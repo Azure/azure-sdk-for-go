@@ -11,7 +11,6 @@ package armappconfiguration
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // KeyValuesClient contains the methods for the KeyValues group.
 // Don't use this type directly, use NewKeyValuesClient() instead.
 type KeyValuesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKeyValuesClient creates a new instance of KeyValuesClient with the specified values.
+// subscriptionID - The Microsoft Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKeyValuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeyValuesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KeyValuesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KeyValuesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a key-value.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeyValuesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesCreateOrUpdateOptions) (KeyValuesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// configStoreName - The name of the configuration store.
+// keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
+// options - KeyValuesClientCreateOrUpdateOptions contains the optional parameters for the KeyValuesClient.CreateOrUpdate
+// method.
+func (client *KeyValuesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientCreateOrUpdateOptions) (KeyValuesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
 	if err != nil {
-		return KeyValuesCreateOrUpdateResponse{}, err
+		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeyValuesCreateOrUpdateResponse{}, err
+		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyValuesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return KeyValuesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter keyValueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyValueName}", url.PathEscape(keyValueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,50 +105,41 @@ func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response) (KeyValuesCreateOrUpdateResponse, error) {
-	result := KeyValuesCreateOrUpdateResponse{RawResponse: resp}
+func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response) (KeyValuesClientCreateOrUpdateResponse, error) {
+	result := KeyValuesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
-		return KeyValuesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *KeyValuesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a key-value.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesBeginDeleteOptions) (KeyValuesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// configStoreName - The name of the configuration store.
+// keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
+// options - KeyValuesClientBeginDeleteOptions contains the optional parameters for the KeyValuesClient.BeginDelete method.
+func (client *KeyValuesClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (KeyValuesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, configStoreName, keyValueName, options)
 	if err != nil {
-		return KeyValuesDeletePollerResponse{}, err
+		return KeyValuesClientDeletePollerResponse{}, err
 	}
-	result := KeyValuesDeletePollerResponse{
+	result := KeyValuesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KeyValuesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("KeyValuesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return KeyValuesDeletePollerResponse{}, err
+		return KeyValuesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &KeyValuesDeletePoller{
+	result.Poller = &KeyValuesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a key-value.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
 	if err != nil {
 		return nil, err
@@ -146,13 +149,13 @@ func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesBeginDeleteOptions) (*policy.Request, error) {
+func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +173,7 @@ func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter keyValueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyValueName}", url.PathEscape(keyValueName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +184,29 @@ func (client *KeyValuesClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *KeyValuesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the properties of the specified key-value.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeyValuesClient) Get(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesGetOptions) (KeyValuesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// configStoreName - The name of the configuration store.
+// keyValueName - Identifier of key and label combination. Key and label are joined by $ character. Label is optional.
+// options - KeyValuesClientGetOptions contains the optional parameters for the KeyValuesClient.Get method.
+func (client *KeyValuesClient) Get(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientGetOptions) (KeyValuesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, configStoreName, keyValueName, options)
 	if err != nil {
-		return KeyValuesGetResponse{}, err
+		return KeyValuesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeyValuesGetResponse{}, err
+		return KeyValuesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyValuesGetResponse{}, client.getHandleError(resp)
+		return KeyValuesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesGetOptions) (*policy.Request, error) {
+func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *KeyValuesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -230,7 +224,7 @@ func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter keyValueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyValueName}", url.PathEscape(keyValueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,43 +236,34 @@ func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValuesGetResponse, error) {
-	result := KeyValuesGetResponse{RawResponse: resp}
+func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValuesClientGetResponse, error) {
+	result := KeyValuesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
-		return KeyValuesGetResponse{}, runtime.NewResponseError(err, resp)
+		return KeyValuesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *KeyValuesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByConfigurationStore - Lists the key-values for a given configuration store.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeyValuesClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *KeyValuesListByConfigurationStoreOptions) *KeyValuesListByConfigurationStorePager {
-	return &KeyValuesListByConfigurationStorePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to which the container registry belongs.
+// configStoreName - The name of the configuration store.
+// options - KeyValuesClientListByConfigurationStoreOptions contains the optional parameters for the KeyValuesClient.ListByConfigurationStore
+// method.
+func (client *KeyValuesClient) ListByConfigurationStore(resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) *KeyValuesClientListByConfigurationStorePager {
+	return &KeyValuesClientListByConfigurationStorePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByConfigurationStoreCreateRequest(ctx, resourceGroupName, configStoreName, options)
 		},
-		advancer: func(ctx context.Context, resp KeyValuesListByConfigurationStoreResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp KeyValuesClientListByConfigurationStoreResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyValueListResult.NextLink)
 		},
 	}
 }
 
 // listByConfigurationStoreCreateRequest creates the ListByConfigurationStore request.
-func (client *KeyValuesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *KeyValuesListByConfigurationStoreOptions) (*policy.Request, error) {
+func (client *KeyValuesClient) listByConfigurationStoreCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *KeyValuesClientListByConfigurationStoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -292,7 +277,7 @@ func (client *KeyValuesClient) listByConfigurationStoreCreateRequest(ctx context
 		return nil, errors.New("parameter configStoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configStoreName}", url.PathEscape(configStoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,23 +292,10 @@ func (client *KeyValuesClient) listByConfigurationStoreCreateRequest(ctx context
 }
 
 // listByConfigurationStoreHandleResponse handles the ListByConfigurationStore response.
-func (client *KeyValuesClient) listByConfigurationStoreHandleResponse(resp *http.Response) (KeyValuesListByConfigurationStoreResponse, error) {
-	result := KeyValuesListByConfigurationStoreResponse{RawResponse: resp}
+func (client *KeyValuesClient) listByConfigurationStoreHandleResponse(resp *http.Response) (KeyValuesClientListByConfigurationStoreResponse, error) {
+	result := KeyValuesClientListByConfigurationStoreResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValueListResult); err != nil {
-		return KeyValuesListByConfigurationStoreResponse{}, runtime.NewResponseError(err, resp)
+		return KeyValuesClientListByConfigurationStoreResponse{}, err
 	}
 	return result, nil
-}
-
-// listByConfigurationStoreHandleError handles the ListByConfigurationStore error response.
-func (client *KeyValuesClient) listByConfigurationStoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

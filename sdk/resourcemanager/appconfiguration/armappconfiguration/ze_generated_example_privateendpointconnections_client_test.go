@@ -30,12 +30,16 @@ func ExamplePrivateEndpointConnectionsClient_ListByConfigurationStore() {
 	pager := client.ListByConfigurationStore("<resource-group-name>",
 		"<config-store-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresCreatePrivateEndpointConnection.json
@@ -75,7 +79,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 			Properties: &armappconfiguration.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armappconfiguration.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armappconfiguration.ConnectionStatusApproved.ToPtr(),
+					Status:      armappconfiguration.ConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -87,7 +91,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresDeletePrivateEndpointConnection.json

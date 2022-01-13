@@ -1,5 +1,333 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ConfigurationStoresClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ConfigurationStoresBeginDeleteOptions)` to `(context.Context, string, string, *ConfigurationStoresClientBeginDeleteOptions)`
+- Function `*ConfigurationStoresClient.BeginDelete` return value(s) have been changed from `(ConfigurationStoresDeletePollerResponse, error)` to `(ConfigurationStoresClientDeletePollerResponse, error)`
+- Function `*ConfigurationStoresClient.ListKeys` parameter(s) have been changed from `(string, string, *ConfigurationStoresListKeysOptions)` to `(string, string, *ConfigurationStoresClientListKeysOptions)`
+- Function `*ConfigurationStoresClient.ListKeys` return value(s) have been changed from `(*ConfigurationStoresListKeysPager)` to `(*ConfigurationStoresClientListKeysPager)`
+- Function `*ConfigurationStoresClient.List` parameter(s) have been changed from `(*ConfigurationStoresListOptions)` to `(*ConfigurationStoresClientListOptions)`
+- Function `*ConfigurationStoresClient.List` return value(s) have been changed from `(*ConfigurationStoresListPager)` to `(*ConfigurationStoresClientListPager)`
+- Function `*ConfigurationStoresClient.RegenerateKey` parameter(s) have been changed from `(context.Context, string, string, RegenerateKeyParameters, *ConfigurationStoresRegenerateKeyOptions)` to `(context.Context, string, string, RegenerateKeyParameters, *ConfigurationStoresClientRegenerateKeyOptions)`
+- Function `*ConfigurationStoresClient.RegenerateKey` return value(s) have been changed from `(ConfigurationStoresRegenerateKeyResponse, error)` to `(ConfigurationStoresClientRegenerateKeyResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*OperationsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, CheckNameAvailabilityParameters, *OperationsCheckNameAvailabilityOptions)` to `(context.Context, CheckNameAvailabilityParameters, *OperationsClientCheckNameAvailabilityOptions)`
+- Function `*OperationsClient.CheckNameAvailability` return value(s) have been changed from `(OperationsCheckNameAvailabilityResponse, error)` to `(OperationsClientCheckNameAvailabilityResponse, error)`
+- Function `*ConfigurationStoresClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ConfigurationStoreUpdateParameters, *ConfigurationStoresBeginUpdateOptions)` to `(context.Context, string, string, ConfigurationStoreUpdateParameters, *ConfigurationStoresClientBeginUpdateOptions)`
+- Function `*ConfigurationStoresClient.BeginUpdate` return value(s) have been changed from `(ConfigurationStoresUpdatePollerResponse, error)` to `(ConfigurationStoresClientUpdatePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*KeyValuesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *KeyValuesCreateOrUpdateOptions)` to `(context.Context, string, string, string, *KeyValuesClientCreateOrUpdateOptions)`
+- Function `*KeyValuesClient.CreateOrUpdate` return value(s) have been changed from `(KeyValuesCreateOrUpdateResponse, error)` to `(KeyValuesClientCreateOrUpdateResponse, error)`
+- Function `*KeyValuesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *KeyValuesGetOptions)` to `(context.Context, string, string, string, *KeyValuesClientGetOptions)`
+- Function `*KeyValuesClient.Get` return value(s) have been changed from `(KeyValuesGetResponse, error)` to `(KeyValuesClientGetResponse, error)`
+- Function `*ConfigurationStoresClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ConfigurationStoresListByResourceGroupOptions)` to `(string, *ConfigurationStoresClientListByResourceGroupOptions)`
+- Function `*ConfigurationStoresClient.ListByResourceGroup` return value(s) have been changed from `(*ConfigurationStoresListByResourceGroupPager)` to `(*ConfigurationStoresClientListByResourceGroupPager)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByConfigurationStore` parameter(s) have been changed from `(string, string, *PrivateLinkResourcesListByConfigurationStoreOptions)` to `(string, string, *PrivateLinkResourcesClientListByConfigurationStoreOptions)`
+- Function `*PrivateLinkResourcesClient.ListByConfigurationStore` return value(s) have been changed from `(*PrivateLinkResourcesListByConfigurationStorePager)` to `(*PrivateLinkResourcesClientListByConfigurationStorePager)`
+- Function `*KeyValuesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *KeyValuesBeginDeleteOptions)` to `(context.Context, string, string, string, *KeyValuesClientBeginDeleteOptions)`
+- Function `*KeyValuesClient.BeginDelete` return value(s) have been changed from `(KeyValuesDeletePollerResponse, error)` to `(KeyValuesClientDeletePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByConfigurationStore` parameter(s) have been changed from `(string, string, *PrivateEndpointConnectionsListByConfigurationStoreOptions)` to `(string, string, *PrivateEndpointConnectionsClientListByConfigurationStoreOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByConfigurationStore` return value(s) have been changed from `(*PrivateEndpointConnectionsListByConfigurationStorePager)` to `(*PrivateEndpointConnectionsClientListByConfigurationStorePager)`
+- Function `*ConfigurationStoresClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, ConfigurationStore, *ConfigurationStoresBeginCreateOptions)` to `(context.Context, string, string, ConfigurationStore, *ConfigurationStoresClientBeginCreateOptions)`
+- Function `*ConfigurationStoresClient.BeginCreate` return value(s) have been changed from `(ConfigurationStoresCreatePollerResponse, error)` to `(ConfigurationStoresClientCreatePollerResponse, error)`
+- Function `*ConfigurationStoresClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ConfigurationStoresGetOptions)` to `(context.Context, string, string, *ConfigurationStoresClientGetOptions)`
+- Function `*ConfigurationStoresClient.Get` return value(s) have been changed from `(ConfigurationStoresGetResponse, error)` to `(ConfigurationStoresClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*KeyValuesClient.ListByConfigurationStore` parameter(s) have been changed from `(string, string, *KeyValuesListByConfigurationStoreOptions)` to `(string, string, *KeyValuesClientListByConfigurationStoreOptions)`
+- Function `*KeyValuesClient.ListByConfigurationStore` return value(s) have been changed from `(*KeyValuesListByConfigurationStorePager)` to `(*KeyValuesClientListByConfigurationStorePager)`
+- Function `*ConfigurationStoresUpdatePoller.Done` has been removed
+- Function `*KeyValuesListByConfigurationStorePager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*ConfigurationStoresListKeysPager.Err` has been removed
+- Function `*ConfigurationStoresListKeysPager.PageResponse` has been removed
+- Function `*ConfigurationStoresDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `ConfigurationStoresCreatePollerResponse.PollUntilDone` has been removed
+- Function `ConfigurationStoresUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*KeyValuesDeletePollerResponse.Resume` has been removed
+- Function `*ConfigurationStoresUpdatePoller.FinalResponse` has been removed
+- Function `*ConfigurationStoresListByResourceGroupPager.NextPage` has been removed
+- Function `*ConfigurationStoresListKeysPager.NextPage` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*ConfigurationStoresListPager.Err` has been removed
+- Function `*KeyValuesListByConfigurationStorePager.PageResponse` has been removed
+- Function `*ConfigurationStoresUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*PrivateLinkResourcesListByConfigurationStorePager.Err` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*ConfigurationStoresCreatePoller.ResumeToken` has been removed
+- Function `KeyValuesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigurationStoresCreatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ConfigurationStoresDeletePoller.Done` has been removed
+- Function `*ConfigurationStoresListPager.NextPage` has been removed
+- Function `*KeyValuesDeletePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ConfigurationStoresListByResourceGroupPager.PageResponse` has been removed
+- Function `*ConfigurationStoresUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigurationStoresDeletePollerResponse.Resume` has been removed
+- Function `*PrivateLinkResourcesListByConfigurationStorePager.PageResponse` has been removed
+- Function `*ConfigurationStoresListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsListByConfigurationStorePager.NextPage` has been removed
+- Function `*ConfigurationStoresDeletePoller.Poll` has been removed
+- Function `*KeyValuesDeletePoller.Poll` has been removed
+- Function `ConfigurationStoresDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*KeyValuesDeletePoller.Done` has been removed
+- Function `*KeyValuesDeletePoller.ResumeToken` has been removed
+- Function `*KeyValuesListByConfigurationStorePager.NextPage` has been removed
+- Function `*ConfigurationStoresCreatePollerResponse.Resume` has been removed
+- Function `*ConfigurationStoresUpdatePollerResponse.Resume` has been removed
+- Function `*ConfigurationStoresListPager.PageResponse` has been removed
+- Function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ConfigurationStoresCreatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsListByConfigurationStorePager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsListByConfigurationStorePager.Err` has been removed
+- Function `*ConfigurationStoresCreatePoller.Done` has been removed
+- Function `*PrivateLinkResourcesListByConfigurationStorePager.NextPage` has been removed
+- Function `*ConfigurationStoresDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Struct `ConfigurationStoresBeginCreateOptions` has been removed
+- Struct `ConfigurationStoresBeginDeleteOptions` has been removed
+- Struct `ConfigurationStoresBeginUpdateOptions` has been removed
+- Struct `ConfigurationStoresCreatePoller` has been removed
+- Struct `ConfigurationStoresCreatePollerResponse` has been removed
+- Struct `ConfigurationStoresCreateResponse` has been removed
+- Struct `ConfigurationStoresCreateResult` has been removed
+- Struct `ConfigurationStoresDeletePoller` has been removed
+- Struct `ConfigurationStoresDeletePollerResponse` has been removed
+- Struct `ConfigurationStoresDeleteResponse` has been removed
+- Struct `ConfigurationStoresGetOptions` has been removed
+- Struct `ConfigurationStoresGetResponse` has been removed
+- Struct `ConfigurationStoresGetResult` has been removed
+- Struct `ConfigurationStoresListByResourceGroupOptions` has been removed
+- Struct `ConfigurationStoresListByResourceGroupPager` has been removed
+- Struct `ConfigurationStoresListByResourceGroupResponse` has been removed
+- Struct `ConfigurationStoresListByResourceGroupResult` has been removed
+- Struct `ConfigurationStoresListKeysOptions` has been removed
+- Struct `ConfigurationStoresListKeysPager` has been removed
+- Struct `ConfigurationStoresListKeysResponse` has been removed
+- Struct `ConfigurationStoresListKeysResult` has been removed
+- Struct `ConfigurationStoresListOptions` has been removed
+- Struct `ConfigurationStoresListPager` has been removed
+- Struct `ConfigurationStoresListResponse` has been removed
+- Struct `ConfigurationStoresListResult` has been removed
+- Struct `ConfigurationStoresRegenerateKeyOptions` has been removed
+- Struct `ConfigurationStoresRegenerateKeyResponse` has been removed
+- Struct `ConfigurationStoresRegenerateKeyResult` has been removed
+- Struct `ConfigurationStoresUpdatePoller` has been removed
+- Struct `ConfigurationStoresUpdatePollerResponse` has been removed
+- Struct `ConfigurationStoresUpdateResponse` has been removed
+- Struct `ConfigurationStoresUpdateResult` has been removed
+- Struct `KeyValuesBeginDeleteOptions` has been removed
+- Struct `KeyValuesCreateOrUpdateOptions` has been removed
+- Struct `KeyValuesCreateOrUpdateResponse` has been removed
+- Struct `KeyValuesCreateOrUpdateResult` has been removed
+- Struct `KeyValuesDeletePoller` has been removed
+- Struct `KeyValuesDeletePollerResponse` has been removed
+- Struct `KeyValuesDeleteResponse` has been removed
+- Struct `KeyValuesGetOptions` has been removed
+- Struct `KeyValuesGetResponse` has been removed
+- Struct `KeyValuesGetResult` has been removed
+- Struct `KeyValuesListByConfigurationStoreOptions` has been removed
+- Struct `KeyValuesListByConfigurationStorePager` has been removed
+- Struct `KeyValuesListByConfigurationStoreResponse` has been removed
+- Struct `KeyValuesListByConfigurationStoreResult` has been removed
+- Struct `OperationsCheckNameAvailabilityOptions` has been removed
+- Struct `OperationsCheckNameAvailabilityResponse` has been removed
+- Struct `OperationsCheckNameAvailabilityResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByConfigurationStoreOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByConfigurationStorePager` has been removed
+- Struct `PrivateEndpointConnectionsListByConfigurationStoreResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByConfigurationStoreResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListByConfigurationStoreOptions` has been removed
+- Struct `PrivateLinkResourcesListByConfigurationStorePager` has been removed
+- Struct `PrivateLinkResourcesListByConfigurationStoreResponse` has been removed
+- Struct `PrivateLinkResourcesListByConfigurationStoreResult` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `TrackedResource` of struct `ConfigurationStore` has been removed
+
+### Features Added
+
+- New function `KeyValuesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (KeyValuesClientDeleteResponse, error)`
+- New function `*PrivateLinkResourcesClientListByConfigurationStorePager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientListByConfigurationStorePager.NextPage(context.Context) bool`
+- New function `*ConfigurationStoresClientUpdatePoller.Done() bool`
+- New function `*KeyValuesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*ConfigurationStoresClientDeletePoller.Done() bool`
+- New function `*ConfigurationStoresClientListKeysPager.NextPage(context.Context) bool`
+- New function `*ConfigurationStoresClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigurationStoresClientDeletePoller.FinalResponse(context.Context) (ConfigurationStoresClientDeleteResponse, error)`
+- New function `*ConfigurationStoresClientDeletePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ConfigurationStoresClientDeletePollerResponse.Resume(context.Context, *ConfigurationStoresClient, string) error`
+- New function `*PrivateLinkResourcesClientListByConfigurationStorePager.PageResponse() PrivateLinkResourcesClientListByConfigurationStoreResponse`
+- New function `*ConfigurationStoresClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*ConfigurationStoresClientListPager.PageResponse() ConfigurationStoresClientListResponse`
+- New function `*ConfigurationStoresClientListPager.Err() error`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `ConfigurationStoresClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationStoresClientUpdateResponse, error)`
+- New function `*ConfigurationStoresClientListKeysPager.Err() error`
+- New function `*KeyValuesClientListByConfigurationStorePager.NextPage(context.Context) bool`
+- New function `*KeyValuesClientDeletePollerResponse.Resume(context.Context, *KeyValuesClient, string) error`
+- New function `*ConfigurationStoresClientUpdatePoller.FinalResponse(context.Context) (ConfigurationStoresClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientListByConfigurationStorePager.PageResponse() PrivateEndpointConnectionsClientListByConfigurationStoreResponse`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*KeyValuesClientListByConfigurationStorePager.Err() error`
+- New function `*ConfigurationStoresClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*KeyValuesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ConfigurationStoresClientListKeysPager.PageResponse() ConfigurationStoresClientListKeysResponse`
+- New function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*ConfigurationStoresClientCreatePoller.FinalResponse(context.Context) (ConfigurationStoresClientCreateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientListByConfigurationStorePager.Err() error`
+- New function `*KeyValuesClientListByConfigurationStorePager.PageResponse() KeyValuesClientListByConfigurationStoreResponse`
+- New function `*ConfigurationStoresClientCreatePollerResponse.Resume(context.Context, *ConfigurationStoresClient, string) error`
+- New function `*ConfigurationStoresClientUpdatePollerResponse.Resume(context.Context, *ConfigurationStoresClient, string) error`
+- New function `*PrivateLinkResourcesClientListByConfigurationStorePager.Err() error`
+- New function `*ConfigurationStoresClientCreatePoller.ResumeToken() (string, error)`
+- New function `ConfigurationStoresClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationStoresClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ConfigurationStoresClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ConfigurationStoresClientListPager.NextPage(context.Context) bool`
+- New function `*ConfigurationStoresClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*KeyValuesClientDeletePoller.Done() bool`
+- New function `*ConfigurationStoresClientCreatePoller.Done() bool`
+- New function `ConfigurationStoresClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ConfigurationStoresClientCreateResponse, error)`
+- New function `*ConfigurationStoresClientListByResourceGroupPager.PageResponse() ConfigurationStoresClientListByResourceGroupResponse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ConfigurationStoresClientListByResourceGroupPager.Err() error`
+- New function `*KeyValuesClientDeletePoller.FinalResponse(context.Context) (KeyValuesClientDeleteResponse, error)`
+- New struct `ConfigurationStoresClientBeginCreateOptions`
+- New struct `ConfigurationStoresClientBeginDeleteOptions`
+- New struct `ConfigurationStoresClientBeginUpdateOptions`
+- New struct `ConfigurationStoresClientCreatePoller`
+- New struct `ConfigurationStoresClientCreatePollerResponse`
+- New struct `ConfigurationStoresClientCreateResponse`
+- New struct `ConfigurationStoresClientCreateResult`
+- New struct `ConfigurationStoresClientDeletePoller`
+- New struct `ConfigurationStoresClientDeletePollerResponse`
+- New struct `ConfigurationStoresClientDeleteResponse`
+- New struct `ConfigurationStoresClientGetOptions`
+- New struct `ConfigurationStoresClientGetResponse`
+- New struct `ConfigurationStoresClientGetResult`
+- New struct `ConfigurationStoresClientListByResourceGroupOptions`
+- New struct `ConfigurationStoresClientListByResourceGroupPager`
+- New struct `ConfigurationStoresClientListByResourceGroupResponse`
+- New struct `ConfigurationStoresClientListByResourceGroupResult`
+- New struct `ConfigurationStoresClientListKeysOptions`
+- New struct `ConfigurationStoresClientListKeysPager`
+- New struct `ConfigurationStoresClientListKeysResponse`
+- New struct `ConfigurationStoresClientListKeysResult`
+- New struct `ConfigurationStoresClientListOptions`
+- New struct `ConfigurationStoresClientListPager`
+- New struct `ConfigurationStoresClientListResponse`
+- New struct `ConfigurationStoresClientListResult`
+- New struct `ConfigurationStoresClientRegenerateKeyOptions`
+- New struct `ConfigurationStoresClientRegenerateKeyResponse`
+- New struct `ConfigurationStoresClientRegenerateKeyResult`
+- New struct `ConfigurationStoresClientUpdatePoller`
+- New struct `ConfigurationStoresClientUpdatePollerResponse`
+- New struct `ConfigurationStoresClientUpdateResponse`
+- New struct `ConfigurationStoresClientUpdateResult`
+- New struct `KeyValuesClientBeginDeleteOptions`
+- New struct `KeyValuesClientCreateOrUpdateOptions`
+- New struct `KeyValuesClientCreateOrUpdateResponse`
+- New struct `KeyValuesClientCreateOrUpdateResult`
+- New struct `KeyValuesClientDeletePoller`
+- New struct `KeyValuesClientDeletePollerResponse`
+- New struct `KeyValuesClientDeleteResponse`
+- New struct `KeyValuesClientGetOptions`
+- New struct `KeyValuesClientGetResponse`
+- New struct `KeyValuesClientGetResult`
+- New struct `KeyValuesClientListByConfigurationStoreOptions`
+- New struct `KeyValuesClientListByConfigurationStorePager`
+- New struct `KeyValuesClientListByConfigurationStoreResponse`
+- New struct `KeyValuesClientListByConfigurationStoreResult`
+- New struct `OperationsClientCheckNameAvailabilityOptions`
+- New struct `OperationsClientCheckNameAvailabilityResponse`
+- New struct `OperationsClientCheckNameAvailabilityResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByConfigurationStoreOptions`
+- New struct `PrivateEndpointConnectionsClientListByConfigurationStorePager`
+- New struct `PrivateEndpointConnectionsClientListByConfigurationStoreResponse`
+- New struct `PrivateEndpointConnectionsClientListByConfigurationStoreResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListByConfigurationStoreOptions`
+- New struct `PrivateLinkResourcesClientListByConfigurationStorePager`
+- New struct `PrivateLinkResourcesClientListByConfigurationStoreResponse`
+- New struct `PrivateLinkResourcesClientListByConfigurationStoreResult`
+- New field `Tags` in struct `ConfigurationStore`
+- New field `ID` in struct `ConfigurationStore`
+- New field `Name` in struct `ConfigurationStore`
+- New field `Type` in struct `ConfigurationStore`
+- New field `Location` in struct `ConfigurationStore`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Error` in struct `ErrorResponse`
+
+
 ## 0.1.0 (2021-11-30)
 
 - Initial preview release.

@@ -7,10 +7,11 @@ import (
 	"fmt"
 	"os"
 
+	azblob "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/azblob"
 	azkeys "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/azkeys"
 	aztables "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/aztables"
+	systemperf "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/system_perfstress"
 	template "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/template"
-	azblob "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/azblob"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
 	"github.com/spf13/cobra"
 )
@@ -38,6 +39,7 @@ func init() {
 	rootCmd.AddCommand(azblob.DownloadBlobCmd)
 	rootCmd.AddCommand(azblob.UploadBlobCmd)
 	rootCmd.AddCommand(azblob.ListBlobCmd)
+	rootCmd.AddCommand(systemperf.NoOpTestCmd)
 }
 
 // Execute executes the specified command.

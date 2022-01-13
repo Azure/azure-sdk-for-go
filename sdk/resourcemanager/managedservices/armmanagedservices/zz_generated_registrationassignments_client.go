@@ -11,7 +11,6 @@ package armmanagedservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,45 +25,56 @@ import (
 // RegistrationAssignmentsClient contains the methods for the RegistrationAssignments group.
 // Don't use this type directly, use NewRegistrationAssignmentsClient() instead.
 type RegistrationAssignmentsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewRegistrationAssignmentsClient creates a new instance of RegistrationAssignmentsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRegistrationAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RegistrationAssignmentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RegistrationAssignmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RegistrationAssignmentsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a registration assignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistrationAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsBeginCreateOrUpdateOptions) (RegistrationAssignmentsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the resource.
+// registrationAssignmentID - The GUID of the registration assignment.
+// requestBody - The parameters required to create new registration assignment.
+// options - RegistrationAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginCreateOrUpdate
+// method.
+func (client *RegistrationAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsClientBeginCreateOrUpdateOptions) (RegistrationAssignmentsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, scope, registrationAssignmentID, requestBody, options)
 	if err != nil {
-		return RegistrationAssignmentsCreateOrUpdatePollerResponse{}, err
+		return RegistrationAssignmentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := RegistrationAssignmentsCreateOrUpdatePollerResponse{
+	result := RegistrationAssignmentsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RegistrationAssignmentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("RegistrationAssignmentsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return RegistrationAssignmentsCreateOrUpdatePollerResponse{}, err
+		return RegistrationAssignmentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &RegistrationAssignmentsCreateOrUpdatePoller{
+	result.Poller = &RegistrationAssignmentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a registration assignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistrationAssignmentsClient) createOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RegistrationAssignmentsClient) createOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, registrationAssignmentID, requestBody, options)
 	if err != nil {
 		return nil, err
@@ -74,20 +84,20 @@ func (client *RegistrationAssignmentsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RegistrationAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RegistrationAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment, options *RegistrationAssignmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registrationAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if registrationAssignmentID == "" {
 		return nil, errors.New("parameter registrationAssignmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registrationAssignmentId}", url.PathEscape(registrationAssignmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,42 +108,33 @@ func (client *RegistrationAssignmentsClient) createOrUpdateCreateRequest(ctx con
 	return req, runtime.MarshalAsJSON(req, requestBody)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *RegistrationAssignmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified registration assignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistrationAssignmentsClient) BeginDelete(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsBeginDeleteOptions) (RegistrationAssignmentsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the resource.
+// registrationAssignmentID - The GUID of the registration assignment.
+// options - RegistrationAssignmentsClientBeginDeleteOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginDelete
+// method.
+func (client *RegistrationAssignmentsClient) BeginDelete(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientBeginDeleteOptions) (RegistrationAssignmentsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, scope, registrationAssignmentID, options)
 	if err != nil {
-		return RegistrationAssignmentsDeletePollerResponse{}, err
+		return RegistrationAssignmentsClientDeletePollerResponse{}, err
 	}
-	result := RegistrationAssignmentsDeletePollerResponse{
+	result := RegistrationAssignmentsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RegistrationAssignmentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("RegistrationAssignmentsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return RegistrationAssignmentsDeletePollerResponse{}, err
+		return RegistrationAssignmentsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &RegistrationAssignmentsDeletePoller{
+	result.Poller = &RegistrationAssignmentsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified registration assignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistrationAssignmentsClient) deleteOperation(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RegistrationAssignmentsClient) deleteOperation(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, registrationAssignmentID, options)
 	if err != nil {
 		return nil, err
@@ -143,20 +144,20 @@ func (client *RegistrationAssignmentsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RegistrationAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsBeginDeleteOptions) (*policy.Request, error) {
+func (client *RegistrationAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registrationAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if registrationAssignmentID == "" {
 		return nil, errors.New("parameter registrationAssignmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registrationAssignmentId}", url.PathEscape(registrationAssignmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,45 +168,36 @@ func (client *RegistrationAssignmentsClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RegistrationAssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the specified registration assignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsGetOptions) (RegistrationAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the resource.
+// registrationAssignmentID - The GUID of the registration assignment.
+// options - RegistrationAssignmentsClientGetOptions contains the optional parameters for the RegistrationAssignmentsClient.Get
+// method.
+func (client *RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientGetOptions) (RegistrationAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, registrationAssignmentID, options)
 	if err != nil {
-		return RegistrationAssignmentsGetResponse{}, err
+		return RegistrationAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegistrationAssignmentsGetResponse{}, err
+		return RegistrationAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RegistrationAssignmentsGetResponse{}, client.getHandleError(resp)
+		return RegistrationAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegistrationAssignmentsClient) getCreateRequest(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsGetOptions) (*policy.Request, error) {
+func (client *RegistrationAssignmentsClient) getCreateRequest(ctx context.Context, scope string, registrationAssignmentID string, options *RegistrationAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registrationAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if registrationAssignmentID == "" {
 		return nil, errors.New("parameter registrationAssignmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registrationAssignmentId}", url.PathEscape(registrationAssignmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,46 +212,36 @@ func (client *RegistrationAssignmentsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegistrationAssignmentsClient) getHandleResponse(resp *http.Response) (RegistrationAssignmentsGetResponse, error) {
-	result := RegistrationAssignmentsGetResponse{RawResponse: resp}
+func (client *RegistrationAssignmentsClient) getHandleResponse(resp *http.Response) (RegistrationAssignmentsClientGetResponse, error) {
+	result := RegistrationAssignmentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistrationAssignment); err != nil {
-		return RegistrationAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RegistrationAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RegistrationAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of the registration assignments.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistrationAssignmentsClient) List(scope string, options *RegistrationAssignmentsListOptions) *RegistrationAssignmentsListPager {
-	return &RegistrationAssignmentsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the resource.
+// options - RegistrationAssignmentsClientListOptions contains the optional parameters for the RegistrationAssignmentsClient.List
+// method.
+func (client *RegistrationAssignmentsClient) List(scope string, options *RegistrationAssignmentsClientListOptions) *RegistrationAssignmentsClientListPager {
+	return &RegistrationAssignmentsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp RegistrationAssignmentsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RegistrationAssignmentsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegistrationAssignmentList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RegistrationAssignmentsClient) listCreateRequest(ctx context.Context, scope string, options *RegistrationAssignmentsListOptions) (*policy.Request, error) {
+func (client *RegistrationAssignmentsClient) listCreateRequest(ctx context.Context, scope string, options *RegistrationAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedServices/registrationAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,23 +256,10 @@ func (client *RegistrationAssignmentsClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *RegistrationAssignmentsClient) listHandleResponse(resp *http.Response) (RegistrationAssignmentsListResponse, error) {
-	result := RegistrationAssignmentsListResponse{RawResponse: resp}
+func (client *RegistrationAssignmentsClient) listHandleResponse(resp *http.Response) (RegistrationAssignmentsClientListResponse, error) {
+	result := RegistrationAssignmentsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistrationAssignmentList); err != nil {
-		return RegistrationAssignmentsListResponse{}, runtime.NewResponseError(err, resp)
+		return RegistrationAssignmentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RegistrationAssignmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

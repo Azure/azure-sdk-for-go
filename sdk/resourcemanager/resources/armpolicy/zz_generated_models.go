@@ -93,19 +93,211 @@ type AliasPattern struct {
 	Variable *string `json:"variable,omitempty"`
 }
 
-// CloudError - An error response from a policy operation.
-// Implements the error and azcore.HTTPResponse interfaces.
-type CloudError struct {
-	raw string
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
-	// format.)
-	InnerError *ErrorResponse `json:"error,omitempty"`
+// Assignment - The policy assignment.
+type Assignment struct {
+	// The managed identity associated with the policy assignment.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// The location of the policy assignment. Only required when utilizing managed identity.
+	Location *string `json:"location,omitempty"`
+
+	// Properties for the policy assignment.
+	Properties *AssignmentProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the policy assignment.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the policy assignment.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the policy assignment.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+// AssignmentListResult - List of policy assignments.
+type AssignmentListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of policy assignments.
+	Value []*Assignment `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssignmentListResult.
+func (a AssignmentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AssignmentProperties - The policy assignment properties.
+type AssignmentProperties struct {
+	// This message will be part of response in case of policy violation.
+	Description *string `json:"description,omitempty"`
+
+	// The display name of the policy assignment.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
+	EnforcementMode *EnforcementMode `json:"enforcementMode,omitempty"`
+
+	// The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
+
+	// The messages that describe why a resource is non-compliant with the policy.
+	NonComplianceMessages []*NonComplianceMessage `json:"nonComplianceMessages,omitempty"`
+
+	// The policy's excluded scopes.
+	NotScopes []*string `json:"notScopes,omitempty"`
+
+	// The parameter values for the assigned policy rule. The keys are the parameter names.
+	Parameters map[string]*ParameterValuesValue `json:"parameters,omitempty"`
+
+	// The ID of the policy definition or policy set definition being assigned.
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+
+	// READ-ONLY; The scope for the policy assignment.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssignmentProperties.
+func (a AssignmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", a.Description)
+	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "enforcementMode", a.EnforcementMode)
+	populate(objectMap, "metadata", a.Metadata)
+	populate(objectMap, "nonComplianceMessages", a.NonComplianceMessages)
+	populate(objectMap, "notScopes", a.NotScopes)
+	populate(objectMap, "parameters", a.Parameters)
+	populate(objectMap, "policyDefinitionId", a.PolicyDefinitionID)
+	populate(objectMap, "scope", a.Scope)
+	return json.Marshal(objectMap)
+}
+
+type AssignmentUpdate struct {
+	// The managed identity associated with the policy assignment.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// The location of the policy assignment. Only required when utilizing managed identity.
+	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AssignmentUpdate.
+func (a AssignmentUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	return json.Marshal(objectMap)
+}
+
+// AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
+type AssignmentsClientCreateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientCreateOptions contains the optional parameters for the AssignmentsClient.Create method.
+type AssignmentsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
+type AssignmentsClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
+type AssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
+type AssignmentsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
+type AssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientListForManagementGroupOptions contains the optional parameters for the AssignmentsClient.ListForManagementGroup
+// method.
+type AssignmentsClientListForManagementGroupOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy assignments that
+	// at the given scope. If $filter=policyDefinitionId eq '{value}' is provided,
+	// the returned list includes all policy assignments of the policy definition whose id is {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup
+// method.
+type AssignmentsClientListForResourceGroupOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy assignments that
+	// at the given scope. If $filter=policyDefinitionId eq '{value}' is provided,
+	// the returned list includes all policy assignments of the policy definition whose id is {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.ListForResource method.
+type AssignmentsClientListForResourceOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy assignments that
+	// at the given scope. If $filter=policyDefinitionId eq '{value}' is provided,
+	// the returned list includes all policy assignments of the policy definition whose id is {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
+type AssignmentsClientListOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy assignments that
+	// at the given scope. If $filter=policyDefinitionId eq '{value}' is provided,
+	// the returned list includes all policy assignments of the policy definition whose id is {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// AssignmentsClientUpdateByIDOptions contains the optional parameters for the AssignmentsClient.UpdateByID method.
+type AssignmentsClientUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientUpdateOptions contains the optional parameters for the AssignmentsClient.Update method.
+type AssignmentsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudError - An error response from a policy operation.
+type CloudError struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // DataEffect - The data effect definition.
@@ -119,10 +311,12 @@ type DataEffect struct {
 
 // DataManifestCustomResourceFunctionDefinition - The custom resource function definition.
 type DataManifestCustomResourceFunctionDefinition struct {
-	// A value indicating whether the custom properties within the property bag are allowed. Needs api-version to be specified in the policy rule eg - vault('2019-06-01').
+	// A value indicating whether the custom properties within the property bag are allowed. Needs api-version to be specified
+	// in the policy rule eg - vault('2019-06-01').
 	AllowCustomProperties *bool `json:"allowCustomProperties,omitempty"`
 
-	// The top-level properties that can be selected on the function's output. eg - [ "name", "location" ] if vault().name and vault().location are supported
+	// The top-level properties that can be selected on the function's output. eg - [ "name", "location" ] if vault().name and
+	// vault().location are supported
 	DefaultProperties []*string `json:"defaultProperties,omitempty"`
 
 	// The fully qualified control plane resource type that this function represents. eg - 'Microsoft.KeyVault/vaults'.
@@ -228,17 +422,214 @@ func (d DataPolicyManifestProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DataPolicyManifestsGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifests.GetByPolicyMode method.
-type DataPolicyManifestsGetByPolicyModeOptions struct {
+// DataPolicyManifestsClientGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifestsClient.GetByPolicyMode
+// method.
+type DataPolicyManifestsClientGetByPolicyModeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataPolicyManifestsListOptions contains the optional parameters for the DataPolicyManifests.List method.
-type DataPolicyManifestsListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: "namespace eq '{value}'". If $filter is not provided, no filtering is performed.
-	// If $filter=namespace eq '{value}' is provided, the returned list only includes all data policy manifests that have a namespace matching the provided
-	// value.
+// DataPolicyManifestsClientListOptions contains the optional parameters for the DataPolicyManifestsClient.List method.
+type DataPolicyManifestsClientListOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: "namespace eq '{value}'". If $filter is not provided,
+	// no filtering is performed. If $filter=namespace eq '{value}' is provided, the
+	// returned list only includes all data policy manifests that have a namespace matching the provided value.
 	Filter *string
+}
+
+// Definition - The policy definition.
+type Definition struct {
+	// The policy definition properties.
+	Properties *DefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the policy definition.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the policy definition.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource (Microsoft.Authorization/policyDefinitions).
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DefinitionGroup - The policy definition group.
+type DefinitionGroup struct {
+	// REQUIRED; The name of the group.
+	Name *string `json:"name,omitempty"`
+
+	// A resource ID of a resource that contains additional metadata about the group.
+	AdditionalMetadataID *string `json:"additionalMetadataId,omitempty"`
+
+	// The group's category.
+	Category *string `json:"category,omitempty"`
+
+	// The group's description.
+	Description *string `json:"description,omitempty"`
+
+	// The group's display name.
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// DefinitionListResult - List of policy definitions.
+type DefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of policy definitions.
+	Value []*Definition `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DefinitionListResult.
+func (d DefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", d.NextLink)
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
+}
+
+// DefinitionProperties - The policy definition properties.
+type DefinitionProperties struct {
+	// The policy definition description.
+	Description *string `json:"description,omitempty"`
+
+	// The display name of the policy definition.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The policy definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
+
+	// The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
+	Mode *string `json:"mode,omitempty"`
+
+	// The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
+	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
+
+	// The policy rule.
+	PolicyRule map[string]interface{} `json:"policyRule,omitempty"`
+
+	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
+	PolicyType *PolicyType `json:"policyType,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DefinitionProperties.
+func (d DefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", d.Description)
+	populate(objectMap, "displayName", d.DisplayName)
+	populate(objectMap, "metadata", d.Metadata)
+	populate(objectMap, "mode", d.Mode)
+	populate(objectMap, "parameters", d.Parameters)
+	populate(objectMap, "policyRule", d.PolicyRule)
+	populate(objectMap, "policyType", d.PolicyType)
+	return json.Marshal(objectMap)
+}
+
+// DefinitionReference - The policy definition reference.
+type DefinitionReference struct {
+	// REQUIRED; The ID of the policy definition or policy set definition.
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+
+	// The name of the groups that this policy definition reference belongs to.
+	GroupNames []*string `json:"groupNames,omitempty"`
+
+	// The parameter values for the referenced policy rule. The keys are the parameter names.
+	Parameters map[string]*ParameterValuesValue `json:"parameters,omitempty"`
+
+	// A unique id (within the policy set definition) for this policy definition reference.
+	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DefinitionReference.
+func (d DefinitionReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupNames", d.GroupNames)
+	populate(objectMap, "parameters", d.Parameters)
+	populate(objectMap, "policyDefinitionId", d.PolicyDefinitionID)
+	populate(objectMap, "policyDefinitionReferenceId", d.PolicyDefinitionReferenceID)
+	return json.Marshal(objectMap)
+}
+
+// DefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdateAtManagementGroup
+// method.
+type DefinitionsClientCreateOrUpdateAtManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientCreateOrUpdateOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdate method.
+type DefinitionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientDeleteAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.DeleteAtManagementGroup
+// method.
+type DefinitionsClientDeleteAtManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientDeleteOptions contains the optional parameters for the DefinitionsClient.Delete method.
+type DefinitionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientGetAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.GetAtManagementGroup
+// method.
+type DefinitionsClientGetAtManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientGetBuiltInOptions contains the optional parameters for the DefinitionsClient.GetBuiltIn method.
+type DefinitionsClientGetBuiltInOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientGetOptions contains the optional parameters for the DefinitionsClient.Get method.
+type DefinitionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.ListBuiltIn method.
+type DefinitionsClientListBuiltInOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given scope. If
+	// $filter='policyType -eq {value}' is provided, the returned list only includes all
+	// policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static.
+	// If $filter='category -eq {value}' is provided, the returned list only
+	// includes all policy definitions whose category match the {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.ListByManagementGroup
+// method.
+type DefinitionsClientListByManagementGroupOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given scope. If
+	// $filter='policyType -eq {value}' is provided, the returned list only includes all
+	// policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static.
+	// If $filter='category -eq {value}' is provided, the returned list only
+	// includes all policy definitions whose category match the {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.List method.
+type DefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given scope. If
+	// $filter='policyType -eq {value}' is provided, the returned list only includes all
+	// policy definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom, and Static.
+	// If $filter='category -eq {value}' is provided, the returned list only
+	// includes all policy definitions whose category match the {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -250,8 +641,8 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.)
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
@@ -280,13 +671,205 @@ func (e ErrorResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Identity for the resource. Policy assignments support a maximum of one identity. That is either a system assigned identity or a single user assigned
-// identity.
+// Exemption - The policy exemption.
+type Exemption struct {
+	// REQUIRED; Properties for the policy exemption.
+	Properties *ExemptionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the policy exemption.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the policy exemption.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource (Microsoft.Authorization/policyExemptions).
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ExemptionListResult - List of policy exemptions.
+type ExemptionListResult struct {
+	// An array of policy exemptions.
+	Value []*Exemption `json:"value,omitempty"`
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ExemptionListResult.
+func (e ExemptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", e.NextLink)
+	populate(objectMap, "value", e.Value)
+	return json.Marshal(objectMap)
+}
+
+// ExemptionProperties - The policy exemption properties.
+type ExemptionProperties struct {
+	// REQUIRED; The policy exemption category. Possible values are Waiver and Mitigated.
+	ExemptionCategory *ExemptionCategory `json:"exemptionCategory,omitempty"`
+
+	// REQUIRED; The ID of the policy assignment that is being exempted.
+	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+
+	// The description of the policy exemption.
+	Description *string `json:"description,omitempty"`
+
+	// The display name of the policy exemption.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
+	ExpiresOn *time.Time `json:"expiresOn,omitempty"`
+
+	// The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
+
+	// The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
+	PolicyDefinitionReferenceIDs []*string `json:"policyDefinitionReferenceIds,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ExemptionProperties.
+func (e ExemptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", e.Description)
+	populate(objectMap, "displayName", e.DisplayName)
+	populate(objectMap, "exemptionCategory", e.ExemptionCategory)
+	populateTimeRFC3339(objectMap, "expiresOn", e.ExpiresOn)
+	populate(objectMap, "metadata", e.Metadata)
+	populate(objectMap, "policyAssignmentId", e.PolicyAssignmentID)
+	populate(objectMap, "policyDefinitionReferenceIds", e.PolicyDefinitionReferenceIDs)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExemptionProperties.
+func (e *ExemptionProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "description":
+			err = unpopulate(val, &e.Description)
+			delete(rawMsg, key)
+		case "displayName":
+			err = unpopulate(val, &e.DisplayName)
+			delete(rawMsg, key)
+		case "exemptionCategory":
+			err = unpopulate(val, &e.ExemptionCategory)
+			delete(rawMsg, key)
+		case "expiresOn":
+			err = unpopulateTimeRFC3339(val, &e.ExpiresOn)
+			delete(rawMsg, key)
+		case "metadata":
+			err = unpopulate(val, &e.Metadata)
+			delete(rawMsg, key)
+		case "policyAssignmentId":
+			err = unpopulate(val, &e.PolicyAssignmentID)
+			delete(rawMsg, key)
+		case "policyDefinitionReferenceIds":
+			err = unpopulate(val, &e.PolicyDefinitionReferenceIDs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ExemptionsClientCreateOrUpdateOptions contains the optional parameters for the ExemptionsClient.CreateOrUpdate method.
+type ExemptionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExemptionsClientDeleteOptions contains the optional parameters for the ExemptionsClient.Delete method.
+type ExemptionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExemptionsClientGetOptions contains the optional parameters for the ExemptionsClient.Get method.
+type ExemptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExemptionsClientListForManagementGroupOptions contains the optional parameters for the ExemptionsClient.ListForManagementGroup
+// method.
+type ExemptionsClientListForManagementGroupOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
+	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
+	// those that apply directly or apply from containing scopes. If
+	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
+	// at the given scope. If $filter=excludeExpired() is provided, the returned list
+	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
+	// eq '{value}' is provided. the returned list only includes all policy
+	// exemptions that are associated with the give policyAssignmentId.
+	Filter *string
+}
+
+// ExemptionsClientListForResourceGroupOptions contains the optional parameters for the ExemptionsClient.ListForResourceGroup
+// method.
+type ExemptionsClientListForResourceGroupOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
+	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
+	// those that apply directly or apply from containing scopes. If
+	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
+	// at the given scope. If $filter=excludeExpired() is provided, the returned list
+	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
+	// eq '{value}' is provided. the returned list only includes all policy
+	// exemptions that are associated with the give policyAssignmentId.
+	Filter *string
+}
+
+// ExemptionsClientListForResourceOptions contains the optional parameters for the ExemptionsClient.ListForResource method.
+type ExemptionsClientListForResourceOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
+	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
+	// those that apply directly or apply from containing scopes. If
+	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
+	// at the given scope. If $filter=excludeExpired() is provided, the returned list
+	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
+	// eq '{value}' is provided. the returned list only includes all policy
+	// exemptions that are associated with the give policyAssignmentId.
+	Filter *string
+}
+
+// ExemptionsClientListOptions contains the optional parameters for the ExemptionsClient.List method.
+type ExemptionsClientListOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
+	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
+	// those that apply directly or apply from containing scopes. If
+	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
+	// everything in the unfiltered list except those applied to sub scopes contained
+	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
+	// at the given scope. If $filter=excludeExpired() is provided, the returned list
+	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
+	// eq '{value}' is provided. the returned list only includes all policy
+	// exemptions that are associated with the give policyAssignmentId.
+	Filter *string
+}
+
+// Identity for the resource. Policy assignments support a maximum of one identity. That is either a system assigned identity
+// or a single user assigned identity.
 type Identity struct {
 	// The identity type. This is the only required field when adding a system or user assigned identity to a resource.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The user identity associated with the policy. The user identity dictionary key references will be ARM resource ids in the form:
+	// The user identity associated with the policy. The user identity dictionary key references will be ARM resource ids in the
+	// form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
 
@@ -307,15 +890,15 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NonComplianceMessage - A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages and on resource's
-// non-compliant compliance results.
+// NonComplianceMessage - A message that describes why a resource is non-compliant with the policy. This is shown in 'deny'
+// error messages and on resource's non-compliant compliance results.
 type NonComplianceMessage struct {
-	// REQUIRED; A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages and on resource's non-compliant
-	// compliance results.
+	// REQUIRED; A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages
+	// and on resource's non-compliant compliance results.
 	Message *string `json:"message,omitempty"`
 
-	// The policy definition reference ID within a policy set definition the message is intended for. This is only applicable if the policy assignment assigns
-	// a policy set definition. If this is not provided
+	// The policy definition reference ID within a policy set definition the message is intended for. This is only applicable
+	// if the policy assignment assigns a policy set definition. If this is not provided
 	// the message applies to all policies assigned by this policy assignment.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
 }
@@ -350,8 +933,8 @@ type ParameterDefinitionsValueMetadata struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]map[string]interface{}
 
-	// Set to true to have Azure portal create role assignments on the resource ID or resource scope value of this parameter during policy assignment. This
-	// property is useful in case you wish to assign
+	// Set to true to have Azure portal create role assignments on the resource ID or resource scope value of this parameter during
+	// policy assignment. This property is useful in case you wish to assign
 	// permissions outside the assignment scope.
 	AssignPermissions *bool `json:"assignPermissions,omitempty"`
 
@@ -361,7 +944,8 @@ type ParameterDefinitionsValueMetadata struct {
 	// The display name for the parameter.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Used when assigning the policy definition through the portal. Provides a context aware list of values for the user to choose from.
+	// Used when assigning the policy definition through the portal. Provides a context aware list of values for the user to choose
+	// from.
 	StrongType *string `json:"strongType,omitempty"`
 }
 
@@ -425,699 +1009,6 @@ type ParameterValuesValue struct {
 	Value map[string]interface{} `json:"value,omitempty"`
 }
 
-// PolicyAssignment - The policy assignment.
-type PolicyAssignment struct {
-	// The managed identity associated with the policy assignment.
-	Identity *Identity `json:"identity,omitempty"`
-
-	// The location of the policy assignment. Only required when utilizing managed identity.
-	Location *string `json:"location,omitempty"`
-
-	// Properties for the policy assignment.
-	Properties *PolicyAssignmentProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The ID of the policy assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the policy assignment.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the policy assignment.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PolicyAssignmentListResult - List of policy assignments.
-type PolicyAssignmentListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// An array of policy assignments.
-	Value []*PolicyAssignment `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentListResult.
-func (p PolicyAssignmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PolicyAssignmentProperties - The policy assignment properties.
-type PolicyAssignmentProperties struct {
-	// This message will be part of response in case of policy violation.
-	Description *string `json:"description,omitempty"`
-
-	// The display name of the policy assignment.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
-	EnforcementMode *EnforcementMode `json:"enforcementMode,omitempty"`
-
-	// The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
-
-	// The messages that describe why a resource is non-compliant with the policy.
-	NonComplianceMessages []*NonComplianceMessage `json:"nonComplianceMessages,omitempty"`
-
-	// The policy's excluded scopes.
-	NotScopes []*string `json:"notScopes,omitempty"`
-
-	// The parameter values for the assigned policy rule. The keys are the parameter names.
-	Parameters map[string]*ParameterValuesValue `json:"parameters,omitempty"`
-
-	// The ID of the policy definition or policy set definition being assigned.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
-
-	// READ-ONLY; The scope for the policy assignment.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentProperties.
-func (p PolicyAssignmentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "enforcementMode", p.EnforcementMode)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "nonComplianceMessages", p.NonComplianceMessages)
-	populate(objectMap, "notScopes", p.NotScopes)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "policyDefinitionId", p.PolicyDefinitionID)
-	populate(objectMap, "scope", p.Scope)
-	return json.Marshal(objectMap)
-}
-
-type PolicyAssignmentUpdate struct {
-	// The managed identity associated with the policy assignment.
-	Identity *Identity `json:"identity,omitempty"`
-
-	// The location of the policy assignment. Only required when utilizing managed identity.
-	Location *string `json:"location,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyAssignmentUpdate.
-func (p PolicyAssignmentUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "location", p.Location)
-	return json.Marshal(objectMap)
-}
-
-// PolicyAssignmentsCreateByIDOptions contains the optional parameters for the PolicyAssignments.CreateByID method.
-type PolicyAssignmentsCreateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsCreateOptions contains the optional parameters for the PolicyAssignments.Create method.
-type PolicyAssignmentsCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsDeleteByIDOptions contains the optional parameters for the PolicyAssignments.DeleteByID method.
-type PolicyAssignmentsDeleteByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsDeleteOptions contains the optional parameters for the PolicyAssignments.Delete method.
-type PolicyAssignmentsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsGetByIDOptions contains the optional parameters for the PolicyAssignments.GetByID method.
-type PolicyAssignmentsGetByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsGetOptions contains the optional parameters for the PolicyAssignments.Get method.
-type PolicyAssignmentsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsListForManagementGroupOptions contains the optional parameters for the PolicyAssignments.ListForManagementGroup method.
-type PolicyAssignmentsListForManagementGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is
-	// not provided, no filtering is performed. If $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope,
-	// which is everything in the unfiltered list except those applied to sub scopes contained within the given scope. If $filter=atExactScope() is provided,
-	// the returned list only includes all policy assignments that at the given scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned
-	// list includes all policy assignments of the policy definition whose id is {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyAssignmentsListForResourceGroupOptions contains the optional parameters for the PolicyAssignments.ListForResourceGroup method.
-type PolicyAssignmentsListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is
-	// not provided, no filtering is performed. If $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope,
-	// which is everything in the unfiltered list except those applied to sub scopes contained within the given scope. If $filter=atExactScope() is provided,
-	// the returned list only includes all policy assignments that at the given scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned
-	// list includes all policy assignments of the policy definition whose id is {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyAssignmentsListForResourceOptions contains the optional parameters for the PolicyAssignments.ListForResource method.
-type PolicyAssignmentsListForResourceOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is
-	// not provided, no filtering is performed. If $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope,
-	// which is everything in the unfiltered list except those applied to sub scopes contained within the given scope. If $filter=atExactScope() is provided,
-	// the returned list only includes all policy assignments that at the given scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned
-	// list includes all policy assignments of the policy definition whose id is {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyAssignmentsListOptions contains the optional parameters for the PolicyAssignments.List method.
-type PolicyAssignmentsListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is
-	// not provided, no filtering is performed. If $filter=atScope() is provided, the returned list only includes all policy assignments that apply to the scope,
-	// which is everything in the unfiltered list except those applied to sub scopes contained within the given scope. If $filter=atExactScope() is provided,
-	// the returned list only includes all policy assignments that at the given scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned
-	// list includes all policy assignments of the policy definition whose id is {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyAssignmentsUpdateByIDOptions contains the optional parameters for the PolicyAssignments.UpdateByID method.
-type PolicyAssignmentsUpdateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentsUpdateOptions contains the optional parameters for the PolicyAssignments.Update method.
-type PolicyAssignmentsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinition - The policy definition.
-type PolicyDefinition struct {
-	// The policy definition properties.
-	Properties *PolicyDefinitionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The ID of the policy definition.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the policy definition.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource (Microsoft.Authorization/policyDefinitions).
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PolicyDefinitionGroup - The policy definition group.
-type PolicyDefinitionGroup struct {
-	// REQUIRED; The name of the group.
-	Name *string `json:"name,omitempty"`
-
-	// A resource ID of a resource that contains additional metadata about the group.
-	AdditionalMetadataID *string `json:"additionalMetadataId,omitempty"`
-
-	// The group's category.
-	Category *string `json:"category,omitempty"`
-
-	// The group's description.
-	Description *string `json:"description,omitempty"`
-
-	// The group's display name.
-	DisplayName *string `json:"displayName,omitempty"`
-}
-
-// PolicyDefinitionListResult - List of policy definitions.
-type PolicyDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// An array of policy definitions.
-	Value []*PolicyDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyDefinitionListResult.
-func (p PolicyDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PolicyDefinitionProperties - The policy definition properties.
-type PolicyDefinitionProperties struct {
-	// The policy definition description.
-	Description *string `json:"description,omitempty"`
-
-	// The display name of the policy definition.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The policy definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
-
-	// The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
-	Mode *string `json:"mode,omitempty"`
-
-	// The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
-	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
-
-	// The policy rule.
-	PolicyRule map[string]interface{} `json:"policyRule,omitempty"`
-
-	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
-	PolicyType *PolicyType `json:"policyType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyDefinitionProperties.
-func (p PolicyDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "mode", p.Mode)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "policyRule", p.PolicyRule)
-	populate(objectMap, "policyType", p.PolicyType)
-	return json.Marshal(objectMap)
-}
-
-// PolicyDefinitionReference - The policy definition reference.
-type PolicyDefinitionReference struct {
-	// REQUIRED; The ID of the policy definition or policy set definition.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
-
-	// The name of the groups that this policy definition reference belongs to.
-	GroupNames []*string `json:"groupNames,omitempty"`
-
-	// The parameter values for the referenced policy rule. The keys are the parameter names.
-	Parameters map[string]*ParameterValuesValue `json:"parameters,omitempty"`
-
-	// A unique id (within the policy set definition) for this policy definition reference.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyDefinitionReference.
-func (p PolicyDefinitionReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupNames", p.GroupNames)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "policyDefinitionId", p.PolicyDefinitionID)
-	populate(objectMap, "policyDefinitionReferenceId", p.PolicyDefinitionReferenceID)
-	return json.Marshal(objectMap)
-}
-
-// PolicyDefinitionsCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the PolicyDefinitions.CreateOrUpdateAtManagementGroup method.
-type PolicyDefinitionsCreateOrUpdateAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsCreateOrUpdateOptions contains the optional parameters for the PolicyDefinitions.CreateOrUpdate method.
-type PolicyDefinitionsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsDeleteAtManagementGroupOptions contains the optional parameters for the PolicyDefinitions.DeleteAtManagementGroup method.
-type PolicyDefinitionsDeleteAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsDeleteOptions contains the optional parameters for the PolicyDefinitions.Delete method.
-type PolicyDefinitionsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsGetAtManagementGroupOptions contains the optional parameters for the PolicyDefinitions.GetAtManagementGroup method.
-type PolicyDefinitionsGetAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsGetBuiltInOptions contains the optional parameters for the PolicyDefinitions.GetBuiltIn method.
-type PolicyDefinitionsGetBuiltInOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsGetOptions contains the optional parameters for the PolicyDefinitions.Get method.
-type PolicyDefinitionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyDefinitionsListBuiltInOptions contains the optional parameters for the PolicyDefinitions.ListBuiltIn method.
-type PolicyDefinitionsListBuiltInOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}''. If $filter
-	// is not provided, no filtering is performed. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-	// given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions whose type match the {value}. Possible
-	// policyType values are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy
-	// definitions whose category match the {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyDefinitionsListByManagementGroupOptions contains the optional parameters for the PolicyDefinitions.ListByManagementGroup method.
-type PolicyDefinitionsListByManagementGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}''. If $filter
-	// is not provided, no filtering is performed. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-	// given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions whose type match the {value}. Possible
-	// policyType values are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy
-	// definitions whose category match the {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyDefinitionsListOptions contains the optional parameters for the PolicyDefinitions.List method.
-type PolicyDefinitionsListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}''. If $filter
-	// is not provided, no filtering is performed. If $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the
-	// given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy definitions whose type match the {value}. Possible
-	// policyType values are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy
-	// definitions whose category match the {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicyExemption - The policy exemption.
-type PolicyExemption struct {
-	// REQUIRED; Properties for the policy exemption.
-	Properties *PolicyExemptionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The ID of the policy exemption.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the policy exemption.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource (Microsoft.Authorization/policyExemptions).
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PolicyExemptionListResult - List of policy exemptions.
-type PolicyExemptionListResult struct {
-	// An array of policy exemptions.
-	Value []*PolicyExemption `json:"value,omitempty"`
-
-	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyExemptionListResult.
-func (p PolicyExemptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PolicyExemptionProperties - The policy exemption properties.
-type PolicyExemptionProperties struct {
-	// REQUIRED; The policy exemption category. Possible values are Waiver and Mitigated.
-	ExemptionCategory *ExemptionCategory `json:"exemptionCategory,omitempty"`
-
-	// REQUIRED; The ID of the policy assignment that is being exempted.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
-
-	// The description of the policy exemption.
-	Description *string `json:"description,omitempty"`
-
-	// The display name of the policy exemption.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
-	ExpiresOn *time.Time `json:"expiresOn,omitempty"`
-
-	// The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
-
-	// The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
-	PolicyDefinitionReferenceIDs []*string `json:"policyDefinitionReferenceIds,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyExemptionProperties.
-func (p PolicyExemptionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "exemptionCategory", p.ExemptionCategory)
-	populateTimeRFC3339(objectMap, "expiresOn", p.ExpiresOn)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "policyAssignmentId", p.PolicyAssignmentID)
-	populate(objectMap, "policyDefinitionReferenceIds", p.PolicyDefinitionReferenceIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PolicyExemptionProperties.
-func (p *PolicyExemptionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &p.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &p.DisplayName)
-			delete(rawMsg, key)
-		case "exemptionCategory":
-			err = unpopulate(val, &p.ExemptionCategory)
-			delete(rawMsg, key)
-		case "expiresOn":
-			err = unpopulateTimeRFC3339(val, &p.ExpiresOn)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &p.Metadata)
-			delete(rawMsg, key)
-		case "policyAssignmentId":
-			err = unpopulate(val, &p.PolicyAssignmentID)
-			delete(rawMsg, key)
-		case "policyDefinitionReferenceIds":
-			err = unpopulate(val, &p.PolicyDefinitionReferenceIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// PolicyExemptionsCreateOrUpdateOptions contains the optional parameters for the PolicyExemptions.CreateOrUpdate method.
-type PolicyExemptionsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyExemptionsDeleteOptions contains the optional parameters for the PolicyExemptions.Delete method.
-type PolicyExemptionsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyExemptionsGetOptions contains the optional parameters for the PolicyExemptions.Get method.
-type PolicyExemptionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyExemptionsListForManagementGroupOptions contains the optional parameters for the PolicyExemptions.ListForManagementGroup method.
-type PolicyExemptionsListForManagementGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''.
-	// If $filter is not provided, no filtering is performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with
-	// the scope, including those that apply directly or apply from containing scopes. If $filter=atScope() is provided, the returned list only includes all
-	// policy exemptions that apply to the scope, which is everything in the unfiltered list except those applied to sub scopes contained within the given scope.
-	// If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that at the given scope. If $filter=excludeExpired() is
-	// provided, the returned list only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// PolicyExemptionsListForResourceGroupOptions contains the optional parameters for the PolicyExemptions.ListForResourceGroup method.
-type PolicyExemptionsListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''.
-	// If $filter is not provided, no filtering is performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with
-	// the scope, including those that apply directly or apply from containing scopes. If $filter=atScope() is provided, the returned list only includes all
-	// policy exemptions that apply to the scope, which is everything in the unfiltered list except those applied to sub scopes contained within the given scope.
-	// If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that at the given scope. If $filter=excludeExpired() is
-	// provided, the returned list only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// PolicyExemptionsListForResourceOptions contains the optional parameters for the PolicyExemptions.ListForResource method.
-type PolicyExemptionsListForResourceOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''.
-	// If $filter is not provided, no filtering is performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with
-	// the scope, including those that apply directly or apply from containing scopes. If $filter=atScope() is provided, the returned list only includes all
-	// policy exemptions that apply to the scope, which is everything in the unfiltered list except those applied to sub scopes contained within the given scope.
-	// If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that at the given scope. If $filter=excludeExpired() is
-	// provided, the returned list only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// PolicyExemptionsListOptions contains the optional parameters for the PolicyExemptions.List method.
-type PolicyExemptionsListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''.
-	// If $filter is not provided, no filtering is performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with
-	// the scope, including those that apply directly or apply from containing scopes. If $filter=atScope() is provided, the returned list only includes all
-	// policy exemptions that apply to the scope, which is everything in the unfiltered list except those applied to sub scopes contained within the given scope.
-	// If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that at the given scope. If $filter=excludeExpired() is
-	// provided, the returned list only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// PolicySetDefinition - The policy set definition.
-type PolicySetDefinition struct {
-	// The policy definition properties.
-	Properties *PolicySetDefinitionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The ID of the policy set definition.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the policy set definition.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource (Microsoft.Authorization/policySetDefinitions).
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// PolicySetDefinitionListResult - List of policy set definitions.
-type PolicySetDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// An array of policy set definitions.
-	Value []*PolicySetDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicySetDefinitionListResult.
-func (p PolicySetDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PolicySetDefinitionProperties - The policy set definition properties.
-type PolicySetDefinitionProperties struct {
-	// REQUIRED; An array of policy definition references.
-	PolicyDefinitions []*PolicyDefinitionReference `json:"policyDefinitions,omitempty"`
-
-	// The policy set definition description.
-	Description *string `json:"description,omitempty"`
-
-	// The display name of the policy set definition.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The policy set definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
-
-	// The policy set definition parameters that can be used in policy definition references.
-	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
-
-	// The metadata describing groups of policy definition references within the policy set definition.
-	PolicyDefinitionGroups []*PolicyDefinitionGroup `json:"policyDefinitionGroups,omitempty"`
-
-	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
-	PolicyType *PolicyType `json:"policyType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicySetDefinitionProperties.
-func (p PolicySetDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "parameters", p.Parameters)
-	populate(objectMap, "policyDefinitionGroups", p.PolicyDefinitionGroups)
-	populate(objectMap, "policyDefinitions", p.PolicyDefinitions)
-	populate(objectMap, "policyType", p.PolicyType)
-	return json.Marshal(objectMap)
-}
-
-// PolicySetDefinitionsCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the PolicySetDefinitions.CreateOrUpdateAtManagementGroup
-// method.
-type PolicySetDefinitionsCreateOrUpdateAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsCreateOrUpdateOptions contains the optional parameters for the PolicySetDefinitions.CreateOrUpdate method.
-type PolicySetDefinitionsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsDeleteAtManagementGroupOptions contains the optional parameters for the PolicySetDefinitions.DeleteAtManagementGroup method.
-type PolicySetDefinitionsDeleteAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsDeleteOptions contains the optional parameters for the PolicySetDefinitions.Delete method.
-type PolicySetDefinitionsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsGetAtManagementGroupOptions contains the optional parameters for the PolicySetDefinitions.GetAtManagementGroup method.
-type PolicySetDefinitionsGetAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsGetBuiltInOptions contains the optional parameters for the PolicySetDefinitions.GetBuiltIn method.
-type PolicySetDefinitionsGetBuiltInOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsGetOptions contains the optional parameters for the PolicySetDefinitions.Get method.
-type PolicySetDefinitionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicySetDefinitionsListBuiltInOptions contains the optional parameters for the PolicySetDefinitions.ListBuiltIn method.
-type PolicySetDefinitionsListBuiltInOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}''. If $filter
-	// is not provided, no filtering is performed. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at
-	// the given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set definitions whose type match the {value}.
-	// Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq {value}' is provided, the returned list only includes
-	// all policy set definitions whose category match the {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicySetDefinitionsListByManagementGroupOptions contains the optional parameters for the PolicySetDefinitions.ListByManagementGroup method.
-type PolicySetDefinitionsListByManagementGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}''. If $filter
-	// is not provided, no filtering is performed. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at
-	// the given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set definitions whose type match the {value}.
-	// Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq {value}' is provided, the returned list only includes
-	// all policy set definitions whose category match the {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
-// PolicySetDefinitionsListOptions contains the optional parameters for the PolicySetDefinitions.List method.
-type PolicySetDefinitionsListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}''. If $filter
-	// is not provided, no filtering is performed. If $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at
-	// the given scope. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set definitions whose type match the {value}.
-	// Possible policyType values are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq {value}' is provided, the returned list only includes
-	// all policy set definitions whose category match the {value}.
-	Filter *string
-	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-	Top *int32
-}
-
 // ResourceTypeAliases - The resource type aliases definition.
 type ResourceTypeAliases struct {
 	// The aliases for property names.
@@ -1133,6 +1024,160 @@ func (r ResourceTypeAliases) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "aliases", r.Aliases)
 	populate(objectMap, "resourceType", r.ResourceType)
 	return json.Marshal(objectMap)
+}
+
+// SetDefinition - The policy set definition.
+type SetDefinition struct {
+	// The policy definition properties.
+	Properties *SetDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the policy set definition.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the policy set definition.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource (Microsoft.Authorization/policySetDefinitions).
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SetDefinitionListResult - List of policy set definitions.
+type SetDefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of policy set definitions.
+	Value []*SetDefinition `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SetDefinitionListResult.
+func (s SetDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// SetDefinitionProperties - The policy set definition properties.
+type SetDefinitionProperties struct {
+	// REQUIRED; An array of policy definition references.
+	PolicyDefinitions []*DefinitionReference `json:"policyDefinitions,omitempty"`
+
+	// The policy set definition description.
+	Description *string `json:"description,omitempty"`
+
+	// The display name of the policy set definition.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The policy set definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
+
+	// The policy set definition parameters that can be used in policy definition references.
+	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
+
+	// The metadata describing groups of policy definition references within the policy set definition.
+	PolicyDefinitionGroups []*DefinitionGroup `json:"policyDefinitionGroups,omitempty"`
+
+	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
+	PolicyType *PolicyType `json:"policyType,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SetDefinitionProperties.
+func (s SetDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", s.Description)
+	populate(objectMap, "displayName", s.DisplayName)
+	populate(objectMap, "metadata", s.Metadata)
+	populate(objectMap, "parameters", s.Parameters)
+	populate(objectMap, "policyDefinitionGroups", s.PolicyDefinitionGroups)
+	populate(objectMap, "policyDefinitions", s.PolicyDefinitions)
+	populate(objectMap, "policyType", s.PolicyType)
+	return json.Marshal(objectMap)
+}
+
+// SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.CreateOrUpdateAtManagementGroup
+// method.
+type SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the SetDefinitionsClient.CreateOrUpdate
+// method.
+type SetDefinitionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientDeleteAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.DeleteAtManagementGroup
+// method.
+type SetDefinitionsClientDeleteAtManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientDeleteOptions contains the optional parameters for the SetDefinitionsClient.Delete method.
+type SetDefinitionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientGetAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.GetAtManagementGroup
+// method.
+type SetDefinitionsClientGetAtManagementGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientGetBuiltInOptions contains the optional parameters for the SetDefinitionsClient.GetBuiltIn method.
+type SetDefinitionsClientGetBuiltInOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientGetOptions contains the optional parameters for the SetDefinitionsClient.Get method.
+type SetDefinitionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SetDefinitionsClientListBuiltInOptions contains the optional parameters for the SetDefinitionsClient.ListBuiltIn method.
+type SetDefinitionsClientListBuiltInOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given scope.
+	// If $filter='policyType -eq {value}' is provided, the returned list only includes
+	// all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+	// and Static. If $filter='category -eq {value}' is provided, the returned list only
+	// includes all policy set definitions whose category match the {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// SetDefinitionsClientListByManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.ListByManagementGroup
+// method.
+type SetDefinitionsClientListByManagementGroupOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given scope.
+	// If $filter='policyType -eq {value}' is provided, the returned list only includes
+	// all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+	// and Static. If $filter='category -eq {value}' is provided, the returned list only
+	// includes all policy set definitions whose category match the {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
+}
+
+// SetDefinitionsClientListOptions contains the optional parameters for the SetDefinitionsClient.List method.
+type SetDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category
+	// eq '{value}''. If $filter is not provided, no filtering is performed. If
+	// $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the given scope.
+	// If $filter='policyType -eq {value}' is provided, the returned list only includes
+	// all policy set definitions whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn, Custom,
+	// and Static. If $filter='category -eq {value}' is provided, the returned list only
+	// includes all policy set definitions whose category match the {value}.
+	Filter *string
+	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
+	Top *int32
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

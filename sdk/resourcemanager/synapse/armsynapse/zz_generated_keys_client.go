@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // KeysClient contains the methods for the Keys group.
 // Don't use this type directly, use NewKeysClient() instead.
 type KeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKeysClient creates a new instance of KeysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a workspace key
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key, options *KeysCreateOrUpdateOptions) (KeysCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// keyName - The name of the workspace key
+// keyProperties - Key put request properties
+// options - KeysClientCreateOrUpdateOptions contains the optional parameters for the KeysClient.CreateOrUpdate method.
+func (client *KeysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key, options *KeysClientCreateOrUpdateOptions) (KeysClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, keyName, keyProperties, options)
 	if err != nil {
-		return KeysCreateOrUpdateResponse{}, err
+		return KeysClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysCreateOrUpdateResponse{}, err
+		return KeysClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeysCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return KeysClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *KeysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key, options *KeysCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *KeysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key, options *KeysClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *KeysClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,37 @@ func (client *KeysClient) createOrUpdateCreateRequest(ctx context.Context, resou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *KeysClient) createOrUpdateHandleResponse(resp *http.Response) (KeysCreateOrUpdateResponse, error) {
-	result := KeysCreateOrUpdateResponse{RawResponse: resp}
+func (client *KeysClient) createOrUpdateHandleResponse(resp *http.Response) (KeysClientCreateOrUpdateResponse, error) {
+	result := KeysClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *KeysClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a workspace key
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeysClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysDeleteOptions) (KeysDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// keyName - The name of the workspace key
+// options - KeysClientDeleteOptions contains the optional parameters for the KeysClient.Delete method.
+func (client *KeysClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysClientDeleteOptions) (KeysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, keyName, options)
 	if err != nil {
-		return KeysDeleteResponse{}, err
+		return KeysClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysDeleteResponse{}, err
+		return KeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return KeysDeleteResponse{}, client.deleteHandleError(resp)
+		return KeysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *KeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysDeleteOptions) (*policy.Request, error) {
+func (client *KeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +150,7 @@ func (client *KeysClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,46 +162,37 @@ func (client *KeysClient) deleteCreateRequest(ctx context.Context, resourceGroup
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *KeysClient) deleteHandleResponse(resp *http.Response) (KeysDeleteResponse, error) {
-	result := KeysDeleteResponse{RawResponse: resp}
+func (client *KeysClient) deleteHandleResponse(resp *http.Response) (KeysClientDeleteResponse, error) {
+	result := KeysClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *KeysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a workspace key
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysGetOptions) (KeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// keyName - The name of the workspace key
+// options - KeysClientGetOptions contains the optional parameters for the KeysClient.Get method.
+func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysClientGetOptions) (KeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, keyName, options)
 	if err != nil {
-		return KeysGetResponse{}, err
+		return KeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysGetResponse{}, err
+		return KeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeysGetResponse{}, client.getHandleError(resp)
+		return KeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysGetOptions) (*policy.Request, error) {
+func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, options *KeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -216,7 +210,7 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,43 +222,33 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysGetResponse, error) {
-	result := KeysGetResponse{RawResponse: resp}
+func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetResponse, error) {
+	result := KeysClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *KeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - Returns a list of keys in a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KeysClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *KeysListByWorkspaceOptions) *KeysListByWorkspacePager {
-	return &KeysListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - KeysClientListByWorkspaceOptions contains the optional parameters for the KeysClient.ListByWorkspace method.
+func (client *KeysClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *KeysClientListByWorkspaceOptions) *KeysClientListByWorkspacePager {
+	return &KeysClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp KeysListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp KeysClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyInfoListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *KeysClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *KeysListByWorkspaceOptions) (*policy.Request, error) {
+func (client *KeysClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *KeysClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -278,7 +262,7 @@ func (client *KeysClient) listByWorkspaceCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -290,23 +274,10 @@ func (client *KeysClient) listByWorkspaceCreateRequest(ctx context.Context, reso
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *KeysClient) listByWorkspaceHandleResponse(resp *http.Response) (KeysListByWorkspaceResponse, error) {
-	result := KeysListByWorkspaceResponse{RawResponse: resp}
+func (client *KeysClient) listByWorkspaceHandleResponse(resp *http.Response) (KeysClientListByWorkspaceResponse, error) {
+	result := KeysClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyInfoListResult); err != nil {
-		return KeysListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *KeysClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

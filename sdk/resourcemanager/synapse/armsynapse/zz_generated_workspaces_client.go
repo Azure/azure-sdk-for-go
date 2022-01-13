@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // WorkspacesClient contains the methods for the Workspaces group.
 // Don't use this type directly, use NewWorkspacesClient() instead.
 type WorkspacesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspacesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace, options *WorkspacesBeginCreateOrUpdateOptions) (WorkspacesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// workspaceInfo - Workspace create or update request properties
+// options - WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
+// method.
+func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (WorkspacesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, workspaceInfo, options)
 	if err != nil {
-		return WorkspacesCreateOrUpdatePollerResponse{}, err
+		return WorkspacesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := WorkspacesCreateOrUpdatePollerResponse{
+	result := WorkspacesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkspacesClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("WorkspacesClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return WorkspacesCreateOrUpdatePollerResponse{}, err
+		return WorkspacesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &WorkspacesCreateOrUpdatePoller{
+	result.Poller = &WorkspacesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace, options *WorkspacesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, workspaceInfo, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace, options *WorkspacesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,32 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, workspaceInfo)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WorkspacesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesBeginDeleteOptions) (WorkspacesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (WorkspacesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return WorkspacesDeletePollerResponse{}, err
+		return WorkspacesClientDeletePollerResponse{}, err
 	}
-	result := WorkspacesDeletePollerResponse{
+	result := WorkspacesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkspacesClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("WorkspacesClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return WorkspacesDeletePollerResponse{}, err
+		return WorkspacesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &WorkspacesDeletePoller{
+	result.Poller = &WorkspacesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +152,13 @@ func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesBeginDeleteOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +172,7 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +183,28 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WorkspacesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesGetOptions) (WorkspacesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientGetOptions) (WorkspacesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return WorkspacesGetResponse{}, err
+		return WorkspacesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspacesGetResponse{}, err
+		return WorkspacesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspacesGetResponse{}, client.getHandleError(resp)
+		return WorkspacesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesGetOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +218,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,49 +230,37 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (WorkspacesGetResponse, error) {
-	result := WorkspacesGetResponse{RawResponse: resp}
+func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (WorkspacesClientGetResponse, error) {
+	result := WorkspacesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workspace); err != nil {
-		return WorkspacesGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspacesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkspacesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns a list of workspaces in a subscription
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) List(options *WorkspacesListOptions) *WorkspacesListPager {
-	return &WorkspacesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
+func (client *WorkspacesClient) List(options *WorkspacesClientListOptions) *WorkspacesClientListPager {
+	return &WorkspacesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspacesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspacesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkspaceInfoListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspacesClient) listCreateRequest(ctx context.Context, options *WorkspacesListOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listCreateRequest(ctx context.Context, options *WorkspacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/workspaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -292,43 +272,33 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (WorkspacesListResponse, error) {
-	result := WorkspacesListResponse{RawResponse: resp}
+func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (WorkspacesClientListResponse, error) {
+	result := WorkspacesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceInfoListResult); err != nil {
-		return WorkspacesListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspacesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *WorkspacesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Returns a list of workspaces in a resource group
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) ListByResourceGroup(resourceGroupName string, options *WorkspacesListByResourceGroupOptions) *WorkspacesListByResourceGroupPager {
-	return &WorkspacesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// method.
+func (client *WorkspacesClient) ListByResourceGroup(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *WorkspacesClientListByResourceGroupPager {
+	return &WorkspacesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspacesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspacesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkspaceInfoListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WorkspacesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,7 +308,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,50 +320,41 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkspacesListByResourceGroupResponse, error) {
-	result := WorkspacesListByResourceGroupResponse{RawResponse: resp}
+func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkspacesClientListByResourceGroupResponse, error) {
+	result := WorkspacesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceInfoListResult); err != nil {
-		return WorkspacesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspacesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *WorkspacesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo, options *WorkspacesBeginUpdateOptions) (WorkspacesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// workspacePatchInfo - Workspace patch request properties
+// options - WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo, options *WorkspacesClientBeginUpdateOptions) (WorkspacesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, workspaceName, workspacePatchInfo, options)
 	if err != nil {
-		return WorkspacesUpdatePollerResponse{}, err
+		return WorkspacesClientUpdatePollerResponse{}, err
 	}
-	result := WorkspacesUpdatePollerResponse{
+	result := WorkspacesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkspacesClient.Update", "location", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("WorkspacesClient.Update", "location", resp, client.pl)
 	if err != nil {
-		return WorkspacesUpdatePollerResponse{}, err
+		return WorkspacesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &WorkspacesUpdatePoller{
+	result.Poller = &WorkspacesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo, options *WorkspacesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo, options *WorkspacesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, workspacePatchInfo, options)
 	if err != nil {
 		return nil, err
@@ -403,13 +364,13 @@ func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo, options *WorkspacesBeginUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo, options *WorkspacesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -423,7 +384,7 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,17 +393,4 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, workspacePatchInfo)
-}
-
-// updateHandleError handles the Update error response.
-func (client *WorkspacesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

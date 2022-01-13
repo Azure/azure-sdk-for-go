@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // AzureADOnlyAuthenticationsClient contains the methods for the AzureADOnlyAuthentications group.
 // Don't use this type directly, use NewAzureADOnlyAuthenticationsClient() instead.
 type AzureADOnlyAuthenticationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAzureADOnlyAuthenticationsClient creates a new instance of AzureADOnlyAuthenticationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AzureADOnlyAuthenticationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AzureADOnlyAuthenticationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AzureADOnlyAuthenticationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create or Update a Azure Active Directory only authentication property for the workspaces
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsBeginCreateOptions) (AzureADOnlyAuthenticationsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// azureADOnlyAuthenticationName - name of the property
+// azureADOnlyAuthenticationInfo - Azure Active Directory Property
+// options - AzureADOnlyAuthenticationsClientBeginCreateOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.BeginCreate
+// method.
+func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (AzureADOnlyAuthenticationsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, options)
 	if err != nil {
-		return AzureADOnlyAuthenticationsCreatePollerResponse{}, err
+		return AzureADOnlyAuthenticationsClientCreatePollerResponse{}, err
 	}
-	result := AzureADOnlyAuthenticationsCreatePollerResponse{
+	result := AzureADOnlyAuthenticationsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AzureADOnlyAuthenticationsClient.Create", "location", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("AzureADOnlyAuthenticationsClient.Create", "location", resp, client.pl)
 	if err != nil {
-		return AzureADOnlyAuthenticationsCreatePollerResponse{}, err
+		return AzureADOnlyAuthenticationsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &AzureADOnlyAuthenticationsCreatePoller{
+	result.Poller = &AzureADOnlyAuthenticationsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create or Update a Azure Active Directory only authentication property for the workspaces
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AzureADOnlyAuthenticationsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AzureADOnlyAuthenticationsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *AzureADOnlyAuthenticationsClient) create(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AzureADOnlyAuthenticationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsBeginCreateOptions) (*policy.Request, error) {
+func (client *AzureADOnlyAuthenticationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/azureADOnlyAuthentications/{azureADOnlyAuthenticationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *AzureADOnlyAuthenticationsClient) createCreateRequest(ctx context.
 		return nil, errors.New("parameter azureADOnlyAuthenticationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureADOnlyAuthenticationName}", url.PathEscape(string(azureADOnlyAuthenticationName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,38 +122,30 @@ func (client *AzureADOnlyAuthenticationsClient) createCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, azureADOnlyAuthenticationInfo)
 }
 
-// createHandleError handles the Create error response.
-func (client *AzureADOnlyAuthenticationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Azure Active Directory only authentication property
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AzureADOnlyAuthenticationsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, options *AzureADOnlyAuthenticationsGetOptions) (AzureADOnlyAuthenticationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// azureADOnlyAuthenticationName - name of the property
+// options - AzureADOnlyAuthenticationsClientGetOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.Get
+// method.
+func (client *AzureADOnlyAuthenticationsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, options *AzureADOnlyAuthenticationsClientGetOptions) (AzureADOnlyAuthenticationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, options)
 	if err != nil {
-		return AzureADOnlyAuthenticationsGetResponse{}, err
+		return AzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AzureADOnlyAuthenticationsGetResponse{}, err
+		return AzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AzureADOnlyAuthenticationsGetResponse{}, client.getHandleError(resp)
+		return AzureADOnlyAuthenticationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, options *AzureADOnlyAuthenticationsGetOptions) (*policy.Request, error) {
+func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, options *AzureADOnlyAuthenticationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/azureADOnlyAuthentications/{azureADOnlyAuthenticationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,7 +163,7 @@ func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter azureADOnlyAuthenticationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureADOnlyAuthenticationName}", url.PathEscape(string(azureADOnlyAuthenticationName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,43 +175,34 @@ func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *AzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (AzureADOnlyAuthenticationsGetResponse, error) {
-	result := AzureADOnlyAuthenticationsGetResponse{RawResponse: resp}
+func (client *AzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (AzureADOnlyAuthenticationsClientGetResponse, error) {
+	result := AzureADOnlyAuthenticationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthentication); err != nil {
-		return AzureADOnlyAuthenticationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AzureADOnlyAuthenticationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of Azure Active Directory only authentication property for a workspace
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AzureADOnlyAuthenticationsClient) List(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsListOptions) *AzureADOnlyAuthenticationsListPager {
-	return &AzureADOnlyAuthenticationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - AzureADOnlyAuthenticationsClientListOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.List
+// method.
+func (client *AzureADOnlyAuthenticationsClient) List(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) *AzureADOnlyAuthenticationsClientListPager {
+	return &AzureADOnlyAuthenticationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp AzureADOnlyAuthenticationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AzureADOnlyAuthenticationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureADOnlyAuthenticationListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsListOptions) (*policy.Request, error) {
+func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/azureADOnlyAuthentications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -220,7 +216,7 @@ func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,23 +228,10 @@ func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *AzureADOnlyAuthenticationsClient) listHandleResponse(resp *http.Response) (AzureADOnlyAuthenticationsListResponse, error) {
-	result := AzureADOnlyAuthenticationsListResponse{RawResponse: resp}
+func (client *AzureADOnlyAuthenticationsClient) listHandleResponse(resp *http.Response) (AzureADOnlyAuthenticationsClientListResponse, error) {
+	result := AzureADOnlyAuthenticationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthenticationListResult); err != nil {
-		return AzureADOnlyAuthenticationsListResponse{}, runtime.NewResponseError(err, resp)
+		return AzureADOnlyAuthenticationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AzureADOnlyAuthenticationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

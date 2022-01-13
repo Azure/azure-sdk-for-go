@@ -24,42 +24,56 @@ import (
 // SQLPoolMaintenanceWindowOptionsClient contains the methods for the SQLPoolMaintenanceWindowOptions group.
 // Don't use this type directly, use NewSQLPoolMaintenanceWindowOptionsClient() instead.
 type SQLPoolMaintenanceWindowOptionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolMaintenanceWindowOptionsClient creates a new instance of SQLPoolMaintenanceWindowOptionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolMaintenanceWindowOptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolMaintenanceWindowOptionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolMaintenanceWindowOptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolMaintenanceWindowOptionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get list of SQL pool's available maintenance windows.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolMaintenanceWindowOptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, maintenanceWindowOptionsName string, options *SQLPoolMaintenanceWindowOptionsGetOptions) (SQLPoolMaintenanceWindowOptionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// maintenanceWindowOptionsName - Maintenance window options name.
+// options - SQLPoolMaintenanceWindowOptionsClientGetOptions contains the optional parameters for the SQLPoolMaintenanceWindowOptionsClient.Get
+// method.
+func (client *SQLPoolMaintenanceWindowOptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, maintenanceWindowOptionsName string, options *SQLPoolMaintenanceWindowOptionsClientGetOptions) (SQLPoolMaintenanceWindowOptionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName, options)
 	if err != nil {
-		return SQLPoolMaintenanceWindowOptionsGetResponse{}, err
+		return SQLPoolMaintenanceWindowOptionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolMaintenanceWindowOptionsGetResponse{}, err
+		return SQLPoolMaintenanceWindowOptionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolMaintenanceWindowOptionsGetResponse{}, client.getHandleError(resp)
+		return SQLPoolMaintenanceWindowOptionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolMaintenanceWindowOptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, maintenanceWindowOptionsName string, options *SQLPoolMaintenanceWindowOptionsGetOptions) (*policy.Request, error) {
+func (client *SQLPoolMaintenanceWindowOptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, maintenanceWindowOptionsName string, options *SQLPoolMaintenanceWindowOptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenanceWindowOptions/current"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,7 +91,7 @@ func (client *SQLPoolMaintenanceWindowOptionsClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,22 +104,10 @@ func (client *SQLPoolMaintenanceWindowOptionsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolMaintenanceWindowOptionsClient) getHandleResponse(resp *http.Response) (SQLPoolMaintenanceWindowOptionsGetResponse, error) {
-	result := SQLPoolMaintenanceWindowOptionsGetResponse{RawResponse: resp}
+func (client *SQLPoolMaintenanceWindowOptionsClient) getHandleResponse(resp *http.Response) (SQLPoolMaintenanceWindowOptionsClientGetResponse, error) {
+	result := SQLPoolMaintenanceWindowOptionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowOptions); err != nil {
-		return SQLPoolMaintenanceWindowOptionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolMaintenanceWindowOptionsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SQLPoolMaintenanceWindowOptionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

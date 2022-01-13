@@ -24,39 +24,51 @@ import (
 // SQLPoolOperationsClient contains the methods for the SQLPoolOperations group.
 // Don't use this type directly, use NewSQLPoolOperationsClient() instead.
 type SQLPoolOperationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolOperationsClient creates a new instance of SQLPoolOperationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolOperationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets a list of operations performed on the SQL pool.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolOperationsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolOperationsListOptions) *SQLPoolOperationsListPager {
-	return &SQLPoolOperationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolOperationsClientListOptions contains the optional parameters for the SQLPoolOperationsClient.List method.
+func (client *SQLPoolOperationsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolOperationsClientListOptions) *SQLPoolOperationsClientListPager {
+	return &SQLPoolOperationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolOperationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolOperationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLPoolBlobAuditingPolicySQLPoolOperationListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolOperationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolOperationsListOptions) (*policy.Request, error) {
+func (client *SQLPoolOperationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/operations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *SQLPoolOperationsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,22 +98,10 @@ func (client *SQLPoolOperationsClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolOperationsClient) listHandleResponse(resp *http.Response) (SQLPoolOperationsListResponse, error) {
-	result := SQLPoolOperationsListResponse{RawResponse: resp}
+func (client *SQLPoolOperationsClient) listHandleResponse(resp *http.Response) (SQLPoolOperationsClientListResponse, error) {
+	result := SQLPoolOperationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolBlobAuditingPolicySQLPoolOperationListResult); err != nil {
-		return SQLPoolOperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolOperationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolOperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

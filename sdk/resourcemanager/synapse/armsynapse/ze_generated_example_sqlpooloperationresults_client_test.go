@@ -24,7 +24,7 @@ func ExampleSQLPoolOperationResultsClient_GetLocationHeaderResult() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewSQLPoolOperationResultsClient("<subscription-id>", cred, nil)
-	_, err = client.GetLocationHeaderResult(ctx,
+	res, err := client.GetLocationHeaderResult(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
@@ -33,4 +33,5 @@ func ExampleSQLPoolOperationResultsClient_GetLocationHeaderResult() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SQLPoolOperationResultsClientGetLocationHeaderResultResult)
 }

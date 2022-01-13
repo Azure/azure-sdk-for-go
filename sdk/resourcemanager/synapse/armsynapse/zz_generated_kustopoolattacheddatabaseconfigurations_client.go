@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // KustoPoolAttachedDatabaseConfigurationsClient contains the methods for the KustoPoolAttachedDatabaseConfigurations group.
 // Don't use this type directly, use NewKustoPoolAttachedDatabaseConfigurationsClient() instead.
 type KustoPoolAttachedDatabaseConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKustoPoolAttachedDatabaseConfigurationsClient creates a new instance of KustoPoolAttachedDatabaseConfigurationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKustoPoolAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KustoPoolAttachedDatabaseConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KustoPoolAttachedDatabaseConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KustoPoolAttachedDatabaseConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates an attached database configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, parameters AttachedDatabaseConfiguration, options *KustoPoolAttachedDatabaseConfigurationsBeginCreateOrUpdateOptions) (KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// attachedDatabaseConfigurationName - The name of the attached database configuration.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// parameters - The database parameters supplied to the CreateOrUpdate operation.
+// options - KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for
+// the KustoPoolAttachedDatabaseConfigurationsClient.BeginCreateOrUpdate method.
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, parameters AttachedDatabaseConfiguration, options *KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, parameters, options)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse{
+	result := KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolAttachedDatabaseConfigurationsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolAttachedDatabaseConfigurationsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePollerResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolAttachedDatabaseConfigurationsCreateOrUpdatePoller{
+	result.Poller = &KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an attached database configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, parameters AttachedDatabaseConfiguration, options *KustoPoolAttachedDatabaseConfigurationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, parameters AttachedDatabaseConfiguration, options *KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdate(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, parameters AttachedDatabaseConfiguration, options *KustoPoolAttachedDatabaseConfigurationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, parameters AttachedDatabaseConfiguration, options *KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -102,7 +116,7 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdateCreat
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,42 +127,35 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdateCreat
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the attached database configuration with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsBeginDeleteOptions) (KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// attachedDatabaseConfigurationName - The name of the attached database configuration.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the KustoPoolAttachedDatabaseConfigurationsClient.BeginDelete
+// method.
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions) (KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, options)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse{}, err
 	}
-	result := KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse{
+	result := KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("KustoPoolAttachedDatabaseConfigurationsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("KustoPoolAttachedDatabaseConfigurationsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsDeletePollerResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &KustoPoolAttachedDatabaseConfigurationsDeletePoller{
+	result.Poller = &KustoPoolAttachedDatabaseConfigurationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the attached database configuration with the given name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +165,13 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteOperation(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -186,7 +193,7 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteCreateRequest
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,38 +204,31 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteCreateRequest
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns an attached database configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) Get(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsGetOptions) (KustoPoolAttachedDatabaseConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// attachedDatabaseConfigurationName - The name of the attached database configuration.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - KustoPoolAttachedDatabaseConfigurationsClientGetOptions contains the optional parameters for the KustoPoolAttachedDatabaseConfigurationsClient.Get
+// method.
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) Get(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientGetOptions) (KustoPoolAttachedDatabaseConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, options)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsGetResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsGetResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolAttachedDatabaseConfigurationsGetResponse{}, client.getHandleError(resp)
+		return KustoPoolAttachedDatabaseConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsGetOptions) (*policy.Request, error) {
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) getCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, attachedDatabaseConfigurationName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -250,7 +250,7 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) getCreateRequest(ct
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,46 +262,38 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) getCreateRequest(ct
 }
 
 // getHandleResponse handles the Get response.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response) (KustoPoolAttachedDatabaseConfigurationsGetResponse, error) {
-	result := KustoPoolAttachedDatabaseConfigurationsGetResponse{RawResponse: resp}
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) getHandleResponse(resp *http.Response) (KustoPoolAttachedDatabaseConfigurationsClientGetResponse, error) {
+	result := KustoPoolAttachedDatabaseConfigurationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfiguration); err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolAttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByKustoPool - Returns the list of attached database configurations of the given Kusto Pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) ListByKustoPool(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsListByKustoPoolOptions) (KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// workspaceName - The name of the workspace.
+// kustoPoolName - The name of the Kusto pool.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions contains the optional parameters for the
+// KustoPoolAttachedDatabaseConfigurationsClient.ListByKustoPool method.
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) ListByKustoPool(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions) (KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse, error) {
 	req, err := client.listByKustoPoolCreateRequest(ctx, workspaceName, kustoPoolName, resourceGroupName, options)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse{}, err
+		return KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse{}, client.listByKustoPoolHandleError(resp)
+		return KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByKustoPoolHandleResponse(resp)
 }
 
 // listByKustoPoolCreateRequest creates the ListByKustoPool request.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsListByKustoPoolOptions) (*policy.Request, error) {
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolCreateRequest(ctx context.Context, workspaceName string, kustoPoolName string, resourceGroupName string, options *KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations"
 	if workspaceName == "" {
 		return nil, errors.New("parameter workspaceName cannot be empty")
@@ -319,7 +311,7 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolCrea
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -331,23 +323,10 @@ func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolCrea
 }
 
 // listByKustoPoolHandleResponse handles the ListByKustoPool response.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolHandleResponse(resp *http.Response) (KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse, error) {
-	result := KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse{RawResponse: resp}
+func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolHandleResponse(resp *http.Response) (KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse, error) {
+	result := KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedDatabaseConfigurationListResult); err != nil {
-		return KustoPoolAttachedDatabaseConfigurationsListByKustoPoolResponse{}, runtime.NewResponseError(err, resp)
+		return KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResponse{}, err
 	}
 	return result, nil
-}
-
-// listByKustoPoolHandleError handles the ListByKustoPool error response.
-func (client *KustoPoolAttachedDatabaseConfigurationsClient) listByKustoPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

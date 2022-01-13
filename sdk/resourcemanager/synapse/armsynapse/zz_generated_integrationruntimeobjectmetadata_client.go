@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // IntegrationRuntimeObjectMetadataClient contains the methods for the IntegrationRuntimeObjectMetadata group.
 // Don't use this type directly, use NewIntegrationRuntimeObjectMetadataClient() instead.
 type IntegrationRuntimeObjectMetadataClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeObjectMetadataClient creates a new instance of IntegrationRuntimeObjectMetadataClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimeObjectMetadataClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationRuntimeObjectMetadataClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationRuntimeObjectMetadataClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get object metadata from an integration runtime
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeObjectMetadataClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataListOptions) (IntegrationRuntimeObjectMetadataListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// integrationRuntimeName - Integration runtime name
+// options - IntegrationRuntimeObjectMetadataClientListOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.List
+// method.
+func (client *IntegrationRuntimeObjectMetadataClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientListOptions) (IntegrationRuntimeObjectMetadataClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimeObjectMetadataListResponse{}, err
+		return IntegrationRuntimeObjectMetadataClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimeObjectMetadataListResponse{}, err
+		return IntegrationRuntimeObjectMetadataClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimeObjectMetadataListResponse{}, client.listHandleError(resp)
+		return IntegrationRuntimeObjectMetadataClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationRuntimeObjectMetadataClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataListOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimeObjectMetadataClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) listCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,50 +105,42 @@ func (client *IntegrationRuntimeObjectMetadataClient) listCreateRequest(ctx cont
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationRuntimeObjectMetadataClient) listHandleResponse(resp *http.Response) (IntegrationRuntimeObjectMetadataListResponse, error) {
-	result := IntegrationRuntimeObjectMetadataListResponse{RawResponse: resp}
+func (client *IntegrationRuntimeObjectMetadataClient) listHandleResponse(resp *http.Response) (IntegrationRuntimeObjectMetadataClientListResponse, error) {
+	result := IntegrationRuntimeObjectMetadataClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SsisObjectMetadataListResponse); err != nil {
-		return IntegrationRuntimeObjectMetadataListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimeObjectMetadataClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationRuntimeObjectMetadataClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRefresh - Refresh the object metadata in an integration runtime
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (IntegrationRuntimeObjectMetadataRefreshPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// integrationRuntimeName - Integration runtime name
+// options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
+// method.
+func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (IntegrationRuntimeObjectMetadataClientRefreshPollerResponse, error) {
 	resp, err := client.refresh(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
-		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
+		return IntegrationRuntimeObjectMetadataClientRefreshPollerResponse{}, err
 	}
-	result := IntegrationRuntimeObjectMetadataRefreshPollerResponse{
+	result := IntegrationRuntimeObjectMetadataClientRefreshPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IntegrationRuntimeObjectMetadataClient.Refresh", "", resp, client.pl, client.refreshHandleError)
+	pt, err := armruntime.NewPoller("IntegrationRuntimeObjectMetadataClient.Refresh", "", resp, client.pl)
 	if err != nil {
-		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
+		return IntegrationRuntimeObjectMetadataClientRefreshPollerResponse{}, err
 	}
-	result.Poller = &IntegrationRuntimeObjectMetadataRefreshPoller{
+	result.Poller = &IntegrationRuntimeObjectMetadataClientRefreshPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Refresh - Refresh the object metadata in an integration runtime
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
 	req, err := client.refreshCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
 		return nil, err
@@ -146,13 +150,13 @@ func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.refreshHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // refreshCreateRequest creates the Refresh request.
-func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +174,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx c
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,17 +183,4 @@ func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// refreshHandleError handles the Refresh error response.
-func (client *IntegrationRuntimeObjectMetadataClient) refreshHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

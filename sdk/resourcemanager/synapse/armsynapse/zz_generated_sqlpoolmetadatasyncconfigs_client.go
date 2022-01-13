@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // SQLPoolMetadataSyncConfigsClient contains the methods for the SQLPoolMetadataSyncConfigs group.
 // Don't use this type directly, use NewSQLPoolMetadataSyncConfigsClient() instead.
 type SQLPoolMetadataSyncConfigsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolMetadataSyncConfigsClient creates a new instance of SQLPoolMetadataSyncConfigsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolMetadataSyncConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolMetadataSyncConfigsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolMetadataSyncConfigsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolMetadataSyncConfigsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Set the metadata sync configuration for a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolMetadataSyncConfigsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, metadataSyncConfiguration MetadataSyncConfig, options *SQLPoolMetadataSyncConfigsCreateOptions) (SQLPoolMetadataSyncConfigsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// metadataSyncConfiguration - Metadata sync configuration
+// options - SQLPoolMetadataSyncConfigsClientCreateOptions contains the optional parameters for the SQLPoolMetadataSyncConfigsClient.Create
+// method.
+func (client *SQLPoolMetadataSyncConfigsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, metadataSyncConfiguration MetadataSyncConfig, options *SQLPoolMetadataSyncConfigsClientCreateOptions) (SQLPoolMetadataSyncConfigsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration, options)
 	if err != nil {
-		return SQLPoolMetadataSyncConfigsCreateResponse{}, err
+		return SQLPoolMetadataSyncConfigsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolMetadataSyncConfigsCreateResponse{}, err
+		return SQLPoolMetadataSyncConfigsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return SQLPoolMetadataSyncConfigsCreateResponse{}, client.createHandleError(resp)
+		return SQLPoolMetadataSyncConfigsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SQLPoolMetadataSyncConfigsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, metadataSyncConfiguration MetadataSyncConfig, options *SQLPoolMetadataSyncConfigsCreateOptions) (*policy.Request, error) {
+func (client *SQLPoolMetadataSyncConfigsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, metadataSyncConfiguration MetadataSyncConfig, options *SQLPoolMetadataSyncConfigsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *SQLPoolMetadataSyncConfigsClient) createCreateRequest(ctx context.
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,38 @@ func (client *SQLPoolMetadataSyncConfigsClient) createCreateRequest(ctx context.
 }
 
 // createHandleResponse handles the Create response.
-func (client *SQLPoolMetadataSyncConfigsClient) createHandleResponse(resp *http.Response) (SQLPoolMetadataSyncConfigsCreateResponse, error) {
-	result := SQLPoolMetadataSyncConfigsCreateResponse{RawResponse: resp}
+func (client *SQLPoolMetadataSyncConfigsClient) createHandleResponse(resp *http.Response) (SQLPoolMetadataSyncConfigsClientCreateResponse, error) {
+	result := SQLPoolMetadataSyncConfigsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataSyncConfig); err != nil {
-		return SQLPoolMetadataSyncConfigsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolMetadataSyncConfigsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SQLPoolMetadataSyncConfigsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the metadata sync configuration for a SQL pool
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolMetadataSyncConfigsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolMetadataSyncConfigsGetOptions) (SQLPoolMetadataSyncConfigsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolMetadataSyncConfigsClientGetOptions contains the optional parameters for the SQLPoolMetadataSyncConfigsClient.Get
+// method.
+func (client *SQLPoolMetadataSyncConfigsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolMetadataSyncConfigsClientGetOptions) (SQLPoolMetadataSyncConfigsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return SQLPoolMetadataSyncConfigsGetResponse{}, err
+		return SQLPoolMetadataSyncConfigsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolMetadataSyncConfigsGetResponse{}, err
+		return SQLPoolMetadataSyncConfigsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return SQLPoolMetadataSyncConfigsGetResponse{}, client.getHandleError(resp)
+		return SQLPoolMetadataSyncConfigsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolMetadataSyncConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolMetadataSyncConfigsGetOptions) (*policy.Request, error) {
+func (client *SQLPoolMetadataSyncConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolMetadataSyncConfigsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +152,7 @@ func (client *SQLPoolMetadataSyncConfigsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,23 +164,10 @@ func (client *SQLPoolMetadataSyncConfigsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolMetadataSyncConfigsClient) getHandleResponse(resp *http.Response) (SQLPoolMetadataSyncConfigsGetResponse, error) {
-	result := SQLPoolMetadataSyncConfigsGetResponse{RawResponse: resp}
+func (client *SQLPoolMetadataSyncConfigsClient) getHandleResponse(resp *http.Response) (SQLPoolMetadataSyncConfigsClientGetResponse, error) {
+	result := SQLPoolMetadataSyncConfigsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetadataSyncConfig); err != nil {
-		return SQLPoolMetadataSyncConfigsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolMetadataSyncConfigsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SQLPoolMetadataSyncConfigsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

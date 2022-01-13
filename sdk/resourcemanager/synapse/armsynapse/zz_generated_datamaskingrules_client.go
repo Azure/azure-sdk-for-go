@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // DataMaskingRulesClient contains the methods for the DataMaskingRules group.
 // Don't use this type directly, use NewDataMaskingRulesClient() instead.
 type DataMaskingRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataMaskingRulesClient creates a new instance of DataMaskingRulesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataMaskingRulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataMaskingRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataMaskingRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a Sql pool data masking rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataMaskingRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesCreateOrUpdateOptions) (DataMaskingRulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// dataMaskingRuleName - The name of the data masking rule.
+// parameters - The required parameters for creating or updating a data masking rule.
+// options - DataMaskingRulesClientCreateOrUpdateOptions contains the optional parameters for the DataMaskingRulesClient.CreateOrUpdate
+// method.
+func (client *DataMaskingRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesClientCreateOrUpdateOptions) (DataMaskingRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters, options)
 	if err != nil {
-		return DataMaskingRulesCreateOrUpdateResponse{}, err
+		return DataMaskingRulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataMaskingRulesCreateOrUpdateResponse{}, err
+		return DataMaskingRulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DataMaskingRulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DataMaskingRulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,7 +97,7 @@ func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter dataMaskingRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataMaskingRuleName}", url.PathEscape(dataMaskingRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,46 +109,38 @@ func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Response) (DataMaskingRulesCreateOrUpdateResponse, error) {
-	result := DataMaskingRulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Response) (DataMaskingRulesClientCreateOrUpdateResponse, error) {
+	result := DataMaskingRulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingRule); err != nil {
-		return DataMaskingRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DataMaskingRulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DataMaskingRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the specific Sql pool data masking rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataMaskingRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, options *DataMaskingRulesGetOptions) (DataMaskingRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// dataMaskingRuleName - The name of the data masking rule.
+// options - DataMaskingRulesClientGetOptions contains the optional parameters for the DataMaskingRulesClient.Get method.
+func (client *DataMaskingRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, options *DataMaskingRulesClientGetOptions) (DataMaskingRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, options)
 	if err != nil {
-		return DataMaskingRulesGetResponse{}, err
+		return DataMaskingRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataMaskingRulesGetResponse{}, err
+		return DataMaskingRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataMaskingRulesGetResponse{}, client.getHandleError(resp)
+		return DataMaskingRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataMaskingRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, options *DataMaskingRulesGetOptions) (*policy.Request, error) {
+func (client *DataMaskingRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, dataMaskingRuleName string, options *DataMaskingRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -157,7 +163,7 @@ func (client *DataMaskingRulesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter dataMaskingRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataMaskingRuleName}", url.PathEscape(dataMaskingRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,46 +175,38 @@ func (client *DataMaskingRulesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataMaskingRulesClient) getHandleResponse(resp *http.Response) (DataMaskingRulesGetResponse, error) {
-	result := DataMaskingRulesGetResponse{RawResponse: resp}
+func (client *DataMaskingRulesClient) getHandleResponse(resp *http.Response) (DataMaskingRulesClientGetResponse, error) {
+	result := DataMaskingRulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingRule); err != nil {
-		return DataMaskingRulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataMaskingRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataMaskingRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySQLPool - Gets a list of Sql pool data masking rules.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DataMaskingRulesClient) ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesListBySQLPoolOptions) (DataMaskingRulesListBySQLPoolResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - DataMaskingRulesClientListBySQLPoolOptions contains the optional parameters for the DataMaskingRulesClient.ListBySQLPool
+// method.
+func (client *DataMaskingRulesClient) ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesClientListBySQLPoolOptions) (DataMaskingRulesClientListBySQLPoolResponse, error) {
 	req, err := client.listBySQLPoolCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return DataMaskingRulesListBySQLPoolResponse{}, err
+		return DataMaskingRulesClientListBySQLPoolResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataMaskingRulesListBySQLPoolResponse{}, err
+		return DataMaskingRulesClientListBySQLPoolResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataMaskingRulesListBySQLPoolResponse{}, client.listBySQLPoolHandleError(resp)
+		return DataMaskingRulesClientListBySQLPoolResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySQLPoolHandleResponse(resp)
 }
 
 // listBySQLPoolCreateRequest creates the ListBySQLPool request.
-func (client *DataMaskingRulesClient) listBySQLPoolCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesListBySQLPoolOptions) (*policy.Request, error) {
+func (client *DataMaskingRulesClient) listBySQLPoolCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesClientListBySQLPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +225,7 @@ func (client *DataMaskingRulesClient) listBySQLPoolCreateRequest(ctx context.Con
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
 	urlPath = strings.ReplaceAll(urlPath, "{dataMaskingPolicyName}", url.PathEscape("Default"))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,23 +237,10 @@ func (client *DataMaskingRulesClient) listBySQLPoolCreateRequest(ctx context.Con
 }
 
 // listBySQLPoolHandleResponse handles the ListBySQLPool response.
-func (client *DataMaskingRulesClient) listBySQLPoolHandleResponse(resp *http.Response) (DataMaskingRulesListBySQLPoolResponse, error) {
-	result := DataMaskingRulesListBySQLPoolResponse{RawResponse: resp}
+func (client *DataMaskingRulesClient) listBySQLPoolHandleResponse(resp *http.Response) (DataMaskingRulesClientListBySQLPoolResponse, error) {
+	result := DataMaskingRulesClientListBySQLPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingRuleListResult); err != nil {
-		return DataMaskingRulesListBySQLPoolResponse{}, runtime.NewResponseError(err, resp)
+		return DataMaskingRulesClientListBySQLPoolResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySQLPoolHandleError handles the ListBySQLPool error response.
-func (client *DataMaskingRulesClient) listBySQLPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -39,7 +39,7 @@ func ExampleDataMaskingPoliciesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataMaskingPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataMaskingPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyGet.json
@@ -58,5 +58,5 @@ func ExampleDataMaskingPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataMaskingPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataMaskingPoliciesClientGetResult)
 }

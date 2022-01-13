@@ -27,7 +27,7 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_ListByKustoPool() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByKustoPool(ctx,
+	res, err := client.ListByKustoPool(ctx,
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
@@ -35,6 +35,7 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_ListByKustoPool() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolAttachedDatabaseConfigurationsClientListByKustoPoolResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationsGet.json
@@ -54,7 +55,7 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttachedDatabaseConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolAttachedDatabaseConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.json
@@ -75,7 +76,7 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() 
 			Properties: &armsynapse.AttachedDatabaseConfigurationProperties{
 				KustoPoolResourceID:               to.StringPtr("<kusto-pool-resource-id>"),
 				DatabaseName:                      to.StringPtr("<database-name>"),
-				DefaultPrincipalsModificationKind: armsynapse.DefaultPrincipalsModificationKindUnion.ToPtr(),
+				DefaultPrincipalsModificationKind: armsynapse.DefaultPrincipalsModificationKind("Union").ToPtr(),
 				TableLevelSharingProperties: &armsynapse.TableLevelSharingProperties{
 					ExternalTablesToExclude: []*string{
 						to.StringPtr("ExternalTable2")},
@@ -100,7 +101,7 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() 
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttachedDatabaseConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationsDelete.json

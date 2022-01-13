@@ -24,7 +24,7 @@ func ExampleIntegrationRuntimeNodeIPAddressClient_Get() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeNodeIPAddressClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -33,4 +33,5 @@ func ExampleIntegrationRuntimeNodeIPAddressClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeNodeIPAddressClientGetResult)
 }

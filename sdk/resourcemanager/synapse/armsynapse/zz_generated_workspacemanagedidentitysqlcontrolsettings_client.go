@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // WorkspaceManagedIdentitySQLControlSettingsClient contains the methods for the WorkspaceManagedIdentitySQLControlSettings group.
 // Don't use this type directly, use NewWorkspaceManagedIdentitySQLControlSettingsClient() instead.
 type WorkspaceManagedIdentitySQLControlSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceManagedIdentitySQLControlSettingsClient creates a new instance of WorkspaceManagedIdentitySQLControlSettingsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceManagedIdentitySQLControlSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceManagedIdentitySQLControlSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceManagedIdentitySQLControlSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update Managed Identity Sql Control Settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsBeginCreateOrUpdateOptions) (WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// managedIdentitySQLControlSettings - Managed Identity Sql Control Settings
+// options - WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for
+// the WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate method.
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings, options)
 	if err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse{}, err
+		return WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse{
+	result := WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkspaceManagedIdentitySQLControlSettingsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("WorkspaceManagedIdentitySQLControlSettingsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePollerResponse{}, err
+		return WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdatePoller{
+	result.Poller = &WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update Managed Identity Sql Control Settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdate(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdateCr
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,38 +117,29 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdateCr
 	return req, runtime.MarshalAsJSON(req, managedIdentitySQLControlSettings)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get Managed Identity Sql Control Settings
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedIdentitySQLControlSettingsGetOptions) (WorkspaceManagedIdentitySQLControlSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspaceManagedIdentitySQLControlSettingsClientGetOptions contains the optional parameters for the WorkspaceManagedIdentitySQLControlSettingsClient.Get
+// method.
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedIdentitySQLControlSettingsClientGetOptions) (WorkspaceManagedIdentitySQLControlSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsGetResponse{}, err
+		return WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsGetResponse{}, err
+		return WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceManagedIdentitySQLControlSettingsGetResponse{}, client.getHandleError(resp)
+		return WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedIdentitySQLControlSettingsGetOptions) (*policy.Request, error) {
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedIdentitySQLControlSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +153,7 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getCreateRequest
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,23 +165,10 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getCreateRequest
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getHandleResponse(resp *http.Response) (WorkspaceManagedIdentitySQLControlSettingsGetResponse, error) {
-	result := WorkspaceManagedIdentitySQLControlSettingsGetResponse{RawResponse: resp}
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getHandleResponse(resp *http.Response) (WorkspaceManagedIdentitySQLControlSettingsClientGetResponse, error) {
+	result := WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedIdentitySQLControlSettingsModel); err != nil {
-		return WorkspaceManagedIdentitySQLControlSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceManagedIdentitySQLControlSettingsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

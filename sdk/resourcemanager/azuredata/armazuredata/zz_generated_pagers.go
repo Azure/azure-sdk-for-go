@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// SQLServerRegistrationsListByResourceGroupPager provides operations for iterating over paged responses.
-type SQLServerRegistrationsListByResourceGroupPager struct {
+// SQLServerRegistrationsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type SQLServerRegistrationsClientListByResourceGroupPager struct {
 	client    *SQLServerRegistrationsClient
-	current   SQLServerRegistrationsListByResourceGroupResponse
+	current   SQLServerRegistrationsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SQLServerRegistrationsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, SQLServerRegistrationsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SQLServerRegistrationsListByResourceGroupPager) Err() error {
+func (p *SQLServerRegistrationsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SQLServerRegistrationsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *SQLServerRegistrationsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *SQLServerRegistrationsListByResourceGroupPager) NextPage(ctx context.Co
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *SQLServerRegistrationsListByResourceGroupPager) NextPage(ctx context.Co
 	return true
 }
 
-// PageResponse returns the current SQLServerRegistrationsListByResourceGroupResponse page.
-func (p *SQLServerRegistrationsListByResourceGroupPager) PageResponse() SQLServerRegistrationsListByResourceGroupResponse {
+// PageResponse returns the current SQLServerRegistrationsClientListByResourceGroupResponse page.
+func (p *SQLServerRegistrationsClientListByResourceGroupPager) PageResponse() SQLServerRegistrationsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// SQLServerRegistrationsListPager provides operations for iterating over paged responses.
-type SQLServerRegistrationsListPager struct {
+// SQLServerRegistrationsClientListPager provides operations for iterating over paged responses.
+type SQLServerRegistrationsClientListPager struct {
 	client    *SQLServerRegistrationsClient
-	current   SQLServerRegistrationsListResponse
+	current   SQLServerRegistrationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SQLServerRegistrationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, SQLServerRegistrationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SQLServerRegistrationsListPager) Err() error {
+func (p *SQLServerRegistrationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SQLServerRegistrationsListPager) NextPage(ctx context.Context) bool {
+func (p *SQLServerRegistrationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *SQLServerRegistrationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *SQLServerRegistrationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SQLServerRegistrationsListResponse page.
-func (p *SQLServerRegistrationsListPager) PageResponse() SQLServerRegistrationsListResponse {
+// PageResponse returns the current SQLServerRegistrationsClientListResponse page.
+func (p *SQLServerRegistrationsClientListPager) PageResponse() SQLServerRegistrationsClientListResponse {
 	return p.current
 }
 
-// SQLServersListByResourceGroupPager provides operations for iterating over paged responses.
-type SQLServersListByResourceGroupPager struct {
+// SQLServersClientListByResourceGroupPager provides operations for iterating over paged responses.
+type SQLServersClientListByResourceGroupPager struct {
 	client    *SQLServersClient
-	current   SQLServersListByResourceGroupResponse
+	current   SQLServersClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SQLServersListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, SQLServersClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SQLServersListByResourceGroupPager) Err() error {
+func (p *SQLServersClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SQLServersListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *SQLServersClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *SQLServersListByResourceGroupPager) NextPage(ctx context.Context) bool 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *SQLServersListByResourceGroupPager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-// PageResponse returns the current SQLServersListByResourceGroupResponse page.
-func (p *SQLServersListByResourceGroupPager) PageResponse() SQLServersListByResourceGroupResponse {
+// PageResponse returns the current SQLServersClientListByResourceGroupResponse page.
+func (p *SQLServersClientListByResourceGroupPager) PageResponse() SQLServersClientListByResourceGroupResponse {
 	return p.current
 }

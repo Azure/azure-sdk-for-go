@@ -11,7 +11,6 @@ package armcustomproviders
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,58 @@ import (
 // AssociationsClient contains the methods for the Associations group.
 // Don't use this type directly, use NewAssociationsClient() instead.
 type AssociationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAssociationsClient creates a new instance of AssociationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAssociationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssociationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AssociationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AssociationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update an association.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssociationsClient) BeginCreateOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsBeginCreateOrUpdateOptions) (AssociationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the association. The scope can be any valid REST resource instance. For example, use
+// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.Compute/virtualMachines/{vm-name}'
+// for a virtual machine resource.
+// associationName - The name of the association.
+// association - The parameters required to create or update an association.
+// options - AssociationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AssociationsClient.BeginCreateOrUpdate
+// method.
+func (client *AssociationsClient) BeginCreateOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (AssociationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, scope, associationName, association, options)
 	if err != nil {
-		return AssociationsCreateOrUpdatePollerResponse{}, err
+		return AssociationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AssociationsCreateOrUpdatePollerResponse{
+	result := AssociationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AssociationsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AssociationsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return AssociationsCreateOrUpdatePollerResponse{}, err
+		return AssociationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AssociationsCreateOrUpdatePoller{
+	result.Poller = &AssociationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update an association.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssociationsClient) createOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AssociationsClient) createOrUpdate(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, associationName, association, options)
 	if err != nil {
 		return nil, err
@@ -73,20 +85,20 @@ func (client *AssociationsClient) createOrUpdate(ctx context.Context, scope stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssociationsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, associationName string, association Association, options *AssociationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssociationsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, associationName string, association Association, options *AssociationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if associationName == "" {
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,42 +109,33 @@ func (client *AssociationsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, association)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AssociationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete an association.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssociationsClient) BeginDelete(ctx context.Context, scope string, associationName string, options *AssociationsBeginDeleteOptions) (AssociationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the association.
+// associationName - The name of the association.
+// options - AssociationsClientBeginDeleteOptions contains the optional parameters for the AssociationsClient.BeginDelete
+// method.
+func (client *AssociationsClient) BeginDelete(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (AssociationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, scope, associationName, options)
 	if err != nil {
-		return AssociationsDeletePollerResponse{}, err
+		return AssociationsClientDeletePollerResponse{}, err
 	}
-	result := AssociationsDeletePollerResponse{
+	result := AssociationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AssociationsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AssociationsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AssociationsDeletePollerResponse{}, err
+		return AssociationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AssociationsDeletePoller{
+	result.Poller = &AssociationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete an association.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssociationsClient) deleteOperation(ctx context.Context, scope string, associationName string, options *AssociationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AssociationsClient) deleteOperation(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, associationName, options)
 	if err != nil {
 		return nil, err
@@ -142,20 +145,20 @@ func (client *AssociationsClient) deleteOperation(ctx context.Context, scope str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssociationsClient) deleteCreateRequest(ctx context.Context, scope string, associationName string, options *AssociationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AssociationsClient) deleteCreateRequest(ctx context.Context, scope string, associationName string, options *AssociationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if associationName == "" {
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,45 +169,35 @@ func (client *AssociationsClient) deleteCreateRequest(ctx context.Context, scope
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AssociationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an association.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssociationsClient) Get(ctx context.Context, scope string, associationName string, options *AssociationsGetOptions) (AssociationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the association.
+// associationName - The name of the association.
+// options - AssociationsClientGetOptions contains the optional parameters for the AssociationsClient.Get method.
+func (client *AssociationsClient) Get(ctx context.Context, scope string, associationName string, options *AssociationsClientGetOptions) (AssociationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, associationName, options)
 	if err != nil {
-		return AssociationsGetResponse{}, err
+		return AssociationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssociationsGetResponse{}, err
+		return AssociationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssociationsGetResponse{}, client.getHandleError(resp)
+		return AssociationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssociationsClient) getCreateRequest(ctx context.Context, scope string, associationName string, options *AssociationsGetOptions) (*policy.Request, error) {
+func (client *AssociationsClient) getCreateRequest(ctx context.Context, scope string, associationName string, options *AssociationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if associationName == "" {
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,46 +209,35 @@ func (client *AssociationsClient) getCreateRequest(ctx context.Context, scope st
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssociationsClient) getHandleResponse(resp *http.Response) (AssociationsGetResponse, error) {
-	result := AssociationsGetResponse{RawResponse: resp}
+func (client *AssociationsClient) getHandleResponse(resp *http.Response) (AssociationsClientGetResponse, error) {
+	result := AssociationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Association); err != nil {
-		return AssociationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AssociationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AssociationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAll - Gets all association for the given scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssociationsClient) ListAll(scope string, options *AssociationsListAllOptions) *AssociationsListAllPager {
-	return &AssociationsListAllPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the association.
+// options - AssociationsClientListAllOptions contains the optional parameters for the AssociationsClient.ListAll method.
+func (client *AssociationsClient) ListAll(scope string, options *AssociationsClientListAllOptions) *AssociationsClientListAllPager {
+	return &AssociationsClientListAllPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAllCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp AssociationsListAllResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AssociationsClientListAllResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssociationsList.NextLink)
 		},
 	}
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *AssociationsClient) listAllCreateRequest(ctx context.Context, scope string, options *AssociationsListAllOptions) (*policy.Request, error) {
+func (client *AssociationsClient) listAllCreateRequest(ctx context.Context, scope string, options *AssociationsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CustomProviders/associations"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -267,23 +249,10 @@ func (client *AssociationsClient) listAllCreateRequest(ctx context.Context, scop
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *AssociationsClient) listAllHandleResponse(resp *http.Response) (AssociationsListAllResponse, error) {
-	result := AssociationsListAllResponse{RawResponse: resp}
+func (client *AssociationsClient) listAllHandleResponse(resp *http.Response) (AssociationsClientListAllResponse, error) {
+	result := AssociationsClientListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssociationsList); err != nil {
-		return AssociationsListAllResponse{}, runtime.NewResponseError(err, resp)
+		return AssociationsClientListAllResponse{}, err
 	}
 	return result, nil
-}
-
-// listAllHandleError handles the ListAll error response.
-func (client *AssociationsClient) listAllHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

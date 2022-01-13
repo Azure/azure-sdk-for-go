@@ -27,12 +27,16 @@ func ExampleAssignmentOperationsClient_List() {
 	pager := client.List("<resource-scope>",
 		"<assignment-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AssignmentOperation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExampleAssignmentOperationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AssignmentOperation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AssignmentOperationsClientGetResult)
 }

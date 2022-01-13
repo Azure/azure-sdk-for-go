@@ -40,12 +40,14 @@ func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline 
 	}
 
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
-		[]policy.Policy{
-			newSharedKeyCredPolicy(cred),
-			&headerPolicies{
-				enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
-			}},
-		nil,
+		azruntime.PipelineOptions{
+			PerCall: []policy.Policy{
+				newSharedKeyCredPolicy(cred),
+				&headerPolicies{
+					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+				},
+			},
+		},
 		&options.ClientOptions)
 }
 

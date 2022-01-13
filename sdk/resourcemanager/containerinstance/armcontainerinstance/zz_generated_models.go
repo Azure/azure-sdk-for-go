@@ -107,17 +107,9 @@ func (c CapabilitiesListResult) MarshalJSON() ([]byte, error) {
 }
 
 // CloudError - An error response from the Container Instance service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// An error response from the Container Instance service.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Container Instance service.
@@ -213,20 +205,42 @@ type ContainerExecResponse struct {
 
 // ContainerGroup - A container group.
 type ContainerGroup struct {
-	Resource
 	// REQUIRED; The container group properties
 	Properties *ContainerGroupProperties `json:"properties,omitempty"`
 
 	// The identity of the container group, if configured.
 	Identity *ContainerGroupIdentity `json:"identity,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The zones for the container group.
+	Zones []*string `json:"zones,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContainerGroup.
 func (c ContainerGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
+	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -238,19 +252,22 @@ type ContainerGroupDiagnostics struct {
 
 // ContainerGroupIdentity - Identity for the container group.
 type ContainerGroupIdentity struct {
-	// The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of
-	// user assigned identities. The type 'None' will
+	// The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+	// created identity and a set of user assigned identities. The type 'None' will
 	// remove any identities from the container group.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the container group. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the container group. The user identity dictionary key references will be ARM
+	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*Components10Wh5UdSchemasContainergroupidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
-	// READ-ONLY; The principal id of the container group identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The principal id of the container group identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The tenant id associated with the container group. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The tenant id associated with the container group. This property will only be provided for a system assigned
+	// identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
@@ -375,54 +392,56 @@ type ContainerGroupSubnetID struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ContainerGroupsBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroups.BeginCreateOrUpdate method.
-type ContainerGroupsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsBeginDeleteOptions contains the optional parameters for the ContainerGroups.BeginDelete method.
-type ContainerGroupsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsBeginRestartOptions contains the optional parameters for the ContainerGroups.BeginRestart method.
-type ContainerGroupsBeginRestartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsBeginStartOptions contains the optional parameters for the ContainerGroups.BeginStart method.
-type ContainerGroupsBeginStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsGetOptions contains the optional parameters for the ContainerGroups.Get method.
-type ContainerGroupsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ContainerGroups.GetOutboundNetworkDependenciesEndpoints
+// ContainerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroupsClient.BeginCreateOrUpdate
 // method.
-type ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions struct {
+type ContainerGroupsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsListByResourceGroupOptions contains the optional parameters for the ContainerGroups.ListByResourceGroup method.
-type ContainerGroupsListByResourceGroupOptions struct {
+// ContainerGroupsClientBeginDeleteOptions contains the optional parameters for the ContainerGroupsClient.BeginDelete method.
+type ContainerGroupsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsListOptions contains the optional parameters for the ContainerGroups.List method.
-type ContainerGroupsListOptions struct {
+// ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart method.
+type ContainerGroupsClientBeginRestartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsStopOptions contains the optional parameters for the ContainerGroups.Stop method.
-type ContainerGroupsStopOptions struct {
+// ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart method.
+type ContainerGroupsClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsUpdateOptions contains the optional parameters for the ContainerGroups.Update method.
-type ContainerGroupsUpdateOptions struct {
+// ContainerGroupsClientGetOptions contains the optional parameters for the ContainerGroupsClient.Get method.
+type ContainerGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints
+// method.
+type ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.ListByResourceGroup
+// method.
+type ContainerGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.List method.
+type ContainerGroupsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupsClientStopOptions contains the optional parameters for the ContainerGroupsClient.Stop method.
+type ContainerGroupsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupsClientUpdateOptions contains the optional parameters for the ContainerGroupsClient.Update method.
+type ContainerGroupsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -615,19 +634,20 @@ func (c *ContainerState) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ContainersAttachOptions contains the optional parameters for the Containers.Attach method.
-type ContainersAttachOptions struct {
+// ContainersClientAttachOptions contains the optional parameters for the ContainersClient.Attach method.
+type ContainersClientAttachOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersExecuteCommandOptions contains the optional parameters for the Containers.ExecuteCommand method.
-type ContainersExecuteCommandOptions struct {
+// ContainersClientExecuteCommandOptions contains the optional parameters for the ContainersClient.ExecuteCommand method.
+type ContainersClientExecuteCommandOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersListLogsOptions contains the optional parameters for the Containers.ListLogs method.
-type ContainersListLogsOptions struct {
-	// The number of lines to show from the tail of the container instance log. If not provided, all available logs are shown up to 4mb.
+// ContainersClientListLogsOptions contains the optional parameters for the ContainersClient.ListLogs method.
+type ContainersClientListLogsOptions struct {
+	// The number of lines to show from the tail of the container instance log. If not provided, all available logs are shown
+	// up to 4mb.
 	Tail *int32
 	// If true, adds a timestamp at the beginning of every line of log output. If not provided, defaults to false.
 	Timestamps *bool
@@ -751,8 +771,8 @@ type GitRepoVolume struct {
 	// REQUIRED; Repository URL
 	Repository *string `json:"repository,omitempty"`
 
-	// Target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git repository. Otherwise, if specified,
-	// the volume will contain the git repository in
+	// Target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git repository.
+	// Otherwise, if specified, the volume will contain the git repository in
 	// the subdirectory with the given name.
 	Directory *string `json:"directory,omitempty"`
 
@@ -789,6 +809,9 @@ type IPAddress struct {
 	// The Dns name label for the IP.
 	DNSNameLabel *string `json:"dnsNameLabel,omitempty"`
 
+	// The value representing the security enum.
+	DNSNameLabelReusePolicy *DNSNameLabelReusePolicy `json:"dnsNameLabelReusePolicy,omitempty"`
+
 	// The IP exposed to the public internet.
 	IP *string `json:"ip,omitempty"`
 
@@ -800,6 +823,7 @@ type IPAddress struct {
 func (i IPAddress) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "dnsNameLabel", i.DNSNameLabel)
+	populate(objectMap, "dnsNameLabelReusePolicy", i.DNSNameLabelReusePolicy)
 	populate(objectMap, "fqdn", i.Fqdn)
 	populate(objectMap, "ip", i.IP)
 	populate(objectMap, "ports", i.Ports)
@@ -888,18 +912,18 @@ func (i InitContainerPropertiesDefinitionInstanceView) MarshalJSON() ([]byte, er
 	return json.Marshal(objectMap)
 }
 
-// LocationListCachedImagesOptions contains the optional parameters for the Location.ListCachedImages method.
-type LocationListCachedImagesOptions struct {
+// LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.ListCachedImages method.
+type LocationClientListCachedImagesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationListCapabilitiesOptions contains the optional parameters for the Location.ListCapabilities method.
-type LocationListCapabilitiesOptions struct {
+// LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.ListCapabilities method.
+type LocationClientListCapabilitiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationListUsageOptions contains the optional parameters for the Location.ListUsage method.
-type LocationListUsageOptions struct {
+// LocationClientListUsageOptions contains the optional parameters for the LocationClient.ListUsage method.
+type LocationClientListUsageOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -985,8 +1009,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1023,17 +1047,13 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
 	populate(objectMap, "zones", r.Zones)
+	return json.Marshal(objectMap)
 }
 
 // ResourceLimits - The resource limits.

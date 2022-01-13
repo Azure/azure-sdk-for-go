@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance"
 )
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsList.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsList.json
 func ExampleContainerGroupsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,17 +28,21 @@ func ExampleContainerGroupsClient_List() {
 	ctx := context.Background()
 	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ContainerGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsListByResourceGroup.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsListByResourceGroup.json
 func ExampleContainerGroupsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,17 +52,21 @@ func ExampleContainerGroupsClient_ListByResourceGroup() {
 	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ContainerGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsGet_Failed.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsGet_Failed.json
 func ExampleContainerGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,10 +81,10 @@ func ExampleContainerGroupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContainerGroupsClientGetResult)
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsCreateOrUpdate.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsCreateOrUpdate.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,9 +96,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<container-group-name>",
 		armcontainerinstance.ContainerGroup{
-			Resource: armcontainerinstance.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armcontainerinstance.ContainerGroupIdentity{
 				Type: armcontainerinstance.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
 				UserAssignedIdentities: map[string]*armcontainerinstance.Components10Wh5UdSchemasContainergroupidentityPropertiesUserassignedidentitiesAdditionalproperties{
@@ -114,7 +120,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 									CPU: to.Float64Ptr(1),
 									Gpu: &armcontainerinstance.GpuResource{
 										Count: to.Int32Ptr(1),
-										SKU:   armcontainerinstance.GpuSKUK80.ToPtr(),
+										SKU:   armcontainerinstance.GpuSKU("K80").ToPtr(),
 									},
 									MemoryInGB: to.Float64Ptr(1.5),
 								},
@@ -139,7 +145,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 					}},
 				Diagnostics: &armcontainerinstance.ContainerGroupDiagnostics{
 					LogAnalytics: &armcontainerinstance.LogAnalytics{
-						LogType: armcontainerinstance.LogAnalyticsLogTypeContainerInsights.ToPtr(),
+						LogType: armcontainerinstance.LogAnalyticsLogType("ContainerInsights").ToPtr(),
 						Metadata: map[string]*string{
 							"test-key": to.StringPtr("test-metadata-value"),
 						},
@@ -156,15 +162,16 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 				},
 				ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{},
 				IPAddress: &armcontainerinstance.IPAddress{
-					Type:         armcontainerinstance.ContainerGroupIPAddressTypePublic.ToPtr(),
-					DNSNameLabel: to.StringPtr("<dnsname-label>"),
+					Type:                    armcontainerinstance.ContainerGroupIPAddressType("Public").ToPtr(),
+					DNSNameLabel:            to.StringPtr("<dnsname-label>"),
+					DNSNameLabelReusePolicy: armcontainerinstance.DNSNameLabelReusePolicy("Unsecure").ToPtr(),
 					Ports: []*armcontainerinstance.Port{
 						{
 							Port:     to.Int32Ptr(80),
-							Protocol: armcontainerinstance.ContainerGroupNetworkProtocolTCP.ToPtr(),
+							Protocol: armcontainerinstance.ContainerGroupNetworkProtocol("TCP").ToPtr(),
 						}},
 				},
-				OSType: armcontainerinstance.OperatingSystemTypesLinux.ToPtr(),
+				OSType: armcontainerinstance.OperatingSystemTypes("Linux").ToPtr(),
 				SubnetIDs: []*armcontainerinstance.ContainerGroupSubnetID{
 					{
 						ID: to.StringPtr("<id>"),
@@ -199,10 +206,10 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContainerGroupsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsUpdate.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsUpdate.json
 func ExampleContainerGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,15 +220,20 @@ func ExampleContainerGroupsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<container-group-name>",
-		armcontainerinstance.Resource{},
+		armcontainerinstance.Resource{
+			Tags: map[string]*string{
+				"tag1key": to.StringPtr("tag1Value"),
+				"tag2key": to.StringPtr("tag2Value"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContainerGroupsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsDelete.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsDelete.json
 func ExampleContainerGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,10 +252,10 @@ func ExampleContainerGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContainerGroupsClientDeleteResult)
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsRestart.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsRestart.json
 func ExampleContainerGroupsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +276,7 @@ func ExampleContainerGroupsClient_BeginRestart() {
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsStop.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsStop.json
 func ExampleContainerGroupsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +293,7 @@ func ExampleContainerGroupsClient_Stop() {
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsStart.json
+// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsStart.json
 func ExampleContainerGroupsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

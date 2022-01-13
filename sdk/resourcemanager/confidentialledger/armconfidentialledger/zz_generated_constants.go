@@ -9,8 +9,8 @@
 package armconfidentialledger
 
 const (
-	module  = "armconfidentialledger"
-	version = "v0.1.0"
+	moduleName    = "armconfidentialledger"
+	moduleVersion = "v0.1.0"
 )
 
 // CheckNameAvailabilityReason - The reason why the given name is not available.

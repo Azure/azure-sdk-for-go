@@ -86,19 +86,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // GroupConnectivityInformation
@@ -138,13 +130,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -153,18 +148,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -181,29 +179,30 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PowerBIResourcesCreateOptions contains the optional parameters for the PowerBIResources.Create method.
-type PowerBIResourcesCreateOptions struct {
+// PowerBIResourcesClientCreateOptions contains the optional parameters for the PowerBIResourcesClient.Create method.
+type PowerBIResourcesClientCreateOptions struct {
 	// The client tenant id in header. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 	ClientTenantID *string
 }
 
-// PowerBIResourcesDeleteOptions contains the optional parameters for the PowerBIResources.Delete method.
-type PowerBIResourcesDeleteOptions struct {
+// PowerBIResourcesClientDeleteOptions contains the optional parameters for the PowerBIResourcesClient.Delete method.
+type PowerBIResourcesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PowerBIResourcesListByResourceNameOptions contains the optional parameters for the PowerBIResources.ListByResourceName method.
-type PowerBIResourcesListByResourceNameOptions struct {
+// PowerBIResourcesClientListByResourceNameOptions contains the optional parameters for the PowerBIResourcesClient.ListByResourceName
+// method.
+type PowerBIResourcesClientListByResourceNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PowerBIResourcesUpdateOptions contains the optional parameters for the PowerBIResources.Update method.
-type PowerBIResourcesUpdateOptions struct {
+// PowerBIResourcesClientUpdateOptions contains the optional parameters for the PowerBIResourcesClient.Update method.
+type PowerBIResourcesClientUpdateOptions struct {
 	// The client tenant id in header. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 	ClientTenantID *string
 }
@@ -261,23 +260,27 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsCreateOptions contains the optional parameters for the PrivateEndpointConnections.Create method.
-type PrivateEndpointConnectionsCreateOptions struct {
+// PrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Create
+// method.
+type PrivateEndpointConnectionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListByResourceOptions contains the optional parameters for the PrivateEndpointConnections.ListByResource method.
-type PrivateEndpointConnectionsListByResourceOptions struct {
+// PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
+// method.
+type PrivateEndpointConnectionsClientListByResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -335,13 +338,14 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByResourceOptions contains the optional parameters for the PrivateLinkResources.ListByResource method.
-type PrivateLinkResourcesListByResourceOptions struct {
+// PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
+// method.
+type PrivateLinkResourcesClientListByResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -408,20 +412,21 @@ func (p PrivateLinkServiceProxy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkServiceResourceOperationResultsBeginGetOptions contains the optional parameters for the PrivateLinkServiceResourceOperationResults.BeginGet
+// PrivateLinkServiceResourceOperationResultsClientBeginGetOptions contains the optional parameters for the PrivateLinkServiceResourceOperationResultsClient.BeginGet
 // method.
-type PrivateLinkServiceResourceOperationResultsBeginGetOptions struct {
+type PrivateLinkServiceResourceOperationResultsClientBeginGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForPowerBIListBySubscriptionIDOptions contains the optional parameters for the PrivateLinkServicesForPowerBI.ListBySubscriptionID
+// PrivateLinkServicesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesClient.ListByResourceGroup
 // method.
-type PrivateLinkServicesForPowerBIListBySubscriptionIDOptions struct {
+type PrivateLinkServicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesListByResourceGroupOptions contains the optional parameters for the PrivateLinkServices.ListByResourceGroup method.
-type PrivateLinkServicesListByResourceGroupOptions struct {
+// PrivateLinkServicesForPowerBIClientListBySubscriptionIDOptions contains the optional parameters for the PrivateLinkServicesForPowerBIClient.ListBySubscriptionID
+// method.
+type PrivateLinkServicesForPowerBIClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
 }
 

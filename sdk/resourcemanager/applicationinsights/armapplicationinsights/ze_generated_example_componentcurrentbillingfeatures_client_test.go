@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -24,13 +25,14 @@ func ExampleComponentCurrentBillingFeaturesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewComponentCurrentBillingFeaturesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ComponentCurrentBillingFeaturesClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/CurrentBillingFeaturesUpdate.json
@@ -41,12 +43,21 @@ func ExampleComponentCurrentBillingFeaturesClient_Update() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewComponentCurrentBillingFeaturesClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ApplicationInsightsComponentBillingFeatures{},
+		armapplicationinsights.ComponentBillingFeatures{
+			CurrentBillingFeatures: []*string{
+				to.StringPtr("Basic"),
+				to.StringPtr("Application Insights Enterprise")},
+			DataVolumeCap: &armapplicationinsights.ComponentDataVolumeCap{
+				Cap:                            to.Float32Ptr(100),
+				StopSendNotificationWhenHitCap: to.BoolPtr(true),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ComponentCurrentBillingFeaturesClientUpdateResult)
 }

@@ -25,42 +25,56 @@ import (
 // FavoritesClient contains the methods for the Favorites group.
 // Don't use this type directly, use NewFavoritesClient() instead.
 type FavoritesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFavoritesClient creates a new instance of FavoritesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFavoritesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FavoritesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FavoritesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FavoritesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Add - Adds a new favorites to an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *FavoritesClient) Add(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ApplicationInsightsComponentFavorite, options *FavoritesAddOptions) (FavoritesAddResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// favoriteID - The Id of a specific favorite defined in the Application Insights component
+// favoriteProperties - Properties that need to be specified to create a new favorite and add it to an Application Insights
+// component.
+// options - FavoritesClientAddOptions contains the optional parameters for the FavoritesClient.Add method.
+func (client *FavoritesClient) Add(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ComponentFavorite, options *FavoritesClientAddOptions) (FavoritesClientAddResponse, error) {
 	req, err := client.addCreateRequest(ctx, resourceGroupName, resourceName, favoriteID, favoriteProperties, options)
 	if err != nil {
-		return FavoritesAddResponse{}, err
+		return FavoritesClientAddResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoritesAddResponse{}, err
+		return FavoritesClientAddResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoritesAddResponse{}, client.addHandleError(resp)
+		return FavoritesClientAddResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.addHandleResponse(resp)
 }
 
 // addCreateRequest creates the Add request.
-func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ApplicationInsightsComponentFavorite, options *FavoritesAddOptions) (*policy.Request, error) {
+func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ComponentFavorite, options *FavoritesClientAddOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +92,7 @@ func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter favoriteID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteId}", url.PathEscape(favoriteID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,45 +104,37 @@ func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGro
 }
 
 // addHandleResponse handles the Add response.
-func (client *FavoritesClient) addHandleResponse(resp *http.Response) (FavoritesAddResponse, error) {
-	result := FavoritesAddResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentFavorite); err != nil {
-		return FavoritesAddResponse{}, runtime.NewResponseError(err, resp)
+func (client *FavoritesClient) addHandleResponse(resp *http.Response) (FavoritesClientAddResponse, error) {
+	result := FavoritesClientAddResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavorite); err != nil {
+		return FavoritesClientAddResponse{}, err
 	}
 	return result, nil
 }
 
-// addHandleError handles the Add error response.
-func (client *FavoritesClient) addHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Remove a favorite that is associated to an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *FavoritesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesDeleteOptions) (FavoritesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// favoriteID - The Id of a specific favorite defined in the Application Insights component
+// options - FavoritesClientDeleteOptions contains the optional parameters for the FavoritesClient.Delete method.
+func (client *FavoritesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesClientDeleteOptions) (FavoritesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, favoriteID, options)
 	if err != nil {
-		return FavoritesDeleteResponse{}, err
+		return FavoritesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoritesDeleteResponse{}, err
+		return FavoritesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoritesDeleteResponse{}, client.deleteHandleError(resp)
+		return FavoritesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FavoritesDeleteResponse{RawResponse: resp}, nil
+	return FavoritesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FavoritesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesDeleteOptions) (*policy.Request, error) {
+func (client *FavoritesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -146,7 +152,7 @@ func (client *FavoritesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter favoriteID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteId}", url.PathEscape(favoriteID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,37 +162,29 @@ func (client *FavoritesClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FavoritesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get a single favorite by its FavoriteId, defined within an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *FavoritesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesGetOptions) (FavoritesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// favoriteID - The Id of a specific favorite defined in the Application Insights component
+// options - FavoritesClientGetOptions contains the optional parameters for the FavoritesClient.Get method.
+func (client *FavoritesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesClientGetOptions) (FavoritesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, favoriteID, options)
 	if err != nil {
-		return FavoritesGetResponse{}, err
+		return FavoritesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoritesGetResponse{}, err
+		return FavoritesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoritesGetResponse{}, client.getHandleError(resp)
+		return FavoritesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesGetOptions) (*policy.Request, error) {
+func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, options *FavoritesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -204,7 +202,7 @@ func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter favoriteID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteId}", url.PathEscape(favoriteID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,45 +214,36 @@ func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *FavoritesClient) getHandleResponse(resp *http.Response) (FavoritesGetResponse, error) {
-	result := FavoritesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentFavorite); err != nil {
-		return FavoritesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *FavoritesClient) getHandleResponse(resp *http.Response) (FavoritesClientGetResponse, error) {
+	result := FavoritesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavorite); err != nil {
+		return FavoritesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FavoritesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets a list of favorites defined within an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *FavoritesClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *FavoritesListOptions) (FavoritesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - FavoritesClientListOptions contains the optional parameters for the FavoritesClient.List method.
+func (client *FavoritesClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *FavoritesClientListOptions) (FavoritesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return FavoritesListResponse{}, err
+		return FavoritesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoritesListResponse{}, err
+		return FavoritesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoritesListResponse{}, client.listHandleError(resp)
+		return FavoritesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *FavoritesListOptions) (*policy.Request, error) {
+func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *FavoritesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -268,7 +257,7 @@ func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -292,45 +281,38 @@ func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGr
 }
 
 // listHandleResponse handles the List response.
-func (client *FavoritesClient) listHandleResponse(resp *http.Response) (FavoritesListResponse, error) {
-	result := FavoritesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentFavoriteArray); err != nil {
-		return FavoritesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *FavoritesClient) listHandleResponse(resp *http.Response) (FavoritesClientListResponse, error) {
+	result := FavoritesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavoriteArray); err != nil {
+		return FavoritesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *FavoritesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates a favorite that has already been added to an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *FavoritesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ApplicationInsightsComponentFavorite, options *FavoritesUpdateOptions) (FavoritesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// favoriteID - The Id of a specific favorite defined in the Application Insights component
+// favoriteProperties - Properties that need to be specified to update the existing favorite.
+// options - FavoritesClientUpdateOptions contains the optional parameters for the FavoritesClient.Update method.
+func (client *FavoritesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ComponentFavorite, options *FavoritesClientUpdateOptions) (FavoritesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, favoriteID, favoriteProperties, options)
 	if err != nil {
-		return FavoritesUpdateResponse{}, err
+		return FavoritesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoritesUpdateResponse{}, err
+		return FavoritesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoritesUpdateResponse{}, client.updateHandleError(resp)
+		return FavoritesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ApplicationInsightsComponentFavorite, options *FavoritesUpdateOptions) (*policy.Request, error) {
+func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ComponentFavorite, options *FavoritesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -348,7 +330,7 @@ func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter favoriteID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteId}", url.PathEscape(favoriteID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,22 +342,10 @@ func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FavoritesClient) updateHandleResponse(resp *http.Response) (FavoritesUpdateResponse, error) {
-	result := FavoritesUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentFavorite); err != nil {
-		return FavoritesUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *FavoritesClient) updateHandleResponse(resp *http.Response) (FavoritesClientUpdateResponse, error) {
+	result := FavoritesClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavorite); err != nil {
+		return FavoritesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *FavoritesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -33,7 +33,7 @@ func ExampleSessionHostsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SessionHost.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SessionHostsClientGetResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/SessionHost_Delete.json
@@ -48,7 +48,7 @@ func ExampleSessionHostsClient_Delete() {
 		"<resource-group-name>",
 		"<host-pool-name>",
 		"<session-host-name>",
-		&armdesktopvirtualization.SessionHostsDeleteOptions{Force: to.BoolPtr(true)})
+		&armdesktopvirtualization.SessionHostsClientDeleteOptions{Force: to.BoolPtr(true)})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +66,7 @@ func ExampleSessionHostsClient_Update() {
 		"<resource-group-name>",
 		"<host-pool-name>",
 		"<session-host-name>",
-		&armdesktopvirtualization.SessionHostsUpdateOptions{Force: to.BoolPtr(true),
+		&armdesktopvirtualization.SessionHostsClientUpdateOptions{Force: to.BoolPtr(true),
 			SessionHost: &armdesktopvirtualization.SessionHostPatch{
 				Properties: &armdesktopvirtualization.SessionHostPatchProperties{
 					AllowNewSession: to.BoolPtr(true),
@@ -77,7 +77,7 @@ func ExampleSessionHostsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SessionHost.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SessionHostsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/SessionHost_List.json
@@ -91,12 +91,16 @@ func ExampleSessionHostsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<host-pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SessionHost.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

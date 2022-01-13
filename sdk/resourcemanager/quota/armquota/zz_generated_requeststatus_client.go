@@ -18,20 +18,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
-// UsagesClient contains the methods for the Usages group.
-// Don't use this type directly, use NewUsagesClient() instead.
-type UsagesClient struct {
+// RequestStatusClient contains the methods for the QuotaRequestStatus group.
+// Don't use this type directly, use NewRequestStatusClient() instead.
+type RequestStatusClient struct {
 	host string
 	pl   runtime.Pipeline
 }
 
-// NewUsagesClient creates a new instance of UsagesClient with the specified values.
+// NewRequestStatusClient creates a new instance of RequestStatusClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
+func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RequestStatusClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -39,45 +40,45 @@ func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &UsagesClient{
+	client := &RequestStatusClient{
 		host: string(cp.Endpoint),
 		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
 	}
 	return client
 }
 
-// Get - Get the current usage of a resource.
+// Get - Get the quota request details and status by quota request ID for the resources of the resource provider at a specific
+// location. The quota request ID id is returned in the response of the PUT
+// operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceName - Resource name for a given resource provider. For example:
-// * SKU name for Microsoft.Compute
-// * SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
+// id - Quota request ID.
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
-// options - UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
-func (client *UsagesClient) Get(ctx context.Context, resourceName string, scope string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceName, scope, options)
+// options - RequestStatusClientGetOptions contains the optional parameters for the RequestStatusClient.Get method.
+func (client *RequestStatusClient) Get(ctx context.Context, id string, scope string, options *RequestStatusClientGetOptions) (RequestStatusClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, id, scope, options)
 	if err != nil {
-		return UsagesClientGetResponse{}, err
+		return RequestStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UsagesClientGetResponse{}, err
+		return RequestStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UsagesClientGetResponse{}, runtime.NewResponseError(resp)
+		return RequestStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName string, scope string, options *UsagesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Quota/usages/{resourceName}"
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
+func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id string, scope string, options *RequestStatusClientGetOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Quota/quotaRequests/{id}"
+	if id == "" {
+		return nil, errors.New("parameter id cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -91,39 +92,37 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName s
 }
 
 // getHandleResponse handles the Get response.
-func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClientGetResponse, error) {
-	result := UsagesClientGetResponse{RawResponse: resp}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CurrentUsagesBase); err != nil {
-		return UsagesClientGetResponse{}, err
+func (client *RequestStatusClient) getHandleResponse(resp *http.Response) (RequestStatusClientGetResponse, error) {
+	result := RequestStatusClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RequestDetails); err != nil {
+		return RequestStatusClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - Get a list of current usage for all resources for the scope specified.
+// List - For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
+// oData filter to select quota requests.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
-// options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
-func (client *UsagesClient) List(scope string, options *UsagesClientListOptions) *UsagesClientListPager {
-	return &UsagesClientListPager{
+// options - RequestStatusClientListOptions contains the optional parameters for the RequestStatusClient.List method.
+func (client *RequestStatusClient) List(scope string, options *RequestStatusClientListOptions) *RequestStatusClientListPager {
+	return &RequestStatusClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp UsagesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesLimits.NextLink)
+		advancer: func(ctx context.Context, resp RequestStatusClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RequestDetailsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string, options *UsagesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Quota/usages"
+func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope string, options *RequestStatusClientListOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Quota/quotaRequests"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -131,19 +130,25 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string,
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-15-preview")
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	if options != nil && options.Skiptoken != nil {
+		reqQP.Set("$skiptoken", *options.Skiptoken)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesClientListResponse, error) {
-	result := UsagesClientListResponse{RawResponse: resp}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesLimits); err != nil {
-		return UsagesClientListResponse{}, err
+func (client *RequestStatusClient) listHandleResponse(resp *http.Response) (RequestStatusClientListResponse, error) {
+	result := RequestStatusClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RequestDetailsList); err != nil {
+		return RequestStatusClientListResponse{}, err
 	}
 	return result, nil
 }

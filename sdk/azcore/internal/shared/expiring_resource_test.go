@@ -19,7 +19,7 @@ func TestNewExpiringResource(t *testing.T) {
 		s := state.(string)
 		switch s {
 		case "initial":
-			return "updated", time.Now(), nil
+			return "updated", time.Now().Add(-time.Minute), nil
 		case "updated":
 			return "refreshed", time.Now().Add(1 * time.Hour), nil
 		default:

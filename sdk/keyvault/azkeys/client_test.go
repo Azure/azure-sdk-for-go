@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
@@ -565,6 +566,7 @@ func TestGetDeletedKey(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -595,6 +597,7 @@ func TestRotateKey(t *testing.T) {
 }
 
 func TestGetKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -642,26 +645,31 @@ func TestReleaseKey(t *testing.T) {
 			if recording.GetRecordMode() == recording.PlaybackMode {
 				t.Skip("Skipping test in playback")
 			}
-			_, err = http.DefaultClient.Do(req)
-			require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
-			// require.Equal(t, resp.StatusCode, http.StatusOK)
-			// defer resp.Body.Close()
 
-			// type targetResponse struct {
-			// 	Token string `json:"token"`
-			// }
+			// Issue when deploying HSM as well
+			if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
+				_, err = http.DefaultClient.Do(req)
+				require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
+				// require.Equal(t, resp.StatusCode, http.StatusOK)
+				// defer resp.Body.Close()
 
-			// var tR targetResponse
-			// err = json.NewDecoder(resp.Body).Decode(&tR)
-			// require.NoError(t, err)
+				// type targetResponse struct {
+				// 	Token string `json:"token"`
+				// }
 
-			_, err = client.ReleaseKey(ctx, key, "target", nil)
-			require.Error(t, err)
+				// var tR targetResponse
+				// err = json.NewDecoder(resp.Body).Decode(&tR)
+				// require.NoError(t, err)
+
+				_, err = client.ReleaseKey(ctx, key, "target", nil)
+				require.Error(t, err)
+			}
 		})
 	}
 }
 
 func TestUpdateKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)

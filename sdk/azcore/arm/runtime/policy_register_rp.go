@@ -15,7 +15,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -51,7 +50,7 @@ func setDefaults(r *armpolicy.RegistrationOptions) {
 // credentials and options.  The policy controls if an unregistered resource provider should
 // automatically be registered. See https://aka.ms/rps-not-found for more information.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewRPRegistrationPolicy(endpoint string, cred azcore.TokenCredential, o *armpolicy.RegistrationOptions) azpolicy.Policy {
+func NewRPRegistrationPolicy(endpoint string, cred shared.TokenCredential, o *armpolicy.RegistrationOptions) azpolicy.Policy {
 	if o == nil {
 		o = &armpolicy.RegistrationOptions{}
 	}

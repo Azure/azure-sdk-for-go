@@ -165,6 +165,24 @@ type CertificateBundle struct {
 	X509Thumbprint []byte `json:"x5t,omitempty" azure:"ro"`
 }
 
+func certificateBundleFromGenerated(g *generated.CertificateBundle) CertificateBundle {
+	if g == nil {
+		return CertificateBundle{}
+	}
+
+	return CertificateBundle{
+		Attributes:     certificateAttributesFromGenerated(g.Attributes),
+		Cer:            g.Cer,
+		ContentType:    g.ContentType,
+		Tags:           g.Tags,
+		ID:             g.ID,
+		Kid:            g.Kid,
+		Policy:         certificatePolicyFromGenerated(g.Policy),
+		Sid:            g.Sid,
+		X509Thumbprint: g.X509Thumbprint,
+	}
+}
+
 // CertificateIssuerItem - The certificate issuer item containing certificate issuer metadata.
 type CertificateIssuerItem struct {
 	// Certificate Identifier.

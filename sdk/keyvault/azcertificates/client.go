@@ -116,6 +116,7 @@ func (b *beginCreateCertificatePoller) Poll(ctx context.Context) (*http.Response
 	resp, err := b.client.GetCertificate(ctx, b.vaultURL, b.certName, b.certVersion, nil)
 	if err == nil {
 		b.lastResponse = resp
+		b.createResponse.ID = b.lastResponse.ID
 		return resp.RawResponse, nil
 	}
 
@@ -1208,5 +1209,56 @@ func (c *Client) GetCertificatePolicy(ctx context.Context, certName string, opti
 	return GetCertificatePolicyResponse{
 		RawResponse:       resp.RawResponse,
 		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
+	}, nil
+}
+
+// UpdateCertificatePropertiesOptions contains the optional parameters for the Client.UpdateCertificateProperties function
+type UpdateCertificatePropertiesOptions struct {
+	// The version of the certificate to update
+	Version string
+
+	// The attributes of the certificate (optional).
+	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// The management policy for the certificate.
+	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOptions {
+	return &generated.KeyVaultClientUpdateCertificateOptions{}
+}
+
+// UpdateCertificatePropertiesResponse contains the result from method Client.UpdateCertificateProperties.
+type UpdateCertificatePropertiesResponse struct {
+	CertificateBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) UpdateCertificateProperties(ctx context.Context, certName string, options *UpdateCertificatePropertiesOptions) (UpdateCertificatePropertiesResponse, error) {
+	if options == nil {
+		options = &UpdateCertificatePropertiesOptions{}
+	}
+	resp, err := c.genClient.UpdateCertificate(
+		ctx,
+		c.vaultURL,
+		certName,
+		options.Version,
+		generated.CertificateUpdateParameters{
+			CertificateAttributes: options.CertificateAttributes.toGenerated(),
+			CertificatePolicy:     options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
+			Tags:                  options.Tags,
+		},
+		options.toGenerated(),
+	)
+	if err != nil {
+		return UpdateCertificatePropertiesResponse{}, err
+	}
+	return UpdateCertificatePropertiesResponse{
+		RawResponse:       resp.RawResponse,
+		CertificateBundle: certificateBundleFromGenerated(&resp.CertificateBundle),
 	}, nil
 }

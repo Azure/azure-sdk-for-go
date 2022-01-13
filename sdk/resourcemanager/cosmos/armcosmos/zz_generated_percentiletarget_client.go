@@ -24,43 +24,59 @@ import (
 // PercentileTargetClient contains the methods for the PercentileTarget group.
 // Don't use this type directly, use NewPercentileTargetClient() instead.
 type PercentileTargetClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPercentileTargetClient creates a new instance of PercentileTargetClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPercentileTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PercentileTargetClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PercentileTargetClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PercentileTargetClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given account target region. This url is only for PBS and Replication Latency
-// data
-// If the operation fails it returns a generic error.
-func (client *PercentileTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetListMetricsOptions) (PercentileTargetListMetricsResponse, error) {
+// ListMetrics - Retrieves the metrics determined by the given filter for the given account target region. This url is only
+// for PBS and Replication Latency data
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// targetRegion - Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
+// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+// and timeGrain. The supported operator is eq.
+// options - PercentileTargetClientListMetricsOptions contains the optional parameters for the PercentileTargetClient.ListMetrics
+// method.
+func (client *PercentileTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetClientListMetricsOptions) (PercentileTargetClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, targetRegion, filter, options)
 	if err != nil {
-		return PercentileTargetListMetricsResponse{}, err
+		return PercentileTargetClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PercentileTargetListMetricsResponse{}, err
+		return PercentileTargetClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PercentileTargetListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return PercentileTargetClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *PercentileTargetClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetListMetricsOptions) (*policy.Request, error) {
+func (client *PercentileTargetClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/targetRegion/{targetRegion}/percentile/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +94,7 @@ func (client *PercentileTargetClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter targetRegion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetRegion}", url.PathEscape(targetRegion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,22 +107,10 @@ func (client *PercentileTargetClient) listMetricsCreateRequest(ctx context.Conte
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *PercentileTargetClient) listMetricsHandleResponse(resp *http.Response) (PercentileTargetListMetricsResponse, error) {
-	result := PercentileTargetListMetricsResponse{RawResponse: resp}
+func (client *PercentileTargetClient) listMetricsHandleResponse(resp *http.Response) (PercentileTargetClientListMetricsResponse, error) {
+	result := PercentileTargetClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PercentileMetricListResult); err != nil {
-		return PercentileTargetListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return PercentileTargetClientListMetricsResponse{}, err
 	}
 	return result, nil
-}
-
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *PercentileTargetClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

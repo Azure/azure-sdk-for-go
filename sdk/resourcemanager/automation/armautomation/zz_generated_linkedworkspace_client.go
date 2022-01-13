@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // LinkedWorkspaceClient contains the methods for the LinkedWorkspace group.
 // Don't use this type directly, use NewLinkedWorkspaceClient() instead.
 type LinkedWorkspaceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLinkedWorkspaceClient creates a new instance of LinkedWorkspaceClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLinkedWorkspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedWorkspaceClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LinkedWorkspaceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LinkedWorkspaceClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieve the linked workspace for the account id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LinkedWorkspaceClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, options *LinkedWorkspaceGetOptions) (LinkedWorkspaceGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - LinkedWorkspaceClientGetOptions contains the optional parameters for the LinkedWorkspaceClient.Get method.
+func (client *LinkedWorkspaceClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, options *LinkedWorkspaceClientGetOptions) (LinkedWorkspaceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
-		return LinkedWorkspaceGetResponse{}, err
+		return LinkedWorkspaceClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedWorkspaceGetResponse{}, err
+		return LinkedWorkspaceClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LinkedWorkspaceGetResponse{}, client.getHandleError(resp)
+		return LinkedWorkspaceClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *LinkedWorkspaceGetOptions) (*policy.Request, error) {
+func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *LinkedWorkspaceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/linkedWorkspace"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +85,7 @@ func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +97,10 @@ func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedWorkspaceClient) getHandleResponse(resp *http.Response) (LinkedWorkspaceGetResponse, error) {
-	result := LinkedWorkspaceGetResponse{RawResponse: resp}
+func (client *LinkedWorkspaceClient) getHandleResponse(resp *http.Response) (LinkedWorkspaceClientGetResponse, error) {
+	result := LinkedWorkspaceClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedWorkspace); err != nil {
-		return LinkedWorkspaceGetResponse{}, runtime.NewResponseError(err, resp)
+		return LinkedWorkspaceClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *LinkedWorkspaceClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

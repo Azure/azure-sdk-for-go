@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,45 +21,59 @@ import (
 	"strings"
 )
 
-// AutomationClient contains the methods for the AutomationClient group.
-// Don't use this type directly, use NewAutomationClient() instead.
-type AutomationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+// Client contains the methods for the AutomationClient group.
+// Don't use this type directly, use NewClient() instead.
+type Client struct {
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
-// NewAutomationClient creates a new instance of AutomationClient with the specified values.
-func NewAutomationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationClient {
+// NewClient creates a new instance of Client with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AutomationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &Client{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ConvertGraphRunbookContent - Post operation to serialize or deserialize GraphRunbookContent
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AutomationClient) ConvertGraphRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, parameters GraphicalRunbookContent, options *AutomationClientConvertGraphRunbookContentOptions) (AutomationClientConvertGraphRunbookContentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// parameters - Input data describing the graphical runbook.
+// options - ClientConvertGraphRunbookContentOptions contains the optional parameters for the Client.ConvertGraphRunbookContent
+// method.
+func (client *Client) ConvertGraphRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, parameters GraphicalRunbookContent, options *ClientConvertGraphRunbookContentOptions) (ClientConvertGraphRunbookContentResponse, error) {
 	req, err := client.convertGraphRunbookContentCreateRequest(ctx, resourceGroupName, automationAccountName, parameters, options)
 	if err != nil {
-		return AutomationClientConvertGraphRunbookContentResponse{}, err
+		return ClientConvertGraphRunbookContentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutomationClientConvertGraphRunbookContentResponse{}, err
+		return ClientConvertGraphRunbookContentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutomationClientConvertGraphRunbookContentResponse{}, client.convertGraphRunbookContentHandleError(resp)
+		return ClientConvertGraphRunbookContentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.convertGraphRunbookContentHandleResponse(resp)
 }
 
 // convertGraphRunbookContentCreateRequest creates the ConvertGraphRunbookContent request.
-func (client *AutomationClient) convertGraphRunbookContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters GraphicalRunbookContent, options *AutomationClientConvertGraphRunbookContentOptions) (*policy.Request, error) {
+func (client *Client) convertGraphRunbookContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters GraphicalRunbookContent, options *ClientConvertGraphRunbookContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/convertGraphRunbookContent"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *AutomationClient) convertGraphRunbookContentCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +99,10 @@ func (client *AutomationClient) convertGraphRunbookContentCreateRequest(ctx cont
 }
 
 // convertGraphRunbookContentHandleResponse handles the ConvertGraphRunbookContent response.
-func (client *AutomationClient) convertGraphRunbookContentHandleResponse(resp *http.Response) (AutomationClientConvertGraphRunbookContentResponse, error) {
-	result := AutomationClientConvertGraphRunbookContentResponse{RawResponse: resp}
+func (client *Client) convertGraphRunbookContentHandleResponse(resp *http.Response) (ClientConvertGraphRunbookContentResponse, error) {
+	result := ClientConvertGraphRunbookContentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GraphicalRunbookContent); err != nil {
-		return AutomationClientConvertGraphRunbookContentResponse{}, runtime.NewResponseError(err, resp)
+		return ClientConvertGraphRunbookContentResponse{}, err
 	}
 	return result, nil
-}
-
-// convertGraphRunbookContentHandleError handles the ConvertGraphRunbookContent error response.
-func (client *AutomationClient) convertGraphRunbookContentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -21,19 +21,19 @@ import (
 	"strings"
 )
 
-// ResourceSKUsClient contains the methods for the ResourceSKUs group.
-// Don't use this type directly, use NewResourceSKUsClient() instead.
-type ResourceSKUsClient struct {
+// CommitmentTiersClient contains the methods for the CommitmentTiers group.
+// Don't use this type directly, use NewCommitmentTiersClient() instead.
+type CommitmentTiersClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewResourceSKUsClient creates a new instance of ResourceSKUsClient with the specified values.
+// NewCommitmentTiersClient creates a new instance of CommitmentTiersClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceSKUsClient {
+func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommitmentTiersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -41,7 +41,7 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &ResourceSKUsClient{
+	client := &CommitmentTiersClient{
 		subscriptionID: subscriptionID,
 		host:           string(cp.Endpoint),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
@@ -49,28 +49,33 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 	return client
 }
 
-// List - Gets the list of Microsoft.CognitiveServices SKUs available for your Subscription.
+// List - List Commitment Tiers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
-func (client *ResourceSKUsClient) List(options *ResourceSKUsClientListOptions) *ResourceSKUsClientListPager {
-	return &ResourceSKUsClientListPager{
+// location - Resource location.
+// options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.List method.
+func (client *CommitmentTiersClient) List(location string, options *CommitmentTiersClientListOptions) *CommitmentTiersClientListPager {
+	return &CommitmentTiersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp ResourceSKUsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUListResult.NextLink)
+		advancer: func(ctx context.Context, resp CommitmentTiersClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CommitmentTierListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options *ResourceSKUsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/skus"
+func (client *CommitmentTiersClient) listCreateRequest(ctx context.Context, location string, options *CommitmentTiersClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/commitmentTiers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -83,10 +88,10 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceSKUsClient) listHandleResponse(resp *http.Response) (ResourceSKUsClientListResponse, error) {
-	result := ResourceSKUsClientListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUListResult); err != nil {
-		return ResourceSKUsClientListResponse{}, err
+func (client *CommitmentTiersClient) listHandleResponse(resp *http.Response) (CommitmentTiersClientListResponse, error) {
+	result := CommitmentTiersClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentTierListResult); err != nil {
+		return CommitmentTiersClientListResponse{}, err
 	}
 	return result, nil
 }

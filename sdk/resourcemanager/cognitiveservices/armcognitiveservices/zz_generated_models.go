@@ -138,9 +138,9 @@ func (a *APIProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Account - Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and SKU.
+// Account - Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and
+// SKU.
 type Account struct {
-	AzureEntityResource
 	// Identity for the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -159,21 +159,36 @@ type Account struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Account.
 func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureEntityResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
 	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "kind", a.Kind)
 	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "sku", a.SKU)
 	populate(objectMap, "systemData", a.SystemData)
 	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -213,7 +228,8 @@ type AccountProperties struct {
 	// A collection of rules governing the accessibility from specific network locations.
 	NetworkACLs *NetworkRuleSet `json:"networkAcls,omitempty"`
 
-	// Whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+	// Whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled'
+	// or 'Disabled'
 	PublicNetworkAccess           *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	Restore                       *bool                `json:"restore,omitempty"`
 	RestrictOutboundNetworkAccess *bool                `json:"restrictOutboundNetworkAccess,omitempty"`
@@ -224,8 +240,8 @@ type AccountProperties struct {
 	// READ-ONLY; The call rate limit Cognitive Services account.
 	CallRateLimit *CallRateLimit `json:"callRateLimit,omitempty" azure:"ro"`
 
-	// READ-ONLY; Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific feature. The values are read-only
-	// and for reference only.
+	// READ-ONLY; Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific feature.
+	// The values are read-only and for reference only.
 	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the date of cognitive services account creation.
@@ -306,75 +322,71 @@ func (a AccountSKUListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountsBeginCreateOptions contains the optional parameters for the Accounts.BeginCreate method.
-type AccountsBeginCreateOptions struct {
+// AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
+type AccountsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsBeginDeleteOptions contains the optional parameters for the Accounts.BeginDelete method.
-type AccountsBeginDeleteOptions struct {
+// AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
+type AccountsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsBeginUpdateOptions contains the optional parameters for the Accounts.BeginUpdate method.
-type AccountsBeginUpdateOptions struct {
+// AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+type AccountsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsGetOptions contains the optional parameters for the Accounts.Get method.
-type AccountsGetOptions struct {
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListByResourceGroupOptions contains the optional parameters for the Accounts.ListByResourceGroup method.
-type AccountsListByResourceGroupOptions struct {
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListKeysOptions contains the optional parameters for the Accounts.ListKeys method.
-type AccountsListKeysOptions struct {
+// AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
+type AccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListOptions contains the optional parameters for the Accounts.List method.
-type AccountsListOptions struct {
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListSKUsOptions contains the optional parameters for the Accounts.ListSKUs method.
-type AccountsListSKUsOptions struct {
+// AccountsClientListSKUsOptions contains the optional parameters for the AccountsClient.ListSKUs method.
+type AccountsClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListUsagesOptions contains the optional parameters for the Accounts.ListUsages method.
-type AccountsListUsagesOptions struct {
-	// An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of
-	// multiple names).
+// AccountsClientListUsagesOptions contains the optional parameters for the AccountsClient.ListUsages method.
+type AccountsClientListUsagesOptions struct {
+	// An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of
+	// the metric, can have an or of multiple names).
 	Filter *string
 }
 
-// AccountsRegenerateKeyOptions contains the optional parameters for the Accounts.RegenerateKey method.
-type AccountsRegenerateKeyOptions struct {
+// AccountsClientRegenerateKeyOptions contains the optional parameters for the AccountsClient.RegenerateKey method.
+type AccountsClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
 // AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
-	Resource
 	// READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AzureEntityResource.
-func (a AzureEntityResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (a AzureEntityResource) marshalInternal(objectMap map[string]interface{}) {
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "etag", a.Etag)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CallRateLimit - The call rate limit Cognitive Services account.
@@ -403,6 +415,9 @@ type CheckDomainAvailabilityParameter struct {
 
 	// REQUIRED; The Type of the resource.
 	Type *string `json:"type,omitempty"`
+
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 }
 
 // CheckSKUAvailabilityParameter - Check SKU availability parameter.
@@ -426,30 +441,275 @@ func (c CheckSKUAvailabilityParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CognitiveServicesManagementClientCheckDomainAvailabilityOptions contains the optional parameters for the CognitiveServicesManagementClient.CheckDomainAvailability
+// CommitmentCost - Cognitive Services account commitment cost.
+type CommitmentCost struct {
+	// Commitment meter Id.
+	CommitmentMeterID *string `json:"commitmentMeterId,omitempty"`
+
+	// Overage meter Id.
+	OverageMeterID *string `json:"overageMeterId,omitempty"`
+}
+
+// CommitmentPeriod - Cognitive Services account commitment period.
+type CommitmentPeriod struct {
+	// Commitment period commitment count.
+	Count *int32 `json:"count,omitempty"`
+
+	// Commitment period commitment tier.
+	Tier *string `json:"tier,omitempty"`
+
+	// READ-ONLY; Commitment period end date.
+	EndDate *string `json:"endDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Cognitive Services account commitment quota.
+	Quota *CommitmentQuota `json:"quota,omitempty" azure:"ro"`
+
+	// READ-ONLY; Commitment period start date.
+	StartDate *string `json:"startDate,omitempty" azure:"ro"`
+}
+
+// CommitmentPlan - Cognitive Services account commitment plan.
+type CommitmentPlan struct {
+	// Properties of Cognitive Services account commitment plan.
+	Properties *CommitmentPlanProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CommitmentPlanListResult - The list of cognitive services accounts operation response.
+type CommitmentPlanListResult struct {
+	// The link used to get the next page of CommitmentPlan.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services accounts CommitmentPlan and their properties.
+	Value []*CommitmentPlan `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommitmentPlanListResult.
+func (c CommitmentPlanListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CommitmentPlanProperties - Properties of Cognitive Services account commitment plan.
+type CommitmentPlanProperties struct {
+	// AutoRenew commitment plan.
+	AutoRenew *bool `json:"autoRenew,omitempty"`
+
+	// Cognitive Services account commitment period.
+	Current *CommitmentPeriod `json:"current,omitempty"`
+
+	// Account hosting model.
+	HostingModel *HostingModel `json:"hostingModel,omitempty"`
+
+	// Cognitive Services account commitment period.
+	Next *CommitmentPeriod `json:"next,omitempty"`
+
+	// Commitment plan type.
+	PlanType *string `json:"planType,omitempty"`
+
+	// READ-ONLY; Cognitive Services account commitment period.
+	Last *CommitmentPeriod `json:"last,omitempty" azure:"ro"`
+}
+
+// CommitmentPlansClientBeginDeleteOptions contains the optional parameters for the CommitmentPlansClient.BeginDelete method.
+type CommitmentPlansClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansClientCreateOrUpdateOptions contains the optional parameters for the CommitmentPlansClient.CreateOrUpdate
 // method.
-type CognitiveServicesManagementClientCheckDomainAvailabilityOptions struct {
+type CommitmentPlansClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CognitiveServicesManagementClientCheckSKUAvailabilityOptions contains the optional parameters for the CognitiveServicesManagementClient.CheckSKUAvailability
+// CommitmentPlansClientGetOptions contains the optional parameters for the CommitmentPlansClient.Get method.
+type CommitmentPlansClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.List method.
+type CommitmentPlansClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentQuota - Cognitive Services account commitment quota.
+type CommitmentQuota struct {
+	// Commitment quota quantity.
+	Quantity *int64 `json:"quantity,omitempty"`
+
+	// Commitment quota unit.
+	Unit *string `json:"unit,omitempty"`
+}
+
+// CommitmentTier - Cognitive Services account commitment tier.
+type CommitmentTier struct {
+	// Cognitive Services account commitment cost.
+	Cost *CommitmentCost `json:"cost,omitempty"`
+
+	// Account hosting model.
+	HostingModel *HostingModel `json:"hostingModel,omitempty"`
+
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// Commitment period commitment max count.
+	MaxCount *int32 `json:"maxCount,omitempty"`
+
+	// Commitment plan type.
+	PlanType *string `json:"planType,omitempty"`
+
+	// Cognitive Services account commitment quota.
+	Quota *CommitmentQuota `json:"quota,omitempty"`
+
+	// The name of the SKU. Ex - P3. It is typically a letter+number code
+	SKUName *string `json:"skuName,omitempty"`
+
+	// Commitment period commitment tier.
+	Tier *string `json:"tier,omitempty"`
+}
+
+// CommitmentTierListResult - The list of cognitive services accounts operation response.
+type CommitmentTierListResult struct {
+	// The link used to get the next page of CommitmentTier.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services accounts CommitmentTier and their properties.
+	Value []*CommitmentTier `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommitmentTierListResult.
+func (c CommitmentTierListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.List method.
+type CommitmentTiersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedAccountsClientBeginPurgeOptions contains the optional parameters for the DeletedAccountsClient.BeginPurge method.
+type DeletedAccountsClientBeginPurgeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedAccountsClientGetOptions contains the optional parameters for the DeletedAccountsClient.Get method.
+type DeletedAccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.List method.
+type DeletedAccountsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Deployment - Cognitive Services account deployment.
+type Deployment struct {
+	// Properties of Cognitive Services account deployment.
+	Properties *DeploymentProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DeploymentListResult - The list of cognitive services accounts operation response.
+type DeploymentListResult struct {
+	// The link used to get the next page of Deployment.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services accounts Deployment and their properties.
+	Value []*Deployment `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DeploymentListResult.
+func (d DeploymentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", d.NextLink)
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
+}
+
+// DeploymentModel - Properties of Cognitive Services account deployment model.
+type DeploymentModel struct {
+	// Deployment model format.
+	Format *string `json:"format,omitempty"`
+
+	// Deployment model name.
+	Name *string `json:"name,omitempty"`
+
+	// Deployment model version.
+	Version *string `json:"version,omitempty"`
+}
+
+// DeploymentProperties - Properties of Cognitive Services account deployment.
+type DeploymentProperties struct {
+	// Properties of Cognitive Services account deployment model.
+	Model *DeploymentModel `json:"model,omitempty"`
+
+	// Properties of Cognitive Services account deployment model.
+	ScaleSettings *DeploymentScaleSettings `json:"scaleSettings,omitempty"`
+
+	// READ-ONLY; Gets the status of the resource at the time the operation was called.
+	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// DeploymentScaleSettings - Properties of Cognitive Services account deployment model.
+type DeploymentScaleSettings struct {
+	// Deployment capacity.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// Deployment scale type.
+	ScaleType *DeploymentScaleType `json:"scaleType,omitempty"`
+}
+
+// DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
 // method.
-type CognitiveServicesManagementClientCheckSKUAvailabilityOptions struct {
+type DeploymentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedAccountsBeginPurgeOptions contains the optional parameters for the DeletedAccounts.BeginPurge method.
-type DeletedAccountsBeginPurgeOptions struct {
+// DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
+type DeploymentsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedAccountsGetOptions contains the optional parameters for the DeletedAccounts.Get method.
-type DeletedAccountsGetOptions struct {
+// DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
+type DeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedAccountsListOptions contains the optional parameters for the DeletedAccounts.List method.
-type DeletedAccountsListOptions struct {
+// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+type DeploymentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -457,6 +717,9 @@ type DeletedAccountsListOptions struct {
 type DomainAvailability struct {
 	// Indicates the given SKU is available or not.
 	IsSubdomainAvailable *bool `json:"isSubdomainAvailable,omitempty"`
+
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 
 	// Reason why the SKU is not available.
 	Reason *string `json:"reason,omitempty"`
@@ -515,24 +778,17 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // IPRule - A rule governing the accessibility from a specific ip address or ip range.
 type IPRule struct {
-	// REQUIRED; An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that start with 124.56.78).
+	// REQUIRED; An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses
+	// that start with 124.56.78).
 	Value *string `json:"value,omitempty"`
 }
 
@@ -541,7 +797,8 @@ type Identity struct {
 	// The identity type.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be
+	// ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -576,6 +833,18 @@ type KeyVaultProperties struct {
 	KeyVersion *string `json:"keyVersion,omitempty"`
 }
 
+// ManagementClientCheckDomainAvailabilityOptions contains the optional parameters for the ManagementClient.CheckDomainAvailability
+// method.
+type ManagementClientCheckDomainAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementClientCheckSKUAvailabilityOptions contains the optional parameters for the ManagementClient.CheckSKUAvailability
+// method.
+type ManagementClientCheckSKUAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MetricName - A metric name.
 type MetricName struct {
 	// The friendly name of the metric.
@@ -587,7 +856,8 @@ type MetricName struct {
 
 // NetworkRuleSet - A set of rules governing the network accessibility.
 type NetworkRuleSet struct {
-	// The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property has been evaluated.
+	// The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property
+	// has been evaluated.
 	DefaultAction *NetworkRuleAction `json:"defaultAction,omitempty"`
 
 	// The list of IP address rules.
@@ -614,13 +884,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -629,18 +902,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -657,8 +933,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -670,25 +946,26 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	AzureEntityResource
 	// The location of the private endpoint connection
 	Location *string `json:"location,omitempty"`
 
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.AzureEntityResource.marshalInternal(objectMap)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections
@@ -729,39 +1006,43 @@ func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -802,12 +1083,13 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -817,6 +1099,19 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type QuotaLimit struct {
@@ -855,19 +1150,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceSKU - Describes an available Cognitive Services SKU.
@@ -947,7 +1229,8 @@ type ResourceSKURestrictions struct {
 	// The type of restrictions.
 	Type *ResourceSKURestrictionsType `json:"type,omitempty"`
 
-	// The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU
+	// is restricted.
 	Values []*string `json:"values,omitempty"`
 }
 
@@ -961,8 +1244,8 @@ func (r ResourceSKURestrictions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceSKUsListOptions contains the optional parameters for the ResourceSKUs.List method.
-type ResourceSKUsListOptions struct {
+// ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
+type ResourceSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -971,7 +1254,8 @@ type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
 
-	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
@@ -980,7 +1264,8 @@ type SKU struct {
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 
-	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
 	Tier *SKUTier `json:"tier,omitempty"`
 }
 

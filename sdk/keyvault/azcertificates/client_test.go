@@ -385,3 +385,69 @@ func TestClient_ContactsCRUD(t *testing.T) {
 	_, err = client.GetContacts(ctx, nil)
 	require.Error(t, err)
 }
+
+func TestPolicy(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "policyCertificate")
+	require.NoError(t, err)
+
+	policy := CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			CertificateTransparency: to.BoolPtr(false),
+			Name:                    to.StringPtr("Self"),
+		},
+		KeyProperties: &KeyProperties{
+			Exportable: to.BoolPtr(true),
+			KeySize:    to.Int32Ptr(2048),
+			ReuseKey:   to.BoolPtr(true),
+			KeyType:    JSONWebKeyTypeRSA.ToPtr(),
+		},
+		LifetimeActions: []*LifetimeAction{
+			{Action: &Action{ActionType: ActionTypeEmailContacts.ToPtr()}, Trigger: &Trigger{LifetimePercentage: to.Int32Ptr(98)}},
+		},
+		SecretProperties: &SecretProperties{
+			ContentType: to.StringPtr("application/x-pkcs12"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Ekus:             []*string{to.StringPtr("1.3.6.1.5.5.7.3.1"), to.StringPtr("1.3.6.1.5.5.7.3.2")},
+			KeyUsage:         []*KeyUsageType{KeyUsageTypeDecipherOnly.ToPtr()},
+			Subject:          to.StringPtr("CN=DefaultPolicy"),
+			ValidityInMonths: to.Int32Ptr(12),
+			SubjectAlternativeNames: &SubjectAlternativeNames{
+				DNSNames: []*string{to.StringPtr("sdk.azure-int.net")},
+			},
+		},
+	}
+
+	_, err = client.BeginCreateCertificate(ctx, certName, policy, nil)
+	require.NoError(t, err)
+
+	receivedPolicy, err := client.GetCertificatePolicy(ctx, certName, nil)
+	require.NoError(t, err)
+
+	// Make sure policies are equal
+	require.Equal(t, *policy.IssuerParameters.Name, *receivedPolicy.CertificatePolicy.IssuerParameters.Name)
+	require.Equal(t, *policy.KeyProperties.Exportable, *receivedPolicy.KeyProperties.Exportable)
+	require.Equal(t, *policy.SecretProperties.ContentType, *receivedPolicy.SecretProperties.ContentType)
+
+	// Update the policy
+	policy.KeyProperties.KeyType = JSONWebKeyTypeEC.ToPtr()
+	policy.KeyProperties.KeySize = to.Int32Ptr(256)
+	policy.KeyProperties.Curve = JSONWebKeyCurveNameP256.ToPtr()
+
+	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, policy, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, *policy.IssuerParameters.Name, *updateResp.CertificatePolicy.IssuerParameters.Name)
+	require.Equal(t, *policy.KeyProperties.Exportable, *updateResp.KeyProperties.Exportable)
+	require.Equal(t, *policy.SecretProperties.ContentType, *updateResp.SecretProperties.ContentType)
+	require.Equal(t, *policy.KeyProperties.KeyType, *updateResp.KeyProperties.KeyType)
+	require.Equal(t, *policy.KeyProperties.KeySize, *updateResp.KeyProperties.KeySize)
+	require.Equal(t, *policy.KeyProperties.Curve, *updateResp.KeyProperties.Curve)
+
+}

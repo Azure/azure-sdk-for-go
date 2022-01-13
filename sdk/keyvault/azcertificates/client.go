@@ -1141,3 +1141,72 @@ func (c *Client) DeleteContacts(ctx context.Context, options *DeleteContactsOpti
 		},
 	}, nil
 }
+
+// UpdateCertificatePolicyOptions contains the optional parameters for the Client.UpdateCertificatePolicy method.
+type UpdateCertificatePolicyOptions struct{}
+
+func (u *UpdateCertificatePolicyOptions) toGenerated() *generated.KeyVaultClientUpdateCertificatePolicyOptions {
+	return &generated.KeyVaultClientUpdateCertificatePolicyOptions{}
+}
+
+// UpdateCertificatePolicyResponse contains the response from method Client.UpdateCertificatePolicy.
+type UpdateCertificatePolicyResponse struct {
+	CertificatePolicy
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UpdateCertificatePolicy - Set specified members in the certificate policy. Leave others as null. This operation requires the certificates/update permission.
+func (c *Client) UpdateCertificatePolicy(ctx context.Context, certName string, policy CertificatePolicy, options *UpdateCertificatePolicyOptions) (UpdateCertificatePolicyResponse, error) {
+	resp, err := c.genClient.UpdateCertificatePolicy(
+		ctx,
+		c.vaultURL,
+		certName,
+		*policy.toGeneratedCertificateCreateParameters(),
+		options.toGenerated(),
+	)
+
+	if err != nil {
+		return UpdateCertificatePolicyResponse{}, err
+	}
+
+	return UpdateCertificatePolicyResponse{
+		RawResponse:       resp.RawResponse,
+		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
+	}, nil
+}
+
+// GetCertificatePolicyOptions contains the optional parameters for the method Client.GetCertificatePolicy.
+type GetCertificatePolicyOptions struct{}
+
+func (g *GetCertificatePolicyOptions) toGenerated() *generated.KeyVaultClientGetCertificatePolicyOptions {
+	return &generated.KeyVaultClientGetCertificatePolicyOptions{}
+}
+
+// GetCertificatePolicyResponse contains the response from method Client.GetCertificatePolicy.
+type GetCertificatePolicyResponse struct {
+	CertificatePolicy
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GetCertificatePolicy - The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault. This operation
+// requires the certificates/get permission.
+func (c *Client) GetCertificatePolicy(ctx context.Context, certName string, options *GetCertificatePolicyOptions) (GetCertificatePolicyResponse, error) {
+	resp, err := c.genClient.GetCertificatePolicy(
+		ctx,
+		c.vaultURL,
+		certName,
+		options.toGenerated(),
+	)
+	if err != nil {
+		return GetCertificatePolicyResponse{}, err
+	}
+
+	return GetCertificatePolicyResponse{
+		RawResponse:       resp.RawResponse,
+		CertificatePolicy: *certificatePolicyFromGenerated(&resp.CertificatePolicy),
+	}, nil
+}

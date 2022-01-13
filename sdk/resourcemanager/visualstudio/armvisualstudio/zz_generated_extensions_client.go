@@ -24,42 +24,55 @@ import (
 // ExtensionsClient contains the methods for the Extensions group.
 // Don't use this type directly, use NewExtensionsClient() instead.
 type ExtensionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExtensionsClient creates a new instance of ExtensionsClient with the specified values.
+// subscriptionID - The Azure subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExtensionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExtensionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Registers the extension with a Visual Studio Team Services account.
-// If the operation fails it returns a generic error.
-func (client *ExtensionsClient) Create(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsCreateOptions) (ExtensionsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// accountResourceName - The name of the Visual Studio Team Services account resource.
+// extensionResourceName - The name of the extension.
+// body - An object containing additional information related to the extension request.
+// options - ExtensionsClientCreateOptions contains the optional parameters for the ExtensionsClient.Create method.
+func (client *ExtensionsClient) Create(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsClientCreateOptions) (ExtensionsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountResourceName, extensionResourceName, body, options)
 	if err != nil {
-		return ExtensionsCreateResponse{}, err
+		return ExtensionsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsCreateResponse{}, err
+		return ExtensionsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsCreateResponse{}, client.createHandleError(resp)
+		return ExtensionsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsCreateOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{accountResourceName}/extension/{extensionResourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +90,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter extensionResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionResourceName}", url.PathEscape(extensionResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,45 +102,37 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 }
 
 // createHandleResponse handles the Create response.
-func (client *ExtensionsClient) createHandleResponse(resp *http.Response) (ExtensionsCreateResponse, error) {
-	result := ExtensionsCreateResponse{RawResponse: resp}
+func (client *ExtensionsClient) createHandleResponse(resp *http.Response) (ExtensionsClientCreateResponse, error) {
+	result := ExtensionsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionResource); err != nil {
-		return ExtensionsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ExtensionsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Removes an extension resource registration for a Visual Studio Team Services account.
-// If the operation fails it returns a generic error.
-func (client *ExtensionsClient) Delete(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsDeleteOptions) (ExtensionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// accountResourceName - The name of the Visual Studio Team Services account resource.
+// extensionResourceName - The name of the extension.
+// options - ExtensionsClientDeleteOptions contains the optional parameters for the ExtensionsClient.Delete method.
+func (client *ExtensionsClient) Delete(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsClientDeleteOptions) (ExtensionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountResourceName, extensionResourceName, options)
 	if err != nil {
-		return ExtensionsDeleteResponse{}, err
+		return ExtensionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsDeleteResponse{}, err
+		return ExtensionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsDeleteResponse{}, client.deleteHandleError(resp)
+		return ExtensionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ExtensionsDeleteResponse{RawResponse: resp}, nil
+	return ExtensionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsDeleteOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{accountResourceName}/extension/{extensionResourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,7 +150,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter extensionResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionResourceName}", url.PathEscape(extensionResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,37 +160,29 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ExtensionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of an extension associated with a Visual Studio Team Services account resource.
-// If the operation fails it returns a generic error.
-func (client *ExtensionsClient) Get(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsGetOptions) (ExtensionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// accountResourceName - The name of the Visual Studio Team Services account resource.
+// extensionResourceName - The name of the extension.
+// options - ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+func (client *ExtensionsClient) Get(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsClientGetOptions) (ExtensionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountResourceName, extensionResourceName, options)
 	if err != nil {
-		return ExtensionsGetResponse{}, err
+		return ExtensionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsGetResponse{}, err
+		return ExtensionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return ExtensionsGetResponse{}, client.getHandleError(resp)
+		return ExtensionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsGetOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, options *ExtensionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{accountResourceName}/extension/{extensionResourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -203,7 +200,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter extensionResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionResourceName}", url.PathEscape(extensionResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -215,45 +212,37 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (ExtensionsGetResponse, error) {
-	result := ExtensionsGetResponse{RawResponse: resp}
+func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (ExtensionsClientGetResponse, error) {
+	result := ExtensionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionResource); err != nil {
-		return ExtensionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExtensionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByAccount - Gets the details of the extension resources created within the resource group.
-// If the operation fails it returns a generic error.
-func (client *ExtensionsClient) ListByAccount(ctx context.Context, resourceGroupName string, accountResourceName string, options *ExtensionsListByAccountOptions) (ExtensionsListByAccountResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// accountResourceName - The name of the Visual Studio Team Services account resource.
+// options - ExtensionsClientListByAccountOptions contains the optional parameters for the ExtensionsClient.ListByAccount
+// method.
+func (client *ExtensionsClient) ListByAccount(ctx context.Context, resourceGroupName string, accountResourceName string, options *ExtensionsClientListByAccountOptions) (ExtensionsClientListByAccountResponse, error) {
 	req, err := client.listByAccountCreateRequest(ctx, resourceGroupName, accountResourceName, options)
 	if err != nil {
-		return ExtensionsListByAccountResponse{}, err
+		return ExtensionsClientListByAccountResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsListByAccountResponse{}, err
+		return ExtensionsClientListByAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsListByAccountResponse{}, client.listByAccountHandleError(resp)
+		return ExtensionsClientListByAccountResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByAccountHandleResponse(resp)
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *ExtensionsClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, options *ExtensionsListByAccountOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, options *ExtensionsClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{accountResourceName}/extension"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -267,7 +256,7 @@ func (client *ExtensionsClient) listByAccountCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter accountResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountResourceName}", url.PathEscape(accountResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,45 +268,38 @@ func (client *ExtensionsClient) listByAccountCreateRequest(ctx context.Context, 
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *ExtensionsClient) listByAccountHandleResponse(resp *http.Response) (ExtensionsListByAccountResponse, error) {
-	result := ExtensionsListByAccountResponse{RawResponse: resp}
+func (client *ExtensionsClient) listByAccountHandleResponse(resp *http.Response) (ExtensionsClientListByAccountResponse, error) {
+	result := ExtensionsClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionResourceListResult); err != nil {
-		return ExtensionsListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *ExtensionsClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates an existing extension registration for the Visual Studio Team Services account.
-// If the operation fails it returns a generic error.
-func (client *ExtensionsClient) Update(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsUpdateOptions) (ExtensionsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// accountResourceName - The name of the Visual Studio Team Services account resource.
+// extensionResourceName - The name of the extension.
+// body - An object containing additional information related to the extension request.
+// options - ExtensionsClientUpdateOptions contains the optional parameters for the ExtensionsClient.Update method.
+func (client *ExtensionsClient) Update(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsClientUpdateOptions) (ExtensionsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountResourceName, extensionResourceName, body, options)
 	if err != nil {
-		return ExtensionsUpdateResponse{}, err
+		return ExtensionsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsUpdateResponse{}, err
+		return ExtensionsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsUpdateResponse{}, client.updateHandleError(resp)
+		return ExtensionsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsUpdateOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountResourceName string, extensionResourceName string, body ExtensionResourceRequest, options *ExtensionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{accountResourceName}/extension/{extensionResourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -335,7 +317,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter extensionResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionResourceName}", url.PathEscape(extensionResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,22 +329,10 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ExtensionsClient) updateHandleResponse(resp *http.Response) (ExtensionsUpdateResponse, error) {
-	result := ExtensionsUpdateResponse{RawResponse: resp}
+func (client *ExtensionsClient) updateHandleResponse(resp *http.Response) (ExtensionsClientUpdateResponse, error) {
+	result := ExtensionsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionResource); err != nil {
-		return ExtensionsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ExtensionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

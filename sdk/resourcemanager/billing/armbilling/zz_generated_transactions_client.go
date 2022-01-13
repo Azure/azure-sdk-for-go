@@ -11,7 +11,6 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,38 +24,48 @@ import (
 // TransactionsClient contains the methods for the Transactions group.
 // Don't use this type directly, use NewTransactionsClient() instead.
 type TransactionsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewTransactionsClient creates a new instance of TransactionsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTransactionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TransactionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TransactionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TransactionsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByInvoice - Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TransactionsClient) ListByInvoice(billingAccountName string, invoiceName string, options *TransactionsListByInvoiceOptions) *TransactionsListByInvoicePager {
-	return &TransactionsListByInvoicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// invoiceName - The ID that uniquely identifies an invoice.
+// options - TransactionsClientListByInvoiceOptions contains the optional parameters for the TransactionsClient.ListByInvoice
+// method.
+func (client *TransactionsClient) ListByInvoice(billingAccountName string, invoiceName string, options *TransactionsClientListByInvoiceOptions) *TransactionsClientListByInvoicePager {
+	return &TransactionsClientListByInvoicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInvoiceCreateRequest(ctx, billingAccountName, invoiceName, options)
 		},
-		advancer: func(ctx context.Context, resp TransactionsListByInvoiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TransactionsClientListByInvoiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TransactionListResult.NextLink)
 		},
 	}
 }
 
 // listByInvoiceCreateRequest creates the ListByInvoice request.
-func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsListByInvoiceOptions) (*policy.Request, error) {
+func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *TransactionsClientListByInvoiceOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -66,7 +75,7 @@ func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context
 		return nil, errors.New("parameter invoiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invoiceName}", url.PathEscape(invoiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +87,10 @@ func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context
 }
 
 // listByInvoiceHandleResponse handles the ListByInvoice response.
-func (client *TransactionsClient) listByInvoiceHandleResponse(resp *http.Response) (TransactionsListByInvoiceResponse, error) {
-	result := TransactionsListByInvoiceResponse{RawResponse: resp}
+func (client *TransactionsClient) listByInvoiceHandleResponse(resp *http.Response) (TransactionsClientListByInvoiceResponse, error) {
+	result := TransactionsClientListByInvoiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionListResult); err != nil {
-		return TransactionsListByInvoiceResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionsClientListByInvoiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByInvoiceHandleError handles the ListByInvoice error response.
-func (client *TransactionsClient) listByInvoiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

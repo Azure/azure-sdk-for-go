@@ -15,6 +15,133 @@ import (
 	"time"
 )
 
+// Account - A billing account.
+type Account struct {
+	// The properties of the billing account.
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccountListResult - The list of billing accounts.
+type AccountListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of billing accounts.
+	Value []*Account `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
+func (a AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountProperties - The properties of the billing account.
+type AccountProperties struct {
+	// The billing profiles associated with the billing account. By default this is not populated, unless it's specified in $expand.
+	BillingProfiles *ProfilesOnExpand `json:"billingProfiles,omitempty"`
+
+	// The departments associated to the enrollment.
+	Departments []*Department `json:"departments,omitempty"`
+
+	// The billing account name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The accounts associated to the enrollment.
+	EnrollmentAccounts []*EnrollmentAccount `json:"enrollmentAccounts,omitempty"`
+
+	// Notification email address, only for legacy accounts
+	NotificationEmailAddress *string `json:"notificationEmailAddress,omitempty"`
+
+	// The address of the individual or organization that is responsible for the billing account.
+	SoldTo *AddressDetails `json:"soldTo,omitempty"`
+
+	// READ-ONLY; The current status of the billing account.
+	AccountStatus *AccountStatus `json:"accountStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of customer.
+	AccountType *AccountType `json:"accountType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of agreement.
+	AgreementType *AgreementType `json:"agreementType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The details about the associated legacy enrollment. By default this is not populated, unless it's specified
+	// in $expand.
+	EnrollmentDetails *Enrollment `json:"enrollmentDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates whether user has read access to the billing account.
+	HasReadAccess *bool `json:"hasReadAccess,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
+func (a AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accountStatus", a.AccountStatus)
+	populate(objectMap, "accountType", a.AccountType)
+	populate(objectMap, "agreementType", a.AgreementType)
+	populate(objectMap, "billingProfiles", a.BillingProfiles)
+	populate(objectMap, "departments", a.Departments)
+	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "enrollmentAccounts", a.EnrollmentAccounts)
+	populate(objectMap, "enrollmentDetails", a.EnrollmentDetails)
+	populate(objectMap, "hasReadAccess", a.HasReadAccess)
+	populate(objectMap, "notificationEmailAddress", a.NotificationEmailAddress)
+	populate(objectMap, "soldTo", a.SoldTo)
+	return json.Marshal(objectMap)
+}
+
+// AccountUpdateRequest - The request properties of the billing account that can be updated.
+type AccountUpdateRequest struct {
+	// A billing property.
+	Properties *AccountProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountUpdateRequest.
+func (a AccountUpdateRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", a.Properties)
+	return json.Marshal(objectMap)
+}
+
+// AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+type AccountsClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
+	// May be used to expand the soldTo, invoice sections and billing profiles.
+	Expand *string
+}
+
+// AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission
+// method.
+type AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+type AccountsClientListOptions struct {
+	// May be used to expand the soldTo, invoice sections and billing profiles.
+	Expand *string
+}
+
+// AddressClientValidateOptions contains the optional parameters for the AddressClient.Validate method.
+type AddressClientValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AddressDetails - Address details.
 type AddressDetails struct {
 	// REQUIRED; Address line 1.
@@ -60,24 +187,19 @@ type AddressDetails struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// AddressValidateOptions contains the optional parameters for the Address.Validate method.
-type AddressValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Agreement - An agreement.
 type Agreement struct {
-	Resource
 	// The properties of an agreement.
 	Properties *AgreementProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Agreement.
-func (a Agreement) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AgreementListResult - Result of listing agreements.
@@ -172,14 +294,15 @@ func (a *AgreementProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// AgreementsGetOptions contains the optional parameters for the Agreements.Get method.
-type AgreementsGetOptions struct {
+// AgreementsClientGetOptions contains the optional parameters for the AgreementsClient.Get method.
+type AgreementsClientGetOptions struct {
 	// May be used to expand the participants.
 	Expand *string
 }
 
-// AgreementsListByBillingAccountOptions contains the optional parameters for the Agreements.ListByBillingAccount method.
-type AgreementsListByBillingAccountOptions struct {
+// AgreementsClientListByBillingAccountOptions contains the optional parameters for the AgreementsClient.ListByBillingAccount
+// method.
+type AgreementsClientListByBillingAccountOptions struct {
 	// May be used to expand the participants.
 	Expand *string
 }
@@ -195,17 +318,17 @@ type Amount struct {
 
 // AvailableBalance - The latest Azure credit balance. This is the balance available for pay now.
 type AvailableBalance struct {
-	Resource
 	// The properties of available balance.
 	Properties *AvailableBalanceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AvailableBalance.
-func (a AvailableBalance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AvailableBalanceProperties - The properties of available balance.
@@ -214,8 +337,8 @@ type AvailableBalanceProperties struct {
 	Amount *Amount `json:"amount,omitempty" azure:"ro"`
 }
 
-// AvailableBalancesGetOptions contains the optional parameters for the AvailableBalances.Get method.
-type AvailableBalancesGetOptions struct {
+// AvailableBalancesClientGetOptions contains the optional parameters for the AvailableBalancesClient.Get method.
+type AvailableBalancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -228,887 +351,19 @@ type AzurePlan struct {
 	SKUDescription *string `json:"skuDescription,omitempty" azure:"ro"`
 }
 
-// BillingAccount - A billing account.
-type BillingAccount struct {
-	Resource
-	// The properties of the billing account.
-	Properties *BillingAccountProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingAccount.
-func (b BillingAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingAccountListResult - The list of billing accounts.
-type BillingAccountListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of billing accounts.
-	Value []*BillingAccount `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingAccountListResult.
-func (b BillingAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingAccountProperties - The properties of the billing account.
-type BillingAccountProperties struct {
-	// The billing profiles associated with the billing account. By default this is not populated, unless it's specified in $expand.
-	BillingProfiles *BillingProfilesOnExpand `json:"billingProfiles,omitempty"`
-
-	// The departments associated to the enrollment.
-	Departments []*Department `json:"departments,omitempty"`
-
-	// The billing account name.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The accounts associated to the enrollment.
-	EnrollmentAccounts []*EnrollmentAccount `json:"enrollmentAccounts,omitempty"`
-
-	// Notification email address, only for legacy accounts
-	NotificationEmailAddress *string `json:"notificationEmailAddress,omitempty"`
-
-	// The address of the individual or organization that is responsible for the billing account.
-	SoldTo *AddressDetails `json:"soldTo,omitempty"`
-
-	// READ-ONLY; The current status of the billing account.
-	AccountStatus *AccountStatus `json:"accountStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of customer.
-	AccountType *AccountType `json:"accountType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of agreement.
-	AgreementType *AgreementType `json:"agreementType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The details about the associated legacy enrollment. By default this is not populated, unless it's specified in $expand.
-	EnrollmentDetails *Enrollment `json:"enrollmentDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; Indicates whether user has read access to the billing account.
-	HasReadAccess *bool `json:"hasReadAccess,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingAccountProperties.
-func (b BillingAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountStatus", b.AccountStatus)
-	populate(objectMap, "accountType", b.AccountType)
-	populate(objectMap, "agreementType", b.AgreementType)
-	populate(objectMap, "billingProfiles", b.BillingProfiles)
-	populate(objectMap, "departments", b.Departments)
-	populate(objectMap, "displayName", b.DisplayName)
-	populate(objectMap, "enrollmentAccounts", b.EnrollmentAccounts)
-	populate(objectMap, "enrollmentDetails", b.EnrollmentDetails)
-	populate(objectMap, "hasReadAccess", b.HasReadAccess)
-	populate(objectMap, "notificationEmailAddress", b.NotificationEmailAddress)
-	populate(objectMap, "soldTo", b.SoldTo)
-	return json.Marshal(objectMap)
-}
-
-// BillingAccountUpdateRequest - The request properties of the billing account that can be updated.
-type BillingAccountUpdateRequest struct {
-	// A billing property.
-	Properties *BillingAccountProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingAccountUpdateRequest.
-func (b BillingAccountUpdateRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingAccountsBeginUpdateOptions contains the optional parameters for the BillingAccounts.BeginUpdate method.
-type BillingAccountsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingAccountsGetOptions contains the optional parameters for the BillingAccounts.Get method.
-type BillingAccountsGetOptions struct {
-	// May be used to expand the soldTo, invoice sections and billing profiles.
-	Expand *string
-}
-
-// BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the BillingAccounts.ListInvoiceSectionsByCreateSubscriptionPermission
-// method.
-type BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingAccountsListOptions contains the optional parameters for the BillingAccounts.List method.
-type BillingAccountsListOptions struct {
-	// May be used to expand the soldTo, invoice sections and billing profiles.
-	Expand *string
-}
-
-// BillingPeriod - A billing period resource.
-type BillingPeriod struct {
-	Resource
-	// A billing period.
-	Properties *BillingPeriodProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingPeriod.
-func (b BillingPeriod) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingPeriodProperties - The properties of the billing period.
-type BillingPeriodProperties struct {
-	// READ-ONLY; The end of the date range covered by the billing period.
-	BillingPeriodEndDate *time.Time `json:"billingPeriodEndDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; The start of the date range covered by the billing period.
-	BillingPeriodStartDate *time.Time `json:"billingPeriodStartDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of invoice ids that associated with.
-	InvoiceIDs []*string `json:"invoiceIds,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingPeriodProperties.
-func (b BillingPeriodProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateDateType(objectMap, "billingPeriodEndDate", b.BillingPeriodEndDate)
-	populateDateType(objectMap, "billingPeriodStartDate", b.BillingPeriodStartDate)
-	populate(objectMap, "invoiceIds", b.InvoiceIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BillingPeriodProperties.
-func (b *BillingPeriodProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "billingPeriodEndDate":
-			err = unpopulateDateType(val, &b.BillingPeriodEndDate)
-			delete(rawMsg, key)
-		case "billingPeriodStartDate":
-			err = unpopulateDateType(val, &b.BillingPeriodStartDate)
-			delete(rawMsg, key)
-		case "invoiceIds":
-			err = unpopulate(val, &b.InvoiceIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// BillingPeriodsGetOptions contains the optional parameters for the BillingPeriods.Get method.
-type BillingPeriodsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingPeriodsListOptions contains the optional parameters for the BillingPeriods.List method.
-type BillingPeriodsListOptions struct {
-	// May be used to filter billing periods by billingPeriodEndDate. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
-	// 'ne', 'or', or 'not'.
-	Filter *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
-	Skiptoken *string
-	// May be used to limit the number of results to the most recent N billing periods.
-	Top *int32
-}
-
-// BillingPeriodsListResult - Result of listing billing periods. It contains a list of available billing periods in reverse chronological order.
-type BillingPeriodsListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of billing periods.
-	Value []*BillingPeriod `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingPeriodsListResult.
-func (b BillingPeriodsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingPermissionsListByBillingAccountOptions contains the optional parameters for the BillingPermissions.ListByBillingAccount method.
-type BillingPermissionsListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingPermissionsListByBillingProfileOptions contains the optional parameters for the BillingPermissions.ListByBillingProfile method.
-type BillingPermissionsListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingPermissionsListByCustomerOptions contains the optional parameters for the BillingPermissions.ListByCustomer method.
-type BillingPermissionsListByCustomerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingPermissionsListByInvoiceSectionsOptions contains the optional parameters for the BillingPermissions.ListByInvoiceSections method.
-type BillingPermissionsListByInvoiceSectionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingPermissionsListResult - Result of list billingPermissions a caller has on a billing account.
-type BillingPermissionsListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of billingPermissions a caller has on a billing account.
-	Value []*BillingPermissionsProperties `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingPermissionsListResult.
-func (b BillingPermissionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingPermissionsProperties - The set of allowed action and not allowed actions a caller has on a billing account
-type BillingPermissionsProperties struct {
-	// READ-ONLY; The set of actions that the caller is allowed to perform.
-	Actions []*string `json:"actions,omitempty" azure:"ro"`
-
-	// READ-ONLY; The set of actions that the caller is not allowed to perform.
-	NotActions []*string `json:"notActions,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingPermissionsProperties.
-func (b BillingPermissionsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", b.Actions)
-	populate(objectMap, "notActions", b.NotActions)
-	return json.Marshal(objectMap)
-}
-
-// BillingProfile - A billing profile.
-type BillingProfile struct {
-	Resource
-	// The properties of the billing profile.
-	Properties *BillingProfileProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingProfile.
-func (b BillingProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingProfileCreationRequest - The request parameters for creating a new billing profile.
-type BillingProfileCreationRequest struct {
-	// The address of the individual or organization that is responsible for the billing profile.
-	BillTo *AddressDetails `json:"billTo,omitempty"`
-
-	// The name of the billing profile.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Enabled azure plans for the billing profile.
-	EnabledAzurePlans []*AzurePlan `json:"enabledAzurePlans,omitempty"`
-
-	// Flag controlling whether the invoices for the billing profile are sent through email.
-	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
-
-	// The purchase order name that will appear on the invoices generated for the billing profile.
-	PoNumber *string `json:"poNumber,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingProfileCreationRequest.
-func (b BillingProfileCreationRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billTo", b.BillTo)
-	populate(objectMap, "displayName", b.DisplayName)
-	populate(objectMap, "enabledAzurePlans", b.EnabledAzurePlans)
-	populate(objectMap, "invoiceEmailOptIn", b.InvoiceEmailOptIn)
-	populate(objectMap, "poNumber", b.PoNumber)
-	return json.Marshal(objectMap)
-}
-
-// BillingProfileListResult - The list of billing profiles.
-type BillingProfileListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of billing profiles.
-	Value []*BillingProfile `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingProfileListResult.
-func (b BillingProfileListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingProfileProperties - The properties of the billing profile.
-type BillingProfileProperties struct {
-	// Billing address.
-	BillTo *AddressDetails `json:"billTo,omitempty"`
-
-	// The name of the billing profile.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Information about the enabled azure plans.
-	EnabledAzurePlans []*AzurePlan `json:"enabledAzurePlans,omitempty"`
-
-	// Flag controlling whether the invoices for the billing profile are sent through email.
-	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
-
-	// The invoice sections associated to the billing profile. By default this is not populated, unless it's specified in $expand.
-	InvoiceSections *InvoiceSectionsOnExpand `json:"invoiceSections,omitempty"`
-
-	// The purchase order name that will appear on the invoices generated for the billing profile.
-	PoNumber *string `json:"poNumber,omitempty"`
-
-	// Tags of billing profiles.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Identifies which services and purchases are paid by a billing profile.
-	BillingRelationshipType *BillingRelationshipType `json:"billingRelationshipType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The currency in which the charges for the billing profile are billed.
-	Currency *string `json:"currency,omitempty" azure:"ro"`
-
-	// READ-ONLY; Indicates whether user has read access to the billing profile.
-	HasReadAccess *bool `json:"hasReadAccess,omitempty" azure:"ro"`
-
-	// READ-ONLY; Identifies the billing profile that is linked to another billing profile in indirect purchase motion.
-	IndirectRelationshipInfo *IndirectRelationshipInfo `json:"indirectRelationshipInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The day of the month when the invoice for the billing profile is generated.
-	InvoiceDay *int32 `json:"invoiceDay,omitempty" azure:"ro"`
-
-	// READ-ONLY; The billing profile spending limit.
-	SpendingLimit *SpendingLimit `json:"spendingLimit,omitempty" azure:"ro"`
-
-	// READ-ONLY; The status of the billing profile.
-	Status *BillingProfileStatus `json:"status,omitempty" azure:"ro"`
-
-	// READ-ONLY; Reason for the specified billing profile status.
-	StatusReasonCode *StatusReasonCode `json:"statusReasonCode,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system generated unique identifier for a billing profile.
-	SystemID *string `json:"systemId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Identifies the cloud environments that are associated with a billing profile. This is a system managed optional field and gets updated as
-	// the billing profile gets associated with accounts in various
-	// clouds.
-	TargetClouds []*TargetCloud `json:"targetClouds,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingProfileProperties.
-func (b BillingProfileProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billTo", b.BillTo)
-	populate(objectMap, "billingRelationshipType", b.BillingRelationshipType)
-	populate(objectMap, "currency", b.Currency)
-	populate(objectMap, "displayName", b.DisplayName)
-	populate(objectMap, "enabledAzurePlans", b.EnabledAzurePlans)
-	populate(objectMap, "hasReadAccess", b.HasReadAccess)
-	populate(objectMap, "indirectRelationshipInfo", b.IndirectRelationshipInfo)
-	populate(objectMap, "invoiceDay", b.InvoiceDay)
-	populate(objectMap, "invoiceEmailOptIn", b.InvoiceEmailOptIn)
-	populate(objectMap, "invoiceSections", b.InvoiceSections)
-	populate(objectMap, "poNumber", b.PoNumber)
-	populate(objectMap, "spendingLimit", b.SpendingLimit)
-	populate(objectMap, "status", b.Status)
-	populate(objectMap, "statusReasonCode", b.StatusReasonCode)
-	populate(objectMap, "systemId", b.SystemID)
-	populate(objectMap, "tags", b.Tags)
-	populate(objectMap, "targetClouds", b.TargetClouds)
-	return json.Marshal(objectMap)
-}
-
-// BillingProfilesBeginCreateOrUpdateOptions contains the optional parameters for the BillingProfiles.BeginCreateOrUpdate method.
-type BillingProfilesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingProfilesGetOptions contains the optional parameters for the BillingProfiles.Get method.
-type BillingProfilesGetOptions struct {
-	// May be used to expand the invoice sections.
-	Expand *string
-}
-
-// BillingProfilesListByBillingAccountOptions contains the optional parameters for the BillingProfiles.ListByBillingAccount method.
-type BillingProfilesListByBillingAccountOptions struct {
-	// May be used to expand the invoice sections.
-	Expand *string
-}
-
-// BillingProfilesOnExpand - The billing profiles associated with the billing account. By default this is not populated, unless it's specified in $expand.
-type BillingProfilesOnExpand struct {
-	// The billing profiles associated with the billing account.
-	Value []*BillingProfile `json:"value,omitempty"`
-
-	// READ-ONLY; Indicates whether there are more billing profiles than the ones listed in this collection. The collection lists a maximum of 50 billing profiles.
-	// To get all billing profiles, use the list billing
-	// profiles API.
-	HasMoreResults *bool `json:"hasMoreResults,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingProfilesOnExpand.
-func (b BillingProfilesOnExpand) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hasMoreResults", b.HasMoreResults)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingProperty - A billing property.
-type BillingProperty struct {
-	Resource
-	// A billing property.
-	Properties *BillingPropertyProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingProperty.
-func (b BillingProperty) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingPropertyGetOptions contains the optional parameters for the BillingProperty.Get method.
-type BillingPropertyGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingPropertyProperties - The billing property.
-type BillingPropertyProperties struct {
-	// The cost center applied to the subscription.
-	CostCenter *string `json:"costCenter,omitempty"`
-
-	// READ-ONLY; The email address on which the account admin gets all Azure notifications.
-	AccountAdminNotificationEmailAddress *string `json:"accountAdminNotificationEmailAddress,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the billing account to which the subscription is billed.
-	BillingAccountDisplayName *string `json:"billingAccountDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the billing account to which the subscription is billed.
-	BillingAccountID *string `json:"billingAccountId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the billing profile to which the subscription is billed.
-	BillingProfileDisplayName *string `json:"billingProfileDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the billing profile to which the subscription is billed.
-	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The billing profile spending limit.
-	BillingProfileSpendingLimit *BillingProfileSpendingLimit `json:"billingProfileSpendingLimit,omitempty" azure:"ro"`
-
-	// READ-ONLY; The status of the billing profile.
-	BillingProfileStatus *BillingProfileStatus `json:"billingProfileStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; Reason for the specified billing profile status.
-	BillingProfileStatusReasonCode *BillingProfileStatusReasonCode `json:"billingProfileStatusReasonCode,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Azure AD tenant ID of the billing account for the subscription.
-	BillingTenantID *string `json:"billingTenantId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the invoice section to which the subscription is billed.
-	InvoiceSectionDisplayName *string `json:"invoiceSectionDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the invoice section to which the subscription is billed.
-	InvoiceSectionID *string `json:"invoiceSectionId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Indicates whether user is the account admin.
-	IsAccountAdmin *bool `json:"isAccountAdmin,omitempty" azure:"ro"`
-
-	// READ-ONLY; The product ID of the Azure plan.
-	ProductID *string `json:"productId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The product name of the Azure plan.
-	ProductName *string `json:"productName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sku description of the Azure plan for the subscription.
-	SKUDescription *string `json:"skuDescription,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sku ID of the Azure plan for the subscription.
-	SKUID *string `json:"skuId,omitempty" azure:"ro"`
-}
-
-// BillingPropertyUpdateOptions contains the optional parameters for the BillingProperty.Update method.
-type BillingPropertyUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignment - The role assignment
-type BillingRoleAssignment struct {
-	Resource
-	// The properties of the role assignment.
-	Properties *BillingRoleAssignmentProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingRoleAssignment.
-func (b BillingRoleAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingRoleAssignmentListResult - The list of role assignments.
-type BillingRoleAssignmentListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of role assignments.
-	Value []*BillingRoleAssignment `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingRoleAssignmentListResult.
-func (b BillingRoleAssignmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingRoleAssignmentProperties - The properties of the role assignment.
-type BillingRoleAssignmentProperties struct {
-	// The principal id of the user to whom the role was assigned.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The principal tenant id of the user to whom the role was assigned.
-	PrincipalTenantID *string `json:"principalTenantId,omitempty"`
-
-	// The ID of the role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The authentication type.
-	UserAuthenticationType *string `json:"userAuthenticationType,omitempty"`
-
-	// The email address of the user.
-	UserEmailAddress *string `json:"userEmailAddress,omitempty"`
-
-	// READ-ONLY; The principal Id of the user who created the role assignment.
-	CreatedByPrincipalID *string `json:"createdByPrincipalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant Id of the user who created the role assignment.
-	CreatedByPrincipalTenantID *string `json:"createdByPrincipalTenantId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The email address of the user who created the role assignment.
-	CreatedByUserEmailAddress *string `json:"createdByUserEmailAddress,omitempty" azure:"ro"`
-
-	// READ-ONLY; The date the role assignment was created.
-	CreatedOn *string `json:"createdOn,omitempty" azure:"ro"`
-
-	// READ-ONLY; The scope at which the role was assigned.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
-}
-
-// BillingRoleAssignmentsDeleteByBillingAccountOptions contains the optional parameters for the BillingRoleAssignments.DeleteByBillingAccount method.
-type BillingRoleAssignmentsDeleteByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsDeleteByBillingProfileOptions contains the optional parameters for the BillingRoleAssignments.DeleteByBillingProfile method.
-type BillingRoleAssignmentsDeleteByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsDeleteByInvoiceSectionOptions contains the optional parameters for the BillingRoleAssignments.DeleteByInvoiceSection method.
-type BillingRoleAssignmentsDeleteByInvoiceSectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsGetByBillingAccountOptions contains the optional parameters for the BillingRoleAssignments.GetByBillingAccount method.
-type BillingRoleAssignmentsGetByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsGetByBillingProfileOptions contains the optional parameters for the BillingRoleAssignments.GetByBillingProfile method.
-type BillingRoleAssignmentsGetByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsGetByInvoiceSectionOptions contains the optional parameters for the BillingRoleAssignments.GetByInvoiceSection method.
-type BillingRoleAssignmentsGetByInvoiceSectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsListByBillingAccountOptions contains the optional parameters for the BillingRoleAssignments.ListByBillingAccount method.
-type BillingRoleAssignmentsListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsListByBillingProfileOptions contains the optional parameters for the BillingRoleAssignments.ListByBillingProfile method.
-type BillingRoleAssignmentsListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleAssignmentsListByInvoiceSectionOptions contains the optional parameters for the BillingRoleAssignments.ListByInvoiceSection method.
-type BillingRoleAssignmentsListByInvoiceSectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleDefinition - The properties of a role definition.
-type BillingRoleDefinition struct {
-	Resource
-	// The properties of the a role definition.
-	Properties *BillingRoleDefinitionProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingRoleDefinition.
-func (b BillingRoleDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingRoleDefinitionListResult - The list of role definitions.
-type BillingRoleDefinitionListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definitions.
-	Value []*BillingRoleDefinition `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingRoleDefinitionListResult.
-func (b BillingRoleDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingRoleDefinitionProperties - The properties of the a role definition.
-type BillingRoleDefinitionProperties struct {
-	// The billingPermissions the role has
-	Permissions []*BillingPermissionsProperties `json:"permissions,omitempty"`
-
-	// READ-ONLY; The role description
-	Description *string `json:"description,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the role
-	RoleName *string `json:"roleName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingRoleDefinitionProperties.
-func (b BillingRoleDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", b.Description)
-	populate(objectMap, "permissions", b.Permissions)
-	populate(objectMap, "roleName", b.RoleName)
-	return json.Marshal(objectMap)
-}
-
-// BillingRoleDefinitionsGetByBillingAccountOptions contains the optional parameters for the BillingRoleDefinitions.GetByBillingAccount method.
-type BillingRoleDefinitionsGetByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleDefinitionsGetByBillingProfileOptions contains the optional parameters for the BillingRoleDefinitions.GetByBillingProfile method.
-type BillingRoleDefinitionsGetByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleDefinitionsGetByInvoiceSectionOptions contains the optional parameters for the BillingRoleDefinitions.GetByInvoiceSection method.
-type BillingRoleDefinitionsGetByInvoiceSectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleDefinitionsListByBillingAccountOptions contains the optional parameters for the BillingRoleDefinitions.ListByBillingAccount method.
-type BillingRoleDefinitionsListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleDefinitionsListByBillingProfileOptions contains the optional parameters for the BillingRoleDefinitions.ListByBillingProfile method.
-type BillingRoleDefinitionsListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingRoleDefinitionsListByInvoiceSectionOptions contains the optional parameters for the BillingRoleDefinitions.ListByInvoiceSection method.
-type BillingRoleDefinitionsListByInvoiceSectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscription - A billing subscription.
-type BillingSubscription struct {
-	Resource
-	// The billing properties of a subscription.
-	Properties *BillingSubscriptionProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingSubscription.
-func (b BillingSubscription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BillingSubscriptionProperties - The billing properties of a subscription.
-type BillingSubscriptionProperties struct {
-	// The cost center applied to the subscription.
-	CostCenter *string `json:"costCenter,omitempty"`
-
-	// The sku ID of the Azure plan for the subscription.
-	SKUID *string `json:"skuId,omitempty"`
-
-	// The current billing status of the subscription.
-	SubscriptionBillingStatus *BillingSubscriptionStatusType `json:"subscriptionBillingStatus,omitempty"`
-
-	// READ-ONLY; The name of the billing profile to which the subscription is billed.
-	BillingProfileDisplayName *string `json:"billingProfileDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the billing profile to which the subscription is billed.
-	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner Agreement billing account.
-	CustomerDisplayName *string `json:"customerDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner Agreement billing account.
-	CustomerID *string `json:"customerId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the subscription.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the invoice section to which the subscription is billed.
-	InvoiceSectionDisplayName *string `json:"invoiceSectionDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the invoice section to which the subscription is billed.
-	InvoiceSectionID *string `json:"invoiceSectionId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last month charges.
-	LastMonthCharges *Amount `json:"lastMonthCharges,omitempty" azure:"ro"`
-
-	// READ-ONLY; The current month to date charges.
-	MonthToDateCharges *Amount `json:"monthToDateCharges,omitempty" azure:"ro"`
-
-	// READ-ONLY; Reseller for this subscription.
-	Reseller *Reseller `json:"reseller,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sku description of the Azure plan for the subscription.
-	SKUDescription *string `json:"skuDescription,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the subscription.
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The suspension reason for a subscription. Applies only to subscriptions in Microsoft Online Services Program billing accounts.
-	SuspensionReasons []*string `json:"suspensionReasons,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingSubscriptionProperties.
-func (b BillingSubscriptionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingProfileDisplayName", b.BillingProfileDisplayName)
-	populate(objectMap, "billingProfileId", b.BillingProfileID)
-	populate(objectMap, "costCenter", b.CostCenter)
-	populate(objectMap, "customerDisplayName", b.CustomerDisplayName)
-	populate(objectMap, "customerId", b.CustomerID)
-	populate(objectMap, "displayName", b.DisplayName)
-	populate(objectMap, "invoiceSectionDisplayName", b.InvoiceSectionDisplayName)
-	populate(objectMap, "invoiceSectionId", b.InvoiceSectionID)
-	populate(objectMap, "lastMonthCharges", b.LastMonthCharges)
-	populate(objectMap, "monthToDateCharges", b.MonthToDateCharges)
-	populate(objectMap, "reseller", b.Reseller)
-	populate(objectMap, "skuDescription", b.SKUDescription)
-	populate(objectMap, "skuId", b.SKUID)
-	populate(objectMap, "subscriptionBillingStatus", b.SubscriptionBillingStatus)
-	populate(objectMap, "subscriptionId", b.SubscriptionID)
-	populate(objectMap, "suspensionReasons", b.SuspensionReasons)
-	return json.Marshal(objectMap)
-}
-
-// BillingSubscriptionsBeginMoveOptions contains the optional parameters for the BillingSubscriptions.BeginMove method.
-type BillingSubscriptionsBeginMoveOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsGetOptions contains the optional parameters for the BillingSubscriptions.Get method.
-type BillingSubscriptionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsListByBillingAccountOptions contains the optional parameters for the BillingSubscriptions.ListByBillingAccount method.
-type BillingSubscriptionsListByBillingAccountOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsListByBillingProfileOptions contains the optional parameters for the BillingSubscriptions.ListByBillingProfile method.
-type BillingSubscriptionsListByBillingProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsListByCustomerOptions contains the optional parameters for the BillingSubscriptions.ListByCustomer method.
-type BillingSubscriptionsListByCustomerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsListByInvoiceSectionOptions contains the optional parameters for the BillingSubscriptions.ListByInvoiceSection method.
-type BillingSubscriptionsListByInvoiceSectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsListResult - The list of billing subscriptions.
-type BillingSubscriptionsListResult struct {
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Total number of records.
-	TotalCount *int32 `json:"totalCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of billing subscriptions.
-	Value []*BillingSubscription `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BillingSubscriptionsListResult.
-func (b BillingSubscriptionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "totalCount", b.TotalCount)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BillingSubscriptionsUpdateOptions contains the optional parameters for the BillingSubscriptions.Update method.
-type BillingSubscriptionsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BillingSubscriptionsValidateMoveOptions contains the optional parameters for the BillingSubscriptions.ValidateMove method.
-type BillingSubscriptionsValidateMoveOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Customer - A partner's customer.
 type Customer struct {
-	Resource
 	// The customer.
 	Properties *CustomerProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Customer.
-func (c Customer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CustomerListResult - The list of customers.
@@ -1134,17 +389,17 @@ func (c CustomerListResult) MarshalJSON() ([]byte, error) {
 
 // CustomerPolicy - The customer's Policy.
 type CustomerPolicy struct {
-	Resource
 	// The properties of a customer's policy.
 	Properties *CustomerPolicyProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CustomerPolicy.
-func (c CustomerPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CustomerPolicyProperties - The properties of a customer's policy.
@@ -1182,22 +437,24 @@ func (c CustomerProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CustomersGetOptions contains the optional parameters for the Customers.Get method.
-type CustomersGetOptions struct {
+// CustomersClientGetOptions contains the optional parameters for the CustomersClient.Get method.
+type CustomersClientGetOptions struct {
 	// May be used to expand enabledAzurePlans and resellers
 	Expand *string
 }
 
-// CustomersListByBillingAccountOptions contains the optional parameters for the Customers.ListByBillingAccount method.
-type CustomersListByBillingAccountOptions struct {
+// CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.ListByBillingAccount
+// method.
+type CustomersClientListByBillingAccountOptions struct {
 	// May be used to filter the list of customers.
 	Filter *string
 	// Used for searching customers by their name. Any customer with name containing the search text will be included in the response
 	Search *string
 }
 
-// CustomersListByBillingProfileOptions contains the optional parameters for the Customers.ListByBillingProfile method.
-type CustomersListByBillingProfileOptions struct {
+// CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.ListByBillingProfile
+// method.
+type CustomersClientListByBillingProfileOptions struct {
 	// May be used to filter the list of customers.
 	Filter *string
 	// Used for searching customers by their name. Any customer with name containing the search text will be included in the response
@@ -1206,17 +463,17 @@ type CustomersListByBillingProfileOptions struct {
 
 // Department - A department.
 type Department struct {
-	Resource
 	// A department.
 	Properties *DepartmentProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Department.
-func (d Department) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DepartmentProperties - The properties of a department.
@@ -1387,17 +644,17 @@ func (e *Enrollment) UnmarshalJSON(data []byte) error {
 
 // EnrollmentAccount - An enrollment account.
 type EnrollmentAccount struct {
-	Resource
 	// The properties of an enrollment account.
 	Properties *EnrollmentAccountProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EnrollmentAccount.
-func (e EnrollmentAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // EnrollmentAccountContext - The enrollment account context
@@ -1555,17 +812,17 @@ func (e *EnrollmentAccountProperties) UnmarshalJSON(data []byte) error {
 
 // EnrollmentAccountSummary - An enrollment account resource.
 type EnrollmentAccountSummary struct {
-	Resource
 	// An enrollment account.
 	Properties *EnrollmentAccountSummaryProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EnrollmentAccountSummary.
-func (e EnrollmentAccountSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // EnrollmentAccountSummaryProperties - The properties of the enrollment account.
@@ -1574,13 +831,13 @@ type EnrollmentAccountSummaryProperties struct {
 	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
 }
 
-// EnrollmentAccountsGetOptions contains the optional parameters for the EnrollmentAccounts.Get method.
-type EnrollmentAccountsGetOptions struct {
+// EnrollmentAccountsClientGetOptions contains the optional parameters for the EnrollmentAccountsClient.Get method.
+type EnrollmentAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnrollmentAccountsListOptions contains the optional parameters for the EnrollmentAccounts.List method.
-type EnrollmentAccountsListOptions struct {
+// EnrollmentAccountsClientListOptions contains the optional parameters for the EnrollmentAccountsClient.List method.
+type EnrollmentAccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1624,18 +881,11 @@ func (e ErrorDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
+// in the error message.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 type ErrorSubDetailsItem struct {
@@ -1663,17 +913,17 @@ type IndirectRelationshipInfo struct {
 
 // Instruction - An instruction.
 type Instruction struct {
-	Resource
 	// A billing instruction used during invoice generation.
 	Properties *InstructionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Instruction.
-func (i Instruction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // InstructionListResult - The list of billing instructions used during invoice generation.
@@ -1747,34 +997,35 @@ func (i *InstructionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// InstructionsGetOptions contains the optional parameters for the Instructions.Get method.
-type InstructionsGetOptions struct {
+// InstructionsClientGetOptions contains the optional parameters for the InstructionsClient.Get method.
+type InstructionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InstructionsListByBillingProfileOptions contains the optional parameters for the Instructions.ListByBillingProfile method.
-type InstructionsListByBillingProfileOptions struct {
+// InstructionsClientListByBillingProfileOptions contains the optional parameters for the InstructionsClient.ListByBillingProfile
+// method.
+type InstructionsClientListByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InstructionsPutOptions contains the optional parameters for the Instructions.Put method.
-type InstructionsPutOptions struct {
+// InstructionsClientPutOptions contains the optional parameters for the InstructionsClient.Put method.
+type InstructionsClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Invoice - An invoice.
 type Invoice struct {
-	Resource
 	// An invoice.
 	Properties *InvoiceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Invoice.
-func (i Invoice) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // InvoiceListResult - The list of invoices.
@@ -1803,14 +1054,15 @@ type InvoiceProperties struct {
 	// READ-ONLY; The amount due as of now.
 	AmountDue *Amount `json:"amountDue,omitempty" azure:"ro"`
 
-	// READ-ONLY; The amount of Azure prepayment applied to the charges. This field is applicable to billing accounts with agreement type Microsoft Customer
-	// Agreement.
+	// READ-ONLY; The amount of Azure prepayment applied to the charges. This field is applicable to billing accounts with agreement
+	// type Microsoft Customer Agreement.
 	AzurePrepaymentApplied *Amount `json:"azurePrepaymentApplied,omitempty" azure:"ro"`
 
 	// READ-ONLY; The total charges for the invoice billing period.
 	BilledAmount *Amount `json:"billedAmount,omitempty" azure:"ro"`
 
-	// READ-ONLY; The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable to the void invoices only.
+	// READ-ONLY; The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable
+	// to the void invoices only.
 	BilledDocumentID *string `json:"billedDocumentId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the billing profile for which the invoice is generated.
@@ -1819,11 +1071,12 @@ type InvoiceProperties struct {
 	// READ-ONLY; The ID of the billing profile for which the invoice is generated.
 	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The total refund for returns and cancellations during the invoice billing period. This field is applicable to billing accounts with agreement
-	// type Microsoft Customer Agreement.
+	// READ-ONLY; The total refund for returns and cancellations during the invoice billing period. This field is applicable to
+	// billing accounts with agreement type Microsoft Customer Agreement.
 	CreditAmount *Amount `json:"creditAmount,omitempty" azure:"ro"`
 
-	// READ-ONLY; The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable to the credit notes only.
+	// READ-ONLY; The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable
+	// to the credit notes only.
 	CreditForDocumentID *string `json:"creditForDocumentId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the document.
@@ -1835,8 +1088,8 @@ type InvoiceProperties struct {
 	// READ-ONLY; The due date for the invoice.
 	DueDate *time.Time `json:"dueDate,omitempty" azure:"ro"`
 
-	// READ-ONLY; The amount of free Azure credits applied to the charges. This field is applicable to billing accounts with agreement type Microsoft Customer
-	// Agreement.
+	// READ-ONLY; The amount of free Azure credits applied to the charges. This field is applicable to billing accounts with agreement
+	// type Microsoft Customer Agreement.
 	FreeAzureCreditApplied *Amount `json:"freeAzureCreditApplied,omitempty" azure:"ro"`
 
 	// READ-ONLY; The date when the invoice was generated.
@@ -1851,8 +1104,8 @@ type InvoiceProperties struct {
 	// READ-ONLY; Invoice type.
 	InvoiceType *InvoiceType `json:"invoiceType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Specifies if the invoice is generated as part of monthly invoicing cycle or not. This field is applicable to billing accounts with agreement
-	// type Microsoft Customer Agreement.
+	// READ-ONLY; Specifies if the invoice is generated as part of monthly invoicing cycle or not. This field is applicable to
+	// billing accounts with agreement type Microsoft Customer Agreement.
 	IsMonthlyInvoice *bool `json:"isMonthlyInvoice,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of payments.
@@ -1867,16 +1120,19 @@ type InvoiceProperties struct {
 	// READ-ONLY; The current status of the invoice.
 	Status *InvoiceStatus `json:"status,omitempty" azure:"ro"`
 
-	// READ-ONLY; The pre-tax amount due. This field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
+	// READ-ONLY; The pre-tax amount due. This field is applicable to billing accounts with agreement type Microsoft Customer
+	// Agreement.
 	SubTotal *Amount `json:"subTotal,omitempty" azure:"ro"`
 
 	// READ-ONLY; The ID of the subscription for which the invoice is generated.
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The amount of tax charged for the billing period. This field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
+	// READ-ONLY; The amount of tax charged for the billing period. This field is applicable to billing accounts with agreement
+	// type Microsoft Customer Agreement.
 	TaxAmount *Amount `json:"taxAmount,omitempty" azure:"ro"`
 
-	// READ-ONLY; The amount due when the invoice was generated. This field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
+	// READ-ONLY; The amount due when the invoice was generated. This field is applicable to billing accounts with agreement type
+	// Microsoft Customer Agreement.
 	TotalAmount *Amount `json:"totalAmount,omitempty" azure:"ro"`
 }
 
@@ -2005,17 +1261,17 @@ func (i *InvoiceProperties) UnmarshalJSON(data []byte) error {
 
 // InvoiceSection - An invoice section.
 type InvoiceSection struct {
-	Resource
 	// The properties of an invoice section.
 	Properties *InvoiceSectionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type InvoiceSection.
-func (i InvoiceSection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // InvoiceSectionCreationRequest - The properties of the invoice section.
@@ -2070,8 +1326,8 @@ type InvoiceSectionProperties struct {
 	// Dictionary of metadata associated with the invoice section.
 	Labels map[string]*string `json:"labels,omitempty"`
 
-	// Dictionary of metadata associated with the invoice section. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor
-	// null. Keys can not contain < > % & \ ? /
+	// Dictionary of metadata associated with the invoice section. Maximum key/value length supported of 256 characters. Keys/value
+	// should not empty value nor null. Keys can not contain < > % & \ ? /
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Identifies the state of an invoice section.
@@ -2080,8 +1336,8 @@ type InvoiceSectionProperties struct {
 	// READ-ONLY; The system generated unique identifier for an invoice section.
 	SystemID *string `json:"systemId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Identifies the cloud environments that are associated with an invoice section. This is a system managed optional field and gets updated as
-	// the invoice section gets associated with accounts in various
+	// READ-ONLY; Identifies the cloud environments that are associated with an invoice section. This is a system managed optional
+	// field and gets updated as the invoice section gets associated with accounts in various
 	// clouds.
 	TargetCloud *TargetCloud `json:"targetCloud,omitempty" azure:"ro"`
 }
@@ -2147,28 +1403,31 @@ func (i InvoiceSectionWithCreateSubPermission) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// InvoiceSectionsBeginCreateOrUpdateOptions contains the optional parameters for the InvoiceSections.BeginCreateOrUpdate method.
-type InvoiceSectionsBeginCreateOrUpdateOptions struct {
+// InvoiceSectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the InvoiceSectionsClient.BeginCreateOrUpdate
+// method.
+type InvoiceSectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoiceSectionsGetOptions contains the optional parameters for the InvoiceSections.Get method.
-type InvoiceSectionsGetOptions struct {
+// InvoiceSectionsClientGetOptions contains the optional parameters for the InvoiceSectionsClient.Get method.
+type InvoiceSectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoiceSectionsListByBillingProfileOptions contains the optional parameters for the InvoiceSections.ListByBillingProfile method.
-type InvoiceSectionsListByBillingProfileOptions struct {
+// InvoiceSectionsClientListByBillingProfileOptions contains the optional parameters for the InvoiceSectionsClient.ListByBillingProfile
+// method.
+type InvoiceSectionsClientListByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoiceSectionsOnExpand - The invoice sections associated to the billing profile. By default this is not populated, unless it's specified in $expand.
+// InvoiceSectionsOnExpand - The invoice sections associated to the billing profile. By default this is not populated, unless
+// it's specified in $expand.
 type InvoiceSectionsOnExpand struct {
 	// The invoice sections associated to the billing profile.
 	Value []*InvoiceSection `json:"value,omitempty"`
 
-	// READ-ONLY; Indicates whether there are more invoice sections than the ones listed in this collection. The collection lists a maximum of 50 invoice sections.
-	// To get all invoice sections, use the list invoice
+	// READ-ONLY; Indicates whether there are more invoice sections than the ones listed in this collection. The collection lists
+	// a maximum of 50 invoice sections. To get all invoice sections, use the list invoice
 	// sections API.
 	HasMoreResults *bool `json:"hasMoreResults,omitempty" azure:"ro"`
 }
@@ -2181,55 +1440,61 @@ func (i InvoiceSectionsOnExpand) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// InvoicesBeginDownloadBillingSubscriptionInvoiceOptions contains the optional parameters for the Invoices.BeginDownloadBillingSubscriptionInvoice method.
-type InvoicesBeginDownloadBillingSubscriptionInvoiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InvoicesBeginDownloadInvoiceOptions contains the optional parameters for the Invoices.BeginDownloadInvoice method.
-type InvoicesBeginDownloadInvoiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InvoicesBeginDownloadMultipleBillingProfileInvoicesOptions contains the optional parameters for the Invoices.BeginDownloadMultipleBillingProfileInvoices
+// InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions contains the optional parameters for the InvoicesClient.BeginDownloadBillingSubscriptionInvoice
 // method.
-type InvoicesBeginDownloadMultipleBillingProfileInvoicesOptions struct {
+type InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesBeginDownloadMultipleBillingSubscriptionInvoicesOptions contains the optional parameters for the Invoices.BeginDownloadMultipleBillingSubscriptionInvoices
+// InvoicesClientBeginDownloadInvoiceOptions contains the optional parameters for the InvoicesClient.BeginDownloadInvoice
 // method.
-type InvoicesBeginDownloadMultipleBillingSubscriptionInvoicesOptions struct {
+type InvoicesClientBeginDownloadInvoiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesGetByIDOptions contains the optional parameters for the Invoices.GetByID method.
-type InvoicesGetByIDOptions struct {
+// InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions contains the optional parameters for the InvoicesClient.BeginDownloadMultipleBillingProfileInvoices
+// method.
+type InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesGetBySubscriptionAndInvoiceIDOptions contains the optional parameters for the Invoices.GetBySubscriptionAndInvoiceID method.
-type InvoicesGetBySubscriptionAndInvoiceIDOptions struct {
+// InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions contains the optional parameters for the InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices
+// method.
+type InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesGetOptions contains the optional parameters for the Invoices.Get method.
-type InvoicesGetOptions struct {
+// InvoicesClientGetByIDOptions contains the optional parameters for the InvoicesClient.GetByID method.
+type InvoicesClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesListByBillingAccountOptions contains the optional parameters for the Invoices.ListByBillingAccount method.
-type InvoicesListByBillingAccountOptions struct {
+// InvoicesClientGetBySubscriptionAndInvoiceIDOptions contains the optional parameters for the InvoicesClient.GetBySubscriptionAndInvoiceID
+// method.
+type InvoicesClientGetBySubscriptionAndInvoiceIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesListByBillingProfileOptions contains the optional parameters for the Invoices.ListByBillingProfile method.
-type InvoicesListByBillingProfileOptions struct {
+// InvoicesClientGetOptions contains the optional parameters for the InvoicesClient.Get method.
+type InvoicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InvoicesListByBillingSubscriptionOptions contains the optional parameters for the Invoices.ListByBillingSubscription method.
-type InvoicesListByBillingSubscriptionOptions struct {
+// InvoicesClientListByBillingAccountOptions contains the optional parameters for the InvoicesClient.ListByBillingAccount
+// method.
+type InvoicesClientListByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InvoicesClientListByBillingProfileOptions contains the optional parameters for the InvoicesClient.ListByBillingProfile
+// method.
+type InvoicesClientListByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// InvoicesClientListByBillingSubscriptionOptions contains the optional parameters for the InvoicesClient.ListByBillingSubscription
+// method.
+type InvoicesClientListByBillingSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2277,8 +1542,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2390,39 +1655,194 @@ func (p *PaymentProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// PoliciesGetByBillingProfileOptions contains the optional parameters for the Policies.GetByBillingProfile method.
-type PoliciesGetByBillingProfileOptions struct {
+// Period - A billing period resource.
+type Period struct {
+	// A billing period.
+	Properties *PeriodProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PeriodProperties - The properties of the billing period.
+type PeriodProperties struct {
+	// READ-ONLY; The end of the date range covered by the billing period.
+	BillingPeriodEndDate *time.Time `json:"billingPeriodEndDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The start of the date range covered by the billing period.
+	BillingPeriodStartDate *time.Time `json:"billingPeriodStartDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of invoice ids that associated with.
+	InvoiceIDs []*string `json:"invoiceIds,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PeriodProperties.
+func (p PeriodProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateDateType(objectMap, "billingPeriodEndDate", p.BillingPeriodEndDate)
+	populateDateType(objectMap, "billingPeriodStartDate", p.BillingPeriodStartDate)
+	populate(objectMap, "invoiceIds", p.InvoiceIDs)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PeriodProperties.
+func (p *PeriodProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "billingPeriodEndDate":
+			err = unpopulateDateType(val, &p.BillingPeriodEndDate)
+			delete(rawMsg, key)
+		case "billingPeriodStartDate":
+			err = unpopulateDateType(val, &p.BillingPeriodStartDate)
+			delete(rawMsg, key)
+		case "invoiceIds":
+			err = unpopulate(val, &p.InvoiceIDs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// PeriodsClientGetOptions contains the optional parameters for the PeriodsClient.Get method.
+type PeriodsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesGetByCustomerOptions contains the optional parameters for the Policies.GetByCustomer method.
-type PoliciesGetByCustomerOptions struct {
+// PeriodsClientListOptions contains the optional parameters for the PeriodsClient.List method.
+type PeriodsClientListOptions struct {
+	// May be used to filter billing periods by billingPeriodEndDate. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+	// It does not currently support 'ne', 'or', or 'not'.
+	Filter *string
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
+	Skiptoken *string
+	// May be used to limit the number of results to the most recent N billing periods.
+	Top *int32
+}
+
+// PeriodsListResult - Result of listing billing periods. It contains a list of available billing periods in reverse chronological
+// order.
+type PeriodsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of billing periods.
+	Value []*Period `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PeriodsListResult.
+func (p PeriodsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// PermissionsClientListByBillingAccountOptions contains the optional parameters for the PermissionsClient.ListByBillingAccount
+// method.
+type PermissionsClientListByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesUpdateCustomerOptions contains the optional parameters for the Policies.UpdateCustomer method.
-type PoliciesUpdateCustomerOptions struct {
+// PermissionsClientListByBillingProfileOptions contains the optional parameters for the PermissionsClient.ListByBillingProfile
+// method.
+type PermissionsClientListByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoliciesUpdateOptions contains the optional parameters for the Policies.Update method.
-type PoliciesUpdateOptions struct {
+// PermissionsClientListByCustomerOptions contains the optional parameters for the PermissionsClient.ListByCustomer method.
+type PermissionsClientListByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsClientListByInvoiceSectionsOptions contains the optional parameters for the PermissionsClient.ListByInvoiceSections
+// method.
+type PermissionsClientListByInvoiceSectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsListResult - Result of list billingPermissions a caller has on a billing account.
+type PermissionsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of billingPermissions a caller has on a billing account.
+	Value []*PermissionsProperties `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PermissionsListResult.
+func (p PermissionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// PermissionsProperties - The set of allowed action and not allowed actions a caller has on a billing account
+type PermissionsProperties struct {
+	// READ-ONLY; The set of actions that the caller is allowed to perform.
+	Actions []*string `json:"actions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The set of actions that the caller is not allowed to perform.
+	NotActions []*string `json:"notActions,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PermissionsProperties.
+func (p PermissionsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", p.Actions)
+	populate(objectMap, "notActions", p.NotActions)
+	return json.Marshal(objectMap)
+}
+
+// PoliciesClientGetByBillingProfileOptions contains the optional parameters for the PoliciesClient.GetByBillingProfile method.
+type PoliciesClientGetByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoliciesClientGetByCustomerOptions contains the optional parameters for the PoliciesClient.GetByCustomer method.
+type PoliciesClientGetByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoliciesClientUpdateCustomerOptions contains the optional parameters for the PoliciesClient.UpdateCustomer method.
+type PoliciesClientUpdateCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoliciesClientUpdateOptions contains the optional parameters for the PoliciesClient.Update method.
+type PoliciesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Policy - A policy.
 type Policy struct {
-	Resource
 	// The properties of a policy.
 	Properties *PolicyProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Policy.
-func (p Policy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PolicyProperties - The properties of a policy.
@@ -2439,16 +1859,26 @@ type PolicyProperties struct {
 
 // Product - A product.
 type Product struct {
-	Resource
 	// The properties of a product.
 	Properties *ProductProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Product.
 func (p Product) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2472,10 +1902,12 @@ type ProductProperties struct {
 	// READ-ONLY; The ID of the billing profile to which the product is billed.
 	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the customer for whom the product was purchased. The field is applicable only for Microsoft Partner Agreement billing account.
+	// READ-ONLY; The name of the customer for whom the product was purchased. The field is applicable only for Microsoft Partner
+	// Agreement billing account.
 	CustomerDisplayName *string `json:"customerDisplayName,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ID of the customer for whom the product was purchased. The field is applicable only for Microsoft Partner Agreement billing account.
+	// READ-ONLY; The ID of the customer for whom the product was purchased. The field is applicable only for Microsoft Partner
+	// Agreement billing account.
 	CustomerID *string `json:"customerId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The display name of the product.
@@ -2632,38 +2064,60 @@ func (p *ProductProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ProductsGetOptions contains the optional parameters for the Products.Get method.
-type ProductsGetOptions struct {
+// ProductsClientGetOptions contains the optional parameters for the ProductsClient.Get method.
+type ProductsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductsListByBillingAccountOptions contains the optional parameters for the Products.ListByBillingAccount method.
-type ProductsListByBillingAccountOptions struct {
-	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-	// Tag filter is a key value pair string where key and value are separated by a colon (:).
+// ProductsClientListByBillingAccountOptions contains the optional parameters for the ProductsClient.ListByBillingAccount
+// method.
+type ProductsClientListByBillingAccountOptions struct {
+	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
+	// support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
+	// and value are separated by a colon (:).
 	Filter *string
 }
 
-// ProductsListByBillingProfileOptions contains the optional parameters for the Products.ListByBillingProfile method.
-type ProductsListByBillingProfileOptions struct {
-	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-	// Tag filter is a key value pair string where key and value are separated by a colon (:).
+// ProductsClientListByBillingProfileOptions contains the optional parameters for the ProductsClient.ListByBillingProfile
+// method.
+type ProductsClientListByBillingProfileOptions struct {
+	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
+	// support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
+	// and value are separated by a colon (:).
 	Filter *string
 }
 
-// ProductsListByCustomerOptions contains the optional parameters for the Products.ListByCustomer method.
-type ProductsListByCustomerOptions struct {
+// ProductsClientListByCustomerOptions contains the optional parameters for the ProductsClient.ListByCustomer method.
+type ProductsClientListByCustomerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductsListByInvoiceSectionOptions contains the optional parameters for the Products.ListByInvoiceSection method.
-type ProductsListByInvoiceSectionOptions struct {
-	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-	// Tag filter is a key value pair string where key and value are separated by a colon (:).
+// ProductsClientListByInvoiceSectionOptions contains the optional parameters for the ProductsClient.ListByInvoiceSection
+// method.
+type ProductsClientListByInvoiceSectionOptions struct {
+	// May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
+	// support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
+	// and value are separated by a colon (:).
 	Filter *string
 }
 
-// ProductsListResult - The list of products. It contains a list of available product summaries in reverse chronological order by purchase date.
+// ProductsClientMoveOptions contains the optional parameters for the ProductsClient.Move method.
+type ProductsClientMoveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProductsClientUpdateOptions contains the optional parameters for the ProductsClient.Update method.
+type ProductsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProductsClientValidateMoveOptions contains the optional parameters for the ProductsClient.ValidateMove method.
+type ProductsClientValidateMoveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProductsListResult - The list of products. It contains a list of available product summaries in reverse chronological order
+// by purchase date.
 type ProductsListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -2684,19 +2138,271 @@ func (p ProductsListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProductsMoveOptions contains the optional parameters for the Products.Move method.
-type ProductsMoveOptions struct {
+// Profile - A billing profile.
+type Profile struct {
+	// The properties of the billing profile.
+	Properties *ProfileProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ProfileCreationRequest - The request parameters for creating a new billing profile.
+type ProfileCreationRequest struct {
+	// The address of the individual or organization that is responsible for the billing profile.
+	BillTo *AddressDetails `json:"billTo,omitempty"`
+
+	// The name of the billing profile.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Enabled azure plans for the billing profile.
+	EnabledAzurePlans []*AzurePlan `json:"enabledAzurePlans,omitempty"`
+
+	// Flag controlling whether the invoices for the billing profile are sent through email.
+	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
+
+	// The purchase order name that will appear on the invoices generated for the billing profile.
+	PoNumber *string `json:"poNumber,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProfileCreationRequest.
+func (p ProfileCreationRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "billTo", p.BillTo)
+	populate(objectMap, "displayName", p.DisplayName)
+	populate(objectMap, "enabledAzurePlans", p.EnabledAzurePlans)
+	populate(objectMap, "invoiceEmailOptIn", p.InvoiceEmailOptIn)
+	populate(objectMap, "poNumber", p.PoNumber)
+	return json.Marshal(objectMap)
+}
+
+// ProfileListResult - The list of billing profiles.
+type ProfileListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of billing profiles.
+	Value []*Profile `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProfileListResult.
+func (p ProfileListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// ProfileProperties - The properties of the billing profile.
+type ProfileProperties struct {
+	// Billing address.
+	BillTo *AddressDetails `json:"billTo,omitempty"`
+
+	// The name of the billing profile.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Information about the enabled azure plans.
+	EnabledAzurePlans []*AzurePlan `json:"enabledAzurePlans,omitempty"`
+
+	// Flag controlling whether the invoices for the billing profile are sent through email.
+	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
+
+	// The invoice sections associated to the billing profile. By default this is not populated, unless it's specified in $expand.
+	InvoiceSections *InvoiceSectionsOnExpand `json:"invoiceSections,omitempty"`
+
+	// The purchase order name that will appear on the invoices generated for the billing profile.
+	PoNumber *string `json:"poNumber,omitempty"`
+
+	// Tags of billing profiles.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Identifies which services and purchases are paid by a billing profile.
+	BillingRelationshipType *BillingRelationshipType `json:"billingRelationshipType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The currency in which the charges for the billing profile are billed.
+	Currency *string `json:"currency,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates whether user has read access to the billing profile.
+	HasReadAccess *bool `json:"hasReadAccess,omitempty" azure:"ro"`
+
+	// READ-ONLY; Identifies the billing profile that is linked to another billing profile in indirect purchase motion.
+	IndirectRelationshipInfo *IndirectRelationshipInfo `json:"indirectRelationshipInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The day of the month when the invoice for the billing profile is generated.
+	InvoiceDay *int32 `json:"invoiceDay,omitempty" azure:"ro"`
+
+	// READ-ONLY; The billing profile spending limit.
+	SpendingLimit *SpendingLimit `json:"spendingLimit,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status of the billing profile.
+	Status *BillingProfileStatus `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; Reason for the specified billing profile status.
+	StatusReasonCode *StatusReasonCode `json:"statusReasonCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system generated unique identifier for a billing profile.
+	SystemID *string `json:"systemId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Identifies the cloud environments that are associated with a billing profile. This is a system managed optional
+	// field and gets updated as the billing profile gets associated with accounts in various
+	// clouds.
+	TargetClouds []*TargetCloud `json:"targetClouds,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProfileProperties.
+func (p ProfileProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "billTo", p.BillTo)
+	populate(objectMap, "billingRelationshipType", p.BillingRelationshipType)
+	populate(objectMap, "currency", p.Currency)
+	populate(objectMap, "displayName", p.DisplayName)
+	populate(objectMap, "enabledAzurePlans", p.EnabledAzurePlans)
+	populate(objectMap, "hasReadAccess", p.HasReadAccess)
+	populate(objectMap, "indirectRelationshipInfo", p.IndirectRelationshipInfo)
+	populate(objectMap, "invoiceDay", p.InvoiceDay)
+	populate(objectMap, "invoiceEmailOptIn", p.InvoiceEmailOptIn)
+	populate(objectMap, "invoiceSections", p.InvoiceSections)
+	populate(objectMap, "poNumber", p.PoNumber)
+	populate(objectMap, "spendingLimit", p.SpendingLimit)
+	populate(objectMap, "status", p.Status)
+	populate(objectMap, "statusReasonCode", p.StatusReasonCode)
+	populate(objectMap, "systemId", p.SystemID)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "targetClouds", p.TargetClouds)
+	return json.Marshal(objectMap)
+}
+
+// ProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.BeginCreateOrUpdate method.
+type ProfilesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductsUpdateOptions contains the optional parameters for the Products.Update method.
-type ProductsUpdateOptions struct {
+// ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
+type ProfilesClientGetOptions struct {
+	// May be used to expand the invoice sections.
+	Expand *string
+}
+
+// ProfilesClientListByBillingAccountOptions contains the optional parameters for the ProfilesClient.ListByBillingAccount
+// method.
+type ProfilesClientListByBillingAccountOptions struct {
+	// May be used to expand the invoice sections.
+	Expand *string
+}
+
+// ProfilesOnExpand - The billing profiles associated with the billing account. By default this is not populated, unless it's
+// specified in $expand.
+type ProfilesOnExpand struct {
+	// The billing profiles associated with the billing account.
+	Value []*Profile `json:"value,omitempty"`
+
+	// READ-ONLY; Indicates whether there are more billing profiles than the ones listed in this collection. The collection lists
+	// a maximum of 50 billing profiles. To get all billing profiles, use the list billing
+	// profiles API.
+	HasMoreResults *bool `json:"hasMoreResults,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProfilesOnExpand.
+func (p ProfilesOnExpand) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "hasMoreResults", p.HasMoreResults)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// Property - A billing property.
+type Property struct {
+	// A billing property.
+	Properties *PropertyProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Property.
+func (p Property) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// PropertyClientGetOptions contains the optional parameters for the PropertyClient.Get method.
+type PropertyClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProductsValidateMoveOptions contains the optional parameters for the Products.ValidateMove method.
-type ProductsValidateMoveOptions struct {
+// PropertyClientUpdateOptions contains the optional parameters for the PropertyClient.Update method.
+type PropertyClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PropertyProperties - The billing property.
+type PropertyProperties struct {
+	// The cost center applied to the subscription.
+	CostCenter *string `json:"costCenter,omitempty"`
+
+	// READ-ONLY; The email address on which the account admin gets all Azure notifications.
+	AccountAdminNotificationEmailAddress *string `json:"accountAdminNotificationEmailAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the billing account to which the subscription is billed.
+	BillingAccountDisplayName *string `json:"billingAccountDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the billing account to which the subscription is billed.
+	BillingAccountID *string `json:"billingAccountId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the billing profile to which the subscription is billed.
+	BillingProfileDisplayName *string `json:"billingProfileDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the billing profile to which the subscription is billed.
+	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The billing profile spending limit.
+	BillingProfileSpendingLimit *BillingProfileSpendingLimit `json:"billingProfileSpendingLimit,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status of the billing profile.
+	BillingProfileStatus *BillingProfileStatus `json:"billingProfileStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Reason for the specified billing profile status.
+	BillingProfileStatusReasonCode *BillingProfileStatusReasonCode `json:"billingProfileStatusReasonCode,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Azure AD tenant ID of the billing account for the subscription.
+	BillingTenantID *string `json:"billingTenantId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the invoice section to which the subscription is billed.
+	InvoiceSectionDisplayName *string `json:"invoiceSectionDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the invoice section to which the subscription is billed.
+	InvoiceSectionID *string `json:"invoiceSectionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates whether user is the account admin.
+	IsAccountAdmin *bool `json:"isAccountAdmin,omitempty" azure:"ro"`
+
+	// READ-ONLY; The product ID of the Azure plan.
+	ProductID *string `json:"productId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The product name of the Azure plan.
+	ProductName *string `json:"productName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The sku description of the Azure plan for the subscription.
+	SKUDescription *string `json:"skuDescription,omitempty" azure:"ro"`
+
+	// READ-ONLY; The sku ID of the Azure plan for the subscription.
+	SKUID *string `json:"skuId,omitempty" azure:"ro"`
 }
 
 // RebillDetails - The rebill details of an invoice.
@@ -2886,10 +2592,11 @@ type ReservationUtilizationAggregates struct {
 	ValueUnit *string `json:"valueUnit,omitempty" azure:"ro"`
 }
 
-// ReservationsListByBillingAccountOptions contains the optional parameters for the Reservations.ListByBillingAccount method.
-type ReservationsListByBillingAccountOptions struct {
-	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support 'ne', 'gt', 'le', 'ge', or
-	// 'not'.
+// ReservationsClientListByBillingAccountOptions contains the optional parameters for the ReservationsClient.ListByBillingAccount
+// method.
+type ReservationsClientListByBillingAccountOptions struct {
+	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
+	// 'ne', 'gt', 'le', 'ge', or 'not'.
 	Filter *string
 	// May be used to sort order by reservation properties.
 	Orderby *string
@@ -2899,10 +2606,11 @@ type ReservationsListByBillingAccountOptions struct {
 	SelectedState *string
 }
 
-// ReservationsListByBillingProfileOptions contains the optional parameters for the Reservations.ListByBillingProfile method.
-type ReservationsListByBillingProfileOptions struct {
-	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support 'ne', 'gt', 'le', 'ge', or
-	// 'not'.
+// ReservationsClientListByBillingProfileOptions contains the optional parameters for the ReservationsClient.ListByBillingProfile
+// method.
+type ReservationsClientListByBillingProfileOptions struct {
+	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
+	// 'ne', 'gt', 'le', 'ge', or 'not'.
 	Filter *string
 	// May be used to sort order by reservation properties.
 	Orderby *string
@@ -2945,32 +2653,392 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
+// RoleAssignment - The role assignment
+type RoleAssignment struct {
+	// The properties of the role assignment.
+	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RoleAssignmentListResult - The list of role assignments.
+type RoleAssignmentListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of role assignments.
+	Value []*RoleAssignment `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RoleAssignmentListResult.
+func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
 }
 
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
+// RoleAssignmentProperties - The properties of the role assignment.
+type RoleAssignmentProperties struct {
+	// The principal id of the user to whom the role was assigned.
+	PrincipalID *string `json:"principalId,omitempty"`
+
+	// The principal tenant id of the user to whom the role was assigned.
+	PrincipalTenantID *string `json:"principalTenantId,omitempty"`
+
+	// The ID of the role definition.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+
+	// The authentication type.
+	UserAuthenticationType *string `json:"userAuthenticationType,omitempty"`
+
+	// The email address of the user.
+	UserEmailAddress *string `json:"userEmailAddress,omitempty"`
+
+	// READ-ONLY; The principal Id of the user who created the role assignment.
+	CreatedByPrincipalID *string `json:"createdByPrincipalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant Id of the user who created the role assignment.
+	CreatedByPrincipalTenantID *string `json:"createdByPrincipalTenantId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The email address of the user who created the role assignment.
+	CreatedByUserEmailAddress *string `json:"createdByUserEmailAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; The date the role assignment was created.
+	CreatedOn *string `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; The scope at which the role was assigned.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
+}
+
+// RoleAssignmentsClientDeleteByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByBillingAccount
+// method.
+type RoleAssignmentsClientDeleteByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientDeleteByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByBillingProfile
+// method.
+type RoleAssignmentsClientDeleteByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientDeleteByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByInvoiceSection
+// method.
+type RoleAssignmentsClientDeleteByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientGetByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.GetByBillingAccount
+// method.
+type RoleAssignmentsClientGetByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientGetByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.GetByBillingProfile
+// method.
+type RoleAssignmentsClientGetByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientGetByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.GetByInvoiceSection
+// method.
+type RoleAssignmentsClientGetByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientListByBillingAccountOptions contains the optional parameters for the RoleAssignmentsClient.ListByBillingAccount
+// method.
+type RoleAssignmentsClientListByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientListByBillingProfileOptions contains the optional parameters for the RoleAssignmentsClient.ListByBillingProfile
+// method.
+type RoleAssignmentsClientListByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentsClientListByInvoiceSectionOptions contains the optional parameters for the RoleAssignmentsClient.ListByInvoiceSection
+// method.
+type RoleAssignmentsClientListByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinition - The properties of a role definition.
+type RoleDefinition struct {
+	// The properties of the a role definition.
+	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RoleDefinitionListResult - The list of role definitions.
+type RoleDefinitionListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The role definitions.
+	Value []*RoleDefinition `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionListResult.
+func (r RoleDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// RoleDefinitionProperties - The properties of the a role definition.
+type RoleDefinitionProperties struct {
+	// The billingPermissions the role has
+	Permissions []*PermissionsProperties `json:"permissions,omitempty"`
+
+	// READ-ONLY; The role description
+	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the role
+	RoleName *string `json:"roleName,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionProperties.
+func (r RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "description", r.Description)
+	populate(objectMap, "permissions", r.Permissions)
+	populate(objectMap, "roleName", r.RoleName)
+	return json.Marshal(objectMap)
+}
+
+// RoleDefinitionsClientGetByBillingAccountOptions contains the optional parameters for the RoleDefinitionsClient.GetByBillingAccount
+// method.
+type RoleDefinitionsClientGetByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsClientGetByBillingProfileOptions contains the optional parameters for the RoleDefinitionsClient.GetByBillingProfile
+// method.
+type RoleDefinitionsClientGetByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsClientGetByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionsClient.GetByInvoiceSection
+// method.
+type RoleDefinitionsClientGetByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsClientListByBillingAccountOptions contains the optional parameters for the RoleDefinitionsClient.ListByBillingAccount
+// method.
+type RoleDefinitionsClientListByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsClientListByBillingProfileOptions contains the optional parameters for the RoleDefinitionsClient.ListByBillingProfile
+// method.
+type RoleDefinitionsClientListByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsClientListByInvoiceSectionOptions contains the optional parameters for the RoleDefinitionsClient.ListByInvoiceSection
+// method.
+type RoleDefinitionsClientListByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Subscription - A billing subscription.
+type Subscription struct {
+	// The billing properties of a subscription.
+	Properties *SubscriptionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Subscription.
+func (s Subscription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
+}
+
+// SubscriptionProperties - The billing properties of a subscription.
+type SubscriptionProperties struct {
+	// The cost center applied to the subscription.
+	CostCenter *string `json:"costCenter,omitempty"`
+
+	// The sku ID of the Azure plan for the subscription.
+	SKUID *string `json:"skuId,omitempty"`
+
+	// The current billing status of the subscription.
+	SubscriptionBillingStatus *BillingSubscriptionStatusType `json:"subscriptionBillingStatus,omitempty"`
+
+	// READ-ONLY; The name of the billing profile to which the subscription is billed.
+	BillingProfileDisplayName *string `json:"billingProfileDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the billing profile to which the subscription is billed.
+	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner
+	// Agreement billing account.
+	CustomerDisplayName *string `json:"customerDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner
+	// Agreement billing account.
+	CustomerID *string `json:"customerId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the subscription.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the invoice section to which the subscription is billed.
+	InvoiceSectionDisplayName *string `json:"invoiceSectionDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the invoice section to which the subscription is billed.
+	InvoiceSectionID *string `json:"invoiceSectionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The last month charges.
+	LastMonthCharges *Amount `json:"lastMonthCharges,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current month to date charges.
+	MonthToDateCharges *Amount `json:"monthToDateCharges,omitempty" azure:"ro"`
+
+	// READ-ONLY; Reseller for this subscription.
+	Reseller *Reseller `json:"reseller,omitempty" azure:"ro"`
+
+	// READ-ONLY; The sku description of the Azure plan for the subscription.
+	SKUDescription *string `json:"skuDescription,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID of the subscription.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The suspension reason for a subscription. Applies only to subscriptions in Microsoft Online Services Program
+	// billing accounts.
+	SuspensionReasons []*string `json:"suspensionReasons,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SubscriptionProperties.
+func (s SubscriptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "billingProfileDisplayName", s.BillingProfileDisplayName)
+	populate(objectMap, "billingProfileId", s.BillingProfileID)
+	populate(objectMap, "costCenter", s.CostCenter)
+	populate(objectMap, "customerDisplayName", s.CustomerDisplayName)
+	populate(objectMap, "customerId", s.CustomerID)
+	populate(objectMap, "displayName", s.DisplayName)
+	populate(objectMap, "invoiceSectionDisplayName", s.InvoiceSectionDisplayName)
+	populate(objectMap, "invoiceSectionId", s.InvoiceSectionID)
+	populate(objectMap, "lastMonthCharges", s.LastMonthCharges)
+	populate(objectMap, "monthToDateCharges", s.MonthToDateCharges)
+	populate(objectMap, "reseller", s.Reseller)
+	populate(objectMap, "skuDescription", s.SKUDescription)
+	populate(objectMap, "skuId", s.SKUID)
+	populate(objectMap, "subscriptionBillingStatus", s.SubscriptionBillingStatus)
+	populate(objectMap, "subscriptionId", s.SubscriptionID)
+	populate(objectMap, "suspensionReasons", s.SuspensionReasons)
+	return json.Marshal(objectMap)
+}
+
+// SubscriptionsClientBeginMoveOptions contains the optional parameters for the SubscriptionsClient.BeginMove method.
+type SubscriptionsClientBeginMoveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.
+type SubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientListByBillingAccountOptions contains the optional parameters for the SubscriptionsClient.ListByBillingAccount
+// method.
+type SubscriptionsClientListByBillingAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientListByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.ListByBillingProfile
+// method.
+type SubscriptionsClientListByBillingProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientListByCustomerOptions contains the optional parameters for the SubscriptionsClient.ListByCustomer method.
+type SubscriptionsClientListByCustomerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientListByInvoiceSectionOptions contains the optional parameters for the SubscriptionsClient.ListByInvoiceSection
+// method.
+type SubscriptionsClientListByInvoiceSectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientUpdateOptions contains the optional parameters for the SubscriptionsClient.Update method.
+type SubscriptionsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsClientValidateMoveOptions contains the optional parameters for the SubscriptionsClient.ValidateMove method.
+type SubscriptionsClientValidateMoveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SubscriptionsListResult - The list of billing subscriptions.
+type SubscriptionsListResult struct {
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Total number of records.
+	TotalCount *int32 `json:"totalCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of billing subscriptions.
+	Value []*Subscription `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SubscriptionsListResult.
+func (s SubscriptionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "totalCount", s.TotalCount)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
 }
 
 // Transaction - A transaction.
 type Transaction struct {
-	Resource
 	// The properties of a transaction.
 	Properties *TransactionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Transaction.
-func (t Transaction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TransactionListResult - The list of transactions.
@@ -3017,10 +3085,12 @@ type TransactionProperties struct {
 	// READ-ONLY; The ID of the billing profile which will be billed for the transaction.
 	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the customer for which the transaction took place. The field is applicable only for Microsoft Partner Agreement billing account.
+	// READ-ONLY; The name of the customer for which the transaction took place. The field is applicable only for Microsoft Partner
+	// Agreement billing account.
 	CustomerDisplayName *string `json:"customerDisplayName,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ID of the customer for which the transaction took place. The field is applicable only for Microsoft Partner Agreement billing account.
+	// READ-ONLY; The ID of the customer for which the transaction took place. The field is applicable only for Microsoft Partner
+	// Agreement billing account.
 	CustomerID *string `json:"customerId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The date of transaction.
@@ -3038,7 +3108,8 @@ type TransactionProperties struct {
 	// READ-ONLY; Invoice on which the transaction was billed or 'pending' if the transaction is not billed.
 	Invoice *string `json:"invoice,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ID of the invoice on which the transaction was billed. This field is only applicable for transactions which are billed.
+	// READ-ONLY; The ID of the invoice on which the transaction was billed. This field is only applicable for transactions which
+	// are billed.
 	InvoiceID *string `json:"invoiceId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the invoice section which will be billed for the transaction.
@@ -3083,10 +3154,12 @@ type TransactionProperties struct {
 	// READ-ONLY; The pre-tax charged amount for the transaction.
 	SubTotal *Amount `json:"subTotal,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ID of the subscription that was used for the transaction. The field is only applicable for transaction of kind reservation.
+	// READ-ONLY; The ID of the subscription that was used for the transaction. The field is only applicable for transaction of
+	// kind reservation.
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the subscription that was used for the transaction. The field is only applicable for transaction of kind reservation.
+	// READ-ONLY; The name of the subscription that was used for the transaction. The field is only applicable for transaction
+	// of kind reservation.
 	SubscriptionName *string `json:"subscriptionName,omitempty" azure:"ro"`
 
 	// READ-ONLY; The tax amount applied to the transaction.
@@ -3272,8 +3345,8 @@ func (t *TransactionProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TransactionsListByInvoiceOptions contains the optional parameters for the Transactions.ListByInvoice method.
-type TransactionsListByInvoiceOptions struct {
+// TransactionsClientListByInvoiceOptions contains the optional parameters for the TransactionsClient.ListByInvoice method.
+type TransactionsClientListByInvoiceOptions struct {
 	// placeholder for future optional parameters
 }
 

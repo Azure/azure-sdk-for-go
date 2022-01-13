@@ -28,12 +28,16 @@ func ExampleDatasetsClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DatasetResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,26 +56,22 @@ func ExampleDatasetsClient_CreateOrUpdate() {
 		"<dataset-name>",
 		armdatafactory.DatasetResource{
 			Properties: &armdatafactory.AzureBlobDataset{
-				Dataset: armdatafactory.Dataset{
-					Type: to.StringPtr("<type>"),
-					LinkedServiceName: &armdatafactory.LinkedServiceReference{
-						Type:          armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference.ToPtr(),
-						ReferenceName: to.StringPtr("<reference-name>"),
+				Type: to.StringPtr("<type>"),
+				LinkedServiceName: &armdatafactory.LinkedServiceReference{
+					Type:          armdatafactory.LinkedServiceReferenceType("LinkedServiceReference").ToPtr(),
+					ReferenceName: to.StringPtr("<reference-name>"),
+				},
+				Parameters: map[string]*armdatafactory.ParameterSpecification{
+					"MyFileName": {
+						Type: armdatafactory.ParameterType("String").ToPtr(),
 					},
-					Parameters: map[string]*armdatafactory.ParameterSpecification{
-						"MyFileName": {
-							Type: armdatafactory.ParameterTypeString.ToPtr(),
-						},
-						"MyFolderPath": {
-							Type: armdatafactory.ParameterTypeString.ToPtr(),
-						},
+					"MyFolderPath": {
+						Type: armdatafactory.ParameterType("String").ToPtr(),
 					},
 				},
 				TypeProperties: &armdatafactory.AzureBlobDatasetTypeProperties{
 					Format: &armdatafactory.TextFormat{
-						DatasetStorageFormat: armdatafactory.DatasetStorageFormat{
-							Type: to.StringPtr("<type>"),
-						},
+						Type: to.StringPtr("<type>"),
 					},
 					FileName: map[string]interface{}{
 						"type":  "Expression",
@@ -84,11 +84,11 @@ func ExampleDatasetsClient_CreateOrUpdate() {
 				},
 			},
 		},
-		&armdatafactory.DatasetsCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.DatasetsClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatasetResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatasetsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
@@ -103,11 +103,11 @@ func ExampleDatasetsClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<dataset-name>",
-		&armdatafactory.DatasetsGetOptions{IfNoneMatch: nil})
+		&armdatafactory.DatasetsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatasetResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatasetsClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Delete.json

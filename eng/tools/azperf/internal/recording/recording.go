@@ -14,7 +14,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"runtime"
 )
@@ -22,7 +21,6 @@ import (
 var pathToRecordings = "eng/tools/azperf"
 
 func init() {
-
 	recordMode = os.Getenv("AZURE_RECORD_MODE")
 	if recordMode == "" {
 		log.Printf("AZURE_RECORD_MODE was not set, defaulting to playback")
@@ -170,9 +168,9 @@ func (r RecordingOptions) baseURL() string {
 	return "https://localhost:5001"
 }
 
-func getTestId(pathToRecordings string, t string) string {
-	return path.Join(pathToRecordings, "recordings", t+".json")
-}
+// func getTestId(pathToRecordings string, t string) string {
+// 	return path.Join(pathToRecordings, "recordings", t+".json")
+// }
 
 var client = http.Client{
 	Transport: &http.Transport{
@@ -182,26 +180,29 @@ var client = http.Client{
 
 // Start tells the test proxy to begin accepting requests for a given test
 func Start(t string, options *RecordingOptions) error {
-	if options == nil {
-		options = &RecordingOptions{}
-	}
-
-	testId := getTestId(pathToRecordings, t)
+	// testId := getTestId(pathToRecordings, t)
 
 	url := fmt.Sprintf("https://localhost:5001/%s/start", recordMode)
+	fmt.Println(url)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-recording-file", testId)
+
+	if recordMode == PlaybackMode {
+		req.Header.Set(IDHeader, "X")
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
-	recId := resp.Header.Get(IDHeader)
-	if recId == "" {
+
+	// In live mode the "x-recording-id" header should be "X"
+	recID := resp.Header.Get(IDHeader)
+	fmt.Println("x-recording-id: ", recID)
+	if recID == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err != nil {
@@ -210,7 +211,7 @@ func Start(t string, options *RecordingOptions) error {
 		return fmt.Errorf("recording ID was not returned by the response. Response body: %s", b)
 	}
 
-	perfTestSuite[t] = recId
+	perfTestSuite[t] = recID
 
 	return nil
 }
@@ -232,6 +233,7 @@ func Stop(t string, options *RecordingOptions) error {
 	if recTest, ok = perfTestSuite[t]; !ok {
 		return errors.New("recording ID was never set. Did you call StartRecording?")
 	}
+	fmt.Println("STOPPED RECORDING. recTest=", recTest)
 	req.Header.Set("x-recording-id", recTest)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {

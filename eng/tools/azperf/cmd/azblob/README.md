@@ -10,7 +10,6 @@ AZURE_STORAGE_CONNECTION_STRING=<live storage account connection string>
 ### Common perf command line options
 These options are available for all perf tests:
 - `-d --duration=10` Number of seconds to run as many operations (the "run" function) as possible. Default is 10.
-- `-i --iterations=1` Number of test iterations to run. Default is 1.
 - `-w --warm-up=5` Number of seconds to spend warming up the connection before measuring begins. Default is 5.
 - `-x --test-proxies` Whether to run the tests against the test proxy server. Specfiy the URL(s) for the proxy endpoint(s) (e.g. "https://localhost:5001"). WARNING: When using with Legacy tests - only HTTPS is supported.
 

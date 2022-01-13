@@ -6,8 +6,8 @@ package azkeysperf
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/recording"
@@ -87,11 +87,9 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 	}
 
 	a.client = c
-	a.keyName = "myKeyName0"
+	a.keyName = "myKeyName"
 
-	fmt.Println("Creating key")
 	_, err = a.client.CreateRSAKey(context.Background(), a.keyName, nil)
-	fmt.Println("Done creating key")
 	return err
 }
 
@@ -110,6 +108,10 @@ func (a *azkeysPerf) TearDown(ctx context.Context) error {
 
 func (a *azkeysPerf) GlobalTearDown(ctx context.Context) error {
 	defer recording.Stop(a.GetMetadata(), nil)
-	_, err := a.client.BeginDeleteKey(ctx, a.keyName, nil)
+	resp, err := a.client.BeginDeleteKey(ctx, a.keyName, nil)
+	if err != nil {return err}
+	_, err = resp.PollUntilDone(ctx, time.Second)
+	if err != nil {return err}
+	_, err = a.client.PurgeDeletedKey(ctx, a.keyName, nil)
 	return err
 }

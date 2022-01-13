@@ -10,7 +10,6 @@ package armreservations
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,45 +21,54 @@ import (
 // CalculateExchangeClient contains the methods for the CalculateExchange group.
 // Don't use this type directly, use NewCalculateExchangeClient() instead.
 type CalculateExchangeClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewCalculateExchangeClient creates a new instance of CalculateExchangeClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCalculateExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CalculateExchangeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CalculateExchangeClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CalculateExchangeClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginPost - Calculates price for exchanging Reservations if there are no policy errors.
-// If the operation fails it returns the *Error error type.
-func (client *CalculateExchangeClient) BeginPost(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeBeginPostOptions) (CalculateExchangePostPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// body - Request containing purchases and refunds that need to be executed.
+// options - CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost
+// method.
+func (client *CalculateExchangeClient) BeginPost(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (CalculateExchangeClientPostPollerResponse, error) {
 	resp, err := client.post(ctx, body, options)
 	if err != nil {
-		return CalculateExchangePostPollerResponse{}, err
+		return CalculateExchangeClientPostPollerResponse{}, err
 	}
-	result := CalculateExchangePostPollerResponse{
+	result := CalculateExchangeClientPostPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CalculateExchangeClient.Post", "azure-async-operation", resp, client.pl, client.postHandleError)
+	pt, err := armruntime.NewPoller("CalculateExchangeClient.Post", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CalculateExchangePostPollerResponse{}, err
+		return CalculateExchangeClientPostPollerResponse{}, err
 	}
-	result.Poller = &CalculateExchangePostPoller{
+	result.Poller = &CalculateExchangeClientPostPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Post - Calculates price for exchanging Reservations if there are no policy errors.
-// If the operation fails it returns the *Error error type.
-func (client *CalculateExchangeClient) post(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeBeginPostOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CalculateExchangeClient) post(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, body, options)
 	if err != nil {
 		return nil, err
@@ -70,15 +78,15 @@ func (client *CalculateExchangeClient) post(ctx context.Context, body CalculateE
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.postHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // postCreateRequest creates the Post request.
-func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeBeginPostOptions) (*policy.Request, error) {
+func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/calculateExchange"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,17 +95,4 @@ func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, bo
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// postHandleError handles the Post error response.
-func (client *CalculateExchangeClient) postHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

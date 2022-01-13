@@ -41,5 +41,5 @@ func ExampleExchangeClient_BeginPost() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExchangeOperationResultResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExchangeClientPostResult)
 }

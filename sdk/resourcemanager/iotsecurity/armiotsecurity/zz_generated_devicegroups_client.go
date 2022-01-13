@@ -11,7 +11,6 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,57 @@ import (
 // DeviceGroupsClient contains the methods for the DeviceGroups group.
 // Don't use this type directly, use NewDeviceGroupsClient() instead.
 type DeviceGroupsClient struct {
-	ep                  string
-	pl                  runtime.Pipeline
+	host                string
 	subscriptionID      string
 	iotDefenderLocation string
+	pl                  runtime.Pipeline
 }
 
 // NewDeviceGroupsClient creates a new instance of DeviceGroupsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// iotDefenderLocation - Defender for IoT location
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDeviceGroupsClient(subscriptionID string, iotDefenderLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeviceGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DeviceGroupsClient{subscriptionID: subscriptionID, iotDefenderLocation: iotDefenderLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DeviceGroupsClient{
+		subscriptionID:      subscriptionID,
+		iotDefenderLocation: iotDefenderLocation,
+		host:                string(cp.Endpoint),
+		pl:                  armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update device group
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeviceGroupsClient) CreateOrUpdate(ctx context.Context, deviceGroupName string, deviceGroupModel DeviceGroupModel, options *DeviceGroupsCreateOrUpdateOptions) (DeviceGroupsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceGroupName - Device group name
+// deviceGroupModel - Device group model
+// options - DeviceGroupsClientCreateOrUpdateOptions contains the optional parameters for the DeviceGroupsClient.CreateOrUpdate
+// method.
+func (client *DeviceGroupsClient) CreateOrUpdate(ctx context.Context, deviceGroupName string, deviceGroupModel DeviceGroupModel, options *DeviceGroupsClientCreateOrUpdateOptions) (DeviceGroupsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceGroupName, deviceGroupModel, options)
 	if err != nil {
-		return DeviceGroupsCreateOrUpdateResponse{}, err
+		return DeviceGroupsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DeviceGroupsCreateOrUpdateResponse{}, err
+		return DeviceGroupsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DeviceGroupsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DeviceGroupsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Context, deviceGroupName string, deviceGroupModel DeviceGroupModel, options *DeviceGroupsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Context, deviceGroupName string, deviceGroupModel DeviceGroupModel, options *DeviceGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -75,7 +88,7 @@ func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter deviceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceGroupName}", url.PathEscape(deviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,46 +100,35 @@ func (client *DeviceGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DeviceGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceGroupsCreateOrUpdateResponse, error) {
-	result := DeviceGroupsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DeviceGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceGroupsClientCreateOrUpdateResponse, error) {
+	result := DeviceGroupsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceGroupModel); err != nil {
-		return DeviceGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DeviceGroupsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DeviceGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete device group
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeviceGroupsClient) Delete(ctx context.Context, deviceGroupName string, options *DeviceGroupsDeleteOptions) (DeviceGroupsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceGroupName - Device group name
+// options - DeviceGroupsClientDeleteOptions contains the optional parameters for the DeviceGroupsClient.Delete method.
+func (client *DeviceGroupsClient) Delete(ctx context.Context, deviceGroupName string, options *DeviceGroupsClientDeleteOptions) (DeviceGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceGroupName, options)
 	if err != nil {
-		return DeviceGroupsDeleteResponse{}, err
+		return DeviceGroupsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DeviceGroupsDeleteResponse{}, err
+		return DeviceGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DeviceGroupsDeleteResponse{}, client.deleteHandleError(resp)
+		return DeviceGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DeviceGroupsDeleteResponse{RawResponse: resp}, nil
+	return DeviceGroupsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, deviceGroupName string, options *DeviceGroupsDeleteOptions) (*policy.Request, error) {
+func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, deviceGroupName string, options *DeviceGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +142,7 @@ func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, devic
 		return nil, errors.New("parameter deviceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceGroupName}", url.PathEscape(deviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,38 +153,27 @@ func (client *DeviceGroupsClient) deleteCreateRequest(ctx context.Context, devic
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DeviceGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get device group
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeviceGroupsClient) Get(ctx context.Context, deviceGroupName string, options *DeviceGroupsGetOptions) (DeviceGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// deviceGroupName - Device group name
+// options - DeviceGroupsClientGetOptions contains the optional parameters for the DeviceGroupsClient.Get method.
+func (client *DeviceGroupsClient) Get(ctx context.Context, deviceGroupName string, options *DeviceGroupsClientGetOptions) (DeviceGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deviceGroupName, options)
 	if err != nil {
-		return DeviceGroupsGetResponse{}, err
+		return DeviceGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DeviceGroupsGetResponse{}, err
+		return DeviceGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DeviceGroupsGetResponse{}, client.getHandleError(resp)
+		return DeviceGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, deviceGroupName string, options *DeviceGroupsGetOptions) (*policy.Request, error) {
+func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, deviceGroupName string, options *DeviceGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -196,7 +187,7 @@ func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, deviceGr
 		return nil, errors.New("parameter deviceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceGroupName}", url.PathEscape(deviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,43 +199,31 @@ func (client *DeviceGroupsClient) getCreateRequest(ctx context.Context, deviceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (DeviceGroupsGetResponse, error) {
-	result := DeviceGroupsGetResponse{RawResponse: resp}
+func (client *DeviceGroupsClient) getHandleResponse(resp *http.Response) (DeviceGroupsClientGetResponse, error) {
+	result := DeviceGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceGroupModel); err != nil {
-		return DeviceGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DeviceGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DeviceGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List device groups
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeviceGroupsClient) List(options *DeviceGroupsListOptions) *DeviceGroupsListPager {
-	return &DeviceGroupsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DeviceGroupsClientListOptions contains the optional parameters for the DeviceGroupsClient.List method.
+func (client *DeviceGroupsClient) List(options *DeviceGroupsClientListOptions) *DeviceGroupsClientListPager {
+	return &DeviceGroupsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DeviceGroupsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DeviceGroupsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceGroupList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DeviceGroupsClient) listCreateRequest(ctx context.Context, options *DeviceGroupsListOptions) (*policy.Request, error) {
+func (client *DeviceGroupsClient) listCreateRequest(ctx context.Context, options *DeviceGroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -254,7 +233,7 @@ func (client *DeviceGroupsClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.iotDefenderLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{iotDefenderLocation}", url.PathEscape(client.iotDefenderLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -266,23 +245,10 @@ func (client *DeviceGroupsClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *DeviceGroupsClient) listHandleResponse(resp *http.Response) (DeviceGroupsListResponse, error) {
-	result := DeviceGroupsListResponse{RawResponse: resp}
+func (client *DeviceGroupsClient) listHandleResponse(resp *http.Response) (DeviceGroupsClientListResponse, error) {
+	result := DeviceGroupsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceGroupList); err != nil {
-		return DeviceGroupsListResponse{}, runtime.NewResponseError(err, resp)
+		return DeviceGroupsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DeviceGroupsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

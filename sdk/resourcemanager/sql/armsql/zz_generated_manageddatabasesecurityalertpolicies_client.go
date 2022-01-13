@@ -24,42 +24,58 @@ import (
 // ManagedDatabaseSecurityAlertPoliciesClient contains the methods for the ManagedDatabaseSecurityAlertPolicies group.
 // Don't use this type directly, use NewManagedDatabaseSecurityAlertPoliciesClient() instead.
 type ManagedDatabaseSecurityAlertPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedDatabaseSecurityAlertPoliciesClient creates a new instance of ManagedDatabaseSecurityAlertPoliciesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedDatabaseSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseSecurityAlertPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedDatabaseSecurityAlertPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedDatabaseSecurityAlertPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a database's security alert policy.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedDatabaseSecurityAlertPolicy, options *ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateOptions) (ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the security alert policy is defined.
+// securityAlertPolicyName - The name of the security alert policy.
+// parameters - The database security alert policy.
+// options - ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ManagedDatabaseSecurityAlertPoliciesClient.CreateOrUpdate
+// method.
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedDatabaseSecurityAlertPolicy, options *ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions) (ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters, options)
 	if err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
+		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
+		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedDatabaseSecurityAlertPolicy, options *ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedDatabaseSecurityAlertPolicy, options *ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,7 +97,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,45 +109,40 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRe
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse, error) {
-	result := ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
+	result := ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseSecurityAlertPolicy); err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a managed database's security alert policy.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedDatabaseSecurityAlertPoliciesGetOptions) (ManagedDatabaseSecurityAlertPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the security alert policy is defined.
+// securityAlertPolicyName - The name of the security alert policy.
+// options - ManagedDatabaseSecurityAlertPoliciesClientGetOptions contains the optional parameters for the ManagedDatabaseSecurityAlertPoliciesClient.Get
+// method.
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedDatabaseSecurityAlertPoliciesClientGetOptions) (ManagedDatabaseSecurityAlertPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, options)
 	if err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesGetResponse{}, err
+		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesGetResponse{}, err
+		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedDatabaseSecurityAlertPoliciesGetResponse{}, client.getHandleError(resp)
+		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedDatabaseSecurityAlertPoliciesGetOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedDatabaseSecurityAlertPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +164,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,42 +176,36 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx c
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesGetResponse, error) {
-	result := ManagedDatabaseSecurityAlertPoliciesGetResponse{RawResponse: resp}
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesClientGetResponse, error) {
+	result := ManagedDatabaseSecurityAlertPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseSecurityAlertPolicy); err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Gets a list of managed database's security alert policies.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesListByDatabaseOptions) *ManagedDatabaseSecurityAlertPoliciesListByDatabasePager {
-	return &ManagedDatabaseSecurityAlertPoliciesListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the security alert policies are defined.
+// options - ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityAlertPoliciesClient.ListByDatabase
+// method.
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager {
+	return &ManagedDatabaseSecurityAlertPoliciesClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseSecurityAlertPoliciesListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedDatabaseSecurityAlertPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesListByDatabaseOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityAlertPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,7 +223,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,22 +235,10 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRe
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesListByDatabaseResponse, error) {
-	result := ManagedDatabaseSecurityAlertPoliciesListByDatabaseResponse{RawResponse: resp}
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse, error) {
+	result := ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseSecurityAlertPolicyListResult); err != nil {
-		return ManagedDatabaseSecurityAlertPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -21,45 +21,57 @@ import (
 	"strings"
 )
 
-// SQLAgentClient contains the methods for the SQLAgent group.
-// Don't use this type directly, use NewSQLAgentClient() instead.
-type SQLAgentClient struct {
-	ep             string
-	pl             runtime.Pipeline
+// AgentClient contains the methods for the SQLAgent group.
+// Don't use this type directly, use NewAgentClient() instead.
+type AgentClient struct {
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
-// NewSQLAgentClient creates a new instance of SQLAgentClient with the specified values.
-func NewSQLAgentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLAgentClient {
+// NewAgentClient creates a new instance of AgentClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAgentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AgentClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLAgentClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AgentClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Puts new sql agent configuration to instance.
-// If the operation fails it returns a generic error.
-func (client *SQLAgentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters SQLAgentConfiguration, options *SQLAgentCreateOrUpdateOptions) (SQLAgentCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - AgentClientCreateOrUpdateOptions contains the optional parameters for the AgentClient.CreateOrUpdate method.
+func (client *AgentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters AgentConfiguration, options *AgentClientCreateOrUpdateOptions) (AgentClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
 	if err != nil {
-		return SQLAgentCreateOrUpdateResponse{}, err
+		return AgentClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLAgentCreateOrUpdateResponse{}, err
+		return AgentClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLAgentCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AgentClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLAgentClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters SQLAgentConfiguration, options *SQLAgentCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AgentClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters AgentConfiguration, options *AgentClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/sqlAgent/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *SQLAgentClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +97,37 @@ func (client *SQLAgentClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SQLAgentClient) createOrUpdateHandleResponse(resp *http.Response) (SQLAgentCreateOrUpdateResponse, error) {
-	result := SQLAgentCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SQLAgentConfiguration); err != nil {
-		return SQLAgentCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *AgentClient) createOrUpdateHandleResponse(resp *http.Response) (AgentClientCreateOrUpdateResponse, error) {
+	result := AgentClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AgentConfiguration); err != nil {
+		return AgentClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLAgentClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets current instance sql agent configuration.
-// If the operation fails it returns a generic error.
-func (client *SQLAgentClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, options *SQLAgentGetOptions) (SQLAgentGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - AgentClientGetOptions contains the optional parameters for the AgentClient.Get method.
+func (client *AgentClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, options *AgentClientGetOptions) (AgentClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
-		return SQLAgentGetResponse{}, err
+		return AgentClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLAgentGetResponse{}, err
+		return AgentClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLAgentGetResponse{}, client.getHandleError(resp)
+		return AgentClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLAgentClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *SQLAgentGetOptions) (*policy.Request, error) {
+func (client *AgentClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *AgentClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/sqlAgent/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,7 +141,7 @@ func (client *SQLAgentClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -149,22 +153,10 @@ func (client *SQLAgentClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLAgentClient) getHandleResponse(resp *http.Response) (SQLAgentGetResponse, error) {
-	result := SQLAgentGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SQLAgentConfiguration); err != nil {
-		return SQLAgentGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *AgentClient) getHandleResponse(resp *http.Response) (AgentClientGetResponse, error) {
+	result := AgentClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AgentConfiguration); err != nil {
+		return AgentClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SQLAgentClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

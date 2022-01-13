@@ -24,42 +24,58 @@ import (
 // DatabaseSecurityAlertPoliciesClient contains the methods for the DatabaseSecurityAlertPolicies group.
 // Don't use this type directly, use NewDatabaseSecurityAlertPoliciesClient() instead.
 type DatabaseSecurityAlertPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseSecurityAlertPoliciesClient creates a new instance of DatabaseSecurityAlertPoliciesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatabaseSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseSecurityAlertPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatabaseSecurityAlertPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatabaseSecurityAlertPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a database's security alert policy.
-// If the operation fails it returns a generic error.
-func (client *DatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters DatabaseSecurityAlertPolicy, options *DatabaseSecurityAlertPoliciesCreateOrUpdateOptions) (DatabaseSecurityAlertPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database for which the security alert policy is defined.
+// securityAlertPolicyName - The name of the security alert policy.
+// parameters - The database security alert policy.
+// options - DatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions contains the optional parameters for the DatabaseSecurityAlertPoliciesClient.CreateOrUpdate
+// method.
+func (client *DatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters DatabaseSecurityAlertPolicy, options *DatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions) (DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters, options)
 	if err != nil {
-		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
+		return DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, err
+		return DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters DatabaseSecurityAlertPolicy, options *DatabaseSecurityAlertPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters DatabaseSecurityAlertPolicy, options *DatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,7 +97,7 @@ func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,45 +109,40 @@ func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateCreateRequest(c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesCreateOrUpdateResponse, error) {
-	result := DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
+	result := DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSecurityAlertPolicy); err != nil {
-		return DatabaseSecurityAlertPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatabaseSecurityAlertPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a database's security alert policy.
-// If the operation fails it returns a generic error.
-func (client *DatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *DatabaseSecurityAlertPoliciesGetOptions) (DatabaseSecurityAlertPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database for which the security alert policy is defined.
+// securityAlertPolicyName - The name of the security alert policy.
+// options - DatabaseSecurityAlertPoliciesClientGetOptions contains the optional parameters for the DatabaseSecurityAlertPoliciesClient.Get
+// method.
+func (client *DatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *DatabaseSecurityAlertPoliciesClientGetOptions) (DatabaseSecurityAlertPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, securityAlertPolicyName, options)
 	if err != nil {
-		return DatabaseSecurityAlertPoliciesGetResponse{}, err
+		return DatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseSecurityAlertPoliciesGetResponse{}, err
+		return DatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseSecurityAlertPoliciesGetResponse{}, client.getHandleError(resp)
+		return DatabaseSecurityAlertPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *DatabaseSecurityAlertPoliciesGetOptions) (*policy.Request, error) {
+func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *DatabaseSecurityAlertPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +164,7 @@ func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,42 +176,36 @@ func (client *DatabaseSecurityAlertPoliciesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesGetResponse, error) {
-	result := DatabaseSecurityAlertPoliciesGetResponse{RawResponse: resp}
+func (client *DatabaseSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesClientGetResponse, error) {
+	result := DatabaseSecurityAlertPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSecurityAlertPolicy); err != nil {
-		return DatabaseSecurityAlertPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseSecurityAlertPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Gets a list of database's security alert policies.
-// If the operation fails it returns a generic error.
-func (client *DatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesListByDatabaseOptions) *DatabaseSecurityAlertPoliciesListByDatabasePager {
-	return &DatabaseSecurityAlertPoliciesListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database for which the security alert policy is defined.
+// options - DatabaseSecurityAlertPoliciesClientListByDatabaseOptions contains the optional parameters for the DatabaseSecurityAlertPoliciesClient.ListByDatabase
+// method.
+func (client *DatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *DatabaseSecurityAlertPoliciesClientListByDatabasePager {
+	return &DatabaseSecurityAlertPoliciesClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseSecurityAlertPoliciesListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DatabaseSecurityAlertPoliciesClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseSecurityAlertListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesListByDatabaseOptions) (*policy.Request, error) {
+func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseSecurityAlertPoliciesClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -218,7 +223,7 @@ func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,22 +235,10 @@ func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseCreateRequest(c
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesListByDatabaseResponse, error) {
-	result := DatabaseSecurityAlertPoliciesListByDatabaseResponse{RawResponse: resp}
+func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseSecurityAlertPoliciesClientListByDatabaseResponse, error) {
+	result := DatabaseSecurityAlertPoliciesClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSecurityAlertListResult); err != nil {
-		return DatabaseSecurityAlertPoliciesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseSecurityAlertPoliciesClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

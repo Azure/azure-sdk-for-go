@@ -24,42 +24,56 @@ import (
 // DatabaseSchemasClient contains the methods for the DatabaseSchemas group.
 // Don't use this type directly, use NewDatabaseSchemasClient() instead.
 type DatabaseSchemasClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseSchemasClient creates a new instance of DatabaseSchemasClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatabaseSchemasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseSchemasClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatabaseSchemasClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatabaseSchemasClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get database schema
-// If the operation fails it returns a generic error.
-func (client *DatabaseSchemasClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseSchemasGetOptions) (DatabaseSchemasGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// options - DatabaseSchemasClientGetOptions contains the optional parameters for the DatabaseSchemasClient.Get method.
+func (client *DatabaseSchemasClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseSchemasClientGetOptions) (DatabaseSchemasClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, options)
 	if err != nil {
-		return DatabaseSchemasGetResponse{}, err
+		return DatabaseSchemasClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseSchemasGetResponse{}, err
+		return DatabaseSchemasClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseSchemasGetResponse{}, client.getHandleError(resp)
+		return DatabaseSchemasClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseSchemasGetOptions) (*policy.Request, error) {
+func (client *DatabaseSchemasClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseSchemasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,7 +95,7 @@ func (client *DatabaseSchemasClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,42 +107,36 @@ func (client *DatabaseSchemasClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseSchemasClient) getHandleResponse(resp *http.Response) (DatabaseSchemasGetResponse, error) {
-	result := DatabaseSchemasGetResponse{RawResponse: resp}
+func (client *DatabaseSchemasClient) getHandleResponse(resp *http.Response) (DatabaseSchemasClientGetResponse, error) {
+	result := DatabaseSchemasClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSchema); err != nil {
-		return DatabaseSchemasGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseSchemasClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseSchemasClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - List database schemas
-// If the operation fails it returns a generic error.
-func (client *DatabaseSchemasClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseSchemasListByDatabaseOptions) *DatabaseSchemasListByDatabasePager {
-	return &DatabaseSchemasListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - DatabaseSchemasClientListByDatabaseOptions contains the optional parameters for the DatabaseSchemasClient.ListByDatabase
+// method.
+func (client *DatabaseSchemasClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseSchemasClientListByDatabaseOptions) *DatabaseSchemasClientListByDatabasePager {
+	return &DatabaseSchemasClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp DatabaseSchemasListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DatabaseSchemasClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseSchemaListResult.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseSchemasClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseSchemasListByDatabaseOptions) (*policy.Request, error) {
+func (client *DatabaseSchemasClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseSchemasClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -146,7 +154,7 @@ func (client *DatabaseSchemasClient) listByDatabaseCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,22 +169,10 @@ func (client *DatabaseSchemasClient) listByDatabaseCreateRequest(ctx context.Con
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseSchemasClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseSchemasListByDatabaseResponse, error) {
-	result := DatabaseSchemasListByDatabaseResponse{RawResponse: resp}
+func (client *DatabaseSchemasClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseSchemasClientListByDatabaseResponse, error) {
+	result := DatabaseSchemasClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseSchemaListResult); err != nil {
-		return DatabaseSchemasListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseSchemasClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseSchemasClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

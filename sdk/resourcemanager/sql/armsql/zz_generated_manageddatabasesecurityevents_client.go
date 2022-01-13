@@ -25,39 +25,53 @@ import (
 // ManagedDatabaseSecurityEventsClient contains the methods for the ManagedDatabaseSecurityEvents group.
 // Don't use this type directly, use NewManagedDatabaseSecurityEventsClient() instead.
 type ManagedDatabaseSecurityEventsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedDatabaseSecurityEventsClient creates a new instance of ManagedDatabaseSecurityEventsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseSecurityEventsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedDatabaseSecurityEventsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedDatabaseSecurityEventsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByDatabase - Gets a list of security events.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseSecurityEventsClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsListByDatabaseOptions) *ManagedDatabaseSecurityEventsListByDatabasePager {
-	return &ManagedDatabaseSecurityEventsListByDatabasePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the managed database for which the security events are retrieved.
+// options - ManagedDatabaseSecurityEventsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityEventsClient.ListByDatabase
+// method.
+func (client *ManagedDatabaseSecurityEventsClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) *ManagedDatabaseSecurityEventsClientListByDatabasePager {
+	return &ManagedDatabaseSecurityEventsClientListByDatabasePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseSecurityEventsListByDatabaseResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedDatabaseSecurityEventsClientListByDatabaseResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityEventCollection.NextLink)
 		},
 	}
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsListByDatabaseOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityEvents"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -75,7 +89,7 @@ func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -99,22 +113,10 @@ func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseCreateRequest(c
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSecurityEventsListByDatabaseResponse, error) {
-	result := ManagedDatabaseSecurityEventsListByDatabaseResponse{RawResponse: resp}
+func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSecurityEventsClientListByDatabaseResponse, error) {
+	result := ManagedDatabaseSecurityEventsClientListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityEventCollection); err != nil {
-		return ManagedDatabaseSecurityEventsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseSecurityEventsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

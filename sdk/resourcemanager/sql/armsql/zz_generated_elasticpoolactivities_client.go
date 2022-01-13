@@ -24,42 +24,56 @@ import (
 // ElasticPoolActivitiesClient contains the methods for the ElasticPoolActivities group.
 // Don't use this type directly, use NewElasticPoolActivitiesClient() instead.
 type ElasticPoolActivitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewElasticPoolActivitiesClient creates a new instance of ElasticPoolActivitiesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewElasticPoolActivitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ElasticPoolActivitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ElasticPoolActivitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ElasticPoolActivitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByElasticPool - Returns elastic pool activities.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolActivitiesClient) ListByElasticPool(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesListByElasticPoolOptions) (ElasticPoolActivitiesListByElasticPoolResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool for which to get the current activity.
+// options - ElasticPoolActivitiesClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolActivitiesClient.ListByElasticPool
+// method.
+func (client *ElasticPoolActivitiesClient) ListByElasticPool(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesClientListByElasticPoolOptions) (ElasticPoolActivitiesClientListByElasticPoolResponse, error) {
 	req, err := client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
-		return ElasticPoolActivitiesListByElasticPoolResponse{}, err
+		return ElasticPoolActivitiesClientListByElasticPoolResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ElasticPoolActivitiesListByElasticPoolResponse{}, err
+		return ElasticPoolActivitiesClientListByElasticPoolResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ElasticPoolActivitiesListByElasticPoolResponse{}, client.listByElasticPoolHandleError(resp)
+		return ElasticPoolActivitiesClientListByElasticPoolResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByElasticPoolHandleResponse(resp)
 }
 
 // listByElasticPoolCreateRequest creates the ListByElasticPool request.
-func (client *ElasticPoolActivitiesClient) listByElasticPoolCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesListByElasticPoolOptions) (*policy.Request, error) {
+func (client *ElasticPoolActivitiesClient) listByElasticPoolCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesClientListByElasticPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolActivity"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,7 +91,7 @@ func (client *ElasticPoolActivitiesClient) listByElasticPoolCreateRequest(ctx co
 		return nil, errors.New("parameter elasticPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticPoolName}", url.PathEscape(elasticPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,22 +103,10 @@ func (client *ElasticPoolActivitiesClient) listByElasticPoolCreateRequest(ctx co
 }
 
 // listByElasticPoolHandleResponse handles the ListByElasticPool response.
-func (client *ElasticPoolActivitiesClient) listByElasticPoolHandleResponse(resp *http.Response) (ElasticPoolActivitiesListByElasticPoolResponse, error) {
-	result := ElasticPoolActivitiesListByElasticPoolResponse{RawResponse: resp}
+func (client *ElasticPoolActivitiesClient) listByElasticPoolHandleResponse(resp *http.Response) (ElasticPoolActivitiesClientListByElasticPoolResponse, error) {
+	result := ElasticPoolActivitiesClientListByElasticPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPoolActivityListResult); err != nil {
-		return ElasticPoolActivitiesListByElasticPoolResponse{}, runtime.NewResponseError(err, resp)
+		return ElasticPoolActivitiesClientListByElasticPoolResponse{}, err
 	}
 	return result, nil
-}
-
-// listByElasticPoolHandleError handles the ListByElasticPool error response.
-func (client *ElasticPoolActivitiesClient) listByElasticPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

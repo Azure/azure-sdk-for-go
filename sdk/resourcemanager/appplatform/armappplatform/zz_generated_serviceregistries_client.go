@@ -21,20 +21,20 @@ import (
 	"strings"
 )
 
-// StoragesClient contains the methods for the Storages group.
-// Don't use this type directly, use NewStoragesClient() instead.
-type StoragesClient struct {
+// ServiceRegistriesClient contains the methods for the ServiceRegistries group.
+// Don't use this type directly, use NewServiceRegistriesClient() instead.
+type ServiceRegistriesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewStoragesClient creates a new instance of StoragesClient with the specified values.
+// NewServiceRegistriesClient creates a new instance of ServiceRegistriesClient with the specified values.
 // subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StoragesClient {
+func NewServiceRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceRegistriesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -42,7 +42,7 @@ func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential,
 	if len(cp.Endpoint) == 0 {
 		cp.Endpoint = arm.AzurePublicCloud
 	}
-	client := &StoragesClient{
+	client := &ServiceRegistriesClient{
 		subscriptionID: subscriptionID,
 		host:           string(cp.Endpoint),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
@@ -50,37 +50,36 @@ func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential,
 	return client
 }
 
-// BeginCreateOrUpdate - Create or update storage resource.
+// BeginCreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
-// storageName - The name of the storage resource.
-// storageResource - Parameters for the create or update operation
-// options - StoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the StoragesClient.BeginCreateOrUpdate
+// serviceRegistryName - The name of Service Registry.
+// options - ServiceRegistriesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceRegistriesClient.BeginCreateOrUpdate
 // method.
-func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesClientBeginCreateOrUpdateOptions) (StoragesClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, storageName, storageResource, options)
+func (client *ServiceRegistriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (ServiceRegistriesClientCreateOrUpdatePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
 	if err != nil {
-		return StoragesClientCreateOrUpdatePollerResponse{}, err
+		return ServiceRegistriesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := StoragesClientCreateOrUpdatePollerResponse{
+	result := ServiceRegistriesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StoragesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
+	pt, err := armruntime.NewPoller("ServiceRegistriesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return StoragesClientCreateOrUpdatePollerResponse{}, err
+		return ServiceRegistriesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &StoragesClientCreateOrUpdatePoller{
+	result.Poller = &ServiceRegistriesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Create or update storage resource.
+// CreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, storageName, storageResource, options)
+func (client *ServiceRegistriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -88,15 +87,15 @@ func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}"
+func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -109,10 +108,10 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if storageName == "" {
-		return nil, errors.New("parameter storageName cannot be empty")
+	if serviceRegistryName == "" {
+		return nil, errors.New("parameter serviceRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
+	urlPath = strings.ReplaceAll(urlPath, "{serviceRegistryName}", url.PathEscape(serviceRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -121,38 +120,39 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, storageResource)
+	return req, nil
 }
 
-// BeginDelete - Delete the storage resource.
+// BeginDelete - Disable the default Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
-// storageName - The name of the storage resource.
-// options - StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
-func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientBeginDeleteOptions) (StoragesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, storageName, options)
+// serviceRegistryName - The name of Service Registry.
+// options - ServiceRegistriesClientBeginDeleteOptions contains the optional parameters for the ServiceRegistriesClient.BeginDelete
+// method.
+func (client *ServiceRegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (ServiceRegistriesClientDeletePollerResponse, error) {
+	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
 	if err != nil {
-		return StoragesClientDeletePollerResponse{}, err
+		return ServiceRegistriesClientDeletePollerResponse{}, err
 	}
-	result := StoragesClientDeletePollerResponse{
+	result := ServiceRegistriesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StoragesClient.Delete", "azure-async-operation", resp, client.pl)
+	pt, err := armruntime.NewPoller("ServiceRegistriesClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return StoragesClientDeletePollerResponse{}, err
+		return ServiceRegistriesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &StoragesClientDeletePoller{
+	result.Poller = &ServiceRegistriesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Delete the storage resource.
+// Delete - Disable the default Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, storageName, options)
+func (client *ServiceRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -167,8 +167,8 @@ func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}"
+func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -181,10 +181,10 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if storageName == "" {
-		return nil, errors.New("parameter storageName cannot be empty")
+	if serviceRegistryName == "" {
+		return nil, errors.New("parameter serviceRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
+	urlPath = strings.ReplaceAll(urlPath, "{serviceRegistryName}", url.PathEscape(serviceRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -196,31 +196,31 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// Get - Get the storage resource.
+// Get - Get the Service Registry and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
-// storageName - The name of the storage resource.
-// options - StoragesClientGetOptions contains the optional parameters for the StoragesClient.Get method.
-func (client *StoragesClient) Get(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientGetOptions) (StoragesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, storageName, options)
+// serviceRegistryName - The name of Service Registry.
+// options - ServiceRegistriesClientGetOptions contains the optional parameters for the ServiceRegistriesClient.Get method.
+func (client *ServiceRegistriesClient) Get(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientGetOptions) (ServiceRegistriesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
 	if err != nil {
-		return StoragesClientGetResponse{}, err
+		return ServiceRegistriesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StoragesClientGetResponse{}, err
+		return ServiceRegistriesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StoragesClientGetResponse{}, runtime.NewResponseError(resp)
+		return ServiceRegistriesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}"
+func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -233,10 +233,10 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if storageName == "" {
-		return nil, errors.New("parameter storageName cannot be empty")
+	if serviceRegistryName == "" {
+		return nil, errors.New("parameter serviceRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
+	urlPath = strings.ReplaceAll(urlPath, "{serviceRegistryName}", url.PathEscape(serviceRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -249,35 +249,35 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *StoragesClient) getHandleResponse(resp *http.Response) (StoragesClientGetResponse, error) {
-	result := StoragesClientGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StorageResource); err != nil {
-		return StoragesClientGetResponse{}, err
+func (client *ServiceRegistriesClient) getHandleResponse(resp *http.Response) (ServiceRegistriesClientGetResponse, error) {
+	result := ServiceRegistriesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceRegistryResource); err != nil {
+		return ServiceRegistriesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - List all the storages of one Azure Spring Cloud instance.
+// List - Handles requests to list all resources in a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
-// options - StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
-func (client *StoragesClient) List(resourceGroupName string, serviceName string, options *StoragesClientListOptions) *StoragesClientListPager {
-	return &StoragesClientListPager{
+// options - ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.List method.
+func (client *ServiceRegistriesClient) List(resourceGroupName string, serviceName string, options *ServiceRegistriesClientListOptions) *ServiceRegistriesClientListPager {
+	return &ServiceRegistriesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp StoragesClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageResourceCollection.NextLink)
+		advancer: func(ctx context.Context, resp ServiceRegistriesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceRegistryResourceCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *StoragesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *StoragesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages"
+func (client *ServiceRegistriesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceRegistriesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -302,10 +302,10 @@ func (client *StoragesClient) listCreateRequest(ctx context.Context, resourceGro
 }
 
 // listHandleResponse handles the List response.
-func (client *StoragesClient) listHandleResponse(resp *http.Response) (StoragesClientListResponse, error) {
-	result := StoragesClientListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StorageResourceCollection); err != nil {
-		return StoragesClientListResponse{}, err
+func (client *ServiceRegistriesClient) listHandleResponse(resp *http.Response) (ServiceRegistriesClientListResponse, error) {
+	result := ServiceRegistriesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceRegistryResourceCollection); err != nil {
+		return ServiceRegistriesClientListResponse{}, err
 	}
 	return result, nil
 }

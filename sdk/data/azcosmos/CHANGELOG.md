@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2022-1-13)
+## 0.2.0 (2022-01-13)
 
 ### Features Added
 * Failed API calls will now return an `*azcore.ResponseError` type.

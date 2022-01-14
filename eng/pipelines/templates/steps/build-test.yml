@@ -71,10 +71,11 @@ steps:
     inputs:
       BuildDropPath: $(Build.ArtifactStagingDirectory)
 
-  - publish: $(Build.ArtifactStagingDirectory)/_manifest
-    displayName: 'Publish BOM Manifest'
-    condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
-    artifact: 'manifest'
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+      ArtifactName: 'manifest'
+      CustomCondition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()

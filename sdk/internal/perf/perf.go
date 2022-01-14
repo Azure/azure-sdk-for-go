@@ -189,12 +189,6 @@ func printFinal(totalCount int, totalElapsed float64) {
 	fmt.Printf("Summary: Completed %d operations in %.4f seconds. Averaged %.4f ops/sec.\n", totalCount, totalElapsed, perSecond)
 }
 
-// printUsage prints the usage for when commands are unsuccessful
-func printUsage() {
-	fmt.Println("Azure Go Performance Framework Usage")
-	fmt.Println("\tperf.exe [-h --help] [TestsToRun] [COMMANDS]")
-}
-
 // testsToRun trims the slice of PerfTest to only those that are flagged as running.
 func testsToRun(registered []PerfTest) []PerfTest {
 	var ret []PerfTest
@@ -224,22 +218,25 @@ func Run(perfTests []PerfTest) {
 	// Need to add individual performance tests local flags
 
 	pflag.Parse()
-	fmt.Println("parsed flags")
 
-	perfTests = testsToRun(perfTests)
+	perfTestsToRun := testsToRun(perfTests)
+
+	if len(perfTestsToRun) == 0 {
+		fmt.Println("Available performance tests:")
+		for _, p := range perfTests {
+			fmt.Printf("\t%s\n", p.GetMetadata())
+		}
+
+		return
+	}
 
 	fmt.Println("======= Pre Run Summary =======")
-	for _, p := range perfTests {
+	for _, p := range perfTestsToRun {
 		fmt.Printf("\tRunning %s\n", p.GetMetadata())
 	}
 	fmt.Println("===============================")
 
-	if debug {
-		fmt.Println("====== Flag Values =======")
-		fmt.Printf("TestProxy: %s\n", TestProxy)
-	}
-
-	for _, p := range perfTests {
+	for _, p := range perfTestsToRun {
 		err := runPerfTest(p)
 		if err != nil {
 			panic(err)

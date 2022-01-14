@@ -5,13 +5,11 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
-
-var errReceiveAndDeleteReceiver = errors.New("messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
 
 type settler interface {
 	CompleteMessage(ctx context.Context, message *ReceivedMessage) error
@@ -21,15 +19,17 @@ type settler interface {
 }
 
 type messageSettler struct {
-	links                  internal.AMQPLinks
+	links        internal.AMQPLinks
+	retryOptions utils.RetryOptions
+
+	// used only for tests
 	onlyDoBackupSettlement bool
-	baseRetrier            internal.Retrier
 }
 
-func newMessageSettler(links internal.AMQPLinks, baseRetrier internal.Retrier) settler {
+func newMessageSettler(links internal.AMQPLinks, retryOptions utils.RetryOptions) settler {
 	return &messageSettler{
-		links:       links,
-		baseRetrier: baseRetrier,
+		links:        links,
+		retryOptions: retryOptions,
 	}
 }
 
@@ -39,44 +39,31 @@ func (s *messageSettler) useManagementLink(m *ReceivedMessage, receiver internal
 		m.rawAMQPMessage.LinkName() != receiver.LinkName()
 }
 
-func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error) error {
+func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error) error {
 	if s == nil {
-		return errReceiveAndDeleteReceiver
+		return internal.ErrNonRetriable{Message: "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable"}
 	}
 
-	retrier := s.baseRetrier.Copy()
-	var lastErr error
-
-	for retrier.Try(ctx) {
-		var receiver internal.AMQPReceiver
-		var mgmt internal.MgmtClient
-		var linkRevision uint64
-
-		_, receiver, mgmt, linkRevision, lastErr = s.links.Get(ctx)
-
-		if lastErr != nil {
-			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
-			continue
+	err := s.links.Retry(ctx, "settle", func(ctx context.Context, lwr *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+		if err := settleFn(lwr.Receiver, lwr.RPC); err != nil {
+			return err
 		}
 
-		lastErr := settleFn(receiver, mgmt)
+		return nil
+	}, utils.RetryOptions{})
 
-		if lastErr != nil {
-			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
-			continue
-		}
+	return err
+}
 
-		break
-	}
-
-	return lastErr
+func (s *messageSettler) DisableBackupSettlement() {
+	s.neverUseBackupSettlement = true
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
 func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		if s.useManagementLink(message, receiver) {
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
+			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
 		} else {
 			return receiver.AcceptMessage(ctx, message.rawAMQPMessage)
 		}
@@ -92,7 +79,7 @@ type AbandonMessageOptions struct {
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
 func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status: internal.AbandonedDisposition,
@@ -104,7 +91,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 				propertiesToModify = options.PropertiesToModify
 			}
 
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
+			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		var annotations amqp.Annotations
@@ -125,7 +112,7 @@ type DeferMessageOptions struct {
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
 func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status: internal.DeferredDisposition,
@@ -137,7 +124,7 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 				propertiesToModify = options.PropertiesToModify
 			}
 
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
+			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		var annotations amqp.Annotations
@@ -167,7 +154,7 @@ type DeadLetterOptions struct {
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiver()`
 // using the `SubQueue` option.
 func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		reason := ""
 		description := ""
 
@@ -194,7 +181,7 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 				propertiesToModify = options.PropertiesToModify
 			}
 
-			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
+			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		info := map[string]interface{}{

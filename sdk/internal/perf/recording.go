@@ -16,6 +16,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+
 )
 
 func init() {
@@ -171,7 +172,7 @@ var client = http.Client{
 
 // start tells the test proxy to begin accepting requests for a given test
 func start(t string, options *RecordingOptions) error {
-	url := fmt.Sprintf("%s://%s/%s/start", host(), scheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/start", TestProxy, recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -203,7 +204,7 @@ func start(t string, options *RecordingOptions) error {
 
 // stop tells the test proxy to stop accepting requests for a given test
 func stop(t string, options *RecordingOptions) error {
-	url := fmt.Sprintf("%s://%s/%s/stop", host(), scheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/stop", TestProxy, recordMode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

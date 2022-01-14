@@ -79,8 +79,7 @@ func runTest(p PerfTest) (int, float64, error) {
 	defer cancel()
 
 	// If we are using the test proxy need to set up the in-memory recording.
-	usingProxy := TestProxy == "http" || TestProxy == "https"
-	if usingProxy {
+	if TestProxy != "" {
 		// First request goes through in Live mode
 		setRecordingMode("live")
 		err := p.Run(ctx)
@@ -209,7 +208,7 @@ func testsToRun(registered []PerfTest) []PerfTest {
 func Run(perfTests []PerfTest) {
 	// Start with adding all of our arguments
 	pflag.IntVarP(&Duration, "duration", "d", 10, "The duration to run a single performance test for")
-	pflag.StringVarP(&TestProxy, "proxy", "x", "", "whether to target http or https proxy (default is neither)")
+	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
 	pflag.IntVarP(&TimeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
 	pflag.IntVarP(&WarmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
@@ -234,7 +233,7 @@ func Run(perfTests []PerfTest) {
 	for _, p := range perfTestsToRun {
 		fmt.Printf("\tRunning %s\n", p.GetMetadata())
 	}
-	fmt.Println("===============================")
+	fmt.Printf("===============================\n\n")
 
 	for _, p := range perfTestsToRun {
 		err := runPerfTest(p)

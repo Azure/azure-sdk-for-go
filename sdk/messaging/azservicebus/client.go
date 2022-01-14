@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
 )
 
@@ -28,9 +29,10 @@ type Client struct {
 		internal.NamespaceForAMQPLinks
 		internal.NamespaceForMgmtClient
 	}
-	linksMu     *sync.Mutex
-	linkCounter uint64
-	links       map[uint64]internal.Closeable
+	linksMu      *sync.Mutex
+	linkCounter  uint64
+	links        map[uint64]internal.Closeable
+	retryOptions RetryOptions
 }
 
 // ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
@@ -45,7 +47,15 @@ type ClientOptions struct {
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+
+	// RetryOptions controls how often operations are retried from this client and any
+	// Receivers and Senders created from this client.
+	RetryOptions RetryOptions
 }
+
+// RetryOptions controls how often operations are retried from this client and any
+// Receivers and Senders created from this client.
+type RetryOptions utils.RetryOptions
 
 // NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
 type NewWebSocketConnArgs = internal.NewWebSocketConnArgs
@@ -107,7 +117,7 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	if client.creds.connectionString != "" {
 		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.creds.connectionString))
 	} else if client.creds.credential != nil {
-		option := internal.NamespacesWithTokenCredential(
+		option := internal.NamespaceWithTokenCredential(
 			client.creds.fullyQualifiedNamespace,
 			client.creds.credential)
 
@@ -126,6 +136,8 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 		if options.ApplicationID != "" {
 			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.ApplicationID))
 		}
+
+		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions((utils.RetryOptions)(options.RetryOptions)))
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
@@ -135,7 +147,11 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 // NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	receiver, err := newReceiver(client.namespace, &entity{Queue: queueName}, cleanupOnClose, options, nil)
+	receiver, err := newReceiver(newReceiverArgs{
+		cleanupOnClose: cleanupOnClose,
+		ns:             client.namespace,
+		entity:         entity{Queue: queueName},
+	}, options)
 
 	if err != nil {
 		return nil, err
@@ -148,7 +164,11 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 // NewReceiver creates a Receiver for a subscription. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForSubscription(topicName string, subscriptionName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	receiver, err := newReceiver(client.namespace, &entity{Topic: topicName, Subscription: subscriptionName}, cleanupOnClose, options, nil)
+	receiver, err := newReceiver(newReceiverArgs{
+		cleanupOnClose: cleanupOnClose,
+		ns:             client.namespace,
+		entity:         entity{Topic: topicName, Subscription: subscriptionName},
+	}, options)
 
 	if err != nil {
 		return nil, err
@@ -165,7 +185,11 @@ type NewSenderOptions struct {
 // NewSender creates a Sender, which allows you to send messages or schedule messages.
 func (client *Client) NewSender(queueOrTopic string, options *NewSenderOptions) (*Sender, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	sender, err := newSender(client.namespace, queueOrTopic, cleanupOnClose)
+	sender, err := newSender(newSenderArgs{
+		ns:             client.namespace,
+		queueOrTopic:   queueOrTopic,
+		cleanupOnClose: cleanupOnClose,
+	}, client.retryOptions)
 
 	if err != nil {
 		return nil, err
@@ -183,7 +207,7 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queueName strin
 		ctx,
 		&sessionID,
 		client.namespace,
-		&entity{Queue: queueName},
+		entity{Queue: queueName},
 		cleanupOnClose,
 		toReceiverOptions(options))
 
@@ -207,7 +231,7 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 		ctx,
 		&sessionID,
 		client.namespace,
-		&entity{Topic: topicName, Subscription: subscriptionName},
+		entity{Topic: topicName, Subscription: subscriptionName},
 		cleanupOnClose,
 		toReceiverOptions(options))
 
@@ -231,7 +255,7 @@ func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queueName s
 		ctx,
 		nil,
 		client.namespace,
-		&entity{Queue: queueName},
+		entity{Queue: queueName},
 		cleanupOnClose,
 		toReceiverOptions(options))
 
@@ -255,7 +279,7 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 		ctx,
 		nil,
 		client.namespace,
-		&entity{Topic: topicName, Subscription: subscriptionName},
+		entity{Topic: topicName, Subscription: subscriptionName},
 		cleanupOnClose,
 		toReceiverOptions(options))
 

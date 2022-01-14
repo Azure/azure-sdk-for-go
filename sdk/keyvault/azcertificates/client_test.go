@@ -8,7 +8,12 @@ package azcertificates
 
 import (
 	"context"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"crypto/x509/pkix"
 	"fmt"
+	"math/big"
 	"testing"
 	"time"
 
@@ -182,7 +187,6 @@ func TestClient_ListCertificates(t *testing.T) {
 }
 
 func TestClient_ListCertificateVersions(t *testing.T) {
-	t.Skip()
 	stop := startTest(t)
 	defer stop()
 
@@ -520,4 +524,141 @@ func TestCRUDOperations(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "updated_values1", *updatePropsResp.Tags["tag1"])
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
+}
+
+func TestMergeCertificate(t *testing.T) {
+	t.Skip()
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "mergeCert")
+	require.NoError(t, err)
+
+	certPolicy := CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name:                    to.StringPtr("Unknown"),
+			CertificateTransparency: to.BoolPtr(false),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=MyCert"),
+		},
+	}
+
+	// read testdata/ca.crt
+	// data, err := os.ReadFile("testdata/ca.crt")
+	// require.NoError(t, err)
+	// caCert, err := x509.ParseCertificate(data)
+	// require.NoError(t, err)
+
+	// data, err = os.ReadFile("testdata/ca.key")
+	// require.NoError(t, err)
+	// pkey, err := x509.ParseECPrivateKey(data)
+	// require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, certPolicy, nil)
+	require.NoError(t, err)
+	pollerResp, err := resp.PollUntilDone(ctx, time.Second)
+	require.NoError(t, err)
+
+	serviceCert, err := x509.ParseCertificate(pollerResp.Csr)
+	require.NoError(t, err)
+	_ = serviceCert
+
+	// certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
+	// require.NoError(t, err)
+
+	// mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
+	// csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
+
+	ca := &x509.Certificate{
+		SerialNumber: big.NewInt(2019),
+		Subject: pkix.Name{
+			Organization:  []string{"Company, INC."},
+			Country:       []string{"US"},
+			Province:      []string{""},
+			Locality:      []string{"San Francisco"},
+			StreetAddress: []string{"Golden Gate Bridge"},
+			PostalCode:    []string{"94016"},
+		},
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().AddDate(10, 0, 0),
+		IsCA:                  true,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		BasicConstraintsValid: true,
+	}
+
+	// create our private and public key
+	caPrivKey, err := rsa.GenerateKey(rand.Reader, 4096)
+	require.NoError(t, err)
+
+	// create the CA
+	caBytes, err := x509.CreateCertificate(rand.Reader, ca, ca, &caPrivKey.PublicKey, caPrivKey)
+	require.NoError(t, err)
+
+	// // pem encode
+	// caPEM := new(bytes.Buffer)
+	// pem.Encode(caPEM, &pem.Block{
+	// 	Type:  "CERTIFICATE",
+	// 	Bytes: caBytes,
+	// })
+
+	// caPrivKeyPEM := new(bytes.Buffer)
+	// pem.Encode(caPrivKeyPEM, &pem.Block{
+	// 	Type:  "RSA PRIVATE KEY",
+	// 	Bytes: x509.MarshalPKCS1PrivateKey(caPrivKey),
+	// })
+
+	var mergedCerts [][]byte
+	mergedCerts = append(mergedCerts, caBytes)
+
+	_, err = client.MergeCertificate(ctx, certName, mergedCerts, nil)
+	require.NoError(t, err)
+}
+
+func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "certRecover")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+		},
+	}, nil)
+	require.NoError(t, err)
+	defer cleanUp(t, client, certName)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
+
+	_, err = client.GetCertificate(ctx, certName, nil)
+	require.Error(t, err)
+
+	recover, err := client.BeginRecoverDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	recoveredResp, err := recover.PollUntilDone(ctx, time.Second)
+	require.NoError(t, err)
+	require.Contains(t, *recoveredResp.ID, certName)
+
 }

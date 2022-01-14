@@ -1262,3 +1262,49 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 		CertificateBundle: certificateBundleFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
+
+// MergeCertificateOptions contains the optional parameters for the Client.MergeCertificate function.
+type MergeCertificateOptions struct {
+	// The attributes of the certificate (optional).
+	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCertificateOptions {
+	return &generated.KeyVaultClientMergeCertificateOptions{}
+}
+
+// MergeCertificateResponse contains the response from method Client.MergeCertificate.
+type MergeCertificateResponse struct {
+	CertificateBundle
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.
+func (c *Client) MergeCertificate(ctx context.Context, certName string, certificates [][]byte, options *MergeCertificateOptions) (MergeCertificateResponse, error) {
+	if options == nil {
+		options = &MergeCertificateOptions{}
+	}
+	resp, err := c.genClient.MergeCertificate(
+		ctx, c.vaultURL,
+		certName,
+		generated.CertificateMergeParameters{
+			X509Certificates:      certificates,
+			CertificateAttributes: options.CertificateAttributes.toGenerated(),
+			Tags:                  options.Tags,
+		},
+		options.toGenerated(),
+	)
+	if err != nil {
+		return MergeCertificateResponse{}, err
+	}
+
+	return MergeCertificateResponse{
+		RawResponse:       resp.RawResponse,
+		CertificateBundle: certificateBundleFromGenerated(&resp.CertificateBundle),
+	}, nil
+}

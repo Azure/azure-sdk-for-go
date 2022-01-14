@@ -192,7 +192,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) 
 
 		sessionState = s
 		return nil
-	}, internal.IsFatalMgmtError, sr.inner.retryOptions)
+	}, sr.inner.retryOptions)
 
 	return sessionState, err
 }
@@ -201,7 +201,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) 
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte) error {
 	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithRev, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
-	}, internal.IsFatalMgmtError, sr.inner.retryOptions)
+	}, sr.inner.retryOptions)
 }
 
 // RenewSessionLock renews this session's lock. The new expiration time is available
@@ -216,7 +216,7 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
 
 		sr.lockedUntil = newLockedUntil
 		return nil
-	}, internal.IsFatalMgmtError, sr.inner.retryOptions)
+	}, sr.inner.retryOptions)
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.

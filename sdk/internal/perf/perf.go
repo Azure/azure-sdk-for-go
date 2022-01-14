@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/spf13/pflag"
@@ -18,6 +19,9 @@ var (
 	TimeoutSeconds int
 	TestProxy      string
 	WarmUp         int
+	Parallel       int
+	runSync        bool
+	wg             sync.WaitGroup
 )
 
 type PerfTest interface {
@@ -73,7 +77,8 @@ func runSetup(p PerfTest) error {
 
 // runTest takes care of the semantics of running a single iteration. It returns the number of times the test ran as an int, the exact number
 // of seconds the test ran as a float64, and any errors.
-func runTest(p PerfTest) (int, float64, error) {
+func runTest(p PerfTest, c chan runResult) {
+	defer wg.Done()
 	fmt.Println("Beginning `Run`")
 	ctx, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
@@ -84,7 +89,7 @@ func runTest(p PerfTest) (int, float64, error) {
 		setRecordingMode("live")
 		err := p.Run(ctx)
 		if err != nil {
-			return 0, 0.0, err
+			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
 
 		// 2nd request goes through in Record mode
@@ -92,7 +97,7 @@ func runTest(p PerfTest) (int, float64, error) {
 		start(p.GetMetadata(), nil)
 		err = p.Run(ctx)
 		if err != nil {
-			return 0, 0.0, err
+			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
 		stop(p.GetMetadata(), nil)
 
@@ -106,7 +111,7 @@ func runTest(p PerfTest) (int, float64, error) {
 	for time.Since(start).Seconds() < float64(Duration) {
 		err := p.Run(ctx)
 		if err != nil {
-			return 0, 0.0, err
+			c <- runResult{count: 0, timeInSeconds: 0.0, err: err}
 		}
 		count += 1
 	}
@@ -116,7 +121,7 @@ func runTest(p PerfTest) (int, float64, error) {
 	// Stop the proxy now
 	stop(p.GetMetadata(), nil)
 	setRecordingMode("live")
-	return count, elapsed, nil
+	c <- runResult{count: count, timeInSeconds: elapsed, err: nil}
 }
 
 // runTearDown takes care of the semantics for tearing down a single iteration of a performance test.
@@ -145,6 +150,12 @@ func runGlobalTearDown(p PerfTest) error {
 	return nil
 }
 
+type runResult struct {
+	count         int
+	timeInSeconds float64
+	err           error
+}
+
 func runPerfTest(p PerfTest) error {
 	err := runGlobalSetup(p)
 	if err != nil {
@@ -156,20 +167,32 @@ func runPerfTest(p PerfTest) error {
 
 	runSetup(p)
 
-	count, end, err := runTest(p)
-	if err != nil {
-		return err
+	var channels []chan runResult
+
+	for idx := 0; idx < Parallel; idx++ {
+		wg.Add(1)
+		c := make(chan runResult, 1) // Create a buffered channel
+		channels = append(channels, c)
+		go runTest(p, c)
 	}
 
-	printIteration(end, count)
+	wg.Wait()
 
-	totalCount += count
-	totalTime += end
+	// Get the results from the channels
+	for idx, channel := range channels {
+		result := <-channel
+		if err != nil {
+			return err
+		}
+		printIteration(idx, result.timeInSeconds, result.count)
+
+		totalCount += result.count
+		totalTime += result.timeInSeconds
+	}
 
 	err = runTearDown(p)
 	if err != nil {
 		return err
-
 	}
 
 	err = runGlobalTearDown(p)
@@ -178,9 +201,9 @@ func runPerfTest(p PerfTest) error {
 	return err
 }
 
-func printIteration(t float64, count int) {
+func printIteration(idx int, t float64, count int) {
 	perSecond := float64(count) / t
-	fmt.Printf("Completed %d operations in %.4f seconds. Averaged %.4f operations per second.\n", count, t, perSecond)
+	fmt.Printf("Thread #%d: Completed %d operations in %.4f seconds. Averaged %.4f operations per second.\n", idx+1, count, t, perSecond)
 }
 
 func printFinal(totalCount int, totalElapsed float64) {
@@ -207,10 +230,13 @@ func testsToRun(registered []PerfTest) []PerfTest {
 // Run runs all individual tests
 func Run(perfTests []PerfTest) {
 	// Start with adding all of our arguments
-	pflag.IntVarP(&Duration, "duration", "d", 10, "The duration to run a single performance test for")
+	pflag.IntVarP(&Duration, "duration", "d", 10, "Duration of the test in seconds. Default is 10.")
 	pflag.StringVarP(&TestProxy, "test-proxies", "x", "", "whether to target http or https proxy (default is neither)")
 	pflag.IntVarP(&TimeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
-	pflag.IntVarP(&WarmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")
+	pflag.IntVarP(&WarmUp, "warmup", "w", 5, "Duration of warmup in seconds. Default is 5.")
+	pflag.IntVarP(&Parallel, "parallel", "p", 1, "Degree of parallelism to run with. Default is 1.")
+	pflag.BoolVarP(&runSync, "sync", "s", false, "Run tests in sync mode. Default is false.")
+
 	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
 	pflag.CommandLine.MarkHidden("debug")
 

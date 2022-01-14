@@ -12,7 +12,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-08-01-preview/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-09-01/containerregistry"
 )
 
 const (
@@ -32,13 +32,6 @@ const (
 	ActionsRequiredRecreate ActionsRequired = original.ActionsRequiredRecreate
 )
 
-type ActivationStatus = original.ActivationStatus
-
-const (
-	ActivationStatusActive   ActivationStatus = original.ActivationStatusActive
-	ActivationStatusInactive ActivationStatus = original.ActivationStatusInactive
-)
-
 type Architecture = original.Architecture
 
 const (
@@ -47,13 +40,6 @@ const (
 	ArchitectureArm64         Architecture = original.ArchitectureArm64
 	ArchitectureThreeEightSix Architecture = original.ArchitectureThreeEightSix
 	ArchitectureX86           Architecture = original.ArchitectureX86
-)
-
-type AuditLogStatus = original.AuditLogStatus
-
-const (
-	AuditLogStatusDisabled AuditLogStatus = original.AuditLogStatusDisabled
-	AuditLogStatusEnabled  AuditLogStatus = original.AuditLogStatusEnabled
 )
 
 type BaseImageDependencyType = original.BaseImageDependencyType
@@ -68,30 +54,6 @@ type BaseImageTriggerType = original.BaseImageTriggerType
 const (
 	BaseImageTriggerTypeAll     BaseImageTriggerType = original.BaseImageTriggerTypeAll
 	BaseImageTriggerTypeRuntime BaseImageTriggerType = original.BaseImageTriggerTypeRuntime
-)
-
-type CertificateType = original.CertificateType
-
-const (
-	CertificateTypeLocalDirectory CertificateType = original.CertificateTypeLocalDirectory
-)
-
-type ConnectedRegistryMode = original.ConnectedRegistryMode
-
-const (
-	ConnectedRegistryModeMirror    ConnectedRegistryMode = original.ConnectedRegistryModeMirror
-	ConnectedRegistryModeReadOnly  ConnectedRegistryMode = original.ConnectedRegistryModeReadOnly
-	ConnectedRegistryModeReadWrite ConnectedRegistryMode = original.ConnectedRegistryModeReadWrite
-	ConnectedRegistryModeRegistry  ConnectedRegistryMode = original.ConnectedRegistryModeRegistry
-)
-
-type ConnectionState = original.ConnectionState
-
-const (
-	ConnectionStateOffline   ConnectionState = original.ConnectionStateOffline
-	ConnectionStateOnline    ConnectionState = original.ConnectionStateOnline
-	ConnectionStateSyncing   ConnectionState = original.ConnectionStateSyncing
-	ConnectionStateUnhealthy ConnectionState = original.ConnectionStateUnhealthy
 )
 
 type ConnectionStatus = original.ConnectionStatus
@@ -149,16 +111,6 @@ const (
 	LastModifiedByTypeUser            LastModifiedByType = original.LastModifiedByTypeUser
 )
 
-type LogLevel = original.LogLevel
-
-const (
-	LogLevelDebug       LogLevel = original.LogLevelDebug
-	LogLevelError       LogLevel = original.LogLevelError
-	LogLevelInformation LogLevel = original.LogLevelInformation
-	LogLevelNone        LogLevel = original.LogLevelNone
-	LogLevelWarning     LogLevel = original.LogLevelWarning
-)
-
 type NetworkRuleBypassOptions = original.NetworkRuleBypassOptions
 
 const (
@@ -178,33 +130,6 @@ type PasswordName = original.PasswordName
 const (
 	PasswordNamePassword  PasswordName = original.PasswordNamePassword
 	PasswordNamePassword2 PasswordName = original.PasswordNamePassword2
-)
-
-type PipelineOptions = original.PipelineOptions
-
-const (
-	PipelineOptionsContinueOnErrors          PipelineOptions = original.PipelineOptionsContinueOnErrors
-	PipelineOptionsDeleteSourceBlobOnSuccess PipelineOptions = original.PipelineOptionsDeleteSourceBlobOnSuccess
-	PipelineOptionsOverwriteBlobs            PipelineOptions = original.PipelineOptionsOverwriteBlobs
-	PipelineOptionsOverwriteTags             PipelineOptions = original.PipelineOptionsOverwriteTags
-)
-
-type PipelineRunSourceType = original.PipelineRunSourceType
-
-const (
-	PipelineRunSourceTypeAzureStorageBlob PipelineRunSourceType = original.PipelineRunSourceTypeAzureStorageBlob
-)
-
-type PipelineRunTargetType = original.PipelineRunTargetType
-
-const (
-	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = original.PipelineRunTargetTypeAzureStorageBlob
-)
-
-type PipelineSourceType = original.PipelineSourceType
-
-const (
-	PipelineSourceTypeAzureStorageBlobContainer PipelineSourceType = original.PipelineSourceTypeAzureStorageBlobContainer
 )
 
 type PolicyStatus = original.PolicyStatus
@@ -316,39 +241,11 @@ const (
 	SourceTriggerEventPullrequest SourceTriggerEvent = original.SourceTriggerEventPullrequest
 )
 
-type TLSStatus = original.TLSStatus
-
-const (
-	TLSStatusDisabled TLSStatus = original.TLSStatusDisabled
-	TLSStatusEnabled  TLSStatus = original.TLSStatusEnabled
-)
-
 type TaskStatus = original.TaskStatus
 
 const (
 	TaskStatusDisabled TaskStatus = original.TaskStatusDisabled
 	TaskStatusEnabled  TaskStatus = original.TaskStatusEnabled
-)
-
-type TokenCertificateName = original.TokenCertificateName
-
-const (
-	TokenCertificateNameCertificate1 TokenCertificateName = original.TokenCertificateNameCertificate1
-	TokenCertificateNameCertificate2 TokenCertificateName = original.TokenCertificateNameCertificate2
-)
-
-type TokenPasswordName = original.TokenPasswordName
-
-const (
-	TokenPasswordNamePassword1 TokenPasswordName = original.TokenPasswordNamePassword1
-	TokenPasswordNamePassword2 TokenPasswordName = original.TokenPasswordNamePassword2
-)
-
-type TokenStatus = original.TokenStatus
-
-const (
-	TokenStatusDisabled TokenStatus = original.TokenStatusDisabled
-	TokenStatusEnabled  TokenStatus = original.TokenStatusEnabled
 )
 
 type TokenType = original.TokenType
@@ -438,8 +335,6 @@ const (
 	ZoneRedundancyEnabled  ZoneRedundancy = original.ZoneRedundancyEnabled
 )
 
-type ActivationProperties = original.ActivationProperties
-type ActiveDirectoryObject = original.ActiveDirectoryObject
 type Actor = original.Actor
 type AgentPool = original.AgentPool
 type AgentPoolListResult = original.AgentPoolListResult
@@ -465,18 +360,6 @@ type BasicRunRequest = original.BasicRunRequest
 type BasicTaskStepProperties = original.BasicTaskStepProperties
 type BasicTaskStepUpdateParameters = original.BasicTaskStepUpdateParameters
 type CallbackConfig = original.CallbackConfig
-type ConnectedRegistriesClient = original.ConnectedRegistriesClient
-type ConnectedRegistriesCreateFuture = original.ConnectedRegistriesCreateFuture
-type ConnectedRegistriesDeactivateFuture = original.ConnectedRegistriesDeactivateFuture
-type ConnectedRegistriesDeleteFuture = original.ConnectedRegistriesDeleteFuture
-type ConnectedRegistriesUpdateFuture = original.ConnectedRegistriesUpdateFuture
-type ConnectedRegistry = original.ConnectedRegistry
-type ConnectedRegistryListResult = original.ConnectedRegistryListResult
-type ConnectedRegistryListResultIterator = original.ConnectedRegistryListResultIterator
-type ConnectedRegistryListResultPage = original.ConnectedRegistryListResultPage
-type ConnectedRegistryProperties = original.ConnectedRegistryProperties
-type ConnectedRegistryUpdateParameters = original.ConnectedRegistryUpdateParameters
-type ConnectedRegistryUpdateProperties = original.ConnectedRegistryUpdateProperties
 type Credentials = original.Credentials
 type CustomRegistryCredentials = original.CustomRegistryCredentials
 type DockerBuildRequest = original.DockerBuildRequest
@@ -496,41 +379,19 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
-type ExportPipeline = original.ExportPipeline
-type ExportPipelineListResult = original.ExportPipelineListResult
-type ExportPipelineListResultIterator = original.ExportPipelineListResultIterator
-type ExportPipelineListResultPage = original.ExportPipelineListResultPage
-type ExportPipelineProperties = original.ExportPipelineProperties
-type ExportPipelineTargetProperties = original.ExportPipelineTargetProperties
-type ExportPipelinesClient = original.ExportPipelinesClient
-type ExportPipelinesCreateFuture = original.ExportPipelinesCreateFuture
-type ExportPipelinesDeleteFuture = original.ExportPipelinesDeleteFuture
 type ExportPolicy = original.ExportPolicy
 type FileTaskRunRequest = original.FileTaskRunRequest
 type FileTaskStep = original.FileTaskStep
 type FileTaskStepUpdateParameters = original.FileTaskStepUpdateParameters
-type GenerateCredentialsParameters = original.GenerateCredentialsParameters
-type GenerateCredentialsResult = original.GenerateCredentialsResult
 type IPRule = original.IPRule
 type IdentityProperties = original.IdentityProperties
 type ImageDescriptor = original.ImageDescriptor
 type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
-type ImportPipeline = original.ImportPipeline
-type ImportPipelineListResult = original.ImportPipelineListResult
-type ImportPipelineListResultIterator = original.ImportPipelineListResultIterator
-type ImportPipelineListResultPage = original.ImportPipelineListResultPage
-type ImportPipelineProperties = original.ImportPipelineProperties
-type ImportPipelineSourceProperties = original.ImportPipelineSourceProperties
-type ImportPipelinesClient = original.ImportPipelinesClient
-type ImportPipelinesCreateFuture = original.ImportPipelinesCreateFuture
-type ImportPipelinesDeleteFuture = original.ImportPipelinesDeleteFuture
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
 type InnerErrorDescription = original.InnerErrorDescription
 type KeyVaultProperties = original.KeyVaultProperties
-type LoggingProperties = original.LoggingProperties
-type LoginServerProperties = original.LoginServerProperties
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
@@ -543,23 +404,7 @@ type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
 type OverrideTaskStepProperties = original.OverrideTaskStepProperties
-type ParentProperties = original.ParentProperties
-type PipelineRun = original.PipelineRun
-type PipelineRunListResult = original.PipelineRunListResult
-type PipelineRunListResultIterator = original.PipelineRunListResultIterator
-type PipelineRunListResultPage = original.PipelineRunListResultPage
-type PipelineRunProperties = original.PipelineRunProperties
-type PipelineRunRequest = original.PipelineRunRequest
-type PipelineRunResponse = original.PipelineRunResponse
-type PipelineRunSourceProperties = original.PipelineRunSourceProperties
-type PipelineRunTargetProperties = original.PipelineRunTargetProperties
-type PipelineRunsClient = original.PipelineRunsClient
-type PipelineRunsCreateFuture = original.PipelineRunsCreateFuture
-type PipelineRunsDeleteFuture = original.PipelineRunsDeleteFuture
-type PipelineSourceTriggerDescriptor = original.PipelineSourceTriggerDescriptor
-type PipelineSourceTriggerProperties = original.PipelineSourceTriggerProperties
-type PipelineTriggerDescriptor = original.PipelineTriggerDescriptor
-type PipelineTriggerProperties = original.PipelineTriggerProperties
+type PackageType = original.PackageType
 type PlatformProperties = original.PlatformProperties
 type PlatformUpdateParameters = original.PlatformUpdateParameters
 type Policies = original.Policies
@@ -578,14 +423,12 @@ type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListRes
 type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
-type ProgressProperties = original.ProgressProperties
 type ProxyResource = original.ProxyResource
 type QuarantinePolicy = original.QuarantinePolicy
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesClient = original.RegistriesClient
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
-type RegistriesGenerateCredentialsFuture = original.RegistriesGenerateCredentialsFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
 type RegistriesScheduleRunFuture = original.RegistriesScheduleRunFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
@@ -628,17 +471,6 @@ type RunUpdateParameters = original.RunUpdateParameters
 type RunsCancelFuture = original.RunsCancelFuture
 type RunsClient = original.RunsClient
 type RunsUpdateFuture = original.RunsUpdateFuture
-type ScopeMap = original.ScopeMap
-type ScopeMapListResult = original.ScopeMapListResult
-type ScopeMapListResultIterator = original.ScopeMapListResultIterator
-type ScopeMapListResultPage = original.ScopeMapListResultPage
-type ScopeMapProperties = original.ScopeMapProperties
-type ScopeMapPropertiesUpdateParameters = original.ScopeMapPropertiesUpdateParameters
-type ScopeMapUpdateParameters = original.ScopeMapUpdateParameters
-type ScopeMapsClient = original.ScopeMapsClient
-type ScopeMapsCreateFuture = original.ScopeMapsCreateFuture
-type ScopeMapsDeleteFuture = original.ScopeMapsDeleteFuture
-type ScopeMapsUpdateFuture = original.ScopeMapsUpdateFuture
 type SecretObject = original.SecretObject
 type SetValue = original.SetValue
 type Sku = original.Sku
@@ -651,12 +483,8 @@ type SourceTriggerUpdateParameters = original.SourceTriggerUpdateParameters
 type SourceUpdateParameters = original.SourceUpdateParameters
 type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
-type StatusDetailProperties = original.StatusDetailProperties
-type SyncProperties = original.SyncProperties
-type SyncUpdateProperties = original.SyncUpdateProperties
+type StorageAccountProperties = original.StorageAccountProperties
 type SystemData = original.SystemData
-type TLSCertificateProperties = original.TLSCertificateProperties
-type TLSProperties = original.TLSProperties
 type Target = original.Target
 type Task = original.Task
 type TaskListResult = original.TaskListResult
@@ -686,25 +514,10 @@ type TasksUpdateFuture = original.TasksUpdateFuture
 type TimerTrigger = original.TimerTrigger
 type TimerTriggerDescriptor = original.TimerTriggerDescriptor
 type TimerTriggerUpdateParameters = original.TimerTriggerUpdateParameters
-type Token = original.Token
-type TokenCertificate = original.TokenCertificate
-type TokenCredentialsProperties = original.TokenCredentialsProperties
-type TokenListResult = original.TokenListResult
-type TokenListResultIterator = original.TokenListResultIterator
-type TokenListResultPage = original.TokenListResultPage
-type TokenPassword = original.TokenPassword
-type TokenProperties = original.TokenProperties
-type TokenUpdateParameters = original.TokenUpdateParameters
-type TokenUpdateProperties = original.TokenUpdateProperties
-type TokensClient = original.TokensClient
-type TokensCreateFuture = original.TokensCreateFuture
-type TokensDeleteFuture = original.TokensDeleteFuture
-type TokensUpdateFuture = original.TokensUpdateFuture
 type TriggerProperties = original.TriggerProperties
 type TriggerUpdateParameters = original.TriggerUpdateParameters
 type TrustPolicy = original.TrustPolicy
 type UserIdentityProperties = original.UserIdentityProperties
-type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -734,47 +547,11 @@ func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
 func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) AgentPoolsClient {
 	return original.NewAgentPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewConnectedRegistriesClient(subscriptionID string) ConnectedRegistriesClient {
-	return original.NewConnectedRegistriesClient(subscriptionID)
-}
-func NewConnectedRegistriesClientWithBaseURI(baseURI string, subscriptionID string) ConnectedRegistriesClient {
-	return original.NewConnectedRegistriesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConnectedRegistryListResultIterator(page ConnectedRegistryListResultPage) ConnectedRegistryListResultIterator {
-	return original.NewConnectedRegistryListResultIterator(page)
-}
-func NewConnectedRegistryListResultPage(cur ConnectedRegistryListResult, getNextPage func(context.Context, ConnectedRegistryListResult) (ConnectedRegistryListResult, error)) ConnectedRegistryListResultPage {
-	return original.NewConnectedRegistryListResultPage(cur, getNextPage)
-}
 func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
 	return original.NewEventListResultIterator(page)
 }
 func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
 	return original.NewEventListResultPage(cur, getNextPage)
-}
-func NewExportPipelineListResultIterator(page ExportPipelineListResultPage) ExportPipelineListResultIterator {
-	return original.NewExportPipelineListResultIterator(page)
-}
-func NewExportPipelineListResultPage(cur ExportPipelineListResult, getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
-	return original.NewExportPipelineListResultPage(cur, getNextPage)
-}
-func NewExportPipelinesClient(subscriptionID string) ExportPipelinesClient {
-	return original.NewExportPipelinesClient(subscriptionID)
-}
-func NewExportPipelinesClientWithBaseURI(baseURI string, subscriptionID string) ExportPipelinesClient {
-	return original.NewExportPipelinesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewImportPipelineListResultIterator(page ImportPipelineListResultPage) ImportPipelineListResultIterator {
-	return original.NewImportPipelineListResultIterator(page)
-}
-func NewImportPipelineListResultPage(cur ImportPipelineListResult, getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
-	return original.NewImportPipelineListResultPage(cur, getNextPage)
-}
-func NewImportPipelinesClient(subscriptionID string) ImportPipelinesClient {
-	return original.NewImportPipelinesClient(subscriptionID)
-}
-func NewImportPipelinesClientWithBaseURI(baseURI string, subscriptionID string) ImportPipelinesClient {
-	return original.NewImportPipelinesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -787,18 +564,6 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPipelineRunListResultIterator(page PipelineRunListResultPage) PipelineRunListResultIterator {
-	return original.NewPipelineRunListResultIterator(page)
-}
-func NewPipelineRunListResultPage(cur PipelineRunListResult, getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
-	return original.NewPipelineRunListResultPage(cur, getNextPage)
-}
-func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
-	return original.NewPipelineRunsClient(subscriptionID)
-}
-func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
-	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
@@ -854,18 +619,6 @@ func NewRunsClient(subscriptionID string) RunsClient {
 func NewRunsClientWithBaseURI(baseURI string, subscriptionID string) RunsClient {
 	return original.NewRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewScopeMapListResultIterator(page ScopeMapListResultPage) ScopeMapListResultIterator {
-	return original.NewScopeMapListResultIterator(page)
-}
-func NewScopeMapListResultPage(cur ScopeMapListResult, getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
-	return original.NewScopeMapListResultPage(cur, getNextPage)
-}
-func NewScopeMapsClient(subscriptionID string) ScopeMapsClient {
-	return original.NewScopeMapsClient(subscriptionID)
-}
-func NewScopeMapsClientWithBaseURI(baseURI string, subscriptionID string) ScopeMapsClient {
-	return original.NewScopeMapsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTaskListResultIterator(page TaskListResultPage) TaskListResultIterator {
 	return original.NewTaskListResultIterator(page)
 }
@@ -890,18 +643,6 @@ func NewTasksClient(subscriptionID string) TasksClient {
 func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
 	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTokenListResultIterator(page TokenListResultPage) TokenListResultIterator {
-	return original.NewTokenListResultIterator(page)
-}
-func NewTokenListResultPage(cur TokenListResult, getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
-	return original.NewTokenListResultPage(cur, getNextPage)
-}
-func NewTokensClient(subscriptionID string) TokensClient {
-	return original.NewTokensClient(subscriptionID)
-}
-func NewTokensClientWithBaseURI(baseURI string, subscriptionID string) TokensClient {
-	return original.NewTokensClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
 	return original.NewWebhookListResultIterator(page)
 }
@@ -923,29 +664,14 @@ func PossibleActionValues() []Action {
 func PossibleActionsRequiredValues() []ActionsRequired {
 	return original.PossibleActionsRequiredValues()
 }
-func PossibleActivationStatusValues() []ActivationStatus {
-	return original.PossibleActivationStatusValues()
-}
 func PossibleArchitectureValues() []Architecture {
 	return original.PossibleArchitectureValues()
-}
-func PossibleAuditLogStatusValues() []AuditLogStatus {
-	return original.PossibleAuditLogStatusValues()
 }
 func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 	return original.PossibleBaseImageDependencyTypeValues()
 }
 func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	return original.PossibleBaseImageTriggerTypeValues()
-}
-func PossibleCertificateTypeValues() []CertificateType {
-	return original.PossibleCertificateTypeValues()
-}
-func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
-	return original.PossibleConnectedRegistryModeValues()
-}
-func PossibleConnectionStateValues() []ConnectionState {
-	return original.PossibleConnectionStateValues()
 }
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
@@ -968,9 +694,6 @@ func PossibleImportModeValues() []ImportMode {
 func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	return original.PossibleLastModifiedByTypeValues()
 }
-func PossibleLogLevelValues() []LogLevel {
-	return original.PossibleLogLevelValues()
-}
 func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	return original.PossibleNetworkRuleBypassOptionsValues()
 }
@@ -979,18 +702,6 @@ func PossibleOSValues() []OS {
 }
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
-}
-func PossiblePipelineOptionsValues() []PipelineOptions {
-	return original.PossiblePipelineOptionsValues()
-}
-func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
-	return original.PossiblePipelineRunSourceTypeValues()
-}
-func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
-	return original.PossiblePipelineRunTargetTypeValues()
-}
-func PossiblePipelineSourceTypeValues() []PipelineSourceType {
-	return original.PossiblePipelineSourceTypeValues()
 }
 func PossiblePolicyStatusValues() []PolicyStatus {
 	return original.PossiblePolicyStatusValues()
@@ -1031,20 +742,8 @@ func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
 func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
 	return original.PossibleSourceTriggerEventValues()
 }
-func PossibleTLSStatusValues() []TLSStatus {
-	return original.PossibleTLSStatusValues()
-}
 func PossibleTaskStatusValues() []TaskStatus {
 	return original.PossibleTaskStatusValues()
-}
-func PossibleTokenCertificateNameValues() []TokenCertificateName {
-	return original.PossibleTokenCertificateNameValues()
-}
-func PossibleTokenPasswordNameValues() []TokenPasswordName {
-	return original.PossibleTokenPasswordNameValues()
-}
-func PossibleTokenStatusValues() []TokenStatus {
-	return original.PossibleTokenStatusValues()
 }
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()

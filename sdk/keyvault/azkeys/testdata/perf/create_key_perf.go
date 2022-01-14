@@ -42,7 +42,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 
 	options := &azkeys.ClientOptions{}
 	if perf.TestProxy == "http" {
-		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -52,7 +52,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 			},
 		}
 	} else if perf.TestProxy == "https" {
-		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}

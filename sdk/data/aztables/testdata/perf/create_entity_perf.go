@@ -26,7 +26,7 @@ type aztablesPerfTest struct {
 func (a *aztablesPerfTest) createClient() error {
 	options := &aztables.ClientOptions{}
 	if perf.TestProxy == "http" {
-		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -36,7 +36,7 @@ func (a *aztablesPerfTest) createClient() error {
 			},
 		}
 	} else if perf.TestProxy == "https" {
-		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}

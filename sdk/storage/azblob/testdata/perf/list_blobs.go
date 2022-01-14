@@ -13,17 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
-// var ListBlobCmd = &cobra.Command{
-// 	Use:   "BlobListTest",
-// 	Short: "BlobListTest performance test",
-// 	Args: func(cmd *cobra.Command, args []string) error {
-// 		return nil
-// 	},
-// 	RunE: func(c *cobra.Command, args []string) error {
-// 		return perf.RunPerfTest(&listBlobPerfTest{})
-// 	},
-// }
-
 type listBlobPerfTest struct {
 	containerName   string
 	blobName        string

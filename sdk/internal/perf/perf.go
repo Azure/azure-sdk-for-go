@@ -60,10 +60,10 @@ func runGlobalSetup(p PerfTest) error {
 func runSetup(p PerfTest) error {
 	fmt.Println("Running `Setup`")
 
-	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
+	ctx, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	err := p.Setup(context.Background())
+	err := p.Setup(ctx)
 	if err != nil {
 		return err
 	}
@@ -74,37 +74,28 @@ func runSetup(p PerfTest) error {
 // of seconds the test ran as a float64, and any errors.
 func runTest(p PerfTest) (int, float64, error) {
 	fmt.Println("Beginning `Run`")
-	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
+	ctx, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
 	// If we are using the test proxy need to set up the in-memory recording.
 	usingProxy := TestProxy == "http" || TestProxy == "https"
 	if usingProxy {
 		// First request goes through in Live mode
-		if debug {
-			fmt.Println("Running in live")
-		}
 		SetRecordingMode("live")
-		err := p.Run(context.TODO())
+		err := p.Run(ctx)
 		if err != nil {
 			return 0, 0.0, err
 		}
 
 		// 2nd request goes through in Record mode
-		if debug {
-			fmt.Println("Running in record")
-		}
 		SetRecordingMode("record")
 		Start(p.GetMetadata(), nil)
-		err = p.Run(context.TODO())
+		err = p.Run(ctx)
 		if err != nil {
 			return 0, 0.0, err
 		}
 		Stop(p.GetMetadata(), nil)
 
-		if debug {
-			fmt.Println("Running the rest in playback")
-		}
 		// All ensuing requests go through in Playback mode
 		SetRecordingMode("playback")
 		Start(p.GetMetadata(), nil)
@@ -113,7 +104,7 @@ func runTest(p PerfTest) (int, float64, error) {
 	start := time.Now()
 	count := 0
 	for time.Since(start).Seconds() < float64(Duration) {
-		err := p.Run(context.Background())
+		err := p.Run(ctx)
 		if err != nil {
 			return 0, 0.0, err
 		}

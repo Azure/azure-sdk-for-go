@@ -82,22 +82,20 @@ var recordMode string
 var perfTestSuite = map[string]string{}
 
 type TransportOptions struct {
-	UseHTTPS bool
 	TestName string
 }
 
-func (r TransportOptions) host() string {
-	if r.UseHTTPS {
+func host() string {
+	if TestProxy == "https" {
 		return "localhost:5001"
+	} else if TestProxy == "http" {
+		return "localhost:5000"
 	}
-	return "localhost:5000"
+	return ""
 }
 
-func (r TransportOptions) scheme() string {
-	if r.UseHTTPS {
-		return "https"
-	}
-	return "http"
+func scheme() string {
+	return TestProxy
 }
 
 func GetRecordMode() string {
@@ -112,7 +110,7 @@ type RecordingHTTPClient struct {
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.
 func NewProxyTransport(options *TransportOptions) (*RecordingHTTPClient, error) {
 	if options == nil {
-		options = &TransportOptions{UseHTTPS: true}
+		options = &TransportOptions{}
 	}
 	c, err := GetHTTPClient()
 	if err != nil {
@@ -145,11 +143,11 @@ func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
 }
 func (r TransportOptions) ReplaceAuthority(rawReq *http.Request) {
 	originalURLHost := rawReq.URL.Host
-	rawReq.URL.Scheme = r.scheme()
-	rawReq.URL.Host = r.host()
-	rawReq.Host = r.host()
+	rawReq.URL.Scheme = scheme()
+	rawReq.URL.Host = host()
+	rawReq.Host = host()
 
-	rawReq.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", r.scheme(), originalURLHost))
+	rawReq.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", scheme(), originalURLHost))
 	rawReq.Header.Set(ModeHeader, GetRecordMode())
 	rawReq.Header.Set(IDHeader, GetRecordingId(r.TestName))
 	rawReq.Header.Set("x-recording-remove", "false")
@@ -168,10 +166,6 @@ func (r RecordingOptions) baseURL() string {
 	return "https://localhost:5001"
 }
 
-// func getTestId(pathToRecordings string, t string) string {
-// 	return path.Join(pathToRecordings, "recordings", t+".json")
-// }
-
 var client = http.Client{
 	Transport: &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -180,9 +174,7 @@ var client = http.Client{
 
 // Start tells the test proxy to begin accepting requests for a given test
 func Start(t string, options *RecordingOptions) error {
-	// testId := getTestId(pathToRecordings, t)
-
-	url := fmt.Sprintf("https://localhost:5001/%s/start", recordMode)
+	url := fmt.Sprintf("%s://%s/%s/start", host(), scheme(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -190,7 +182,6 @@ func Start(t string, options *RecordingOptions) error {
 	}
 
 	if recordMode == PlaybackMode {
-		fmt.Println("PlaybackMode IDHeader: ", perfTestSuite[t])
 		req.Header.Set(IDHeader, perfTestSuite[t])
 	}
 
@@ -200,7 +191,6 @@ func Start(t string, options *RecordingOptions) error {
 	}
 
 	recID := resp.Header.Get(IDHeader)
-	fmt.Println("RecordingMode x-recording-id value: ", recID)
 	if recID == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()
@@ -216,11 +206,7 @@ func Start(t string, options *RecordingOptions) error {
 
 // Stop tells the test proxy to stop accepting requests for a given test
 func Stop(t string, options *RecordingOptions) error {
-	if options == nil {
-		options = &RecordingOptions{}
-	}
-
-	url := fmt.Sprintf("%v/%v/stop", options.baseURL(), recordMode)
+	url := fmt.Sprintf("%s://%s/%s/stop", host(), scheme(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

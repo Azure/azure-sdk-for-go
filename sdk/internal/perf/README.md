@@ -27,53 +27,31 @@ func (k *keysPerfTest) GlobalSetup() error {
 
     client, err := azkeys.NewClient("<my-vault-url>", cred, options)
     if err != nil {return err}
-    k.client = client
-}
-```
-
-Before you can use the proxy in playback mode, you have to generate live recordings. To do this, call `recording.Start` before the test run and `recording.Stop` after the test run.
-
-```go
-func (k *keysPerfTest) GlobalSetup() error {
-    ...
-    err := recording.Start(k.GetMetadata(), nil)
-    ...
-}
-
-func (k *keysPerfTest) GlobalTeardown() error {
-    ...
-    err := recording.Stop(k.GetMetadata(), nil)
-    return err
 }
 ```
 
 ## Adding Performance Tests to an SDK
 
-1. Copy the `cmd/template` directory into a directory for your package:
-```pwsh
-Copy-Item cmd/template cmd/<mypackage> -Recurse
-```
+1. Create a performance test directory at `testdata/perf` within a module.
+2. Run `go mod init` to create a new module.
+3. Create a `struct` that implements the `perf.PerfTest` interface by implementing the `GlobalSetup`, `Setup`, `Run`, `TearDown`, `GlobalTearDown`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings. `GlobalSetup` and `GlobalTearDown` are called once each, at the beginning and end of the performance test respectively. These are good places to do client instantiation, create instances, etc. `Setup` and `TearDown` are called once before each test iteration. If there is nothing to do in any of these steps, you can use `return nil` for the implementation.
 
-2. Change the name of `TemplateCmd`. Best practices are to use a `<packageName>Cmd` as the name. Fill in `Use`, `Short`, `Long`, and `RunE` for your specific test.
-
-3. Implement the `GlobalSetup`, `Setup`, `Run`, `TearDown`, `GlobalTearDown`, and `GetMetadata` functions. All of these functions will take a `context.Context` type to prevent an erroneous test from blocking. `GetMetadata` should return a `string` with the name of the specific test. This is only used by the test proxy for generating and reading recordings. `GlobalSetup` and `GlobalTearDown` are called once each, at the beginning and end of the performance test respectively. These are good places to do client instantiation, create instances, etc. `Setup` and `TearDown` are called once before each test iteration. If there is nothing to do in any of these steps, you can use `return nil` for the implementation.
-
-4. Register the test in `cmd/root.go` by adding the command to the `init` function and importing your package:
+4. Create a main package that uses the `perf.Run` function to run performance tests.
 
 ```golang
+package main
+
 import (
     ...
-    mypackage "github.com/Azure/azure-sdk-for-go/eng/tools/azperf/cmd/mypackage"
+    "github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 )
 
-
-func init() {
-    ...
-    rootCmd.AddCommand(mypackage.MyPackageCmd)
+func main() {
+    perf.Run([]perf.PerfTest{&myPerfTest{}, &mySecondPerfTest{}, &myThirdPerfTest{}})
 }
 ```
 
-You can create multiple performance tests all in one directory. Each performance test should be it's own unique `*cobra.Command` type and each needs to be registered with the `rootCmd.AddCommand` function.
+You can create multiple performance tests all in one directory. Each performance test needs to be it's own implementation of the `perf.PerfTest` interface. Add each performance test for the SDK to the `perf.Run` command and only the tests indicated by your execution command will be run.
 
 ### Writing a test
 
@@ -87,33 +65,21 @@ TODO
 
 First, make sure you have go version 1.17 or later installed. You can install go from the [go.dev](https://go.dev/doc/install) site.
 
-Navigate to the `eng/tools/azperf` folder and run `go mod download` to download all the requirements for the performance framework.
-
-Build the CLI with the command:
-```pwsh
-go build .
-```
-
-Now you will have a single executable `azperf.exe` on Windows, or `azperf` on Mac/Linux, which can be used to run all performance tests.
-
-To list all the performance tests available run `./azperf.exe --help` and a list will show up along with optional parameters.
+Navigate to your SDK performance test, (ie. `sdk/keyvault/azkeys/testdata/perf` folder and run `go mod download` to download all the requirements for the performance framework.
 
 To run a single performance test specify the test as the second argument:
 ```pwsh
-./azperf.exe CreateEntityTest
+go run . CreateEntityTest
 ```
 
 To specify flags for a performance test, add them after the second argument:
 ```pwsh
-./azperf.exe CreateEntityTest --duration 7 --proxy https
+go run . CreateEntityTest --duration 7 --proxy https
 ```
 
-For more information about running individual tests, refer to the READMEs of each test linked below.
+You can also run multiple performance tests by listing them:
+```pwsh
+go run . DownloadBobTest UploadBlobTest ListBlobsTest --duration 7 --proxy https
+```
 
-### Available Performance Tests
-
-| Name | Options | Package Testing | Description | Additional Flags | More Information |
-| ---- | ------- | --------------- | ----------- | ---------------- | ---------------- |
-| CreateEntityTest | None | `aztables` | Creates a single entity | None | [README](https://github.com/Azure/azure-sdk-for-go) |
-| CreateKeyTest | None | `azkeys` | Creates a single RSA key | None | [README](https://github.com/Azure/azure-sdk-for-go) |
-| UploadBlobTest | None | `azblobs` | Uploads random data to a blob | None | [README](https://github.com/Azure/azure-sdk-for-go) |
+For help run `go run . --help`. A list of registered performance tests, global command flags, and local command flags will print out.

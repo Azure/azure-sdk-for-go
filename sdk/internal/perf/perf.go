@@ -22,6 +22,7 @@ var (
 
 type PerfTest interface {
 	// GetMetadata returns the name of the test
+	// TODO: Add local flags to the GetMetadata
 	GetMetadata() string
 
 	GlobalSetup(context.Context) error
@@ -49,7 +50,7 @@ func runGlobalSetup(p PerfTest) error {
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	SetRecordingMode("live")
+	setRecordingMode("live")
 	err := p.GlobalSetup(context.Background())
 	if err != nil {
 		return err
@@ -81,24 +82,24 @@ func runTest(p PerfTest) (int, float64, error) {
 	usingProxy := TestProxy == "http" || TestProxy == "https"
 	if usingProxy {
 		// First request goes through in Live mode
-		SetRecordingMode("live")
+		setRecordingMode("live")
 		err := p.Run(ctx)
 		if err != nil {
 			return 0, 0.0, err
 		}
 
 		// 2nd request goes through in Record mode
-		SetRecordingMode("record")
-		Start(p.GetMetadata(), nil)
+		setRecordingMode("record")
+		start(p.GetMetadata(), nil)
 		err = p.Run(ctx)
 		if err != nil {
 			return 0, 0.0, err
 		}
-		Stop(p.GetMetadata(), nil)
+		stop(p.GetMetadata(), nil)
 
 		// All ensuing requests go through in Playback mode
-		SetRecordingMode("playback")
-		Start(p.GetMetadata(), nil)
+		setRecordingMode("playback")
+		start(p.GetMetadata(), nil)
 	}
 
 	start := time.Now()
@@ -114,8 +115,8 @@ func runTest(p PerfTest) (int, float64, error) {
 	elapsed := time.Since(start).Seconds()
 
 	// Stop the proxy now
-	Stop(p.GetMetadata(), nil)
-	SetRecordingMode("live")
+	stop(p.GetMetadata(), nil)
+	setRecordingMode("live")
 	return count, elapsed, nil
 }
 
@@ -145,7 +146,7 @@ func runGlobalTearDown(p PerfTest) error {
 	return nil
 }
 
-func RunPerfTest(p PerfTest) error {
+func runPerfTest(p PerfTest) error {
 	err := runGlobalSetup(p)
 	if err != nil {
 		return err
@@ -239,7 +240,7 @@ func Run(perfTests []PerfTest) {
 	}
 
 	for _, p := range perfTests {
-		err := RunPerfTest(p)
+		err := runPerfTest(p)
 		if err != nil {
 			panic(err)
 		}

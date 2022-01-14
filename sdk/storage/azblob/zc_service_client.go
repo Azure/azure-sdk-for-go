@@ -71,13 +71,9 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 		return ServiceClient{}, err
 	}
 	authPolicy := newSharedKeyCredPolicy(cred)
-	return ServiceClient{
-		client: &serviceClient{
-			con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
-		},
-		u:         *u,
-		sharedKey: cred,
-	}, nil
+	return ServiceClient{client: &serviceClient{
+		con: newConnection(serviceURL, authPolicy, options.getConnectionOptions()),
+	}, u: *u, sharedKey: cred}, nil
 }
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.

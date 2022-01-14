@@ -20,8 +20,6 @@ type ChainedTokenCredentialOptions struct {
 	// stopping when one provides a token. When false, the credential requests a token
 	// only from the source that previously retrieved a token--it never again tries the sources which failed.
 	RetrySources bool
-	// Custom name for the ChainedTokenCredential logs
-	ChainedCredentialName string
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
@@ -51,11 +49,7 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	if options == nil {
 		options = &ChainedTokenCredentialOptions{}
 	}
-	chainedCredentialName := options.ChainedCredentialName
-	if chainedCredentialName == "" {
-		chainedCredentialName = "ChainedTokenCredential"
-	}
-	return &ChainedTokenCredential{sources: cp, chainedCredentialName: chainedCredentialName, retrySources: options.RetrySources}, nil
+	return &ChainedTokenCredential{sources: cp, chainedCredentialName: "ChainedTokenCredential", retrySources: options.RetrySources}, nil
 }
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.

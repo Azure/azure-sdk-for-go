@@ -166,6 +166,29 @@ Attempted credentials:
 	}
 }
 
+func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing.T) {
+	credential1 := &UnavailableTestCredential{credentialName: "unavailableCredential1"}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1}, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	cred.chainedCredentialName = "CustomNameCredential"
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr credentialUnavailableError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected credentialUnavailableError, received %T", err)
+	}
+	expectedError := `CustomNameCredential: 
+Attempted credentials:
+	UnavailableTestCredential: unavailableCredential1: Unavailable expected error`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+}
+
 type UnavailableTestCredential struct {
 	credentialName string
 }

@@ -66,6 +66,7 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	}
 
 	sessionReceiver.inner = r
+	sessionReceiver.inner.settler.DisableBackupSettlement()
 
 	// temp workaround until we expose the session expiration time from the receiver in go-amqp
 	if err := sessionReceiver.RenewSessionLock(ctx); err != nil {
@@ -98,13 +99,13 @@ func (r *SessionReceiver) newLink(ctx context.Context, session internal.AMQPSess
 	// we failed to get the lock.
 	// if we specified nil then we can _set_ our internally held session ID now that we know the value.
 	receivedSessionID := link.LinkSourceFilterValue(sessionFilterName)
-	asStr, ok := receivedSessionID.(string)
+	receivedSessionIDStr, ok := receivedSessionID.(string)
 
-	if !ok || (r.sessionID != nil && asStr != *r.sessionID) {
+	if !ok || (r.sessionID != nil && receivedSessionIDStr != *r.sessionID) {
 		return nil, nil, fmt.Errorf("invalid type/value for returned sessionID(type:%T, value:%v)", receivedSessionID, receivedSessionID)
 	}
 
-	r.sessionID = &asStr
+	r.sessionID = &receivedSessionIDStr
 	return nil, link, nil
 }
 

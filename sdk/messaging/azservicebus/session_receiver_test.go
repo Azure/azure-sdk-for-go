@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -269,6 +270,56 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 
 	err = sessionReceiver.RenewSessionLock(context.Background())
 	require.Contains(t, err.Error(), "status code 410 and description: The session lock has expired on the MessageSession")
+}
+
+func TestSessionReceiver_Detach(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.AcceptSessionForQueue(context.Background(), queueName, "test-session", nil)
+	require.NoError(t, err)
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body:      []byte("hello"),
+		SessionID: to.StringPtr("test-session"),
+	})
+	require.NoError(t, err)
+	require.NoError(t, sender.Close(context.Background()))
+
+	state, err := receiver.GetSessionState(context.Background())
+	require.NoError(t, err)
+	require.Nil(t, state)
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	}, nil)
+	require.NoError(t, err)
+
+	state, err = receiver.GetSessionState(context.Background())
+	require.NoError(t, err)
+	require.Nil(t, state)
+
+	// force a detach to happen
+	_, err = adminClient.UpdateQueue(context.Background(), queueName, admin.QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages)
+
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+	require.NoError(t, receiver.Close(context.Background()))
 }
 
 func Test_toReceiverOptions(t *testing.T) {

@@ -55,10 +55,6 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 	return err
 }
 
-func (s *messageSettler) DisableBackupSettlement() {
-	s.neverUseBackupSettlement = true
-}
-
 // CompleteMessage completes a message, deleting it from the queue or subscription.
 func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {

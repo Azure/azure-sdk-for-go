@@ -66,7 +66,6 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	}
 
 	sessionReceiver.inner = r
-	sessionReceiver.inner.settler.DisableBackupSettlement()
 
 	// temp workaround until we expose the session expiration time from the receiver in go-amqp
 	if err := sessionReceiver.RenewSessionLock(ctx); err != nil {

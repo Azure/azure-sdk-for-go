@@ -174,6 +174,9 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		fakeNetError{temp: true},
 		fakeNetError{timeout: true},
 		fakeNetError{temp: false, timeout: false},
+		// simple timeouts from the mgmt link
+		mgmtError{Resp: &RPCResponse{Code: 408}},
+		mgmtError{Resp: &RPCResponse{Code: 503}},
 	}
 
 	for i, err := range tempErrors {
@@ -201,6 +204,11 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		amqp.ErrLinkClosed,
 		&amqp.DetachError{},
 		&amqp.Error{Condition: amqp.ErrorDetachForced},
+		// we lost the session lock, attempt link recovery
+		mgmtError{Resp: &RPCResponse{Code: 410}},
+		// this can happen when we're recovering the link - the client gets closed and the old link is still being
+		// used by this instance of the client. It needs to recover and attempt it again.
+		mgmtError{Resp: &RPCResponse{Code: 401}},
 	}
 
 	for i, err := range linkErrors {
@@ -228,5 +236,8 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 
 	// unknown errors are also considered fatal
 	rk := GetSBErrInfo(errors.New("Some unknown error")).RecoveryKind
+	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
+
+	rk = GetSBErrInfo(mgmtError{Resp: &RPCResponse{Code: 500}}).RecoveryKind
 	require.EqualValues(t, RecoveryKindFatal, rk, "some unknown error")
 }

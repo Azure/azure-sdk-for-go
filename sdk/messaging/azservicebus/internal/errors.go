@@ -161,6 +161,25 @@ func GetRecoveryKind(err error) recoveryKind {
 		}
 	}
 
+	var me mgmtError
+
+	if errors.As(err, &me) {
+		code := me.RPCCode()
+
+		// this can happen when we're recovering the link - the client gets closed and the old link is still being
+		// used by this instance of the client. It needs to recover and attempt it again.
+		if code == 401 ||
+			// we lost the session lock, attempt link recovery
+			code == 410 {
+			return RecoveryKindLink
+		}
+
+		// simple timeouts
+		if me.Resp.Code == 408 || me.Resp.Code == 503 {
+			return RecoveryKindNone
+		}
+	}
+
 	// this is some error type we've never seen.
 	return RecoveryKindFatal
 }

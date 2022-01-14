@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
@@ -111,6 +112,74 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	if len(err.Error()) == 0 {
 		t.Fatalf("Did not create an appropriate error message")
 	}
+}
+
+func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testing.T) {
+	credential1 := &UnavailableTestCredential{credentialName: "unavailableCredential1"}
+	credential2 := &UnavailableTestCredential{credentialName: "unavailableCredential2"}
+	credential3 := &UnavailableTestCredential{credentialName: "unavailableCredential3"}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr credentialUnavailableError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected CredentialUnavailableError, received %T", err)
+	}
+	expectedError := `ChainedTokenCredential: 
+Attempted credentials:
+	UnavailableTestCredential: unavailableCredential1: Unavailable expected error
+	UnavailableTestCredential: unavailableCredential2: Unavailable expected error
+	UnavailableTestCredential: unavailableCredential3: Unavailable expected error`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+}
+
+func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(t *testing.T) {
+	credential1 := &UnavailableTestCredential{credentialName: "unavailableCredential1"}
+	credential2 := &UnavailableTestCredential{credentialName: "unavailableCredential2"}
+	credential3 := &AuthenticationFailedTestCredential{credentialName: "authenticationFailedCredential3"}
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	var authErr AuthenticationFailedError
+	if !errors.As(err, &authErr) {
+		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
+	}
+	expectedError := `ERROR in GetToken() call for ChainedTokenCredential:
+Attempted credentials:
+	UnavailableTestCredential: unavailableCredential1: Unavailable expected error
+	UnavailableTestCredential: unavailableCredential2: Unavailable expected error
+	AuthenticationFailedTestCredential: authenticationFailedCredential3: Authentication failed expected error`
+	if err.Error() != expectedError {
+		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
+	}
+}
+
+type UnavailableTestCredential struct {
+	credentialName string
+}
+
+func (c *UnavailableTestCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+	return nil, newCredentialUnavailableError(c.credentialName, "Unavailable expected error")
+}
+
+type AuthenticationFailedTestCredential struct {
+	credentialName string
+}
+
+func (c *AuthenticationFailedTestCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+	return nil, newAuthenticationFailedError(fmt.Errorf("%s: Authentication failed expected error", c.credentialName), nil)
 }
 
 // TestCredential response

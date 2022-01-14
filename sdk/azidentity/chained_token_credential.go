@@ -19,18 +19,19 @@ type ChainedTokenCredentialOptions struct {
 	// When true, the credential will always request a token from each source in turn,
 	// stopping when one provides a token. When false, the credential requests a token
 	// only from the source that previously retrieved a token--it never again tries the sources which failed.
-	RetrySources   bool
-	CredentialName string
+	RetrySources bool
+	// Custom name for the ChainedTokenCredential logs
+	ChainedCredentialName string
 }
 
 // ChainedTokenCredential is a chain of credentials that enables fallback behavior when a credential can't authenticate.
 // By default, this credential will assume that the first successful credential should be the only credential used on future requests.
 // If the `RetrySources` option is set to true, it will always try to get a token using all of the originally provided credentials.
 type ChainedTokenCredential struct {
-	sources              []azcore.TokenCredential
-	successfulCredential azcore.TokenCredential
-	retrySources         bool
-	credentialName       string
+	sources               []azcore.TokenCredential
+	successfulCredential  azcore.TokenCredential
+	retrySources          bool
+	chainedCredentialName string
 }
 
 // NewChainedTokenCredential creates a ChainedTokenCredential.
@@ -50,20 +51,17 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 	if options == nil {
 		options = &ChainedTokenCredentialOptions{}
 	}
-	credentialName := options.CredentialName
-	if credentialName == "" {
-		credentialName = "ChainedTokenCredential"
+	chainedCredentialName := options.ChainedCredentialName
+	if chainedCredentialName == "" {
+		chainedCredentialName = "ChainedTokenCredential"
 	}
-	return &ChainedTokenCredential{sources: cp, credentialName: credentialName, retrySources: options.RetrySources}, nil
+	return &ChainedTokenCredential{sources: cp, chainedCredentialName: chainedCredentialName, retrySources: options.RetrySources}, nil
 }
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token. This method is called automatically by Azure SDK clients.
 // ctx: Context controlling the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
-	logError := func(cred azcore.TokenCredential, err error) {
-		log.Write(EventAuthentication, fmt.Sprintf("Azure Identity => Error in %v %T's GetToken(): %v", c.credentialName, cred, err))
-	}
 	if c.successfulCredential != nil && !c.retrySources {
 		return c.successfulCredential.GetToken(ctx, opts)
 	}
@@ -72,39 +70,56 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		token, err = cred.GetToken(ctx, opts)
 		var credErr credentialUnavailableError
 		if errors.As(err, &credErr) {
-			logError(cred, err)
-			errList = append(errList, credErr)
+			errList = append(errList, newCredentialUnavailableError(extractCredentialName(cred), err.Error()))
 		} else if err != nil {
 			var authFailed AuthenticationFailedError
 			if errors.As(err, &authFailed) {
-				err = fmt.Errorf("Authentication failed:\n%s\n%s"+createChainedErrorMessage(errList), err)
+				// The message of the error created here would look as follows:
+				//
+				// 	ERROR in GetToken() call for <ChainedCredentialName>:
+				// 	Attempted credentials:
+				// 		<CredentialType>: <Error message>
+				// 		<CredentialType>: <Error message>
+				//      ...
+				//
+				err = fmt.Errorf("ERROR in GetToken() call for %s:%s\n\t%s: %s", c.chainedCredentialName, createChainedErrorMessage(errList), extractCredentialName(cred), err)
 				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
-				logError(cred, authErr)
 				return nil, authErr
 			}
-			logError(cred, err)
 			return nil, err
 		} else {
-			log.Write(EventAuthentication, fmt.Sprintf("Azure Identity => GetToken() result for %v %T:", c.credentialName, cred))
+			log.Write(EventAuthentication, fmt.Sprintf("Azure Identity => GetToken() result for %s %s:", c.chainedCredentialName, extractCredentialName(cred)))
 			c.successfulCredential = cred
 			return token, nil
 		}
 	}
 
 	// if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableError
-	credErr := newCredentialUnavailableError("Chained Token Credential", createChainedErrorMessage(errList))
-	// skip adding the stack trace here as it was already logged by other calls to GetToken()
-	addGetTokenFailureLogs("Chained Token Credential", credErr, false)
+	credErr := newCredentialUnavailableError(c.chainedCredentialName, createChainedErrorMessage(errList))
+
+	// The error logged here would look as follows:
+	//
+	// 	Authentication: Azure Identity => ERROR in GetToken() call for <ChainedCredentialName>:
+	// 	Attempted credentials:
+	// 		<CredentialType>: <Error message>
+	// 		<CredentialType>: <Error message>
+	// 		...
+	//
+	log.Writef(EventAuthentication, "Azure Identity => ERROR in GetToken() call for %s", credErr.Error())
+
 	return nil, credErr
 }
 
 func createChainedErrorMessage(errList []credentialUnavailableError) string {
-	msg := ""
+	msg := "\nAttempted credentials:\n"
 	for _, err := range errList {
-		msg += err.Error()
+		msg += fmt.Sprintf("\t%s\n", err.Error())
 	}
+	return msg[0 : len(msg)-1]
+}
 
-	return msg
+func extractCredentialName(credential azcore.TokenCredential) string {
+	return fmt.Sprintf("%T", credential)[len("*azidentity."):]
 }
 
 var _ azcore.TokenCredential = (*ChainedTokenCredential)(nil)

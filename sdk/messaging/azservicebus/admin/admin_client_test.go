@@ -757,7 +757,7 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-	require.Contains(t, asResponseErr.ErrorCode, "SubCode=40400. Not Found")
+	require.Contains(t, asResponseErr.ErrorCode, "non-existent-subscription' was not found")
 
 	require.Nil(t, updateResp)
 }

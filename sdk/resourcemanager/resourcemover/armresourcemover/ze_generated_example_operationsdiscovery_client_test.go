@@ -24,9 +24,10 @@ func ExampleOperationsDiscoveryClient_Get() {
 	}
 	ctx := context.Background()
 	client := armresourcemover.NewOperationsDiscoveryClient(cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OperationsDiscoveryClientGetResult)
 }

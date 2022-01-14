@@ -6,12 +6,14 @@ package perf
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/recording"
+	"github.com/spf13/pflag"
 )
 
 var (
+	debug          bool
 	Duration       int
 	TimeoutSeconds int
 	TestProxy      string
@@ -41,11 +43,13 @@ func getLimitedContext(t time.Duration) (context.Context, context.CancelFunc) {
 func runGlobalSetup(p PerfTest) error {
 	fmt.Println("Running `GlobalSetup`")
 
-	fmt.Printf("Deadline of %d\n", TimeoutSeconds)
+	if debug {
+		fmt.Printf("Deadline of %d\n", TimeoutSeconds)
+	}
 	_, cancel := getLimitedContext(time.Duration(TimeoutSeconds) * time.Second)
 	defer cancel()
 
-	recording.SetRecordingMode("live")
+	SetRecordingMode("live")
 	err := p.GlobalSetup(context.Background())
 	if err != nil {
 		return err
@@ -77,27 +81,33 @@ func runTest(p PerfTest) (int, float64, error) {
 	usingProxy := TestProxy == "http" || TestProxy == "https"
 	if usingProxy {
 		// First request goes through in Live mode
-		fmt.Println("Running in live")
-		recording.SetRecordingMode("live")
+		if debug {
+			fmt.Println("Running in live")
+		}
+		SetRecordingMode("live")
 		err := p.Run(context.TODO())
 		if err != nil {
 			return 0, 0.0, err
 		}
 
 		// 2nd request goes through in Record mode
-		fmt.Println("Running in record")
-		recording.SetRecordingMode("record")
-		recording.Start(p.GetMetadata(), nil)
+		if debug {
+			fmt.Println("Running in record")
+		}
+		SetRecordingMode("record")
+		Start(p.GetMetadata(), nil)
 		err = p.Run(context.TODO())
 		if err != nil {
 			return 0, 0.0, err
 		}
-		recording.Stop(p.GetMetadata(), nil)
+		Stop(p.GetMetadata(), nil)
 
-		fmt.Println("Running the rest in playback")
+		if debug {
+			fmt.Println("Running the rest in playback")
+		}
 		// All ensuing requests go through in Playback mode
-		recording.SetRecordingMode("playback")
-		recording.Start(p.GetMetadata(), nil)
+		SetRecordingMode("playback")
+		Start(p.GetMetadata(), nil)
 	}
 
 	start := time.Now()
@@ -111,9 +121,10 @@ func runTest(p PerfTest) (int, float64, error) {
 	}
 
 	elapsed := time.Since(start).Seconds()
+
 	// Stop the proxy now
-	recording.Stop(p.GetMetadata(), nil)
-	recording.SetRecordingMode("live")
+	Stop(p.GetMetadata(), nil)
+	SetRecordingMode("live")
 	return count, elapsed, nil
 }
 
@@ -184,4 +195,62 @@ func printIteration(t float64, count int) {
 func printFinal(totalCount int, totalElapsed float64) {
 	perSecond := float64(totalCount) / totalElapsed
 	fmt.Printf("Summary: Completed %d operations in %.4f seconds. Averaged %.4f ops/sec.\n", totalCount, totalElapsed, perSecond)
+}
+
+// printUsage prints the usage for when commands are unsuccessful
+func printUsage() {
+	fmt.Println("Azure Go Performance Framework Usage")
+	fmt.Println("\tperf.exe [-h --help] [TestsToRun] [COMMANDS]")
+}
+
+// testsToRun trims the slice of PerfTest to only those that are flagged as running.
+func testsToRun(registered []PerfTest) []PerfTest {
+	var ret []PerfTest
+
+	args := os.Args[1:]
+	for _, r := range registered {
+		for _, arg := range args {
+			if r.GetMetadata() == arg {
+				ret = append(ret, r)
+			}
+		}
+	}
+
+	return ret
+}
+
+// Run runs all individual tests
+func Run(perfTests []PerfTest) {
+	// Start with adding all of our arguments
+	pflag.IntVarP(&Duration, "duration", "d", 10, "The duration to run a single performance test for")
+	pflag.StringVarP(&TestProxy, "proxy", "x", "", "whether to target http or https proxy (default is neither)")
+	pflag.IntVarP(&TimeoutSeconds, "timeout", "t", 10, "How long to allow an operation to block before cancelling.")
+	pflag.IntVarP(&WarmUp, "warmup", "w", 3, "How long to allow a connection to warm up.")
+	pflag.BoolVarP(&debug, "debug", "g", false, "Print debugging information")
+	pflag.CommandLine.MarkHidden("debug")
+
+	// Need to add individual performance tests local flags
+
+	pflag.Parse()
+	fmt.Println("parsed flags")
+
+	perfTests = testsToRun(perfTests)
+
+	fmt.Println("======= Pre Run Summary =======")
+	for _, p := range perfTests {
+		fmt.Printf("\tRunning %s\n", p.GetMetadata())
+	}
+	fmt.Println("===============================")
+
+	if debug {
+		fmt.Println("====== Flag Values =======")
+		fmt.Printf("TestProxy: %s\n", TestProxy)
+	}
+
+	for _, p := range perfTests {
+		err := RunPerfTest(p)
+		if err != nil {
+			panic(err)
+		}
+	}
 }

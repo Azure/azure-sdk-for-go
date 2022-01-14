@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package aztablesperf
+package main
 
 import (
 	"context"
@@ -12,24 +12,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
-	"github.com/spf13/cobra"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 )
-
-var AztablesCmd = &cobra.Command{
-	Use:   "CreateEntityTest",
-	Short: "aztables perf test for creating an entity",
-	Long:  "aztables perf test for creating an entity. This test uses the `Client.InsertEntity` method to merge an entity on insertion.",
-	Args: func(cmd *cobra.Command, args []string) error {
-		return nil
-	},
-	RunE: func(c *cobra.Command, args []string) error {
-		return perf.RunPerfTest(&aztablesPerfTest{})
-	},
-}
 
 type aztablesPerfTest struct {
 	client    aztables.Client
@@ -38,10 +24,9 @@ type aztablesPerfTest struct {
 }
 
 func (a *aztablesPerfTest) createClient() error {
-	fmt.Println("PERF.TESTPROXY: ", perf.TestProxy)
 	options := &aztables.ClientOptions{}
 	if perf.TestProxy == "http" {
-		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -51,7 +36,7 @@ func (a *aztablesPerfTest) createClient() error {
 			},
 		}
 	} else if perf.TestProxy == "https" {
-		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -85,19 +70,9 @@ func (a *aztablesPerfTest) createClient() error {
 
 func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 	a.tableName = "randomTableName"
-	if perf.TestProxy != "" {
-		err := recording.Start(a.GetMetadata(), nil)
-		if err != nil {
-			return err
-		}
-	}
 
 	err := a.createClient()
 	if err != nil {
-		fmt.Println("there was an error creating the client")
-		if perf.TestProxy != "" {
-			recording.Stop(a.GetMetadata(), nil)
-		}
 		return err
 	}
 	e := aztables.EDMEntity{
@@ -118,9 +93,6 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 	}
 	marshalled, err := json.Marshal(e)
 	if err != nil {
-		if perf.TestProxy != "" {
-			recording.Stop(a.GetMetadata(), nil)
-		}
 		return err
 	}
 	a.entity = marshalled
@@ -130,12 +102,6 @@ func (a *aztablesPerfTest) GlobalSetup(ctx context.Context) error {
 }
 
 func (a *aztablesPerfTest) GlobalTearDown(ctx context.Context) error {
-	defer func() {
-		err := recording.Stop(a.GetMetadata(), nil)
-		if err != nil {
-			fmt.Println("test proxy was not stopped successfully.")
-		}
-	}()
 	_, err := a.client.Delete(context.Background(), nil)
 	return err
 }
@@ -154,5 +120,5 @@ func (a *aztablesPerfTest) TearDown(ctx context.Context) error {
 }
 
 func (a *aztablesPerfTest) GetMetadata() string {
-	return "aztables-update"
+	return "CreateEntity"
 }

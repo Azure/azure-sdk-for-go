@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
+// Licensed under the MIT License.
 
-package cmd
+package main
 
 import (
 	"bytes"
@@ -9,21 +9,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/spf13/cobra"
 )
-
-var UploadBlobCmd = &cobra.Command{
-	Use:   "BlobUploadTest",
-	Short: "BlobUploadTest performance test",
-	Args: func(cmd *cobra.Command, args []string) error {
-		return nil
-	},
-	RunE: func(c *cobra.Command, args []string) error {
-		return perf.RunPerfTest(&uploadPerfTest{})
-	},
-}
 
 type uploadPerfTest struct {
 	blobName        string
@@ -37,7 +24,7 @@ func (m *uploadPerfTest) GlobalSetup(ctx context.Context) error {
 
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
-		return fmt.Errorf("the environment variable 'AZBLOB_CONNECTION_STRING' could not be found")
+		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, "uploadtest", nil)
@@ -77,4 +64,8 @@ func (m *uploadPerfTest) TearDown(ctx context.Context) error {
 
 func (m *uploadPerfTest) GetMetadata() string {
 	return "BlobUploadTest"
+}
+
+func (m *uploadPerfTest) Arguments() {
+
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package cmd
+package main
 
 import (
 	"bytes"
@@ -9,25 +9,23 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/spf13/cobra"
 )
 
-var ListBlobCmd = &cobra.Command{
-	Use:   "BlobListTest",
-	Short: "BlobListTest performance test",
-	Args: func(cmd *cobra.Command, args []string) error {
-		return nil
-	},
-	RunE: func(c *cobra.Command, args []string) error {
-		return perf.RunPerfTest(&listBlobPerfTest{})
-	},
-}
+// var ListBlobCmd = &cobra.Command{
+// 	Use:   "BlobListTest",
+// 	Short: "BlobListTest performance test",
+// 	Args: func(cmd *cobra.Command, args []string) error {
+// 		return nil
+// 	},
+// 	RunE: func(c *cobra.Command, args []string) error {
+// 		return perf.RunPerfTest(&listBlobPerfTest{})
+// 	},
+// }
 
 type listBlobPerfTest struct {
-	containerName string
+	containerName   string
 	blobName        string
 	containerClient azblob.ContainerClient
 	blobClient      azblob.BlockBlobClient

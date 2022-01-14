@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azkeysperf
+package main
 
 import (
 	"context"
@@ -9,25 +9,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/azperf/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-	"github.com/spf13/cobra"
 )
-
-var AzkeysCmd = &cobra.Command{
-	Use:   "CreateKeyTest",
-	Short: "Create a single RSA key",
-	Long:  "Create a RSA key using default options.",
-	Args: func(cmd *cobra.Command, args []string) error {
-		return nil
-	},
-	RunE: func(c *cobra.Command, args []string) error {
-		return perf.RunPerfTest(&azkeysPerf{})
-	},
-}
 
 type azkeysPerf struct {
 	client  *azkeys.Client
@@ -35,7 +21,7 @@ type azkeysPerf struct {
 }
 
 func (a *azkeysPerf) GetMetadata() string {
-	return "azkeyscreate"
+	return "CreateKey"
 }
 
 func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
@@ -56,7 +42,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 
 	options := &azkeys.ClientOptions{}
 	if perf.TestProxy == "http" {
-		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}
@@ -66,7 +52,7 @@ func (a *azkeysPerf) GlobalSetup(ctx context.Context) error {
 			},
 		}
 	} else if perf.TestProxy == "https" {
-		t, err := recording.NewProxyTransport(&recording.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
+		t, err := perf.NewProxyTransport(&perf.TransportOptions{UseHTTPS: true, TestName: a.GetMetadata()})
 		if err != nil {
 			return err
 		}

@@ -1,12 +1,12 @@
 # Performance Testing Framework
-The `azperf` CLI tool provides a singular framework for writing and running performance tests.
+The `perf` sub-module provides a singular framework for writing performance tests.
 
 ## Default Command Options
 
 | Flag | Short Flag | Default Value | Variable Name | Description |
 | -----| ---------- | ------------- | ------------- | ----------- |
 | `--duration` | `-d` | 10 seconds | internal.Duration (`int`) | How long to run an individual performance test |
-| `--testproxy` | `-x` | N/A | internal.TestProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--testproxy https`, likewise for `http`. If you want to run normally omit this flag |
+| `--proxy` | `-x` | N/A | internal.TestProxy (`string`) | Whether to run a test against a test proxy. If you want to run against `https` specify with `--proxy https`, likewise for `http`. If you want to run normally omit this flag |
 | `--warmup` | `-w` | 3 seconds| internal.WarmUp (`int`) | How long to allow the connection to warm up. |
 | `--timeout` | `-t` | 10 seconds| internal.TimeoutSeconds (`int`) | How long to allow an operation to block. |
 
@@ -105,7 +105,7 @@ To run a single performance test specify the test as the second argument:
 
 To specify flags for a performance test, add them after the second argument:
 ```pwsh
-./azperf.exe CreateEntityTest --duration 7 --testproxy https
+./azperf.exe CreateEntityTest --duration 7 --proxy https
 ```
 
 For more information about running individual tests, refer to the READMEs of each test linked below.

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package recording
+package perf
 
 import (
 	"bytes"
@@ -17,8 +17,6 @@ import (
 	"path/filepath"
 	"runtime"
 )
-
-var pathToRecordings = "eng/tools/azperf"
 
 func init() {
 	recordMode = os.Getenv("AZURE_RECORD_MODE")

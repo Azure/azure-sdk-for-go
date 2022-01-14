@@ -42,8 +42,6 @@ jobs:
       - template: ../variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
-      - name: generate.bom
-        value: false
 
     pool:
       name: $(Pool)

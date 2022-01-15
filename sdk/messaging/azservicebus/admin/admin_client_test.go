@@ -773,21 +773,33 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	require.True(t, notFound)
 	require.NotNil(t, resp)
 
+	var re *azcore.ResponseError
+
 	_, err = testData.Client.GetQueue(ctx, testData.QueueName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	pager := testData.Client.ListQueues(nil)
 	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	require.Contains(t, pager.Err().Error(), "Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.CreateQueue(ctx, "canneverbecreated", nil, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityWrite")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.UpdateQueue(ctx, "canneverbecreated", QueueProperties{}, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityWrite")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 
 	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
+	require.ErrorAs(t, err, &re)
+	require.EqualValues(t, 401, re.StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Topic(t *testing.T) {

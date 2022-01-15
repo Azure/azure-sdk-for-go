@@ -170,7 +170,7 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 	props, err := newTopicRuntimeProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, atom.NewResponseError(err, resp)
+		return nil, err
 	}
 
 	return &GetTopicRuntimePropertiesResponse{
@@ -239,7 +239,7 @@ func (p *TopicsPager) getNextPage(ctx context.Context) (*ListTopicsResponse, err
 		props, err := newTopicProperties(&env.Content.TopicDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &TopicItem{
@@ -326,7 +326,7 @@ func (p *TopicRuntimePropertiesPager) getNextPage(ctx context.Context) (*ListTop
 		props, err := newTopicRuntimeProperties(&entry.Content.TopicDescription)
 
 		if err != nil {
-			return nil, atom.NewResponseError(err, resp)
+			return nil, err
 		}
 
 		all = append(all, &TopicRuntimePropertiesItem{
@@ -436,7 +436,7 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 	topicProps, err := newTopicProperties(&atomResp.Content.TopicDescription)
 
 	if err != nil {
-		return nil, nil, atom.NewResponseError(err, resp)
+		return nil, nil, err
 	}
 
 	return topicProps, resp, nil

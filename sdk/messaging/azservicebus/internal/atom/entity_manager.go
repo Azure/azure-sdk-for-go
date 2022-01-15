@@ -55,7 +55,8 @@ type (
 		ServiceBusSchema       *string `xml:"xmlns,attr,omitempty"`
 	}
 
-	managementError struct {
+	// example: <Error><Code>401</Code><Detail>Manage,EntityRead claims required for this operation.</Detail></Error>
+	ManagementError struct {
 		XMLName xml.Name `xml:"Error"`
 		Code    int      `xml:"Code"`
 		Detail  string   `xml:"Detail"`
@@ -148,7 +149,7 @@ const (
 	Unknown EntityStatus = "Unknown"
 )
 
-func (m *managementError) String() string {
+func (m *ManagementError) String() string {
 	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
 }
 
@@ -283,7 +284,7 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 
 		if err == nil {
 			if resp.StatusCode >= http.StatusBadRequest {
-				return NewResponseError(err, resp)
+				return NewResponseError(resp)
 			}
 
 			finalResp = resp
@@ -291,7 +292,7 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 		}
 
 		if resp != nil {
-			return NewResponseError(err, resp)
+			return NewResponseError(resp)
 		}
 
 		return err
@@ -339,7 +340,7 @@ func (em *entityManager) TokenProvider() auth.TokenProvider {
 }
 
 func FormatManagementError(body []byte, origErr error) error {
-	var mgmtError managementError
+	var mgmtError ManagementError
 	unmarshalErr := xml.Unmarshal(body, &mgmtError)
 	if unmarshalErr != nil {
 		return origErr

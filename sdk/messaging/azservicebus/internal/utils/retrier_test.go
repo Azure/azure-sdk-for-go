@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -200,73 +199,6 @@ var fastRetryOptions = RetryOptions{
 	// we do setDefaults() before we run.
 	RetryDelay:    time.Millisecond,
 	MaxRetryDelay: time.Millisecond,
-}
-
-func TestRetryBasic(t *testing.T) {
-	called := 0
-
-	err := Retry(context.Background(), "retrytest", func(ctx context.Context, args *RetryFnArgs) error {
-		require.NotNil(t, args)
-		require.NotNil(t, ctx)
-
-		called++
-
-		return &amqp.DetachError{}
-	}, nil, fastRetryOptions)
-
-	var de *amqp.DetachError
-	require.ErrorAs(t, err, &de)
-	require.EqualValues(t, 4, called)
-}
-
-func TestRetryWithFatalError(t *testing.T) {
-	called := 0
-
-	err := Retry(context.Background(), "retrytest", func(ctx context.Context, args *RetryFnArgs) error {
-		require.NotNil(t, args)
-		require.NotNil(t, ctx)
-
-		called++
-
-		return &amqp.Error{
-			// this is just a basic non-recoverable situation - typically happens if the
-			// lock period expires.
-			Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost"),
-		}
-	}, nil, fastRetryOptions)
-
-	// fatal error so we only called the function once
-	require.EqualValues(t, 1, called)
-
-	var testErr *amqp.Error
-
-	require.ErrorAs(t, err, &testErr)
-	require.EqualValues(t, "com.microsoft:message-lock-lost", testErr.Condition)
-}
-
-func TestRetryCustomIsFatal(t *testing.T) {
-	called := 0
-	var totallyHarmlessErrorAsFatal = errors.New("I'm supposed to be harmless but the custom error handler is going to make me fatal")
-	var isFatalErr error
-
-	err := Retry(context.Background(), "retrytest", func(ctx context.Context, args *RetryFnArgs) error {
-		require.NotNil(t, args)
-		require.NotNil(t, ctx)
-
-		called++
-
-		return totallyHarmlessErrorAsFatal
-	}, func(err error) bool {
-		require.Nil(t, isFatalErr, "should only get called once")
-		isFatalErr = err
-		return true
-	}, fastRetryOptions)
-
-	// fatal error so we only called the function once
-	require.EqualValues(t, 1, called)
-
-	require.ErrorIs(t, err, totallyHarmlessErrorAsFatal)
-	require.ErrorIs(t, isFatalErr, totallyHarmlessErrorAsFatal)
 }
 
 func TestRetryDefaults(t *testing.T) {

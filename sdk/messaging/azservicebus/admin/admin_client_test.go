@@ -210,7 +210,6 @@ func TestAdminClient_UpdateQueue(t *testing.T) {
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-	require.Contains(t, asResponseErr.ErrorCode, "SubCode=40400. Not Found")
 
 	require.Nil(t, updatedProps)
 }
@@ -487,7 +486,6 @@ func TestAdminClient_UpdateTopic(t *testing.T) {
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-	require.Contains(t, asResponseErr.ErrorCode, "SubCode=40400. Not Found")
 
 	require.Nil(t, updateResp)
 }
@@ -751,13 +749,11 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	require.Nil(t, updateResp)
 
 	updateResp, err = adminClient.UpdateSubscription(context.Background(), topicName, "non-existent-subscription", addResp.CreateSubscriptionResult.SubscriptionProperties, nil)
-	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
 	require.Contains(t, err.Error(), "404 Not Found")
 
 	var asResponseErr *azcore.ResponseError
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 404, asResponseErr.StatusCode)
-	require.Contains(t, asResponseErr.ErrorCode, "non-existent-subscription' was not found")
 
 	require.Nil(t, updateResp)
 }

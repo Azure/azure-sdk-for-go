@@ -24,7 +24,9 @@ func TestRetrier(t *testing.T) {
 		err := Retry(ctx, "Retrier", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return nil
-		}, nil, RetryOptions{})
+		}, func(err error) bool {
+			panic("won't get called")
+		}, RetryOptions{})
 
 		require.Nil(t, err)
 		require.EqualValues(t, 1, called)
@@ -34,71 +36,48 @@ func TestRetrier(t *testing.T) {
 		ctx := context.Background()
 
 		called := 0
+		isFatalCalled := 0
+
+		isFatalFn := func(err error) bool {
+			require.NotNil(t, err)
+			// we'll just keep saying the errors aren't fatal.
+			isFatalCalled++
+			return false
+		}
 
 		err := Retry(ctx, "FailsThenSucceeds", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 
-			if called == 1 {
-				// first round always has a nil error
-				// (mostly nobody will care and just no-op on recovery
-				// if the error is nil)
-				require.Nil(t, args.LastErr)
-			} else {
-				// subsequent calls should pass in the error from the
-				// last failure (this makes it simple to do recovery at the
-				// start of your function)
-				var amqpErr *amqp.DetachError
-				require.True(t, errors.As(args.LastErr, &amqpErr))
-				require.EqualValues(t, fmt.Sprintf("Error from previous iteration %d", called-1), amqpErr.RemoteError.Description)
+			if args.I == 3 {
+				// we're on the last iteration, succeed
+				return nil
 			}
 
-			return &amqp.DetachError{
-				RemoteError: &amqp.Error{
-					// should be passeed into the callback on the next iteration.
-					Description: fmt.Sprintf("Error from previous iteration %d", called)},
-			}
-		}, nil, fastRetryOptions)
+			return fmt.Errorf("Error, iteration %d", args.I)
+		}, isFatalFn, fastRetryOptions)
 
-		// if all the retries fail then we get the
-		var amqpErr *amqp.DetachError
-		require.True(t, errors.As(err, &amqpErr))
-		require.EqualValues(t, "Error from previous iteration 4", amqpErr.RemoteError.Description)
 		require.EqualValues(t, 4, called)
+		require.EqualValues(t, 3, isFatalCalled)
+
+		// if an attempt succeeds then there's no error (despite previous failed tries)
+		require.NoError(t, err)
 	})
 
 	t.Run("FatalFailure", func(t *testing.T) {
 		ctx := context.Background()
-
 		called := 0
+
+		isFatalFn := func(err error) bool {
+			require.EqualValues(t, "isFatalFn says this is a fatal error", err.Error())
+			return true
+		}
 
 		err := Retry(ctx, "FatalFailure", func(ctx context.Context, args *RetryFnArgs) error {
 			called++
-			return context.Canceled
-		}, nil, RetryOptions{})
+			return errors.New("isFatalFn says this is a fatal error")
+		}, isFatalFn, RetryOptions{})
 
-		require.ErrorIs(t, err, context.Canceled)
-		require.EqualValues(t, 1, called)
-	})
-
-	t.Run("NonFatalFailures", func(t *testing.T) {
-		ctx := context.Background()
-
-		called := 0
-
-		err := Retry(ctx, "NonFatalFailures", func(ctx context.Context, args *RetryFnArgs) error {
-			called++
-			if called == 1 {
-				return &amqp.Error{
-					Condition: "com.microsoft:message-lock-lost",
-				}
-			}
-
-			panic("won't be called")
-		}, nil, RetryOptions{})
-
-		var amqpErr *amqp.Error
-		require.ErrorAs(t, err, &amqpErr)
-		require.EqualValues(t, "com.microsoft:message-lock-lost", amqpErr.Condition)
+		require.EqualValues(t, "isFatalFn says this is a fatal error", err.Error())
 		require.EqualValues(t, 1, called)
 	})
 
@@ -106,8 +85,14 @@ func TestRetrier(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel()
 
+		isFatalFn := func(err error) bool {
+			return errors.Is(err, context.Canceled)
+		}
+
+		// it's up to
 		err := Retry(ctx, "Cancellation", func(ctx context.Context, args *RetryFnArgs) error {
-			// we propagate the context so this one should also be cancelled.
+			// NOTE: it's up to the underlying function to handle cancellation. `Retry` doesn't
+			// do anything but propagate it.
 			select {
 			case <-ctx.Done():
 			default:
@@ -115,25 +100,61 @@ func TestRetrier(t *testing.T) {
 			}
 
 			return context.Canceled
-		}, nil, RetryOptions{})
+		}, isFatalFn, RetryOptions{})
 
 		require.ErrorIs(t, context.Canceled, err)
 	})
 
-	t.Run("CustomFatalCheck", func(t *testing.T) {
-		errCall := 0
+	t.Run("ResetAttempts", func(t *testing.T) {
+		isFatalFn := func(err error) bool {
+			return errors.Is(err, context.Canceled)
+		}
 
-		err := Retry(context.Background(), "CustomFatalCheck", func(ctx context.Context, args *RetryFnArgs) error {
-			return fmt.Errorf("hello: %d", args.I)
-		}, func(err error) bool {
-			defer func() { errCall++ }()
-			require.EqualValues(t, fmt.Sprintf("hello: %d", errCall), err.Error())
+		customRetryOptions := fastRetryOptions
+		customRetryOptions.MaxRetries = 1
 
-			// let one iteration go, then everything after that is fatal.
-			return errCall != 0
-		}, fastRetryOptions)
+		var actualAttempts []int32
 
-		require.EqualValues(t, "hello: 1", err.Error())
+		err := Retry(context.Background(), "ResetAttempts", func(ctx context.Context, args *RetryFnArgs) error {
+			actualAttempts = append(actualAttempts, args.I)
+
+			if len(actualAttempts) == 3 {
+				args.ResetAttempts()
+			}
+
+			return errors.New("whatever")
+		}, isFatalFn, RetryOptions{
+			MaxRetries:    2,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
+		})
+
+		expectedAttempts := []int32{
+			0, 1, 2, // we resetted attempts here.
+			1, 2, // and we start at the first retry attempt again.
+		}
+
+		require.EqualValues(t, "whatever", err.Error())
+		require.EqualValues(t, expectedAttempts, actualAttempts)
+	})
+
+	t.Run("DisableRetries", func(t *testing.T) {
+		isFatalFn := func(err error) bool {
+			return errors.Is(err, context.Canceled)
+		}
+
+		customRetryOptions := fastRetryOptions
+		customRetryOptions.MaxRetries = -1
+
+		called := 0
+
+		err := Retry(context.Background(), "ResetAttempts", func(ctx context.Context, args *RetryFnArgs) error {
+			called++
+			return errors.New("whatever")
+		}, isFatalFn, customRetryOptions)
+
+		require.EqualValues(t, 1, called)
+		require.EqualValues(t, "whatever", err.Error())
 	})
 }
 

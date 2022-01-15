@@ -66,11 +66,6 @@ type NamespaceForAMQPLinks interface {
 	Recover(ctx context.Context, clientRevision uint64) (bool, error)
 }
 
-// NamespaceForAMQPLinks is the Namespace surface needed for the *MgmtClient.
-type NamespaceForMgmtClient interface {
-	NewRPCLink(ctx context.Context, managementPath string) (RPCLink, error)
-}
-
 // NamespaceWithConnectionString configures a namespace with the information provided in a Service Bus connection string
 func NamespaceWithConnectionString(connStr string) NamespaceOption {
 	return func(ns *Namespace) error {

@@ -27,7 +27,6 @@ type Client struct {
 		internal.NamespaceWithNewAMQPLinks
 		// for child clients
 		internal.NamespaceForAMQPLinks
-		internal.NamespaceForMgmtClient
 	}
 	linksMu      *sync.Mutex
 	linkCounter  uint64

@@ -813,21 +813,33 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.True(t, notFound)
 	require.NotNil(t, resp)
 
+	var asResponseErr *azcore.ResponseError
+
 	_, err = testData.Client.GetTopic(ctx, testData.TopicName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	pager := testData.Client.ListTopics(nil)
 	require.False(t, pager.NextPage(context.Background()))
-	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	require.Contains(t, pager.Err().Error(), ">Manage,EntityRead claims required for this operation")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.CreateTopic(ctx, "canneverbecreated", nil, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	require.Contains(t, err.Error(), "Authorization failed for specified action")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.UpdateTopic(ctx, "canneverbecreated", TopicProperties{}, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	require.Contains(t, err.Error(), "Authorization failed for specified action")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
 	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName, nil)
-	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	require.Contains(t, err.Error(), "Authorization failed for specified action: Manage,EntityDelete.")
+	require.ErrorAs(t, err, &asResponseErr)
+	require.EqualValues(t, 401, asResponseErr.StatusCode)
 }
 
 func TestAdminClient_LackPermissions_Subscription(t *testing.T) {

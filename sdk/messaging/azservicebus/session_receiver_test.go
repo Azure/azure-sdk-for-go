@@ -257,19 +257,9 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, messages)
 
-	// surprisingly this works. Not sure what it accomplishes though. C# has a manual check for it.
-	// err = sessionReceiver.RenewMessageLock(context.Background(), messages[0])
-	// require.NoError(t, err)
-
 	orig := sessionReceiver.LockedUntil()
 	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background()))
 	require.Greater(t, sessionReceiver.LockedUntil().UnixNano(), orig.UnixNano())
-
-	// bogus renewal
-	sessionReceiver.sessionID = to.StringPtr("bogus")
-
-	err = sessionReceiver.RenewSessionLock(context.Background())
-	require.Contains(t, err.Error(), "status code 410 and description: The session lock has expired on the MessageSession")
 }
 
 func TestSessionReceiver_Detach(t *testing.T) {

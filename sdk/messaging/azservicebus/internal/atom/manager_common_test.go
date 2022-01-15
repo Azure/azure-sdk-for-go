@@ -52,10 +52,6 @@ func TestResponseError(t *testing.T) {
 	require.EqualValues(t, http.StatusBadGateway, re.StatusCode)
 }
 
-type ReaderWithError struct {
-	io.Reader
-}
-
 type FakeReader struct {
 	io.Reader
 	closed   bool

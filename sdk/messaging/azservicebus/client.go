@@ -20,17 +20,17 @@ import (
 // Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	creds     clientCreds
-	namespace interface {
+	linkCounter uint64
+	links       map[uint64]internal.Closeable
+	creds       clientCreds
+	namespace   interface {
 		// used internally by `Client`
 		internal.NamespaceWithNewAMQPLinks
 		// for child clients
 		internal.NamespaceForAMQPLinks
 		internal.NamespaceForMgmtClient
 	}
-	linksMu     *sync.Mutex
-	linkCounter uint64
-	links       map[uint64]internal.Closeable
+	linksMu *sync.Mutex
 }
 
 // ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`

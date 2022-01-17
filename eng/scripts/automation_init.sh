@@ -8,7 +8,6 @@ echo $1
 
 set -x
 set -e
-sudo npm install -g autorest@latest && sudo npm install -g typescript
 
 TMPDIR="/tmp"
 if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.16" ]

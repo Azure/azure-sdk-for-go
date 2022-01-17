@@ -1,5 +1,9 @@
 #Requires -Version 7.0
 
+$MOCK_SERVER_NAME = "mock-server"
+$MOCK_SERVER_Directory = "mock-service-host"
+$MOCK_SERVER_READY = "validator initialized"
+$MOCK_SERVER_WAIT_TIME = 600
 function Invoke-MgmtTestgen ()
 {
     param (
@@ -98,12 +102,9 @@ function Invoke-MgmtTestgen ()
 
 function PrepareMockServer()
 {
-    param(
-        [string]$MOCK_SERVER_NAME = "mock-server"
-    )
     # install mock server
-    $folder = Join-Path $env:TEMP "mock-service-host"
-    StopMockServer -MOCK_SERVER_NAME $MOCK_SERVER_NAME
+    $folder = Join-Path $env:TEMP "$MOCK_SERVER_Directory"
+    StopMockServer
     try
     {
         Remove-Item -Recurse -Force -Path $folder
@@ -120,63 +121,34 @@ function PrepareMockServer()
 function StartMockServer()
 {
     param(
-        [string]$MOCK_SERVER_NAME = "mock-server",
-        [string]$MOCK_SERVER_READY = "validator initialized",
-        [string]$MOCK_SERVER_WAIT_TIME = 600,
         [string]$specDir = "",
         [string]$rpSDKFolder,
         [string]$AUTOREST_CONFIG_FILE = "autorest.md"
     )
-    $folder = Join-Path $env:TEMP  "mock-service-host"
+    $folder = Join-Path $env:TEMP  "$MOCK_SERVER_Directory"
     Set-Location $folder
 
     # change .env file to use the specific swagger file
     $envFile = Join-Path $folder .env
-    if ([string]::IsNullOrEmpty($rpSDKFolder))
-    {
-        if ([string]::IsNullOrEmpty($specDir)) {
-            $swaggerInfo = [PSCustomObject]@{
-                isRepoUrl = $true
-                path = "https://github.com/Azure/azure-rest-api-specs"
-                specName = "*"
-                org = "Azure"
-                branch = "main"
-                commitID = ""
-            }
-        } else {
-            $swaggerInfo = [PSCustomObject]@{
-                isRepoUrl = $false
-                path = $specDir
-                specName = "*"
-                org = ""
-                branch = ""
-                commitID = ""
-            }
-        }
-        
-    } else {
-        Write-Host "Retrieve Swagger info"
-        $swaggerInfo = GetSwaggerInfo -dir $rpSDKFolder -AUTOREST_CONFIG_FILE $AUTOREST_CONFIG_FILE
-    }
+    $swaggerInfo = GetSwaggerInfo -specDir $specDir -rpSDKFolder $rpSDKFolder -AUTOREST_CONFIG_FILE $AUTOREST_CONFIG_FILE
     New-Item -Path $envFile -ItemType File -Value '' -Force
 
-    $swaggerpath = $swaggerInfo.path
+    $swaggerPath = $swaggerInfo.path
     $specName = $swaggerInfo.specName
     if ($swaggerInfo.isRepoUrl -eq $true) {
-        Add-Content $envFile "specRetrievalGitUrl=$swaggerpath"
+        Add-Content $envFile "specRetrievalGitUrl=$swaggerPath"
         if ([string]::IsNullOrEmpty($swaggerInfo.branch) -eq $false) {
             Add-Content $envFile "specRetrievalGitBranch=$(swaggerInfo.branch)"
         }
         if ([string]::IsNullOrEmpty($swaggerInfo.commitID) -eq $false) {
-            $commitID = $swaggerInfo.commitID
-            Add-Content $envFile "specRetrievalGitCommitID=$commitID"
+            Add-Content $envFile "specRetrievalGitCommitID=$(swaggerInfo.commitID)"
         }
         Add-Content $envFile "validationPathsPattern=specification/$specName/resource-manager/**/*.json"
     } else {
         Write-Host "start Mock Test from local swagger"
         Add-Content $envFile "specRetrievalMethod=filesystem
-specRetrievalLocalRelativePath=$swaggerpath
-validationPathsPattern=$swaggerpath/*/resource-manager/**/*.json"
+specRetrievalLocalRelativePath=$swaggerPath
+validationPathsPattern=$swaggerPath/*/resource-manager/**/*.json"
     }
 
     # start mock server and check status
@@ -210,9 +182,6 @@ validationPathsPattern=$swaggerpath/*/resource-manager/**/*.json"
 
 function StopMockServer()
 {
-    param(
-        [string]$MOCK_SERVER_NAME = "mock-server"
-    )
     try
     {
         Stop-Job -Name $MOCK_SERVER_NAME
@@ -225,76 +194,102 @@ function StopMockServer()
 
 function GetSwaggerInfo() {
     param(
-        [string]$dir,
+        [string]$specDir = "",
+        [string]$rpSDKFolder,
         [string]$AUTOREST_CONFIG_FILE = "autorest.md"
     )
 
-    $file="$dir/$AUTOREST_CONFIG_FILE"
-    $readmefile = (Select-String -Path $file -Pattern ".*readme.md" | ForEach-Object {$_.Matches.Value}) -replace "require *:|- ", ""
-    if ([string]::IsNullOrEmpty($readmefile)) {
-        Write-Host "Cannot get swagger info"
-        exit 1
-    }
-    $readmefile = $readmefile -replace "\\", "/"
-    
-    $isRepoUrl = $false
-    $path = ""
-    $specName = ""
-    $org = ""
-    $branch = ""
-    $commitID = ""
-    $readmefile = $readmefile.Trim()
-
-    if ($readmefile.StartsWith("http")) {
-        $isRepoUrl = $true
-    }
-    if ($isRepoUrl -eq $true) {
-        $swaggerInfoRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/blob\/(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
-        $rawSwaggerInfoRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
-        $swaggerNoCommitRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/(blob\/)?(?<branch>.*)\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
-        try
-        {
-            if ($readmefile -match $swaggerInfoRegex)
-            {
-                $org = $matches["org"]
-                $specName = $matches["specName"]
-                $commitID = $matches["commitID"]
-                $path = "https://github.com/$org/azure-rest-api-specs"
-            } elseif ($readmefile -match $rawSwaggerInfoRegex)
-            {
-                $org = $matches["org"]
-                $specName = $matches["specName"]
-                $commitID = $matches["commitID"]
-                $path = "https://github.com/$org/azure-rest-api-specs"
-            }elseif ($readmefile -match $swaggerNoCommitRegex)
-            {
-                $org = $matches["org"]
-                $specName = $matches["specName"]
-                $branch = $matches["branch"]
-                $path = "https://github.com/$org/azure-rest-api-specs"
+    if ([string]::IsNullOrEmpty($rpSDKFolder))
+    {
+        if ([string]::IsNullOrEmpty($specDir)) {
+            $swaggerInfo = [PSCustomObject]@{
+                isRepoUrl = $true
+                path = "https://github.com/Azure/azure-rest-api-specs"
+                specName = "*"
+                org = "Azure"
+                branch = "main"
+                commitID = ""
+            }
+        } else {
+            $swaggerInfo = [PSCustomObject]@{
+                isRepoUrl = $false
+                path = $specDir
+                specName = "*"
+                org = ""
+                branch = ""
+                commitID = ""
             }
         }
-        catch
-        {
-            Write-Error "Error parsing swagger info"
-            Write-Error $_
-        }
+        
+        return $swaggerInfo
     } else {
-        $paths = $readmefile.split("/");
-        $len = $paths.count
-        if ($len -gt 2) {
-            $specName = $paths[$len - 3]
-            $path = ($paths[0..($len - 4)]) -join "/"
+        $file="$rpSDKFolder/$AUTOREST_CONFIG_FILE"
+        $readmefile = (Select-String -Path $file -Pattern ".*readme.md" | ForEach-Object {$_.Matches.Value}) -replace "require *:|- ", ""
+        if ([string]::IsNullOrEmpty($readmefile)) {
+            Write-Host "Cannot get swagger info"
+            exit 1
         }
-    }
-    
-    return [PSCustomObject]@{
-        isRepoUrl = $isRepoUrl
-        path = $path
-        specName = $specName
-        org = $org
-        branch = $branch
-        commitID = $commitID
+        $readmefile = $readmefile -replace "\\", "/"
+        
+        $isRepoUrl = $false
+        $path = ""
+        $specName = ""
+        $org = ""
+        $branch = ""
+        $commitID = ""
+        $readmefile = $readmefile.Trim()
+
+        if ($readmefile.StartsWith("http")) {
+            $isRepoUrl = $true
+        }
+        if ($isRepoUrl -eq $true) {
+            $swaggerInfoRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/blob\/(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
+            $rawSwaggerInfoRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/(?<commitID>[0-9a-f]{40})\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
+            $swaggerNoCommitRegex = ".*github.*.com\/(?<org>.*)\/azure-rest-api-specs\/(blob\/)?(?<branch>.*)\/specification\/(?<specName>.*)\/resource-manager\/readme.md"
+            try
+            {
+                if ($readmefile -match $swaggerInfoRegex)
+                {
+                    $org = $matches["org"]
+                    $specName = $matches["specName"]
+                    $commitID = $matches["commitID"]
+                    $path = "https://github.com/$org/azure-rest-api-specs"
+                } elseif ($readmefile -match $rawSwaggerInfoRegex)
+                {
+                    $org = $matches["org"]
+                    $specName = $matches["specName"]
+                    $commitID = $matches["commitID"]
+                    $path = "https://github.com/$org/azure-rest-api-specs"
+                }elseif ($readmefile -match $swaggerNoCommitRegex)
+                {
+                    $org = $matches["org"]
+                    $specName = $matches["specName"]
+                    $branch = $matches["branch"]
+                    $path = "https://github.com/$org/azure-rest-api-specs"
+                }
+            }
+            catch
+            {
+                Write-Error "Error parsing swagger info"
+                Write-Error $_
+            }
+        } else {
+            $paths = $readmefile.split("/");
+            $len = $paths.count
+            if ($len -gt 2) {
+                $specName = $paths[$len - 3]
+                $path = ($paths[0..($len - 4)]) -join "/"
+            }
+        }
+        
+        return [PSCustomObject]@{
+            isRepoUrl = $isRepoUrl
+            path = $path
+            specName = $specName
+            org = $org
+            branch = $branch
+            commitID = $commitID
+        }
     }
 }
 
@@ -335,16 +330,16 @@ function JudgeExitCode($errorMsg = "execution error")
     }
 }
 
-function ExecuteSingleTest($sdk, $runMock=$true)
+function ExecuteSingleTest($sdk, $needRunMockServe=$true)
 {
     Write-Host "Start mock server"
-    if ($runMock -eq $true) {
+    if ($needRunMockServe -eq $true) {
         StartMockServer -rpSDKFolder $sdk.DirectoryPath
     }
     Write-Host "Execute mock test for $($sdk.Name)"
     TestAndGenerateReport $sdk.DirectoryPath
     Write-Host "Stop mock server"
-    if ($runMock -eq $true) {
+    if ($needRunMockServe -eq $true) {
         StopMockServer
     }
 }

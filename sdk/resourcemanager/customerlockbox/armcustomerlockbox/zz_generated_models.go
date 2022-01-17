@@ -65,21 +65,13 @@ func (e ErrorBody) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - An error response from the Lockbox service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Detailed information about the error encountered.
-	InnerError *ErrorBody `json:"error,omitempty"`
+	Error *ErrorBody `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// GetTenantOptedInOptions contains the optional parameters for the Get.TenantOptedIn method.
-type GetTenantOptedInOptions struct {
+// GetClientTenantOptedInOptions contains the optional parameters for the GetClient.TenantOptedIn method.
+type GetClientTenantOptedInOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -265,18 +257,18 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PostDisableLockboxOptions contains the optional parameters for the Post.DisableLockbox method.
-type PostDisableLockboxOptions struct {
+// PostClientDisableLockboxOptions contains the optional parameters for the PostClient.DisableLockbox method.
+type PostClientDisableLockboxOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PostEnableLockboxOptions contains the optional parameters for the Post.EnableLockbox method.
-type PostEnableLockboxOptions struct {
+// PostClientEnableLockboxOptions contains the optional parameters for the PostClient.EnableLockbox method.
+type PostClientEnableLockboxOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -297,19 +289,19 @@ func (r RequestListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RequestsGetOptions contains the optional parameters for the Requests.Get method.
-type RequestsGetOptions struct {
+// RequestsClientGetOptions contains the optional parameters for the RequestsClient.Get method.
+type RequestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RequestsListOptions contains the optional parameters for the Requests.List method.
-type RequestsListOptions struct {
+// RequestsClientListOptions contains the optional parameters for the RequestsClient.List method.
+type RequestsClientListOptions struct {
 	// The $filter OData query parameter. Only filter by request status is supported, e.g $filter=properties/status eq 'Pending'
 	Filter *string
 }
 
-// RequestsUpdateStatusOptions contains the optional parameters for the Requests.UpdateStatus method.
-type RequestsUpdateStatusOptions struct {
+// RequestsClientUpdateStatusOptions contains the optional parameters for the RequestsClient.UpdateStatus method.
+type RequestsClientUpdateStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

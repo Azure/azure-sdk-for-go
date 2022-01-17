@@ -24,12 +24,13 @@ func ExampleLocationsClient_CheckTrialAvailability() {
 	}
 	ctx := context.Background()
 	client := armavs.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckTrialAvailability(ctx,
+	res, err := client.CheckTrialAvailability(ctx,
 		"<location>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationsClientCheckTrialAvailabilityResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Locations_CheckQuotaAvailability.json
@@ -40,10 +41,11 @@ func ExampleLocationsClient_CheckQuotaAvailability() {
 	}
 	ctx := context.Background()
 	client := armavs.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckQuotaAvailability(ctx,
+	res, err := client.CheckQuotaAvailability(ctx,
 		"<location>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationsClientCheckQuotaAvailabilityResult)
 }

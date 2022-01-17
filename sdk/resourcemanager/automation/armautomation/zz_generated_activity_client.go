@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ActivityClient contains the methods for the Activity group.
 // Don't use this type directly, use NewActivityClient() instead.
 type ActivityClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewActivityClient creates a new instance of ActivityClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewActivityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ActivityClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ActivityClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieve the activity in the module identified by module name and activity name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string, options *ActivityGetOptions) (ActivityGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The name of module.
+// activityName - The name of activity.
+// options - ActivityClientGetOptions contains the optional parameters for the ActivityClient.Get method.
+func (client *ActivityClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string, options *ActivityClientGetOptions) (ActivityClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, activityName, options)
 	if err != nil {
-		return ActivityGetResponse{}, err
+		return ActivityClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActivityGetResponse{}, err
+		return ActivityClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActivityGetResponse{}, client.getHandleError(resp)
+		return ActivityClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string, options *ActivityGetOptions) (*policy.Request, error) {
+func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string, options *ActivityClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities/{activityName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,7 +95,7 @@ func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,43 +107,34 @@ func (client *ActivityClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityGetResponse, error) {
-	result := ActivityGetResponse{RawResponse: resp}
+func (client *ActivityClient) getHandleResponse(resp *http.Response) (ActivityClientGetResponse, error) {
+	result := ActivityClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Activity); err != nil {
-		return ActivityGetResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ActivityClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByModule - Retrieve a list of activities in the module identified by module name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityClient) ListByModule(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityListByModuleOptions) *ActivityListByModulePager {
-	return &ActivityListByModulePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// moduleName - The name of module.
+// options - ActivityClientListByModuleOptions contains the optional parameters for the ActivityClient.ListByModule method.
+func (client *ActivityClient) ListByModule(resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) *ActivityClientListByModulePager {
+	return &ActivityClientListByModulePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByModuleCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, options)
 		},
-		advancer: func(ctx context.Context, resp ActivityListByModuleResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ActivityClientListByModuleResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ActivityListResult.NextLink)
 		},
 	}
 }
 
 // listByModuleCreateRequest creates the ListByModule request.
-func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ActivityListByModuleOptions) (*policy.Request, error) {
+func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, options *ActivityClientListByModuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -148,7 +152,7 @@ func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,23 +164,10 @@ func (client *ActivityClient) listByModuleCreateRequest(ctx context.Context, res
 }
 
 // listByModuleHandleResponse handles the ListByModule response.
-func (client *ActivityClient) listByModuleHandleResponse(resp *http.Response) (ActivityListByModuleResponse, error) {
-	result := ActivityListByModuleResponse{RawResponse: resp}
+func (client *ActivityClient) listByModuleHandleResponse(resp *http.Response) (ActivityClientListByModuleResponse, error) {
+	result := ActivityClientListByModuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityListResult); err != nil {
-		return ActivityListByModuleResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityClientListByModuleResponse{}, err
 	}
 	return result, nil
-}
-
-// listByModuleHandleError handles the ListByModule error response.
-func (client *ActivityClient) listByModuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -44,7 +44,7 @@ func ExampleRolesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Role.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RolesClientCreateResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/RoleDelete.json
@@ -77,11 +77,12 @@ func ExampleRolesClient_ListByServerGroup() {
 	}
 	ctx := context.Background()
 	client := armpostgresqlhsc.NewRolesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServerGroup(ctx,
+	res, err := client.ListByServerGroup(ctx,
 		"<resource-group-name>",
 		"<server-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RolesClientListByServerGroupResult)
 }

@@ -31,58 +31,48 @@ func ExampleDataFlowsClient_CreateOrUpdate() {
 		"<data-flow-name>",
 		armdatafactory.DataFlowResource{
 			Properties: &armdatafactory.MappingDataFlow{
-				DataFlow: armdatafactory.DataFlow{
-					Type:        to.StringPtr("<type>"),
-					Description: to.StringPtr("<description>"),
-				},
+				Type:        to.StringPtr("<type>"),
+				Description: to.StringPtr("<description>"),
 				TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
 					Script: to.StringPtr("<script>"),
 					Sinks: []*armdatafactory.DataFlowSink{
 						{
-							Transformation: armdatafactory.Transformation{
-								Name: to.StringPtr("<name>"),
-								Dataset: &armdatafactory.DatasetReference{
-									Type:          armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
-									ReferenceName: to.StringPtr("<reference-name>"),
-								},
+							Name: to.StringPtr("<name>"),
+							Dataset: &armdatafactory.DatasetReference{
+								Type:          armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
+								ReferenceName: to.StringPtr("<reference-name>"),
 							},
 						},
 						{
-							Transformation: armdatafactory.Transformation{
-								Name: to.StringPtr("<name>"),
-								Dataset: &armdatafactory.DatasetReference{
-									Type:          armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
-									ReferenceName: to.StringPtr("<reference-name>"),
-								},
+							Name: to.StringPtr("<name>"),
+							Dataset: &armdatafactory.DatasetReference{
+								Type:          armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
+								ReferenceName: to.StringPtr("<reference-name>"),
 							},
 						}},
 					Sources: []*armdatafactory.DataFlowSource{
 						{
-							Transformation: armdatafactory.Transformation{
-								Name: to.StringPtr("<name>"),
-								Dataset: &armdatafactory.DatasetReference{
-									Type:          armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
-									ReferenceName: to.StringPtr("<reference-name>"),
-								},
+							Name: to.StringPtr("<name>"),
+							Dataset: &armdatafactory.DatasetReference{
+								Type:          armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
+								ReferenceName: to.StringPtr("<reference-name>"),
 							},
 						},
 						{
-							Transformation: armdatafactory.Transformation{
-								Name: to.StringPtr("<name>"),
-								Dataset: &armdatafactory.DatasetReference{
-									Type:          armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
-									ReferenceName: to.StringPtr("<reference-name>"),
-								},
+							Name: to.StringPtr("<name>"),
+							Dataset: &armdatafactory.DatasetReference{
+								Type:          armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
+								ReferenceName: to.StringPtr("<reference-name>"),
 							},
 						}},
 				},
 			},
 		},
-		&armdatafactory.DataFlowsCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.DataFlowsClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataFlowResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataFlowsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Get.json
@@ -97,11 +87,11 @@ func ExampleDataFlowsClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<data-flow-name>",
-		&armdatafactory.DataFlowsGetOptions{IfNoneMatch: nil})
+		&armdatafactory.DataFlowsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataFlowResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataFlowsClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Delete.json
@@ -133,12 +123,16 @@ func ExampleDataFlowsClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataFlowResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

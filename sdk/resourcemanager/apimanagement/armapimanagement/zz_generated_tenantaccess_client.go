@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,58 @@ import (
 // TenantAccessClient contains the methods for the TenantAccess group.
 // Don't use this type directly, use NewTenantAccessClient() instead.
 type TenantAccessClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTenantAccessClient creates a new instance of TenantAccessClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantAccessClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TenantAccessClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TenantAccessClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Update tenant access information details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) Create(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationCreateParameters, options *TenantAccessCreateOptions) (TenantAccessCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Parameters supplied to retrieve the Tenant Access Information.
+// options - TenantAccessClientCreateOptions contains the optional parameters for the TenantAccessClient.Create method.
+func (client *TenantAccessClient) Create(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationCreateParameters, options *TenantAccessClientCreateOptions) (TenantAccessClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serviceName, accessName, ifMatch, parameters, options)
 	if err != nil {
-		return TenantAccessCreateResponse{}, err
+		return TenantAccessClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessCreateResponse{}, err
+		return TenantAccessClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TenantAccessCreateResponse{}, client.createHandleError(resp)
+		return TenantAccessClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationCreateParameters, options *TenantAccessCreateOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationCreateParameters, options *TenantAccessClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +93,7 @@ func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,49 +106,40 @@ func (client *TenantAccessClient) createCreateRequest(ctx context.Context, resou
 }
 
 // createHandleResponse handles the Create response.
-func (client *TenantAccessClient) createHandleResponse(resp *http.Response) (TenantAccessCreateResponse, error) {
-	result := TenantAccessCreateResponse{RawResponse: resp}
+func (client *TenantAccessClient) createHandleResponse(resp *http.Response) (TenantAccessClientCreateResponse, error) {
+	result := TenantAccessClientCreateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationContract); err != nil {
-		return TenantAccessCreateResponse{}, runtime.NewResponseError(err, resp)
+		return TenantAccessClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *TenantAccessClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get tenant access information details without secrets.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) Get(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGetOptions) (TenantAccessGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessClientGetOptions contains the optional parameters for the TenantAccessClient.Get method.
+func (client *TenantAccessClient) Get(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientGetOptions) (TenantAccessClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessGetResponse{}, err
+		return TenantAccessClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessGetResponse{}, err
+		return TenantAccessClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TenantAccessGetResponse{}, client.getHandleError(resp)
+		return TenantAccessClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGetOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,7 +157,7 @@ func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,46 +169,37 @@ func (client *TenantAccessClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *TenantAccessClient) getHandleResponse(resp *http.Response) (TenantAccessGetResponse, error) {
-	result := TenantAccessGetResponse{RawResponse: resp}
+func (client *TenantAccessClient) getHandleResponse(resp *http.Response) (TenantAccessClientGetResponse, error) {
+	result := TenantAccessClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationContract); err != nil {
-		return TenantAccessGetResponse{}, runtime.NewResponseError(err, resp)
+		return TenantAccessClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TenantAccessClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Tenant access metadata
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGetEntityTagOptions) (TenantAccessGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessClientGetEntityTagOptions contains the optional parameters for the TenantAccessClient.GetEntityTag
+// method.
+func (client *TenantAccessClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientGetEntityTagOptions) (TenantAccessClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessGetEntityTagResponse{}, err
+		return TenantAccessClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessGetEntityTagResponse{}, err
+		return TenantAccessClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessGetEntityTagOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -220,7 +217,7 @@ func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,8 +229,8 @@ func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context,
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response) (TenantAccessGetEntityTagResponse, error) {
-	result := TenantAccessGetEntityTagResponse{RawResponse: resp}
+func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response) (TenantAccessClientGetEntityTagResponse, error) {
+	result := TenantAccessClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -244,21 +241,25 @@ func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response
 }
 
 // ListByService - Returns list of access infos - for Git and Management endpoints.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) ListByService(resourceGroupName string, serviceName string, options *TenantAccessListByServiceOptions) *TenantAccessListByServicePager {
-	return &TenantAccessListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - TenantAccessClientListByServiceOptions contains the optional parameters for the TenantAccessClient.ListByService
+// method.
+func (client *TenantAccessClient) ListByService(resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) *TenantAccessClientListByServicePager {
+	return &TenantAccessClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp TenantAccessListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TenantAccessClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessInformationCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TenantAccessListByServiceOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TenantAccessClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -272,7 +273,7 @@ func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,46 +288,38 @@ func (client *TenantAccessClient) listByServiceCreateRequest(ctx context.Context
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *TenantAccessClient) listByServiceHandleResponse(resp *http.Response) (TenantAccessListByServiceResponse, error) {
-	result := TenantAccessListByServiceResponse{RawResponse: resp}
+func (client *TenantAccessClient) listByServiceHandleResponse(resp *http.Response) (TenantAccessClientListByServiceResponse, error) {
+	result := TenantAccessClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationCollection); err != nil {
-		return TenantAccessListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return TenantAccessClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *TenantAccessClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSecrets - Get tenant access information details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessListSecretsOptions) (TenantAccessListSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessClientListSecretsOptions contains the optional parameters for the TenantAccessClient.ListSecrets
+// method.
+func (client *TenantAccessClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientListSecretsOptions) (TenantAccessClientListSecretsResponse, error) {
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessListSecretsResponse{}, err
+		return TenantAccessClientListSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessListSecretsResponse{}, err
+		return TenantAccessClientListSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TenantAccessListSecretsResponse{}, client.listSecretsHandleError(resp)
+		return TenantAccessClientListSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSecretsHandleResponse(resp)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
-func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessListSecretsOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -344,7 +337,7 @@ func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,49 +349,41 @@ func (client *TenantAccessClient) listSecretsCreateRequest(ctx context.Context, 
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *TenantAccessClient) listSecretsHandleResponse(resp *http.Response) (TenantAccessListSecretsResponse, error) {
-	result := TenantAccessListSecretsResponse{RawResponse: resp}
+func (client *TenantAccessClient) listSecretsHandleResponse(resp *http.Response) (TenantAccessClientListSecretsResponse, error) {
+	result := TenantAccessClientListSecretsResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationSecretsContract); err != nil {
-		return TenantAccessListSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return TenantAccessClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSecretsHandleError handles the ListSecrets error response.
-func (client *TenantAccessClient) listSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegeneratePrimaryKey - Regenerate primary access key
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessRegeneratePrimaryKeyOptions) (TenantAccessRegeneratePrimaryKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessClientRegeneratePrimaryKeyOptions contains the optional parameters for the TenantAccessClient.RegeneratePrimaryKey
+// method.
+func (client *TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientRegeneratePrimaryKeyOptions) (TenantAccessClientRegeneratePrimaryKeyResponse, error) {
 	req, err := client.regeneratePrimaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessRegeneratePrimaryKeyResponse{}, err
+		return TenantAccessClientRegeneratePrimaryKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessRegeneratePrimaryKeyResponse{}, err
+		return TenantAccessClientRegeneratePrimaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return TenantAccessRegeneratePrimaryKeyResponse{}, client.regeneratePrimaryKeyHandleError(resp)
+		return TenantAccessClientRegeneratePrimaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantAccessRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
+	return TenantAccessClientRegeneratePrimaryKeyResponse{RawResponse: resp}, nil
 }
 
 // regeneratePrimaryKeyCreateRequest creates the RegeneratePrimaryKey request.
-func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessRegeneratePrimaryKeyOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientRegeneratePrimaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/regeneratePrimaryKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,7 +401,7 @@ func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -427,38 +412,30 @@ func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.
 	return req, nil
 }
 
-// regeneratePrimaryKeyHandleError handles the RegeneratePrimaryKey error response.
-func (client *TenantAccessClient) regeneratePrimaryKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateSecondaryKey - Regenerate secondary access key
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessRegenerateSecondaryKeyOptions) (TenantAccessRegenerateSecondaryKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// options - TenantAccessClientRegenerateSecondaryKeyOptions contains the optional parameters for the TenantAccessClient.RegenerateSecondaryKey
+// method.
+func (client *TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientRegenerateSecondaryKeyOptions) (TenantAccessClientRegenerateSecondaryKeyResponse, error) {
 	req, err := client.regenerateSecondaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
-		return TenantAccessRegenerateSecondaryKeyResponse{}, err
+		return TenantAccessClientRegenerateSecondaryKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessRegenerateSecondaryKeyResponse{}, err
+		return TenantAccessClientRegenerateSecondaryKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return TenantAccessRegenerateSecondaryKeyResponse{}, client.regenerateSecondaryKeyHandleError(resp)
+		return TenantAccessClientRegenerateSecondaryKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return TenantAccessRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
+	return TenantAccessClientRegenerateSecondaryKeyResponse{RawResponse: resp}, nil
 }
 
 // regenerateSecondaryKeyCreateRequest creates the RegenerateSecondaryKey request.
-func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessRegenerateSecondaryKeyOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientRegenerateSecondaryKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/regenerateSecondaryKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -476,7 +453,7 @@ func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx contex
 		return nil, errors.New("parameter accessName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accessName}", url.PathEscape(string(accessName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -487,38 +464,32 @@ func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx contex
 	return req, nil
 }
 
-// regenerateSecondaryKeyHandleError handles the RegenerateSecondaryKey error response.
-func (client *TenantAccessClient) regenerateSecondaryKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update tenant access information details.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantAccessClient) Update(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationUpdateParameters, options *TenantAccessUpdateOptions) (TenantAccessUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// accessName - The identifier of the Access configuration.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Parameters supplied to retrieve the Tenant Access Information.
+// options - TenantAccessClientUpdateOptions contains the optional parameters for the TenantAccessClient.Update method.
+func (client *TenantAccessClient) Update(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationUpdateParameters, options *TenantAccessClientUpdateOptions) (TenantAccessClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, accessName, ifMatch, parameters, options)
 	if err != nil {
-		return TenantAccessUpdateResponse{}, err
+		return TenantAccessClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantAccessUpdateResponse{}, err
+		return TenantAccessClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TenantAccessUpdateResponse{}, client.updateHandleError(resp)
+		return TenantAccessClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationUpdateParameters, options *TenantAccessUpdateOptions) (*policy.Request, error) {
+func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationUpdateParameters, options *TenantAccessClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -536,7 +507,7 @@ func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -549,26 +520,13 @@ func (client *TenantAccessClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TenantAccessClient) updateHandleResponse(resp *http.Response) (TenantAccessUpdateResponse, error) {
-	result := TenantAccessUpdateResponse{RawResponse: resp}
+func (client *TenantAccessClient) updateHandleResponse(resp *http.Response) (TenantAccessClientUpdateResponse, error) {
+	result := TenantAccessClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessInformationContract); err != nil {
-		return TenantAccessUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TenantAccessClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TenantAccessClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

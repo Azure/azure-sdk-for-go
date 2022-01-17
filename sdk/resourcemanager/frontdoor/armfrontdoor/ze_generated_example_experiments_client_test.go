@@ -30,12 +30,16 @@ func ExampleExperimentsClient_ListByProfile() {
 	pager := client.ListByProfile("<resource-group-name>",
 		"<profile-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Experiment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleExperimentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientGetResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentCreateExperiment.json
@@ -74,7 +78,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 		armfrontdoor.Experiment{
 			Properties: &armfrontdoor.ExperimentProperties{
 				Description:  to.StringPtr("<description>"),
-				EnabledState: armfrontdoor.StateEnabled.ToPtr(),
+				EnabledState: armfrontdoor.State("Enabled").ToPtr(),
 				EndpointA: &armfrontdoor.Endpoint{
 					Name:     to.StringPtr("<name>"),
 					Endpoint: to.StringPtr("<endpoint>"),
@@ -93,7 +97,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateExperiment.json
@@ -111,7 +115,7 @@ func ExampleExperimentsClient_BeginUpdate() {
 		armfrontdoor.ExperimentUpdateModel{
 			Properties: &armfrontdoor.ExperimentUpdateProperties{
 				Description:  to.StringPtr("<description>"),
-				EnabledState: armfrontdoor.StateEnabled.ToPtr(),
+				EnabledState: armfrontdoor.State("Enabled").ToPtr(),
 			},
 		},
 		nil)
@@ -122,7 +126,7 @@ func ExampleExperimentsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExperimentsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentDeleteExperiment.json

@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// ClustersCreateOrUpdatePollerResponse contains the response from method Clusters.CreateOrUpdate.
-type ClustersCreateOrUpdatePollerResponse struct {
+// ClustersClientCreateOrUpdatePollerResponse contains the response from method ClustersClient.CreateOrUpdate.
+type ClustersClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ClustersCreateOrUpdatePoller
+	Poller *ClustersClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type ClustersCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersCreateOrUpdateResponse, error) {
-	respType := ClustersCreateOrUpdateResponse{}
+func (l ClustersClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersClientCreateOrUpdateResponse, error) {
+	respType := ClustersClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l ClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a ClustersCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ClustersClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ClustersClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ClustersCreateOrUpdatePoller{
+	poller := &ClustersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *ClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// ClustersCreateOrUpdateResponse contains the response from method Clusters.CreateOrUpdate.
-type ClustersCreateOrUpdateResponse struct {
-	ClustersCreateOrUpdateResult
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.CreateOrUpdate.
+type ClustersClientCreateOrUpdateResponse struct {
+	ClustersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersCreateOrUpdateResult contains the result from method Clusters.CreateOrUpdate.
-type ClustersCreateOrUpdateResult struct {
+// ClustersClientCreateOrUpdateResult contains the result from method ClustersClient.CreateOrUpdate.
+type ClustersClientCreateOrUpdateResult struct {
 	Cluster
 }
 
-// ClustersDeletePollerResponse contains the response from method Clusters.Delete.
-type ClustersDeletePollerResponse struct {
+// ClustersClientDeletePollerResponse contains the response from method ClustersClient.Delete.
+type ClustersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ClustersDeletePoller
+	Poller *ClustersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type ClustersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersDeleteResponse, error) {
-	respType := ClustersDeleteResponse{}
+func (l ClustersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersClientDeleteResponse, error) {
+	respType := ClustersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l ClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a ClustersDeletePollerResponse from the provided client and resume token.
-func (l *ClustersDeletePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ClustersClientDeletePollerResponse from the provided client and resume token.
+func (l *ClustersClientDeletePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ClustersDeletePoller{
+	poller := &ClustersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,76 +107,76 @@ func (l *ClustersDeletePollerResponse) Resume(ctx context.Context, client *Clust
 	return nil
 }
 
-// ClustersDeleteResponse contains the response from method Clusters.Delete.
-type ClustersDeleteResponse struct {
+// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+type ClustersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersGetResponse contains the response from method Clusters.Get.
-type ClustersGetResponse struct {
-	ClustersGetResult
+// ClustersClientGetResponse contains the response from method ClustersClient.Get.
+type ClustersClientGetResponse struct {
+	ClustersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersGetResult contains the result from method Clusters.Get.
-type ClustersGetResult struct {
+// ClustersClientGetResult contains the result from method ClustersClient.Get.
+type ClustersClientGetResult struct {
 	Cluster
 }
 
-// ClustersListAvailableClusterRegionResponse contains the response from method Clusters.ListAvailableClusterRegion.
-type ClustersListAvailableClusterRegionResponse struct {
-	ClustersListAvailableClusterRegionResult
+// ClustersClientListAvailableClusterRegionResponse contains the response from method ClustersClient.ListAvailableClusterRegion.
+type ClustersClientListAvailableClusterRegionResponse struct {
+	ClustersClientListAvailableClusterRegionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListAvailableClusterRegionResult contains the result from method Clusters.ListAvailableClusterRegion.
-type ClustersListAvailableClusterRegionResult struct {
+// ClustersClientListAvailableClusterRegionResult contains the result from method ClustersClient.ListAvailableClusterRegion.
+type ClustersClientListAvailableClusterRegionResult struct {
 	AvailableClustersList
 }
 
-// ClustersListByResourceGroupResponse contains the response from method Clusters.ListByResourceGroup.
-type ClustersListByResourceGroupResponse struct {
-	ClustersListByResourceGroupResult
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+type ClustersClientListByResourceGroupResponse struct {
+	ClustersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListByResourceGroupResult contains the result from method Clusters.ListByResourceGroup.
-type ClustersListByResourceGroupResult struct {
+// ClustersClientListByResourceGroupResult contains the result from method ClustersClient.ListByResourceGroup.
+type ClustersClientListByResourceGroupResult struct {
 	ClusterListResult
 }
 
-// ClustersListBySubscriptionResponse contains the response from method Clusters.ListBySubscription.
-type ClustersListBySubscriptionResponse struct {
-	ClustersListBySubscriptionResult
+// ClustersClientListBySubscriptionResponse contains the response from method ClustersClient.ListBySubscription.
+type ClustersClientListBySubscriptionResponse struct {
+	ClustersClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListBySubscriptionResult contains the result from method Clusters.ListBySubscription.
-type ClustersListBySubscriptionResult struct {
+// ClustersClientListBySubscriptionResult contains the result from method ClustersClient.ListBySubscription.
+type ClustersClientListBySubscriptionResult struct {
 	ClusterListResult
 }
 
-// ClustersListNamespacesResponse contains the response from method Clusters.ListNamespaces.
-type ClustersListNamespacesResponse struct {
-	ClustersListNamespacesResult
+// ClustersClientListNamespacesResponse contains the response from method ClustersClient.ListNamespaces.
+type ClustersClientListNamespacesResponse struct {
+	ClustersClientListNamespacesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListNamespacesResult contains the result from method Clusters.ListNamespaces.
-type ClustersListNamespacesResult struct {
+// ClustersClientListNamespacesResult contains the result from method ClustersClient.ListNamespaces.
+type ClustersClientListNamespacesResult struct {
 	EHNamespaceIDListResult
 }
 
-// ClustersUpdatePollerResponse contains the response from method Clusters.Update.
-type ClustersUpdatePollerResponse struct {
+// ClustersClientUpdatePollerResponse contains the response from method ClustersClient.Update.
+type ClustersClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ClustersUpdatePoller
+	Poller *ClustersClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -185,8 +185,8 @@ type ClustersUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ClustersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersUpdateResponse, error) {
-	respType := ClustersUpdateResponse{}
+func (l ClustersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersClientUpdateResponse, error) {
+	respType := ClustersClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
 	if err != nil {
 		return respType, err
@@ -195,13 +195,13 @@ func (l ClustersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a ClustersUpdatePollerResponse from the provided client and resume token.
-func (l *ClustersUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ClustersClientUpdatePollerResponse from the provided client and resume token.
+func (l *ClustersClientUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ClustersUpdatePoller{
+	poller := &ClustersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -213,334 +213,334 @@ func (l *ClustersUpdatePollerResponse) Resume(ctx context.Context, client *Clust
 	return nil
 }
 
-// ClustersUpdateResponse contains the response from method Clusters.Update.
-type ClustersUpdateResponse struct {
-	ClustersUpdateResult
+// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+type ClustersClientUpdateResponse struct {
+	ClustersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersUpdateResult contains the result from method Clusters.Update.
-type ClustersUpdateResult struct {
+// ClustersClientUpdateResult contains the result from method ClustersClient.Update.
+type ClustersClientUpdateResult struct {
 	Cluster
 }
 
-// ConfigurationGetResponse contains the response from method Configuration.Get.
-type ConfigurationGetResponse struct {
-	ConfigurationGetResult
+// ConfigurationClientGetResponse contains the response from method ConfigurationClient.Get.
+type ConfigurationClientGetResponse struct {
+	ConfigurationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationGetResult contains the result from method Configuration.Get.
-type ConfigurationGetResult struct {
+// ConfigurationClientGetResult contains the result from method ConfigurationClient.Get.
+type ConfigurationClientGetResult struct {
 	ClusterQuotaConfigurationProperties
 }
 
-// ConfigurationPatchResponse contains the response from method Configuration.Patch.
-type ConfigurationPatchResponse struct {
-	ConfigurationPatchResult
+// ConfigurationClientPatchResponse contains the response from method ConfigurationClient.Patch.
+type ConfigurationClientPatchResponse struct {
+	ConfigurationClientPatchResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationPatchResult contains the result from method Configuration.Patch.
-type ConfigurationPatchResult struct {
+// ConfigurationClientPatchResult contains the result from method ConfigurationClient.Patch.
+type ConfigurationClientPatchResult struct {
 	ClusterQuotaConfigurationProperties
 }
 
-// ConsumerGroupsCreateOrUpdateResponse contains the response from method ConsumerGroups.CreateOrUpdate.
-type ConsumerGroupsCreateOrUpdateResponse struct {
-	ConsumerGroupsCreateOrUpdateResult
+// ConsumerGroupsClientCreateOrUpdateResponse contains the response from method ConsumerGroupsClient.CreateOrUpdate.
+type ConsumerGroupsClientCreateOrUpdateResponse struct {
+	ConsumerGroupsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerGroupsCreateOrUpdateResult contains the result from method ConsumerGroups.CreateOrUpdate.
-type ConsumerGroupsCreateOrUpdateResult struct {
+// ConsumerGroupsClientCreateOrUpdateResult contains the result from method ConsumerGroupsClient.CreateOrUpdate.
+type ConsumerGroupsClientCreateOrUpdateResult struct {
 	ConsumerGroup
 }
 
-// ConsumerGroupsDeleteResponse contains the response from method ConsumerGroups.Delete.
-type ConsumerGroupsDeleteResponse struct {
+// ConsumerGroupsClientDeleteResponse contains the response from method ConsumerGroupsClient.Delete.
+type ConsumerGroupsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerGroupsGetResponse contains the response from method ConsumerGroups.Get.
-type ConsumerGroupsGetResponse struct {
-	ConsumerGroupsGetResult
+// ConsumerGroupsClientGetResponse contains the response from method ConsumerGroupsClient.Get.
+type ConsumerGroupsClientGetResponse struct {
+	ConsumerGroupsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerGroupsGetResult contains the result from method ConsumerGroups.Get.
-type ConsumerGroupsGetResult struct {
+// ConsumerGroupsClientGetResult contains the result from method ConsumerGroupsClient.Get.
+type ConsumerGroupsClientGetResult struct {
 	ConsumerGroup
 }
 
-// ConsumerGroupsListByEventHubResponse contains the response from method ConsumerGroups.ListByEventHub.
-type ConsumerGroupsListByEventHubResponse struct {
-	ConsumerGroupsListByEventHubResult
+// ConsumerGroupsClientListByEventHubResponse contains the response from method ConsumerGroupsClient.ListByEventHub.
+type ConsumerGroupsClientListByEventHubResponse struct {
+	ConsumerGroupsClientListByEventHubResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConsumerGroupsListByEventHubResult contains the result from method ConsumerGroups.ListByEventHub.
-type ConsumerGroupsListByEventHubResult struct {
+// ConsumerGroupsClientListByEventHubResult contains the result from method ConsumerGroupsClient.ListByEventHub.
+type ConsumerGroupsClientListByEventHubResult struct {
 	ConsumerGroupListResult
 }
 
-// DisasterRecoveryConfigsBreakPairingResponse contains the response from method DisasterRecoveryConfigs.BreakPairing.
-type DisasterRecoveryConfigsBreakPairingResponse struct {
+// DisasterRecoveryConfigsClientBreakPairingResponse contains the response from method DisasterRecoveryConfigsClient.BreakPairing.
+type DisasterRecoveryConfigsClientBreakPairingResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsCheckNameAvailabilityResponse contains the response from method DisasterRecoveryConfigs.CheckNameAvailability.
-type DisasterRecoveryConfigsCheckNameAvailabilityResponse struct {
-	DisasterRecoveryConfigsCheckNameAvailabilityResult
+// DisasterRecoveryConfigsClientCheckNameAvailabilityResponse contains the response from method DisasterRecoveryConfigsClient.CheckNameAvailability.
+type DisasterRecoveryConfigsClientCheckNameAvailabilityResponse struct {
+	DisasterRecoveryConfigsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsCheckNameAvailabilityResult contains the result from method DisasterRecoveryConfigs.CheckNameAvailability.
-type DisasterRecoveryConfigsCheckNameAvailabilityResult struct {
+// DisasterRecoveryConfigsClientCheckNameAvailabilityResult contains the result from method DisasterRecoveryConfigsClient.CheckNameAvailability.
+type DisasterRecoveryConfigsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// DisasterRecoveryConfigsCreateOrUpdateResponse contains the response from method DisasterRecoveryConfigs.CreateOrUpdate.
-type DisasterRecoveryConfigsCreateOrUpdateResponse struct {
-	DisasterRecoveryConfigsCreateOrUpdateResult
+// DisasterRecoveryConfigsClientCreateOrUpdateResponse contains the response from method DisasterRecoveryConfigsClient.CreateOrUpdate.
+type DisasterRecoveryConfigsClientCreateOrUpdateResponse struct {
+	DisasterRecoveryConfigsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsCreateOrUpdateResult contains the result from method DisasterRecoveryConfigs.CreateOrUpdate.
-type DisasterRecoveryConfigsCreateOrUpdateResult struct {
+// DisasterRecoveryConfigsClientCreateOrUpdateResult contains the result from method DisasterRecoveryConfigsClient.CreateOrUpdate.
+type DisasterRecoveryConfigsClientCreateOrUpdateResult struct {
 	ArmDisasterRecovery
 }
 
-// DisasterRecoveryConfigsDeleteResponse contains the response from method DisasterRecoveryConfigs.Delete.
-type DisasterRecoveryConfigsDeleteResponse struct {
+// DisasterRecoveryConfigsClientDeleteResponse contains the response from method DisasterRecoveryConfigsClient.Delete.
+type DisasterRecoveryConfigsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsFailOverResponse contains the response from method DisasterRecoveryConfigs.FailOver.
-type DisasterRecoveryConfigsFailOverResponse struct {
+// DisasterRecoveryConfigsClientFailOverResponse contains the response from method DisasterRecoveryConfigsClient.FailOver.
+type DisasterRecoveryConfigsClientFailOverResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsGetAuthorizationRuleResponse contains the response from method DisasterRecoveryConfigs.GetAuthorizationRule.
-type DisasterRecoveryConfigsGetAuthorizationRuleResponse struct {
-	DisasterRecoveryConfigsGetAuthorizationRuleResult
+// DisasterRecoveryConfigsClientGetAuthorizationRuleResponse contains the response from method DisasterRecoveryConfigsClient.GetAuthorizationRule.
+type DisasterRecoveryConfigsClientGetAuthorizationRuleResponse struct {
+	DisasterRecoveryConfigsClientGetAuthorizationRuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsGetAuthorizationRuleResult contains the result from method DisasterRecoveryConfigs.GetAuthorizationRule.
-type DisasterRecoveryConfigsGetAuthorizationRuleResult struct {
+// DisasterRecoveryConfigsClientGetAuthorizationRuleResult contains the result from method DisasterRecoveryConfigsClient.GetAuthorizationRule.
+type DisasterRecoveryConfigsClientGetAuthorizationRuleResult struct {
 	AuthorizationRule
 }
 
-// DisasterRecoveryConfigsGetResponse contains the response from method DisasterRecoveryConfigs.Get.
-type DisasterRecoveryConfigsGetResponse struct {
-	DisasterRecoveryConfigsGetResult
+// DisasterRecoveryConfigsClientGetResponse contains the response from method DisasterRecoveryConfigsClient.Get.
+type DisasterRecoveryConfigsClientGetResponse struct {
+	DisasterRecoveryConfigsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsGetResult contains the result from method DisasterRecoveryConfigs.Get.
-type DisasterRecoveryConfigsGetResult struct {
+// DisasterRecoveryConfigsClientGetResult contains the result from method DisasterRecoveryConfigsClient.Get.
+type DisasterRecoveryConfigsClientGetResult struct {
 	ArmDisasterRecovery
 }
 
-// DisasterRecoveryConfigsListAuthorizationRulesResponse contains the response from method DisasterRecoveryConfigs.ListAuthorizationRules.
-type DisasterRecoveryConfigsListAuthorizationRulesResponse struct {
-	DisasterRecoveryConfigsListAuthorizationRulesResult
+// DisasterRecoveryConfigsClientListAuthorizationRulesResponse contains the response from method DisasterRecoveryConfigsClient.ListAuthorizationRules.
+type DisasterRecoveryConfigsClientListAuthorizationRulesResponse struct {
+	DisasterRecoveryConfigsClientListAuthorizationRulesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsListAuthorizationRulesResult contains the result from method DisasterRecoveryConfigs.ListAuthorizationRules.
-type DisasterRecoveryConfigsListAuthorizationRulesResult struct {
+// DisasterRecoveryConfigsClientListAuthorizationRulesResult contains the result from method DisasterRecoveryConfigsClient.ListAuthorizationRules.
+type DisasterRecoveryConfigsClientListAuthorizationRulesResult struct {
 	AuthorizationRuleListResult
 }
 
-// DisasterRecoveryConfigsListKeysResponse contains the response from method DisasterRecoveryConfigs.ListKeys.
-type DisasterRecoveryConfigsListKeysResponse struct {
-	DisasterRecoveryConfigsListKeysResult
+// DisasterRecoveryConfigsClientListKeysResponse contains the response from method DisasterRecoveryConfigsClient.ListKeys.
+type DisasterRecoveryConfigsClientListKeysResponse struct {
+	DisasterRecoveryConfigsClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsListKeysResult contains the result from method DisasterRecoveryConfigs.ListKeys.
-type DisasterRecoveryConfigsListKeysResult struct {
+// DisasterRecoveryConfigsClientListKeysResult contains the result from method DisasterRecoveryConfigsClient.ListKeys.
+type DisasterRecoveryConfigsClientListKeysResult struct {
 	AccessKeys
 }
 
-// DisasterRecoveryConfigsListResponse contains the response from method DisasterRecoveryConfigs.List.
-type DisasterRecoveryConfigsListResponse struct {
-	DisasterRecoveryConfigsListResult
+// DisasterRecoveryConfigsClientListResponse contains the response from method DisasterRecoveryConfigsClient.List.
+type DisasterRecoveryConfigsClientListResponse struct {
+	DisasterRecoveryConfigsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DisasterRecoveryConfigsListResult contains the result from method DisasterRecoveryConfigs.List.
-type DisasterRecoveryConfigsListResult struct {
+// DisasterRecoveryConfigsClientListResult contains the result from method DisasterRecoveryConfigsClient.List.
+type DisasterRecoveryConfigsClientListResult struct {
 	ArmDisasterRecoveryListResult
 }
 
-// EventHubsCreateOrUpdateAuthorizationRuleResponse contains the response from method EventHubs.CreateOrUpdateAuthorizationRule.
-type EventHubsCreateOrUpdateAuthorizationRuleResponse struct {
-	EventHubsCreateOrUpdateAuthorizationRuleResult
+// EventHubsClientCreateOrUpdateAuthorizationRuleResponse contains the response from method EventHubsClient.CreateOrUpdateAuthorizationRule.
+type EventHubsClientCreateOrUpdateAuthorizationRuleResponse struct {
+	EventHubsClientCreateOrUpdateAuthorizationRuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsCreateOrUpdateAuthorizationRuleResult contains the result from method EventHubs.CreateOrUpdateAuthorizationRule.
-type EventHubsCreateOrUpdateAuthorizationRuleResult struct {
+// EventHubsClientCreateOrUpdateAuthorizationRuleResult contains the result from method EventHubsClient.CreateOrUpdateAuthorizationRule.
+type EventHubsClientCreateOrUpdateAuthorizationRuleResult struct {
 	AuthorizationRule
 }
 
-// EventHubsCreateOrUpdateResponse contains the response from method EventHubs.CreateOrUpdate.
-type EventHubsCreateOrUpdateResponse struct {
-	EventHubsCreateOrUpdateResult
+// EventHubsClientCreateOrUpdateResponse contains the response from method EventHubsClient.CreateOrUpdate.
+type EventHubsClientCreateOrUpdateResponse struct {
+	EventHubsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsCreateOrUpdateResult contains the result from method EventHubs.CreateOrUpdate.
-type EventHubsCreateOrUpdateResult struct {
+// EventHubsClientCreateOrUpdateResult contains the result from method EventHubsClient.CreateOrUpdate.
+type EventHubsClientCreateOrUpdateResult struct {
 	Eventhub
 }
 
-// EventHubsDeleteAuthorizationRuleResponse contains the response from method EventHubs.DeleteAuthorizationRule.
-type EventHubsDeleteAuthorizationRuleResponse struct {
+// EventHubsClientDeleteAuthorizationRuleResponse contains the response from method EventHubsClient.DeleteAuthorizationRule.
+type EventHubsClientDeleteAuthorizationRuleResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsDeleteResponse contains the response from method EventHubs.Delete.
-type EventHubsDeleteResponse struct {
+// EventHubsClientDeleteResponse contains the response from method EventHubsClient.Delete.
+type EventHubsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsGetAuthorizationRuleResponse contains the response from method EventHubs.GetAuthorizationRule.
-type EventHubsGetAuthorizationRuleResponse struct {
-	EventHubsGetAuthorizationRuleResult
+// EventHubsClientGetAuthorizationRuleResponse contains the response from method EventHubsClient.GetAuthorizationRule.
+type EventHubsClientGetAuthorizationRuleResponse struct {
+	EventHubsClientGetAuthorizationRuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsGetAuthorizationRuleResult contains the result from method EventHubs.GetAuthorizationRule.
-type EventHubsGetAuthorizationRuleResult struct {
+// EventHubsClientGetAuthorizationRuleResult contains the result from method EventHubsClient.GetAuthorizationRule.
+type EventHubsClientGetAuthorizationRuleResult struct {
 	AuthorizationRule
 }
 
-// EventHubsGetResponse contains the response from method EventHubs.Get.
-type EventHubsGetResponse struct {
-	EventHubsGetResult
+// EventHubsClientGetResponse contains the response from method EventHubsClient.Get.
+type EventHubsClientGetResponse struct {
+	EventHubsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsGetResult contains the result from method EventHubs.Get.
-type EventHubsGetResult struct {
+// EventHubsClientGetResult contains the result from method EventHubsClient.Get.
+type EventHubsClientGetResult struct {
 	Eventhub
 }
 
-// EventHubsListAuthorizationRulesResponse contains the response from method EventHubs.ListAuthorizationRules.
-type EventHubsListAuthorizationRulesResponse struct {
-	EventHubsListAuthorizationRulesResult
+// EventHubsClientListAuthorizationRulesResponse contains the response from method EventHubsClient.ListAuthorizationRules.
+type EventHubsClientListAuthorizationRulesResponse struct {
+	EventHubsClientListAuthorizationRulesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsListAuthorizationRulesResult contains the result from method EventHubs.ListAuthorizationRules.
-type EventHubsListAuthorizationRulesResult struct {
+// EventHubsClientListAuthorizationRulesResult contains the result from method EventHubsClient.ListAuthorizationRules.
+type EventHubsClientListAuthorizationRulesResult struct {
 	AuthorizationRuleListResult
 }
 
-// EventHubsListByNamespaceResponse contains the response from method EventHubs.ListByNamespace.
-type EventHubsListByNamespaceResponse struct {
-	EventHubsListByNamespaceResult
+// EventHubsClientListByNamespaceResponse contains the response from method EventHubsClient.ListByNamespace.
+type EventHubsClientListByNamespaceResponse struct {
+	EventHubsClientListByNamespaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsListByNamespaceResult contains the result from method EventHubs.ListByNamespace.
-type EventHubsListByNamespaceResult struct {
-	EventHubListResult
+// EventHubsClientListByNamespaceResult contains the result from method EventHubsClient.ListByNamespace.
+type EventHubsClientListByNamespaceResult struct {
+	ListResult
 }
 
-// EventHubsListKeysResponse contains the response from method EventHubs.ListKeys.
-type EventHubsListKeysResponse struct {
-	EventHubsListKeysResult
+// EventHubsClientListKeysResponse contains the response from method EventHubsClient.ListKeys.
+type EventHubsClientListKeysResponse struct {
+	EventHubsClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsListKeysResult contains the result from method EventHubs.ListKeys.
-type EventHubsListKeysResult struct {
+// EventHubsClientListKeysResult contains the result from method EventHubsClient.ListKeys.
+type EventHubsClientListKeysResult struct {
 	AccessKeys
 }
 
-// EventHubsRegenerateKeysResponse contains the response from method EventHubs.RegenerateKeys.
-type EventHubsRegenerateKeysResponse struct {
-	EventHubsRegenerateKeysResult
+// EventHubsClientRegenerateKeysResponse contains the response from method EventHubsClient.RegenerateKeys.
+type EventHubsClientRegenerateKeysResponse struct {
+	EventHubsClientRegenerateKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EventHubsRegenerateKeysResult contains the result from method EventHubs.RegenerateKeys.
-type EventHubsRegenerateKeysResult struct {
+// EventHubsClientRegenerateKeysResult contains the result from method EventHubsClient.RegenerateKeys.
+type EventHubsClientRegenerateKeysResult struct {
 	AccessKeys
 }
 
-// NamespacesCheckNameAvailabilityResponse contains the response from method Namespaces.CheckNameAvailability.
-type NamespacesCheckNameAvailabilityResponse struct {
-	NamespacesCheckNameAvailabilityResult
+// NamespacesClientCheckNameAvailabilityResponse contains the response from method NamespacesClient.CheckNameAvailability.
+type NamespacesClientCheckNameAvailabilityResponse struct {
+	NamespacesClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesCheckNameAvailabilityResult contains the result from method Namespaces.CheckNameAvailability.
-type NamespacesCheckNameAvailabilityResult struct {
+// NamespacesClientCheckNameAvailabilityResult contains the result from method NamespacesClient.CheckNameAvailability.
+type NamespacesClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// NamespacesCreateOrUpdateAuthorizationRuleResponse contains the response from method Namespaces.CreateOrUpdateAuthorizationRule.
-type NamespacesCreateOrUpdateAuthorizationRuleResponse struct {
-	NamespacesCreateOrUpdateAuthorizationRuleResult
+// NamespacesClientCreateOrUpdateAuthorizationRuleResponse contains the response from method NamespacesClient.CreateOrUpdateAuthorizationRule.
+type NamespacesClientCreateOrUpdateAuthorizationRuleResponse struct {
+	NamespacesClientCreateOrUpdateAuthorizationRuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesCreateOrUpdateAuthorizationRuleResult contains the result from method Namespaces.CreateOrUpdateAuthorizationRule.
-type NamespacesCreateOrUpdateAuthorizationRuleResult struct {
+// NamespacesClientCreateOrUpdateAuthorizationRuleResult contains the result from method NamespacesClient.CreateOrUpdateAuthorizationRule.
+type NamespacesClientCreateOrUpdateAuthorizationRuleResult struct {
 	AuthorizationRule
 }
 
-// NamespacesCreateOrUpdateNetworkRuleSetResponse contains the response from method Namespaces.CreateOrUpdateNetworkRuleSet.
-type NamespacesCreateOrUpdateNetworkRuleSetResponse struct {
-	NamespacesCreateOrUpdateNetworkRuleSetResult
+// NamespacesClientCreateOrUpdateNetworkRuleSetResponse contains the response from method NamespacesClient.CreateOrUpdateNetworkRuleSet.
+type NamespacesClientCreateOrUpdateNetworkRuleSetResponse struct {
+	NamespacesClientCreateOrUpdateNetworkRuleSetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesCreateOrUpdateNetworkRuleSetResult contains the result from method Namespaces.CreateOrUpdateNetworkRuleSet.
-type NamespacesCreateOrUpdateNetworkRuleSetResult struct {
+// NamespacesClientCreateOrUpdateNetworkRuleSetResult contains the result from method NamespacesClient.CreateOrUpdateNetworkRuleSet.
+type NamespacesClientCreateOrUpdateNetworkRuleSetResult struct {
 	NetworkRuleSet
 }
 
-// NamespacesCreateOrUpdatePollerResponse contains the response from method Namespaces.CreateOrUpdate.
-type NamespacesCreateOrUpdatePollerResponse struct {
+// NamespacesClientCreateOrUpdatePollerResponse contains the response from method NamespacesClient.CreateOrUpdate.
+type NamespacesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *NamespacesCreateOrUpdatePoller
+	Poller *NamespacesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -549,8 +549,8 @@ type NamespacesCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l NamespacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesCreateOrUpdateResponse, error) {
-	respType := NamespacesCreateOrUpdateResponse{}
+func (l NamespacesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesClientCreateOrUpdateResponse, error) {
+	respType := NamespacesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.EHNamespace)
 	if err != nil {
 		return respType, err
@@ -559,13 +559,13 @@ func (l NamespacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a NamespacesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *NamespacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NamespacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NamespacesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a NamespacesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *NamespacesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NamespacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamespacesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &NamespacesCreateOrUpdatePoller{
+	poller := &NamespacesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -577,28 +577,28 @@ func (l *NamespacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// NamespacesCreateOrUpdateResponse contains the response from method Namespaces.CreateOrUpdate.
-type NamespacesCreateOrUpdateResponse struct {
-	NamespacesCreateOrUpdateResult
+// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.CreateOrUpdate.
+type NamespacesClientCreateOrUpdateResponse struct {
+	NamespacesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesCreateOrUpdateResult contains the result from method Namespaces.CreateOrUpdate.
-type NamespacesCreateOrUpdateResult struct {
+// NamespacesClientCreateOrUpdateResult contains the result from method NamespacesClient.CreateOrUpdate.
+type NamespacesClientCreateOrUpdateResult struct {
 	EHNamespace
 }
 
-// NamespacesDeleteAuthorizationRuleResponse contains the response from method Namespaces.DeleteAuthorizationRule.
-type NamespacesDeleteAuthorizationRuleResponse struct {
+// NamespacesClientDeleteAuthorizationRuleResponse contains the response from method NamespacesClient.DeleteAuthorizationRule.
+type NamespacesClientDeleteAuthorizationRuleResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesDeletePollerResponse contains the response from method Namespaces.Delete.
-type NamespacesDeletePollerResponse struct {
+// NamespacesClientDeletePollerResponse contains the response from method NamespacesClient.Delete.
+type NamespacesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *NamespacesDeletePoller
+	Poller *NamespacesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -607,8 +607,8 @@ type NamespacesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l NamespacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesDeleteResponse, error) {
-	respType := NamespacesDeleteResponse{}
+func (l NamespacesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesClientDeleteResponse, error) {
+	respType := NamespacesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -617,13 +617,13 @@ func (l NamespacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a NamespacesDeletePollerResponse from the provided client and resume token.
-func (l *NamespacesDeletePollerResponse) Resume(ctx context.Context, client *NamespacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("NamespacesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a NamespacesClientDeletePollerResponse from the provided client and resume token.
+func (l *NamespacesClientDeletePollerResponse) Resume(ctx context.Context, client *NamespacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamespacesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &NamespacesDeletePoller{
+	poller := &NamespacesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -635,160 +635,160 @@ func (l *NamespacesDeletePollerResponse) Resume(ctx context.Context, client *Nam
 	return nil
 }
 
-// NamespacesDeleteResponse contains the response from method Namespaces.Delete.
-type NamespacesDeleteResponse struct {
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.Delete.
+type NamespacesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesGetAuthorizationRuleResponse contains the response from method Namespaces.GetAuthorizationRule.
-type NamespacesGetAuthorizationRuleResponse struct {
-	NamespacesGetAuthorizationRuleResult
+// NamespacesClientGetAuthorizationRuleResponse contains the response from method NamespacesClient.GetAuthorizationRule.
+type NamespacesClientGetAuthorizationRuleResponse struct {
+	NamespacesClientGetAuthorizationRuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesGetAuthorizationRuleResult contains the result from method Namespaces.GetAuthorizationRule.
-type NamespacesGetAuthorizationRuleResult struct {
+// NamespacesClientGetAuthorizationRuleResult contains the result from method NamespacesClient.GetAuthorizationRule.
+type NamespacesClientGetAuthorizationRuleResult struct {
 	AuthorizationRule
 }
 
-// NamespacesGetNetworkRuleSetResponse contains the response from method Namespaces.GetNetworkRuleSet.
-type NamespacesGetNetworkRuleSetResponse struct {
-	NamespacesGetNetworkRuleSetResult
+// NamespacesClientGetNetworkRuleSetResponse contains the response from method NamespacesClient.GetNetworkRuleSet.
+type NamespacesClientGetNetworkRuleSetResponse struct {
+	NamespacesClientGetNetworkRuleSetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesGetNetworkRuleSetResult contains the result from method Namespaces.GetNetworkRuleSet.
-type NamespacesGetNetworkRuleSetResult struct {
+// NamespacesClientGetNetworkRuleSetResult contains the result from method NamespacesClient.GetNetworkRuleSet.
+type NamespacesClientGetNetworkRuleSetResult struct {
 	NetworkRuleSet
 }
 
-// NamespacesGetResponse contains the response from method Namespaces.Get.
-type NamespacesGetResponse struct {
-	NamespacesGetResult
+// NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
+type NamespacesClientGetResponse struct {
+	NamespacesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesGetResult contains the result from method Namespaces.Get.
-type NamespacesGetResult struct {
+// NamespacesClientGetResult contains the result from method NamespacesClient.Get.
+type NamespacesClientGetResult struct {
 	EHNamespace
 }
 
-// NamespacesListAuthorizationRulesResponse contains the response from method Namespaces.ListAuthorizationRules.
-type NamespacesListAuthorizationRulesResponse struct {
-	NamespacesListAuthorizationRulesResult
+// NamespacesClientListAuthorizationRulesResponse contains the response from method NamespacesClient.ListAuthorizationRules.
+type NamespacesClientListAuthorizationRulesResponse struct {
+	NamespacesClientListAuthorizationRulesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesListAuthorizationRulesResult contains the result from method Namespaces.ListAuthorizationRules.
-type NamespacesListAuthorizationRulesResult struct {
+// NamespacesClientListAuthorizationRulesResult contains the result from method NamespacesClient.ListAuthorizationRules.
+type NamespacesClientListAuthorizationRulesResult struct {
 	AuthorizationRuleListResult
 }
 
-// NamespacesListByResourceGroupResponse contains the response from method Namespaces.ListByResourceGroup.
-type NamespacesListByResourceGroupResponse struct {
-	NamespacesListByResourceGroupResult
+// NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.ListByResourceGroup.
+type NamespacesClientListByResourceGroupResponse struct {
+	NamespacesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesListByResourceGroupResult contains the result from method Namespaces.ListByResourceGroup.
-type NamespacesListByResourceGroupResult struct {
+// NamespacesClientListByResourceGroupResult contains the result from method NamespacesClient.ListByResourceGroup.
+type NamespacesClientListByResourceGroupResult struct {
 	EHNamespaceListResult
 }
 
-// NamespacesListKeysResponse contains the response from method Namespaces.ListKeys.
-type NamespacesListKeysResponse struct {
-	NamespacesListKeysResult
+// NamespacesClientListKeysResponse contains the response from method NamespacesClient.ListKeys.
+type NamespacesClientListKeysResponse struct {
+	NamespacesClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesListKeysResult contains the result from method Namespaces.ListKeys.
-type NamespacesListKeysResult struct {
+// NamespacesClientListKeysResult contains the result from method NamespacesClient.ListKeys.
+type NamespacesClientListKeysResult struct {
 	AccessKeys
 }
 
-// NamespacesListNetworkRuleSetResponse contains the response from method Namespaces.ListNetworkRuleSet.
-type NamespacesListNetworkRuleSetResponse struct {
-	NamespacesListNetworkRuleSetResult
+// NamespacesClientListNetworkRuleSetResponse contains the response from method NamespacesClient.ListNetworkRuleSet.
+type NamespacesClientListNetworkRuleSetResponse struct {
+	NamespacesClientListNetworkRuleSetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesListNetworkRuleSetResult contains the result from method Namespaces.ListNetworkRuleSet.
-type NamespacesListNetworkRuleSetResult struct {
+// NamespacesClientListNetworkRuleSetResult contains the result from method NamespacesClient.ListNetworkRuleSet.
+type NamespacesClientListNetworkRuleSetResult struct {
 	NetworkRuleSetListResult
 }
 
-// NamespacesListResponse contains the response from method Namespaces.List.
-type NamespacesListResponse struct {
-	NamespacesListResult
+// NamespacesClientListResponse contains the response from method NamespacesClient.List.
+type NamespacesClientListResponse struct {
+	NamespacesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesListResult contains the result from method Namespaces.List.
-type NamespacesListResult struct {
+// NamespacesClientListResult contains the result from method NamespacesClient.List.
+type NamespacesClientListResult struct {
 	EHNamespaceListResult
 }
 
-// NamespacesRegenerateKeysResponse contains the response from method Namespaces.RegenerateKeys.
-type NamespacesRegenerateKeysResponse struct {
-	NamespacesRegenerateKeysResult
+// NamespacesClientRegenerateKeysResponse contains the response from method NamespacesClient.RegenerateKeys.
+type NamespacesClientRegenerateKeysResponse struct {
+	NamespacesClientRegenerateKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesRegenerateKeysResult contains the result from method Namespaces.RegenerateKeys.
-type NamespacesRegenerateKeysResult struct {
+// NamespacesClientRegenerateKeysResult contains the result from method NamespacesClient.RegenerateKeys.
+type NamespacesClientRegenerateKeysResult struct {
 	AccessKeys
 }
 
-// NamespacesUpdateResponse contains the response from method Namespaces.Update.
-type NamespacesUpdateResponse struct {
-	NamespacesUpdateResult
+// NamespacesClientUpdateResponse contains the response from method NamespacesClient.Update.
+type NamespacesClientUpdateResponse struct {
+	NamespacesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NamespacesUpdateResult contains the result from method Namespaces.Update.
-type NamespacesUpdateResult struct {
+// NamespacesClientUpdateResult contains the result from method NamespacesClient.Update.
+type NamespacesClientUpdateResult struct {
 	EHNamespace
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
+	Poller *PrivateEndpointConnectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -797,8 +797,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -807,13 +807,13 @@ func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -825,86 +825,86 @@ func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateLinkResourcesClientGetResult contains the result from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResult struct {
 	PrivateLinkResourcesListResult
 }
 
-// SchemaRegistryCreateOrUpdateResponse contains the response from method SchemaRegistry.CreateOrUpdate.
-type SchemaRegistryCreateOrUpdateResponse struct {
-	SchemaRegistryCreateOrUpdateResult
+// SchemaRegistryClientCreateOrUpdateResponse contains the response from method SchemaRegistryClient.CreateOrUpdate.
+type SchemaRegistryClientCreateOrUpdateResponse struct {
+	SchemaRegistryClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SchemaRegistryCreateOrUpdateResult contains the result from method SchemaRegistry.CreateOrUpdate.
-type SchemaRegistryCreateOrUpdateResult struct {
+// SchemaRegistryClientCreateOrUpdateResult contains the result from method SchemaRegistryClient.CreateOrUpdate.
+type SchemaRegistryClientCreateOrUpdateResult struct {
 	SchemaGroup
 }
 
-// SchemaRegistryDeleteResponse contains the response from method SchemaRegistry.Delete.
-type SchemaRegistryDeleteResponse struct {
+// SchemaRegistryClientDeleteResponse contains the response from method SchemaRegistryClient.Delete.
+type SchemaRegistryClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SchemaRegistryGetResponse contains the response from method SchemaRegistry.Get.
-type SchemaRegistryGetResponse struct {
-	SchemaRegistryGetResult
+// SchemaRegistryClientGetResponse contains the response from method SchemaRegistryClient.Get.
+type SchemaRegistryClientGetResponse struct {
+	SchemaRegistryClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SchemaRegistryGetResult contains the result from method SchemaRegistry.Get.
-type SchemaRegistryGetResult struct {
+// SchemaRegistryClientGetResult contains the result from method SchemaRegistryClient.Get.
+type SchemaRegistryClientGetResult struct {
 	SchemaGroup
 }
 
-// SchemaRegistryListByNamespaceResponse contains the response from method SchemaRegistry.ListByNamespace.
-type SchemaRegistryListByNamespaceResponse struct {
-	SchemaRegistryListByNamespaceResult
+// SchemaRegistryClientListByNamespaceResponse contains the response from method SchemaRegistryClient.ListByNamespace.
+type SchemaRegistryClientListByNamespaceResponse struct {
+	SchemaRegistryClientListByNamespaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SchemaRegistryListByNamespaceResult contains the result from method SchemaRegistry.ListByNamespace.
-type SchemaRegistryListByNamespaceResult struct {
+// SchemaRegistryClientListByNamespaceResult contains the result from method SchemaRegistryClient.ListByNamespace.
+type SchemaRegistryClientListByNamespaceResult struct {
 	SchemaGroupListResult
 }

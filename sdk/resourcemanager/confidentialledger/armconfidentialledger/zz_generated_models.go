@@ -57,44 +57,45 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
 }
 
+// ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
+type ClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfidentialLedger - Confidential Ledger. Contains the properties of Confidential Ledger Resource.
 type ConfidentialLedger struct {
-	Location
-	Resource
-	Tags
+	// The Azure location where the Confidential Ledger is running.
+	Location *string `json:"location,omitempty"`
+
 	// Properties of Confidential Ledger Resource.
 	Properties *LedgerProperties `json:"properties,omitempty"`
+
+	// Additional tags for Confidential Ledger
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the Resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ConfidentialLedger.
 func (c ConfidentialLedger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	c.Location.marshalInternal(objectMap)
-	c.Tags.marshalInternal(objectMap)
+	populate(objectMap, "id", c.ID)
+	populate(objectMap, "location", c.Location)
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ConfidentialLedgerCheckNameAvailabilityOptions contains the optional parameters for the ConfidentialLedger.CheckNameAvailability method.
-type ConfidentialLedgerCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfidentialLedgerList - Object that includes an array of Confidential Ledgers and a possible link for next set.
-type ConfidentialLedgerList struct {
-	// The URL the client should use to fetch the next page (per server side paging).
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of Confidential Ledgers
-	Value []*ConfidentialLedger `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfidentialLedgerList.
-func (c ConfidentialLedgerList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
+	populate(objectMap, "systemData", c.SystemData)
+	populate(objectMap, "tags", c.Tags)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -136,49 +137,41 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// LedgerBeginCreateOptions contains the optional parameters for the Ledger.BeginCreate method.
-type LedgerBeginCreateOptions struct {
+// LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
+type LedgerClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LedgerBeginDeleteOptions contains the optional parameters for the Ledger.BeginDelete method.
-type LedgerBeginDeleteOptions struct {
+// LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
+type LedgerClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LedgerBeginUpdateOptions contains the optional parameters for the Ledger.BeginUpdate method.
-type LedgerBeginUpdateOptions struct {
+// LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
+type LedgerClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LedgerGetOptions contains the optional parameters for the Ledger.Get method.
-type LedgerGetOptions struct {
+// LedgerClientGetOptions contains the optional parameters for the LedgerClient.Get method.
+type LedgerClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LedgerListByResourceGroupOptions contains the optional parameters for the Ledger.ListByResourceGroup method.
-type LedgerListByResourceGroupOptions struct {
+// LedgerClientListByResourceGroupOptions contains the optional parameters for the LedgerClient.ListByResourceGroup method.
+type LedgerClientListByResourceGroupOptions struct {
 	// The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'
 	Filter *string
 }
 
-// LedgerListBySubscriptionOptions contains the optional parameters for the Ledger.ListBySubscription method.
-type LedgerListBySubscriptionOptions struct {
+// LedgerClientListBySubscriptionOptions contains the optional parameters for the LedgerClient.ListBySubscription method.
+type LedgerClientListBySubscriptionOptions struct {
 	// The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'
 	Filter *string
 }
@@ -224,25 +217,31 @@ func (l LedgerProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// List - Object that includes an array of Confidential Ledgers and a possible link for next set.
+type List struct {
+	// The URL the client should use to fetch the next page (per server side paging).
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of Confidential Ledgers
+	Value []*ConfidentialLedger `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type List.
+func (l List) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
 // Location of the ARM Resource
 type Location struct {
 	// The Azure location where the Confidential Ledger is running.
 	Location *string `json:"location,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Location.
-func (l Location) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (l Location) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "location", l.Location)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -259,20 +258,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceProviderOperationDefinition - Describes the Resource Provider Operation.
@@ -396,12 +381,8 @@ type Tags struct {
 // MarshalJSON implements the json.Marshaller interface for type Tags.
 func (t Tags) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t Tags) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", t.Tags)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

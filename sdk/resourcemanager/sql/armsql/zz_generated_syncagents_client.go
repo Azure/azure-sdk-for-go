@@ -24,46 +24,61 @@ import (
 // SyncAgentsClient contains the methods for the SyncAgents group.
 // Don't use this type directly, use NewSyncAgentsClient() instead.
 type SyncAgentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSyncAgentsClient creates a new instance of SyncAgentsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSyncAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncAgentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SyncAgentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SyncAgentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync agent.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsBeginCreateOrUpdateOptions) (SyncAgentsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server on which the sync agent is hosted.
+// syncAgentName - The name of the sync agent.
+// parameters - The requested sync agent resource state.
+// options - SyncAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncAgentsClient.BeginCreateOrUpdate
+// method.
+func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (SyncAgentsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, syncAgentName, parameters, options)
 	if err != nil {
-		return SyncAgentsCreateOrUpdatePollerResponse{}, err
+		return SyncAgentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := SyncAgentsCreateOrUpdatePollerResponse{
+	result := SyncAgentsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SyncAgentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("SyncAgentsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return SyncAgentsCreateOrUpdatePollerResponse{}, err
+		return SyncAgentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &SyncAgentsCreateOrUpdatePoller{
+	result.Poller = &SyncAgentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a sync agent.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +112,7 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +123,34 @@ func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SyncAgentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a sync agent.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsBeginDeleteOptions) (SyncAgentsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server on which the sync agent is hosted.
+// syncAgentName - The name of the sync agent.
+// options - SyncAgentsClientBeginDeleteOptions contains the optional parameters for the SyncAgentsClient.BeginDelete method.
+func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (SyncAgentsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, syncAgentName, options)
 	if err != nil {
-		return SyncAgentsDeletePollerResponse{}, err
+		return SyncAgentsClientDeletePollerResponse{}, err
 	}
-	result := SyncAgentsDeletePollerResponse{
+	result := SyncAgentsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SyncAgentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SyncAgentsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return SyncAgentsDeletePollerResponse{}, err
+		return SyncAgentsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SyncAgentsDeletePoller{
+	result.Poller = &SyncAgentsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a sync agent.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +160,13 @@ func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +184,7 @@ func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +194,30 @@ func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SyncAgentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GenerateKey - Generates a sync agent key.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) GenerateKey(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsGenerateKeyOptions) (SyncAgentsGenerateKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server on which the sync agent is hosted.
+// syncAgentName - The name of the sync agent.
+// options - SyncAgentsClientGenerateKeyOptions contains the optional parameters for the SyncAgentsClient.GenerateKey method.
+func (client *SyncAgentsClient) GenerateKey(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientGenerateKeyOptions) (SyncAgentsClientGenerateKeyResponse, error) {
 	req, err := client.generateKeyCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
 	if err != nil {
-		return SyncAgentsGenerateKeyResponse{}, err
+		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncAgentsGenerateKeyResponse{}, err
+		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncAgentsGenerateKeyResponse{}, client.generateKeyHandleError(resp)
+		return SyncAgentsClientGenerateKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.generateKeyHandleResponse(resp)
 }
 
 // generateKeyCreateRequest creates the GenerateKey request.
-func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsGenerateKeyOptions) (*policy.Request, error) {
+func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientGenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/generateKey"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -234,7 +235,7 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,45 +247,38 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 }
 
 // generateKeyHandleResponse handles the GenerateKey response.
-func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (SyncAgentsGenerateKeyResponse, error) {
-	result := SyncAgentsGenerateKeyResponse{RawResponse: resp}
+func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (SyncAgentsClientGenerateKeyResponse, error) {
+	result := SyncAgentsClientGenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentKeyProperties); err != nil {
-		return SyncAgentsGenerateKeyResponse{}, runtime.NewResponseError(err, resp)
+		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// generateKeyHandleError handles the GenerateKey error response.
-func (client *SyncAgentsClient) generateKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a sync agent.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) Get(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsGetOptions) (SyncAgentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server on which the sync agent is hosted.
+// syncAgentName - The name of the sync agent.
+// options - SyncAgentsClientGetOptions contains the optional parameters for the SyncAgentsClient.Get method.
+func (client *SyncAgentsClient) Get(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientGetOptions) (SyncAgentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
 	if err != nil {
-		return SyncAgentsGetResponse{}, err
+		return SyncAgentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncAgentsGetResponse{}, err
+		return SyncAgentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncAgentsGetResponse{}, client.getHandleError(resp)
+		return SyncAgentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsGetOptions) (*policy.Request, error) {
+func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -302,7 +296,7 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,42 +308,34 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgentsGetResponse, error) {
-	result := SyncAgentsGetResponse{RawResponse: resp}
+func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgentsClientGetResponse, error) {
+	result := SyncAgentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgent); err != nil {
-		return SyncAgentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SyncAgentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SyncAgentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Lists sync agents in a server.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) ListByServer(resourceGroupName string, serverName string, options *SyncAgentsListByServerOptions) *SyncAgentsListByServerPager {
-	return &SyncAgentsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server on which the sync agent is hosted.
+// options - SyncAgentsClientListByServerOptions contains the optional parameters for the SyncAgentsClient.ListByServer method.
+func (client *SyncAgentsClient) ListByServer(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *SyncAgentsClientListByServerPager {
+	return &SyncAgentsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp SyncAgentsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SyncAgentsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncAgentListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *SyncAgentsListByServerOptions) (*policy.Request, error) {
+func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -363,7 +349,7 @@ func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -375,42 +361,36 @@ func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, r
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) (SyncAgentsListByServerResponse, error) {
-	result := SyncAgentsListByServerResponse{RawResponse: resp}
+func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) (SyncAgentsClientListByServerResponse, error) {
+	result := SyncAgentsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentListResult); err != nil {
-		return SyncAgentsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return SyncAgentsClientListByServerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerHandleError handles the ListByServer error response.
-func (client *SyncAgentsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListLinkedDatabases - Lists databases linked to a sync agent.
-// If the operation fails it returns a generic error.
-func (client *SyncAgentsClient) ListLinkedDatabases(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsListLinkedDatabasesOptions) *SyncAgentsListLinkedDatabasesPager {
-	return &SyncAgentsListLinkedDatabasesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server on which the sync agent is hosted.
+// syncAgentName - The name of the sync agent.
+// options - SyncAgentsClientListLinkedDatabasesOptions contains the optional parameters for the SyncAgentsClient.ListLinkedDatabases
+// method.
+func (client *SyncAgentsClient) ListLinkedDatabases(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *SyncAgentsClientListLinkedDatabasesPager {
+	return &SyncAgentsClientListLinkedDatabasesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listLinkedDatabasesCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
 		},
-		advancer: func(ctx context.Context, resp SyncAgentsListLinkedDatabasesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SyncAgentsClientListLinkedDatabasesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncAgentLinkedDatabaseListResult.NextLink)
 		},
 	}
 }
 
 // listLinkedDatabasesCreateRequest creates the ListLinkedDatabases request.
-func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsListLinkedDatabasesOptions) (*policy.Request, error) {
+func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/linkedDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -428,7 +408,7 @@ func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -440,22 +420,10 @@ func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Con
 }
 
 // listLinkedDatabasesHandleResponse handles the ListLinkedDatabases response.
-func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Response) (SyncAgentsListLinkedDatabasesResponse, error) {
-	result := SyncAgentsListLinkedDatabasesResponse{RawResponse: resp}
+func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Response) (SyncAgentsClientListLinkedDatabasesResponse, error) {
+	result := SyncAgentsClientListLinkedDatabasesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentLinkedDatabaseListResult); err != nil {
-		return SyncAgentsListLinkedDatabasesResponse{}, runtime.NewResponseError(err, resp)
+		return SyncAgentsClientListLinkedDatabasesResponse{}, err
 	}
 	return result, nil
-}
-
-// listLinkedDatabasesHandleError handles the ListLinkedDatabases error response.
-func (client *SyncAgentsClient) listLinkedDatabasesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -10,7 +10,6 @@ package armapplicationinsights
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,52 @@ import (
 // LiveTokenClient contains the methods for the LiveToken group.
 // Don't use this type directly, use NewLiveTokenClient() instead.
 type LiveTokenClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewLiveTokenClient creates a new instance of LiveTokenClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLiveTokenClient(credential azcore.TokenCredential, options *arm.ClientOptions) *LiveTokenClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LiveTokenClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LiveTokenClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets an access token for live metrics stream data.
-// If the operation fails it returns the *ErrorResponseLinkedStorage error type.
-func (client *LiveTokenClient) Get(ctx context.Context, resourceURI string, options *LiveTokenGetOptions) (LiveTokenGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The identifier of the resource.
+// options - LiveTokenClientGetOptions contains the optional parameters for the LiveTokenClient.Get method.
+func (client *LiveTokenClient) Get(ctx context.Context, resourceURI string, options *LiveTokenClientGetOptions) (LiveTokenClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return LiveTokenGetResponse{}, err
+		return LiveTokenClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LiveTokenGetResponse{}, err
+		return LiveTokenClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LiveTokenGetResponse{}, client.getHandleError(resp)
+		return LiveTokenClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI string, options *LiveTokenGetOptions) (*policy.Request, error) {
+func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI string, options *LiveTokenClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/generatelivetoken"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -72,23 +79,10 @@ func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI
 }
 
 // getHandleResponse handles the Get response.
-func (client *LiveTokenClient) getHandleResponse(resp *http.Response) (LiveTokenGetResponse, error) {
-	result := LiveTokenGetResponse{RawResponse: resp}
+func (client *LiveTokenClient) getHandleResponse(resp *http.Response) (LiveTokenClientGetResponse, error) {
+	result := LiveTokenClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveTokenResponse); err != nil {
-		return LiveTokenGetResponse{}, runtime.NewResponseError(err, resp)
+		return LiveTokenClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *LiveTokenClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseLinkedStorage{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

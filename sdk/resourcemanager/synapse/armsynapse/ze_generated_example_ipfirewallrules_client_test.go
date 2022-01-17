@@ -30,12 +30,16 @@ func ExampleIPFirewallRulesClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("IPFirewallRuleInfo.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -66,7 +70,7 @@ func ExampleIPFirewallRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IPFirewallRuleInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IPFirewallRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteIpFirewallRule.json
@@ -85,10 +89,11 @@ func ExampleIPFirewallRulesClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IPFirewallRulesClientDeleteResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetIpFirewallRule.json
@@ -107,7 +112,7 @@ func ExampleIPFirewallRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IPFirewallRuleInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IPFirewallRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ReplaceAllIpFirewallRules.json
@@ -137,8 +142,9 @@ func ExampleIPFirewallRulesClient_BeginReplaceAll() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IPFirewallRulesClientReplaceAllResult)
 }

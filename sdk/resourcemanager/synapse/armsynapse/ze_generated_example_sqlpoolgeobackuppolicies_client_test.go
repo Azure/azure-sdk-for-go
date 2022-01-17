@@ -24,7 +24,7 @@ func ExampleSQLPoolGeoBackupPoliciesClient_List() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewSQLPoolGeoBackupPoliciesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
@@ -32,6 +32,7 @@ func ExampleSQLPoolGeoBackupPoliciesClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SQLPoolGeoBackupPoliciesClientListResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateGeoBackupPolicies.json
@@ -46,7 +47,7 @@ func ExampleSQLPoolGeoBackupPoliciesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		armsynapse.GeoBackupPolicyNameDefault,
+		armsynapse.GeoBackupPolicyName("Default"),
 		armsynapse.GeoBackupPolicy{
 			Properties: &armsynapse.GeoBackupPolicyProperties{
 				State: armsynapse.GeoBackupPolicyStateEnabled.ToPtr(),
@@ -56,7 +57,7 @@ func ExampleSQLPoolGeoBackupPoliciesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GeoBackupPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolGeoBackupPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolGeoBackupPolicy.json
@@ -71,10 +72,10 @@ func ExampleSQLPoolGeoBackupPoliciesClient_Get() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		armsynapse.GeoBackupPolicyNameDefault,
+		armsynapse.GeoBackupPolicyName("Default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("GeoBackupPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolGeoBackupPoliciesClientGetResult)
 }

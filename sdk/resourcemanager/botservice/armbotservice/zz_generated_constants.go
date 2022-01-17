@@ -9,8 +9,8 @@
 package armbotservice
 
 const (
-	module  = "armbotservice"
-	version = "v0.1.0"
+	moduleName    = "armbotservice"
+	moduleVersion = "v0.2.0"
 )
 
 type ChannelName string
@@ -198,6 +198,27 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 
 // ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
 func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
+	return &c
+}
+
+// PublicNetworkAccess - Whether the bot is in an isolated network
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+	}
+}
+
+// ToPtr returns a *PublicNetworkAccess pointing to the current value.
+func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 

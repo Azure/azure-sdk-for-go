@@ -14,6 +14,7 @@ import (
 
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
 )
@@ -29,12 +30,12 @@ func ExampleAzureADOnlyAuthenticationsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.AzureADOnlyAuthenticationNameDefault,
+		armsynapse.AzureADOnlyAuthenticationName("default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureADOnlyAuthentication.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AzureADOnlyAuthenticationsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateAzureADOnlyAuthentication.json
@@ -48,8 +49,12 @@ func ExampleAzureADOnlyAuthenticationsClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.AzureADOnlyAuthenticationNameDefault,
-		armsynapse.AzureADOnlyAuthentication{},
+		armsynapse.AzureADOnlyAuthenticationName("default"),
+		armsynapse.AzureADOnlyAuthentication{
+			Properties: &armsynapse.AzureADOnlyAuthenticationProperties{
+				AzureADOnlyAuthentication: to.BoolPtr(true),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -58,7 +63,7 @@ func ExampleAzureADOnlyAuthenticationsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureADOnlyAuthentication.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AzureADOnlyAuthenticationsClientCreateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListAzureADOnlyAuthentication.json
@@ -72,12 +77,16 @@ func ExampleAzureADOnlyAuthenticationsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AzureADOnlyAuthentication.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

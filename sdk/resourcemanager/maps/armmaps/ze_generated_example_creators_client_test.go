@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 )
@@ -27,12 +28,16 @@ func ExampleCreatorsClient_ListByAccount() {
 	pager := client.ListByAccount("<resource-group-name>",
 		"<account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Creator.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -49,12 +54,20 @@ func ExampleCreatorsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<account-name>",
 		"<creator-name>",
-		armmaps.Creator{},
+		armmaps.Creator{
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"test": to.StringPtr("true"),
+			},
+			Properties: &armmaps.CreatorProperties{
+				StorageUnits: to.Int32Ptr(5),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Creator.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CreatorsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/UpdateMapsCreator.json
@@ -69,12 +82,19 @@ func ExampleCreatorsClient_Update() {
 		"<resource-group-name>",
 		"<account-name>",
 		"<creator-name>",
-		armmaps.CreatorUpdateParameters{},
+		armmaps.CreatorUpdateParameters{
+			Properties: &armmaps.CreatorProperties{
+				StorageUnits: to.Int32Ptr(10),
+			},
+			Tags: map[string]*string{
+				"specialTag": to.StringPtr("true"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Creator.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CreatorsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/preview/2021-12-01-preview/examples/DeleteMapsCreator.json
@@ -111,5 +131,5 @@ func ExampleCreatorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Creator.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CreatorsClientGetResult)
 }

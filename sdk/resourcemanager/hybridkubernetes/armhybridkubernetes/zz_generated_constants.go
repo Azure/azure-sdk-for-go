@@ -9,8 +9,8 @@
 package armhybridkubernetes
 
 const (
-	module  = "armhybridkubernetes"
-	version = "v0.1.0"
+	moduleName    = "armhybridkubernetes"
+	moduleVersion = "v0.2.0"
 )
 
 // AuthenticationMethod - The mode of client authentication.
@@ -140,8 +140,8 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system created identity. The type 'None'
-// means no identity is assigned to the connected cluster.
+// ResourceIdentityType - The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system
+// created identity. The type 'None' means no identity is assigned to the connected cluster.
 type ResourceIdentityType string
 
 const (

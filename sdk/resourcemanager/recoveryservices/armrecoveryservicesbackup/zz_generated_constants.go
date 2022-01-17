@@ -9,9 +9,30 @@
 package armrecoveryservicesbackup
 
 const (
-	module  = "armrecoveryservicesbackup"
-	version = "v0.1.0"
+	moduleName    = "armrecoveryservicesbackup"
+	moduleVersion = "v0.2.0"
 )
+
+// AcquireStorageAccountLock - Whether storage account lock is to be acquired for this container or not.
+type AcquireStorageAccountLock string
+
+const (
+	AcquireStorageAccountLockAcquire    AcquireStorageAccountLock = "Acquire"
+	AcquireStorageAccountLockNotAcquire AcquireStorageAccountLock = "NotAcquire"
+)
+
+// PossibleAcquireStorageAccountLockValues returns the possible values for the AcquireStorageAccountLock const type.
+func PossibleAcquireStorageAccountLockValues() []AcquireStorageAccountLock {
+	return []AcquireStorageAccountLock{
+		AcquireStorageAccountLockAcquire,
+		AcquireStorageAccountLockNotAcquire,
+	}
+}
+
+// ToPtr returns a *AcquireStorageAccountLock pointing to the current value.
+func (c AcquireStorageAccountLock) ToPtr() *AcquireStorageAccountLock {
+	return &c
+}
 
 // AzureFileShareType - File Share type XSync or XSMB.
 type AzureFileShareType string
@@ -364,6 +385,29 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 
 // ToPtr returns a *DayOfWeek pointing to the current value.
 func (c DayOfWeek) ToPtr() *DayOfWeek {
+	return &c
+}
+
+// DedupState - Vault Dedup state
+type DedupState string
+
+const (
+	DedupStateDisabled DedupState = "Disabled"
+	DedupStateEnabled  DedupState = "Enabled"
+	DedupStateInvalid  DedupState = "Invalid"
+)
+
+// PossibleDedupStateValues returns the possible values for the DedupState const type.
+func PossibleDedupStateValues() []DedupState {
+	return []DedupState{
+		DedupStateDisabled,
+		DedupStateEnabled,
+		DedupStateInvalid,
+	}
+}
+
+// ToPtr returns a *DedupState pointing to the current value.
+func (c DedupState) ToPtr() *DedupState {
 	return &c
 }
 
@@ -1084,6 +1128,31 @@ func (c ProtectedItemState) ToPtr() *ProtectedItemState {
 	return &c
 }
 
+// ProtectionIntentItemType - backup protectionIntent type.
+type ProtectionIntentItemType string
+
+const (
+	ProtectionIntentItemTypeAzureResourceItem                          ProtectionIntentItemType = "AzureResourceItem"
+	ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadContainerAutoProtectionIntent"
+	ProtectionIntentItemTypeInvalid                                    ProtectionIntentItemType = "Invalid"
+	ProtectionIntentItemTypeRecoveryServiceVaultItem                   ProtectionIntentItemType = "RecoveryServiceVaultItem"
+)
+
+// PossibleProtectionIntentItemTypeValues returns the possible values for the ProtectionIntentItemType const type.
+func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
+	return []ProtectionIntentItemType{
+		ProtectionIntentItemTypeAzureResourceItem,
+		ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent,
+		ProtectionIntentItemTypeInvalid,
+		ProtectionIntentItemTypeRecoveryServiceVaultItem,
+	}
+}
+
+// ToPtr returns a *ProtectionIntentItemType pointing to the current value.
+func (c ProtectionIntentItemType) ToPtr() *ProtectionIntentItemType {
+	return &c
+}
+
 // ProtectionState - Backup state of this backup item.
 type ProtectionState string
 
@@ -1476,6 +1545,7 @@ type ScheduleRunType string
 
 const (
 	ScheduleRunTypeDaily   ScheduleRunType = "Daily"
+	ScheduleRunTypeHourly  ScheduleRunType = "Hourly"
 	ScheduleRunTypeInvalid ScheduleRunType = "Invalid"
 	ScheduleRunTypeWeekly  ScheduleRunType = "Weekly"
 )
@@ -1484,6 +1554,7 @@ const (
 func PossibleScheduleRunTypeValues() []ScheduleRunType {
 	return []ScheduleRunType{
 		ScheduleRunTypeDaily,
+		ScheduleRunTypeHourly,
 		ScheduleRunTypeInvalid,
 		ScheduleRunTypeWeekly,
 	}
@@ -1544,7 +1615,8 @@ func (c StorageType) ToPtr() *StorageType {
 	return &c
 }
 
-// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
+// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always
+// Locked.
 type StorageTypeState string
 
 const (
@@ -1772,5 +1844,28 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 
 // ToPtr returns a *WorkloadType pointing to the current value.
 func (c WorkloadType) ToPtr() *WorkloadType {
+	return &c
+}
+
+// XcoolState - Vault x-cool state
+type XcoolState string
+
+const (
+	XcoolStateDisabled XcoolState = "Disabled"
+	XcoolStateEnabled  XcoolState = "Enabled"
+	XcoolStateInvalid  XcoolState = "Invalid"
+)
+
+// PossibleXcoolStateValues returns the possible values for the XcoolState const type.
+func PossibleXcoolStateValues() []XcoolState {
+	return []XcoolState{
+		XcoolStateDisabled,
+		XcoolStateEnabled,
+		XcoolStateInvalid,
+	}
+}
+
+// ToPtr returns a *XcoolState pointing to the current value.
+func (c XcoolState) ToPtr() *XcoolState {
 	return &c
 }

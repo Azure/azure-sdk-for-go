@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // JobStreamClient contains the methods for the JobStream group.
 // Don't use this type directly, use NewJobStreamClient() instead.
 type JobStreamClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobStreamClient creates a new instance of JobStreamClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobStreamClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobStreamClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobStreamClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Retrieve the job stream identified by job stream id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobStreamClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, jobStreamID string, options *JobStreamGetOptions) (JobStreamGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// jobStreamID - The job stream id.
+// options - JobStreamClientGetOptions contains the optional parameters for the JobStreamClient.Get method.
+func (client *JobStreamClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, jobStreamID string, options *JobStreamClientGetOptions) (JobStreamClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, jobStreamID, options)
 	if err != nil {
-		return JobStreamGetResponse{}, err
+		return JobStreamClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobStreamGetResponse{}, err
+		return JobStreamClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobStreamGetResponse{}, client.getHandleError(resp)
+		return JobStreamClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, jobStreamID string, options *JobStreamGetOptions) (*policy.Request, error) {
+func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, jobStreamID string, options *JobStreamClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/streams/{jobStreamId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter jobStreamID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobStreamId}", url.PathEscape(jobStreamID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,43 +110,34 @@ func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStreamGetResponse, error) {
-	result := JobStreamGetResponse{RawResponse: resp}
+func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStreamClientGetResponse, error) {
+	result := JobStreamClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStream); err != nil {
-		return JobStreamGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobStreamClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobStreamClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByJob - Retrieve a list of jobs streams identified by job name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobStreamClient) ListByJob(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamListByJobOptions) *JobStreamListByJobPager {
-	return &JobStreamListByJobPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// options - JobStreamClientListByJobOptions contains the optional parameters for the JobStreamClient.ListByJob method.
+func (client *JobStreamClient) ListByJob(resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) *JobStreamClientListByJobPager {
+	return &JobStreamClientListByJobPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByJobCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 		},
-		advancer: func(ctx context.Context, resp JobStreamListByJobResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobStreamClientListByJobResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStreamListResult.NextLink)
 		},
 	}
 }
 
 // listByJobCreateRequest creates the ListByJob request.
-func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobStreamListByJobOptions) (*policy.Request, error) {
+func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/streams"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,7 +155,7 @@ func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,23 +173,10 @@ func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resou
 }
 
 // listByJobHandleResponse handles the ListByJob response.
-func (client *JobStreamClient) listByJobHandleResponse(resp *http.Response) (JobStreamListByJobResponse, error) {
-	result := JobStreamListByJobResponse{RawResponse: resp}
+func (client *JobStreamClient) listByJobHandleResponse(resp *http.Response) (JobStreamClientListByJobResponse, error) {
+	result := JobStreamClientListByJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
-		return JobStreamListByJobResponse{}, runtime.NewResponseError(err, resp)
+		return JobStreamClientListByJobResponse{}, err
 	}
 	return result, nil
-}
-
-// listByJobHandleError handles the ListByJob error response.
-func (client *JobStreamClient) listByJobHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

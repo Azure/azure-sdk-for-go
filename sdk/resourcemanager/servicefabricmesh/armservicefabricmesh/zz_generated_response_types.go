@@ -10,398 +10,398 @@ package armservicefabricmesh
 
 import "net/http"
 
-// ApplicationCreateResponse contains the response from method Application.Create.
-type ApplicationCreateResponse struct {
-	ApplicationCreateResult
+// ApplicationClientCreateResponse contains the response from method ApplicationClient.Create.
+type ApplicationClientCreateResponse struct {
+	ApplicationClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ApplicationCreateResult contains the result from method Application.Create.
-type ApplicationCreateResult struct {
+// ApplicationClientCreateResult contains the result from method ApplicationClient.Create.
+type ApplicationClientCreateResult struct {
 	ApplicationResourceDescription
 }
 
-// ApplicationDeleteResponse contains the response from method Application.Delete.
-type ApplicationDeleteResponse struct {
+// ApplicationClientDeleteResponse contains the response from method ApplicationClient.Delete.
+type ApplicationClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ApplicationGetResponse contains the response from method Application.Get.
-type ApplicationGetResponse struct {
-	ApplicationGetResult
+// ApplicationClientGetResponse contains the response from method ApplicationClient.Get.
+type ApplicationClientGetResponse struct {
+	ApplicationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ApplicationGetResult contains the result from method Application.Get.
-type ApplicationGetResult struct {
+// ApplicationClientGetResult contains the result from method ApplicationClient.Get.
+type ApplicationClientGetResult struct {
 	ApplicationResourceDescription
 }
 
-// ApplicationListByResourceGroupResponse contains the response from method Application.ListByResourceGroup.
-type ApplicationListByResourceGroupResponse struct {
-	ApplicationListByResourceGroupResult
+// ApplicationClientListByResourceGroupResponse contains the response from method ApplicationClient.ListByResourceGroup.
+type ApplicationClientListByResourceGroupResponse struct {
+	ApplicationClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ApplicationListByResourceGroupResult contains the result from method Application.ListByResourceGroup.
-type ApplicationListByResourceGroupResult struct {
+// ApplicationClientListByResourceGroupResult contains the result from method ApplicationClient.ListByResourceGroup.
+type ApplicationClientListByResourceGroupResult struct {
 	ApplicationResourceDescriptionList
 }
 
-// ApplicationListBySubscriptionResponse contains the response from method Application.ListBySubscription.
-type ApplicationListBySubscriptionResponse struct {
-	ApplicationListBySubscriptionResult
+// ApplicationClientListBySubscriptionResponse contains the response from method ApplicationClient.ListBySubscription.
+type ApplicationClientListBySubscriptionResponse struct {
+	ApplicationClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ApplicationListBySubscriptionResult contains the result from method Application.ListBySubscription.
-type ApplicationListBySubscriptionResult struct {
+// ApplicationClientListBySubscriptionResult contains the result from method ApplicationClient.ListBySubscription.
+type ApplicationClientListBySubscriptionResult struct {
 	ApplicationResourceDescriptionList
 }
 
-// CodePackageGetContainerLogsResponse contains the response from method CodePackage.GetContainerLogs.
-type CodePackageGetContainerLogsResponse struct {
-	CodePackageGetContainerLogsResult
+// CodePackageClientGetContainerLogsResponse contains the response from method CodePackageClient.GetContainerLogs.
+type CodePackageClientGetContainerLogsResponse struct {
+	CodePackageClientGetContainerLogsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CodePackageGetContainerLogsResult contains the result from method CodePackage.GetContainerLogs.
-type CodePackageGetContainerLogsResult struct {
+// CodePackageClientGetContainerLogsResult contains the result from method CodePackageClient.GetContainerLogs.
+type CodePackageClientGetContainerLogsResult struct {
 	ContainerLogs
 }
 
-// GatewayCreateResponse contains the response from method Gateway.Create.
-type GatewayCreateResponse struct {
-	GatewayCreateResult
+// GatewayClientCreateResponse contains the response from method GatewayClient.Create.
+type GatewayClientCreateResponse struct {
+	GatewayClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayCreateResult contains the result from method Gateway.Create.
-type GatewayCreateResult struct {
+// GatewayClientCreateResult contains the result from method GatewayClient.Create.
+type GatewayClientCreateResult struct {
 	GatewayResourceDescription
 }
 
-// GatewayDeleteResponse contains the response from method Gateway.Delete.
-type GatewayDeleteResponse struct {
+// GatewayClientDeleteResponse contains the response from method GatewayClient.Delete.
+type GatewayClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayGetResponse contains the response from method Gateway.Get.
-type GatewayGetResponse struct {
-	GatewayGetResult
+// GatewayClientGetResponse contains the response from method GatewayClient.Get.
+type GatewayClientGetResponse struct {
+	GatewayClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayGetResult contains the result from method Gateway.Get.
-type GatewayGetResult struct {
+// GatewayClientGetResult contains the result from method GatewayClient.Get.
+type GatewayClientGetResult struct {
 	GatewayResourceDescription
 }
 
-// GatewayListByResourceGroupResponse contains the response from method Gateway.ListByResourceGroup.
-type GatewayListByResourceGroupResponse struct {
-	GatewayListByResourceGroupResult
+// GatewayClientListByResourceGroupResponse contains the response from method GatewayClient.ListByResourceGroup.
+type GatewayClientListByResourceGroupResponse struct {
+	GatewayClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayListByResourceGroupResult contains the result from method Gateway.ListByResourceGroup.
-type GatewayListByResourceGroupResult struct {
+// GatewayClientListByResourceGroupResult contains the result from method GatewayClient.ListByResourceGroup.
+type GatewayClientListByResourceGroupResult struct {
 	GatewayResourceDescriptionList
 }
 
-// GatewayListBySubscriptionResponse contains the response from method Gateway.ListBySubscription.
-type GatewayListBySubscriptionResponse struct {
-	GatewayListBySubscriptionResult
+// GatewayClientListBySubscriptionResponse contains the response from method GatewayClient.ListBySubscription.
+type GatewayClientListBySubscriptionResponse struct {
+	GatewayClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GatewayListBySubscriptionResult contains the result from method Gateway.ListBySubscription.
-type GatewayListBySubscriptionResult struct {
+// GatewayClientListBySubscriptionResult contains the result from method GatewayClient.ListBySubscription.
+type GatewayClientListBySubscriptionResult struct {
 	GatewayResourceDescriptionList
 }
 
-// NetworkCreateResponse contains the response from method Network.Create.
-type NetworkCreateResponse struct {
-	NetworkCreateResult
+// NetworkClientCreateResponse contains the response from method NetworkClient.Create.
+type NetworkClientCreateResponse struct {
+	NetworkClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkCreateResult contains the result from method Network.Create.
-type NetworkCreateResult struct {
+// NetworkClientCreateResult contains the result from method NetworkClient.Create.
+type NetworkClientCreateResult struct {
 	NetworkResourceDescription
 }
 
-// NetworkDeleteResponse contains the response from method Network.Delete.
-type NetworkDeleteResponse struct {
+// NetworkClientDeleteResponse contains the response from method NetworkClient.Delete.
+type NetworkClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkGetResponse contains the response from method Network.Get.
-type NetworkGetResponse struct {
-	NetworkGetResult
+// NetworkClientGetResponse contains the response from method NetworkClient.Get.
+type NetworkClientGetResponse struct {
+	NetworkClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkGetResult contains the result from method Network.Get.
-type NetworkGetResult struct {
+// NetworkClientGetResult contains the result from method NetworkClient.Get.
+type NetworkClientGetResult struct {
 	NetworkResourceDescription
 }
 
-// NetworkListByResourceGroupResponse contains the response from method Network.ListByResourceGroup.
-type NetworkListByResourceGroupResponse struct {
-	NetworkListByResourceGroupResult
+// NetworkClientListByResourceGroupResponse contains the response from method NetworkClient.ListByResourceGroup.
+type NetworkClientListByResourceGroupResponse struct {
+	NetworkClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkListByResourceGroupResult contains the result from method Network.ListByResourceGroup.
-type NetworkListByResourceGroupResult struct {
+// NetworkClientListByResourceGroupResult contains the result from method NetworkClient.ListByResourceGroup.
+type NetworkClientListByResourceGroupResult struct {
 	NetworkResourceDescriptionList
 }
 
-// NetworkListBySubscriptionResponse contains the response from method Network.ListBySubscription.
-type NetworkListBySubscriptionResponse struct {
-	NetworkListBySubscriptionResult
+// NetworkClientListBySubscriptionResponse contains the response from method NetworkClient.ListBySubscription.
+type NetworkClientListBySubscriptionResponse struct {
+	NetworkClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NetworkListBySubscriptionResult contains the result from method Network.ListBySubscription.
-type NetworkListBySubscriptionResult struct {
+// NetworkClientListBySubscriptionResult contains the result from method NetworkClient.ListBySubscription.
+type NetworkClientListBySubscriptionResult struct {
 	NetworkResourceDescriptionList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SecretCreateResponse contains the response from method Secret.Create.
-type SecretCreateResponse struct {
-	SecretCreateResult
+// SecretClientCreateResponse contains the response from method SecretClient.Create.
+type SecretClientCreateResponse struct {
+	SecretClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretCreateResult contains the result from method Secret.Create.
-type SecretCreateResult struct {
+// SecretClientCreateResult contains the result from method SecretClient.Create.
+type SecretClientCreateResult struct {
 	SecretResourceDescription
 }
 
-// SecretDeleteResponse contains the response from method Secret.Delete.
-type SecretDeleteResponse struct {
+// SecretClientDeleteResponse contains the response from method SecretClient.Delete.
+type SecretClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretGetResponse contains the response from method Secret.Get.
-type SecretGetResponse struct {
-	SecretGetResult
+// SecretClientGetResponse contains the response from method SecretClient.Get.
+type SecretClientGetResponse struct {
+	SecretClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretGetResult contains the result from method Secret.Get.
-type SecretGetResult struct {
+// SecretClientGetResult contains the result from method SecretClient.Get.
+type SecretClientGetResult struct {
 	SecretResourceDescription
 }
 
-// SecretListByResourceGroupResponse contains the response from method Secret.ListByResourceGroup.
-type SecretListByResourceGroupResponse struct {
-	SecretListByResourceGroupResult
+// SecretClientListByResourceGroupResponse contains the response from method SecretClient.ListByResourceGroup.
+type SecretClientListByResourceGroupResponse struct {
+	SecretClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretListByResourceGroupResult contains the result from method Secret.ListByResourceGroup.
-type SecretListByResourceGroupResult struct {
+// SecretClientListByResourceGroupResult contains the result from method SecretClient.ListByResourceGroup.
+type SecretClientListByResourceGroupResult struct {
 	SecretResourceDescriptionList
 }
 
-// SecretListBySubscriptionResponse contains the response from method Secret.ListBySubscription.
-type SecretListBySubscriptionResponse struct {
-	SecretListBySubscriptionResult
+// SecretClientListBySubscriptionResponse contains the response from method SecretClient.ListBySubscription.
+type SecretClientListBySubscriptionResponse struct {
+	SecretClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretListBySubscriptionResult contains the result from method Secret.ListBySubscription.
-type SecretListBySubscriptionResult struct {
+// SecretClientListBySubscriptionResult contains the result from method SecretClient.ListBySubscription.
+type SecretClientListBySubscriptionResult struct {
 	SecretResourceDescriptionList
 }
 
-// SecretValueCreateResponse contains the response from method SecretValue.Create.
-type SecretValueCreateResponse struct {
-	SecretValueCreateResult
+// SecretValueClientCreateResponse contains the response from method SecretValueClient.Create.
+type SecretValueClientCreateResponse struct {
+	SecretValueClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretValueCreateResult contains the result from method SecretValue.Create.
-type SecretValueCreateResult struct {
+// SecretValueClientCreateResult contains the result from method SecretValueClient.Create.
+type SecretValueClientCreateResult struct {
 	SecretValueResourceDescription
 }
 
-// SecretValueDeleteResponse contains the response from method SecretValue.Delete.
-type SecretValueDeleteResponse struct {
+// SecretValueClientDeleteResponse contains the response from method SecretValueClient.Delete.
+type SecretValueClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretValueGetResponse contains the response from method SecretValue.Get.
-type SecretValueGetResponse struct {
-	SecretValueGetResult
+// SecretValueClientGetResponse contains the response from method SecretValueClient.Get.
+type SecretValueClientGetResponse struct {
+	SecretValueClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretValueGetResult contains the result from method SecretValue.Get.
-type SecretValueGetResult struct {
+// SecretValueClientGetResult contains the result from method SecretValueClient.Get.
+type SecretValueClientGetResult struct {
 	SecretValueResourceDescription
 }
 
-// SecretValueListResponse contains the response from method SecretValue.List.
-type SecretValueListResponse struct {
-	SecretValueListResult
+// SecretValueClientListResponse contains the response from method SecretValueClient.List.
+type SecretValueClientListResponse struct {
+	SecretValueClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretValueListResult contains the result from method SecretValue.List.
-type SecretValueListResult struct {
+// SecretValueClientListResult contains the result from method SecretValueClient.List.
+type SecretValueClientListResult struct {
 	SecretValueResourceDescriptionList
 }
 
-// SecretValueListValueResponse contains the response from method SecretValue.ListValue.
-type SecretValueListValueResponse struct {
-	SecretValueListValueResult
+// SecretValueClientListValueResponse contains the response from method SecretValueClient.ListValue.
+type SecretValueClientListValueResponse struct {
+	SecretValueClientListValueResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SecretValueListValueResult contains the result from method SecretValue.ListValue.
-type SecretValueListValueResult struct {
+// SecretValueClientListValueResult contains the result from method SecretValueClient.ListValue.
+type SecretValueClientListValueResult struct {
 	SecretValue
 }
 
-// ServiceGetResponse contains the response from method Service.Get.
-type ServiceGetResponse struct {
-	ServiceGetResult
+// ServiceClientGetResponse contains the response from method ServiceClient.Get.
+type ServiceClientGetResponse struct {
+	ServiceClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceGetResult contains the result from method Service.Get.
-type ServiceGetResult struct {
+// ServiceClientGetResult contains the result from method ServiceClient.Get.
+type ServiceClientGetResult struct {
 	ServiceResourceDescription
 }
 
-// ServiceListResponse contains the response from method Service.List.
-type ServiceListResponse struct {
-	ServiceListResult
+// ServiceClientListResponse contains the response from method ServiceClient.List.
+type ServiceClientListResponse struct {
+	ServiceClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceListResult contains the result from method Service.List.
-type ServiceListResult struct {
+// ServiceClientListResult contains the result from method ServiceClient.List.
+type ServiceClientListResult struct {
 	ServiceResourceDescriptionList
 }
 
-// ServiceReplicaGetResponse contains the response from method ServiceReplica.Get.
-type ServiceReplicaGetResponse struct {
-	ServiceReplicaGetResult
+// ServiceReplicaClientGetResponse contains the response from method ServiceReplicaClient.Get.
+type ServiceReplicaClientGetResponse struct {
+	ServiceReplicaClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceReplicaGetResult contains the result from method ServiceReplica.Get.
-type ServiceReplicaGetResult struct {
+// ServiceReplicaClientGetResult contains the result from method ServiceReplicaClient.Get.
+type ServiceReplicaClientGetResult struct {
 	ServiceReplicaDescription
 }
 
-// ServiceReplicaListResponse contains the response from method ServiceReplica.List.
-type ServiceReplicaListResponse struct {
-	ServiceReplicaListResult
+// ServiceReplicaClientListResponse contains the response from method ServiceReplicaClient.List.
+type ServiceReplicaClientListResponse struct {
+	ServiceReplicaClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceReplicaListResult contains the result from method ServiceReplica.List.
-type ServiceReplicaListResult struct {
+// ServiceReplicaClientListResult contains the result from method ServiceReplicaClient.List.
+type ServiceReplicaClientListResult struct {
 	ServiceReplicaDescriptionList
 }
 
-// VolumeCreateResponse contains the response from method Volume.Create.
-type VolumeCreateResponse struct {
-	VolumeCreateResult
+// VolumeClientCreateResponse contains the response from method VolumeClient.Create.
+type VolumeClientCreateResponse struct {
+	VolumeClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VolumeCreateResult contains the result from method Volume.Create.
-type VolumeCreateResult struct {
+// VolumeClientCreateResult contains the result from method VolumeClient.Create.
+type VolumeClientCreateResult struct {
 	VolumeResourceDescription
 }
 
-// VolumeDeleteResponse contains the response from method Volume.Delete.
-type VolumeDeleteResponse struct {
+// VolumeClientDeleteResponse contains the response from method VolumeClient.Delete.
+type VolumeClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VolumeGetResponse contains the response from method Volume.Get.
-type VolumeGetResponse struct {
-	VolumeGetResult
+// VolumeClientGetResponse contains the response from method VolumeClient.Get.
+type VolumeClientGetResponse struct {
+	VolumeClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VolumeGetResult contains the result from method Volume.Get.
-type VolumeGetResult struct {
+// VolumeClientGetResult contains the result from method VolumeClient.Get.
+type VolumeClientGetResult struct {
 	VolumeResourceDescription
 }
 
-// VolumeListByResourceGroupResponse contains the response from method Volume.ListByResourceGroup.
-type VolumeListByResourceGroupResponse struct {
-	VolumeListByResourceGroupResult
+// VolumeClientListByResourceGroupResponse contains the response from method VolumeClient.ListByResourceGroup.
+type VolumeClientListByResourceGroupResponse struct {
+	VolumeClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VolumeListByResourceGroupResult contains the result from method Volume.ListByResourceGroup.
-type VolumeListByResourceGroupResult struct {
+// VolumeClientListByResourceGroupResult contains the result from method VolumeClient.ListByResourceGroup.
+type VolumeClientListByResourceGroupResult struct {
 	VolumeResourceDescriptionList
 }
 
-// VolumeListBySubscriptionResponse contains the response from method Volume.ListBySubscription.
-type VolumeListBySubscriptionResponse struct {
-	VolumeListBySubscriptionResult
+// VolumeClientListBySubscriptionResponse contains the response from method VolumeClient.ListBySubscription.
+type VolumeClientListBySubscriptionResponse struct {
+	VolumeClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VolumeListBySubscriptionResult contains the result from method Volume.ListBySubscription.
-type VolumeListBySubscriptionResult struct {
+// VolumeClientListBySubscriptionResult contains the result from method VolumeClient.ListBySubscription.
+type VolumeClientListBySubscriptionResult struct {
 	VolumeResourceDescriptionList
 }

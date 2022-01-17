@@ -35,11 +35,12 @@ func Run(remainingArgs []string) {
 	tab.Register(tracer)
 
 	allTests := map[string]func(args []string){
-		"infiniteSendAndReceive": InfiniteSendAndReceiveRun,
-		"finiteSendAndReceive":   FiniteSendAndReceiveTest,
-		"rapidOpenClose":         RapidOpenCloseTest,
-		"longRunningRenewLock":   LongRunningRenewLockTest,
-		"constantDetach":         ConstantDetachment,
+		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
+		"finiteSendAndReceive":     FiniteSendAndReceiveTest,
+		"rapidOpenClose":           RapidOpenCloseTest,
+		"longRunningRenewLock":     LongRunningRenewLockTest,
+		"constantDetach":           ConstantDetachment,
+		"constantDetachmentSender": ConstantDetachmentSender,
 	}
 
 	if len(remainingArgs) == 0 {

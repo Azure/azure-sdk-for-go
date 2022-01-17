@@ -1,5 +1,265 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ContainerGroupsClient.BeginStart` parameter(s) have been changed from `(context.Context, string, string, *ContainerGroupsBeginStartOptions)` to `(context.Context, string, string, *ContainerGroupsClientBeginStartOptions)`
+- Function `*ContainerGroupsClient.BeginStart` return value(s) have been changed from `(ContainerGroupsStartPollerResponse, error)` to `(ContainerGroupsClientStartPollerResponse, error)`
+- Function `*ContainerGroupsClient.BeginRestart` parameter(s) have been changed from `(context.Context, string, string, *ContainerGroupsBeginRestartOptions)` to `(context.Context, string, string, *ContainerGroupsClientBeginRestartOptions)`
+- Function `*ContainerGroupsClient.BeginRestart` return value(s) have been changed from `(ContainerGroupsRestartPollerResponse, error)` to `(ContainerGroupsClientRestartPollerResponse, error)`
+- Function `*ContainerGroupsClient.Stop` parameter(s) have been changed from `(context.Context, string, string, *ContainerGroupsStopOptions)` to `(context.Context, string, string, *ContainerGroupsClientStopOptions)`
+- Function `*ContainerGroupsClient.Stop` return value(s) have been changed from `(ContainerGroupsStopResponse, error)` to `(ContainerGroupsClientStopResponse, error)`
+- Function `*ContainerGroupsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ContainerGroup, *ContainerGroupsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, ContainerGroup, *ContainerGroupsClientBeginCreateOrUpdateOptions)`
+- Function `*ContainerGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ContainerGroupsCreateOrUpdatePollerResponse, error)` to `(ContainerGroupsClientCreateOrUpdatePollerResponse, error)`
+- Function `*LocationClient.ListUsage` parameter(s) have been changed from `(context.Context, string, *LocationListUsageOptions)` to `(context.Context, string, *LocationClientListUsageOptions)`
+- Function `*LocationClient.ListUsage` return value(s) have been changed from `(LocationListUsageResponse, error)` to `(LocationClientListUsageResponse, error)`
+- Function `*ContainersClient.ListLogs` parameter(s) have been changed from `(context.Context, string, string, string, *ContainersListLogsOptions)` to `(context.Context, string, string, string, *ContainersClientListLogsOptions)`
+- Function `*ContainersClient.ListLogs` return value(s) have been changed from `(ContainersListLogsResponse, error)` to `(ContainersClientListLogsResponse, error)`
+- Function `*ContainerGroupsClient.List` parameter(s) have been changed from `(*ContainerGroupsListOptions)` to `(*ContainerGroupsClientListOptions)`
+- Function `*ContainerGroupsClient.List` return value(s) have been changed from `(*ContainerGroupsListPager)` to `(*ContainerGroupsClientListPager)`
+- Function `*ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints` parameter(s) have been changed from `(context.Context, string, string, *ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions)` to `(context.Context, string, string, *ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions)`
+- Function `*ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints` return value(s) have been changed from `(ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse, error)` to `(ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse, error)`
+- Function `*ContainerGroupsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ContainerGroupsListByResourceGroupOptions)` to `(string, *ContainerGroupsClientListByResourceGroupOptions)`
+- Function `*ContainerGroupsClient.ListByResourceGroup` return value(s) have been changed from `(*ContainerGroupsListByResourceGroupPager)` to `(*ContainerGroupsClientListByResourceGroupPager)`
+- Function `*LocationClient.ListCapabilities` parameter(s) have been changed from `(string, *LocationListCapabilitiesOptions)` to `(string, *LocationClientListCapabilitiesOptions)`
+- Function `*LocationClient.ListCapabilities` return value(s) have been changed from `(*LocationListCapabilitiesPager)` to `(*LocationClientListCapabilitiesPager)`
+- Function `*ContainersClient.Attach` parameter(s) have been changed from `(context.Context, string, string, string, *ContainersAttachOptions)` to `(context.Context, string, string, string, *ContainersClientAttachOptions)`
+- Function `*ContainersClient.Attach` return value(s) have been changed from `(ContainersAttachResponse, error)` to `(ContainersClientAttachResponse, error)`
+- Function `*ContainerGroupsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ContainerGroupsBeginDeleteOptions)` to `(context.Context, string, string, *ContainerGroupsClientBeginDeleteOptions)`
+- Function `*ContainerGroupsClient.BeginDelete` return value(s) have been changed from `(ContainerGroupsDeletePollerResponse, error)` to `(ContainerGroupsClientDeletePollerResponse, error)`
+- Function `*LocationClient.ListCachedImages` parameter(s) have been changed from `(string, *LocationListCachedImagesOptions)` to `(string, *LocationClientListCachedImagesOptions)`
+- Function `*LocationClient.ListCachedImages` return value(s) have been changed from `(*LocationListCachedImagesPager)` to `(*LocationClientListCachedImagesPager)`
+- Function `*ContainersClient.ExecuteCommand` parameter(s) have been changed from `(context.Context, string, string, string, ContainerExecRequest, *ContainersExecuteCommandOptions)` to `(context.Context, string, string, string, ContainerExecRequest, *ContainersClientExecuteCommandOptions)`
+- Function `*ContainersClient.ExecuteCommand` return value(s) have been changed from `(ContainersExecuteCommandResponse, error)` to `(ContainersClientExecuteCommandResponse, error)`
+- Function `*ContainerGroupsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ContainerGroupsGetOptions)` to `(context.Context, string, string, *ContainerGroupsClientGetOptions)`
+- Function `*ContainerGroupsClient.Get` return value(s) have been changed from `(ContainerGroupsGetResponse, error)` to `(ContainerGroupsClientGetResponse, error)`
+- Function `*ContainerGroupsClient.Update` parameter(s) have been changed from `(context.Context, string, string, Resource, *ContainerGroupsUpdateOptions)` to `(context.Context, string, string, Resource, *ContainerGroupsClientUpdateOptions)`
+- Function `*ContainerGroupsClient.Update` return value(s) have been changed from `(ContainerGroupsUpdateResponse, error)` to `(ContainerGroupsClientUpdateResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*LocationListCapabilitiesPager.PageResponse` has been removed
+- Function `*ContainerGroupsDeletePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*LocationListCachedImagesPager.NextPage` has been removed
+- Function `*ContainerGroupsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ContainerGroupsStartPoller.Done` has been removed
+- Function `*ContainerGroupsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ContainerGroupsListByResourceGroupPager.PageResponse` has been removed
+- Function `*ContainerGroupsStartPoller.Poll` has been removed
+- Function `*ContainerGroupsRestartPoller.ResumeToken` has been removed
+- Function `ContainerGroupsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ContainerGroupsRestartPoller.FinalResponse` has been removed
+- Function `*ContainerGroupsListPager.Err` has been removed
+- Function `*LocationListCachedImagesPager.Err` has been removed
+- Function `ContainerGroupsRestartPollerResponse.PollUntilDone` has been removed
+- Function `*ContainerGroupsRestartPollerResponse.Resume` has been removed
+- Function `ContainerGroupsStartPollerResponse.PollUntilDone` has been removed
+- Function `*ContainerGroupsStartPoller.ResumeToken` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*ContainerGroupsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ContainerGroupsDeletePoller.Done` has been removed
+- Function `*ContainerGroupsDeletePoller.Poll` has been removed
+- Function `*ContainerGroupsStartPoller.FinalResponse` has been removed
+- Function `*LocationListCapabilitiesPager.NextPage` has been removed
+- Function `*ContainerGroupsCreateOrUpdatePoller.Done` has been removed
+- Function `*ContainerGroupsRestartPoller.Done` has been removed
+- Function `*ContainerGroupsListByResourceGroupPager.Err` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `ContainerGroupsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ContainerGroupsRestartPoller.Poll` has been removed
+- Function `*ContainerGroupsStartPollerResponse.Resume` has been removed
+- Function `*LocationListCapabilitiesPager.Err` has been removed
+- Function `*ContainerGroupsListPager.PageResponse` has been removed
+- Function `*ContainerGroupsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ContainerGroupsDeletePollerResponse.Resume` has been removed
+- Function `*ContainerGroupsListByResourceGroupPager.NextPage` has been removed
+- Function `*LocationListCachedImagesPager.PageResponse` has been removed
+- Function `*ContainerGroupsDeletePoller.FinalResponse` has been removed
+- Function `*ContainerGroupsListPager.NextPage` has been removed
+- Struct `ContainerGroupsBeginCreateOrUpdateOptions` has been removed
+- Struct `ContainerGroupsBeginDeleteOptions` has been removed
+- Struct `ContainerGroupsBeginRestartOptions` has been removed
+- Struct `ContainerGroupsBeginStartOptions` has been removed
+- Struct `ContainerGroupsCreateOrUpdatePoller` has been removed
+- Struct `ContainerGroupsCreateOrUpdatePollerResponse` has been removed
+- Struct `ContainerGroupsCreateOrUpdateResponse` has been removed
+- Struct `ContainerGroupsCreateOrUpdateResult` has been removed
+- Struct `ContainerGroupsDeletePoller` has been removed
+- Struct `ContainerGroupsDeletePollerResponse` has been removed
+- Struct `ContainerGroupsDeleteResponse` has been removed
+- Struct `ContainerGroupsDeleteResult` has been removed
+- Struct `ContainerGroupsGetOptions` has been removed
+- Struct `ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions` has been removed
+- Struct `ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse` has been removed
+- Struct `ContainerGroupsGetOutboundNetworkDependenciesEndpointsResult` has been removed
+- Struct `ContainerGroupsGetResponse` has been removed
+- Struct `ContainerGroupsGetResult` has been removed
+- Struct `ContainerGroupsListByResourceGroupOptions` has been removed
+- Struct `ContainerGroupsListByResourceGroupPager` has been removed
+- Struct `ContainerGroupsListByResourceGroupResponse` has been removed
+- Struct `ContainerGroupsListByResourceGroupResult` has been removed
+- Struct `ContainerGroupsListOptions` has been removed
+- Struct `ContainerGroupsListPager` has been removed
+- Struct `ContainerGroupsListResponse` has been removed
+- Struct `ContainerGroupsListResult` has been removed
+- Struct `ContainerGroupsRestartPoller` has been removed
+- Struct `ContainerGroupsRestartPollerResponse` has been removed
+- Struct `ContainerGroupsRestartResponse` has been removed
+- Struct `ContainerGroupsStartPoller` has been removed
+- Struct `ContainerGroupsStartPollerResponse` has been removed
+- Struct `ContainerGroupsStartResponse` has been removed
+- Struct `ContainerGroupsStopOptions` has been removed
+- Struct `ContainerGroupsStopResponse` has been removed
+- Struct `ContainerGroupsUpdateOptions` has been removed
+- Struct `ContainerGroupsUpdateResponse` has been removed
+- Struct `ContainerGroupsUpdateResult` has been removed
+- Struct `ContainersAttachOptions` has been removed
+- Struct `ContainersAttachResponse` has been removed
+- Struct `ContainersAttachResult` has been removed
+- Struct `ContainersExecuteCommandOptions` has been removed
+- Struct `ContainersExecuteCommandResponse` has been removed
+- Struct `ContainersExecuteCommandResult` has been removed
+- Struct `ContainersListLogsOptions` has been removed
+- Struct `ContainersListLogsResponse` has been removed
+- Struct `ContainersListLogsResult` has been removed
+- Struct `LocationListCachedImagesOptions` has been removed
+- Struct `LocationListCachedImagesPager` has been removed
+- Struct `LocationListCachedImagesResponse` has been removed
+- Struct `LocationListCachedImagesResult` has been removed
+- Struct `LocationListCapabilitiesOptions` has been removed
+- Struct `LocationListCapabilitiesPager` has been removed
+- Struct `LocationListCapabilitiesResponse` has been removed
+- Struct `LocationListCapabilitiesResult` has been removed
+- Struct `LocationListUsageOptions` has been removed
+- Struct `LocationListUsageResponse` has been removed
+- Struct `LocationListUsageResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `Resource` of struct `ContainerGroup` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+
+### Features Added
+
+- New const `DNSNameLabelReusePolicySubscriptionReuse`
+- New const `DNSNameLabelReusePolicyResourceGroupReuse`
+- New const `DNSNameLabelReusePolicyUnsecure`
+- New const `DNSNameLabelReusePolicyTenantReuse`
+- New const `DNSNameLabelReusePolicyNoreuse`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*LocationClientListCachedImagesPager.PageResponse() LocationClientListCachedImagesResponse`
+- New function `*LocationClientListCachedImagesPager.NextPage(context.Context) bool`
+- New function `*ContainerGroupsClientDeletePoller.ResumeToken() (string, error)`
+- New function `DNSNameLabelReusePolicy.ToPtr() *DNSNameLabelReusePolicy`
+- New function `*ContainerGroupsClientRestartPoller.FinalResponse(context.Context) (ContainerGroupsClientRestartResponse, error)`
+- New function `*ContainerGroupsClientDeletePoller.FinalResponse(context.Context) (ContainerGroupsClientDeleteResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ContainerGroupsClientStartPollerResponse.Resume(context.Context, *ContainerGroupsClient, string) error`
+- New function `*ContainerGroupsClientDeletePoller.Done() bool`
+- New function `*ContainerGroupsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ContainerGroupsClientListByResourceGroupPager.PageResponse() ContainerGroupsClientListByResourceGroupResponse`
+- New function `ContainerGroupsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ContainerGroupsClientDeleteResponse, error)`
+- New function `*ContainerGroupsClientRestartPoller.ResumeToken() (string, error)`
+- New function `*ContainerGroupsClientStartPoller.FinalResponse(context.Context) (ContainerGroupsClientStartResponse, error)`
+- New function `ContainerGroupsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ContainerGroupsClientCreateOrUpdateResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ContainerGroupsClientStartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ContainerGroupsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ContainerGroupsClient, string) error`
+- New function `*ContainerGroupsClientRestartPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ContainerGroupsClientRestartPoller.Done() bool`
+- New function `*LocationClientListCachedImagesPager.Err() error`
+- New function `*ContainerGroupsClientStartPoller.Done() bool`
+- New function `*ContainerGroupsClientStartPoller.ResumeToken() (string, error)`
+- New function `*ContainerGroupsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ContainerGroupsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*LocationClientListCapabilitiesPager.Err() error`
+- New function `*ContainerGroupsClientListPager.Err() error`
+- New function `PossibleDNSNameLabelReusePolicyValues() []DNSNameLabelReusePolicy`
+- New function `*ContainerGroupsClientDeletePollerResponse.Resume(context.Context, *ContainerGroupsClient, string) error`
+- New function `*ContainerGroupsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ContainerGroupsClientStartPollerResponse.PollUntilDone(context.Context, time.Duration) (ContainerGroupsClientStartResponse, error)`
+- New function `ContainerGroupsClientRestartPollerResponse.PollUntilDone(context.Context, time.Duration) (ContainerGroupsClientRestartResponse, error)`
+- New function `*ContainerGroupsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ContainerGroupsClientListByResourceGroupPager.Err() error`
+- New function `*ContainerGroupsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ContainerGroupsClientCreateOrUpdateResponse, error)`
+- New function `*ContainerGroupsClientRestartPollerResponse.Resume(context.Context, *ContainerGroupsClient, string) error`
+- New function `*ContainerGroupsClientListPager.PageResponse() ContainerGroupsClientListResponse`
+- New function `*ContainerGroupsClientListPager.NextPage(context.Context) bool`
+- New function `*LocationClientListCapabilitiesPager.PageResponse() LocationClientListCapabilitiesResponse`
+- New function `*LocationClientListCapabilitiesPager.NextPage(context.Context) bool`
+- New struct `ContainerGroupsClientBeginCreateOrUpdateOptions`
+- New struct `ContainerGroupsClientBeginDeleteOptions`
+- New struct `ContainerGroupsClientBeginRestartOptions`
+- New struct `ContainerGroupsClientBeginStartOptions`
+- New struct `ContainerGroupsClientCreateOrUpdatePoller`
+- New struct `ContainerGroupsClientCreateOrUpdatePollerResponse`
+- New struct `ContainerGroupsClientCreateOrUpdateResponse`
+- New struct `ContainerGroupsClientCreateOrUpdateResult`
+- New struct `ContainerGroupsClientDeletePoller`
+- New struct `ContainerGroupsClientDeletePollerResponse`
+- New struct `ContainerGroupsClientDeleteResponse`
+- New struct `ContainerGroupsClientDeleteResult`
+- New struct `ContainerGroupsClientGetOptions`
+- New struct `ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions`
+- New struct `ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse`
+- New struct `ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResult`
+- New struct `ContainerGroupsClientGetResponse`
+- New struct `ContainerGroupsClientGetResult`
+- New struct `ContainerGroupsClientListByResourceGroupOptions`
+- New struct `ContainerGroupsClientListByResourceGroupPager`
+- New struct `ContainerGroupsClientListByResourceGroupResponse`
+- New struct `ContainerGroupsClientListByResourceGroupResult`
+- New struct `ContainerGroupsClientListOptions`
+- New struct `ContainerGroupsClientListPager`
+- New struct `ContainerGroupsClientListResponse`
+- New struct `ContainerGroupsClientListResult`
+- New struct `ContainerGroupsClientRestartPoller`
+- New struct `ContainerGroupsClientRestartPollerResponse`
+- New struct `ContainerGroupsClientRestartResponse`
+- New struct `ContainerGroupsClientStartPoller`
+- New struct `ContainerGroupsClientStartPollerResponse`
+- New struct `ContainerGroupsClientStartResponse`
+- New struct `ContainerGroupsClientStopOptions`
+- New struct `ContainerGroupsClientStopResponse`
+- New struct `ContainerGroupsClientUpdateOptions`
+- New struct `ContainerGroupsClientUpdateResponse`
+- New struct `ContainerGroupsClientUpdateResult`
+- New struct `ContainersClientAttachOptions`
+- New struct `ContainersClientAttachResponse`
+- New struct `ContainersClientAttachResult`
+- New struct `ContainersClientExecuteCommandOptions`
+- New struct `ContainersClientExecuteCommandResponse`
+- New struct `ContainersClientExecuteCommandResult`
+- New struct `ContainersClientListLogsOptions`
+- New struct `ContainersClientListLogsResponse`
+- New struct `ContainersClientListLogsResult`
+- New struct `LocationClientListCachedImagesOptions`
+- New struct `LocationClientListCachedImagesPager`
+- New struct `LocationClientListCachedImagesResponse`
+- New struct `LocationClientListCachedImagesResult`
+- New struct `LocationClientListCapabilitiesOptions`
+- New struct `LocationClientListCapabilitiesPager`
+- New struct `LocationClientListCapabilitiesResponse`
+- New struct `LocationClientListCapabilitiesResult`
+- New struct `LocationClientListUsageOptions`
+- New struct `LocationClientListUsageResponse`
+- New struct `LocationClientListUsageResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `Error` in struct `CloudError`
+- New field `Location` in struct `ContainerGroup`
+- New field `Tags` in struct `ContainerGroup`
+- New field `Zones` in struct `ContainerGroup`
+- New field `ID` in struct `ContainerGroup`
+- New field `Name` in struct `ContainerGroup`
+- New field `Type` in struct `ContainerGroup`
+- New field `DNSNameLabelReusePolicy` in struct `IPAddress`
+
+
 ## 0.1.0 (2021-12-01)
 
 - Initial preview release.

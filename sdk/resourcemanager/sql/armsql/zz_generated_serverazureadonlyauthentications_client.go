@@ -24,46 +24,63 @@ import (
 // ServerAzureADOnlyAuthenticationsClient contains the methods for the ServerAzureADOnlyAuthentications group.
 // Don't use this type directly, use NewServerAzureADOnlyAuthenticationsClient() instead.
 type ServerAzureADOnlyAuthenticationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerAzureADOnlyAuthenticationsClient creates a new instance of ServerAzureADOnlyAuthenticationsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAzureADOnlyAuthenticationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerAzureADOnlyAuthenticationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerAzureADOnlyAuthenticationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory only authentication property.
-// If the operation fails it returns a generic error.
-func (client *ServerAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsBeginCreateOrUpdateOptions) (ServerAzureADOnlyAuthenticationsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
+// only authentication property.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// authenticationName - The name of server azure active directory only authentication.
+// parameters - The required parameters for creating or updating an Active Directory only authentication property.
+// options - ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate
+// method.
+func (client *ServerAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, authenticationName, parameters, options)
 	if err != nil {
-		return ServerAzureADOnlyAuthenticationsCreateOrUpdatePollerResponse{}, err
+		return ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerAzureADOnlyAuthenticationsCreateOrUpdatePollerResponse{
+	result := ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerAzureADOnlyAuthenticationsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerAzureADOnlyAuthenticationsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerAzureADOnlyAuthenticationsCreateOrUpdatePollerResponse{}, err
+		return ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerAzureADOnlyAuthenticationsCreateOrUpdatePoller{
+	result.Poller = &ServerAzureADOnlyAuthenticationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory only authentication property.
-// If the operation fails it returns a generic error.
-func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
+// only authentication property.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, authenticationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +90,13 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, parameters ServerAzureADOnlyAuthentication, options *ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +114,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +125,35 @@ func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateCreateReques
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerAzureADOnlyAuthenticationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes an existing server Active Directory only authentication property.
-// If the operation fails it returns a generic error.
-func (client *ServerAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsBeginDeleteOptions) (ServerAzureADOnlyAuthenticationsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// authenticationName - The name of server azure active directory only authentication.
+// options - ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.BeginDelete
+// method.
+func (client *ServerAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions) (ServerAzureADOnlyAuthenticationsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, authenticationName, options)
 	if err != nil {
-		return ServerAzureADOnlyAuthenticationsDeletePollerResponse{}, err
+		return ServerAzureADOnlyAuthenticationsClientDeletePollerResponse{}, err
 	}
-	result := ServerAzureADOnlyAuthenticationsDeletePollerResponse{
+	result := ServerAzureADOnlyAuthenticationsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerAzureADOnlyAuthenticationsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerAzureADOnlyAuthenticationsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServerAzureADOnlyAuthenticationsDeletePollerResponse{}, err
+		return ServerAzureADOnlyAuthenticationsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServerAzureADOnlyAuthenticationsDeletePoller{
+	result.Poller = &ServerAzureADOnlyAuthenticationsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing server Active Directory only authentication property.
-// If the operation fails it returns a generic error.
-func (client *ServerAzureADOnlyAuthenticationsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerAzureADOnlyAuthenticationsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, authenticationName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +163,13 @@ func (client *ServerAzureADOnlyAuthenticationsClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerAzureADOnlyAuthenticationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerAzureADOnlyAuthenticationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +187,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) deleteCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +197,31 @@ func (client *ServerAzureADOnlyAuthenticationsClient) deleteCreateRequest(ctx co
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServerAzureADOnlyAuthenticationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a specific Azure Active Directory only authentication property.
-// If the operation fails it returns a generic error.
-func (client *ServerAzureADOnlyAuthenticationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsGetOptions) (ServerAzureADOnlyAuthenticationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// authenticationName - The name of server azure active directory only authentication.
+// options - ServerAzureADOnlyAuthenticationsClientGetOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.Get
+// method.
+func (client *ServerAzureADOnlyAuthenticationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientGetOptions) (ServerAzureADOnlyAuthenticationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, authenticationName, options)
 	if err != nil {
-		return ServerAzureADOnlyAuthenticationsGetResponse{}, err
+		return ServerAzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAzureADOnlyAuthenticationsGetResponse{}, err
+		return ServerAzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAzureADOnlyAuthenticationsGetResponse{}, client.getHandleError(resp)
+		return ServerAzureADOnlyAuthenticationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsGetOptions) (*policy.Request, error) {
+func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, authenticationName AuthenticationName, options *ServerAzureADOnlyAuthenticationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -234,7 +239,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,42 +251,35 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsGetResponse, error) {
-	result := ServerAzureADOnlyAuthenticationsGetResponse{RawResponse: resp}
+func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsClientGetResponse, error) {
+	result := ServerAzureADOnlyAuthenticationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAzureADOnlyAuthentication); err != nil {
-		return ServerAzureADOnlyAuthenticationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAzureADOnlyAuthenticationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerAzureADOnlyAuthenticationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Gets a list of server Azure Active Directory only authentications.
-// If the operation fails it returns a generic error.
-func (client *ServerAzureADOnlyAuthenticationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsListByServerOptions) *ServerAzureADOnlyAuthenticationsListByServerPager {
-	return &ServerAzureADOnlyAuthenticationsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerAzureADOnlyAuthenticationsClientListByServerOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.ListByServer
+// method.
+func (client *ServerAzureADOnlyAuthenticationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *ServerAzureADOnlyAuthenticationsClientListByServerPager {
+	return &ServerAzureADOnlyAuthenticationsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerAzureADOnlyAuthenticationsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerAzureADOnlyAuthenticationsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AzureADOnlyAuthListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsListByServerOptions) (*policy.Request, error) {
+func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -295,7 +293,7 @@ func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,22 +305,10 @@ func (client *ServerAzureADOnlyAuthenticationsClient) listByServerCreateRequest(
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerAzureADOnlyAuthenticationsClient) listByServerHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsListByServerResponse, error) {
-	result := ServerAzureADOnlyAuthenticationsListByServerResponse{RawResponse: resp}
+func (client *ServerAzureADOnlyAuthenticationsClient) listByServerHandleResponse(resp *http.Response) (ServerAzureADOnlyAuthenticationsClientListByServerResponse, error) {
+	result := ServerAzureADOnlyAuthenticationsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADOnlyAuthListResult); err != nil {
-		return ServerAzureADOnlyAuthenticationsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAzureADOnlyAuthenticationsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServerAzureADOnlyAuthenticationsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

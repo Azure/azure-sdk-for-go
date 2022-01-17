@@ -1,5 +1,185 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*SuppressionsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, SuppressionContract, *SuppressionsCreateOptions)` to `(context.Context, string, string, string, SuppressionContract, *SuppressionsClientCreateOptions)`
+- Function `*SuppressionsClient.Create` return value(s) have been changed from `(SuppressionsCreateResponse, error)` to `(SuppressionsClientCreateResponse, error)`
+- Function `*RecommendationMetadataClient.List` parameter(s) have been changed from `(*RecommendationMetadataListOptions)` to `(*RecommendationMetadataClientListOptions)`
+- Function `*RecommendationMetadataClient.List` return value(s) have been changed from `(*RecommendationMetadataListPager)` to `(*RecommendationMetadataClientListPager)`
+- Function `*SuppressionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SuppressionsGetOptions)` to `(context.Context, string, string, string, *SuppressionsClientGetOptions)`
+- Function `*SuppressionsClient.Get` return value(s) have been changed from `(SuppressionsGetResponse, error)` to `(SuppressionsClientGetResponse, error)`
+- Function `*RecommendationMetadataClient.Get` parameter(s) have been changed from `(context.Context, string, *RecommendationMetadataGetOptions)` to `(context.Context, string, *RecommendationMetadataClientGetOptions)`
+- Function `*RecommendationMetadataClient.Get` return value(s) have been changed from `(RecommendationMetadataGetResponse, error)` to `(RecommendationMetadataClientGetResponse, error)`
+- Function `*SuppressionsClient.List` parameter(s) have been changed from `(*SuppressionsListOptions)` to `(*SuppressionsClientListOptions)`
+- Function `*SuppressionsClient.List` return value(s) have been changed from `(*SuppressionsListPager)` to `(*SuppressionsClientListPager)`
+- Function `*ConfigurationsClient.CreateInResourceGroup` parameter(s) have been changed from `(context.Context, ConfigurationName, string, ConfigData, *ConfigurationsCreateInResourceGroupOptions)` to `(context.Context, ConfigurationName, string, ConfigData, *ConfigurationsClientCreateInResourceGroupOptions)`
+- Function `*ConfigurationsClient.CreateInResourceGroup` return value(s) have been changed from `(ConfigurationsCreateInResourceGroupResponse, error)` to `(ConfigurationsClientCreateInResourceGroupResponse, error)`
+- Function `*RecommendationsClient.Generate` parameter(s) have been changed from `(context.Context, *RecommendationsGenerateOptions)` to `(context.Context, *RecommendationsClientGenerateOptions)`
+- Function `*RecommendationsClient.Generate` return value(s) have been changed from `(RecommendationsGenerateResponse, error)` to `(RecommendationsClientGenerateResponse, error)`
+- Function `*ConfigurationsClient.ListBySubscription` parameter(s) have been changed from `(*ConfigurationsListBySubscriptionOptions)` to `(*ConfigurationsClientListBySubscriptionOptions)`
+- Function `*ConfigurationsClient.ListBySubscription` return value(s) have been changed from `(*ConfigurationsListBySubscriptionPager)` to `(*ConfigurationsClientListBySubscriptionPager)`
+- Function `*SuppressionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *SuppressionsDeleteOptions)` to `(context.Context, string, string, string, *SuppressionsClientDeleteOptions)`
+- Function `*SuppressionsClient.Delete` return value(s) have been changed from `(SuppressionsDeleteResponse, error)` to `(SuppressionsClientDeleteResponse, error)`
+- Function `*RecommendationsClient.GetGenerateStatus` parameter(s) have been changed from `(context.Context, string, *RecommendationsGetGenerateStatusOptions)` to `(context.Context, string, *RecommendationsClientGetGenerateStatusOptions)`
+- Function `*RecommendationsClient.GetGenerateStatus` return value(s) have been changed from `(RecommendationsGetGenerateStatusResponse, error)` to `(RecommendationsClientGetGenerateStatusResponse, error)`
+- Function `*ConfigurationsClient.CreateInSubscription` parameter(s) have been changed from `(context.Context, ConfigurationName, ConfigData, *ConfigurationsCreateInSubscriptionOptions)` to `(context.Context, ConfigurationName, ConfigData, *ConfigurationsClientCreateInSubscriptionOptions)`
+- Function `*ConfigurationsClient.CreateInSubscription` return value(s) have been changed from `(ConfigurationsCreateInSubscriptionResponse, error)` to `(ConfigurationsClientCreateInSubscriptionResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*RecommendationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RecommendationsGetOptions)` to `(context.Context, string, string, *RecommendationsClientGetOptions)`
+- Function `*RecommendationsClient.Get` return value(s) have been changed from `(RecommendationsGetResponse, error)` to `(RecommendationsClientGetResponse, error)`
+- Function `*ConfigurationsClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ConfigurationsListByResourceGroupOptions)` to `(context.Context, string, *ConfigurationsClientListByResourceGroupOptions)`
+- Function `*ConfigurationsClient.ListByResourceGroup` return value(s) have been changed from `(ConfigurationsListByResourceGroupResponse, error)` to `(ConfigurationsClientListByResourceGroupResponse, error)`
+- Function `*RecommendationsClient.List` parameter(s) have been changed from `(*RecommendationsListOptions)` to `(*RecommendationsClientListOptions)`
+- Function `*RecommendationsClient.List` return value(s) have been changed from `(*RecommendationsListPager)` to `(*RecommendationsClientListPager)`
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ConfigurationsListBySubscriptionPager.PageResponse` has been removed
+- Function `*ConfigurationsListBySubscriptionPager.Err` has been removed
+- Function `*RecommendationMetadataListPager.PageResponse` has been removed
+- Function `*SuppressionsListPager.Err` has been removed
+- Function `ARMErrorResponseBody.Error` has been removed
+- Function `*SuppressionsListPager.PageResponse` has been removed
+- Function `*RecommendationsListPager.NextPage` has been removed
+- Function `*RecommendationMetadataListPager.NextPage` has been removed
+- Function `ArmErrorResponse.Error` has been removed
+- Function `*RecommendationMetadataListPager.Err` has been removed
+- Function `*ConfigurationsListBySubscriptionPager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*SuppressionsListPager.NextPage` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*RecommendationsListPager.Err` has been removed
+- Function `*RecommendationsListPager.PageResponse` has been removed
+- Struct `ConfigurationsCreateInResourceGroupOptions` has been removed
+- Struct `ConfigurationsCreateInResourceGroupResponse` has been removed
+- Struct `ConfigurationsCreateInResourceGroupResult` has been removed
+- Struct `ConfigurationsCreateInSubscriptionOptions` has been removed
+- Struct `ConfigurationsCreateInSubscriptionResponse` has been removed
+- Struct `ConfigurationsCreateInSubscriptionResult` has been removed
+- Struct `ConfigurationsListByResourceGroupOptions` has been removed
+- Struct `ConfigurationsListByResourceGroupResponse` has been removed
+- Struct `ConfigurationsListByResourceGroupResult` has been removed
+- Struct `ConfigurationsListBySubscriptionOptions` has been removed
+- Struct `ConfigurationsListBySubscriptionPager` has been removed
+- Struct `ConfigurationsListBySubscriptionResponse` has been removed
+- Struct `ConfigurationsListBySubscriptionResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `RecommendationMetadataGetOptions` has been removed
+- Struct `RecommendationMetadataGetResponse` has been removed
+- Struct `RecommendationMetadataGetResult` has been removed
+- Struct `RecommendationMetadataListOptions` has been removed
+- Struct `RecommendationMetadataListPager` has been removed
+- Struct `RecommendationMetadataListResponse` has been removed
+- Struct `RecommendationMetadataListResult` has been removed
+- Struct `RecommendationsGenerateOptions` has been removed
+- Struct `RecommendationsGenerateResponse` has been removed
+- Struct `RecommendationsGenerateResult` has been removed
+- Struct `RecommendationsGetGenerateStatusOptions` has been removed
+- Struct `RecommendationsGetGenerateStatusResponse` has been removed
+- Struct `RecommendationsGetOptions` has been removed
+- Struct `RecommendationsGetResponse` has been removed
+- Struct `RecommendationsGetResult` has been removed
+- Struct `RecommendationsListOptions` has been removed
+- Struct `RecommendationsListPager` has been removed
+- Struct `RecommendationsListResponse` has been removed
+- Struct `RecommendationsListResult` has been removed
+- Struct `SuppressionsCreateOptions` has been removed
+- Struct `SuppressionsCreateResponse` has been removed
+- Struct `SuppressionsCreateResult` has been removed
+- Struct `SuppressionsDeleteOptions` has been removed
+- Struct `SuppressionsDeleteResponse` has been removed
+- Struct `SuppressionsGetOptions` has been removed
+- Struct `SuppressionsGetResponse` has been removed
+- Struct `SuppressionsGetResult` has been removed
+- Struct `SuppressionsListOptions` has been removed
+- Struct `SuppressionsListPager` has been removed
+- Struct `SuppressionsListResponse` has been removed
+- Struct `SuppressionsListResult` has been removed
+- Field `InnerError` of struct `ArmErrorResponse` has been removed
+- Field `Resource` of struct `SuppressionContract` has been removed
+- Field `Resource` of struct `ConfigData` has been removed
+- Field `Resource` of struct `ResourceRecommendationBase` has been removed
+
+### Features Added
+
+- New function `*SuppressionsClientListPager.PageResponse() SuppressionsClientListResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ConfigurationsClientListBySubscriptionPager.PageResponse() ConfigurationsClientListBySubscriptionResponse`
+- New function `*RecommendationMetadataClientListPager.NextPage(context.Context) bool`
+- New function `*RecommendationMetadataClientListPager.PageResponse() RecommendationMetadataClientListResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*SuppressionsClientListPager.Err() error`
+- New function `*ConfigurationsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*RecommendationsClientListPager.Err() error`
+- New function `*RecommendationMetadataClientListPager.Err() error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ConfigurationsClientListBySubscriptionPager.Err() error`
+- New function `*RecommendationsClientListPager.NextPage(context.Context) bool`
+- New function `*RecommendationsClientListPager.PageResponse() RecommendationsClientListResponse`
+- New function `*SuppressionsClientListPager.NextPage(context.Context) bool`
+- New struct `ConfigurationsClientCreateInResourceGroupOptions`
+- New struct `ConfigurationsClientCreateInResourceGroupResponse`
+- New struct `ConfigurationsClientCreateInResourceGroupResult`
+- New struct `ConfigurationsClientCreateInSubscriptionOptions`
+- New struct `ConfigurationsClientCreateInSubscriptionResponse`
+- New struct `ConfigurationsClientCreateInSubscriptionResult`
+- New struct `ConfigurationsClientListByResourceGroupOptions`
+- New struct `ConfigurationsClientListByResourceGroupResponse`
+- New struct `ConfigurationsClientListByResourceGroupResult`
+- New struct `ConfigurationsClientListBySubscriptionOptions`
+- New struct `ConfigurationsClientListBySubscriptionPager`
+- New struct `ConfigurationsClientListBySubscriptionResponse`
+- New struct `ConfigurationsClientListBySubscriptionResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `RecommendationMetadataClientGetOptions`
+- New struct `RecommendationMetadataClientGetResponse`
+- New struct `RecommendationMetadataClientGetResult`
+- New struct `RecommendationMetadataClientListOptions`
+- New struct `RecommendationMetadataClientListPager`
+- New struct `RecommendationMetadataClientListResponse`
+- New struct `RecommendationMetadataClientListResult`
+- New struct `RecommendationsClientGenerateOptions`
+- New struct `RecommendationsClientGenerateResponse`
+- New struct `RecommendationsClientGenerateResult`
+- New struct `RecommendationsClientGetGenerateStatusOptions`
+- New struct `RecommendationsClientGetGenerateStatusResponse`
+- New struct `RecommendationsClientGetOptions`
+- New struct `RecommendationsClientGetResponse`
+- New struct `RecommendationsClientGetResult`
+- New struct `RecommendationsClientListOptions`
+- New struct `RecommendationsClientListPager`
+- New struct `RecommendationsClientListResponse`
+- New struct `RecommendationsClientListResult`
+- New struct `SuppressionsClientCreateOptions`
+- New struct `SuppressionsClientCreateResponse`
+- New struct `SuppressionsClientCreateResult`
+- New struct `SuppressionsClientDeleteOptions`
+- New struct `SuppressionsClientDeleteResponse`
+- New struct `SuppressionsClientGetOptions`
+- New struct `SuppressionsClientGetResponse`
+- New struct `SuppressionsClientGetResult`
+- New struct `SuppressionsClientListOptions`
+- New struct `SuppressionsClientListPager`
+- New struct `SuppressionsClientListResponse`
+- New struct `SuppressionsClientListResult`
+- New field `ID` in struct `ResourceRecommendationBase`
+- New field `Name` in struct `ResourceRecommendationBase`
+- New field `Type` in struct `ResourceRecommendationBase`
+- New field `Error` in struct `ArmErrorResponse`
+- New field `ID` in struct `ConfigData`
+- New field `Name` in struct `ConfigData`
+- New field `Type` in struct `ConfigData`
+- New field `Type` in struct `SuppressionContract`
+- New field `ID` in struct `SuppressionContract`
+- New field `Name` in struct `SuppressionContract`
+
+
 ## 0.1.0 (2021-11-16)
 
 - Initial preview release.

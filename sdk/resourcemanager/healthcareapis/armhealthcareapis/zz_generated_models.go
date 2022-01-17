@@ -26,20 +26,42 @@ type CheckNameAvailabilityParameters struct {
 
 // DicomService - The description of Dicom Service
 type DicomService struct {
-	TaggedResource
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// Dicom Service configuration.
 	Properties *DicomServiceProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DicomService.
 func (d DicomService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TaggedResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -79,7 +101,15 @@ func (d DicomServiceCollection) MarshalJSON() ([]byte, error) {
 
 // DicomServicePatchResource - Dicom Service patch properties
 type DicomServicePatchResource struct {
-	ResourceTags
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DicomServicePatchResource.
+func (d DicomServicePatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "tags", d.Tags)
+	return json.Marshal(objectMap)
 }
 
 // DicomServiceProperties - Dicom Service properties.
@@ -94,57 +124,43 @@ type DicomServiceProperties struct {
 	ServiceURL *string `json:"serviceUrl,omitempty" azure:"ro"`
 }
 
-// DicomServicesBeginCreateOrUpdateOptions contains the optional parameters for the DicomServices.BeginCreateOrUpdate method.
-type DicomServicesBeginCreateOrUpdateOptions struct {
+// DicomServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DicomServicesClient.BeginCreateOrUpdate
+// method.
+type DicomServicesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DicomServicesBeginDeleteOptions contains the optional parameters for the DicomServices.BeginDelete method.
-type DicomServicesBeginDeleteOptions struct {
+// DicomServicesClientBeginDeleteOptions contains the optional parameters for the DicomServicesClient.BeginDelete method.
+type DicomServicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DicomServicesBeginUpdateOptions contains the optional parameters for the DicomServices.BeginUpdate method.
-type DicomServicesBeginUpdateOptions struct {
+// DicomServicesClientBeginUpdateOptions contains the optional parameters for the DicomServicesClient.BeginUpdate method.
+type DicomServicesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DicomServicesGetOptions contains the optional parameters for the DicomServices.Get method.
-type DicomServicesGetOptions struct {
+// DicomServicesClientGetOptions contains the optional parameters for the DicomServicesClient.Get method.
+type DicomServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DicomServicesListByWorkspaceOptions contains the optional parameters for the DicomServices.ListByWorkspace method.
-type DicomServicesListByWorkspaceOptions struct {
+// DicomServicesClientListByWorkspaceOptions contains the optional parameters for the DicomServicesClient.ListByWorkspace
+// method.
+type DicomServicesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw string
 	// Error details
-	InnerError *ErrorDetailsInternal `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	Error *ErrorDetailsInternal `json:"error,omitempty"`
 }
 
 // ErrorDetails - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDetails struct {
-	raw string
 	// Error details
-	InnerError *ErrorDetailsInternal `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorDetails.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDetails) Error() string {
-	return e.raw
+	Error *ErrorDetailsInternal `json:"error,omitempty"`
 }
 
 // ErrorDetailsInternal - Error details.
@@ -159,33 +175,58 @@ type ErrorDetailsInternal struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// FhirDestinationsListByIotConnectorOptions contains the optional parameters for the FhirDestinations.ListByIotConnector method.
-type FhirDestinationsListByIotConnectorOptions struct {
+// FhirDestinationsClientListByIotConnectorOptions contains the optional parameters for the FhirDestinationsClient.ListByIotConnector
+// method.
+type FhirDestinationsClientListByIotConnectorOptions struct {
 	// placeholder for future optional parameters
 }
 
 // FhirService - The description of Fhir Service
 type FhirService struct {
-	ServiceManagedIdentity
-	TaggedResource
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServiceManagedIdentityIdentity `json:"identity,omitempty"`
+
 	// The kind of the service.
 	Kind *FhirServiceKind `json:"kind,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
 
 	// Fhir Service configuration.
 	Properties *FhirServiceProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FhirService.
 func (f FhirService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.TaggedResource.marshalInternal(objectMap)
-	f.ServiceManagedIdentity.marshalInternal(objectMap)
+	populate(objectMap, "etag", f.Etag)
+	populate(objectMap, "id", f.ID)
+	populate(objectMap, "identity", f.Identity)
 	populate(objectMap, "kind", f.Kind)
+	populate(objectMap, "location", f.Location)
+	populate(objectMap, "name", f.Name)
 	populate(objectMap, "properties", f.Properties)
 	populate(objectMap, "systemData", f.SystemData)
+	populate(objectMap, "tags", f.Tags)
+	populate(objectMap, "type", f.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -274,8 +315,19 @@ type FhirServiceExportConfiguration struct {
 
 // FhirServicePatchResource - FhirService patch properties
 type FhirServicePatchResource struct {
-	ResourceTags
-	ServiceManagedIdentity
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServiceManagedIdentityIdentity `json:"identity,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FhirServicePatchResource.
+func (f FhirServicePatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", f.Identity)
+	populate(objectMap, "tags", f.Tags)
+	return json.Marshal(objectMap)
 }
 
 // FhirServiceProperties - Fhir Service properties.
@@ -311,49 +363,74 @@ func (f FhirServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FhirServicesBeginCreateOrUpdateOptions contains the optional parameters for the FhirServices.BeginCreateOrUpdate method.
-type FhirServicesBeginCreateOrUpdateOptions struct {
+// FhirServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the FhirServicesClient.BeginCreateOrUpdate
+// method.
+type FhirServicesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FhirServicesBeginDeleteOptions contains the optional parameters for the FhirServices.BeginDelete method.
-type FhirServicesBeginDeleteOptions struct {
+// FhirServicesClientBeginDeleteOptions contains the optional parameters for the FhirServicesClient.BeginDelete method.
+type FhirServicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FhirServicesBeginUpdateOptions contains the optional parameters for the FhirServices.BeginUpdate method.
-type FhirServicesBeginUpdateOptions struct {
+// FhirServicesClientBeginUpdateOptions contains the optional parameters for the FhirServicesClient.BeginUpdate method.
+type FhirServicesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FhirServicesGetOptions contains the optional parameters for the FhirServices.Get method.
-type FhirServicesGetOptions struct {
+// FhirServicesClientGetOptions contains the optional parameters for the FhirServicesClient.Get method.
+type FhirServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FhirServicesListByWorkspaceOptions contains the optional parameters for the FhirServices.ListByWorkspace method.
-type FhirServicesListByWorkspaceOptions struct {
+// FhirServicesClientListByWorkspaceOptions contains the optional parameters for the FhirServicesClient.ListByWorkspace method.
+type FhirServicesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // IotConnector - IoT Connector definition.
 type IotConnector struct {
-	ServiceManagedIdentity
-	TaggedResource
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServiceManagedIdentityIdentity `json:"identity,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// IoT Connector configuration.
 	Properties *IotConnectorProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IotConnector.
 func (i IotConnector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.TaggedResource.marshalInternal(objectMap)
-	i.ServiceManagedIdentity.marshalInternal(objectMap)
+	populate(objectMap, "etag", i.Etag)
+	populate(objectMap, "id", i.ID)
+	populate(objectMap, "identity", i.Identity)
+	populate(objectMap, "location", i.Location)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
 	populate(objectMap, "systemData", i.SystemData)
+	populate(objectMap, "tags", i.Tags)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -374,25 +451,39 @@ func (i IotConnectorCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IotConnectorFhirDestinationBeginCreateOrUpdateOptions contains the optional parameters for the IotConnectorFhirDestination.BeginCreateOrUpdate method.
-type IotConnectorFhirDestinationBeginCreateOrUpdateOptions struct {
+// IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions contains the optional parameters for the IotConnectorFhirDestinationClient.BeginCreateOrUpdate
+// method.
+type IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotConnectorFhirDestinationBeginDeleteOptions contains the optional parameters for the IotConnectorFhirDestination.BeginDelete method.
-type IotConnectorFhirDestinationBeginDeleteOptions struct {
+// IotConnectorFhirDestinationClientBeginDeleteOptions contains the optional parameters for the IotConnectorFhirDestinationClient.BeginDelete
+// method.
+type IotConnectorFhirDestinationClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotConnectorFhirDestinationGetOptions contains the optional parameters for the IotConnectorFhirDestination.Get method.
-type IotConnectorFhirDestinationGetOptions struct {
+// IotConnectorFhirDestinationClientGetOptions contains the optional parameters for the IotConnectorFhirDestinationClient.Get
+// method.
+type IotConnectorFhirDestinationClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // IotConnectorPatchResource - Iot Connector patch properties
 type IotConnectorPatchResource struct {
-	ResourceTags
-	ServiceManagedIdentity
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServiceManagedIdentityIdentity `json:"identity,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type IotConnectorPatchResource.
+func (i IotConnectorPatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", i.Identity)
+	populate(objectMap, "tags", i.Tags)
+	return json.Marshal(objectMap)
 }
 
 // IotConnectorProperties - IoT Connector properties.
@@ -407,28 +498,30 @@ type IotConnectorProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// IotConnectorsBeginCreateOrUpdateOptions contains the optional parameters for the IotConnectors.BeginCreateOrUpdate method.
-type IotConnectorsBeginCreateOrUpdateOptions struct {
+// IotConnectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the IotConnectorsClient.BeginCreateOrUpdate
+// method.
+type IotConnectorsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotConnectorsBeginDeleteOptions contains the optional parameters for the IotConnectors.BeginDelete method.
-type IotConnectorsBeginDeleteOptions struct {
+// IotConnectorsClientBeginDeleteOptions contains the optional parameters for the IotConnectorsClient.BeginDelete method.
+type IotConnectorsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotConnectorsBeginUpdateOptions contains the optional parameters for the IotConnectors.BeginUpdate method.
-type IotConnectorsBeginUpdateOptions struct {
+// IotConnectorsClientBeginUpdateOptions contains the optional parameters for the IotConnectorsClient.BeginUpdate method.
+type IotConnectorsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotConnectorsGetOptions contains the optional parameters for the IotConnectors.Get method.
-type IotConnectorsGetOptions struct {
+// IotConnectorsClientGetOptions contains the optional parameters for the IotConnectorsClient.Get method.
+type IotConnectorsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotConnectorsListByWorkspaceOptions contains the optional parameters for the IotConnectors.ListByWorkspace method.
-type IotConnectorsListByWorkspaceOptions struct {
+// IotConnectorsClientListByWorkspaceOptions contains the optional parameters for the IotConnectorsClient.ListByWorkspace
+// method.
+type IotConnectorsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -452,21 +545,26 @@ type IotEventHubIngestionEndpointConfiguration struct {
 
 // IotFhirDestination - IoT Connector FHIR destination definition.
 type IotFhirDestination struct {
-	LocationBasedResource
 	// REQUIRED; IoT FHIR Destination settings.
 	Properties *IotFhirDestinationProperties `json:"properties,omitempty"`
 
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IotFhirDestination.
-func (i IotFhirDestination) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.LocationBasedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "systemData", i.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IotFhirDestinationCollection - A collection of IoT Connector FHIR destinations.
@@ -488,7 +586,6 @@ func (i IotFhirDestinationCollection) MarshalJSON() ([]byte, error) {
 
 // IotFhirDestinationProperties - IoT Connector destination properties for an Azure FHIR service.
 type IotFhirDestinationProperties struct {
-	IotDestinationProperties
 	// REQUIRED; FHIR Mappings
 	FhirMapping *IotMappingProperties `json:"fhirMapping,omitempty"`
 
@@ -497,6 +594,9 @@ type IotFhirDestinationProperties struct {
 
 	// REQUIRED; Determines how resource identity is resolved on the destination.
 	ResourceIdentityResolutionType *IotIdentityResolutionType `json:"resourceIdentityResolutionType,omitempty"`
+
+	// The provisioning state.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 }
 
 // IotMappingProperties - The mapping content.
@@ -524,21 +624,20 @@ func (l ListOperations) MarshalJSON() ([]byte, error) {
 
 // LocationBasedResource - The common properties for any location based resource, tracked or proxy.
 type LocationBasedResource struct {
-	ResourceCore
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
 	// The resource location.
 	Location *string `json:"location,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type LocationBasedResource.
-func (l LocationBasedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (l LocationBasedResource) marshalInternal(objectMap map[string]interface{}) {
-	l.ResourceCore.marshalInternal(objectMap)
-	populate(objectMap, "location", l.Location)
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // OperationDetail - Service REST API operation.
@@ -549,7 +648,8 @@ type OperationDetail struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the operation
@@ -574,6 +674,11 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
+// OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+type OperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationResultsDescription - The properties indicating the operation result of an operation on a service.
 type OperationResultsDescription struct {
 	// Additional properties of the operation result.
@@ -592,13 +697,8 @@ type OperationResultsDescription struct {
 	Status *OperationResultStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// OperationResultsGetOptions contains the optional parameters for the OperationResults.Get method.
-type OperationResultsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -610,19 +710,39 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionDescription - The Private Endpoint Connection resource.
 type PrivateEndpointConnectionDescription struct {
-	PrivateEndpointConnection
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionListResultDescription - List of private endpoint connection associated with the specified storage account
+// PrivateEndpointConnectionListResultDescription - List of private endpoint connection associated with the specified storage
+// account
 type PrivateEndpointConnectionListResultDescription struct {
 	// Array of private endpoint connections
 	Value []*PrivateEndpointConnectionDescription `json:"value,omitempty"`
@@ -647,38 +767,61 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListByServiceOptions contains the optional parameters for the PrivateEndpointConnections.ListByService method.
-type PrivateEndpointConnectionsListByServiceOptions struct {
+// PrivateEndpointConnectionsClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByService
+// method.
+type PrivateEndpointConnectionsClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceDescription - The Private Endpoint Connection resource.
 type PrivateLinkResourceDescription struct {
-	PrivateLinkResource
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResultDescription - A list of private link resources
@@ -715,17 +858,19 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByServiceOptions contains the optional parameters for the PrivateLinkResources.ListByService method.
-type PrivateLinkResourcesListByServiceOptions struct {
+// PrivateLinkResourcesClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByService
+// method.
+type PrivateLinkResourcesClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -764,20 +909,6 @@ type ResourceCore struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceCore.
-func (r ResourceCore) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r ResourceCore) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceTags - List of key value pairs that describe the resource. This will overwrite the existing tags.
 type ResourceTags struct {
 	// Resource tags.
@@ -787,12 +918,8 @@ type ResourceTags struct {
 // MarshalJSON implements the json.Marshaller interface for type ResourceTags.
 func (r ResourceTags) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r ResourceTags) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", r.Tags)
+	return json.Marshal(objectMap)
 }
 
 // ServiceAccessPolicyEntry - An access policy entry.
@@ -876,59 +1003,94 @@ type ServiceManagedIdentity struct {
 	Identity *ServiceManagedIdentityIdentity `json:"identity,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceManagedIdentity.
-func (s ServiceManagedIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (s ServiceManagedIdentity) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "identity", s.Identity)
-}
-
 // ServiceManagedIdentityIdentity - Setting indicating whether the service has a managed identity associated with it.
 type ServiceManagedIdentityIdentity struct {
 	// Type of identity being specified, currently SystemAssigned and None are allowed.
 	Type *ManagedServiceIdentityType `json:"type,omitempty"`
 }
 
-// ServicesBeginCreateOrUpdateOptions contains the optional parameters for the Services.BeginCreateOrUpdate method.
-type ServicesBeginCreateOrUpdateOptions struct {
+// ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
+type ServicesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginDeleteOptions contains the optional parameters for the Services.BeginDelete method.
-type ServicesBeginDeleteOptions struct {
+// ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
+type ServicesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginUpdateOptions contains the optional parameters for the Services.BeginUpdate method.
-type ServicesBeginUpdateOptions struct {
+// ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
+type ServicesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesCheckNameAvailabilityOptions contains the optional parameters for the Services.CheckNameAvailability method.
-type ServicesCheckNameAvailabilityOptions struct {
+// ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
+// method.
+type ServicesClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup method.
+type ServicesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ServicesDescription - The description of the service.
 type ServicesDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
 
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServicesDescription.
 func (s ServicesDescription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.ServicesResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", s.Etag)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -947,21 +1109,6 @@ func (s ServicesDescriptionListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", s.NextLink)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
-}
-
-// ServicesGetOptions contains the optional parameters for the Services.Get method.
-type ServicesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServicesListByResourceGroupOptions contains the optional parameters for the Services.ListByResourceGroup method.
-type ServicesListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServicesListOptions contains the optional parameters for the Services.List method.
-type ServicesListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ServicesNameAvailabilityInfo - The properties indicating whether a given service name is available.
@@ -1074,11 +1221,6 @@ type ServicesResource struct {
 // MarshalJSON implements the json.Marshaller interface for type ServicesResource.
 func (s ServicesResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (s ServicesResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", s.Etag)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "identity", s.Identity)
@@ -1087,6 +1229,7 @@ func (s ServicesResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "tags", s.Tags)
 	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
 }
 
 // ServicesResourceIdentity - Setting indicating whether the service has a managed identity associated with it.
@@ -1171,31 +1314,75 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TaggedResource - The common properties of tracked resources in the service.
 type TaggedResource struct {
-	LocationBasedResource
-	ResourceTags
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-func (t TaggedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.ResourceTags.marshalInternal(objectMap)
-	t.LocationBasedResource.marshalInternal(objectMap)
+// MarshalJSON implements the json.Marshaller interface for type TaggedResource.
+func (t TaggedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", t.Etag)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // Workspace resource.
 type Workspace struct {
-	TaggedResource
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// Workspaces resource specific properties.
 	Properties *WorkspaceProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Workspace.
 func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.TaggedResource.marshalInternal(objectMap)
+	populate(objectMap, "etag", w.Etag)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "systemData", w.SystemData)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1218,7 +1405,15 @@ func (w WorkspaceList) MarshalJSON() ([]byte, error) {
 
 // WorkspacePatchResource - Workspace patch properties
 type WorkspacePatchResource struct {
-	ResourceTags
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type WorkspacePatchResource.
+func (w WorkspacePatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "tags", w.Tags)
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceProperties - Workspaces resource specific properties.
@@ -1227,33 +1422,36 @@ type WorkspaceProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// WorkspacesBeginCreateOrUpdateOptions contains the optional parameters for the Workspaces.BeginCreateOrUpdate method.
-type WorkspacesBeginCreateOrUpdateOptions struct {
+// WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
+// method.
+type WorkspacesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesBeginDeleteOptions contains the optional parameters for the Workspaces.BeginDelete method.
-type WorkspacesBeginDeleteOptions struct {
+// WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+type WorkspacesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesBeginUpdateOptions contains the optional parameters for the Workspaces.BeginUpdate method.
-type WorkspacesBeginUpdateOptions struct {
+// WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+type WorkspacesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesGetOptions contains the optional parameters for the Workspaces.Get method.
-type WorkspacesGetOptions struct {
+// WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+type WorkspacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesListByResourceGroupOptions contains the optional parameters for the Workspaces.ListByResourceGroup method.
-type WorkspacesListByResourceGroupOptions struct {
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// method.
+type WorkspacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesListBySubscriptionOptions contains the optional parameters for the Workspaces.ListBySubscription method.
-type WorkspacesListBySubscriptionOptions struct {
+// WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.ListBySubscription
+// method.
+type WorkspacesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

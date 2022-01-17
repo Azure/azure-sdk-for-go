@@ -15,11 +15,12 @@ import (
 	"time"
 )
 
-// BitLockerKeysListOptions contains the optional parameters for the BitLockerKeys.List method.
-type BitLockerKeysListOptions struct {
+// BitLockerKeysClientListOptions contains the optional parameters for the BitLockerKeysClient.List method.
+type BitLockerKeysClientListOptions struct {
 }
 
-// DeliveryPackageInformation - Contains information about the delivery package being shipped by the customer to the Microsoft data center.
+// DeliveryPackageInformation - Contains information about the delivery package being shipped by the customer to the Microsoft
+// data center.
 type DeliveryPackageInformation struct {
 	// REQUIRED; The name of the carrier that is used to ship the import or export drives.
 	CarrierName *string `json:"carrierName,omitempty"`
@@ -51,7 +52,8 @@ type DriveStatus struct {
 	// Bytes successfully transferred for the drive.
 	BytesSucceeded *int64 `json:"bytesSucceeded,omitempty"`
 
-	// Detailed status about the data transfer process. This field is not returned in the response until the drive is in the Transferring state.
+	// Detailed status about the data transfer process. This field is not returned in the response until the drive is in the Transferring
+	// state.
 	CopyStatus *string `json:"copyStatus,omitempty"`
 
 	// The drive header hash value.
@@ -95,17 +97,9 @@ type EncryptionKeyDetails struct {
 }
 
 // ErrorResponse - Response when errors occurred
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Describes the error information.
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
 // ErrorResponseError - Describes the error information.
@@ -148,14 +142,14 @@ type ErrorResponseErrorDetailsItem struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// Export - A property containing information about the blobs to be exported for an export job. This property is required for export jobs, but must not
-// be specified for import jobs.
+// Export - A property containing information about the blobs to be exported for an export job. This property is required
+// for export jobs, but must not be specified for import jobs.
 type Export struct {
 	// A list of the blobs to be exported.
 	BlobList *ExportBlobList `json:"blobList,omitempty"`
 
-	// The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning with the container name. If
-	// the blob is in root container, the URI must begin
+	// The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning
+	// with the container name. If the blob is in root container, the URI must begin
 	// with $root.
 	BlobListBlobPath *string `json:"blobListBlobPath,omitempty"`
 }
@@ -216,17 +210,19 @@ type JobDetails struct {
 	// The virtual blob directory to which the copy logs and backups of drive manifest files (if enabled) will be stored.
 	DiagnosticsPath *string `json:"diagnosticsPath,omitempty"`
 
-	// List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is not specified for export jobs.
+	// List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is not specified
+	// for export jobs.
 	DriveList []*DriveStatus `json:"driveList,omitempty"`
 
 	// Contains information about the encryption key.
 	EncryptionKey *EncryptionKeyDetails `json:"encryptionKey,omitempty"`
 
-	// A property containing information about the blobs to be exported for an export job. This property is included for export jobs only.
+	// A property containing information about the blobs to be exported for an export job. This property is included for export
+	// jobs only.
 	Export *Export `json:"export,omitempty"`
 
-	// A blob path that points to a block blob containing a list of blob names that were not exported due to insufficient drive space. If all blobs were exported
-	// successfully, then this element is not
+	// A blob path that points to a block blob containing a list of blob names that were not exported due to insufficient drive
+	// space. If all blobs were exported successfully, then this element is not
 	// included in the response.
 	IncompleteBlobListURI *string `json:"incompleteBlobListUri,omitempty"`
 
@@ -245,8 +241,8 @@ type JobDetails struct {
 	// Specifies the return address information for the job.
 	ReturnAddress *ReturnAddress `json:"returnAddress,omitempty"`
 
-	// Contains information about the package being shipped from the Microsoft data center to the customer to return the drives. The format is the same as the
-	// deliveryPackage property above. This property is
+	// Contains information about the package being shipped from the Microsoft data center to the customer to return the drives.
+	// The format is the same as the deliveryPackage property above. This property is
 	// not included if the drives have not yet been returned.
 	ReturnPackage *PackageInformation `json:"returnPackage,omitempty"`
 
@@ -314,40 +310,40 @@ type JobResponse struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// JobsCreateOptions contains the optional parameters for the Jobs.Create method.
-type JobsCreateOptions struct {
+// JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
+type JobsClientCreateOptions struct {
 	// The tenant ID of the client making the request.
 	ClientTenantID *string
 }
 
-// JobsDeleteOptions contains the optional parameters for the Jobs.Delete method.
-type JobsDeleteOptions struct {
+// JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
+type JobsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsGetOptions contains the optional parameters for the Jobs.Get method.
-type JobsGetOptions struct {
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsListByResourceGroupOptions contains the optional parameters for the Jobs.ListByResourceGroup method.
-type JobsListByResourceGroupOptions struct {
+// JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup method.
+type JobsClientListByResourceGroupOptions struct {
 	// Can be used to restrict the results to certain conditions.
 	Filter *string
 	// An integer value that specifies how many jobs at most should be returned. The value cannot exceed 100.
 	Top *int64
 }
 
-// JobsListBySubscriptionOptions contains the optional parameters for the Jobs.ListBySubscription method.
-type JobsListBySubscriptionOptions struct {
+// JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.ListBySubscription method.
+type JobsClientListBySubscriptionOptions struct {
 	// Can be used to restrict the results to certain conditions.
 	Filter *string
 	// An integer value that specifies how many jobs at most should be returned. The value cannot exceed 100.
 	Top *int64
 }
 
-// JobsUpdateOptions contains the optional parameters for the Jobs.Update method.
-type JobsUpdateOptions struct {
+// JobsClientUpdateOptions contains the optional parameters for the JobsClient.Update method.
+type JobsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -401,8 +397,8 @@ type LocationProperties struct {
 	// Additional shipping information for customer, specific to datacenter to which customer should send their disks.
 	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty"`
 
-	// A list of location IDs that should be used to ship shipping drives to for jobs created against the current location. If the current location is active,
-	// it will be part of the list. If it is
+	// A list of location IDs that should be used to ship shipping drives to for jobs created against the current location. If
+	// the current location is active, it will be part of the list. If it is
 	// temporarily closed due to maintenance, this list may contain other locations.
 	AlternateLocations []*string `json:"alternateLocations,omitempty"`
 
@@ -451,13 +447,13 @@ func (l LocationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LocationsGetOptions contains the optional parameters for the Locations.Get method.
-type LocationsGetOptions struct {
+// LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
+type LocationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationsListOptions contains the optional parameters for the Locations.List method.
-type LocationsListOptions struct {
+// LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
+type LocationsClientListOptions struct {
 }
 
 // LocationsResponse - Locations response
@@ -497,8 +493,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 }
 
 // PackageInformation - Contains information about the package being shipped by the customer to the Microsoft data center.
@@ -705,8 +701,8 @@ type UpdateJobParametersProperties struct {
 	// Specifies the return carrier and customer's account with the carrier.
 	ReturnShipping *ReturnShipping `json:"returnShipping,omitempty"`
 
-	// If specified, the value must be Shipping, which tells the Import/Export service that the package for the job has been shipped. The ReturnAddress and
-	// DeliveryPackage properties must have been set
+	// If specified, the value must be Shipping, which tells the Import/Export service that the package for the job has been shipped.
+	// The ReturnAddress and DeliveryPackage properties must have been set
 	// either in this request or in a previous request, otherwise the request will fail.
 	State *string `json:"state,omitempty"`
 }

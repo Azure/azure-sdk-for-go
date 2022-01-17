@@ -31,12 +31,16 @@ func ExampleVolumesClient_List() {
 		"<account-name>",
 		"<pool-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Volume.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExampleVolumesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Volume.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VolumesClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Volumes_CreateOrUpdate.json
@@ -79,7 +83,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 			Properties: &armnetapp.VolumeProperties{
 				CreationToken:       to.StringPtr("<creation-token>"),
 				EncryptionKeySource: to.StringPtr("<encryption-key-source>"),
-				ServiceLevel:        armnetapp.ServiceLevelPremium.ToPtr(),
+				ServiceLevel:        armnetapp.ServiceLevel("Premium").ToPtr(),
 				SubnetID:            to.StringPtr("<subnet-id>"),
 				ThroughputMibps:     to.Float32Ptr(128),
 				UsageThreshold:      to.Int64Ptr(107374182400),
@@ -93,7 +97,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Volume.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VolumesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Volumes_Update.json
@@ -118,7 +122,7 @@ func ExampleVolumesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Volume.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VolumesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Volumes_Delete.json
@@ -183,7 +187,7 @@ func ExampleVolumesClient_BeginBreakReplication() {
 		"<account-name>",
 		"<pool-name>",
 		"<volume-name>",
-		&armnetapp.VolumesBeginBreakReplicationOptions{Body: &armnetapp.BreakReplicationRequest{
+		&armnetapp.VolumesClientBeginBreakReplicationOptions{Body: &armnetapp.BreakReplicationRequest{
 			ForceBreakReplication: to.BoolPtr(false),
 		},
 		})
@@ -204,7 +208,7 @@ func ExampleVolumesClient_ReplicationStatus() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
-	_, err = client.ReplicationStatus(ctx,
+	res, err := client.ReplicationStatus(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<pool-name>",
@@ -213,6 +217,7 @@ func ExampleVolumesClient_ReplicationStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VolumesClientReplicationStatusResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Volumes_ResyncReplication.json

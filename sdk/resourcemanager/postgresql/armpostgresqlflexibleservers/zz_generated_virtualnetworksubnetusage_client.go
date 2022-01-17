@@ -11,7 +11,6 @@ package armpostgresqlflexibleservers
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // VirtualNetworkSubnetUsageClient contains the methods for the VirtualNetworkSubnetUsage group.
 // Don't use this type directly, use NewVirtualNetworkSubnetUsageClient() instead.
 type VirtualNetworkSubnetUsageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkSubnetUsageClient creates a new instance of VirtualNetworkSubnetUsageClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkSubnetUsageClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualNetworkSubnetUsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualNetworkSubnetUsageClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Execute - Get virtual network subnet usage for a given vNet resource id.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageExecuteOptions) (VirtualNetworkSubnetUsageExecuteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The name of the location.
+// parameters - The required parameters for creating or updating a server.
+// options - VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute
+// method.
+func (client *VirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageClientExecuteOptions) (VirtualNetworkSubnetUsageClientExecuteResponse, error) {
 	req, err := client.executeCreateRequest(ctx, locationName, parameters, options)
 	if err != nil {
-		return VirtualNetworkSubnetUsageExecuteResponse{}, err
+		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkSubnetUsageExecuteResponse{}, err
+		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkSubnetUsageExecuteResponse{}, client.executeHandleError(resp)
+		return VirtualNetworkSubnetUsageClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageExecuteOptions) (*policy.Request, error) {
+func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkVirtualNetworkSubnetUsage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,23 +93,10 @@ func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *VirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (VirtualNetworkSubnetUsageExecuteResponse, error) {
-	result := VirtualNetworkSubnetUsageExecuteResponse{RawResponse: resp}
+func (client *VirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (VirtualNetworkSubnetUsageClientExecuteResponse, error) {
+	result := VirtualNetworkSubnetUsageClientExecuteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
-		return VirtualNetworkSubnetUsageExecuteResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
 	return result, nil
-}
-
-// executeHandleError handles the Execute error response.
-func (client *VirtualNetworkSubnetUsageClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

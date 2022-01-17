@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeeringService.json
-func ExamplePeeringServicesClient_Get() {
+func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",
@@ -32,23 +32,23 @@ func ExamplePeeringServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeeringService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreatePeeringService.json
-func ExamplePeeringServicesClient_CreateOrUpdate() {
+func ExampleServicesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",
-		armpeering.PeeringService{
+		armpeering.Service{
 			Location: to.StringPtr("<location>"),
-			Properties: &armpeering.PeeringServiceProperties{
+			Properties: &armpeering.ServiceProperties{
 				PeeringServiceLocation: to.StringPtr("<peering-service-location>"),
 				PeeringServiceProvider: to.StringPtr("<peering-service-provider>"),
 			},
@@ -57,17 +57,17 @@ func ExamplePeeringServicesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeeringService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeeringService.json
-func ExamplePeeringServicesClient_Delete() {
+func ExampleServicesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",
@@ -78,13 +78,13 @@ func ExamplePeeringServicesClient_Delete() {
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/UpdatePeeringServiceTags.json
-func ExamplePeeringServicesClient_Update() {
+func ExampleServicesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<peering-service-name>",
@@ -98,44 +98,52 @@ func ExamplePeeringServicesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PeeringService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringServicesByResourceGroup.json
-func ExamplePeeringServicesClient_ListByResourceGroup() {
+func ExampleServicesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PeeringService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringServicesBySubscription.json
-func ExamplePeeringServicesClient_ListBySubscription() {
+func ExampleServicesClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringServicesClient("<subscription-id>", cred, nil)
+	client := armpeering.NewServicesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PeeringService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

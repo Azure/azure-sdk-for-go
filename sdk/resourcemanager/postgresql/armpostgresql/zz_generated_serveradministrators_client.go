@@ -11,7 +11,6 @@ package armpostgresql
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // ServerAdministratorsClient contains the methods for the ServerAdministrators group.
 // Don't use this type directly, use NewServerAdministratorsClient() instead.
 type ServerAdministratorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerAdministratorsClient creates a new instance of ServerAdministratorsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAdministratorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerAdministratorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerAdministratorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite the existing administrator.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsBeginCreateOrUpdateOptions) (ServerAdministratorsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite
+// the existing administrator.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// properties - The required parameters for creating or updating an AAD server administrator.
+// options - ServerAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAdministratorsClient.BeginCreateOrUpdate
+// method.
+func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (ServerAdministratorsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, properties, options)
 	if err != nil {
-		return ServerAdministratorsCreateOrUpdatePollerResponse{}, err
+		return ServerAdministratorsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerAdministratorsCreateOrUpdatePollerResponse{
+	result := ServerAdministratorsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerAdministratorsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerAdministratorsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerAdministratorsCreateOrUpdatePollerResponse{}, err
+		return ServerAdministratorsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerAdministratorsCreateOrUpdatePoller{
+	result.Poller = &ServerAdministratorsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite the existing administrator.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite
+// the existing administrator.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, properties, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *ServerAdministratorsClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +108,7 @@ func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +119,33 @@ func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx contex
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerAdministratorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes server active directory administrator.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsBeginDeleteOptions) (ServerAdministratorsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// options - ServerAdministratorsClientBeginDeleteOptions contains the optional parameters for the ServerAdministratorsClient.BeginDelete
+// method.
+func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (ServerAdministratorsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerAdministratorsDeletePollerResponse{}, err
+		return ServerAdministratorsClientDeletePollerResponse{}, err
 	}
-	result := ServerAdministratorsDeletePollerResponse{
+	result := ServerAdministratorsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerAdministratorsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerAdministratorsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServerAdministratorsDeletePollerResponse{}, err
+		return ServerAdministratorsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServerAdministratorsDeletePoller{
+	result.Poller = &ServerAdministratorsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes server active directory administrator.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +155,13 @@ func (client *ServerAdministratorsClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +175,7 @@ func (client *ServerAdministratorsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +186,29 @@ func (client *ServerAdministratorsClient) deleteCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServerAdministratorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about a AAD server administrator.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerAdministratorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsGetOptions) (ServerAdministratorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// options - ServerAdministratorsClientGetOptions contains the optional parameters for the ServerAdministratorsClient.Get
+// method.
+func (client *ServerAdministratorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientGetOptions) (ServerAdministratorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerAdministratorsGetResponse{}, err
+		return ServerAdministratorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAdministratorsGetResponse{}, err
+		return ServerAdministratorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAdministratorsGetResponse{}, client.getHandleError(resp)
+		return ServerAdministratorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsGetOptions) (*policy.Request, error) {
+func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators/activeDirectory"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +222,7 @@ func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,46 +234,37 @@ func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response) (ServerAdministratorsGetResponse, error) {
-	result := ServerAdministratorsGetResponse{RawResponse: resp}
+func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response) (ServerAdministratorsClientGetResponse, error) {
+	result := ServerAdministratorsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAdministratorResource); err != nil {
-		return ServerAdministratorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAdministratorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerAdministratorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns a list of server Administrators.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerAdministratorsClient) List(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsListOptions) (ServerAdministratorsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// options - ServerAdministratorsClientListOptions contains the optional parameters for the ServerAdministratorsClient.List
+// method.
+func (client *ServerAdministratorsClient) List(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) (ServerAdministratorsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerAdministratorsListResponse{}, err
+		return ServerAdministratorsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAdministratorsListResponse{}, err
+		return ServerAdministratorsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAdministratorsListResponse{}, client.listHandleError(resp)
+		return ServerAdministratorsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsListOptions) (*policy.Request, error) {
+func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/administrators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -291,7 +278,7 @@ func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,23 +290,10 @@ func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *ServerAdministratorsClient) listHandleResponse(resp *http.Response) (ServerAdministratorsListResponse, error) {
-	result := ServerAdministratorsListResponse{RawResponse: resp}
+func (client *ServerAdministratorsClient) listHandleResponse(resp *http.Response) (ServerAdministratorsClientListResponse, error) {
+	result := ServerAdministratorsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAdministratorResourceListResult); err != nil {
-		return ServerAdministratorsListResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAdministratorsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ServerAdministratorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

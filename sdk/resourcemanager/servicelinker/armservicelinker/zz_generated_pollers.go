@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// LinkerCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type LinkerCreateOrUpdatePoller struct {
+// LinkerClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type LinkerClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LinkerCreateOrUpdatePoller) Done() bool {
+func (p *LinkerClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *LinkerCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LinkerCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LinkerClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LinkerCreateOrUpdateResponse will be returned.
-func (p *LinkerCreateOrUpdatePoller) FinalResponse(ctx context.Context) (LinkerCreateOrUpdateResponse, error) {
-	respType := LinkerCreateOrUpdateResponse{}
+// If the final GET succeeded then the final LinkerClientCreateOrUpdateResponse will be returned.
+func (p *LinkerClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (LinkerClientCreateOrUpdateResponse, error) {
+	respType := LinkerClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.LinkerResource)
 	if err != nil {
-		return LinkerCreateOrUpdateResponse{}, err
+		return LinkerClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *LinkerCreateOrUpdatePoller) FinalResponse(ctx context.Context) (LinkerC
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LinkerCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *LinkerClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// LinkerDeletePoller provides polling facilities until the operation reaches a terminal state.
-type LinkerDeletePoller struct {
+// LinkerClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type LinkerClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LinkerDeletePoller) Done() bool {
+func (p *LinkerClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *LinkerDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LinkerDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LinkerClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LinkerDeleteResponse will be returned.
-func (p *LinkerDeletePoller) FinalResponse(ctx context.Context) (LinkerDeleteResponse, error) {
-	respType := LinkerDeleteResponse{}
+// If the final GET succeeded then the final LinkerClientDeleteResponse will be returned.
+func (p *LinkerClientDeletePoller) FinalResponse(ctx context.Context) (LinkerClientDeleteResponse, error) {
+	respType := LinkerClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return LinkerDeleteResponse{}, err
+		return LinkerClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *LinkerDeletePoller) FinalResponse(ctx context.Context) (LinkerDeleteRes
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LinkerDeletePoller) ResumeToken() (string, error) {
+func (p *LinkerClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// LinkerUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type LinkerUpdatePoller struct {
+// LinkerClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type LinkerClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LinkerUpdatePoller) Done() bool {
+func (p *LinkerClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *LinkerUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LinkerUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LinkerClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LinkerUpdateResponse will be returned.
-func (p *LinkerUpdatePoller) FinalResponse(ctx context.Context) (LinkerUpdateResponse, error) {
-	respType := LinkerUpdateResponse{}
+// If the final GET succeeded then the final LinkerClientUpdateResponse will be returned.
+func (p *LinkerClientUpdatePoller) FinalResponse(ctx context.Context) (LinkerClientUpdateResponse, error) {
+	respType := LinkerClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.LinkerResource)
 	if err != nil {
-		return LinkerUpdateResponse{}, err
+		return LinkerClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,17 +139,17 @@ func (p *LinkerUpdatePoller) FinalResponse(ctx context.Context) (LinkerUpdateRes
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LinkerUpdatePoller) ResumeToken() (string, error) {
+func (p *LinkerClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// LinkerValidatePoller provides polling facilities until the operation reaches a terminal state.
-type LinkerValidatePoller struct {
+// LinkerClientValidatePoller provides polling facilities until the operation reaches a terminal state.
+type LinkerClientValidatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *LinkerValidatePoller) Done() bool {
+func (p *LinkerClientValidatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -163,18 +163,18 @@ func (p *LinkerValidatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *LinkerValidatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *LinkerClientValidatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final LinkerValidateResponse will be returned.
-func (p *LinkerValidatePoller) FinalResponse(ctx context.Context) (LinkerValidateResponse, error) {
-	respType := LinkerValidateResponse{}
+// If the final GET succeeded then the final LinkerClientValidateResponse will be returned.
+func (p *LinkerClientValidatePoller) FinalResponse(ctx context.Context) (LinkerClientValidateResponse, error) {
+	respType := LinkerClientValidateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ValidateResult)
 	if err != nil {
-		return LinkerValidateResponse{}, err
+		return LinkerClientValidateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -182,6 +182,6 @@ func (p *LinkerValidatePoller) FinalResponse(ctx context.Context) (LinkerValidat
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *LinkerValidatePoller) ResumeToken() (string, error) {
+func (p *LinkerClientValidatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

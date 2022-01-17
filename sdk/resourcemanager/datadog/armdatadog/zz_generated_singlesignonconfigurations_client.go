@@ -11,7 +11,6 @@ package armdatadog
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // SingleSignOnConfigurationsClient contains the methods for the SingleSignOnConfigurations group.
 // Don't use this type directly, use NewSingleSignOnConfigurationsClient() instead.
 type SingleSignOnConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSingleSignOnConfigurationsClient creates a new instance of SingleSignOnConfigurationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSingleSignOnConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SingleSignOnConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SingleSignOnConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SingleSignOnConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Configures single-sign-on for this resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SingleSignOnConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsBeginCreateOrUpdateOptions) (SingleSignOnConfigurationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// configurationName - Configuration name
+// options - SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnConfigurationsClient.BeginCreateOrUpdate
+// method.
+func (client *SingleSignOnConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions) (SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
-		return SingleSignOnConfigurationsCreateOrUpdatePollerResponse{}, err
+		return SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := SingleSignOnConfigurationsCreateOrUpdatePollerResponse{
+	result := SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SingleSignOnConfigurationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("SingleSignOnConfigurationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return SingleSignOnConfigurationsCreateOrUpdatePollerResponse{}, err
+		return SingleSignOnConfigurationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &SingleSignOnConfigurationsCreateOrUpdatePoller{
+	result.Poller = &SingleSignOnConfigurationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Configures single-sign-on for this resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SingleSignOnConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SingleSignOnConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *SingleSignOnConfigurationsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,38 +124,30 @@ func (client *SingleSignOnConfigurationsClient) createOrUpdateCreateRequest(ctx 
 	return req, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SingleSignOnConfigurationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the datadog single sign-on resource for the given Monitor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SingleSignOnConfigurationsClient) Get(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsGetOptions) (SingleSignOnConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// configurationName - Configuration name
+// options - SingleSignOnConfigurationsClientGetOptions contains the optional parameters for the SingleSignOnConfigurationsClient.Get
+// method.
+func (client *SingleSignOnConfigurationsClient) Get(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientGetOptions) (SingleSignOnConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
-		return SingleSignOnConfigurationsGetResponse{}, err
+		return SingleSignOnConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SingleSignOnConfigurationsGetResponse{}, err
+		return SingleSignOnConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SingleSignOnConfigurationsGetResponse{}, client.getHandleError(resp)
+		return SingleSignOnConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsGetOptions) (*policy.Request, error) {
+func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -161,7 +165,7 @@ func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,43 +177,34 @@ func (client *SingleSignOnConfigurationsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *SingleSignOnConfigurationsClient) getHandleResponse(resp *http.Response) (SingleSignOnConfigurationsGetResponse, error) {
-	result := SingleSignOnConfigurationsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatadogSingleSignOnResource); err != nil {
-		return SingleSignOnConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *SingleSignOnConfigurationsClient) getHandleResponse(resp *http.Response) (SingleSignOnConfigurationsClientGetResponse, error) {
+	result := SingleSignOnConfigurationsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SingleSignOnResource); err != nil {
+		return SingleSignOnConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SingleSignOnConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List the single sign-on configurations for a given monitor resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SingleSignOnConfigurationsClient) List(resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsListOptions) *SingleSignOnConfigurationsListPager {
-	return &SingleSignOnConfigurationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// options - SingleSignOnConfigurationsClientListOptions contains the optional parameters for the SingleSignOnConfigurationsClient.List
+// method.
+func (client *SingleSignOnConfigurationsClient) List(resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsClientListOptions) *SingleSignOnConfigurationsClientListPager {
+	return &SingleSignOnConfigurationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
 		},
-		advancer: func(ctx context.Context, resp SingleSignOnConfigurationsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatadogSingleSignOnResourceListResponse.NextLink)
+		advancer: func(ctx context.Context, resp SingleSignOnConfigurationsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SingleSignOnResourceListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsListOptions) (*policy.Request, error) {
+func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *SingleSignOnConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -223,7 +218,7 @@ func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,23 +230,10 @@ func (client *SingleSignOnConfigurationsClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *SingleSignOnConfigurationsClient) listHandleResponse(resp *http.Response) (SingleSignOnConfigurationsListResponse, error) {
-	result := SingleSignOnConfigurationsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatadogSingleSignOnResourceListResponse); err != nil {
-		return SingleSignOnConfigurationsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *SingleSignOnConfigurationsClient) listHandleResponse(resp *http.Response) (SingleSignOnConfigurationsClientListResponse, error) {
+	result := SingleSignOnConfigurationsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SingleSignOnResourceListResponse); err != nil {
+		return SingleSignOnConfigurationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SingleSignOnConfigurationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

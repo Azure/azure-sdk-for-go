@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/TriggerBackup_Post.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/TriggerBackup_Post.json
 func ExampleBackupsClient_Trigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,9 +33,7 @@ func ExampleBackupsClient_Trigger() {
 		"<protected-item-name>",
 		armrecoveryservicesbackup.BackupRequestResource{
 			Properties: &armrecoveryservicesbackup.IaasVMBackupRequest{
-				BackupRequest: armrecoveryservicesbackup.BackupRequest{
-					ObjectType: to.StringPtr("<object-type>"),
-				},
+				ObjectType: to.StringPtr("<object-type>"),
 			},
 		},
 		nil)

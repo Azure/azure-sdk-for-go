@@ -28,16 +28,20 @@ func ExampleVirtualMachinesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>",
 		"<referer>", cred, nil)
-	pager := client.ListBySubscription(&armvmwarecloudsimple.VirtualMachinesListBySubscriptionOptions{Filter: nil,
+	pager := client.ListBySubscription(&armvmwarecloudsimple.VirtualMachinesClientListBySubscriptionOptions{Filter: nil,
 		Top:       nil,
 		SkipToken: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VirtualMachine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,16 +56,20 @@ func ExampleVirtualMachinesClient_ListByResourceGroup() {
 	client := armvmwarecloudsimple.NewVirtualMachinesClient("<subscription-id>",
 		"<referer>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armvmwarecloudsimple.VirtualMachinesListByResourceGroupOptions{Filter: nil,
+		&armvmwarecloudsimple.VirtualMachinesClientListByResourceGroupOptions{Filter: nil,
 			Top:       nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("VirtualMachine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -82,7 +90,7 @@ func ExampleVirtualMachinesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualMachine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachinesClientGetResult)
 }
 
 // x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/CreateVirtualMachine.json
@@ -133,7 +141,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualMachine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachinesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/DeleteVirtualMachine.json
@@ -183,7 +191,7 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VirtualMachine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachinesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/StartVirtualMachine.json
@@ -220,7 +228,7 @@ func ExampleVirtualMachinesClient_BeginStop() {
 	poller, err := client.BeginStop(ctx,
 		"<resource-group-name>",
 		"<virtual-machine-name>",
-		&armvmwarecloudsimple.VirtualMachinesBeginStopOptions{Mode: nil,
+		&armvmwarecloudsimple.VirtualMachinesClientBeginStopOptions{Mode: nil,
 			M: &armvmwarecloudsimple.VirtualMachineStopMode{},
 		})
 	if err != nil {

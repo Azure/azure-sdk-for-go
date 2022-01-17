@@ -27,14 +27,14 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewPipelineRunsClient("<subscription-id>", cred, nil)
-	_, err = client.QueryByFactory(ctx,
+	res, err := client.QueryByFactory(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.RunFilterParameters{
 			Filters: []*armdatafactory.RunQueryFilter{
 				{
-					Operand:  armdatafactory.RunQueryFilterOperandPipelineName.ToPtr(),
-					Operator: armdatafactory.RunQueryFilterOperatorEquals.ToPtr(),
+					Operand:  armdatafactory.RunQueryFilterOperand("PipelineName").ToPtr(),
+					Operator: armdatafactory.RunQueryFilterOperator("Equals").ToPtr(),
 					Values: []*string{
 						to.StringPtr("examplePipeline")},
 				}},
@@ -45,6 +45,7 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PipelineRunsClientQueryByFactoryResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Get.json
@@ -55,7 +56,7 @@ func ExamplePipelineRunsClient_Get() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewPipelineRunsClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<run-id>",
@@ -63,6 +64,7 @@ func ExamplePipelineRunsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PipelineRunsClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Cancel.json
@@ -77,7 +79,7 @@ func ExamplePipelineRunsClient_Cancel() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<run-id>",
-		&armdatafactory.PipelineRunsCancelOptions{IsRecursive: nil})
+		&armdatafactory.PipelineRunsClientCancelOptions{IsRecursive: nil})
 	if err != nil {
 		log.Fatal(err)
 	}

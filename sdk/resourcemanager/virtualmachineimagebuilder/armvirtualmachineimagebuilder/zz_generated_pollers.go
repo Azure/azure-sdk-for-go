@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// VirtualMachineImageTemplatesCancelPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineImageTemplatesCancelPoller struct {
+// VirtualMachineImageTemplatesClientCancelPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineImageTemplatesClientCancelPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VirtualMachineImageTemplatesCancelPoller) Done() bool {
+func (p *VirtualMachineImageTemplatesClientCancelPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *VirtualMachineImageTemplatesCancelPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VirtualMachineImageTemplatesCancelPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VirtualMachineImageTemplatesClientCancelPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VirtualMachineImageTemplatesCancelResponse will be returned.
-func (p *VirtualMachineImageTemplatesCancelPoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesCancelResponse, error) {
-	respType := VirtualMachineImageTemplatesCancelResponse{}
+// If the final GET succeeded then the final VirtualMachineImageTemplatesClientCancelResponse will be returned.
+func (p *VirtualMachineImageTemplatesClientCancelPoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesClientCancelResponse, error) {
+	respType := VirtualMachineImageTemplatesClientCancelResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineImageTemplatesCancelResponse{}, err
+		return VirtualMachineImageTemplatesClientCancelResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *VirtualMachineImageTemplatesCancelPoller) FinalResponse(ctx context.Con
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VirtualMachineImageTemplatesCancelPoller) ResumeToken() (string, error) {
+func (p *VirtualMachineImageTemplatesClientCancelPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// VirtualMachineImageTemplatesCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineImageTemplatesCreateOrUpdatePoller struct {
+// VirtualMachineImageTemplatesClientCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineImageTemplatesClientCreateOrUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VirtualMachineImageTemplatesCreateOrUpdatePoller) Done() bool {
+func (p *VirtualMachineImageTemplatesClientCreateOrUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *VirtualMachineImageTemplatesCreateOrUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VirtualMachineImageTemplatesCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VirtualMachineImageTemplatesClientCreateOrUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VirtualMachineImageTemplatesCreateOrUpdateResponse will be returned.
-func (p *VirtualMachineImageTemplatesCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesCreateOrUpdateResponse, error) {
-	respType := VirtualMachineImageTemplatesCreateOrUpdateResponse{}
+// If the final GET succeeded then the final VirtualMachineImageTemplatesClientCreateOrUpdateResponse will be returned.
+func (p *VirtualMachineImageTemplatesClientCreateOrUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesClientCreateOrUpdateResponse, error) {
+	respType := VirtualMachineImageTemplatesClientCreateOrUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ImageTemplate)
 	if err != nil {
-		return VirtualMachineImageTemplatesCreateOrUpdateResponse{}, err
+		return VirtualMachineImageTemplatesClientCreateOrUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,17 +96,17 @@ func (p *VirtualMachineImageTemplatesCreateOrUpdatePoller) FinalResponse(ctx con
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VirtualMachineImageTemplatesCreateOrUpdatePoller) ResumeToken() (string, error) {
+func (p *VirtualMachineImageTemplatesClientCreateOrUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// VirtualMachineImageTemplatesDeletePoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineImageTemplatesDeletePoller struct {
+// VirtualMachineImageTemplatesClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineImageTemplatesClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VirtualMachineImageTemplatesDeletePoller) Done() bool {
+func (p *VirtualMachineImageTemplatesClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -120,18 +120,18 @@ func (p *VirtualMachineImageTemplatesDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VirtualMachineImageTemplatesDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VirtualMachineImageTemplatesClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VirtualMachineImageTemplatesDeleteResponse will be returned.
-func (p *VirtualMachineImageTemplatesDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesDeleteResponse, error) {
-	respType := VirtualMachineImageTemplatesDeleteResponse{}
+// If the final GET succeeded then the final VirtualMachineImageTemplatesClientDeleteResponse will be returned.
+func (p *VirtualMachineImageTemplatesClientDeletePoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesClientDeleteResponse, error) {
+	respType := VirtualMachineImageTemplatesClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineImageTemplatesDeleteResponse{}, err
+		return VirtualMachineImageTemplatesClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -139,17 +139,17 @@ func (p *VirtualMachineImageTemplatesDeletePoller) FinalResponse(ctx context.Con
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VirtualMachineImageTemplatesDeletePoller) ResumeToken() (string, error) {
+func (p *VirtualMachineImageTemplatesClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// VirtualMachineImageTemplatesRunPoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineImageTemplatesRunPoller struct {
+// VirtualMachineImageTemplatesClientRunPoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineImageTemplatesClientRunPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VirtualMachineImageTemplatesRunPoller) Done() bool {
+func (p *VirtualMachineImageTemplatesClientRunPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -163,18 +163,18 @@ func (p *VirtualMachineImageTemplatesRunPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VirtualMachineImageTemplatesRunPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VirtualMachineImageTemplatesClientRunPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VirtualMachineImageTemplatesRunResponse will be returned.
-func (p *VirtualMachineImageTemplatesRunPoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesRunResponse, error) {
-	respType := VirtualMachineImageTemplatesRunResponse{}
+// If the final GET succeeded then the final VirtualMachineImageTemplatesClientRunResponse will be returned.
+func (p *VirtualMachineImageTemplatesClientRunPoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesClientRunResponse, error) {
+	respType := VirtualMachineImageTemplatesClientRunResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return VirtualMachineImageTemplatesRunResponse{}, err
+		return VirtualMachineImageTemplatesClientRunResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -182,17 +182,17 @@ func (p *VirtualMachineImageTemplatesRunPoller) FinalResponse(ctx context.Contex
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VirtualMachineImageTemplatesRunPoller) ResumeToken() (string, error) {
+func (p *VirtualMachineImageTemplatesClientRunPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// VirtualMachineImageTemplatesUpdatePoller provides polling facilities until the operation reaches a terminal state.
-type VirtualMachineImageTemplatesUpdatePoller struct {
+// VirtualMachineImageTemplatesClientUpdatePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualMachineImageTemplatesClientUpdatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *VirtualMachineImageTemplatesUpdatePoller) Done() bool {
+func (p *VirtualMachineImageTemplatesClientUpdatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -206,18 +206,18 @@ func (p *VirtualMachineImageTemplatesUpdatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *VirtualMachineImageTemplatesUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *VirtualMachineImageTemplatesClientUpdatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final VirtualMachineImageTemplatesUpdateResponse will be returned.
-func (p *VirtualMachineImageTemplatesUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesUpdateResponse, error) {
-	respType := VirtualMachineImageTemplatesUpdateResponse{}
+// If the final GET succeeded then the final VirtualMachineImageTemplatesClientUpdateResponse will be returned.
+func (p *VirtualMachineImageTemplatesClientUpdatePoller) FinalResponse(ctx context.Context) (VirtualMachineImageTemplatesClientUpdateResponse, error) {
+	respType := VirtualMachineImageTemplatesClientUpdateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.ImageTemplate)
 	if err != nil {
-		return VirtualMachineImageTemplatesUpdateResponse{}, err
+		return VirtualMachineImageTemplatesClientUpdateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -225,6 +225,6 @@ func (p *VirtualMachineImageTemplatesUpdatePoller) FinalResponse(ctx context.Con
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *VirtualMachineImageTemplatesUpdatePoller) ResumeToken() (string, error) {
+func (p *VirtualMachineImageTemplatesClientUpdatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

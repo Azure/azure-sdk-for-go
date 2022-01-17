@@ -15,106 +15,106 @@ import (
 	"time"
 )
 
-// ManagementAssociationsCreateOrUpdateResponse contains the response from method ManagementAssociations.CreateOrUpdate.
-type ManagementAssociationsCreateOrUpdateResponse struct {
-	ManagementAssociationsCreateOrUpdateResult
+// ManagementAssociationsClientCreateOrUpdateResponse contains the response from method ManagementAssociationsClient.CreateOrUpdate.
+type ManagementAssociationsClientCreateOrUpdateResponse struct {
+	ManagementAssociationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementAssociationsCreateOrUpdateResult contains the result from method ManagementAssociations.CreateOrUpdate.
-type ManagementAssociationsCreateOrUpdateResult struct {
+// ManagementAssociationsClientCreateOrUpdateResult contains the result from method ManagementAssociationsClient.CreateOrUpdate.
+type ManagementAssociationsClientCreateOrUpdateResult struct {
 	ManagementAssociation
 }
 
-// ManagementAssociationsDeleteResponse contains the response from method ManagementAssociations.Delete.
-type ManagementAssociationsDeleteResponse struct {
+// ManagementAssociationsClientDeleteResponse contains the response from method ManagementAssociationsClient.Delete.
+type ManagementAssociationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementAssociationsGetResponse contains the response from method ManagementAssociations.Get.
-type ManagementAssociationsGetResponse struct {
-	ManagementAssociationsGetResult
+// ManagementAssociationsClientGetResponse contains the response from method ManagementAssociationsClient.Get.
+type ManagementAssociationsClientGetResponse struct {
+	ManagementAssociationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementAssociationsGetResult contains the result from method ManagementAssociations.Get.
-type ManagementAssociationsGetResult struct {
+// ManagementAssociationsClientGetResult contains the result from method ManagementAssociationsClient.Get.
+type ManagementAssociationsClientGetResult struct {
 	ManagementAssociation
 }
 
-// ManagementAssociationsListBySubscriptionResponse contains the response from method ManagementAssociations.ListBySubscription.
-type ManagementAssociationsListBySubscriptionResponse struct {
-	ManagementAssociationsListBySubscriptionResult
+// ManagementAssociationsClientListBySubscriptionResponse contains the response from method ManagementAssociationsClient.ListBySubscription.
+type ManagementAssociationsClientListBySubscriptionResponse struct {
+	ManagementAssociationsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementAssociationsListBySubscriptionResult contains the result from method ManagementAssociations.ListBySubscription.
-type ManagementAssociationsListBySubscriptionResult struct {
+// ManagementAssociationsClientListBySubscriptionResult contains the result from method ManagementAssociationsClient.ListBySubscription.
+type ManagementAssociationsClientListBySubscriptionResult struct {
 	ManagementAssociationPropertiesList
 }
 
-// ManagementConfigurationsCreateOrUpdateResponse contains the response from method ManagementConfigurations.CreateOrUpdate.
-type ManagementConfigurationsCreateOrUpdateResponse struct {
-	ManagementConfigurationsCreateOrUpdateResult
+// ManagementConfigurationsClientCreateOrUpdateResponse contains the response from method ManagementConfigurationsClient.CreateOrUpdate.
+type ManagementConfigurationsClientCreateOrUpdateResponse struct {
+	ManagementConfigurationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementConfigurationsCreateOrUpdateResult contains the result from method ManagementConfigurations.CreateOrUpdate.
-type ManagementConfigurationsCreateOrUpdateResult struct {
+// ManagementConfigurationsClientCreateOrUpdateResult contains the result from method ManagementConfigurationsClient.CreateOrUpdate.
+type ManagementConfigurationsClientCreateOrUpdateResult struct {
 	ManagementConfiguration
 }
 
-// ManagementConfigurationsDeleteResponse contains the response from method ManagementConfigurations.Delete.
-type ManagementConfigurationsDeleteResponse struct {
+// ManagementConfigurationsClientDeleteResponse contains the response from method ManagementConfigurationsClient.Delete.
+type ManagementConfigurationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementConfigurationsGetResponse contains the response from method ManagementConfigurations.Get.
-type ManagementConfigurationsGetResponse struct {
-	ManagementConfigurationsGetResult
+// ManagementConfigurationsClientGetResponse contains the response from method ManagementConfigurationsClient.Get.
+type ManagementConfigurationsClientGetResponse struct {
+	ManagementConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementConfigurationsGetResult contains the result from method ManagementConfigurations.Get.
-type ManagementConfigurationsGetResult struct {
+// ManagementConfigurationsClientGetResult contains the result from method ManagementConfigurationsClient.Get.
+type ManagementConfigurationsClientGetResult struct {
 	ManagementConfiguration
 }
 
-// ManagementConfigurationsListBySubscriptionResponse contains the response from method ManagementConfigurations.ListBySubscription.
-type ManagementConfigurationsListBySubscriptionResponse struct {
-	ManagementConfigurationsListBySubscriptionResult
+// ManagementConfigurationsClientListBySubscriptionResponse contains the response from method ManagementConfigurationsClient.ListBySubscription.
+type ManagementConfigurationsClientListBySubscriptionResponse struct {
+	ManagementConfigurationsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementConfigurationsListBySubscriptionResult contains the result from method ManagementConfigurations.ListBySubscription.
-type ManagementConfigurationsListBySubscriptionResult struct {
+// ManagementConfigurationsClientListBySubscriptionResult contains the result from method ManagementConfigurationsClient.ListBySubscription.
+type ManagementConfigurationsClientListBySubscriptionResult struct {
 	ManagementConfigurationPropertiesList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SolutionsCreateOrUpdatePollerResponse contains the response from method Solutions.CreateOrUpdate.
-type SolutionsCreateOrUpdatePollerResponse struct {
+// SolutionsClientCreateOrUpdatePollerResponse contains the response from method SolutionsClient.CreateOrUpdate.
+type SolutionsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SolutionsCreateOrUpdatePoller
+	Poller *SolutionsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -123,8 +123,8 @@ type SolutionsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SolutionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsCreateOrUpdateResponse, error) {
-	respType := SolutionsCreateOrUpdateResponse{}
+func (l SolutionsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsClientCreateOrUpdateResponse, error) {
+	respType := SolutionsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Solution)
 	if err != nil {
 		return respType, err
@@ -133,13 +133,13 @@ func (l SolutionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a SolutionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SolutionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SolutionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SolutionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a SolutionsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *SolutionsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SolutionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SolutionsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SolutionsCreateOrUpdatePoller{
+	poller := &SolutionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -151,22 +151,22 @@ func (l *SolutionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// SolutionsCreateOrUpdateResponse contains the response from method Solutions.CreateOrUpdate.
-type SolutionsCreateOrUpdateResponse struct {
-	SolutionsCreateOrUpdateResult
+// SolutionsClientCreateOrUpdateResponse contains the response from method SolutionsClient.CreateOrUpdate.
+type SolutionsClientCreateOrUpdateResponse struct {
+	SolutionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SolutionsCreateOrUpdateResult contains the result from method Solutions.CreateOrUpdate.
-type SolutionsCreateOrUpdateResult struct {
+// SolutionsClientCreateOrUpdateResult contains the result from method SolutionsClient.CreateOrUpdate.
+type SolutionsClientCreateOrUpdateResult struct {
 	Solution
 }
 
-// SolutionsDeletePollerResponse contains the response from method Solutions.Delete.
-type SolutionsDeletePollerResponse struct {
+// SolutionsClientDeletePollerResponse contains the response from method SolutionsClient.Delete.
+type SolutionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SolutionsDeletePoller
+	Poller *SolutionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -175,8 +175,8 @@ type SolutionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SolutionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsDeleteResponse, error) {
-	respType := SolutionsDeleteResponse{}
+func (l SolutionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsClientDeleteResponse, error) {
+	respType := SolutionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -185,13 +185,13 @@ func (l SolutionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq t
 	return respType, nil
 }
 
-// Resume rehydrates a SolutionsDeletePollerResponse from the provided client and resume token.
-func (l *SolutionsDeletePollerResponse) Resume(ctx context.Context, client *SolutionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SolutionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SolutionsClientDeletePollerResponse from the provided client and resume token.
+func (l *SolutionsClientDeletePollerResponse) Resume(ctx context.Context, client *SolutionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SolutionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SolutionsDeletePoller{
+	poller := &SolutionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -203,52 +203,52 @@ func (l *SolutionsDeletePollerResponse) Resume(ctx context.Context, client *Solu
 	return nil
 }
 
-// SolutionsDeleteResponse contains the response from method Solutions.Delete.
-type SolutionsDeleteResponse struct {
+// SolutionsClientDeleteResponse contains the response from method SolutionsClient.Delete.
+type SolutionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SolutionsGetResponse contains the response from method Solutions.Get.
-type SolutionsGetResponse struct {
-	SolutionsGetResult
+// SolutionsClientGetResponse contains the response from method SolutionsClient.Get.
+type SolutionsClientGetResponse struct {
+	SolutionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SolutionsGetResult contains the result from method Solutions.Get.
-type SolutionsGetResult struct {
+// SolutionsClientGetResult contains the result from method SolutionsClient.Get.
+type SolutionsClientGetResult struct {
 	Solution
 }
 
-// SolutionsListByResourceGroupResponse contains the response from method Solutions.ListByResourceGroup.
-type SolutionsListByResourceGroupResponse struct {
-	SolutionsListByResourceGroupResult
+// SolutionsClientListByResourceGroupResponse contains the response from method SolutionsClient.ListByResourceGroup.
+type SolutionsClientListByResourceGroupResponse struct {
+	SolutionsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SolutionsListByResourceGroupResult contains the result from method Solutions.ListByResourceGroup.
-type SolutionsListByResourceGroupResult struct {
+// SolutionsClientListByResourceGroupResult contains the result from method SolutionsClient.ListByResourceGroup.
+type SolutionsClientListByResourceGroupResult struct {
 	SolutionPropertiesList
 }
 
-// SolutionsListBySubscriptionResponse contains the response from method Solutions.ListBySubscription.
-type SolutionsListBySubscriptionResponse struct {
-	SolutionsListBySubscriptionResult
+// SolutionsClientListBySubscriptionResponse contains the response from method SolutionsClient.ListBySubscription.
+type SolutionsClientListBySubscriptionResponse struct {
+	SolutionsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SolutionsListBySubscriptionResult contains the result from method Solutions.ListBySubscription.
-type SolutionsListBySubscriptionResult struct {
+// SolutionsClientListBySubscriptionResult contains the result from method SolutionsClient.ListBySubscription.
+type SolutionsClientListBySubscriptionResult struct {
 	SolutionPropertiesList
 }
 
-// SolutionsUpdatePollerResponse contains the response from method Solutions.Update.
-type SolutionsUpdatePollerResponse struct {
+// SolutionsClientUpdatePollerResponse contains the response from method SolutionsClient.Update.
+type SolutionsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SolutionsUpdatePoller
+	Poller *SolutionsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -257,8 +257,8 @@ type SolutionsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SolutionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsUpdateResponse, error) {
-	respType := SolutionsUpdateResponse{}
+func (l SolutionsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SolutionsClientUpdateResponse, error) {
+	respType := SolutionsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Solution)
 	if err != nil {
 		return respType, err
@@ -267,13 +267,13 @@ func (l SolutionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq t
 	return respType, nil
 }
 
-// Resume rehydrates a SolutionsUpdatePollerResponse from the provided client and resume token.
-func (l *SolutionsUpdatePollerResponse) Resume(ctx context.Context, client *SolutionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SolutionsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a SolutionsClientUpdatePollerResponse from the provided client and resume token.
+func (l *SolutionsClientUpdatePollerResponse) Resume(ctx context.Context, client *SolutionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SolutionsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SolutionsUpdatePoller{
+	poller := &SolutionsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -285,14 +285,14 @@ func (l *SolutionsUpdatePollerResponse) Resume(ctx context.Context, client *Solu
 	return nil
 }
 
-// SolutionsUpdateResponse contains the response from method Solutions.Update.
-type SolutionsUpdateResponse struct {
-	SolutionsUpdateResult
+// SolutionsClientUpdateResponse contains the response from method SolutionsClient.Update.
+type SolutionsClientUpdateResponse struct {
+	SolutionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SolutionsUpdateResult contains the result from method Solutions.Update.
-type SolutionsUpdateResult struct {
+// SolutionsClientUpdateResult contains the result from method SolutionsClient.Update.
+type SolutionsClientUpdateResult struct {
 	Solution
 }

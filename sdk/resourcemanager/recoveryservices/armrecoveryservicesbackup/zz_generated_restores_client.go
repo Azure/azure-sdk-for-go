@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,64 @@ import (
 // RestoresClient contains the methods for the Restores group.
 // Don't use this type directly, use NewRestoresClient() instead.
 type RestoresClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestoresClient creates a new instance of RestoresClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRestoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestoresClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RestoresClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RestoresClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginTrigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call, use GetProtectedItemOperationResult
-// API.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresBeginTriggerOptions) (RestoresTriggerPollerResponse, error) {
+// BeginTrigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API
+// call, use GetProtectedItemOperationResult API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the backed up items.
+// containerName - Container name associated with the backed up items.
+// protectedItemName - Backed up item to be restored.
+// recoveryPointID - Recovery point ID which represents the backed up data to be restored.
+// parameters - resource restore request
+// options - RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
+func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (RestoresClientTriggerPollerResponse, error) {
 	resp, err := client.trigger(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
-		return RestoresTriggerPollerResponse{}, err
+		return RestoresClientTriggerPollerResponse{}, err
 	}
-	result := RestoresTriggerPollerResponse{
+	result := RestoresClientTriggerPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("RestoresClient.Trigger", "", resp, client.pl, client.triggerHandleError)
+	pt, err := armruntime.NewPoller("RestoresClient.Trigger", "", resp, client.pl)
 	if err != nil {
-		return RestoresTriggerPollerResponse{}, err
+		return RestoresClientTriggerPollerResponse{}, err
 	}
-	result.Poller = &RestoresTriggerPoller{
+	result.Poller = &RestoresClientTriggerPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Trigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call, use GetProtectedItemOperationResult
-// API.
-// If the operation fails it returns the *CloudError error type.
-func (client *RestoresClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresBeginTriggerOptions) (*http.Response, error) {
+// Trigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
+// use GetProtectedItemOperationResult API.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RestoresClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*http.Response, error) {
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -76,13 +91,13 @@ func (client *RestoresClient) trigger(ctx context.Context, vaultName string, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.triggerHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // triggerCreateRequest creates the Trigger request.
-func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresBeginTriggerOptions) (*policy.Request, error) {
+func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -112,26 +127,13 @@ func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultNam
 		return nil, errors.New("parameter recoveryPointID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// triggerHandleError handles the Trigger error response.
-func (client *RestoresClient) triggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armproviderhub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OperationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the operation supported by the given provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationsClient) CreateOrUpdate(ctx context.Context, providerNamespace string, operationsPutContent OperationsPutContent, options *OperationsCreateOrUpdateOptions) (OperationsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// operationsPutContent - The operations content properties supplied to the CreateOrUpdate operation.
+// options - OperationsClientCreateOrUpdateOptions contains the optional parameters for the OperationsClient.CreateOrUpdate
+// method.
+func (client *OperationsClient) CreateOrUpdate(ctx context.Context, providerNamespace string, operationsPutContent OperationsPutContent, options *OperationsClientCreateOrUpdateOptions) (OperationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, operationsPutContent, options)
 	if err != nil {
-		return OperationsCreateOrUpdateResponse{}, err
+		return OperationsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationsCreateOrUpdateResponse{}, err
+		return OperationsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return OperationsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, operationsPutContent OperationsPutContent, options *OperationsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, operationsPutContent OperationsPutContent, options *OperationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +93,35 @@ func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *OperationsClient) createOrUpdateHandleResponse(resp *http.Response) (OperationsCreateOrUpdateResponse, error) {
-	result := OperationsCreateOrUpdateResponse{RawResponse: resp}
+func (client *OperationsClient) createOrUpdateHandleResponse(resp *http.Response) (OperationsClientCreateOrUpdateResponse, error) {
+	result := OperationsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsContent); err != nil {
-		return OperationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return OperationsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *OperationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationsClient) Delete(ctx context.Context, providerNamespace string, options *OperationsDeleteOptions) (OperationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// options - OperationsClientDeleteOptions contains the optional parameters for the OperationsClient.Delete method.
+func (client *OperationsClient) Delete(ctx context.Context, providerNamespace string, options *OperationsClientDeleteOptions) (OperationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, providerNamespace, options)
 	if err != nil {
-		return OperationsDeleteResponse{}, err
+		return OperationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationsDeleteResponse{}, err
+		return OperationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return OperationsDeleteResponse{}, client.deleteHandleError(resp)
+		return OperationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OperationsDeleteResponse{RawResponse: resp}, nil
+	return OperationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OperationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, options *OperationsDeleteOptions) (*policy.Request, error) {
+func (client *OperationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, options *OperationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +131,7 @@ func (client *OperationsClient) deleteCreateRequest(ctx context.Context, provide
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,37 +142,25 @@ func (client *OperationsClient) deleteCreateRequest(ctx context.Context, provide
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *OperationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the operations supported by Microsoft.ProviderHub.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationsClient) List(options *OperationsListOptions) *OperationsListPager {
-	return &OperationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+func (client *OperationsClient) List(options *OperationsClientListOptions) *OperationsClientListPager {
+	return &OperationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp OperationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OperationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationsDefinitionArrayResponseWithContinuation.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*policy.Request, error) {
+func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ProviderHub/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,46 +169,36 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsListResponse, error) {
-	result := OperationsListResponse{RawResponse: resp}
+func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+	result := OperationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArrayResponseWithContinuation); err != nil {
-		return OperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return OperationsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *OperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProviderRegistration - Gets the operations supported by the given provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationsClient) ListByProviderRegistration(ctx context.Context, providerNamespace string, options *OperationsListByProviderRegistrationOptions) (OperationsListByProviderRegistrationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// options - OperationsClientListByProviderRegistrationOptions contains the optional parameters for the OperationsClient.ListByProviderRegistration
+// method.
+func (client *OperationsClient) ListByProviderRegistration(ctx context.Context, providerNamespace string, options *OperationsClientListByProviderRegistrationOptions) (OperationsClientListByProviderRegistrationResponse, error) {
 	req, err := client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
 	if err != nil {
-		return OperationsListByProviderRegistrationResponse{}, err
+		return OperationsClientListByProviderRegistrationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationsListByProviderRegistrationResponse{}, err
+		return OperationsClientListByProviderRegistrationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationsListByProviderRegistrationResponse{}, client.listByProviderRegistrationHandleError(resp)
+		return OperationsClientListByProviderRegistrationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByProviderRegistrationHandleResponse(resp)
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *OperationsListByProviderRegistrationOptions) (*policy.Request, error) {
+func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *OperationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -230,7 +208,7 @@ func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx cont
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,23 +220,10 @@ func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx cont
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *OperationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (OperationsListByProviderRegistrationResponse, error) {
-	result := OperationsListByProviderRegistrationResponse{RawResponse: resp}
+func (client *OperationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (OperationsClientListByProviderRegistrationResponse, error) {
+	result := OperationsClientListByProviderRegistrationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArray); err != nil {
-		return OperationsListByProviderRegistrationResponse{}, runtime.NewResponseError(err, resp)
+		return OperationsClientListByProviderRegistrationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByProviderRegistrationHandleError handles the ListByProviderRegistration error response.
-func (client *OperationsClient) listByProviderRegistrationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

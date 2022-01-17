@@ -16,8 +16,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -167,7 +167,7 @@ func TestLocPollerCancelled(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	if _, ok := err.(*azcore.ResponseError); !ok {
+	if _, ok := err.(*shared.ResponseError); !ok {
 		t.Fatal("expected pollerError")
 	}
 	if resp != nil {

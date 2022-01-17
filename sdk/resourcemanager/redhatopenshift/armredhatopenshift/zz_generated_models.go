@@ -27,17 +27,9 @@ type APIServerProfile struct {
 }
 
 // CloudError represents a cloud error.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// An error response from the service.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody represents the body of a cloud error.
@@ -133,16 +125,34 @@ type NetworkProfile struct {
 
 // OpenShiftCluster represents an Azure Red Hat OpenShift cluster.
 type OpenShiftCluster struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The cluster properties.
 	Properties *OpenShiftClusterProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OpenShiftCluster.
 func (o OpenShiftCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", o.ID)
+	populate(objectMap, "location", o.Location)
+	populate(objectMap, "name", o.Name)
 	populate(objectMap, "properties", o.Properties)
+	populate(objectMap, "tags", o.Tags)
+	populate(objectMap, "type", o.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -234,38 +244,43 @@ func (o OpenShiftClusterUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OpenShiftClustersBeginCreateOrUpdateOptions contains the optional parameters for the OpenShiftClusters.BeginCreateOrUpdate method.
-type OpenShiftClustersBeginCreateOrUpdateOptions struct {
+// OpenShiftClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginCreateOrUpdate
+// method.
+type OpenShiftClustersClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersBeginDeleteOptions contains the optional parameters for the OpenShiftClusters.BeginDelete method.
-type OpenShiftClustersBeginDeleteOptions struct {
+// OpenShiftClustersClientBeginDeleteOptions contains the optional parameters for the OpenShiftClustersClient.BeginDelete
+// method.
+type OpenShiftClustersClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersBeginUpdateOptions contains the optional parameters for the OpenShiftClusters.BeginUpdate method.
-type OpenShiftClustersBeginUpdateOptions struct {
+// OpenShiftClustersClientBeginUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginUpdate
+// method.
+type OpenShiftClustersClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersGetOptions contains the optional parameters for the OpenShiftClusters.Get method.
-type OpenShiftClustersGetOptions struct {
+// OpenShiftClustersClientGetOptions contains the optional parameters for the OpenShiftClustersClient.Get method.
+type OpenShiftClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersListByResourceGroupOptions contains the optional parameters for the OpenShiftClusters.ListByResourceGroup method.
-type OpenShiftClustersListByResourceGroupOptions struct {
+// OpenShiftClustersClientListByResourceGroupOptions contains the optional parameters for the OpenShiftClustersClient.ListByResourceGroup
+// method.
+type OpenShiftClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersListCredentialsOptions contains the optional parameters for the OpenShiftClusters.ListCredentials method.
-type OpenShiftClustersListCredentialsOptions struct {
+// OpenShiftClustersClientListCredentialsOptions contains the optional parameters for the OpenShiftClustersClient.ListCredentials
+// method.
+type OpenShiftClustersClientListCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OpenShiftClustersListOptions contains the optional parameters for the OpenShiftClusters.List method.
-type OpenShiftClustersListOptions struct {
+// OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.List method.
+type OpenShiftClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -298,8 +313,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -315,19 +330,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ServicePrincipalProfile represents a service principal profile.
 type ServicePrincipalProfile struct {
 	// The client ID used for the cluster (immutable).
@@ -337,27 +339,34 @@ type ServicePrincipalProfile struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // WorkerProfile represents a worker profile.

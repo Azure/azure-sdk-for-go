@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
 func ExampleReplicationMigrationItemsClient_ListByReplicationProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,21 +31,25 @@ func ExampleReplicationMigrationItemsClient_ListByReplicationProtectionContainer
 		"<subscription-id>", cred, nil)
 	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
 		"<protection-container-name>",
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsListByReplicationProtectionContainersOptions{SkipToken: nil,
+		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions{SkipToken: nil,
 			TakeToken: nil,
 			Filter:    nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MigrationItem.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_Get.json
 func ExampleReplicationMigrationItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,10 +67,10 @@ func ExampleReplicationMigrationItemsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_Create.json
 func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,9 +88,7 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 			Properties: &armrecoveryservicessiterecovery.EnableMigrationInputProperties{
 				PolicyID: to.StringPtr("<policy-id>"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtEnableMigrationInput{
-					EnableMigrationProviderSpecificInput: armrecoveryservicessiterecovery.EnableMigrationProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType:            to.StringPtr("<instance-type>"),
 					DataMoverRunAsAccountID: to.StringPtr("<data-mover-run-as-account-id>"),
 					DisksToInclude: []*armrecoveryservicessiterecovery.VMwareCbtDiskInput{
 						{
@@ -110,10 +112,10 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_Delete.json
 func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +129,7 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 		"<fabric-name>",
 		"<protection-container-name>",
 		"<migration-item-name>",
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsBeginDeleteOptions{DeleteOption: nil})
+		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions{DeleteOption: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -137,7 +139,7 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_Update.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_Update.json
 func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,9 +156,7 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 		armrecoveryservicessiterecovery.UpdateMigrationItemInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateMigrationItemInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtUpdateMigrationItemInput{
-					UpdateMigrationItemProviderSpecificInput: armrecoveryservicessiterecovery.UpdateMigrationItemProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -168,10 +168,10 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_Migrate.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_Migrate.json
 func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,9 +188,7 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 		armrecoveryservicessiterecovery.MigrateInput{
 			Properties: &armrecoveryservicessiterecovery.MigrateInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrateInput{
-					MigrateProviderSpecificInput: armrecoveryservicessiterecovery.MigrateProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType:    to.StringPtr("<instance-type>"),
 					PerformShutdown: to.StringPtr("<perform-shutdown>"),
 				},
 			},
@@ -203,10 +201,10 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientMigrateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_Resync.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_Resync.json
 func ExampleReplicationMigrationItemsClient_BeginResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,9 +221,7 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 		armrecoveryservicessiterecovery.ResyncInput{
 			Properties: &armrecoveryservicessiterecovery.ResyncInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtResyncInput{
-					ResyncProviderSpecificInput: armrecoveryservicessiterecovery.ResyncProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 					SkipCbtReset: to.StringPtr("<skip-cbt-reset>"),
 				},
 			},
@@ -238,10 +234,10 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientResyncResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_TestMigrate.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_TestMigrate.json
 func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,9 +254,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 		armrecoveryservicessiterecovery.TestMigrateInput{
 			Properties: &armrecoveryservicessiterecovery.TestMigrateInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtTestMigrateInput{
-					TestMigrateProviderSpecificInput: armrecoveryservicessiterecovery.TestMigrateProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType:    to.StringPtr("<instance-type>"),
 					NetworkID:       to.StringPtr("<network-id>"),
 					RecoveryPointID: to.StringPtr("<recovery-point-id>"),
 				},
@@ -274,10 +268,10 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientTestMigrateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
 func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,10 +298,10 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MigrationItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationMigrationItemsClientTestMigrateCleanupResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationMigrationItems_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationMigrationItems_List.json
 func ExampleReplicationMigrationItemsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,16 +311,20 @@ func ExampleReplicationMigrationItemsClient_List() {
 	client := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationMigrationItemsListOptions{SkipToken: nil,
+	pager := client.List(&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
 		Filter:    nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MigrationItem.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

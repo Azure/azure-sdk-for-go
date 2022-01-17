@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureWorkload/BackupWorkloadItems_List.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureWorkload/BackupWorkloadItems_List.json
 func ExampleBackupWorkloadItemsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,15 +29,19 @@ func ExampleBackupWorkloadItemsClient_List() {
 		"<resource-group-name>",
 		"<fabric-name>",
 		"<container-name>",
-		&armrecoveryservicesbackup.BackupWorkloadItemsListOptions{Filter: to.StringPtr("<filter>"),
+		&armrecoveryservicesbackup.BackupWorkloadItemsClientListOptions{Filter: to.StringPtr("<filter>"),
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadItemResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

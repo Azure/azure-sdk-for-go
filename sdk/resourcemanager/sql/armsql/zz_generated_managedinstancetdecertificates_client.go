@@ -24,46 +24,60 @@ import (
 // ManagedInstanceTdeCertificatesClient contains the methods for the ManagedInstanceTdeCertificates group.
 // Don't use this type directly, use NewManagedInstanceTdeCertificatesClient() instead.
 type ManagedInstanceTdeCertificatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedInstanceTdeCertificatesClient creates a new instance of ManagedInstanceTdeCertificatesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedInstanceTdeCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceTdeCertificatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedInstanceTdeCertificatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedInstanceTdeCertificatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates a TDE certificate for a given server.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceTdeCertificatesClient) BeginCreate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (ManagedInstanceTdeCertificatesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// parameters - The requested TDE certificate to be created or updated.
+// options - ManagedInstanceTdeCertificatesClientBeginCreateOptions contains the optional parameters for the ManagedInstanceTdeCertificatesClient.BeginCreate
+// method.
+func (client *ManagedInstanceTdeCertificatesClient) BeginCreate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (ManagedInstanceTdeCertificatesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, managedInstanceName, parameters, options)
 	if err != nil {
-		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
+		return ManagedInstanceTdeCertificatesClientCreatePollerResponse{}, err
 	}
-	result := ManagedInstanceTdeCertificatesCreatePollerResponse{
+	result := ManagedInstanceTdeCertificatesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedInstanceTdeCertificatesClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ManagedInstanceTdeCertificatesClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ManagedInstanceTdeCertificatesCreatePollerResponse{}, err
+		return ManagedInstanceTdeCertificatesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ManagedInstanceTdeCertificatesCreatePoller{
+	result.Poller = &ManagedInstanceTdeCertificatesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a TDE certificate for a given server.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +87,13 @@ func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesBeginCreateOptions) (*policy.Request, error) {
+func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/tdeCertificates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -93,7 +107,7 @@ func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -101,16 +115,4 @@ func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx cont
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// createHandleError handles the Create error response.
-func (client *ManagedInstanceTdeCertificatesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

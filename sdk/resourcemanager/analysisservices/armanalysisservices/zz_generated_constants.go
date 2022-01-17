@@ -9,12 +9,13 @@
 package armanalysisservices
 
 const (
-	module  = "armanalysisservices"
-	version = "v0.1.0"
+	moduleName    = "armanalysisservices"
+	moduleVersion = "v0.2.0"
 )
 
 // ConnectionMode - How the read-write server's participation in the query pool is controlled.
-// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query operations
+// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query
+// operations
 // * all - indicates that the read-write server can participate in query operations
 // Specifying readOnly when capacity is 1 results in error.
 type ConnectionMode string
@@ -58,7 +59,8 @@ func (c ManagedMode) ToPtr() *ManagedMode {
 	return &c
 }
 
-// ProvisioningState - The current deployment state of Analysis Services resource. The provisioningState is to indicate states for resource provisioning.
+// ProvisioningState - The current deployment state of Analysis Services resource. The provisioningState is to indicate states
+// for resource provisioning.
 type ProvisioningState string
 
 const (

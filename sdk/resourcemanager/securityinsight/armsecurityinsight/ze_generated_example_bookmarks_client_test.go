@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/bookmarks/GetBookmarks.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/bookmarks/GetBookmarks.json
 func ExampleBookmarksClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,17 +30,21 @@ func ExampleBookmarksClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Bookmark.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/bookmarks/GetBookmarkById.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/bookmarks/GetBookmarkById.json
 func ExampleBookmarksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,10 +60,10 @@ func ExampleBookmarksClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Bookmark.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BookmarksClientGetResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/bookmarks/CreateBookmark.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/bookmarks/CreateBookmark.json
 func ExampleBookmarksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,11 +76,9 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 		"<workspace-name>",
 		"<bookmark-id>",
 		armsecurityinsight.Bookmark{
-			ResourceWithEtag: armsecurityinsight.ResourceWithEtag{
-				Etag: to.StringPtr("<etag>"),
-			},
+			Etag: to.StringPtr("<etag>"),
 			Properties: &armsecurityinsight.BookmarkProperties{
-				Created: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t }()),
+				Created: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
 				CreatedBy: &armsecurityinsight.UserInfo{
 					ObjectID: to.StringPtr("<object-id>"),
 				},
@@ -87,7 +89,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 				Notes:       to.StringPtr("<notes>"),
 				Query:       to.StringPtr("<query>"),
 				QueryResult: to.StringPtr("<query-result>"),
-				Updated:     to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t }()),
+				Updated:     to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
 				UpdatedBy: &armsecurityinsight.UserInfo{
 					ObjectID: to.StringPtr("<object-id>"),
 				},
@@ -97,10 +99,10 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Bookmark.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BookmarksClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/bookmarks/DeleteBookmark.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/bookmarks/DeleteBookmark.json
 func ExampleBookmarksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

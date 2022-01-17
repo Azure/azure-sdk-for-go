@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -26,12 +27,16 @@ func ExampleWebTestsClient_ListByResourceGroup() {
 	client := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebTest.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,7 +56,7 @@ func ExampleWebTestsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebTest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WebTestsClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestCreate.json
@@ -65,12 +70,32 @@ func ExampleWebTestsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<web-test-name>",
-		armapplicationinsights.WebTest{},
+		armapplicationinsights.WebTest{
+			Location: to.StringPtr("<location>"),
+			Kind:     armapplicationinsights.WebTestKindPing.ToPtr(),
+			Properties: &armapplicationinsights.WebTestProperties{
+				Configuration: &armapplicationinsights.WebTestPropertiesConfiguration{
+					WebTest: to.StringPtr("<web-test>"),
+				},
+				Description: to.StringPtr("<description>"),
+				Enabled:     to.BoolPtr(true),
+				Frequency:   to.Int32Ptr(900),
+				WebTestKind: armapplicationinsights.WebTestKindPing.ToPtr(),
+				Locations: []*armapplicationinsights.WebTestGeolocation{
+					{
+						Location: to.StringPtr("<location>"),
+					}},
+				WebTestName:        to.StringPtr("<web-test-name>"),
+				RetryEnabled:       to.BoolPtr(true),
+				SyntheticMonitorID: to.StringPtr("<synthetic-monitor-id>"),
+				Timeout:            to.Int32Ptr(120),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebTest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WebTestsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestUpdateTagsOnly.json
@@ -84,12 +109,20 @@ func ExampleWebTestsClient_UpdateTags() {
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<web-test-name>",
-		armapplicationinsights.TagsResource{},
+		armapplicationinsights.TagsResource{
+			Tags: map[string]*string{
+				"Color":          to.StringPtr("AzureBlue"),
+				"CustomField-01": to.StringPtr("This is a random value"),
+				"SystemType":     to.StringPtr("A08"),
+				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component": to.StringPtr("Resource"),
+				"hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/mytestwebapp":           to.StringPtr("Resource"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WebTest.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WebTestsClientUpdateTagsResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestDelete.json
@@ -118,12 +151,16 @@ func ExampleWebTestsClient_List() {
 	ctx := context.Background()
 	client := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebTest.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -139,12 +176,16 @@ func ExampleWebTestsClient_ListByComponent() {
 	pager := client.ListByComponent("<component-name>",
 		"<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WebTest.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

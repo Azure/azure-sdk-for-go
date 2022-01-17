@@ -30,12 +30,16 @@ func ExampleFhirServicesClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("FhirService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleFhirServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FhirService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FhirServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Create.json
@@ -72,24 +76,16 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 		"<workspace-name>",
 		"<fhir-service-name>",
 		armhealthcareapis.FhirService{
-			ServiceManagedIdentity: armhealthcareapis.ServiceManagedIdentity{
-				Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
-					Type: armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
-				},
+			Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+				Type: armhealthcareapis.ManagedServiceIdentityType("SystemAssigned").ToPtr(),
 			},
-			TaggedResource: armhealthcareapis.TaggedResource{
-				LocationBasedResource: armhealthcareapis.LocationBasedResource{
-					Location: to.StringPtr("<location>"),
-				},
-				ResourceTags: armhealthcareapis.ResourceTags{
-					Tags: map[string]*string{
-						"additionalProp1": to.StringPtr("string"),
-						"additionalProp2": to.StringPtr("string"),
-						"additionalProp3": to.StringPtr("string"),
-					},
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"additionalProp1": to.StringPtr("string"),
+				"additionalProp2": to.StringPtr("string"),
+				"additionalProp3": to.StringPtr("string"),
 			},
-			Kind: armhealthcareapis.FhirServiceKindFhirR4.ToPtr(),
+			Kind: armhealthcareapis.FhirServiceKind("fhir-R4").ToPtr(),
 			Properties: &armhealthcareapis.FhirServiceProperties{
 				AccessPolicies: []*armhealthcareapis.FhirServiceAccessPolicyEntry{
 					{
@@ -135,7 +131,7 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FhirService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FhirServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Patch.json
@@ -151,10 +147,8 @@ func ExampleFhirServicesClient_BeginUpdate() {
 		"<fhir-service-name>",
 		"<workspace-name>",
 		armhealthcareapis.FhirServicePatchResource{
-			ResourceTags: armhealthcareapis.ResourceTags{
-				Tags: map[string]*string{
-					"tagKey": to.StringPtr("tagValue"),
-				},
+			Tags: map[string]*string{
+				"tagKey": to.StringPtr("tagValue"),
 			},
 		},
 		nil)
@@ -165,7 +159,7 @@ func ExampleFhirServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FhirService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FhirServicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Delete.json

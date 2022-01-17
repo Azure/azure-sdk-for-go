@@ -25,42 +25,55 @@ import (
 // AnalyticsItemsClient contains the methods for the AnalyticsItems group.
 // Don't use this type directly, use NewAnalyticsItemsClient() instead.
 type AnalyticsItemsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAnalyticsItemsClient creates a new instance of AnalyticsItemsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAnalyticsItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AnalyticsItemsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AnalyticsItemsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AnalyticsItemsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Deletes a specific Analytics Items defined within an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *AnalyticsItemsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsDeleteOptions) (AnalyticsItemsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// scopePath - Enum indicating if this item definition is owned by a specific user or is shared between all users with access
+// to the Application Insights component.
+// options - AnalyticsItemsClientDeleteOptions contains the optional parameters for the AnalyticsItemsClient.Delete method.
+func (client *AnalyticsItemsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientDeleteOptions) (AnalyticsItemsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, scopePath, options)
 	if err != nil {
-		return AnalyticsItemsDeleteResponse{}, err
+		return AnalyticsItemsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnalyticsItemsDeleteResponse{}, err
+		return AnalyticsItemsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalyticsItemsDeleteResponse{}, client.deleteHandleError(resp)
+		return AnalyticsItemsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AnalyticsItemsDeleteResponse{RawResponse: resp}, nil
+	return AnalyticsItemsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AnalyticsItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsDeleteOptions) (*policy.Request, error) {
+func (client *AnalyticsItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *AnalyticsItemsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter scopePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scopePath}", url.PathEscape(string(scopePath)))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,37 +107,30 @@ func (client *AnalyticsItemsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AnalyticsItemsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a specific Analytics Items defined within an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *AnalyticsItemsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsGetOptions) (AnalyticsItemsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// scopePath - Enum indicating if this item definition is owned by a specific user or is shared between all users with access
+// to the Application Insights component.
+// options - AnalyticsItemsClientGetOptions contains the optional parameters for the AnalyticsItemsClient.Get method.
+func (client *AnalyticsItemsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientGetOptions) (AnalyticsItemsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, scopePath, options)
 	if err != nil {
-		return AnalyticsItemsGetResponse{}, err
+		return AnalyticsItemsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnalyticsItemsGetResponse{}, err
+		return AnalyticsItemsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalyticsItemsGetResponse{}, client.getHandleError(resp)
+		return AnalyticsItemsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AnalyticsItemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsGetOptions) (*policy.Request, error) {
+func (client *AnalyticsItemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,7 +148,7 @@ func (client *AnalyticsItemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter scopePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scopePath}", url.PathEscape(string(scopePath)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,45 +166,38 @@ func (client *AnalyticsItemsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AnalyticsItemsClient) getHandleResponse(resp *http.Response) (AnalyticsItemsGetResponse, error) {
-	result := AnalyticsItemsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAnalyticsItem); err != nil {
-		return AnalyticsItemsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *AnalyticsItemsClient) getHandleResponse(resp *http.Response) (AnalyticsItemsClientGetResponse, error) {
+	result := AnalyticsItemsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAnalyticsItem); err != nil {
+		return AnalyticsItemsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AnalyticsItemsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets a list of Analytics Items defined within an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *AnalyticsItemsClient) List(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsListOptions) (AnalyticsItemsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// scopePath - Enum indicating if this item definition is owned by a specific user or is shared between all users with access
+// to the Application Insights component.
+// options - AnalyticsItemsClientListOptions contains the optional parameters for the AnalyticsItemsClient.List method.
+func (client *AnalyticsItemsClient) List(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientListOptions) (AnalyticsItemsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, scopePath, options)
 	if err != nil {
-		return AnalyticsItemsListResponse{}, err
+		return AnalyticsItemsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnalyticsItemsListResponse{}, err
+		return AnalyticsItemsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalyticsItemsListResponse{}, client.listHandleError(resp)
+		return AnalyticsItemsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsListOptions) (*policy.Request, error) {
+func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -216,7 +215,7 @@ func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter scopePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scopePath}", url.PathEscape(string(scopePath)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -237,45 +236,39 @@ func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *AnalyticsItemsClient) listHandleResponse(resp *http.Response) (AnalyticsItemsListResponse, error) {
-	result := AnalyticsItemsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAnalyticsItemArray); err != nil {
-		return AnalyticsItemsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *AnalyticsItemsClient) listHandleResponse(resp *http.Response) (AnalyticsItemsClientListResponse, error) {
+	result := AnalyticsItemsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAnalyticsItemArray); err != nil {
+		return AnalyticsItemsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AnalyticsItemsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Put - Adds or Updates a specific Analytics Item within an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *AnalyticsItemsClient) Put(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, itemProperties ApplicationInsightsComponentAnalyticsItem, options *AnalyticsItemsPutOptions) (AnalyticsItemsPutResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// scopePath - Enum indicating if this item definition is owned by a specific user or is shared between all users with access
+// to the Application Insights component.
+// itemProperties - Properties that need to be specified to create a new item and add it to an Application Insights component.
+// options - AnalyticsItemsClientPutOptions contains the optional parameters for the AnalyticsItemsClient.Put method.
+func (client *AnalyticsItemsClient) Put(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, itemProperties ComponentAnalyticsItem, options *AnalyticsItemsClientPutOptions) (AnalyticsItemsClientPutResponse, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, resourceName, scopePath, itemProperties, options)
 	if err != nil {
-		return AnalyticsItemsPutResponse{}, err
+		return AnalyticsItemsClientPutResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnalyticsItemsPutResponse{}, err
+		return AnalyticsItemsClientPutResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalyticsItemsPutResponse{}, client.putHandleError(resp)
+		return AnalyticsItemsClientPutResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.putHandleResponse(resp)
 }
 
 // putCreateRequest creates the Put request.
-func (client *AnalyticsItemsClient) putCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, itemProperties ApplicationInsightsComponentAnalyticsItem, options *AnalyticsItemsPutOptions) (*policy.Request, error) {
+func (client *AnalyticsItemsClient) putCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, itemProperties ComponentAnalyticsItem, options *AnalyticsItemsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -293,7 +286,7 @@ func (client *AnalyticsItemsClient) putCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter scopePath cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scopePath}", url.PathEscape(string(scopePath)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -308,22 +301,10 @@ func (client *AnalyticsItemsClient) putCreateRequest(ctx context.Context, resour
 }
 
 // putHandleResponse handles the Put response.
-func (client *AnalyticsItemsClient) putHandleResponse(resp *http.Response) (AnalyticsItemsPutResponse, error) {
-	result := AnalyticsItemsPutResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAnalyticsItem); err != nil {
-		return AnalyticsItemsPutResponse{}, runtime.NewResponseError(err, resp)
+func (client *AnalyticsItemsClient) putHandleResponse(resp *http.Response) (AnalyticsItemsClientPutResponse, error) {
+	result := AnalyticsItemsClientPutResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAnalyticsItem); err != nil {
+		return AnalyticsItemsClientPutResponse{}, err
 	}
 	return result, nil
-}
-
-// putHandleError handles the Put error response.
-func (client *AnalyticsItemsClient) putHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

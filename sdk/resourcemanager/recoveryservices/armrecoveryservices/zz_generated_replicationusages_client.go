@@ -24,42 +24,53 @@ import (
 // ReplicationUsagesClient contains the methods for the ReplicationUsages group.
 // Don't use this type directly, use NewReplicationUsagesClient() instead.
 type ReplicationUsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewReplicationUsagesClient creates a new instance of ReplicationUsagesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationUsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationUsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationUsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Fetches the replication usages of the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationUsagesClient) List(ctx context.Context, resourceGroupName string, vaultName string, options *ReplicationUsagesListOptions) (ReplicationUsagesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// vaultName - The name of the recovery services vault.
+// options - ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.List method.
+func (client *ReplicationUsagesClient) List(ctx context.Context, resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) (ReplicationUsagesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return ReplicationUsagesListResponse{}, err
+		return ReplicationUsagesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationUsagesListResponse{}, err
+		return ReplicationUsagesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationUsagesListResponse{}, client.listHandleError(resp)
+		return ReplicationUsagesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ReplicationUsagesListOptions) (*policy.Request, error) {
+func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/replicationUsages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -73,34 +84,22 @@ func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationUsagesClient) listHandleResponse(resp *http.Response) (ReplicationUsagesListResponse, error) {
-	result := ReplicationUsagesListResponse{RawResponse: resp}
+func (client *ReplicationUsagesClient) listHandleResponse(resp *http.Response) (ReplicationUsagesClientListResponse, error) {
+	result := ReplicationUsagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationUsageList); err != nil {
-		return ReplicationUsagesListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationUsagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ReplicationUsagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

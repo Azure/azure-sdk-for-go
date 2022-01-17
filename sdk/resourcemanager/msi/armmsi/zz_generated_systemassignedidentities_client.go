@@ -10,7 +10,6 @@ package armmsi
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,53 @@ import (
 // SystemAssignedIdentitiesClient contains the methods for the SystemAssignedIdentities group.
 // Don't use this type directly, use NewSystemAssignedIdentitiesClient() instead.
 type SystemAssignedIdentitiesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewSystemAssignedIdentitiesClient creates a new instance of SystemAssignedIdentitiesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSystemAssignedIdentitiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SystemAssignedIdentitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SystemAssignedIdentitiesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SystemAssignedIdentitiesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetByScope - Gets the systemAssignedIdentity available under the specified RP scope.
-// If the operation fails it returns the *CloudError error type.
-func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, scope string, options *SystemAssignedIdentitiesGetByScopeOptions) (SystemAssignedIdentitiesGetByScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The resource provider scope of the resource. Parent resource being extended by Managed Identities.
+// options - SystemAssignedIdentitiesClientGetByScopeOptions contains the optional parameters for the SystemAssignedIdentitiesClient.GetByScope
+// method.
+func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, scope string, options *SystemAssignedIdentitiesClientGetByScopeOptions) (SystemAssignedIdentitiesClientGetByScopeResponse, error) {
 	req, err := client.getByScopeCreateRequest(ctx, scope, options)
 	if err != nil {
-		return SystemAssignedIdentitiesGetByScopeResponse{}, err
+		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SystemAssignedIdentitiesGetByScopeResponse{}, err
+		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SystemAssignedIdentitiesGetByScopeResponse{}, client.getByScopeHandleError(resp)
+		return SystemAssignedIdentitiesClientGetByScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByScopeHandleResponse(resp)
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
-func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx context.Context, scope string, options *SystemAssignedIdentitiesGetByScopeOptions) (*policy.Request, error) {
+func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx context.Context, scope string, options *SystemAssignedIdentitiesClientGetByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedIdentity/identities/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -72,23 +80,10 @@ func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx contex
 }
 
 // getByScopeHandleResponse handles the GetByScope response.
-func (client *SystemAssignedIdentitiesClient) getByScopeHandleResponse(resp *http.Response) (SystemAssignedIdentitiesGetByScopeResponse, error) {
-	result := SystemAssignedIdentitiesGetByScopeResponse{RawResponse: resp}
+func (client *SystemAssignedIdentitiesClient) getByScopeHandleResponse(resp *http.Response) (SystemAssignedIdentitiesClientGetByScopeResponse, error) {
+	result := SystemAssignedIdentitiesClientGetByScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemAssignedIdentity); err != nil {
-		return SystemAssignedIdentitiesGetByScopeResponse{}, runtime.NewResponseError(err, resp)
+		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
 	return result, nil
-}
-
-// getByScopeHandleError handles the GetByScope error response.
-func (client *SystemAssignedIdentitiesClient) getByScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

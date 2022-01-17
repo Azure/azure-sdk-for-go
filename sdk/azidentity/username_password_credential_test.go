@@ -60,7 +60,7 @@ func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {
 	if !errors.As(err, &e) {
 		t.Fatal("expected AuthenticationFailedError")
 	}
-	if e.RawResponse() == nil {
-		t.Fatal("expected RawResponse() to return a non-nil *http.Response")
+	if e.RawResponse == nil {
+		t.Fatal("expected a non-nil RawResponse")
 	}
 }

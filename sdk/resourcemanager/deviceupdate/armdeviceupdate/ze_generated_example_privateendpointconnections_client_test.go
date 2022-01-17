@@ -27,13 +27,14 @@ func ExamplePrivateEndpointConnectionsClient_ListByAccount() {
 	}
 	ctx := context.Background()
 	client := armdeviceupdate.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByAccount(ctx,
+	res, err := client.ListByAccount(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListByAccountResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_Get.json
@@ -52,7 +53,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_CreateOrUpdate.json
@@ -71,7 +72,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 			Properties: &armdeviceupdate.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armdeviceupdate.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armdeviceupdate.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:      armdeviceupdate.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -79,11 +80,10 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnection.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/PrivateEndpointConnections/PrivateEndpointConnection_Delete.json

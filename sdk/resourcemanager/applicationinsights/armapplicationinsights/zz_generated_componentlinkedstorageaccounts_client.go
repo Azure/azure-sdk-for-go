@@ -11,7 +11,6 @@ package armapplicationinsights
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // ComponentLinkedStorageAccountsClient contains the methods for the ComponentLinkedStorageAccounts group.
 // Don't use this type directly, use NewComponentLinkedStorageAccountsClient() instead.
 type ComponentLinkedStorageAccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewComponentLinkedStorageAccountsClient creates a new instance of ComponentLinkedStorageAccountsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewComponentLinkedStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComponentLinkedStorageAccountsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ComponentLinkedStorageAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ComponentLinkedStorageAccountsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateAndUpdate - Replace current linked storage account for an Application Insights component.
-// If the operation fails it returns the *ErrorResponseLinkedStorage error type.
-func (client *ComponentLinkedStorageAccountsClient) CreateAndUpdate(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccounts, options *ComponentLinkedStorageAccountsCreateAndUpdateOptions) (ComponentLinkedStorageAccountsCreateAndUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// storageType - The type of the Application Insights component data source for the linked storage account.
+// linkedStorageAccountsProperties - Properties that need to be specified to update linked storage accounts for an Application
+// Insights component.
+// options - ComponentLinkedStorageAccountsClientCreateAndUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.CreateAndUpdate
+// method.
+func (client *ComponentLinkedStorageAccountsClient) CreateAndUpdate(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccounts, options *ComponentLinkedStorageAccountsClientCreateAndUpdateOptions) (ComponentLinkedStorageAccountsClientCreateAndUpdateResponse, error) {
 	req, err := client.createAndUpdateCreateRequest(ctx, resourceGroupName, resourceName, storageType, linkedStorageAccountsProperties, options)
 	if err != nil {
-		return ComponentLinkedStorageAccountsCreateAndUpdateResponse{}, err
+		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentLinkedStorageAccountsCreateAndUpdateResponse{}, err
+		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentLinkedStorageAccountsCreateAndUpdateResponse{}, client.createAndUpdateHandleError(resp)
+		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createAndUpdateHandleResponse(resp)
 }
 
 // createAndUpdateCreateRequest creates the CreateAndUpdate request.
-func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccounts, options *ComponentLinkedStorageAccountsCreateAndUpdateOptions) (*policy.Request, error) {
+func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccounts, options *ComponentLinkedStorageAccountsClientCreateAndUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +92,7 @@ func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest
 		return nil, errors.New("parameter storageType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageType}", url.PathEscape(string(storageType)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +104,38 @@ func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest
 }
 
 // createAndUpdateHandleResponse handles the CreateAndUpdate response.
-func (client *ComponentLinkedStorageAccountsClient) createAndUpdateHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsCreateAndUpdateResponse, error) {
-	result := ComponentLinkedStorageAccountsCreateAndUpdateResponse{RawResponse: resp}
+func (client *ComponentLinkedStorageAccountsClient) createAndUpdateHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsClientCreateAndUpdateResponse, error) {
+	result := ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentLinkedStorageAccounts); err != nil {
-		return ComponentLinkedStorageAccountsCreateAndUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createAndUpdateHandleError handles the CreateAndUpdate error response.
-func (client *ComponentLinkedStorageAccountsClient) createAndUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseLinkedStorage{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete linked storage accounts for an Application Insights component.
-// If the operation fails it returns the *ErrorResponseLinkedStorage error type.
-func (client *ComponentLinkedStorageAccountsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsDeleteOptions) (ComponentLinkedStorageAccountsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// storageType - The type of the Application Insights component data source for the linked storage account.
+// options - ComponentLinkedStorageAccountsClientDeleteOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Delete
+// method.
+func (client *ComponentLinkedStorageAccountsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsClientDeleteOptions) (ComponentLinkedStorageAccountsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, storageType, options)
 	if err != nil {
-		return ComponentLinkedStorageAccountsDeleteResponse{}, err
+		return ComponentLinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentLinkedStorageAccountsDeleteResponse{}, err
+		return ComponentLinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ComponentLinkedStorageAccountsDeleteResponse{}, client.deleteHandleError(resp)
+		return ComponentLinkedStorageAccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ComponentLinkedStorageAccountsDeleteResponse{RawResponse: resp}, nil
+	return ComponentLinkedStorageAccountsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ComponentLinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsDeleteOptions) (*policy.Request, error) {
+func (client *ComponentLinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,7 +153,7 @@ func (client *ComponentLinkedStorageAccountsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter storageType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageType}", url.PathEscape(string(storageType)))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +164,30 @@ func (client *ComponentLinkedStorageAccountsClient) deleteCreateRequest(ctx cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ComponentLinkedStorageAccountsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseLinkedStorage{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns the current linked storage settings for an Application Insights component.
-// If the operation fails it returns the *ErrorResponseLinkedStorage error type.
-func (client *ComponentLinkedStorageAccountsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsGetOptions) (ComponentLinkedStorageAccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// storageType - The type of the Application Insights component data source for the linked storage account.
+// options - ComponentLinkedStorageAccountsClientGetOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Get
+// method.
+func (client *ComponentLinkedStorageAccountsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsClientGetOptions) (ComponentLinkedStorageAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, storageType, options)
 	if err != nil {
-		return ComponentLinkedStorageAccountsGetResponse{}, err
+		return ComponentLinkedStorageAccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentLinkedStorageAccountsGetResponse{}, err
+		return ComponentLinkedStorageAccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentLinkedStorageAccountsGetResponse{}, client.getHandleError(resp)
+		return ComponentLinkedStorageAccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsGetOptions) (*policy.Request, error) {
+func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, options *ComponentLinkedStorageAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +205,7 @@ func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter storageType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageType}", url.PathEscape(string(storageType)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,46 +217,40 @@ func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentLinkedStorageAccountsClient) getHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsGetResponse, error) {
-	result := ComponentLinkedStorageAccountsGetResponse{RawResponse: resp}
+func (client *ComponentLinkedStorageAccountsClient) getHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsClientGetResponse, error) {
+	result := ComponentLinkedStorageAccountsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentLinkedStorageAccounts); err != nil {
-		return ComponentLinkedStorageAccountsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ComponentLinkedStorageAccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ComponentLinkedStorageAccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseLinkedStorage{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update linked storage accounts for an Application Insights component.
-// If the operation fails it returns the *ErrorResponseLinkedStorage error type.
-func (client *ComponentLinkedStorageAccountsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccountsPatch, options *ComponentLinkedStorageAccountsUpdateOptions) (ComponentLinkedStorageAccountsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// storageType - The type of the Application Insights component data source for the linked storage account.
+// linkedStorageAccountsProperties - Properties that need to be specified to update a linked storage accounts for an Application
+// Insights component.
+// options - ComponentLinkedStorageAccountsClientUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Update
+// method.
+func (client *ComponentLinkedStorageAccountsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccountsPatch, options *ComponentLinkedStorageAccountsClientUpdateOptions) (ComponentLinkedStorageAccountsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, storageType, linkedStorageAccountsProperties, options)
 	if err != nil {
-		return ComponentLinkedStorageAccountsUpdateResponse{}, err
+		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentLinkedStorageAccountsUpdateResponse{}, err
+		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentLinkedStorageAccountsUpdateResponse{}, client.updateHandleError(resp)
+		return ComponentLinkedStorageAccountsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccountsPatch, options *ComponentLinkedStorageAccountsUpdateOptions) (*policy.Request, error) {
+func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccountsPatch, options *ComponentLinkedStorageAccountsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -276,7 +268,7 @@ func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx cont
 		return nil, errors.New("parameter storageType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageType}", url.PathEscape(string(storageType)))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,23 +280,10 @@ func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ComponentLinkedStorageAccountsClient) updateHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsUpdateResponse, error) {
-	result := ComponentLinkedStorageAccountsUpdateResponse{RawResponse: resp}
+func (client *ComponentLinkedStorageAccountsClient) updateHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsClientUpdateResponse, error) {
+	result := ComponentLinkedStorageAccountsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentLinkedStorageAccounts); err != nil {
-		return ComponentLinkedStorageAccountsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ComponentLinkedStorageAccountsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponseLinkedStorage{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

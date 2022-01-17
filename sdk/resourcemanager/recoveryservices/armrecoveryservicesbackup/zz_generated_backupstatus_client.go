@@ -24,42 +24,53 @@ import (
 // BackupStatusClient contains the methods for the BackupStatus group.
 // Don't use this type directly, use NewBackupStatusClient() instead.
 type BackupStatusClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupStatusClient creates a new instance of BackupStatusClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupStatusClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupStatusClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the container backup status
-// If the operation fails it returns a generic error.
-func (client *BackupStatusClient) Get(ctx context.Context, azureRegion string, parameters BackupStatusRequest, options *BackupStatusGetOptions) (BackupStatusGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// azureRegion - Azure region to hit Api
+// parameters - Container Backup Status Request
+// options - BackupStatusClientGetOptions contains the optional parameters for the BackupStatusClient.Get method.
+func (client *BackupStatusClient) Get(ctx context.Context, azureRegion string, parameters BackupStatusRequest, options *BackupStatusClientGetOptions) (BackupStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, azureRegion, parameters, options)
 	if err != nil {
-		return BackupStatusGetResponse{}, err
+		return BackupStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupStatusGetResponse{}, err
+		return BackupStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupStatusGetResponse{}, client.getHandleError(resp)
+		return BackupStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureRegion string, parameters BackupStatusRequest, options *BackupStatusGetOptions) (*policy.Request, error) {
+func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureRegion string, parameters BackupStatusRequest, options *BackupStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupStatus"
 	if azureRegion == "" {
 		return nil, errors.New("parameter azureRegion cannot be empty")
@@ -69,34 +80,22 @@ func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureReg
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupStatusClient) getHandleResponse(resp *http.Response) (BackupStatusGetResponse, error) {
-	result := BackupStatusGetResponse{RawResponse: resp}
+func (client *BackupStatusClient) getHandleResponse(resp *http.Response) (BackupStatusClientGetResponse, error) {
+	result := BackupStatusClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupStatusResponse); err != nil {
-		return BackupStatusGetResponse{}, runtime.NewResponseError(err, resp)
+		return BackupStatusClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *BackupStatusClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

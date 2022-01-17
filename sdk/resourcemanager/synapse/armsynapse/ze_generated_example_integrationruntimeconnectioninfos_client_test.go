@@ -24,7 +24,7 @@ func ExampleIntegrationRuntimeConnectionInfosClient_Get() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimeConnectionInfosClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -32,4 +32,5 @@ func ExampleIntegrationRuntimeConnectionInfosClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeConnectionInfosClientGetResult)
 }

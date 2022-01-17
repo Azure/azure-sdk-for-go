@@ -28,12 +28,16 @@ func ExampleLinkedServicesClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LinkedServiceResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,9 +56,7 @@ func ExampleLinkedServicesClient_CreateOrUpdate() {
 		"<linked-service-name>",
 		armdatafactory.LinkedServiceResource{
 			Properties: &armdatafactory.AzureStorageLinkedService{
-				LinkedService: armdatafactory.LinkedService{
-					Type: to.StringPtr("<type>"),
-				},
+				Type: to.StringPtr("<type>"),
 				TypeProperties: &armdatafactory.AzureStorageLinkedServiceTypeProperties{
 					ConnectionString: map[string]interface{}{
 						"type":  "SecureString",
@@ -63,11 +65,11 @@ func ExampleLinkedServicesClient_CreateOrUpdate() {
 				},
 			},
 		},
-		&armdatafactory.LinkedServicesCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.LinkedServicesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LinkedServiceResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LinkedServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Get.json
@@ -82,11 +84,11 @@ func ExampleLinkedServicesClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<linked-service-name>",
-		&armdatafactory.LinkedServicesGetOptions{IfNoneMatch: nil})
+		&armdatafactory.LinkedServicesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LinkedServiceResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LinkedServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Delete.json

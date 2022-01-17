@@ -1,5 +1,241 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ServersClient.GetDetails` parameter(s) have been changed from `(context.Context, string, string, *ServersGetDetailsOptions)` to `(context.Context, string, string, *ServersClientGetDetailsOptions)`
+- Function `*ServersClient.GetDetails` return value(s) have been changed from `(ServersGetDetailsResponse, error)` to `(ServersClientGetDetailsResponse, error)`
+- Function `*ServersClient.BeginResume` parameter(s) have been changed from `(context.Context, string, string, *ServersBeginResumeOptions)` to `(context.Context, string, string, *ServersClientBeginResumeOptions)`
+- Function `*ServersClient.BeginResume` return value(s) have been changed from `(ServersResumePollerResponse, error)` to `(ServersClientResumePollerResponse, error)`
+- Function `*ServersClient.DissociateGateway` parameter(s) have been changed from `(context.Context, string, string, *ServersDissociateGatewayOptions)` to `(context.Context, string, string, *ServersClientDissociateGatewayOptions)`
+- Function `*ServersClient.DissociateGateway` return value(s) have been changed from `(ServersDissociateGatewayResponse, error)` to `(ServersClientDissociateGatewayResponse, error)`
+- Function `*ServersClient.ListGatewayStatus` parameter(s) have been changed from `(context.Context, string, string, *ServersListGatewayStatusOptions)` to `(context.Context, string, string, *ServersClientListGatewayStatusOptions)`
+- Function `*ServersClient.ListGatewayStatus` return value(s) have been changed from `(ServersListGatewayStatusResponse, error)` to `(ServersClientListGatewayStatusResponse, error)`
+- Function `*ServersClient.ListOperationResults` parameter(s) have been changed from `(context.Context, string, string, *ServersListOperationResultsOptions)` to `(context.Context, string, string, *ServersClientListOperationResultsOptions)`
+- Function `*ServersClient.ListOperationResults` return value(s) have been changed from `(ServersListOperationResultsResponse, error)` to `(ServersClientListOperationResultsResponse, error)`
+- Function `*ServersClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckServerNameAvailabilityParameters, *ServersCheckNameAvailabilityOptions)` to `(context.Context, string, CheckServerNameAvailabilityParameters, *ServersClientCheckNameAvailabilityOptions)`
+- Function `*ServersClient.CheckNameAvailability` return value(s) have been changed from `(ServersCheckNameAvailabilityResponse, error)` to `(ServersClientCheckNameAvailabilityResponse, error)`
+- Function `*ServersClient.ListSKUsForNew` parameter(s) have been changed from `(context.Context, *ServersListSKUsForNewOptions)` to `(context.Context, *ServersClientListSKUsForNewOptions)`
+- Function `*ServersClient.ListSKUsForNew` return value(s) have been changed from `(ServersListSKUsForNewResponse, error)` to `(ServersClientListSKUsForNewResponse, error)`
+- Function `*ServersClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ServersListByResourceGroupOptions)` to `(context.Context, string, *ServersClientListByResourceGroupOptions)`
+- Function `*ServersClient.ListByResourceGroup` return value(s) have been changed from `(ServersListByResourceGroupResponse, error)` to `(ServersClientListByResourceGroupResponse, error)`
+- Function `*ServersClient.List` parameter(s) have been changed from `(context.Context, *ServersListOptions)` to `(context.Context, *ServersClientListOptions)`
+- Function `*ServersClient.List` return value(s) have been changed from `(ServersListResponse, error)` to `(ServersClientListResponse, error)`
+- Function `*ServersClient.ListSKUsForExisting` parameter(s) have been changed from `(context.Context, string, string, *ServersListSKUsForExistingOptions)` to `(context.Context, string, string, *ServersClientListSKUsForExistingOptions)`
+- Function `*ServersClient.ListSKUsForExisting` return value(s) have been changed from `(ServersListSKUsForExistingResponse, error)` to `(ServersClientListSKUsForExistingResponse, error)`
+- Function `*ServersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, AnalysisServicesServerUpdateParameters, *ServersBeginUpdateOptions)` to `(context.Context, string, string, ServerUpdateParameters, *ServersClientBeginUpdateOptions)`
+- Function `*ServersClient.BeginUpdate` return value(s) have been changed from `(ServersUpdatePollerResponse, error)` to `(ServersClientUpdatePollerResponse, error)`
+- Function `*ServersClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *ServersBeginDeleteOptions)` to `(context.Context, string, string, *ServersClientBeginDeleteOptions)`
+- Function `*ServersClient.BeginDelete` return value(s) have been changed from `(ServersDeletePollerResponse, error)` to `(ServersClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ServersClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, AnalysisServicesServer, *ServersBeginCreateOptions)` to `(context.Context, string, string, Server, *ServersClientBeginCreateOptions)`
+- Function `*ServersClient.BeginCreate` return value(s) have been changed from `(ServersCreatePollerResponse, error)` to `(ServersClientCreatePollerResponse, error)`
+- Function `*ServersClient.BeginSuspend` parameter(s) have been changed from `(context.Context, string, string, *ServersBeginSuspendOptions)` to `(context.Context, string, string, *ServersClientBeginSuspendOptions)`
+- Function `*ServersClient.BeginSuspend` return value(s) have been changed from `(ServersSuspendPollerResponse, error)` to `(ServersClientSuspendPollerResponse, error)`
+- Function `*ServersClient.ListOperationStatuses` parameter(s) have been changed from `(context.Context, string, string, *ServersListOperationStatusesOptions)` to `(context.Context, string, string, *ServersClientListOperationStatusesOptions)`
+- Function `*ServersClient.ListOperationStatuses` return value(s) have been changed from `(ServersListOperationStatusesResponse, error)` to `(ServersClientListOperationStatusesResponse, error)`
+- Function `*ServersSuspendPoller.ResumeToken` has been removed
+- Function `*ServersUpdatePoller.Poll` has been removed
+- Function `*ServersUpdatePollerResponse.Resume` has been removed
+- Function `*ServersResumePoller.Poll` has been removed
+- Function `*ServersSuspendPoller.Poll` has been removed
+- Function `*ServersCreatePoller.Done` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ServersDeletePoller.Done` has been removed
+- Function `AnalysisServicesServer.MarshalJSON` has been removed
+- Function `*ServersUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `ServersCreatePollerResponse.PollUntilDone` has been removed
+- Function `GatewayListStatusError.Error` has been removed
+- Function `ServersResumePollerResponse.PollUntilDone` has been removed
+- Function `*ServersCreatePoller.ResumeToken` has been removed
+- Function `AnalysisServicesServers.MarshalJSON` has been removed
+- Function `*ServersUpdatePoller.Done` has been removed
+- Function `*ServersSuspendPollerResponse.Resume` has been removed
+- Function `*ServersSuspendPoller.FinalResponse` has been removed
+- Function `*ServersDeletePoller.ResumeToken` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*ServersCreatePollerResponse.Resume` has been removed
+- Function `ServersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServersCreatePoller.FinalResponse` has been removed
+- Function `*ServersDeletePoller.FinalResponse` has been removed
+- Function `*ServersUpdatePoller.FinalResponse` has been removed
+- Function `*ServersDeletePollerResponse.Resume` has been removed
+- Function `*ServersResumePoller.FinalResponse` has been removed
+- Function `*ServersCreatePoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*ServersResumePoller.ResumeToken` has been removed
+- Function `ServersSuspendPollerResponse.PollUntilDone` has been removed
+- Function `*ServersResumePoller.Done` has been removed
+- Function `AnalysisServicesServerUpdateParameters.MarshalJSON` has been removed
+- Function `*ServersResumePollerResponse.Resume` has been removed
+- Function `*ServersDeletePoller.Poll` has been removed
+- Function `*ServersSuspendPoller.Done` has been removed
+- Function `ServersDeletePollerResponse.PollUntilDone` has been removed
+- Struct `AnalysisServicesServer` has been removed
+- Struct `AnalysisServicesServerMutableProperties` has been removed
+- Struct `AnalysisServicesServerProperties` has been removed
+- Struct `AnalysisServicesServerUpdateParameters` has been removed
+- Struct `AnalysisServicesServers` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `ServersBeginCreateOptions` has been removed
+- Struct `ServersBeginDeleteOptions` has been removed
+- Struct `ServersBeginResumeOptions` has been removed
+- Struct `ServersBeginSuspendOptions` has been removed
+- Struct `ServersBeginUpdateOptions` has been removed
+- Struct `ServersCheckNameAvailabilityOptions` has been removed
+- Struct `ServersCheckNameAvailabilityResponse` has been removed
+- Struct `ServersCheckNameAvailabilityResult` has been removed
+- Struct `ServersCreatePoller` has been removed
+- Struct `ServersCreatePollerResponse` has been removed
+- Struct `ServersCreateResponse` has been removed
+- Struct `ServersCreateResult` has been removed
+- Struct `ServersDeletePoller` has been removed
+- Struct `ServersDeletePollerResponse` has been removed
+- Struct `ServersDeleteResponse` has been removed
+- Struct `ServersDissociateGatewayOptions` has been removed
+- Struct `ServersDissociateGatewayResponse` has been removed
+- Struct `ServersGetDetailsOptions` has been removed
+- Struct `ServersGetDetailsResponse` has been removed
+- Struct `ServersGetDetailsResult` has been removed
+- Struct `ServersListByResourceGroupOptions` has been removed
+- Struct `ServersListByResourceGroupResponse` has been removed
+- Struct `ServersListByResourceGroupResult` has been removed
+- Struct `ServersListGatewayStatusOptions` has been removed
+- Struct `ServersListGatewayStatusResponse` has been removed
+- Struct `ServersListGatewayStatusResult` has been removed
+- Struct `ServersListOperationResultsOptions` has been removed
+- Struct `ServersListOperationResultsResponse` has been removed
+- Struct `ServersListOperationStatusesOptions` has been removed
+- Struct `ServersListOperationStatusesResponse` has been removed
+- Struct `ServersListOperationStatusesResult` has been removed
+- Struct `ServersListOptions` has been removed
+- Struct `ServersListResponse` has been removed
+- Struct `ServersListResult` has been removed
+- Struct `ServersListSKUsForExistingOptions` has been removed
+- Struct `ServersListSKUsForExistingResponse` has been removed
+- Struct `ServersListSKUsForExistingResult` has been removed
+- Struct `ServersListSKUsForNewOptions` has been removed
+- Struct `ServersListSKUsForNewResponse` has been removed
+- Struct `ServersListSKUsForNewResult` has been removed
+- Struct `ServersResumePoller` has been removed
+- Struct `ServersResumePollerResponse` has been removed
+- Struct `ServersResumeResponse` has been removed
+- Struct `ServersSuspendPoller` has been removed
+- Struct `ServersSuspendPollerResponse` has been removed
+- Struct `ServersSuspendResponse` has been removed
+- Struct `ServersUpdatePoller` has been removed
+- Struct `ServersUpdatePollerResponse` has been removed
+- Struct `ServersUpdateResponse` has been removed
+- Struct `ServersUpdateResult` has been removed
+- Field `InnerError` of struct `GatewayListStatusError` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `*ServersClientCreatePoller.Done() bool`
+- New function `*ServersClientResumePoller.ResumeToken() (string, error)`
+- New function `*ServersClientUpdatePoller.FinalResponse(context.Context) (ServersClientUpdateResponse, error)`
+- New function `ServersClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersClientCreateResponse, error)`
+- New function `*ServersClientResumePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `ServersClientResumePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersClientResumeResponse, error)`
+- New function `*ServersClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ServersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersClientUpdateResponse, error)`
+- New function `*ServersClientSuspendPoller.FinalResponse(context.Context) (ServersClientSuspendResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `ServersClientSuspendPollerResponse.PollUntilDone(context.Context, time.Duration) (ServersClientSuspendResponse, error)`
+- New function `ServersClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServersClientDeleteResponse, error)`
+- New function `*ServersClientResumePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServersClientResumePoller.FinalResponse(context.Context) (ServersClientResumeResponse, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `ServerUpdateParameters.MarshalJSON() ([]byte, error)`
+- New function `*ServersClientDeletePoller.Done() bool`
+- New function `*ServersClientSuspendPoller.Poll(context.Context) (*http.Response, error)`
+- New function `Servers.MarshalJSON() ([]byte, error)`
+- New function `*ServersClientCreatePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ServersClientUpdatePoller.Done() bool`
+- New function `*ServersClientSuspendPoller.Done() bool`
+- New function `*ServersClientCreatePoller.FinalResponse(context.Context) (ServersClientCreateResponse, error)`
+- New function `*ServersClientSuspendPoller.ResumeToken() (string, error)`
+- New function `*ServersClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServersClientUpdatePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*ServersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServersClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ServersClientSuspendPollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `Server.MarshalJSON() ([]byte, error)`
+- New function `*ServersClientDeletePoller.FinalResponse(context.Context) (ServersClientDeleteResponse, error)`
+- New function `*ServersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServersClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ServersClientDeletePollerResponse.Resume(context.Context, *ServersClient, string) error`
+- New function `*ServersClientResumePoller.Done() bool`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Server`
+- New struct `ServerMutableProperties`
+- New struct `ServerProperties`
+- New struct `ServerUpdateParameters`
+- New struct `Servers`
+- New struct `ServersClientBeginCreateOptions`
+- New struct `ServersClientBeginDeleteOptions`
+- New struct `ServersClientBeginResumeOptions`
+- New struct `ServersClientBeginSuspendOptions`
+- New struct `ServersClientBeginUpdateOptions`
+- New struct `ServersClientCheckNameAvailabilityOptions`
+- New struct `ServersClientCheckNameAvailabilityResponse`
+- New struct `ServersClientCheckNameAvailabilityResult`
+- New struct `ServersClientCreatePoller`
+- New struct `ServersClientCreatePollerResponse`
+- New struct `ServersClientCreateResponse`
+- New struct `ServersClientCreateResult`
+- New struct `ServersClientDeletePoller`
+- New struct `ServersClientDeletePollerResponse`
+- New struct `ServersClientDeleteResponse`
+- New struct `ServersClientDissociateGatewayOptions`
+- New struct `ServersClientDissociateGatewayResponse`
+- New struct `ServersClientGetDetailsOptions`
+- New struct `ServersClientGetDetailsResponse`
+- New struct `ServersClientGetDetailsResult`
+- New struct `ServersClientListByResourceGroupOptions`
+- New struct `ServersClientListByResourceGroupResponse`
+- New struct `ServersClientListByResourceGroupResult`
+- New struct `ServersClientListGatewayStatusOptions`
+- New struct `ServersClientListGatewayStatusResponse`
+- New struct `ServersClientListGatewayStatusResult`
+- New struct `ServersClientListOperationResultsOptions`
+- New struct `ServersClientListOperationResultsResponse`
+- New struct `ServersClientListOperationStatusesOptions`
+- New struct `ServersClientListOperationStatusesResponse`
+- New struct `ServersClientListOperationStatusesResult`
+- New struct `ServersClientListOptions`
+- New struct `ServersClientListResponse`
+- New struct `ServersClientListResult`
+- New struct `ServersClientListSKUsForExistingOptions`
+- New struct `ServersClientListSKUsForExistingResponse`
+- New struct `ServersClientListSKUsForExistingResult`
+- New struct `ServersClientListSKUsForNewOptions`
+- New struct `ServersClientListSKUsForNewResponse`
+- New struct `ServersClientListSKUsForNewResult`
+- New struct `ServersClientResumePoller`
+- New struct `ServersClientResumePollerResponse`
+- New struct `ServersClientResumeResponse`
+- New struct `ServersClientSuspendPoller`
+- New struct `ServersClientSuspendPollerResponse`
+- New struct `ServersClientSuspendResponse`
+- New struct `ServersClientUpdatePoller`
+- New struct `ServersClientUpdatePollerResponse`
+- New struct `ServersClientUpdateResponse`
+- New struct `ServersClientUpdateResult`
+- New field `Error` in struct `ErrorResponse`
+- New field `Error` in struct `GatewayListStatusError`
+
+
 ## 0.1.0 (2021-11-16)
 
 - Initial preview release.

@@ -29,14 +29,14 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceGroupLevel() {
 		"<lock-name>",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
-				Level: armlocks.LockLevelReadOnly.ToPtr(),
+				Level: armlocks.LockLevel("ReadOnly").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_DeleteAtResourceGroupLevel.json
@@ -71,7 +71,7 @@ func ExampleManagementLocksClient_GetAtResourceGroupLevel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientGetAtResourceGroupLevelResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_CreateOrUpdateAtScope.json
@@ -87,14 +87,14 @@ func ExampleManagementLocksClient_CreateOrUpdateByScope() {
 		"<lock-name>",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
-				Level: armlocks.LockLevelReadOnly.ToPtr(),
+				Level: armlocks.LockLevel("ReadOnly").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientCreateOrUpdateByScopeResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_DeleteAtScope.json
@@ -129,7 +129,7 @@ func ExampleManagementLocksClient_GetByScope() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientGetByScopeResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_CreateOrUpdateAtResourceLevel.json
@@ -149,14 +149,14 @@ func ExampleManagementLocksClient_CreateOrUpdateAtResourceLevel() {
 		"<lock-name>",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
-				Level: armlocks.LockLevelReadOnly.ToPtr(),
+				Level: armlocks.LockLevel("ReadOnly").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientCreateOrUpdateAtResourceLevelResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_DeleteAtResourceLevel.json
@@ -199,7 +199,7 @@ func ExampleManagementLocksClient_GetAtResourceLevel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientGetAtResourceLevelResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_CreateOrUpdateAtSubscriptionLevel.json
@@ -214,14 +214,14 @@ func ExampleManagementLocksClient_CreateOrUpdateAtSubscriptionLevel() {
 		"<lock-name>",
 		armlocks.ManagementLockObject{
 			Properties: &armlocks.ManagementLockProperties{
-				Level: armlocks.LockLevelReadOnly.ToPtr(),
+				Level: armlocks.LockLevel("ReadOnly").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_DeleteAtSubscriptionLevel.json
@@ -254,7 +254,7 @@ func ExampleManagementLocksClient_GetAtSubscriptionLevel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagementLockObject.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ManagementLocksClientGetAtSubscriptionLevelResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_ListAtResourceGroupLevel.json
@@ -266,13 +266,17 @@ func ExampleManagementLocksClient_ListAtResourceGroupLevel() {
 	ctx := context.Background()
 	client := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	pager := client.ListAtResourceGroupLevel("<resource-group-name>",
-		&armlocks.ManagementLocksListAtResourceGroupLevelOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlocks.ManagementLocksClientListAtResourceGroupLevelOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagementLockObject.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -290,13 +294,17 @@ func ExampleManagementLocksClient_ListAtResourceLevel() {
 		"<parent-resource-path>",
 		"<resource-type>",
 		"<resource-name>",
-		&armlocks.ManagementLocksListAtResourceLevelOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlocks.ManagementLocksClientListAtResourceLevelOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagementLockObject.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -309,13 +317,17 @@ func ExampleManagementLocksClient_ListAtSubscriptionLevel() {
 	}
 	ctx := context.Background()
 	client := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
-	pager := client.ListAtSubscriptionLevel(&armlocks.ManagementLocksListAtSubscriptionLevelOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListAtSubscriptionLevel(&armlocks.ManagementLocksClientListAtSubscriptionLevelOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagementLockObject.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -329,13 +341,17 @@ func ExampleManagementLocksClient_ListByScope() {
 	ctx := context.Background()
 	client := armlocks.NewManagementLocksClient("<subscription-id>", cred, nil)
 	pager := client.ListByScope("<scope>",
-		&armlocks.ManagementLocksListByScopeOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armlocks.ManagementLocksClientListByScopeOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ManagementLockObject.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

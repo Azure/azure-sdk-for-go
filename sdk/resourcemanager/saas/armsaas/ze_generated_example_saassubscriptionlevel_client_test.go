@@ -20,52 +20,60 @@ import (
 )
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInAzureSubscription.json
-func ExampleSaasSubscriptionLevelClient_ListByAzureSubscription() {
+func ExampleSubscriptionLevelClient_ListByAzureSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	pager := client.ListByAzureSubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SaasResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInResourceGroup.json
-func ExampleSaasSubscriptionLevelClient_ListByResourceGroup() {
+func ExampleSubscriptionLevelClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SaasResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGet.json
-func ExampleSaasSubscriptionLevelClient_Get() {
+func ExampleSubscriptionLevelClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -73,29 +81,29 @@ func ExampleSaasSubscriptionLevelClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientGetResult)
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasPut.json
-func ExampleSaasSubscriptionLevelClient_BeginCreateOrUpdate() {
+func ExampleSubscriptionLevelClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armsaas.SaasResourceCreation{
+		armsaas.ResourceCreation{
 			Name:     to.StringPtr("<name>"),
 			Location: to.StringPtr("<location>"),
-			Properties: &armsaas.SaasCreationProperties{
+			Properties: &armsaas.CreationProperties{
 				OfferID: to.StringPtr("<offer-id>"),
 				PaymentChannelMetadata: map[string]*string{
 					"AzureSubscriptionId": to.StringPtr("155af98a-3205-47e7-883b-a2ab9db9f88d"),
 				},
-				PaymentChannelType: armsaas.PaymentChannelTypeSubscriptionDelegated.ToPtr(),
+				PaymentChannelType: armsaas.PaymentChannelType("SubscriptionDelegated").ToPtr(),
 				PublisherID:        to.StringPtr("<publisher-id>"),
 				SaasResourceName:   to.StringPtr("<saas-resource-name>"),
 				SKUID:              to.StringPtr("<skuid>"),
@@ -110,22 +118,22 @@ func ExampleSaasSubscriptionLevelClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasPatch.json
-func ExampleSaasSubscriptionLevelClient_BeginUpdate() {
+func ExampleSubscriptionLevelClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armsaas.SaasResourceCreation{
-			Properties: &armsaas.SaasCreationProperties{
+		armsaas.ResourceCreation{
+			Properties: &armsaas.CreationProperties{
 				SKUID: to.StringPtr("<skuid>"),
 			},
 			Tags: map[string]*string{},
@@ -138,17 +146,17 @@ func ExampleSaasSubscriptionLevelClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientUpdateResult)
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasDelete.json
-func ExampleSaasSubscriptionLevelClient_BeginDelete() {
+func ExampleSubscriptionLevelClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -163,13 +171,13 @@ func ExampleSaasSubscriptionLevelClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasUnsubscribe.json
-func ExampleSaasSubscriptionLevelClient_BeginUpdateToUnsubscribed() {
+func ExampleSubscriptionLevelClient_BeginUpdateToUnsubscribed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdateToUnsubscribed(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -189,30 +197,31 @@ func ExampleSaasSubscriptionLevelClient_BeginUpdateToUnsubscribed() {
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ListAccessTokenPost.json
-func ExampleSaasSubscriptionLevelClient_ListAccessToken() {
+func ExampleSubscriptionLevelClient_ListAccessToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
-	_, err = client.ListAccessToken(ctx,
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	res, err := client.ListAccessToken(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SubscriptionLevelClientListAccessTokenResult)
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ValidateResourceMove.json
-func ExampleSaasSubscriptionLevelClient_ValidateMoveResources() {
+func ExampleSubscriptionLevelClient_ValidateMoveResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	_, err = client.ValidateMoveResources(ctx,
 		"<resource-group-name>",
 		armsaas.MoveResource{
@@ -229,13 +238,13 @@ func ExampleSaasSubscriptionLevelClient_ValidateMoveResources() {
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/ResourceMove.json
-func ExampleSaasSubscriptionLevelClient_BeginMoveResources() {
+func ExampleSubscriptionLevelClient_BeginMoveResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaasSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginMoveResources(ctx,
 		"<resource-group-name>",
 		armsaas.MoveResource{

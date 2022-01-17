@@ -26,17 +26,21 @@ func ExampleReservationsClient_ListByBillingAccount() {
 	ctx := context.Background()
 	client := armbilling.NewReservationsClient(cred, nil)
 	pager := client.ListByBillingAccount("<billing-account-name>",
-		&armbilling.ReservationsListByBillingAccountOptions{Filter: to.StringPtr("<filter>"),
+		&armbilling.ReservationsClientListByBillingAccountOptions{Filter: to.StringPtr("<filter>"),
 			Orderby:        to.StringPtr("<orderby>"),
 			RefreshSummary: nil,
 			SelectedState:  to.StringPtr("<selected-state>"),
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Reservation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,17 +55,21 @@ func ExampleReservationsClient_ListByBillingProfile() {
 	client := armbilling.NewReservationsClient(cred, nil)
 	pager := client.ListByBillingProfile("<billing-account-name>",
 		"<billing-profile-name>",
-		&armbilling.ReservationsListByBillingProfileOptions{Filter: to.StringPtr("<filter>"),
+		&armbilling.ReservationsClientListByBillingProfileOptions{Filter: to.StringPtr("<filter>"),
 			Orderby:        to.StringPtr("<orderby>"),
 			RefreshSummary: nil,
 			SelectedState:  to.StringPtr("<selected-state>"),
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Reservation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

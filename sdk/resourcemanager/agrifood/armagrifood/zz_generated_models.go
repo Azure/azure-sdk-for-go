@@ -103,42 +103,32 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Extension resource.
 type Extension struct {
-	ProxyResource
 	// Extension resource properties.
 	Properties *ExtensionProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; The ETag value to implement optimistic concurrency.
 	ETag *string `json:"eTag,omitempty" azure:"ro"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Extension.
-func (e Extension) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "eTag", e.ETag)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ExtensionListResponse - Paged response contains list of requested objects and a URL link to get the next set of results.
@@ -176,78 +166,95 @@ type ExtensionProperties struct {
 	InstalledExtensionVersion *string `json:"installedExtensionVersion,omitempty" azure:"ro"`
 }
 
-// ExtensionsCreateOptions contains the optional parameters for the Extensions.Create method.
-type ExtensionsCreateOptions struct {
+// ExtensionsClientCreateOptions contains the optional parameters for the ExtensionsClient.Create method.
+type ExtensionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsDeleteOptions contains the optional parameters for the Extensions.Delete method.
-type ExtensionsDeleteOptions struct {
+// ExtensionsClientDeleteOptions contains the optional parameters for the ExtensionsClient.Delete method.
+type ExtensionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsGetOptions contains the optional parameters for the Extensions.Get method.
-type ExtensionsGetOptions struct {
+// ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+type ExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsListByFarmBeatsOptions contains the optional parameters for the Extensions.ListByFarmBeats method.
-type ExtensionsListByFarmBeatsOptions struct {
+// ExtensionsClientListByFarmBeatsOptions contains the optional parameters for the ExtensionsClient.ListByFarmBeats method.
+type ExtensionsClientListByFarmBeatsOptions struct {
 	// Installed extension categories.
 	ExtensionCategories []string
 	// Installed extension ids.
 	ExtensionIDs []string
-	// Maximum number of items needed (inclusive).
-	// Minimum = 10, Maximum = 1000, Default value = 50.
+	// Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
 	MaxPageSize *int32
 	// Skip token for getting next set of results.
 	SkipToken *string
 }
 
-// ExtensionsUpdateOptions contains the optional parameters for the Extensions.Update method.
-type ExtensionsUpdateOptions struct {
+// ExtensionsClientUpdateOptions contains the optional parameters for the ExtensionsClient.Update method.
+type ExtensionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // FarmBeats ARM Resource.
 type FarmBeats struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// FarmBeats ARM Resource properties.
 	Properties *FarmBeatsProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FarmBeats.
 func (f FarmBeats) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", f.ID)
+	populate(objectMap, "location", f.Location)
+	populate(objectMap, "name", f.Name)
 	populate(objectMap, "properties", f.Properties)
 	populate(objectMap, "systemData", f.SystemData)
+	populate(objectMap, "tags", f.Tags)
+	populate(objectMap, "type", f.Type)
 	return json.Marshal(objectMap)
 }
 
 // FarmBeatsExtension - FarmBeats extension resource.
 type FarmBeatsExtension struct {
-	ProxyResource
 	// FarmBeatsExtension properties.
 	Properties *FarmBeatsExtensionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FarmBeatsExtension.
-func (f FarmBeatsExtension) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	f.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "systemData", f.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// FarmBeatsExtensionListResponse - Paged response contains list of requested objects and a URL link to get the next set of results.
+// FarmBeatsExtensionListResponse - Paged response contains list of requested objects and a URL link to get the next set of
+// results.
 type FarmBeatsExtensionListResponse struct {
 	// List of requested objects.
 	Value []*FarmBeatsExtension `json:"value,omitempty"`
@@ -269,8 +276,8 @@ type FarmBeatsExtensionProperties struct {
 	// READ-ONLY; Textual description.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; Detailed information which shows summary of requested data. Used in descriptive get extension metadata call. Information for weather category
-	// per api included are apisSupported, customParameters,
+	// READ-ONLY; Detailed information which shows summary of requested data. Used in descriptive get extension metadata call.
+	// Information for weather category per api included are apisSupported, customParameters,
 	// PlatformParameters and Units supported.
 	DetailedInformation []*DetailedInformation `json:"detailedInformation,omitempty" azure:"ro"`
 
@@ -315,21 +322,20 @@ func (f FarmBeatsExtensionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FarmBeatsExtensionsGetOptions contains the optional parameters for the FarmBeatsExtensions.Get method.
-type FarmBeatsExtensionsGetOptions struct {
+// FarmBeatsExtensionsClientGetOptions contains the optional parameters for the FarmBeatsExtensionsClient.Get method.
+type FarmBeatsExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FarmBeatsExtensionsListOptions contains the optional parameters for the FarmBeatsExtensions.List method.
-type FarmBeatsExtensionsListOptions struct {
+// FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.List method.
+type FarmBeatsExtensionsClientListOptions struct {
 	// Extension categories.
 	ExtensionCategories []string
 	// FarmBeatsExtension ids.
 	FarmBeatsExtensionIDs []string
 	// FarmBeats extension names.
 	FarmBeatsExtensionNames []string
-	// Maximum number of items needed (inclusive).
-	// Minimum = 10, Maximum = 1000, Default value = 50.
+	// Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
 	MaxPageSize *int32
 	// Publisher ids.
 	PublisherIDs []string
@@ -352,41 +358,42 @@ func (f FarmBeatsListResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FarmBeatsModelsCreateOrUpdateOptions contains the optional parameters for the FarmBeatsModels.CreateOrUpdate method.
-type FarmBeatsModelsCreateOrUpdateOptions struct {
+// FarmBeatsModelsClientCreateOrUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.CreateOrUpdate
+// method.
+type FarmBeatsModelsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FarmBeatsModelsDeleteOptions contains the optional parameters for the FarmBeatsModels.Delete method.
-type FarmBeatsModelsDeleteOptions struct {
+// FarmBeatsModelsClientDeleteOptions contains the optional parameters for the FarmBeatsModelsClient.Delete method.
+type FarmBeatsModelsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FarmBeatsModelsGetOptions contains the optional parameters for the FarmBeatsModels.Get method.
-type FarmBeatsModelsGetOptions struct {
+// FarmBeatsModelsClientGetOptions contains the optional parameters for the FarmBeatsModelsClient.Get method.
+type FarmBeatsModelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FarmBeatsModelsListByResourceGroupOptions contains the optional parameters for the FarmBeatsModels.ListByResourceGroup method.
-type FarmBeatsModelsListByResourceGroupOptions struct {
-	// Maximum number of items needed (inclusive).
-	// Minimum = 10, Maximum = 1000, Default value = 50.
+// FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.ListByResourceGroup
+// method.
+type FarmBeatsModelsClientListByResourceGroupOptions struct {
+	// Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
 	MaxPageSize *int32
 	// Continuation token for getting next set of results.
 	SkipToken *string
 }
 
-// FarmBeatsModelsListBySubscriptionOptions contains the optional parameters for the FarmBeatsModels.ListBySubscription method.
-type FarmBeatsModelsListBySubscriptionOptions struct {
-	// Maximum number of items needed (inclusive).
-	// Minimum = 10, Maximum = 1000, Default value = 50.
+// FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.ListBySubscription
+// method.
+type FarmBeatsModelsClientListBySubscriptionOptions struct {
+	// Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
 	MaxPageSize *int32
 	// Skip token for getting next set of results.
 	SkipToken *string
 }
 
-// FarmBeatsModelsUpdateOptions contains the optional parameters for the FarmBeatsModels.Update method.
-type FarmBeatsModelsUpdateOptions struct {
+// FarmBeatsModelsClientUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.Update method.
+type FarmBeatsModelsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -416,8 +423,9 @@ func (f FarmBeatsUpdateRequestModel) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LocationsCheckNameAvailabilityOptions contains the optional parameters for the Locations.CheckNameAvailability method.
-type LocationsCheckNameAvailabilityOptions struct {
+// LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
+// method.
+type LocationsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -429,13 +437,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -444,18 +455,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -472,18 +486,22 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -496,19 +514,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -579,27 +584,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // UnitSystemsInfo - Unit systems info for the data provider.

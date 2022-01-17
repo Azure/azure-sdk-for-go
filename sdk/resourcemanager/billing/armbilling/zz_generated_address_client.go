@@ -10,7 +10,6 @@ package armbilling
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,43 +21,50 @@ import (
 // AddressClient contains the methods for the Address group.
 // Don't use this type directly, use NewAddressClient() instead.
 type AddressClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAddressClient creates a new instance of AddressClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAddressClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AddressClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AddressClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AddressClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Validate - Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AddressClient) Validate(ctx context.Context, address AddressDetails, options *AddressValidateOptions) (AddressValidateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AddressClientValidateOptions contains the optional parameters for the AddressClient.Validate method.
+func (client *AddressClient) Validate(ctx context.Context, address AddressDetails, options *AddressClientValidateOptions) (AddressClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, address, options)
 	if err != nil {
-		return AddressValidateResponse{}, err
+		return AddressClientValidateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AddressValidateResponse{}, err
+		return AddressClientValidateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AddressValidateResponse{}, client.validateHandleError(resp)
+		return AddressClientValidateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateHandleResponse(resp)
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *AddressClient) validateCreateRequest(ctx context.Context, address AddressDetails, options *AddressValidateOptions) (*policy.Request, error) {
+func (client *AddressClient) validateCreateRequest(ctx context.Context, address AddressDetails, options *AddressClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/validateAddress"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,23 +76,10 @@ func (client *AddressClient) validateCreateRequest(ctx context.Context, address 
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *AddressClient) validateHandleResponse(resp *http.Response) (AddressValidateResponse, error) {
-	result := AddressValidateResponse{RawResponse: resp}
+func (client *AddressClient) validateHandleResponse(resp *http.Response) (AddressClientValidateResponse, error) {
+	result := AddressClientValidateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateAddressResponse); err != nil {
-		return AddressValidateResponse{}, runtime.NewResponseError(err, resp)
+		return AddressClientValidateResponse{}, err
 	}
 	return result, nil
-}
-
-// validateHandleError handles the Validate error response.
-func (client *AddressClient) validateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

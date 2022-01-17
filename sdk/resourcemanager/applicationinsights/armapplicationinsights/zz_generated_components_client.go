@@ -24,43 +24,56 @@ import (
 // ComponentsClient contains the methods for the Components group.
 // Don't use this type directly, use NewComponentsClient() instead.
 type ComponentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewComponentsClient creates a new instance of ComponentsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComponentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ComponentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ComponentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - Creates (or updates) an Application Insights component. Note: You cannot specify a different value for InstrumentationKey nor AppId
-// in the Put operation.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, insightProperties ApplicationInsightsComponent, options *ComponentsCreateOrUpdateOptions) (ComponentsCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
+// InstrumentationKey nor AppId in the Put operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// insightProperties - Properties that need to be specified to create an Application Insights component.
+// options - ComponentsClientCreateOrUpdateOptions contains the optional parameters for the ComponentsClient.CreateOrUpdate
+// method.
+func (client *ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, insightProperties Component, options *ComponentsClientCreateOrUpdateOptions) (ComponentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, insightProperties, options)
 	if err != nil {
-		return ComponentsCreateOrUpdateResponse{}, err
+		return ComponentsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentsCreateOrUpdateResponse{}, err
+		return ComponentsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ComponentsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ComponentsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, insightProperties ApplicationInsightsComponent, options *ComponentsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, insightProperties Component, options *ComponentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,45 +99,36 @@ func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ComponentsClient) createOrUpdateHandleResponse(resp *http.Response) (ComponentsCreateOrUpdateResponse, error) {
-	result := ComponentsCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponent); err != nil {
-		return ComponentsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentsClient) createOrUpdateHandleResponse(resp *http.Response) (ComponentsClientCreateOrUpdateResponse, error) {
+	result := ComponentsClientCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Component); err != nil {
+		return ComponentsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ComponentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsDeleteOptions) (ComponentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - ComponentsClientDeleteOptions contains the optional parameters for the ComponentsClient.Delete method.
+func (client *ComponentsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsClientDeleteOptions) (ComponentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ComponentsDeleteResponse{}, err
+		return ComponentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentsDeleteResponse{}, err
+		return ComponentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ComponentsDeleteResponse{}, client.deleteHandleError(resp)
+		return ComponentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ComponentsDeleteResponse{RawResponse: resp}, nil
+	return ComponentsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsDeleteOptions) (*policy.Request, error) {
+func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -138,7 +142,7 @@ func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -148,37 +152,28 @@ func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ComponentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Returns an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsGetOptions) (ComponentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - ComponentsClientGetOptions contains the optional parameters for the ComponentsClient.Get method.
+func (client *ComponentsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsClientGetOptions) (ComponentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ComponentsGetResponse{}, err
+		return ComponentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentsGetResponse{}, err
+		return ComponentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentsGetResponse{}, client.getHandleError(resp)
+		return ComponentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsGetOptions) (*policy.Request, error) {
+func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -192,7 +187,7 @@ func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -204,45 +199,38 @@ func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentsClient) getHandleResponse(resp *http.Response) (ComponentsGetResponse, error) {
-	result := ComponentsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponent); err != nil {
-		return ComponentsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentsClient) getHandleResponse(resp *http.Response) (ComponentsClientGetResponse, error) {
+	result := ComponentsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Component); err != nil {
+		return ComponentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ComponentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetPurgeStatus - Get status for an ongoing purge operation.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, resourceName string, purgeID string, options *ComponentsGetPurgeStatusOptions) (ComponentsGetPurgeStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// purgeID - In a purge status request, this is the Id of the operation the status of which is returned.
+// options - ComponentsClientGetPurgeStatusOptions contains the optional parameters for the ComponentsClient.GetPurgeStatus
+// method.
+func (client *ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, resourceName string, purgeID string, options *ComponentsClientGetPurgeStatusOptions) (ComponentsClientGetPurgeStatusResponse, error) {
 	req, err := client.getPurgeStatusCreateRequest(ctx, resourceGroupName, resourceName, purgeID, options)
 	if err != nil {
-		return ComponentsGetPurgeStatusResponse{}, err
+		return ComponentsClientGetPurgeStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentsGetPurgeStatusResponse{}, err
+		return ComponentsClientGetPurgeStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentsGetPurgeStatusResponse{}, client.getPurgeStatusHandleError(resp)
+		return ComponentsClientGetPurgeStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPurgeStatusHandleResponse(resp)
 }
 
 // getPurgeStatusCreateRequest creates the GetPurgeStatus request.
-func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, purgeID string, options *ComponentsGetPurgeStatusOptions) (*policy.Request, error) {
+func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, purgeID string, options *ComponentsClientGetPurgeStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/operations/{purgeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +248,7 @@ func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter purgeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{purgeId}", url.PathEscape(purgeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,48 +260,37 @@ func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context,
 }
 
 // getPurgeStatusHandleResponse handles the GetPurgeStatus response.
-func (client *ComponentsClient) getPurgeStatusHandleResponse(resp *http.Response) (ComponentsGetPurgeStatusResponse, error) {
-	result := ComponentsGetPurgeStatusResponse{RawResponse: resp}
+func (client *ComponentsClient) getPurgeStatusHandleResponse(resp *http.Response) (ComponentsClientGetPurgeStatusResponse, error) {
+	result := ComponentsClientGetPurgeStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentPurgeStatusResponse); err != nil {
-		return ComponentsGetPurgeStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ComponentsClientGetPurgeStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getPurgeStatusHandleError handles the GetPurgeStatus error response.
-func (client *ComponentsClient) getPurgeStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets a list of all Application Insights components within a subscription.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) List(options *ComponentsListOptions) *ComponentsListPager {
-	return &ComponentsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ComponentsClientListOptions contains the optional parameters for the ComponentsClient.List method.
+func (client *ComponentsClient) List(options *ComponentsClientListOptions) *ComponentsClientListPager {
+	return &ComponentsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ComponentsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationInsightsComponentListResult.NextLink)
+		advancer: func(ctx context.Context, resp ComponentsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ComponentListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ComponentsClient) listCreateRequest(ctx context.Context, options *ComponentsListOptions) (*policy.Request, error) {
+func (client *ComponentsClient) listCreateRequest(ctx context.Context, options *ComponentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,42 +302,33 @@ func (client *ComponentsClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *ComponentsClient) listHandleResponse(resp *http.Response) (ComponentsListResponse, error) {
-	result := ComponentsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentListResult); err != nil {
-		return ComponentsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentsClient) listHandleResponse(resp *http.Response) (ComponentsClientListResponse, error) {
+	result := ComponentsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentListResult); err != nil {
+		return ComponentsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ComponentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroup - Gets a list of Application Insights components within a resource group.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) ListByResourceGroup(resourceGroupName string, options *ComponentsListByResourceGroupOptions) *ComponentsListByResourceGroupPager {
-	return &ComponentsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ComponentsClientListByResourceGroupOptions contains the optional parameters for the ComponentsClient.ListByResourceGroup
+// method.
+func (client *ComponentsClient) ListByResourceGroup(resourceGroupName string, options *ComponentsClientListByResourceGroupOptions) *ComponentsClientListByResourceGroupPager {
+	return &ComponentsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ComponentsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationInsightsComponentListResult.NextLink)
+		advancer: func(ctx context.Context, resp ComponentsClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ComponentListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ComponentsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ComponentsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -370,7 +338,7 @@ func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -382,49 +350,41 @@ func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ComponentsClient) listByResourceGroupHandleResponse(resp *http.Response) (ComponentsListByResourceGroupResponse, error) {
-	result := ComponentsListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentListResult); err != nil {
-		return ComponentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentsClient) listByResourceGroupHandleResponse(resp *http.Response) (ComponentsClientListByResourceGroupResponse, error) {
+	result := ComponentsClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentListResult); err != nil {
+		return ComponentsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ComponentsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Purge - Purges data in an Application Insights component by a set of user-defined filters.
-// In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending
-// a single command whose predicate includes all
-// user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request
-// to verify that the results are expected.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) Purge(ctx context.Context, resourceGroupName string, resourceName string, body ComponentPurgeBody, options *ComponentsPurgeOptions) (ComponentsPurgeResponse, error) {
+// In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution
+// of purge requests by sending a single command whose predicate includes all
+// user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior
+// to using for a purge request to verify that the results are expected.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// body - Describes the body of a request to purge data in a single table of an Application Insights component
+// options - ComponentsClientPurgeOptions contains the optional parameters for the ComponentsClient.Purge method.
+func (client *ComponentsClient) Purge(ctx context.Context, resourceGroupName string, resourceName string, body ComponentPurgeBody, options *ComponentsClientPurgeOptions) (ComponentsClientPurgeResponse, error) {
 	req, err := client.purgeCreateRequest(ctx, resourceGroupName, resourceName, body, options)
 	if err != nil {
-		return ComponentsPurgeResponse{}, err
+		return ComponentsClientPurgeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentsPurgeResponse{}, err
+		return ComponentsClientPurgeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ComponentsPurgeResponse{}, client.purgeHandleError(resp)
+		return ComponentsClientPurgeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.purgeHandleResponse(resp)
 }
 
 // purgeCreateRequest creates the Purge request.
-func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, body ComponentPurgeBody, options *ComponentsPurgeOptions) (*policy.Request, error) {
+func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, body ComponentPurgeBody, options *ComponentsClientPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/purge"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -438,7 +398,7 @@ func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -450,45 +410,37 @@ func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resource
 }
 
 // purgeHandleResponse handles the Purge response.
-func (client *ComponentsClient) purgeHandleResponse(resp *http.Response) (ComponentsPurgeResponse, error) {
-	result := ComponentsPurgeResponse{RawResponse: resp}
+func (client *ComponentsClient) purgeHandleResponse(resp *http.Response) (ComponentsClientPurgeResponse, error) {
+	result := ComponentsClientPurgeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentPurgeResponse); err != nil {
-		return ComponentsPurgeResponse{}, runtime.NewResponseError(err, resp)
+		return ComponentsClientPurgeResponse{}, err
 	}
 	return result, nil
 }
 
-// purgeHandleError handles the Purge error response.
-func (client *ComponentsClient) purgeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // UpdateTags - Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
-// If the operation fails it returns a generic error.
-func (client *ComponentsClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource, options *ComponentsUpdateTagsOptions) (ComponentsUpdateTagsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// componentTags - Updated tag information to set into the component instance.
+// options - ComponentsClientUpdateTagsOptions contains the optional parameters for the ComponentsClient.UpdateTags method.
+func (client *ComponentsClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource, options *ComponentsClientUpdateTagsOptions) (ComponentsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, resourceName, componentTags, options)
 	if err != nil {
-		return ComponentsUpdateTagsResponse{}, err
+		return ComponentsClientUpdateTagsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentsUpdateTagsResponse{}, err
+		return ComponentsClientUpdateTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ComponentsUpdateTagsResponse{}, client.updateTagsHandleError(resp)
+		return ComponentsClientUpdateTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource, options *ComponentsUpdateTagsOptions) (*policy.Request, error) {
+func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource, options *ComponentsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -502,7 +454,7 @@ func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -514,22 +466,10 @@ func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, res
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *ComponentsClient) updateTagsHandleResponse(resp *http.Response) (ComponentsUpdateTagsResponse, error) {
-	result := ComponentsUpdateTagsResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponent); err != nil {
-		return ComponentsUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentsClient) updateTagsHandleResponse(resp *http.Response) (ComponentsClientUpdateTagsResponse, error) {
+	result := ComponentsClientUpdateTagsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Component); err != nil {
+		return ComponentsClientUpdateTagsResponse{}, err
 	}
 	return result, nil
-}
-
-// updateTagsHandleError handles the UpdateTags error response.
-func (client *ComponentsClient) updateTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

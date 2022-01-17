@@ -9,8 +9,8 @@
 package armnetapp
 
 const (
-	module  = "armnetapp"
-	version = "v0.1.0"
+	moduleName    = "armnetapp"
+	moduleVersion = "v0.2.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -160,8 +160,8 @@ func (c CheckQuotaNameResourceTypes) ToPtr() *CheckQuotaNameResourceTypes {
 	return &c
 }
 
-// ChownMode - This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change the ownership of the
-// file. unrestricted - Non-root users can change ownership of
+// ChownMode - This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can
+// change the ownership of the file. unrestricted - Non-root users can change ownership of
 // files that they own.
 type ChownMode string
 
@@ -208,8 +208,8 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-// EncryptionType - Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only
-// be set when creating new pool.
+// EncryptionType - Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes
+// in it. This value can only be set when creating new pool.
 type EncryptionType string
 
 const (
@@ -253,8 +253,8 @@ func (c EndpointType) ToPtr() *EndpointType {
 	return &c
 }
 
-// InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that the
-// name is already in use and is therefore unavailable.
+// InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists
+// indicates that the name is already in use and is therefore unavailable.
 type InAvailabilityReasonType string
 
 const (

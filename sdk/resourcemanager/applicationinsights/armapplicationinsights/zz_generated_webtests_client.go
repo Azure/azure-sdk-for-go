@@ -24,42 +24,54 @@ import (
 // WebTestsClient contains the methods for the WebTests group.
 // Don't use this type directly, use NewWebTestsClient() instead.
 type WebTestsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWebTestsClient creates a new instance of WebTestsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWebTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WebTestsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WebTestsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WebTestsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an Application Insights web test definition.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, webTestName string, webTestDefinition WebTest, options *WebTestsCreateOrUpdateOptions) (WebTestsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// webTestName - The name of the Application Insights webtest resource.
+// webTestDefinition - Properties that need to be specified to create or update an Application Insights web test definition.
+// options - WebTestsClientCreateOrUpdateOptions contains the optional parameters for the WebTestsClient.CreateOrUpdate method.
+func (client *WebTestsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, webTestName string, webTestDefinition WebTest, options *WebTestsClientCreateOrUpdateOptions) (WebTestsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, webTestName, webTestDefinition, options)
 	if err != nil {
-		return WebTestsCreateOrUpdateResponse{}, err
+		return WebTestsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebTestsCreateOrUpdateResponse{}, err
+		return WebTestsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WebTestsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return WebTestsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WebTestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, webTestDefinition WebTest, options *WebTestsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WebTestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, webTestDefinition WebTest, options *WebTestsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *WebTestsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter webTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webTestName}", url.PathEscape(webTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +97,36 @@ func (client *WebTestsClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WebTestsClient) createOrUpdateHandleResponse(resp *http.Response) (WebTestsCreateOrUpdateResponse, error) {
-	result := WebTestsCreateOrUpdateResponse{RawResponse: resp}
+func (client *WebTestsClient) createOrUpdateHandleResponse(resp *http.Response) (WebTestsClientCreateOrUpdateResponse, error) {
+	result := WebTestsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTest); err != nil {
-		return WebTestsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return WebTestsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WebTestsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes an Application Insights web test.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) Delete(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsDeleteOptions) (WebTestsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// webTestName - The name of the Application Insights webtest resource.
+// options - WebTestsClientDeleteOptions contains the optional parameters for the WebTestsClient.Delete method.
+func (client *WebTestsClient) Delete(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsClientDeleteOptions) (WebTestsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, webTestName, options)
 	if err != nil {
-		return WebTestsDeleteResponse{}, err
+		return WebTestsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebTestsDeleteResponse{}, err
+		return WebTestsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return WebTestsDeleteResponse{}, client.deleteHandleError(resp)
+		return WebTestsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WebTestsDeleteResponse{RawResponse: resp}, nil
+	return WebTestsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WebTestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsDeleteOptions) (*policy.Request, error) {
+func (client *WebTestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -137,7 +140,7 @@ func (client *WebTestsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webTestName}", url.PathEscape(webTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,37 +150,28 @@ func (client *WebTestsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WebTestsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get a specific Application Insights web test definition.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) Get(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsGetOptions) (WebTestsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// webTestName - The name of the Application Insights webtest resource.
+// options - WebTestsClientGetOptions contains the optional parameters for the WebTestsClient.Get method.
+func (client *WebTestsClient) Get(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsClientGetOptions) (WebTestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, webTestName, options)
 	if err != nil {
-		return WebTestsGetResponse{}, err
+		return WebTestsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebTestsGetResponse{}, err
+		return WebTestsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WebTestsGetResponse{}, client.getHandleError(resp)
+		return WebTestsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WebTestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsGetOptions) (*policy.Request, error) {
+func (client *WebTestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, options *WebTestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -191,7 +185,7 @@ func (client *WebTestsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter webTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webTestName}", url.PathEscape(webTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,48 +197,37 @@ func (client *WebTestsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *WebTestsClient) getHandleResponse(resp *http.Response) (WebTestsGetResponse, error) {
-	result := WebTestsGetResponse{RawResponse: resp}
+func (client *WebTestsClient) getHandleResponse(resp *http.Response) (WebTestsClientGetResponse, error) {
+	result := WebTestsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTest); err != nil {
-		return WebTestsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WebTestsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WebTestsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Get all Application Insights web test alerts definitions within a subscription.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) List(options *WebTestsListOptions) *WebTestsListPager {
-	return &WebTestsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - WebTestsClientListOptions contains the optional parameters for the WebTestsClient.List method.
+func (client *WebTestsClient) List(options *WebTestsClientListOptions) *WebTestsClientListPager {
+	return &WebTestsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp WebTestsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WebTestsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebTestListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WebTestsClient) listCreateRequest(ctx context.Context, options *WebTestsListOptions) (*policy.Request, error) {
+func (client *WebTestsClient) listCreateRequest(ctx context.Context, options *WebTestsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/webtests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,42 +239,34 @@ func (client *WebTestsClient) listCreateRequest(ctx context.Context, options *We
 }
 
 // listHandleResponse handles the List response.
-func (client *WebTestsClient) listHandleResponse(resp *http.Response) (WebTestsListResponse, error) {
-	result := WebTestsListResponse{RawResponse: resp}
+func (client *WebTestsClient) listHandleResponse(resp *http.Response) (WebTestsClientListResponse, error) {
+	result := WebTestsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTestListResult); err != nil {
-		return WebTestsListResponse{}, runtime.NewResponseError(err, resp)
+		return WebTestsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *WebTestsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByComponent - Get all Application Insights web tests defined for the specified component.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) ListByComponent(componentName string, resourceGroupName string, options *WebTestsListByComponentOptions) *WebTestsListByComponentPager {
-	return &WebTestsListByComponentPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// componentName - The name of the Application Insights component resource.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - WebTestsClientListByComponentOptions contains the optional parameters for the WebTestsClient.ListByComponent
+// method.
+func (client *WebTestsClient) ListByComponent(componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) *WebTestsClientListByComponentPager {
+	return &WebTestsClientListByComponentPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByComponentCreateRequest(ctx, componentName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp WebTestsListByComponentResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WebTestsClientListByComponentResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebTestListResult.NextLink)
 		},
 	}
 }
 
 // listByComponentCreateRequest creates the ListByComponent request.
-func (client *WebTestsClient) listByComponentCreateRequest(ctx context.Context, componentName string, resourceGroupName string, options *WebTestsListByComponentOptions) (*policy.Request, error) {
+func (client *WebTestsClient) listByComponentCreateRequest(ctx context.Context, componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{componentName}/webtests"
 	if componentName == "" {
 		return nil, errors.New("parameter componentName cannot be empty")
@@ -305,7 +280,7 @@ func (client *WebTestsClient) listByComponentCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -317,42 +292,33 @@ func (client *WebTestsClient) listByComponentCreateRequest(ctx context.Context, 
 }
 
 // listByComponentHandleResponse handles the ListByComponent response.
-func (client *WebTestsClient) listByComponentHandleResponse(resp *http.Response) (WebTestsListByComponentResponse, error) {
-	result := WebTestsListByComponentResponse{RawResponse: resp}
+func (client *WebTestsClient) listByComponentHandleResponse(resp *http.Response) (WebTestsClientListByComponentResponse, error) {
+	result := WebTestsClientListByComponentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTestListResult); err != nil {
-		return WebTestsListByComponentResponse{}, runtime.NewResponseError(err, resp)
+		return WebTestsClientListByComponentResponse{}, err
 	}
 	return result, nil
 }
 
-// listByComponentHandleError handles the ListByComponent error response.
-func (client *WebTestsClient) listByComponentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroup - Get all Application Insights web tests defined within a specified resource group.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) ListByResourceGroup(resourceGroupName string, options *WebTestsListByResourceGroupOptions) *WebTestsListByResourceGroupPager {
-	return &WebTestsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - WebTestsClientListByResourceGroupOptions contains the optional parameters for the WebTestsClient.ListByResourceGroup
+// method.
+func (client *WebTestsClient) ListByResourceGroup(resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) *WebTestsClientListByResourceGroupPager {
+	return &WebTestsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp WebTestsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WebTestsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebTestListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *WebTestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WebTestsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *WebTestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -362,7 +328,7 @@ func (client *WebTestsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -374,45 +340,37 @@ func (client *WebTestsClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *WebTestsClient) listByResourceGroupHandleResponse(resp *http.Response) (WebTestsListByResourceGroupResponse, error) {
-	result := WebTestsListByResourceGroupResponse{RawResponse: resp}
+func (client *WebTestsClient) listByResourceGroupHandleResponse(resp *http.Response) (WebTestsClientListByResourceGroupResponse, error) {
+	result := WebTestsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTestListResult); err != nil {
-		return WebTestsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return WebTestsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *WebTestsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // UpdateTags - Creates or updates an Application Insights web test definition.
-// If the operation fails it returns a generic error.
-func (client *WebTestsClient) UpdateTags(ctx context.Context, resourceGroupName string, webTestName string, webTestTags TagsResource, options *WebTestsUpdateTagsOptions) (WebTestsUpdateTagsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// webTestName - The name of the Application Insights webtest resource.
+// webTestTags - Updated tag information to set into the web test instance.
+// options - WebTestsClientUpdateTagsOptions contains the optional parameters for the WebTestsClient.UpdateTags method.
+func (client *WebTestsClient) UpdateTags(ctx context.Context, resourceGroupName string, webTestName string, webTestTags TagsResource, options *WebTestsClientUpdateTagsOptions) (WebTestsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, webTestName, webTestTags, options)
 	if err != nil {
-		return WebTestsUpdateTagsResponse{}, err
+		return WebTestsClientUpdateTagsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WebTestsUpdateTagsResponse{}, err
+		return WebTestsClientUpdateTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WebTestsUpdateTagsResponse{}, client.updateTagsHandleError(resp)
+		return WebTestsClientUpdateTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *WebTestsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, webTestTags TagsResource, options *WebTestsUpdateTagsOptions) (*policy.Request, error) {
+func (client *WebTestsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, webTestName string, webTestTags TagsResource, options *WebTestsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/webtests/{webTestName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -426,7 +384,7 @@ func (client *WebTestsClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter webTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webTestName}", url.PathEscape(webTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -438,22 +396,10 @@ func (client *WebTestsClient) updateTagsCreateRequest(ctx context.Context, resou
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *WebTestsClient) updateTagsHandleResponse(resp *http.Response) (WebTestsUpdateTagsResponse, error) {
-	result := WebTestsUpdateTagsResponse{RawResponse: resp}
+func (client *WebTestsClient) updateTagsHandleResponse(resp *http.Response) (WebTestsClientUpdateTagsResponse, error) {
+	result := WebTestsClientUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebTest); err != nil {
-		return WebTestsUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
+		return WebTestsClientUpdateTagsResponse{}, err
 	}
 	return result, nil
-}
-
-// updateTagsHandleError handles the UpdateTags error response.
-func (client *WebTestsClient) updateTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

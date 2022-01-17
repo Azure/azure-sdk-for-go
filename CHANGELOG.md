@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## `v61.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-09-01/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/labservices/mgmt/2021-11-15-preview/labservices`
+- `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-03-01/web`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+
+## `v61.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-08-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2020-01-13-preview/automation`
+
 ## `v61.0.0`
 
 ### New Packages
@@ -11,7 +40,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/notificationhubs/mgmt/2017-04-01/notificationhubs/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v61.0.0/services/notificationhubs/mgmt/2017-04-01/notificationhubs/CHANGELOG.md) |
 
 ## `v60.3.0`
 

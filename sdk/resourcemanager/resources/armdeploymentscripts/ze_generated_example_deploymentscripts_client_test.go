@@ -20,40 +20,34 @@ import (
 )
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_Create.json
-func ExampleDeploymentScriptsClient_BeginCreate() {
+func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<script-name>",
 		&armdeploymentscripts.AzurePowerShellScript{
-			DeploymentScript: armdeploymentscripts.DeploymentScript{
-				Identity: &armdeploymentscripts.ManagedServiceIdentity{
-					Type: armdeploymentscripts.ManagedServiceIdentityTypeUserAssigned.ToPtr(),
-					UserAssignedIdentities: map[string]*armdeploymentscripts.UserAssignedIdentity{
-						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scriptRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai": {},
-					},
+			Identity: &armdeploymentscripts.ManagedServiceIdentity{
+				Type: armdeploymentscripts.ManagedServiceIdentityType("UserAssigned").ToPtr(),
+				UserAssignedIdentities: map[string]*armdeploymentscripts.UserAssignedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scriptRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai": {},
 				},
-				Kind:     armdeploymentscripts.ScriptTypeAzurePowerShell.ToPtr(),
-				Location: to.StringPtr("<location>"),
 			},
+			Kind:     armdeploymentscripts.ScriptType("AzurePowerShell").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armdeploymentscripts.AzurePowerShellScriptProperties{
-				DeploymentScriptPropertiesBase: armdeploymentscripts.DeploymentScriptPropertiesBase{
-					CleanupPreference: armdeploymentscripts.CleanupOptionsAlways.ToPtr(),
-				},
-				ScriptConfigurationBase: armdeploymentscripts.ScriptConfigurationBase{
-					Arguments:         to.StringPtr("<arguments>"),
-					RetentionInterval: to.StringPtr("<retention-interval>"),
-					ScriptContent:     to.StringPtr("<script-content>"),
-					SupportingScriptUris: []*string{
-						to.StringPtr("https://uri1.to.supporting.script"),
-						to.StringPtr("https://uri2.to.supporting.script")},
-					Timeout: to.StringPtr("<timeout>"),
-				},
+				CleanupPreference: armdeploymentscripts.CleanupOptions("Always").ToPtr(),
+				Arguments:         to.StringPtr("<arguments>"),
+				RetentionInterval: to.StringPtr("<retention-interval>"),
+				ScriptContent:     to.StringPtr("<script-content>"),
+				SupportingScriptUris: []*string{
+					to.StringPtr("https://uri1.to.supporting.script"),
+					to.StringPtr("https://uri2.to.supporting.script")},
+				Timeout:             to.StringPtr("<timeout>"),
 				AzPowerShellVersion: to.StringPtr("<az-power-shell-version>"),
 			},
 		},
@@ -65,38 +59,38 @@ func ExampleDeploymentScriptsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeploymentScriptClassification.GetDeploymentScript().ID: %s\n", *res.GetDeploymentScript().ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_Update.json
-func ExampleDeploymentScriptsClient_Update() {
+func ExampleClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<script-name>",
-		&armdeploymentscripts.DeploymentScriptsUpdateOptions{DeploymentScript: &armdeploymentscripts.DeploymentScriptUpdateParameter{
+		&armdeploymentscripts.ClientUpdateOptions{DeploymentScript: &armdeploymentscripts.DeploymentScriptUpdateParameter{
 			Tags: map[string]*string{},
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeploymentScriptClassification.GetDeploymentScript().ID: %s\n", *res.GetDeploymentScript().ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_Get.json
-func ExampleDeploymentScriptsClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<script-name>",
@@ -104,17 +98,17 @@ func ExampleDeploymentScriptsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DeploymentScriptClassification.GetDeploymentScript().ID: %s\n", *res.GetDeploymentScript().ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_Delete.json
-func ExampleDeploymentScriptsClient_Delete() {
+func ExampleClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<script-name>",
@@ -125,75 +119,84 @@ func ExampleDeploymentScriptsClient_Delete() {
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_ListBySubscription.json
-func ExampleDeploymentScriptsClient_ListBySubscription() {
+func ExampleClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DeploymentScriptClassification.GetDeploymentScript().ID: %s\n", *v.GetDeploymentScript().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_GetLogs.json
-func ExampleDeploymentScriptsClient_GetLogs() {
+func ExampleClient_GetLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
-	_, err = client.GetLogs(ctx,
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
+	res, err := client.GetLogs(ctx,
 		"<resource-group-name>",
 		"<script-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientGetLogsResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_GetLogsDefault.json
-func ExampleDeploymentScriptsClient_GetLogsDefault() {
+func ExampleClient_GetLogsDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	res, err := client.GetLogsDefault(ctx,
 		"<resource-group-name>",
 		"<script-name>",
-		&armdeploymentscripts.DeploymentScriptsGetLogsDefaultOptions{Tail: nil})
+		&armdeploymentscripts.ClientGetLogsDefaultOptions{Tail: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScriptLog.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetLogsDefaultResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2020-10-01/examples/DeploymentScripts_ListByResourceGroup.json
-func ExampleDeploymentScriptsClient_ListByResourceGroup() {
+func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentscripts.NewDeploymentScriptsClient("<subscription-id>", cred, nil)
+	client := armdeploymentscripts.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DeploymentScriptClassification.GetDeploymentScript().ID: %s\n", *v.GetDeploymentScript().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

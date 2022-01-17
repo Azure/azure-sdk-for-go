@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,58 @@ import (
 // RecoveryPointsClient contains the methods for the RecoveryPoints group.
 // Don't use this type directly, use NewRecoveryPointsClient() instead.
 type RecoveryPointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRecoveryPointsClient creates a new instance of RecoveryPointsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecoveryPointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RecoveryPointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RecoveryPointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous operation. To know the status of the operation,
-// call the GetProtectedItemOperationResult API.
-// If the operation fails it returns the *CloudError error type.
-func (client *RecoveryPointsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *RecoveryPointsGetOptions) (RecoveryPointsGetResponse, error) {
+// Get - Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous operation.
+// To know the status of the operation, call the GetProtectedItemOperationResult API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with backed up item.
+// containerName - Container name associated with backed up item.
+// protectedItemName - Backed up item name whose backup data needs to be fetched.
+// recoveryPointID - RecoveryPointID represents the backed up data to be fetched.
+// options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
+func (client *RecoveryPointsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *RecoveryPointsClientGetOptions) (RecoveryPointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, options)
 	if err != nil {
-		return RecoveryPointsGetResponse{}, err
+		return RecoveryPointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecoveryPointsGetResponse{}, err
+		return RecoveryPointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecoveryPointsGetResponse{}, client.getHandleError(resp)
+		return RecoveryPointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *RecoveryPointsGetOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *RecoveryPointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -91,55 +105,48 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, vaultN
 		return nil, errors.New("parameter recoveryPointID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (RecoveryPointsGetResponse, error) {
-	result := RecoveryPointsGetResponse{RawResponse: resp}
+func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (RecoveryPointsClientGetResponse, error) {
+	result := RecoveryPointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPointResource); err != nil {
-		return RecoveryPointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RecoveryPointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RecoveryPointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the backup copies for the backed up item.
-// If the operation fails it returns the *CloudError error type.
-func (client *RecoveryPointsClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsListOptions) *RecoveryPointsListPager {
-	return &RecoveryPointsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the backed up item.
+// containerName - Container name associated with the backed up item.
+// protectedItemName - Backed up item whose backup copies are to be fetched.
+// options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
+func (client *RecoveryPointsClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsClientListOptions) *RecoveryPointsClientListPager {
+	return &RecoveryPointsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
 		},
-		advancer: func(ctx context.Context, resp RecoveryPointsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RecoveryPointsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoveryPointResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsListOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *RecoveryPointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -165,12 +172,12 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, vault
 		return nil, errors.New("parameter protectedItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectedItemName}", url.PathEscape(protectedItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -180,23 +187,10 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, vault
 }
 
 // listHandleResponse handles the List response.
-func (client *RecoveryPointsClient) listHandleResponse(resp *http.Response) (RecoveryPointsListResponse, error) {
-	result := RecoveryPointsListResponse{RawResponse: resp}
+func (client *RecoveryPointsClient) listHandleResponse(resp *http.Response) (RecoveryPointsClientListResponse, error) {
+	result := RecoveryPointsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryPointResourceList); err != nil {
-		return RecoveryPointsListResponse{}, runtime.NewResponseError(err, resp)
+		return RecoveryPointsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RecoveryPointsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

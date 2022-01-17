@@ -29,12 +29,16 @@ func ExampleAuthorizationsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ExpressRouteAuthorization.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,7 +59,7 @@ func ExampleAuthorizationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExpressRouteAuthorization.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AuthorizationsClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Authorizations_CreateOrUpdate.json
@@ -79,7 +83,7 @@ func ExampleAuthorizationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExpressRouteAuthorization.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AuthorizationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Authorizations_Delete.json

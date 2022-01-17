@@ -30,12 +30,12 @@ func ExampleWorkspaceManagedSQLServerBlobAuditingPoliciesClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.BlobAuditingPolicyNameDefault,
+		armsynapse.BlobAuditingPolicyName("default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerBlobAuditingPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceManagedSQLServerBlobAuditingPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateWorkspaceManagedSqlServerBlobAuditingSettingsWithAllParameters.json
@@ -49,7 +49,7 @@ func ExampleWorkspaceManagedSQLServerBlobAuditingPoliciesClient_BeginCreateOrUpd
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armsynapse.BlobAuditingPolicyNameDefault,
+		armsynapse.BlobAuditingPolicyName("default"),
 		armsynapse.ServerBlobAuditingPolicy{
 			Properties: &armsynapse.ServerBlobAuditingPolicyProperties{
 				AuditActionsAndGroups: []*string{
@@ -74,7 +74,7 @@ func ExampleWorkspaceManagedSQLServerBlobAuditingPoliciesClient_BeginCreateOrUpd
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerBlobAuditingPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerBlobAuditingSettings.json
@@ -88,12 +88,16 @@ func ExampleWorkspaceManagedSQLServerBlobAuditingPoliciesClient_ListByWorkspace(
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServerBlobAuditingPolicy.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

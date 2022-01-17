@@ -27,12 +27,16 @@ func ExampleEndpointsClient_List() {
 	client := armhybridconnectivity.NewEndpointsClient(cred, nil)
 	pager := client.List("<resource-uri>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("EndpointResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,7 +56,7 @@ func ExampleEndpointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/preview/2021-10-06-preview/examples/EndpointsPutCustom.json
@@ -66,12 +70,17 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-uri>",
 		"<endpoint-name>",
-		armhybridconnectivity.EndpointResource{},
+		armhybridconnectivity.EndpointResource{
+			Properties: &armhybridconnectivity.EndpointProperties{
+				Type:       armhybridconnectivity.Type("custom").ToPtr(),
+				ResourceID: to.StringPtr("<resource-id>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/preview/2021-10-06-preview/examples/EndpointsPatchDefault.json
@@ -85,12 +94,16 @@ func ExampleEndpointsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-uri>",
 		"<endpoint-name>",
-		armhybridconnectivity.EndpointResource{},
+		armhybridconnectivity.EndpointResource{
+			Properties: &armhybridconnectivity.EndpointProperties{
+				Type: armhybridconnectivity.Type("default").ToPtr(),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("EndpointResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.EndpointsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/preview/2021-10-06-preview/examples/EndpointsDeleteDefault.json
@@ -118,11 +131,12 @@ func ExampleEndpointsClient_ListCredentials() {
 	}
 	ctx := context.Background()
 	client := armhybridconnectivity.NewEndpointsClient(cred, nil)
-	_, err = client.ListCredentials(ctx,
+	res, err := client.ListCredentials(ctx,
 		"<resource-uri>",
 		"<endpoint-name>",
-		&armhybridconnectivity.EndpointsListCredentialsOptions{Expiresin: to.Int64Ptr(10800)})
+		&armhybridconnectivity.EndpointsClientListCredentialsOptions{Expiresin: to.Int64Ptr(10800)})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.EndpointsClientListCredentialsResult)
 }

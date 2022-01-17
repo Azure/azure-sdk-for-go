@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,63 @@ import (
 // VirtualNetworkGatewayNatRulesClient contains the methods for the VirtualNetworkGatewayNatRules group.
 // Don't use this type directly, use NewVirtualNetworkGatewayNatRulesClient() instead.
 type VirtualNetworkGatewayNatRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkGatewayNatRulesClient creates a new instance of VirtualNetworkGatewayNatRulesClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVirtualNetworkGatewayNatRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkGatewayNatRulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VirtualNetworkGatewayNatRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VirtualNetworkGatewayNatRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesBeginCreateOrUpdateOptions) (VirtualNetworkGatewayNatRulesCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing
+// nat rules.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name of the Virtual Network Gateway.
+// virtualNetworkGatewayName - The name of the gateway.
+// natRuleName - The name of the nat rule.
+// natRuleParameters - Parameters supplied to create or Update a Nat Rule.
+// options - VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayNatRulesClient.BeginCreateOrUpdate
+// method.
+func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters, options)
 	if err != nil {
-		return VirtualNetworkGatewayNatRulesCreateOrUpdatePollerResponse{}, err
+		return VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayNatRulesCreateOrUpdatePollerResponse{
+	result := VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayNatRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayNatRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayNatRulesCreateOrUpdatePollerResponse{}, err
+		return VirtualNetworkGatewayNatRulesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayNatRulesCreateOrUpdatePoller{
+	result.Poller = &VirtualNetworkGatewayNatRulesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing
+// nat rules.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +90,13 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules/{natRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +114,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 		return nil, errors.New("parameter natRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{natRuleName}", url.PathEscape(natRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +125,34 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 	return req, runtime.MarshalAsJSON(req, natRuleParameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a nat rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayNatRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesBeginDeleteOptions) (VirtualNetworkGatewayNatRulesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name of the Virtual Network Gateway.
+// virtualNetworkGatewayName - The name of the gateway.
+// natRuleName - The name of the nat rule.
+// options - VirtualNetworkGatewayNatRulesClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewayNatRulesClient.BeginDelete
+// method.
+func (client *VirtualNetworkGatewayNatRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (VirtualNetworkGatewayNatRulesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
-		return VirtualNetworkGatewayNatRulesDeletePollerResponse{}, err
+		return VirtualNetworkGatewayNatRulesClientDeletePollerResponse{}, err
 	}
-	result := VirtualNetworkGatewayNatRulesDeletePollerResponse{
+	result := VirtualNetworkGatewayNatRulesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkGatewayNatRulesClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkGatewayNatRulesClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return VirtualNetworkGatewayNatRulesDeletePollerResponse{}, err
+		return VirtualNetworkGatewayNatRulesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &VirtualNetworkGatewayNatRulesDeletePoller{
+	result.Poller = &VirtualNetworkGatewayNatRulesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a nat rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +162,13 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesBeginDeleteOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules/{natRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +186,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 		return nil, errors.New("parameter natRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{natRuleName}", url.PathEscape(natRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +197,30 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VirtualNetworkGatewayNatRulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves the details of a nat rule.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayNatRulesClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesGetOptions) (VirtualNetworkGatewayNatRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name of the Virtual Network Gateway.
+// virtualNetworkGatewayName - The name of the gateway.
+// natRuleName - The name of the nat rule.
+// options - VirtualNetworkGatewayNatRulesClientGetOptions contains the optional parameters for the VirtualNetworkGatewayNatRulesClient.Get
+// method.
+func (client *VirtualNetworkGatewayNatRulesClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientGetOptions) (VirtualNetworkGatewayNatRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, natRuleName, options)
 	if err != nil {
-		return VirtualNetworkGatewayNatRulesGetResponse{}, err
+		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualNetworkGatewayNatRulesGetResponse{}, err
+		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualNetworkGatewayNatRulesGetResponse{}, client.getHandleError(resp)
+		return VirtualNetworkGatewayNatRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesGetOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules/{natRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +238,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter natRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{natRuleName}", url.PathEscape(natRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +250,34 @@ func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.Response) (VirtualNetworkGatewayNatRulesGetResponse, error) {
-	result := VirtualNetworkGatewayNatRulesGetResponse{RawResponse: resp}
+func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.Response) (VirtualNetworkGatewayNatRulesClientGetResponse, error) {
+	result := VirtualNetworkGatewayNatRulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkGatewayNatRule); err != nil {
-		return VirtualNetworkGatewayNatRulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VirtualNetworkGatewayNatRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByVirtualNetworkGateway - Retrieves all nat rules for a particular virtual network gateway.
-// If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayNatRulesClient) ListByVirtualNetworkGateway(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayOptions) *VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayPager {
-	return &VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name of the virtual network gateway.
+// virtualNetworkGatewayName - The name of the gateway.
+// options - VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the
+// VirtualNetworkGatewayNatRulesClient.ListByVirtualNetworkGateway method.
+func (client *VirtualNetworkGatewayNatRulesClient) ListByVirtualNetworkGateway(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager {
+	return &VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByVirtualNetworkGatewayCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListVirtualNetworkGatewayNatRulesResult.NextLink)
 		},
 	}
 }
 
 // listByVirtualNetworkGatewayCreateRequest creates the ListByVirtualNetworkGateway request.
-func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayOptions) (*policy.Request, error) {
+func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +291,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCr
 		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +303,10 @@ func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCr
 }
 
 // listByVirtualNetworkGatewayHandleResponse handles the ListByVirtualNetworkGateway response.
-func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayHandleResponse(resp *http.Response) (VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayResponse, error) {
-	result := VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayResponse{RawResponse: resp}
+func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayHandleResponse(resp *http.Response) (VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, error) {
+	result := VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVirtualNetworkGatewayNatRulesResult); err != nil {
-		return VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayResponse{}, runtime.NewResponseError(err, resp)
+		return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, err
 	}
 	return result, nil
-}
-
-// listByVirtualNetworkGatewayHandleError handles the ListByVirtualNetworkGateway error response.
-func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
 func ExampleRestoresClient_BeginTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,9 +36,7 @@ func ExampleRestoresClient_BeginTrigger() {
 		"<recovery-point-id>",
 		armrecoveryservicesbackup.RestoreRequestResource{
 			Properties: &armrecoveryservicesbackup.IaasVMRestoreRequest{
-				RestoreRequest: armrecoveryservicesbackup.RestoreRequest{
-					ObjectType: to.StringPtr("<object-type>"),
-				},
+				ObjectType:            to.StringPtr("<object-type>"),
 				CreateNewCloudService: to.BoolPtr(true),
 				EncryptionDetails: &armrecoveryservicesbackup.EncryptionDetails{
 					EncryptionEnabled: to.BoolPtr(false),
@@ -49,7 +47,7 @@ func ExampleRestoresClient_BeginTrigger() {
 				},
 				OriginalStorageAccountOption: to.BoolPtr(false),
 				RecoveryPointID:              to.StringPtr("<recovery-point-id>"),
-				RecoveryType:                 armrecoveryservicesbackup.RecoveryTypeRestoreDisks.ToPtr(),
+				RecoveryType:                 armrecoveryservicesbackup.RecoveryType("RestoreDisks").ToPtr(),
 				Region:                       to.StringPtr("<region>"),
 				SourceResourceID:             to.StringPtr("<source-resource-id>"),
 				StorageAccountID:             to.StringPtr("<storage-account-id>"),

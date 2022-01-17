@@ -11,7 +11,6 @@ package armstoragecache
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // CachesClient contains the methods for the Caches group.
 // Don't use this type directly, use NewCachesClient() instead.
 type CachesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCachesClient creates a new instance of CachesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCachesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CachesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CachesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CachesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a Cache.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginCreateOrUpdateOptions) (CachesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginCreateOrUpdateOptions contains the optional parameters for the CachesClient.BeginCreateOrUpdate
+// method.
+func (client *CachesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginCreateOrUpdateOptions) (CachesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesCreateOrUpdatePollerResponse{}, err
+		return CachesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := CachesCreateOrUpdatePollerResponse{
+	result := CachesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return CachesCreateOrUpdatePollerResponse{}, err
+		return CachesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &CachesCreateOrUpdatePoller{
+	result.Poller = &CachesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Cache.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *CachesClient) createOrUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +106,7 @@ func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,42 +120,32 @@ func (client *CachesClient) createOrUpdateCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CachesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDebugInfo - Tells a Cache to write generate debug info for support to process.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginDebugInfo(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginDebugInfoOptions) (CachesDebugInfoPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginDebugInfoOptions contains the optional parameters for the CachesClient.BeginDebugInfo method.
+func (client *CachesClient) BeginDebugInfo(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDebugInfoOptions) (CachesClientDebugInfoPollerResponse, error) {
 	resp, err := client.debugInfo(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesDebugInfoPollerResponse{}, err
+		return CachesClientDebugInfoPollerResponse{}, err
 	}
-	result := CachesDebugInfoPollerResponse{
+	result := CachesClientDebugInfoPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.DebugInfo", "azure-async-operation", resp, client.pl, client.debugInfoHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.DebugInfo", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CachesDebugInfoPollerResponse{}, err
+		return CachesClientDebugInfoPollerResponse{}, err
 	}
-	result.Poller = &CachesDebugInfoPoller{
+	result.Poller = &CachesClientDebugInfoPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DebugInfo - Tells a Cache to write generate debug info for support to process.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) debugInfo(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginDebugInfoOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) debugInfo(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDebugInfoOptions) (*http.Response, error) {
 	req, err := client.debugInfoCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -153,13 +155,13 @@ func (client *CachesClient) debugInfo(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.debugInfoHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // debugInfoCreateRequest creates the DebugInfo request.
-func (client *CachesClient) debugInfoCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginDebugInfoOptions) (*policy.Request, error) {
+func (client *CachesClient) debugInfoCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDebugInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/debugInfo"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,7 +175,7 @@ func (client *CachesClient) debugInfoCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -184,42 +186,32 @@ func (client *CachesClient) debugInfoCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// debugInfoHandleError handles the DebugInfo error response.
-func (client *CachesClient) debugInfoHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Schedules a Cache for deletion.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginDeleteOptions) (CachesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginDeleteOptions contains the optional parameters for the CachesClient.BeginDelete method.
+func (client *CachesClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDeleteOptions) (CachesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesDeletePollerResponse{}, err
+		return CachesClientDeletePollerResponse{}, err
 	}
-	result := CachesDeletePollerResponse{
+	result := CachesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return CachesDeletePollerResponse{}, err
+		return CachesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &CachesDeletePoller{
+	result.Poller = &CachesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Schedules a Cache for deletion.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -229,13 +221,13 @@ func (client *CachesClient) deleteOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CachesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginDeleteOptions) (*policy.Request, error) {
+func (client *CachesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -249,7 +241,7 @@ func (client *CachesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -260,42 +252,34 @@ func (client *CachesClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CachesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginFlush - Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors returned until the flush is complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginFlushOptions) (CachesFlushPollerResponse, error) {
+// BeginFlush - Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+// returned until the flush is complete.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginFlushOptions contains the optional parameters for the CachesClient.BeginFlush method.
+func (client *CachesClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginFlushOptions) (CachesClientFlushPollerResponse, error) {
 	resp, err := client.flush(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesFlushPollerResponse{}, err
+		return CachesClientFlushPollerResponse{}, err
 	}
-	result := CachesFlushPollerResponse{
+	result := CachesClientFlushPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.Flush", "azure-async-operation", resp, client.pl, client.flushHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.Flush", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CachesFlushPollerResponse{}, err
+		return CachesClientFlushPollerResponse{}, err
 	}
-	result.Poller = &CachesFlushPoller{
+	result.Poller = &CachesClientFlushPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Flush - Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors returned until the flush is complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) flush(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginFlushOptions) (*http.Response, error) {
+// Flush - Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors returned
+// until the flush is complete.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) flush(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginFlushOptions) (*http.Response, error) {
 	req, err := client.flushCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -305,13 +289,13 @@ func (client *CachesClient) flush(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.flushHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // flushCreateRequest creates the Flush request.
-func (client *CachesClient) flushCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginFlushOptions) (*policy.Request, error) {
+func (client *CachesClient) flushCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginFlushOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/flush"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,7 +309,7 @@ func (client *CachesClient) flushCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -336,38 +320,28 @@ func (client *CachesClient) flushCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// flushHandleError handles the Flush error response.
-func (client *CachesClient) flushHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a Cache.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) Get(ctx context.Context, resourceGroupName string, cacheName string, options *CachesGetOptions) (CachesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientGetOptions contains the optional parameters for the CachesClient.Get method.
+func (client *CachesClient) Get(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientGetOptions) (CachesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesGetResponse{}, err
+		return CachesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CachesGetResponse{}, err
+		return CachesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CachesGetResponse{}, client.getHandleError(resp)
+		return CachesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CachesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesGetOptions) (*policy.Request, error) {
+func (client *CachesClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -381,7 +355,7 @@ func (client *CachesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -393,49 +367,37 @@ func (client *CachesClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *CachesClient) getHandleResponse(resp *http.Response) (CachesGetResponse, error) {
-	result := CachesGetResponse{RawResponse: resp}
+func (client *CachesClient) getHandleResponse(resp *http.Response) (CachesClientGetResponse, error) {
+	result := CachesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cache); err != nil {
-		return CachesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CachesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CachesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns all Caches the user has access to under a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) List(options *CachesListOptions) *CachesListPager {
-	return &CachesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - CachesClientListOptions contains the optional parameters for the CachesClient.List method.
+func (client *CachesClient) List(options *CachesClientListOptions) *CachesClientListPager {
+	return &CachesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp CachesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CachesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CachesListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CachesClient) listCreateRequest(ctx context.Context, options *CachesListOptions) (*policy.Request, error) {
+func (client *CachesClient) listCreateRequest(ctx context.Context, options *CachesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -447,43 +409,33 @@ func (client *CachesClient) listCreateRequest(ctx context.Context, options *Cach
 }
 
 // listHandleResponse handles the List response.
-func (client *CachesClient) listHandleResponse(resp *http.Response) (CachesListResponse, error) {
-	result := CachesListResponse{RawResponse: resp}
+func (client *CachesClient) listHandleResponse(resp *http.Response) (CachesClientListResponse, error) {
+	result := CachesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CachesListResult); err != nil {
-		return CachesListResponse{}, runtime.NewResponseError(err, resp)
+		return CachesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *CachesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Returns all Caches the user has access to under a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) ListByResourceGroup(resourceGroupName string, options *CachesListByResourceGroupOptions) *CachesListByResourceGroupPager {
-	return &CachesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// options - CachesClientListByResourceGroupOptions contains the optional parameters for the CachesClient.ListByResourceGroup
+// method.
+func (client *CachesClient) ListByResourceGroup(resourceGroupName string, options *CachesClientListByResourceGroupOptions) *CachesClientListByResourceGroupPager {
+	return &CachesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp CachesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CachesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CachesListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CachesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CachesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CachesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CachesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -493,7 +445,7 @@ func (client *CachesClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -505,50 +457,40 @@ func (client *CachesClient) listByResourceGroupCreateRequest(ctx context.Context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CachesClient) listByResourceGroupHandleResponse(resp *http.Response) (CachesListByResourceGroupResponse, error) {
-	result := CachesListByResourceGroupResponse{RawResponse: resp}
+func (client *CachesClient) listByResourceGroupHandleResponse(resp *http.Response) (CachesClientListByResourceGroupResponse, error) {
+	result := CachesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CachesListResult); err != nil {
-		return CachesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return CachesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *CachesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Tells a Stopped state Cache to transition to Active state.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginStart(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginStartOptions) (CachesStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginStartOptions contains the optional parameters for the CachesClient.BeginStart method.
+func (client *CachesClient) BeginStart(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartOptions) (CachesClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesStartPollerResponse{}, err
+		return CachesClientStartPollerResponse{}, err
 	}
-	result := CachesStartPollerResponse{
+	result := CachesClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.Start", "azure-async-operation", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.Start", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CachesStartPollerResponse{}, err
+		return CachesClientStartPollerResponse{}, err
 	}
-	result.Poller = &CachesStartPoller{
+	result.Poller = &CachesClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Tells a Stopped state Cache to transition to Active state.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) start(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) start(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -558,13 +500,13 @@ func (client *CachesClient) start(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *CachesClient) startCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginStartOptions) (*policy.Request, error) {
+func (client *CachesClient) startCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/start"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -578,7 +520,7 @@ func (client *CachesClient) startCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -589,42 +531,32 @@ func (client *CachesClient) startCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *CachesClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Tells an Active Cache to transition to Stopped state.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginStop(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginStopOptions) (CachesStopPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginStopOptions contains the optional parameters for the CachesClient.BeginStop method.
+func (client *CachesClient) BeginStop(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopOptions) (CachesClientStopPollerResponse, error) {
 	resp, err := client.stop(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesStopPollerResponse{}, err
+		return CachesClientStopPollerResponse{}, err
 	}
-	result := CachesStopPollerResponse{
+	result := CachesClientStopPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.Stop", "azure-async-operation", resp, client.pl, client.stopHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.Stop", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CachesStopPollerResponse{}, err
+		return CachesClientStopPollerResponse{}, err
 	}
-	result.Poller = &CachesStopPoller{
+	result.Poller = &CachesClientStopPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Tells an Active Cache to transition to Stopped state.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) stop(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) stop(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -634,13 +566,13 @@ func (client *CachesClient) stop(ctx context.Context, resourceGroupName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *CachesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginStopOptions) (*policy.Request, error) {
+func (client *CachesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/stop"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -654,7 +586,7 @@ func (client *CachesClient) stopCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -665,38 +597,28 @@ func (client *CachesClient) stopCreateRequest(ctx context.Context, resourceGroup
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *CachesClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a Cache instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) Update(ctx context.Context, resourceGroupName string, cacheName string, options *CachesUpdateOptions) (CachesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientUpdateOptions contains the optional parameters for the CachesClient.Update method.
+func (client *CachesClient) Update(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientUpdateOptions) (CachesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesUpdateResponse{}, err
+		return CachesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CachesUpdateResponse{}, err
+		return CachesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CachesUpdateResponse{}, client.updateHandleError(resp)
+		return CachesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CachesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesUpdateOptions) (*policy.Request, error) {
+func (client *CachesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -710,7 +632,7 @@ func (client *CachesClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -725,50 +647,41 @@ func (client *CachesClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CachesClient) updateHandleResponse(resp *http.Response) (CachesUpdateResponse, error) {
-	result := CachesUpdateResponse{RawResponse: resp}
+func (client *CachesClient) updateHandleResponse(resp *http.Response) (CachesClientUpdateResponse, error) {
+	result := CachesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cache); err != nil {
-		return CachesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CachesClientUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// updateHandleError handles the Update error response.
-func (client *CachesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpgradeFirmware - Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) BeginUpgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginUpgradeFirmwareOptions) (CachesUpgradeFirmwarePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - CachesClientBeginUpgradeFirmwareOptions contains the optional parameters for the CachesClient.BeginUpgradeFirmware
+// method.
+func (client *CachesClient) BeginUpgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginUpgradeFirmwareOptions) (CachesClientUpgradeFirmwarePollerResponse, error) {
 	resp, err := client.upgradeFirmware(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
-		return CachesUpgradeFirmwarePollerResponse{}, err
+		return CachesClientUpgradeFirmwarePollerResponse{}, err
 	}
-	result := CachesUpgradeFirmwarePollerResponse{
+	result := CachesClientUpgradeFirmwarePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CachesClient.UpgradeFirmware", "azure-async-operation", resp, client.pl, client.upgradeFirmwareHandleError)
+	pt, err := armruntime.NewPoller("CachesClient.UpgradeFirmware", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CachesUpgradeFirmwarePollerResponse{}, err
+		return CachesClientUpgradeFirmwarePollerResponse{}, err
 	}
-	result.Poller = &CachesUpgradeFirmwarePoller{
+	result.Poller = &CachesClientUpgradeFirmwarePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // UpgradeFirmware - Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
-// If the operation fails it returns the *CloudError error type.
-func (client *CachesClient) upgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginUpgradeFirmwareOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CachesClient) upgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginUpgradeFirmwareOptions) (*http.Response, error) {
 	req, err := client.upgradeFirmwareCreateRequest(ctx, resourceGroupName, cacheName, options)
 	if err != nil {
 		return nil, err
@@ -778,13 +691,13 @@ func (client *CachesClient) upgradeFirmware(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.upgradeFirmwareHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // upgradeFirmwareCreateRequest creates the UpgradeFirmware request.
-func (client *CachesClient) upgradeFirmwareCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesBeginUpgradeFirmwareOptions) (*policy.Request, error) {
+func (client *CachesClient) upgradeFirmwareCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *CachesClientBeginUpgradeFirmwareOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/upgrade"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -798,7 +711,7 @@ func (client *CachesClient) upgradeFirmwareCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -807,17 +720,4 @@ func (client *CachesClient) upgradeFirmwareCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// upgradeFirmwareHandleError handles the UpgradeFirmware error response.
-func (client *CachesClient) upgradeFirmwareHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

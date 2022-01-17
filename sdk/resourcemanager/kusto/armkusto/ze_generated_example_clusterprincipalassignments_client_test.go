@@ -27,7 +27,7 @@ func ExampleClusterPrincipalAssignmentsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClusterPrincipalAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.ClusterPrincipalAssignmentCheckNameRequest{
@@ -38,6 +38,7 @@ func ExampleClusterPrincipalAssignmentsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClusterPrincipalAssignmentsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterPrincipalAssignmentsGet.json
@@ -56,7 +57,7 @@ func ExampleClusterPrincipalAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ClusterPrincipalAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClusterPrincipalAssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterPrincipalAssignmentsCreateOrUpdate.json
@@ -74,8 +75,8 @@ func ExampleClusterPrincipalAssignmentsClient_BeginCreateOrUpdate() {
 		armkusto.ClusterPrincipalAssignment{
 			Properties: &armkusto.ClusterPrincipalProperties{
 				PrincipalID:   to.StringPtr("<principal-id>"),
-				PrincipalType: armkusto.PrincipalTypeApp.ToPtr(),
-				Role:          armkusto.ClusterPrincipalRoleAllDatabasesAdmin.ToPtr(),
+				PrincipalType: armkusto.PrincipalType("App").ToPtr(),
+				Role:          armkusto.ClusterPrincipalRole("AllDatabasesAdmin").ToPtr(),
 				TenantID:      to.StringPtr("<tenant-id>"),
 			},
 		},
@@ -87,7 +88,7 @@ func ExampleClusterPrincipalAssignmentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ClusterPrincipalAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClusterPrincipalAssignmentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterPrincipalAssignmentsDelete.json
@@ -120,11 +121,12 @@ func ExampleClusterPrincipalAssignmentsClient_List() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClusterPrincipalAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClusterPrincipalAssignmentsClientListResult)
 }

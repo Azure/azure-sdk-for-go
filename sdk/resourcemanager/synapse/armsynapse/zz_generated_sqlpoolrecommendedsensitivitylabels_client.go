@@ -24,42 +24,55 @@ import (
 // SQLPoolRecommendedSensitivityLabelsClient contains the methods for the SQLPoolRecommendedSensitivityLabels group.
 // Don't use this type directly, use NewSQLPoolRecommendedSensitivityLabelsClient() instead.
 type SQLPoolRecommendedSensitivityLabelsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolRecommendedSensitivityLabelsClient creates a new instance of SQLPoolRecommendedSensitivityLabelsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolRecommendedSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolRecommendedSensitivityLabelsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolRecommendedSensitivityLabelsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolRecommendedSensitivityLabelsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Update - Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolRecommendedSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters RecommendedSensitivityLabelUpdateList, options *SQLPoolRecommendedSensitivityLabelsUpdateOptions) (SQLPoolRecommendedSensitivityLabelsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolRecommendedSensitivityLabelsClientUpdateOptions contains the optional parameters for the SQLPoolRecommendedSensitivityLabelsClient.Update
+// method.
+func (client *SQLPoolRecommendedSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters RecommendedSensitivityLabelUpdateList, options *SQLPoolRecommendedSensitivityLabelsClientUpdateOptions) (SQLPoolRecommendedSensitivityLabelsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, parameters, options)
 	if err != nil {
-		return SQLPoolRecommendedSensitivityLabelsUpdateResponse{}, err
+		return SQLPoolRecommendedSensitivityLabelsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolRecommendedSensitivityLabelsUpdateResponse{}, err
+		return SQLPoolRecommendedSensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolRecommendedSensitivityLabelsUpdateResponse{}, client.updateHandleError(resp)
+		return SQLPoolRecommendedSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLPoolRecommendedSensitivityLabelsUpdateResponse{RawResponse: resp}, nil
+	return SQLPoolRecommendedSensitivityLabelsClientUpdateResponse{RawResponse: resp}, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SQLPoolRecommendedSensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters RecommendedSensitivityLabelUpdateList, options *SQLPoolRecommendedSensitivityLabelsUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolRecommendedSensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters RecommendedSensitivityLabelUpdateList, options *SQLPoolRecommendedSensitivityLabelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/recommendedSensitivityLabels"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,7 +90,7 @@ func (client *SQLPoolRecommendedSensitivityLabelsClient) updateCreateRequest(ctx
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,16 +98,4 @@ func (client *SQLPoolRecommendedSensitivityLabelsClient) updateCreateRequest(ctx
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SQLPoolRecommendedSensitivityLabelsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

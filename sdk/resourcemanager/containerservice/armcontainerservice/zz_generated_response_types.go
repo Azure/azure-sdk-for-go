@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// AgentPoolsCreateOrUpdatePollerResponse contains the response from method AgentPools.CreateOrUpdate.
-type AgentPoolsCreateOrUpdatePollerResponse struct {
+// AgentPoolsClientCreateOrUpdatePollerResponse contains the response from method AgentPoolsClient.CreateOrUpdate.
+type AgentPoolsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AgentPoolsCreateOrUpdatePoller
+	Poller *AgentPoolsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type AgentPoolsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AgentPoolsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsCreateOrUpdateResponse, error) {
-	respType := AgentPoolsCreateOrUpdateResponse{}
+func (l AgentPoolsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsClientCreateOrUpdateResponse, error) {
+	respType := AgentPoolsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AgentPool)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l AgentPoolsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a AgentPoolsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *AgentPoolsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AgentPoolsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AgentPoolsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a AgentPoolsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *AgentPoolsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AgentPoolsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AgentPoolsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AgentPoolsCreateOrUpdatePoller{
+	poller := &AgentPoolsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *AgentPoolsCreateOrUpdatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// AgentPoolsCreateOrUpdateResponse contains the response from method AgentPools.CreateOrUpdate.
-type AgentPoolsCreateOrUpdateResponse struct {
-	AgentPoolsCreateOrUpdateResult
+// AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.CreateOrUpdate.
+type AgentPoolsClientCreateOrUpdateResponse struct {
+	AgentPoolsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsCreateOrUpdateResult contains the result from method AgentPools.CreateOrUpdate.
-type AgentPoolsCreateOrUpdateResult struct {
+// AgentPoolsClientCreateOrUpdateResult contains the result from method AgentPoolsClient.CreateOrUpdate.
+type AgentPoolsClientCreateOrUpdateResult struct {
 	AgentPool
 }
 
-// AgentPoolsDeletePollerResponse contains the response from method AgentPools.Delete.
-type AgentPoolsDeletePollerResponse struct {
+// AgentPoolsClientDeletePollerResponse contains the response from method AgentPoolsClient.Delete.
+type AgentPoolsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AgentPoolsDeletePoller
+	Poller *AgentPoolsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type AgentPoolsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AgentPoolsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsDeleteResponse, error) {
-	respType := AgentPoolsDeleteResponse{}
+func (l AgentPoolsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsClientDeleteResponse, error) {
+	respType := AgentPoolsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l AgentPoolsDeletePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a AgentPoolsDeletePollerResponse from the provided client and resume token.
-func (l *AgentPoolsDeletePollerResponse) Resume(ctx context.Context, client *AgentPoolsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AgentPoolsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a AgentPoolsClientDeletePollerResponse from the provided client and resume token.
+func (l *AgentPoolsClientDeletePollerResponse) Resume(ctx context.Context, client *AgentPoolsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AgentPoolsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AgentPoolsDeletePoller{
+	poller := &AgentPoolsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,64 +107,64 @@ func (l *AgentPoolsDeletePollerResponse) Resume(ctx context.Context, client *Age
 	return nil
 }
 
-// AgentPoolsDeleteResponse contains the response from method AgentPools.Delete.
-type AgentPoolsDeleteResponse struct {
+// AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.Delete.
+type AgentPoolsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsGetAvailableAgentPoolVersionsResponse contains the response from method AgentPools.GetAvailableAgentPoolVersions.
-type AgentPoolsGetAvailableAgentPoolVersionsResponse struct {
-	AgentPoolsGetAvailableAgentPoolVersionsResult
+// AgentPoolsClientGetAvailableAgentPoolVersionsResponse contains the response from method AgentPoolsClient.GetAvailableAgentPoolVersions.
+type AgentPoolsClientGetAvailableAgentPoolVersionsResponse struct {
+	AgentPoolsClientGetAvailableAgentPoolVersionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsGetAvailableAgentPoolVersionsResult contains the result from method AgentPools.GetAvailableAgentPoolVersions.
-type AgentPoolsGetAvailableAgentPoolVersionsResult struct {
+// AgentPoolsClientGetAvailableAgentPoolVersionsResult contains the result from method AgentPoolsClient.GetAvailableAgentPoolVersions.
+type AgentPoolsClientGetAvailableAgentPoolVersionsResult struct {
 	AgentPoolAvailableVersions
 }
 
-// AgentPoolsGetResponse contains the response from method AgentPools.Get.
-type AgentPoolsGetResponse struct {
-	AgentPoolsGetResult
+// AgentPoolsClientGetResponse contains the response from method AgentPoolsClient.Get.
+type AgentPoolsClientGetResponse struct {
+	AgentPoolsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsGetResult contains the result from method AgentPools.Get.
-type AgentPoolsGetResult struct {
+// AgentPoolsClientGetResult contains the result from method AgentPoolsClient.Get.
+type AgentPoolsClientGetResult struct {
 	AgentPool
 }
 
-// AgentPoolsGetUpgradeProfileResponse contains the response from method AgentPools.GetUpgradeProfile.
-type AgentPoolsGetUpgradeProfileResponse struct {
-	AgentPoolsGetUpgradeProfileResult
+// AgentPoolsClientGetUpgradeProfileResponse contains the response from method AgentPoolsClient.GetUpgradeProfile.
+type AgentPoolsClientGetUpgradeProfileResponse struct {
+	AgentPoolsClientGetUpgradeProfileResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsGetUpgradeProfileResult contains the result from method AgentPools.GetUpgradeProfile.
-type AgentPoolsGetUpgradeProfileResult struct {
+// AgentPoolsClientGetUpgradeProfileResult contains the result from method AgentPoolsClient.GetUpgradeProfile.
+type AgentPoolsClientGetUpgradeProfileResult struct {
 	AgentPoolUpgradeProfile
 }
 
-// AgentPoolsListResponse contains the response from method AgentPools.List.
-type AgentPoolsListResponse struct {
-	AgentPoolsListResult
+// AgentPoolsClientListResponse contains the response from method AgentPoolsClient.List.
+type AgentPoolsClientListResponse struct {
+	AgentPoolsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsListResult contains the result from method AgentPools.List.
-type AgentPoolsListResult struct {
+// AgentPoolsClientListResult contains the result from method AgentPoolsClient.List.
+type AgentPoolsClientListResult struct {
 	AgentPoolListResult
 }
 
-// AgentPoolsUpgradeNodeImageVersionPollerResponse contains the response from method AgentPools.UpgradeNodeImageVersion.
-type AgentPoolsUpgradeNodeImageVersionPollerResponse struct {
+// AgentPoolsClientUpgradeNodeImageVersionPollerResponse contains the response from method AgentPoolsClient.UpgradeNodeImageVersion.
+type AgentPoolsClientUpgradeNodeImageVersionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AgentPoolsUpgradeNodeImageVersionPoller
+	Poller *AgentPoolsClientUpgradeNodeImageVersionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -173,8 +173,8 @@ type AgentPoolsUpgradeNodeImageVersionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AgentPoolsUpgradeNodeImageVersionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsUpgradeNodeImageVersionResponse, error) {
-	respType := AgentPoolsUpgradeNodeImageVersionResponse{}
+func (l AgentPoolsClientUpgradeNodeImageVersionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsClientUpgradeNodeImageVersionResponse, error) {
+	respType := AgentPoolsClientUpgradeNodeImageVersionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AgentPool)
 	if err != nil {
 		return respType, err
@@ -183,13 +183,13 @@ func (l AgentPoolsUpgradeNodeImageVersionPollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a AgentPoolsUpgradeNodeImageVersionPollerResponse from the provided client and resume token.
-func (l *AgentPoolsUpgradeNodeImageVersionPollerResponse) Resume(ctx context.Context, client *AgentPoolsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AgentPoolsClient.UpgradeNodeImageVersion", token, client.pl, client.upgradeNodeImageVersionHandleError)
+// Resume rehydrates a AgentPoolsClientUpgradeNodeImageVersionPollerResponse from the provided client and resume token.
+func (l *AgentPoolsClientUpgradeNodeImageVersionPollerResponse) Resume(ctx context.Context, client *AgentPoolsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AgentPoolsClient.UpgradeNodeImageVersion", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AgentPoolsUpgradeNodeImageVersionPoller{
+	poller := &AgentPoolsClientUpgradeNodeImageVersionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -201,64 +201,64 @@ func (l *AgentPoolsUpgradeNodeImageVersionPollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// AgentPoolsUpgradeNodeImageVersionResponse contains the response from method AgentPools.UpgradeNodeImageVersion.
-type AgentPoolsUpgradeNodeImageVersionResponse struct {
-	AgentPoolsUpgradeNodeImageVersionResult
+// AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.UpgradeNodeImageVersion.
+type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
+	AgentPoolsClientUpgradeNodeImageVersionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentPoolsUpgradeNodeImageVersionResult contains the result from method AgentPools.UpgradeNodeImageVersion.
-type AgentPoolsUpgradeNodeImageVersionResult struct {
+// AgentPoolsClientUpgradeNodeImageVersionResult contains the result from method AgentPoolsClient.UpgradeNodeImageVersion.
+type AgentPoolsClientUpgradeNodeImageVersionResult struct {
 	AgentPool
 }
 
-// MaintenanceConfigurationsCreateOrUpdateResponse contains the response from method MaintenanceConfigurations.CreateOrUpdate.
-type MaintenanceConfigurationsCreateOrUpdateResponse struct {
-	MaintenanceConfigurationsCreateOrUpdateResult
+// MaintenanceConfigurationsClientCreateOrUpdateResponse contains the response from method MaintenanceConfigurationsClient.CreateOrUpdate.
+type MaintenanceConfigurationsClientCreateOrUpdateResponse struct {
+	MaintenanceConfigurationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MaintenanceConfigurationsCreateOrUpdateResult contains the result from method MaintenanceConfigurations.CreateOrUpdate.
-type MaintenanceConfigurationsCreateOrUpdateResult struct {
+// MaintenanceConfigurationsClientCreateOrUpdateResult contains the result from method MaintenanceConfigurationsClient.CreateOrUpdate.
+type MaintenanceConfigurationsClientCreateOrUpdateResult struct {
 	MaintenanceConfiguration
 }
 
-// MaintenanceConfigurationsDeleteResponse contains the response from method MaintenanceConfigurations.Delete.
-type MaintenanceConfigurationsDeleteResponse struct {
+// MaintenanceConfigurationsClientDeleteResponse contains the response from method MaintenanceConfigurationsClient.Delete.
+type MaintenanceConfigurationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MaintenanceConfigurationsGetResponse contains the response from method MaintenanceConfigurations.Get.
-type MaintenanceConfigurationsGetResponse struct {
-	MaintenanceConfigurationsGetResult
+// MaintenanceConfigurationsClientGetResponse contains the response from method MaintenanceConfigurationsClient.Get.
+type MaintenanceConfigurationsClientGetResponse struct {
+	MaintenanceConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MaintenanceConfigurationsGetResult contains the result from method MaintenanceConfigurations.Get.
-type MaintenanceConfigurationsGetResult struct {
+// MaintenanceConfigurationsClientGetResult contains the result from method MaintenanceConfigurationsClient.Get.
+type MaintenanceConfigurationsClientGetResult struct {
 	MaintenanceConfiguration
 }
 
-// MaintenanceConfigurationsListByManagedClusterResponse contains the response from method MaintenanceConfigurations.ListByManagedCluster.
-type MaintenanceConfigurationsListByManagedClusterResponse struct {
-	MaintenanceConfigurationsListByManagedClusterResult
+// MaintenanceConfigurationsClientListByManagedClusterResponse contains the response from method MaintenanceConfigurationsClient.ListByManagedCluster.
+type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
+	MaintenanceConfigurationsClientListByManagedClusterResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MaintenanceConfigurationsListByManagedClusterResult contains the result from method MaintenanceConfigurations.ListByManagedCluster.
-type MaintenanceConfigurationsListByManagedClusterResult struct {
+// MaintenanceConfigurationsClientListByManagedClusterResult contains the result from method MaintenanceConfigurationsClient.ListByManagedCluster.
+type MaintenanceConfigurationsClientListByManagedClusterResult struct {
 	MaintenanceConfigurationListResult
 }
 
-// ManagedClustersCreateOrUpdatePollerResponse contains the response from method ManagedClusters.CreateOrUpdate.
-type ManagedClustersCreateOrUpdatePollerResponse struct {
+// ManagedClustersClientCreateOrUpdatePollerResponse contains the response from method ManagedClustersClient.CreateOrUpdate.
+type ManagedClustersClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersCreateOrUpdatePoller
+	Poller *ManagedClustersClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -267,8 +267,8 @@ type ManagedClustersCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersCreateOrUpdateResponse, error) {
-	respType := ManagedClustersCreateOrUpdateResponse{}
+func (l ManagedClustersClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientCreateOrUpdateResponse, error) {
+	respType := ManagedClustersClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedCluster)
 	if err != nil {
 		return respType, err
@@ -277,13 +277,13 @@ func (l ManagedClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ManagedClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ManagedClustersClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersCreateOrUpdatePoller{
+	poller := &ManagedClustersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -295,22 +295,22 @@ func (l *ManagedClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// ManagedClustersCreateOrUpdateResponse contains the response from method ManagedClusters.CreateOrUpdate.
-type ManagedClustersCreateOrUpdateResponse struct {
-	ManagedClustersCreateOrUpdateResult
+// ManagedClustersClientCreateOrUpdateResponse contains the response from method ManagedClustersClient.CreateOrUpdate.
+type ManagedClustersClientCreateOrUpdateResponse struct {
+	ManagedClustersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersCreateOrUpdateResult contains the result from method ManagedClusters.CreateOrUpdate.
-type ManagedClustersCreateOrUpdateResult struct {
+// ManagedClustersClientCreateOrUpdateResult contains the result from method ManagedClustersClient.CreateOrUpdate.
+type ManagedClustersClientCreateOrUpdateResult struct {
 	ManagedCluster
 }
 
-// ManagedClustersDeletePollerResponse contains the response from method ManagedClusters.Delete.
-type ManagedClustersDeletePollerResponse struct {
+// ManagedClustersClientDeletePollerResponse contains the response from method ManagedClustersClient.Delete.
+type ManagedClustersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersDeletePoller
+	Poller *ManagedClustersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -319,8 +319,8 @@ type ManagedClustersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersDeleteResponse, error) {
-	respType := ManagedClustersDeleteResponse{}
+func (l ManagedClustersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientDeleteResponse, error) {
+	respType := ManagedClustersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -329,13 +329,13 @@ func (l ManagedClustersDeletePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersDeletePollerResponse from the provided client and resume token.
-func (l *ManagedClustersDeletePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ManagedClustersClientDeletePollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientDeletePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersDeletePoller{
+	poller := &ManagedClustersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -347,148 +347,148 @@ func (l *ManagedClustersDeletePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// ManagedClustersDeleteResponse contains the response from method ManagedClusters.Delete.
-type ManagedClustersDeleteResponse struct {
+// ManagedClustersClientDeleteResponse contains the response from method ManagedClustersClient.Delete.
+type ManagedClustersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersGetAccessProfileResponse contains the response from method ManagedClusters.GetAccessProfile.
-type ManagedClustersGetAccessProfileResponse struct {
-	ManagedClustersGetAccessProfileResult
+// ManagedClustersClientGetAccessProfileResponse contains the response from method ManagedClustersClient.GetAccessProfile.
+type ManagedClustersClientGetAccessProfileResponse struct {
+	ManagedClustersClientGetAccessProfileResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersGetAccessProfileResult contains the result from method ManagedClusters.GetAccessProfile.
-type ManagedClustersGetAccessProfileResult struct {
+// ManagedClustersClientGetAccessProfileResult contains the result from method ManagedClustersClient.GetAccessProfile.
+type ManagedClustersClientGetAccessProfileResult struct {
 	ManagedClusterAccessProfile
 }
 
-// ManagedClustersGetCommandResultResponse contains the response from method ManagedClusters.GetCommandResult.
-type ManagedClustersGetCommandResultResponse struct {
-	ManagedClustersGetCommandResultResult
+// ManagedClustersClientGetCommandResultResponse contains the response from method ManagedClustersClient.GetCommandResult.
+type ManagedClustersClientGetCommandResultResponse struct {
+	ManagedClustersClientGetCommandResultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersGetCommandResultResult contains the result from method ManagedClusters.GetCommandResult.
-type ManagedClustersGetCommandResultResult struct {
+// ManagedClustersClientGetCommandResultResult contains the result from method ManagedClustersClient.GetCommandResult.
+type ManagedClustersClientGetCommandResultResult struct {
 	RunCommandResult
 }
 
-// ManagedClustersGetOSOptionsResponse contains the response from method ManagedClusters.GetOSOptions.
-type ManagedClustersGetOSOptionsResponse struct {
-	ManagedClustersGetOSOptionsResult
+// ManagedClustersClientGetOSOptionsResponse contains the response from method ManagedClustersClient.GetOSOptions.
+type ManagedClustersClientGetOSOptionsResponse struct {
+	ManagedClustersClientGetOSOptionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersGetOSOptionsResult contains the result from method ManagedClusters.GetOSOptions.
-type ManagedClustersGetOSOptionsResult struct {
+// ManagedClustersClientGetOSOptionsResult contains the result from method ManagedClustersClient.GetOSOptions.
+type ManagedClustersClientGetOSOptionsResult struct {
 	OSOptionProfile
 }
 
-// ManagedClustersGetResponse contains the response from method ManagedClusters.Get.
-type ManagedClustersGetResponse struct {
-	ManagedClustersGetResult
+// ManagedClustersClientGetResponse contains the response from method ManagedClustersClient.Get.
+type ManagedClustersClientGetResponse struct {
+	ManagedClustersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersGetResult contains the result from method ManagedClusters.Get.
-type ManagedClustersGetResult struct {
+// ManagedClustersClientGetResult contains the result from method ManagedClustersClient.Get.
+type ManagedClustersClientGetResult struct {
 	ManagedCluster
 }
 
-// ManagedClustersGetUpgradeProfileResponse contains the response from method ManagedClusters.GetUpgradeProfile.
-type ManagedClustersGetUpgradeProfileResponse struct {
-	ManagedClustersGetUpgradeProfileResult
+// ManagedClustersClientGetUpgradeProfileResponse contains the response from method ManagedClustersClient.GetUpgradeProfile.
+type ManagedClustersClientGetUpgradeProfileResponse struct {
+	ManagedClustersClientGetUpgradeProfileResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersGetUpgradeProfileResult contains the result from method ManagedClusters.GetUpgradeProfile.
-type ManagedClustersGetUpgradeProfileResult struct {
+// ManagedClustersClientGetUpgradeProfileResult contains the result from method ManagedClustersClient.GetUpgradeProfile.
+type ManagedClustersClientGetUpgradeProfileResult struct {
 	ManagedClusterUpgradeProfile
 }
 
-// ManagedClustersListByResourceGroupResponse contains the response from method ManagedClusters.ListByResourceGroup.
-type ManagedClustersListByResourceGroupResponse struct {
-	ManagedClustersListByResourceGroupResult
+// ManagedClustersClientListByResourceGroupResponse contains the response from method ManagedClustersClient.ListByResourceGroup.
+type ManagedClustersClientListByResourceGroupResponse struct {
+	ManagedClustersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersListByResourceGroupResult contains the result from method ManagedClusters.ListByResourceGroup.
-type ManagedClustersListByResourceGroupResult struct {
+// ManagedClustersClientListByResourceGroupResult contains the result from method ManagedClustersClient.ListByResourceGroup.
+type ManagedClustersClientListByResourceGroupResult struct {
 	ManagedClusterListResult
 }
 
-// ManagedClustersListClusterAdminCredentialsResponse contains the response from method ManagedClusters.ListClusterAdminCredentials.
-type ManagedClustersListClusterAdminCredentialsResponse struct {
-	ManagedClustersListClusterAdminCredentialsResult
+// ManagedClustersClientListClusterAdminCredentialsResponse contains the response from method ManagedClustersClient.ListClusterAdminCredentials.
+type ManagedClustersClientListClusterAdminCredentialsResponse struct {
+	ManagedClustersClientListClusterAdminCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersListClusterAdminCredentialsResult contains the result from method ManagedClusters.ListClusterAdminCredentials.
-type ManagedClustersListClusterAdminCredentialsResult struct {
+// ManagedClustersClientListClusterAdminCredentialsResult contains the result from method ManagedClustersClient.ListClusterAdminCredentials.
+type ManagedClustersClientListClusterAdminCredentialsResult struct {
 	CredentialResults
 }
 
-// ManagedClustersListClusterMonitoringUserCredentialsResponse contains the response from method ManagedClusters.ListClusterMonitoringUserCredentials.
-type ManagedClustersListClusterMonitoringUserCredentialsResponse struct {
-	ManagedClustersListClusterMonitoringUserCredentialsResult
+// ManagedClustersClientListClusterMonitoringUserCredentialsResponse contains the response from method ManagedClustersClient.ListClusterMonitoringUserCredentials.
+type ManagedClustersClientListClusterMonitoringUserCredentialsResponse struct {
+	ManagedClustersClientListClusterMonitoringUserCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersListClusterMonitoringUserCredentialsResult contains the result from method ManagedClusters.ListClusterMonitoringUserCredentials.
-type ManagedClustersListClusterMonitoringUserCredentialsResult struct {
+// ManagedClustersClientListClusterMonitoringUserCredentialsResult contains the result from method ManagedClustersClient.ListClusterMonitoringUserCredentials.
+type ManagedClustersClientListClusterMonitoringUserCredentialsResult struct {
 	CredentialResults
 }
 
-// ManagedClustersListClusterUserCredentialsResponse contains the response from method ManagedClusters.ListClusterUserCredentials.
-type ManagedClustersListClusterUserCredentialsResponse struct {
-	ManagedClustersListClusterUserCredentialsResult
+// ManagedClustersClientListClusterUserCredentialsResponse contains the response from method ManagedClustersClient.ListClusterUserCredentials.
+type ManagedClustersClientListClusterUserCredentialsResponse struct {
+	ManagedClustersClientListClusterUserCredentialsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersListClusterUserCredentialsResult contains the result from method ManagedClusters.ListClusterUserCredentials.
-type ManagedClustersListClusterUserCredentialsResult struct {
+// ManagedClustersClientListClusterUserCredentialsResult contains the result from method ManagedClustersClient.ListClusterUserCredentials.
+type ManagedClustersClientListClusterUserCredentialsResult struct {
 	CredentialResults
 }
 
-// ManagedClustersListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClusters.ListOutboundNetworkDependenciesEndpoints.
-type ManagedClustersListOutboundNetworkDependenciesEndpointsResponse struct {
-	ManagedClustersListOutboundNetworkDependenciesEndpointsResult
+// ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints.
+type ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse struct {
+	ManagedClustersClientListOutboundNetworkDependenciesEndpointsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersListOutboundNetworkDependenciesEndpointsResult contains the result from method ManagedClusters.ListOutboundNetworkDependenciesEndpoints.
-type ManagedClustersListOutboundNetworkDependenciesEndpointsResult struct {
+// ManagedClustersClientListOutboundNetworkDependenciesEndpointsResult contains the result from method ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints.
+type ManagedClustersClientListOutboundNetworkDependenciesEndpointsResult struct {
 	OutboundEnvironmentEndpointCollection
 }
 
-// ManagedClustersListResponse contains the response from method ManagedClusters.List.
-type ManagedClustersListResponse struct {
-	ManagedClustersListResult
+// ManagedClustersClientListResponse contains the response from method ManagedClustersClient.List.
+type ManagedClustersClientListResponse struct {
+	ManagedClustersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersListResult contains the result from method ManagedClusters.List.
-type ManagedClustersListResult struct {
+// ManagedClustersClientListResult contains the result from method ManagedClustersClient.List.
+type ManagedClustersClientListResult struct {
 	ManagedClusterListResult
 }
 
-// ManagedClustersResetAADProfilePollerResponse contains the response from method ManagedClusters.ResetAADProfile.
-type ManagedClustersResetAADProfilePollerResponse struct {
+// ManagedClustersClientResetAADProfilePollerResponse contains the response from method ManagedClustersClient.ResetAADProfile.
+type ManagedClustersClientResetAADProfilePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersResetAADProfilePoller
+	Poller *ManagedClustersClientResetAADProfilePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -497,8 +497,8 @@ type ManagedClustersResetAADProfilePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersResetAADProfilePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersResetAADProfileResponse, error) {
-	respType := ManagedClustersResetAADProfileResponse{}
+func (l ManagedClustersClientResetAADProfilePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientResetAADProfileResponse, error) {
+	respType := ManagedClustersClientResetAADProfileResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -507,13 +507,13 @@ func (l ManagedClustersResetAADProfilePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersResetAADProfilePollerResponse from the provided client and resume token.
-func (l *ManagedClustersResetAADProfilePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.ResetAADProfile", token, client.pl, client.resetAADProfileHandleError)
+// Resume rehydrates a ManagedClustersClientResetAADProfilePollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientResetAADProfilePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.ResetAADProfile", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersResetAADProfilePoller{
+	poller := &ManagedClustersClientResetAADProfilePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -525,16 +525,16 @@ func (l *ManagedClustersResetAADProfilePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ManagedClustersResetAADProfileResponse contains the response from method ManagedClusters.ResetAADProfile.
-type ManagedClustersResetAADProfileResponse struct {
+// ManagedClustersClientResetAADProfileResponse contains the response from method ManagedClustersClient.ResetAADProfile.
+type ManagedClustersClientResetAADProfileResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersResetServicePrincipalProfilePollerResponse contains the response from method ManagedClusters.ResetServicePrincipalProfile.
-type ManagedClustersResetServicePrincipalProfilePollerResponse struct {
+// ManagedClustersClientResetServicePrincipalProfilePollerResponse contains the response from method ManagedClustersClient.ResetServicePrincipalProfile.
+type ManagedClustersClientResetServicePrincipalProfilePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersResetServicePrincipalProfilePoller
+	Poller *ManagedClustersClientResetServicePrincipalProfilePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -543,8 +543,8 @@ type ManagedClustersResetServicePrincipalProfilePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersResetServicePrincipalProfilePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersResetServicePrincipalProfileResponse, error) {
-	respType := ManagedClustersResetServicePrincipalProfileResponse{}
+func (l ManagedClustersClientResetServicePrincipalProfilePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientResetServicePrincipalProfileResponse, error) {
+	respType := ManagedClustersClientResetServicePrincipalProfileResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -553,13 +553,14 @@ func (l ManagedClustersResetServicePrincipalProfilePollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersResetServicePrincipalProfilePollerResponse from the provided client and resume token.
-func (l *ManagedClustersResetServicePrincipalProfilePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.ResetServicePrincipalProfile", token, client.pl, client.resetServicePrincipalProfileHandleError)
+// Resume rehydrates a ManagedClustersClientResetServicePrincipalProfilePollerResponse from the provided client and resume
+// token.
+func (l *ManagedClustersClientResetServicePrincipalProfilePollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.ResetServicePrincipalProfile", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersResetServicePrincipalProfilePoller{
+	poller := &ManagedClustersClientResetServicePrincipalProfilePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -571,16 +572,16 @@ func (l *ManagedClustersResetServicePrincipalProfilePollerResponse) Resume(ctx c
 	return nil
 }
 
-// ManagedClustersResetServicePrincipalProfileResponse contains the response from method ManagedClusters.ResetServicePrincipalProfile.
-type ManagedClustersResetServicePrincipalProfileResponse struct {
+// ManagedClustersClientResetServicePrincipalProfileResponse contains the response from method ManagedClustersClient.ResetServicePrincipalProfile.
+type ManagedClustersClientResetServicePrincipalProfileResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersRotateClusterCertificatesPollerResponse contains the response from method ManagedClusters.RotateClusterCertificates.
-type ManagedClustersRotateClusterCertificatesPollerResponse struct {
+// ManagedClustersClientRotateClusterCertificatesPollerResponse contains the response from method ManagedClustersClient.RotateClusterCertificates.
+type ManagedClustersClientRotateClusterCertificatesPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersRotateClusterCertificatesPoller
+	Poller *ManagedClustersClientRotateClusterCertificatesPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -589,8 +590,8 @@ type ManagedClustersRotateClusterCertificatesPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersRotateClusterCertificatesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersRotateClusterCertificatesResponse, error) {
-	respType := ManagedClustersRotateClusterCertificatesResponse{}
+func (l ManagedClustersClientRotateClusterCertificatesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientRotateClusterCertificatesResponse, error) {
+	respType := ManagedClustersClientRotateClusterCertificatesResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -599,13 +600,13 @@ func (l ManagedClustersRotateClusterCertificatesPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersRotateClusterCertificatesPollerResponse from the provided client and resume token.
-func (l *ManagedClustersRotateClusterCertificatesPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.RotateClusterCertificates", token, client.pl, client.rotateClusterCertificatesHandleError)
+// Resume rehydrates a ManagedClustersClientRotateClusterCertificatesPollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientRotateClusterCertificatesPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.RotateClusterCertificates", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersRotateClusterCertificatesPoller{
+	poller := &ManagedClustersClientRotateClusterCertificatesPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -617,16 +618,16 @@ func (l *ManagedClustersRotateClusterCertificatesPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// ManagedClustersRotateClusterCertificatesResponse contains the response from method ManagedClusters.RotateClusterCertificates.
-type ManagedClustersRotateClusterCertificatesResponse struct {
+// ManagedClustersClientRotateClusterCertificatesResponse contains the response from method ManagedClustersClient.RotateClusterCertificates.
+type ManagedClustersClientRotateClusterCertificatesResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersRunCommandPollerResponse contains the response from method ManagedClusters.RunCommand.
-type ManagedClustersRunCommandPollerResponse struct {
+// ManagedClustersClientRunCommandPollerResponse contains the response from method ManagedClustersClient.RunCommand.
+type ManagedClustersClientRunCommandPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersRunCommandPoller
+	Poller *ManagedClustersClientRunCommandPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -635,8 +636,8 @@ type ManagedClustersRunCommandPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersRunCommandPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersRunCommandResponse, error) {
-	respType := ManagedClustersRunCommandResponse{}
+func (l ManagedClustersClientRunCommandPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientRunCommandResponse, error) {
+	respType := ManagedClustersClientRunCommandResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RunCommandResult)
 	if err != nil {
 		return respType, err
@@ -645,13 +646,13 @@ func (l ManagedClustersRunCommandPollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersRunCommandPollerResponse from the provided client and resume token.
-func (l *ManagedClustersRunCommandPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.RunCommand", token, client.pl, client.runCommandHandleError)
+// Resume rehydrates a ManagedClustersClientRunCommandPollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientRunCommandPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.RunCommand", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersRunCommandPoller{
+	poller := &ManagedClustersClientRunCommandPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -663,22 +664,22 @@ func (l *ManagedClustersRunCommandPollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ManagedClustersRunCommandResponse contains the response from method ManagedClusters.RunCommand.
-type ManagedClustersRunCommandResponse struct {
-	ManagedClustersRunCommandResult
+// ManagedClustersClientRunCommandResponse contains the response from method ManagedClustersClient.RunCommand.
+type ManagedClustersClientRunCommandResponse struct {
+	ManagedClustersClientRunCommandResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersRunCommandResult contains the result from method ManagedClusters.RunCommand.
-type ManagedClustersRunCommandResult struct {
+// ManagedClustersClientRunCommandResult contains the result from method ManagedClustersClient.RunCommand.
+type ManagedClustersClientRunCommandResult struct {
 	RunCommandResult
 }
 
-// ManagedClustersStartPollerResponse contains the response from method ManagedClusters.Start.
-type ManagedClustersStartPollerResponse struct {
+// ManagedClustersClientStartPollerResponse contains the response from method ManagedClustersClient.Start.
+type ManagedClustersClientStartPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersStartPoller
+	Poller *ManagedClustersClientStartPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -687,8 +688,8 @@ type ManagedClustersStartPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersStartResponse, error) {
-	respType := ManagedClustersStartResponse{}
+func (l ManagedClustersClientStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientStartResponse, error) {
+	respType := ManagedClustersClientStartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -697,13 +698,13 @@ func (l ManagedClustersStartPollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersStartPollerResponse from the provided client and resume token.
-func (l *ManagedClustersStartPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.Start", token, client.pl, client.startHandleError)
+// Resume rehydrates a ManagedClustersClientStartPollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientStartPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.Start", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersStartPoller{
+	poller := &ManagedClustersClientStartPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -715,16 +716,16 @@ func (l *ManagedClustersStartPollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// ManagedClustersStartResponse contains the response from method ManagedClusters.Start.
-type ManagedClustersStartResponse struct {
+// ManagedClustersClientStartResponse contains the response from method ManagedClustersClient.Start.
+type ManagedClustersClientStartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersStopPollerResponse contains the response from method ManagedClusters.Stop.
-type ManagedClustersStopPollerResponse struct {
+// ManagedClustersClientStopPollerResponse contains the response from method ManagedClustersClient.Stop.
+type ManagedClustersClientStopPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersStopPoller
+	Poller *ManagedClustersClientStopPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -733,8 +734,8 @@ type ManagedClustersStopPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersStopResponse, error) {
-	respType := ManagedClustersStopResponse{}
+func (l ManagedClustersClientStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientStopResponse, error) {
+	respType := ManagedClustersClientStopResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -743,13 +744,13 @@ func (l ManagedClustersStopPollerResponse) PollUntilDone(ctx context.Context, fr
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersStopPollerResponse from the provided client and resume token.
-func (l *ManagedClustersStopPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.Stop", token, client.pl, client.stopHandleError)
+// Resume rehydrates a ManagedClustersClientStopPollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientStopPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.Stop", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersStopPoller{
+	poller := &ManagedClustersClientStopPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -761,16 +762,16 @@ func (l *ManagedClustersStopPollerResponse) Resume(ctx context.Context, client *
 	return nil
 }
 
-// ManagedClustersStopResponse contains the response from method ManagedClusters.Stop.
-type ManagedClustersStopResponse struct {
+// ManagedClustersClientStopResponse contains the response from method ManagedClustersClient.Stop.
+type ManagedClustersClientStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersUpdateTagsPollerResponse contains the response from method ManagedClusters.UpdateTags.
-type ManagedClustersUpdateTagsPollerResponse struct {
+// ManagedClustersClientUpdateTagsPollerResponse contains the response from method ManagedClustersClient.UpdateTags.
+type ManagedClustersClientUpdateTagsPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ManagedClustersUpdateTagsPoller
+	Poller *ManagedClustersClientUpdateTagsPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -779,8 +780,8 @@ type ManagedClustersUpdateTagsPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ManagedClustersUpdateTagsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersUpdateTagsResponse, error) {
-	respType := ManagedClustersUpdateTagsResponse{}
+func (l ManagedClustersClientUpdateTagsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersClientUpdateTagsResponse, error) {
+	respType := ManagedClustersClientUpdateTagsResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedCluster)
 	if err != nil {
 		return respType, err
@@ -789,13 +790,13 @@ func (l ManagedClustersUpdateTagsPollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ManagedClustersUpdateTagsPollerResponse from the provided client and resume token.
-func (l *ManagedClustersUpdateTagsPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.UpdateTags", token, client.pl, client.updateTagsHandleError)
+// Resume rehydrates a ManagedClustersClientUpdateTagsPollerResponse from the provided client and resume token.
+func (l *ManagedClustersClientUpdateTagsPollerResponse) Resume(ctx context.Context, client *ManagedClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagedClustersClient.UpdateTags", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ManagedClustersUpdateTagsPoller{
+	poller := &ManagedClustersClientUpdateTagsPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -807,34 +808,34 @@ func (l *ManagedClustersUpdateTagsPollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ManagedClustersUpdateTagsResponse contains the response from method ManagedClusters.UpdateTags.
-type ManagedClustersUpdateTagsResponse struct {
-	ManagedClustersUpdateTagsResult
+// ManagedClustersClientUpdateTagsResponse contains the response from method ManagedClustersClient.UpdateTags.
+type ManagedClustersClientUpdateTagsResponse struct {
+	ManagedClustersClientUpdateTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagedClustersUpdateTagsResult contains the result from method ManagedClusters.UpdateTags.
-type ManagedClustersUpdateTagsResult struct {
+// ManagedClustersClientUpdateTagsResult contains the result from method ManagedClustersClient.UpdateTags.
+type ManagedClustersClientUpdateTagsResult struct {
 	ManagedCluster
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
+	Poller *PrivateEndpointConnectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -843,8 +844,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -853,13 +854,13 @@ func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -871,134 +872,134 @@ func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResult contains the result from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsUpdateResponse contains the response from method PrivateEndpointConnections.Update.
-type PrivateEndpointConnectionsUpdateResponse struct {
-	PrivateEndpointConnectionsUpdateResult
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	PrivateEndpointConnectionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsUpdateResult contains the result from method PrivateEndpointConnections.Update.
-type PrivateEndpointConnectionsUpdateResult struct {
+// PrivateEndpointConnectionsClientUpdateResult contains the result from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateLinkResourcesListResponse contains the response from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResponse struct {
-	PrivateLinkResourcesListResultEnvelope
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResponse struct {
+	PrivateLinkResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesListResultEnvelope contains the result from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResultEnvelope struct {
+// PrivateLinkResourcesClientListResult contains the result from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResult struct {
 	PrivateLinkResourcesListResult
 }
 
-// ResolvePrivateLinkServiceIDPOSTResponse contains the response from method ResolvePrivateLinkServiceID.POST.
-type ResolvePrivateLinkServiceIDPOSTResponse struct {
-	ResolvePrivateLinkServiceIDPOSTResult
+// ResolvePrivateLinkServiceIDClientPOSTResponse contains the response from method ResolvePrivateLinkServiceIDClient.POST.
+type ResolvePrivateLinkServiceIDClientPOSTResponse struct {
+	ResolvePrivateLinkServiceIDClientPOSTResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResolvePrivateLinkServiceIDPOSTResult contains the result from method ResolvePrivateLinkServiceID.POST.
-type ResolvePrivateLinkServiceIDPOSTResult struct {
+// ResolvePrivateLinkServiceIDClientPOSTResult contains the result from method ResolvePrivateLinkServiceIDClient.POST.
+type ResolvePrivateLinkServiceIDClientPOSTResult struct {
 	PrivateLinkResource
 }
 
-// SnapshotsCreateOrUpdateResponse contains the response from method Snapshots.CreateOrUpdate.
-type SnapshotsCreateOrUpdateResponse struct {
-	SnapshotsCreateOrUpdateResult
+// SnapshotsClientCreateOrUpdateResponse contains the response from method SnapshotsClient.CreateOrUpdate.
+type SnapshotsClientCreateOrUpdateResponse struct {
+	SnapshotsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotsCreateOrUpdateResult contains the result from method Snapshots.CreateOrUpdate.
-type SnapshotsCreateOrUpdateResult struct {
+// SnapshotsClientCreateOrUpdateResult contains the result from method SnapshotsClient.CreateOrUpdate.
+type SnapshotsClientCreateOrUpdateResult struct {
 	Snapshot
 }
 
-// SnapshotsDeleteResponse contains the response from method Snapshots.Delete.
-type SnapshotsDeleteResponse struct {
+// SnapshotsClientDeleteResponse contains the response from method SnapshotsClient.Delete.
+type SnapshotsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotsGetResponse contains the response from method Snapshots.Get.
-type SnapshotsGetResponse struct {
-	SnapshotsGetResult
+// SnapshotsClientGetResponse contains the response from method SnapshotsClient.Get.
+type SnapshotsClientGetResponse struct {
+	SnapshotsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotsGetResult contains the result from method Snapshots.Get.
-type SnapshotsGetResult struct {
+// SnapshotsClientGetResult contains the result from method SnapshotsClient.Get.
+type SnapshotsClientGetResult struct {
 	Snapshot
 }
 
-// SnapshotsListByResourceGroupResponse contains the response from method Snapshots.ListByResourceGroup.
-type SnapshotsListByResourceGroupResponse struct {
-	SnapshotsListByResourceGroupResult
+// SnapshotsClientListByResourceGroupResponse contains the response from method SnapshotsClient.ListByResourceGroup.
+type SnapshotsClientListByResourceGroupResponse struct {
+	SnapshotsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotsListByResourceGroupResult contains the result from method Snapshots.ListByResourceGroup.
-type SnapshotsListByResourceGroupResult struct {
+// SnapshotsClientListByResourceGroupResult contains the result from method SnapshotsClient.ListByResourceGroup.
+type SnapshotsClientListByResourceGroupResult struct {
 	SnapshotListResult
 }
 
-// SnapshotsListResponse contains the response from method Snapshots.List.
-type SnapshotsListResponse struct {
-	SnapshotsListResult
+// SnapshotsClientListResponse contains the response from method SnapshotsClient.List.
+type SnapshotsClientListResponse struct {
+	SnapshotsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotsListResult contains the result from method Snapshots.List.
-type SnapshotsListResult struct {
+// SnapshotsClientListResult contains the result from method SnapshotsClient.List.
+type SnapshotsClientListResult struct {
 	SnapshotListResult
 }
 
-// SnapshotsUpdateTagsResponse contains the response from method Snapshots.UpdateTags.
-type SnapshotsUpdateTagsResponse struct {
-	SnapshotsUpdateTagsResult
+// SnapshotsClientUpdateTagsResponse contains the response from method SnapshotsClient.UpdateTags.
+type SnapshotsClientUpdateTagsResponse struct {
+	SnapshotsClientUpdateTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SnapshotsUpdateTagsResult contains the result from method Snapshots.UpdateTags.
-type SnapshotsUpdateTagsResult struct {
+// SnapshotsClientUpdateTagsResult contains the result from method SnapshotsClient.UpdateTags.
+type SnapshotsClientUpdateTagsResult struct {
 	Snapshot
 }

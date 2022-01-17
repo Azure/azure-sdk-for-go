@@ -11,7 +11,6 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,58 @@ import (
 // DiagnosticSettingsCategoryClient contains the methods for the DiagnosticSettingsCategory group.
 // Don't use this type directly, use NewDiagnosticSettingsCategoryClient() instead.
 type DiagnosticSettingsCategoryClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticSettingsCategoryClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DiagnosticSettingsCategoryClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DiagnosticSettingsCategoryClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the diagnostic settings category for the specified resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryGetOptions) (DiagnosticSettingsCategoryGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The identifier of the resource.
+// name - The name of the diagnostic setting.
+// options - DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
+// method.
+func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryClientGetOptions) (DiagnosticSettingsCategoryClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
-		return DiagnosticSettingsCategoryGetResponse{}, err
+		return DiagnosticSettingsCategoryClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticSettingsCategoryGetResponse{}, err
+		return DiagnosticSettingsCategoryClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticSettingsCategoryGetResponse{}, client.getHandleError(resp)
+		return DiagnosticSettingsCategoryClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryGetOptions) (*policy.Request, error) {
+func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories/{name}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,49 +87,39 @@ func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryGetResponse, error) {
-	result := DiagnosticSettingsCategoryGetResponse{RawResponse: resp}
+func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryClientGetResponse, error) {
+	result := DiagnosticSettingsCategoryClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsCategoryResource); err != nil {
-		return DiagnosticSettingsCategoryGetResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticSettingsCategoryClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DiagnosticSettingsCategoryClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the diagnostic settings categories for the specified resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryListOptions) (DiagnosticSettingsCategoryListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The identifier of the resource.
+// options - DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
+// method.
+func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) (DiagnosticSettingsCategoryClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return DiagnosticSettingsCategoryListResponse{}, err
+		return DiagnosticSettingsCategoryClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticSettingsCategoryListResponse{}, err
+		return DiagnosticSettingsCategoryClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DiagnosticSettingsCategoryListResponse{}, client.listHandleError(resp)
+		return DiagnosticSettingsCategoryClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryListOptions) (*policy.Request, error) {
+func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,23 +131,10 @@ func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *DiagnosticSettingsCategoryClient) listHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryListResponse, error) {
-	result := DiagnosticSettingsCategoryListResponse{RawResponse: resp}
+func (client *DiagnosticSettingsCategoryClient) listHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryClientListResponse, error) {
+	result := DiagnosticSettingsCategoryClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsCategoryResourceCollection); err != nil {
-		return DiagnosticSettingsCategoryListResponse{}, runtime.NewResponseError(err, resp)
+		return DiagnosticSettingsCategoryClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DiagnosticSettingsCategoryClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

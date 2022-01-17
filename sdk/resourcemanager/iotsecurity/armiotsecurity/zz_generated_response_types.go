@@ -10,452 +10,452 @@ package armiotsecurity
 
 import "net/http"
 
-// AlertTypesGetResponse contains the response from method AlertTypes.Get.
-type AlertTypesGetResponse struct {
-	AlertTypesGetResult
+// AlertTypesClientGetResponse contains the response from method AlertTypesClient.Get.
+type AlertTypesClientGetResponse struct {
+	AlertTypesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AlertTypesGetResult contains the result from method AlertTypes.Get.
-type AlertTypesGetResult struct {
+// AlertTypesClientGetResult contains the result from method AlertTypesClient.Get.
+type AlertTypesClientGetResult struct {
 	AlertType
 }
 
-// AlertTypesListResponse contains the response from method AlertTypes.List.
-type AlertTypesListResponse struct {
-	AlertTypesListResult
+// AlertTypesClientListResponse contains the response from method AlertTypesClient.List.
+type AlertTypesClientListResponse struct {
+	AlertTypesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AlertTypesListResult contains the result from method AlertTypes.List.
-type AlertTypesListResult struct {
+// AlertTypesClientListResult contains the result from method AlertTypesClient.List.
+type AlertTypesClientListResult struct {
 	AlertTypeList
 }
 
-// DefenderSettingsCreateOrUpdateResponse contains the response from method DefenderSettings.CreateOrUpdate.
-type DefenderSettingsCreateOrUpdateResponse struct {
-	DefenderSettingsCreateOrUpdateResult
+// DefenderSettingsClientCreateOrUpdateResponse contains the response from method DefenderSettingsClient.CreateOrUpdate.
+type DefenderSettingsClientCreateOrUpdateResponse struct {
+	DefenderSettingsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefenderSettingsCreateOrUpdateResult contains the result from method DefenderSettings.CreateOrUpdate.
-type DefenderSettingsCreateOrUpdateResult struct {
+// DefenderSettingsClientCreateOrUpdateResult contains the result from method DefenderSettingsClient.CreateOrUpdate.
+type DefenderSettingsClientCreateOrUpdateResult struct {
 	DefenderSettingsModel
 }
 
-// DefenderSettingsDeleteResponse contains the response from method DefenderSettings.Delete.
-type DefenderSettingsDeleteResponse struct {
+// DefenderSettingsClientDeleteResponse contains the response from method DefenderSettingsClient.Delete.
+type DefenderSettingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefenderSettingsDownloadManagerActivationResponse contains the response from method DefenderSettings.DownloadManagerActivation.
-type DefenderSettingsDownloadManagerActivationResponse struct {
+// DefenderSettingsClientDownloadManagerActivationResponse contains the response from method DefenderSettingsClient.DownloadManagerActivation.
+type DefenderSettingsClientDownloadManagerActivationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefenderSettingsGetResponse contains the response from method DefenderSettings.Get.
-type DefenderSettingsGetResponse struct {
-	DefenderSettingsGetResult
+// DefenderSettingsClientGetResponse contains the response from method DefenderSettingsClient.Get.
+type DefenderSettingsClientGetResponse struct {
+	DefenderSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefenderSettingsGetResult contains the result from method DefenderSettings.Get.
-type DefenderSettingsGetResult struct {
+// DefenderSettingsClientGetResult contains the result from method DefenderSettingsClient.Get.
+type DefenderSettingsClientGetResult struct {
 	DefenderSettingsModel
 }
 
-// DefenderSettingsListResponse contains the response from method DefenderSettings.List.
-type DefenderSettingsListResponse struct {
-	DefenderSettingsListResult
+// DefenderSettingsClientListResponse contains the response from method DefenderSettingsClient.List.
+type DefenderSettingsClientListResponse struct {
+	DefenderSettingsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefenderSettingsListResult contains the result from method DefenderSettings.List.
-type DefenderSettingsListResult struct {
+// DefenderSettingsClientListResult contains the result from method DefenderSettingsClient.List.
+type DefenderSettingsClientListResult struct {
 	DefenderSettingsList
 }
 
-// DefenderSettingsPackageDownloadsResponse contains the response from method DefenderSettings.PackageDownloads.
-type DefenderSettingsPackageDownloadsResponse struct {
-	DefenderSettingsPackageDownloadsResult
+// DefenderSettingsClientPackageDownloadsResponse contains the response from method DefenderSettingsClient.PackageDownloads.
+type DefenderSettingsClientPackageDownloadsResponse struct {
+	DefenderSettingsClientPackageDownloadsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DefenderSettingsPackageDownloadsResult contains the result from method DefenderSettings.PackageDownloads.
-type DefenderSettingsPackageDownloadsResult struct {
+// DefenderSettingsClientPackageDownloadsResult contains the result from method DefenderSettingsClient.PackageDownloads.
+type DefenderSettingsClientPackageDownloadsResult struct {
 	PackageDownloads
 }
 
-// DeviceGroupsCreateOrUpdateResponse contains the response from method DeviceGroups.CreateOrUpdate.
-type DeviceGroupsCreateOrUpdateResponse struct {
-	DeviceGroupsCreateOrUpdateResult
+// DeviceGroupsClientCreateOrUpdateResponse contains the response from method DeviceGroupsClient.CreateOrUpdate.
+type DeviceGroupsClientCreateOrUpdateResponse struct {
+	DeviceGroupsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeviceGroupsCreateOrUpdateResult contains the result from method DeviceGroups.CreateOrUpdate.
-type DeviceGroupsCreateOrUpdateResult struct {
+// DeviceGroupsClientCreateOrUpdateResult contains the result from method DeviceGroupsClient.CreateOrUpdate.
+type DeviceGroupsClientCreateOrUpdateResult struct {
 	DeviceGroupModel
 }
 
-// DeviceGroupsDeleteResponse contains the response from method DeviceGroups.Delete.
-type DeviceGroupsDeleteResponse struct {
+// DeviceGroupsClientDeleteResponse contains the response from method DeviceGroupsClient.Delete.
+type DeviceGroupsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeviceGroupsGetResponse contains the response from method DeviceGroups.Get.
-type DeviceGroupsGetResponse struct {
-	DeviceGroupsGetResult
+// DeviceGroupsClientGetResponse contains the response from method DeviceGroupsClient.Get.
+type DeviceGroupsClientGetResponse struct {
+	DeviceGroupsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeviceGroupsGetResult contains the result from method DeviceGroups.Get.
-type DeviceGroupsGetResult struct {
+// DeviceGroupsClientGetResult contains the result from method DeviceGroupsClient.Get.
+type DeviceGroupsClientGetResult struct {
 	DeviceGroupModel
 }
 
-// DeviceGroupsListResponse contains the response from method DeviceGroups.List.
-type DeviceGroupsListResponse struct {
-	DeviceGroupsListResult
+// DeviceGroupsClientListResponse contains the response from method DeviceGroupsClient.List.
+type DeviceGroupsClientListResponse struct {
+	DeviceGroupsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeviceGroupsListResult contains the result from method DeviceGroups.List.
-type DeviceGroupsListResult struct {
+// DeviceGroupsClientListResult contains the result from method DeviceGroupsClient.List.
+type DeviceGroupsClientListResult struct {
 	DeviceGroupList
 }
 
-// DevicesGetResponse contains the response from method Devices.Get.
-type DevicesGetResponse struct {
-	DevicesGetResult
+// DevicesClientGetResponse contains the response from method DevicesClient.Get.
+type DevicesClientGetResponse struct {
+	DevicesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DevicesGetResult contains the result from method Devices.Get.
-type DevicesGetResult struct {
+// DevicesClientGetResult contains the result from method DevicesClient.Get.
+type DevicesClientGetResult struct {
 	DeviceModel
 }
 
-// DevicesListResponse contains the response from method Devices.List.
-type DevicesListResponse struct {
-	DevicesListResult
+// DevicesClientListResponse contains the response from method DevicesClient.List.
+type DevicesClientListResponse struct {
+	DevicesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DevicesListResult contains the result from method Devices.List.
-type DevicesListResult struct {
+// DevicesClientListResult contains the result from method DevicesClient.List.
+type DevicesClientListResult struct {
 	DeviceList
 }
 
-// IotAlertsGetResponse contains the response from method IotAlerts.Get.
-type IotAlertsGetResponse struct {
-	IotAlertsGetResult
+// IotAlertsClientGetResponse contains the response from method IotAlertsClient.Get.
+type IotAlertsClientGetResponse struct {
+	IotAlertsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotAlertsGetResult contains the result from method IotAlerts.Get.
-type IotAlertsGetResult struct {
+// IotAlertsClientGetResult contains the result from method IotAlertsClient.Get.
+type IotAlertsClientGetResult struct {
 	AlertModel
 }
 
-// IotAlertsListResponse contains the response from method IotAlerts.List.
-type IotAlertsListResponse struct {
-	IotAlertsListResult
+// IotAlertsClientListResponse contains the response from method IotAlertsClient.List.
+type IotAlertsClientListResponse struct {
+	IotAlertsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotAlertsListResult contains the result from method IotAlerts.List.
-type IotAlertsListResult struct {
+// IotAlertsClientListResult contains the result from method IotAlertsClient.List.
+type IotAlertsClientListResult struct {
 	AlertListModel
 }
 
-// IotAlertsPatchResponse contains the response from method IotAlerts.Patch.
-type IotAlertsPatchResponse struct {
-	IotAlertsPatchResult
+// IotAlertsClientPatchResponse contains the response from method IotAlertsClient.Patch.
+type IotAlertsClientPatchResponse struct {
+	IotAlertsClientPatchResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotAlertsPatchResult contains the result from method IotAlerts.Patch.
-type IotAlertsPatchResult struct {
+// IotAlertsClientPatchResult contains the result from method IotAlertsClient.Patch.
+type IotAlertsClientPatchResult struct {
 	AlertModel
 }
 
-// IotDeviceVulnerabilityGetResponse contains the response from method IotDeviceVulnerability.Get.
-type IotDeviceVulnerabilityGetResponse struct {
-	IotDeviceVulnerabilityGetResult
+// IotDeviceVulnerabilityClientGetResponse contains the response from method IotDeviceVulnerabilityClient.Get.
+type IotDeviceVulnerabilityClientGetResponse struct {
+	IotDeviceVulnerabilityClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDeviceVulnerabilityGetResult contains the result from method IotDeviceVulnerability.Get.
-type IotDeviceVulnerabilityGetResult struct {
+// IotDeviceVulnerabilityClientGetResult contains the result from method IotDeviceVulnerabilityClient.Get.
+type IotDeviceVulnerabilityClientGetResult struct {
 	DeviceVulnerabilityModel
 }
 
-// IotDeviceVulnerabilityListResponse contains the response from method IotDeviceVulnerability.List.
-type IotDeviceVulnerabilityListResponse struct {
-	IotDeviceVulnerabilityListResult
+// IotDeviceVulnerabilityClientListResponse contains the response from method IotDeviceVulnerabilityClient.List.
+type IotDeviceVulnerabilityClientListResponse struct {
+	IotDeviceVulnerabilityClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDeviceVulnerabilityListResult contains the result from method IotDeviceVulnerability.List.
-type IotDeviceVulnerabilityListResult struct {
+// IotDeviceVulnerabilityClientListResult contains the result from method IotDeviceVulnerabilityClient.List.
+type IotDeviceVulnerabilityClientListResult struct {
 	DeviceVulnerabilityListModel
 }
 
-// IotRecommendationsGetResponse contains the response from method IotRecommendations.Get.
-type IotRecommendationsGetResponse struct {
-	IotRecommendationsGetResult
+// IotRecommendationsClientGetResponse contains the response from method IotRecommendationsClient.Get.
+type IotRecommendationsClientGetResponse struct {
+	IotRecommendationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotRecommendationsGetResult contains the result from method IotRecommendations.Get.
-type IotRecommendationsGetResult struct {
+// IotRecommendationsClientGetResult contains the result from method IotRecommendationsClient.Get.
+type IotRecommendationsClientGetResult struct {
 	RecommendationModel
 }
 
-// IotRecommendationsListResponse contains the response from method IotRecommendations.List.
-type IotRecommendationsListResponse struct {
-	IotRecommendationsListResult
+// IotRecommendationsClientListResponse contains the response from method IotRecommendationsClient.List.
+type IotRecommendationsClientListResponse struct {
+	IotRecommendationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotRecommendationsListResult contains the result from method IotRecommendations.List.
-type IotRecommendationsListResult struct {
+// IotRecommendationsClientListResult contains the result from method IotRecommendationsClient.List.
+type IotRecommendationsClientListResult struct {
 	RecommendationListModel
 }
 
-// LocationsGetResponse contains the response from method Locations.Get.
-type LocationsGetResponse struct {
-	LocationsGetResult
+// LocationsClientGetResponse contains the response from method LocationsClient.Get.
+type LocationsClientGetResponse struct {
+	LocationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsGetResult contains the result from method Locations.Get.
-type LocationsGetResult struct {
+// LocationsClientGetResult contains the result from method LocationsClient.Get.
+type LocationsClientGetResult struct {
 	LocationModel
 }
 
-// LocationsListResponse contains the response from method Locations.List.
-type LocationsListResponse struct {
-	LocationsListResult
+// LocationsClientListResponse contains the response from method LocationsClient.List.
+type LocationsClientListResponse struct {
+	LocationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsListResult contains the result from method Locations.List.
-type LocationsListResult struct {
+// LocationsClientListResult contains the result from method LocationsClient.List.
+type LocationsClientListResult struct {
 	LocationList
 }
 
-// OnPremiseSensorsCreateOrUpdateResponse contains the response from method OnPremiseSensors.CreateOrUpdate.
-type OnPremiseSensorsCreateOrUpdateResponse struct {
-	OnPremiseSensorsCreateOrUpdateResult
+// OnPremiseSensorsClientCreateOrUpdateResponse contains the response from method OnPremiseSensorsClient.CreateOrUpdate.
+type OnPremiseSensorsClientCreateOrUpdateResponse struct {
+	OnPremiseSensorsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OnPremiseSensorsCreateOrUpdateResult contains the result from method OnPremiseSensors.CreateOrUpdate.
-type OnPremiseSensorsCreateOrUpdateResult struct {
+// OnPremiseSensorsClientCreateOrUpdateResult contains the result from method OnPremiseSensorsClient.CreateOrUpdate.
+type OnPremiseSensorsClientCreateOrUpdateResult struct {
 	OnPremiseSensor
 }
 
-// OnPremiseSensorsDeleteResponse contains the response from method OnPremiseSensors.Delete.
-type OnPremiseSensorsDeleteResponse struct {
+// OnPremiseSensorsClientDeleteResponse contains the response from method OnPremiseSensorsClient.Delete.
+type OnPremiseSensorsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OnPremiseSensorsDownloadActivationResponse contains the response from method OnPremiseSensors.DownloadActivation.
-type OnPremiseSensorsDownloadActivationResponse struct {
+// OnPremiseSensorsClientDownloadActivationResponse contains the response from method OnPremiseSensorsClient.DownloadActivation.
+type OnPremiseSensorsClientDownloadActivationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OnPremiseSensorsDownloadResetPasswordResponse contains the response from method OnPremiseSensors.DownloadResetPassword.
-type OnPremiseSensorsDownloadResetPasswordResponse struct {
+// OnPremiseSensorsClientDownloadResetPasswordResponse contains the response from method OnPremiseSensorsClient.DownloadResetPassword.
+type OnPremiseSensorsClientDownloadResetPasswordResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OnPremiseSensorsGetResponse contains the response from method OnPremiseSensors.Get.
-type OnPremiseSensorsGetResponse struct {
-	OnPremiseSensorsGetResult
+// OnPremiseSensorsClientGetResponse contains the response from method OnPremiseSensorsClient.Get.
+type OnPremiseSensorsClientGetResponse struct {
+	OnPremiseSensorsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OnPremiseSensorsGetResult contains the result from method OnPremiseSensors.Get.
-type OnPremiseSensorsGetResult struct {
+// OnPremiseSensorsClientGetResult contains the result from method OnPremiseSensorsClient.Get.
+type OnPremiseSensorsClientGetResult struct {
 	OnPremiseSensor
 }
 
-// OnPremiseSensorsListResponse contains the response from method OnPremiseSensors.List.
-type OnPremiseSensorsListResponse struct {
-	OnPremiseSensorsListResult
+// OnPremiseSensorsClientListResponse contains the response from method OnPremiseSensorsClient.List.
+type OnPremiseSensorsClientListResponse struct {
+	OnPremiseSensorsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OnPremiseSensorsListResult contains the result from method OnPremiseSensors.List.
-type OnPremiseSensorsListResult struct {
+// OnPremiseSensorsClientListResult contains the result from method OnPremiseSensorsClient.List.
+type OnPremiseSensorsClientListResult struct {
 	OnPremiseSensorsList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }
 
-// RecommendationTypesGetResponse contains the response from method RecommendationTypes.Get.
-type RecommendationTypesGetResponse struct {
-	RecommendationTypesGetResult
+// RecommendationTypesClientGetResponse contains the response from method RecommendationTypesClient.Get.
+type RecommendationTypesClientGetResponse struct {
+	RecommendationTypesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationTypesGetResult contains the result from method RecommendationTypes.Get.
-type RecommendationTypesGetResult struct {
+// RecommendationTypesClientGetResult contains the result from method RecommendationTypesClient.Get.
+type RecommendationTypesClientGetResult struct {
 	RecommendationType
 }
 
-// RecommendationTypesListResponse contains the response from method RecommendationTypes.List.
-type RecommendationTypesListResponse struct {
-	RecommendationTypesListResult
+// RecommendationTypesClientListResponse contains the response from method RecommendationTypesClient.List.
+type RecommendationTypesClientListResponse struct {
+	RecommendationTypesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecommendationTypesListResult contains the result from method RecommendationTypes.List.
-type RecommendationTypesListResult struct {
+// RecommendationTypesClientListResult contains the result from method RecommendationTypesClient.List.
+type RecommendationTypesClientListResult struct {
 	RecommendationTypeList
 }
 
-// SensorsCreateOrUpdateResponse contains the response from method Sensors.CreateOrUpdate.
-type SensorsCreateOrUpdateResponse struct {
-	SensorsCreateOrUpdateResult
+// SensorsClientCreateOrUpdateResponse contains the response from method SensorsClient.CreateOrUpdate.
+type SensorsClientCreateOrUpdateResponse struct {
+	SensorsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SensorsCreateOrUpdateResult contains the result from method Sensors.CreateOrUpdate.
-type SensorsCreateOrUpdateResult struct {
+// SensorsClientCreateOrUpdateResult contains the result from method SensorsClient.CreateOrUpdate.
+type SensorsClientCreateOrUpdateResult struct {
 	SensorModel
 }
 
-// SensorsDeleteResponse contains the response from method Sensors.Delete.
-type SensorsDeleteResponse struct {
+// SensorsClientDeleteResponse contains the response from method SensorsClient.Delete.
+type SensorsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SensorsDownloadActivationResponse contains the response from method Sensors.DownloadActivation.
-type SensorsDownloadActivationResponse struct {
+// SensorsClientDownloadActivationResponse contains the response from method SensorsClient.DownloadActivation.
+type SensorsClientDownloadActivationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SensorsDownloadResetPasswordResponse contains the response from method Sensors.DownloadResetPassword.
-type SensorsDownloadResetPasswordResponse struct {
+// SensorsClientDownloadResetPasswordResponse contains the response from method SensorsClient.DownloadResetPassword.
+type SensorsClientDownloadResetPasswordResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SensorsGetResponse contains the response from method Sensors.Get.
-type SensorsGetResponse struct {
-	SensorsGetResult
+// SensorsClientGetResponse contains the response from method SensorsClient.Get.
+type SensorsClientGetResponse struct {
+	SensorsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SensorsGetResult contains the result from method Sensors.Get.
-type SensorsGetResult struct {
+// SensorsClientGetResult contains the result from method SensorsClient.Get.
+type SensorsClientGetResult struct {
 	SensorModel
 }
 
-// SensorsListResponse contains the response from method Sensors.List.
-type SensorsListResponse struct {
-	SensorsListResult
+// SensorsClientListResponse contains the response from method SensorsClient.List.
+type SensorsClientListResponse struct {
+	SensorsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SensorsListResult contains the result from method Sensors.List.
-type SensorsListResult struct {
+// SensorsClientListResult contains the result from method SensorsClient.List.
+type SensorsClientListResult struct {
 	SensorsList
 }
 
-// SensorsTriggerTiPackageUpdateResponse contains the response from method Sensors.TriggerTiPackageUpdate.
-type SensorsTriggerTiPackageUpdateResponse struct {
+// SensorsClientTriggerTiPackageUpdateResponse contains the response from method SensorsClient.TriggerTiPackageUpdate.
+type SensorsClientTriggerTiPackageUpdateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SitesCreateOrUpdateResponse contains the response from method Sites.CreateOrUpdate.
-type SitesCreateOrUpdateResponse struct {
-	SitesCreateOrUpdateResult
+// SitesClientCreateOrUpdateResponse contains the response from method SitesClient.CreateOrUpdate.
+type SitesClientCreateOrUpdateResponse struct {
+	SitesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SitesCreateOrUpdateResult contains the result from method Sites.CreateOrUpdate.
-type SitesCreateOrUpdateResult struct {
+// SitesClientCreateOrUpdateResult contains the result from method SitesClient.CreateOrUpdate.
+type SitesClientCreateOrUpdateResult struct {
 	SiteModel
 }
 
-// SitesDeleteResponse contains the response from method Sites.Delete.
-type SitesDeleteResponse struct {
+// SitesClientDeleteResponse contains the response from method SitesClient.Delete.
+type SitesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SitesGetResponse contains the response from method Sites.Get.
-type SitesGetResponse struct {
-	SitesGetResult
+// SitesClientGetResponse contains the response from method SitesClient.Get.
+type SitesClientGetResponse struct {
+	SitesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SitesGetResult contains the result from method Sites.Get.
-type SitesGetResult struct {
+// SitesClientGetResult contains the result from method SitesClient.Get.
+type SitesClientGetResult struct {
 	SiteModel
 }
 
-// SitesListResponse contains the response from method Sites.List.
-type SitesListResponse struct {
-	SitesListResult
+// SitesClientListResponse contains the response from method SitesClient.List.
+type SitesClientListResponse struct {
+	SitesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SitesListResult contains the result from method Sites.List.
-type SitesListResult struct {
+// SitesClientListResult contains the result from method SitesClient.List.
+type SitesClientListResult struct {
 	SitesList
 }

@@ -34,7 +34,7 @@ func ExampleCapacitiesClient_GetDetails() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedCapacity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CapacitiesClientGetDetailsResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/createCapacity.json
@@ -49,24 +49,20 @@ func ExampleCapacitiesClient_BeginCreate() {
 		"<resource-group-name>",
 		"<dedicated-capacity-name>",
 		armpowerbidedicated.DedicatedCapacity{
-			Resource: armpowerbidedicated.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"testKey": to.StringPtr("testValue"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"testKey": to.StringPtr("testValue"),
 			},
 			Properties: &armpowerbidedicated.DedicatedCapacityProperties{
-				DedicatedCapacityMutableProperties: armpowerbidedicated.DedicatedCapacityMutableProperties{
-					Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
-						Members: []*string{
-							to.StringPtr("azsdktest@microsoft.com"),
-							to.StringPtr("azsdktest2@microsoft.com")},
-					},
+				Administration: &armpowerbidedicated.DedicatedCapacityAdministrators{
+					Members: []*string{
+						to.StringPtr("azsdktest@microsoft.com"),
+						to.StringPtr("azsdktest2@microsoft.com")},
 				},
 			},
 			SKU: &armpowerbidedicated.CapacitySKU{
 				Name: to.StringPtr("<name>"),
-				Tier: armpowerbidedicated.CapacitySKUTierPBIEAzure.ToPtr(),
+				Tier: armpowerbidedicated.CapacitySKUTier("PBIE_Azure").ToPtr(),
 			},
 		},
 		nil)
@@ -77,7 +73,7 @@ func ExampleCapacitiesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedCapacity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CapacitiesClientCreateResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/deleteCapacity.json
@@ -122,7 +118,7 @@ func ExampleCapacitiesClient_BeginUpdate() {
 			},
 			SKU: &armpowerbidedicated.CapacitySKU{
 				Name: to.StringPtr("<name>"),
-				Tier: armpowerbidedicated.CapacitySKUTierPBIEAzure.ToPtr(),
+				Tier: armpowerbidedicated.CapacitySKUTier("PBIE_Azure").ToPtr(),
 			},
 			Tags: map[string]*string{
 				"testKey": to.StringPtr("testValue"),
@@ -136,7 +132,7 @@ func ExampleCapacitiesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedCapacity.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CapacitiesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/suspendCapacity.json
@@ -189,12 +185,13 @@ func ExampleCapacitiesClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CapacitiesClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/listCapacitiesInSubscription.json
@@ -205,43 +202,12 @@ func ExampleCapacitiesClient_List() {
 	}
 	ctx := context.Background()
 	client := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/listSKUsForNew.json
-func ExampleCapacitiesClient_ListSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUs(ctx,
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/listSKUsForExisting.json
-func ExampleCapacitiesClient_ListSKUsForCapacity() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUsForCapacity(ctx,
-		"<resource-group-name>",
-		"<dedicated-capacity-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.CapacitiesClientListResult)
 }
 
 // x-ms-original-file: specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/checkNameAvailability.json
@@ -252,7 +218,7 @@ func ExampleCapacitiesClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armpowerbidedicated.NewCapacitiesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armpowerbidedicated.CheckCapacityNameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
@@ -262,4 +228,5 @@ func ExampleCapacitiesClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CapacitiesClientCheckNameAvailabilityResult)
 }

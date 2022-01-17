@@ -15,46 +15,46 @@ import (
 	"time"
 )
 
-// PowerBIEmbeddedManagementClientGetAvailableOperationsResponse contains the response from method PowerBIEmbeddedManagementClient.GetAvailableOperations.
-type PowerBIEmbeddedManagementClientGetAvailableOperationsResponse struct {
-	PowerBIEmbeddedManagementClientGetAvailableOperationsResult
+// ManagementClientGetAvailableOperationsResponse contains the response from method ManagementClient.GetAvailableOperations.
+type ManagementClientGetAvailableOperationsResponse struct {
+	ManagementClientGetAvailableOperationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PowerBIEmbeddedManagementClientGetAvailableOperationsResult contains the result from method PowerBIEmbeddedManagementClient.GetAvailableOperations.
-type PowerBIEmbeddedManagementClientGetAvailableOperationsResult struct {
+// ManagementClientGetAvailableOperationsResult contains the result from method ManagementClient.GetAvailableOperations.
+type ManagementClientGetAvailableOperationsResult struct {
 	OperationList
 }
 
-// WorkspaceCollectionsCheckNameAvailabilityResponse contains the response from method WorkspaceCollections.CheckNameAvailability.
-type WorkspaceCollectionsCheckNameAvailabilityResponse struct {
-	WorkspaceCollectionsCheckNameAvailabilityResult
+// WorkspaceCollectionsClientCheckNameAvailabilityResponse contains the response from method WorkspaceCollectionsClient.CheckNameAvailability.
+type WorkspaceCollectionsClientCheckNameAvailabilityResponse struct {
+	WorkspaceCollectionsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsCheckNameAvailabilityResult contains the result from method WorkspaceCollections.CheckNameAvailability.
-type WorkspaceCollectionsCheckNameAvailabilityResult struct {
+// WorkspaceCollectionsClientCheckNameAvailabilityResult contains the result from method WorkspaceCollectionsClient.CheckNameAvailability.
+type WorkspaceCollectionsClientCheckNameAvailabilityResult struct {
 	CheckNameResponse
 }
 
-// WorkspaceCollectionsCreateResponse contains the response from method WorkspaceCollections.Create.
-type WorkspaceCollectionsCreateResponse struct {
-	WorkspaceCollectionsCreateResult
+// WorkspaceCollectionsClientCreateResponse contains the response from method WorkspaceCollectionsClient.Create.
+type WorkspaceCollectionsClientCreateResponse struct {
+	WorkspaceCollectionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsCreateResult contains the result from method WorkspaceCollections.Create.
-type WorkspaceCollectionsCreateResult struct {
+// WorkspaceCollectionsClientCreateResult contains the result from method WorkspaceCollectionsClient.Create.
+type WorkspaceCollectionsClientCreateResult struct {
 	WorkspaceCollection
 }
 
-// WorkspaceCollectionsDeletePollerResponse contains the response from method WorkspaceCollections.Delete.
-type WorkspaceCollectionsDeletePollerResponse struct {
+// WorkspaceCollectionsClientDeletePollerResponse contains the response from method WorkspaceCollectionsClient.Delete.
+type WorkspaceCollectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WorkspaceCollectionsDeletePoller
+	Poller *WorkspaceCollectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -63,8 +63,8 @@ type WorkspaceCollectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WorkspaceCollectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspaceCollectionsDeleteResponse, error) {
-	respType := WorkspaceCollectionsDeleteResponse{}
+func (l WorkspaceCollectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspaceCollectionsClientDeleteResponse, error) {
+	respType := WorkspaceCollectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -73,13 +73,13 @@ func (l WorkspaceCollectionsDeletePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a WorkspaceCollectionsDeletePollerResponse from the provided client and resume token.
-func (l *WorkspaceCollectionsDeletePollerResponse) Resume(ctx context.Context, client *WorkspaceCollectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WorkspaceCollectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a WorkspaceCollectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *WorkspaceCollectionsClientDeletePollerResponse) Resume(ctx context.Context, client *WorkspaceCollectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WorkspaceCollectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WorkspaceCollectionsDeletePoller{
+	poller := &WorkspaceCollectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -91,98 +91,98 @@ func (l *WorkspaceCollectionsDeletePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// WorkspaceCollectionsDeleteResponse contains the response from method WorkspaceCollections.Delete.
-type WorkspaceCollectionsDeleteResponse struct {
+// WorkspaceCollectionsClientDeleteResponse contains the response from method WorkspaceCollectionsClient.Delete.
+type WorkspaceCollectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsGetAccessKeysResponse contains the response from method WorkspaceCollections.GetAccessKeys.
-type WorkspaceCollectionsGetAccessKeysResponse struct {
-	WorkspaceCollectionsGetAccessKeysResult
+// WorkspaceCollectionsClientGetAccessKeysResponse contains the response from method WorkspaceCollectionsClient.GetAccessKeys.
+type WorkspaceCollectionsClientGetAccessKeysResponse struct {
+	WorkspaceCollectionsClientGetAccessKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsGetAccessKeysResult contains the result from method WorkspaceCollections.GetAccessKeys.
-type WorkspaceCollectionsGetAccessKeysResult struct {
+// WorkspaceCollectionsClientGetAccessKeysResult contains the result from method WorkspaceCollectionsClient.GetAccessKeys.
+type WorkspaceCollectionsClientGetAccessKeysResult struct {
 	WorkspaceCollectionAccessKeys
 }
 
-// WorkspaceCollectionsGetByNameResponse contains the response from method WorkspaceCollections.GetByName.
-type WorkspaceCollectionsGetByNameResponse struct {
-	WorkspaceCollectionsGetByNameResult
+// WorkspaceCollectionsClientGetByNameResponse contains the response from method WorkspaceCollectionsClient.GetByName.
+type WorkspaceCollectionsClientGetByNameResponse struct {
+	WorkspaceCollectionsClientGetByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsGetByNameResult contains the result from method WorkspaceCollections.GetByName.
-type WorkspaceCollectionsGetByNameResult struct {
+// WorkspaceCollectionsClientGetByNameResult contains the result from method WorkspaceCollectionsClient.GetByName.
+type WorkspaceCollectionsClientGetByNameResult struct {
 	WorkspaceCollection
 }
 
-// WorkspaceCollectionsListByResourceGroupResponse contains the response from method WorkspaceCollections.ListByResourceGroup.
-type WorkspaceCollectionsListByResourceGroupResponse struct {
-	WorkspaceCollectionsListByResourceGroupResult
+// WorkspaceCollectionsClientListByResourceGroupResponse contains the response from method WorkspaceCollectionsClient.ListByResourceGroup.
+type WorkspaceCollectionsClientListByResourceGroupResponse struct {
+	WorkspaceCollectionsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsListByResourceGroupResult contains the result from method WorkspaceCollections.ListByResourceGroup.
-type WorkspaceCollectionsListByResourceGroupResult struct {
+// WorkspaceCollectionsClientListByResourceGroupResult contains the result from method WorkspaceCollectionsClient.ListByResourceGroup.
+type WorkspaceCollectionsClientListByResourceGroupResult struct {
 	WorkspaceCollectionList
 }
 
-// WorkspaceCollectionsListBySubscriptionResponse contains the response from method WorkspaceCollections.ListBySubscription.
-type WorkspaceCollectionsListBySubscriptionResponse struct {
-	WorkspaceCollectionsListBySubscriptionResult
+// WorkspaceCollectionsClientListBySubscriptionResponse contains the response from method WorkspaceCollectionsClient.ListBySubscription.
+type WorkspaceCollectionsClientListBySubscriptionResponse struct {
+	WorkspaceCollectionsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsListBySubscriptionResult contains the result from method WorkspaceCollections.ListBySubscription.
-type WorkspaceCollectionsListBySubscriptionResult struct {
+// WorkspaceCollectionsClientListBySubscriptionResult contains the result from method WorkspaceCollectionsClient.ListBySubscription.
+type WorkspaceCollectionsClientListBySubscriptionResult struct {
 	WorkspaceCollectionList
 }
 
-// WorkspaceCollectionsMigrateResponse contains the response from method WorkspaceCollections.Migrate.
-type WorkspaceCollectionsMigrateResponse struct {
+// WorkspaceCollectionsClientMigrateResponse contains the response from method WorkspaceCollectionsClient.Migrate.
+type WorkspaceCollectionsClientMigrateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsRegenerateKeyResponse contains the response from method WorkspaceCollections.RegenerateKey.
-type WorkspaceCollectionsRegenerateKeyResponse struct {
-	WorkspaceCollectionsRegenerateKeyResult
+// WorkspaceCollectionsClientRegenerateKeyResponse contains the response from method WorkspaceCollectionsClient.RegenerateKey.
+type WorkspaceCollectionsClientRegenerateKeyResponse struct {
+	WorkspaceCollectionsClientRegenerateKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsRegenerateKeyResult contains the result from method WorkspaceCollections.RegenerateKey.
-type WorkspaceCollectionsRegenerateKeyResult struct {
+// WorkspaceCollectionsClientRegenerateKeyResult contains the result from method WorkspaceCollectionsClient.RegenerateKey.
+type WorkspaceCollectionsClientRegenerateKeyResult struct {
 	WorkspaceCollectionAccessKeys
 }
 
-// WorkspaceCollectionsUpdateResponse contains the response from method WorkspaceCollections.Update.
-type WorkspaceCollectionsUpdateResponse struct {
-	WorkspaceCollectionsUpdateResult
+// WorkspaceCollectionsClientUpdateResponse contains the response from method WorkspaceCollectionsClient.Update.
+type WorkspaceCollectionsClientUpdateResponse struct {
+	WorkspaceCollectionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspaceCollectionsUpdateResult contains the result from method WorkspaceCollections.Update.
-type WorkspaceCollectionsUpdateResult struct {
+// WorkspaceCollectionsClientUpdateResult contains the result from method WorkspaceCollectionsClient.Update.
+type WorkspaceCollectionsClientUpdateResult struct {
 	WorkspaceCollection
 }
 
-// WorkspacesListResponse contains the response from method Workspaces.List.
-type WorkspacesListResponse struct {
-	WorkspacesListResult
+// WorkspacesClientListResponse contains the response from method WorkspacesClient.List.
+type WorkspacesClientListResponse struct {
+	WorkspacesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesListResult contains the result from method Workspaces.List.
-type WorkspacesListResult struct {
+// WorkspacesClientListResult contains the result from method WorkspacesClient.List.
+type WorkspacesClientListResult struct {
 	WorkspaceList
 }

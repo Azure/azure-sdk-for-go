@@ -25,13 +25,17 @@ func ExampleAgreementsClient_ListByBillingAccount() {
 	ctx := context.Background()
 	client := armbilling.NewAgreementsClient(cred, nil)
 	pager := client.ListByBillingAccount("<billing-account-name>",
-		&armbilling.AgreementsListByBillingAccountOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+		&armbilling.AgreementsClientListByBillingAccountOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Agreement.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,9 +51,9 @@ func ExampleAgreementsClient_Get() {
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
 		"<agreement-name>",
-		&armbilling.AgreementsGetOptions{Expand: nil})
+		&armbilling.AgreementsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Agreement.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AgreementsClientGetResult)
 }

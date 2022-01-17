@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DataSetsClient contains the methods for the DataSets group.
 // Don't use this type directly, use NewDataSetsClient() instead.
 type DataSetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataSetsClient creates a new instance of DataSetsClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataSetsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataSetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a DataSet
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet DataSetClassification, options *DataSetsCreateOptions) (DataSetsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share to add the data set to.
+// dataSetName - The name of the dataSet.
+// dataSet - The new data set information.
+// options - DataSetsClientCreateOptions contains the optional parameters for the DataSetsClient.Create method.
+func (client *DataSetsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet DataSetClassification, options *DataSetsClientCreateOptions) (DataSetsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, dataSetName, dataSet, options)
 	if err != nil {
-		return DataSetsCreateResponse{}, err
+		return DataSetsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSetsCreateResponse{}, err
+		return DataSetsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return DataSetsCreateResponse{}, client.createHandleError(resp)
+		return DataSetsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *DataSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet DataSetClassification, options *DataSetsCreateOptions) (*policy.Request, error) {
+func (client *DataSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet DataSetClassification, options *DataSetsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets/{dataSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *DataSetsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter dataSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataSetName}", url.PathEscape(dataSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,50 +107,42 @@ func (client *DataSetsClient) createCreateRequest(ctx context.Context, resourceG
 }
 
 // createHandleResponse handles the Create response.
-func (client *DataSetsClient) createHandleResponse(resp *http.Response) (DataSetsCreateResponse, error) {
-	result := DataSetsCreateResponse{RawResponse: resp}
+func (client *DataSetsClient) createHandleResponse(resp *http.Response) (DataSetsClientCreateResponse, error) {
+	result := DataSetsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return DataSetsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return DataSetsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *DataSetsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a DataSet in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsBeginDeleteOptions) (DataSetsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// dataSetName - The name of the dataSet.
+// options - DataSetsClientBeginDeleteOptions contains the optional parameters for the DataSetsClient.BeginDelete method.
+func (client *DataSetsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsClientBeginDeleteOptions) (DataSetsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, dataSetName, options)
 	if err != nil {
-		return DataSetsDeletePollerResponse{}, err
+		return DataSetsClientDeletePollerResponse{}, err
 	}
-	result := DataSetsDeletePollerResponse{
+	result := DataSetsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DataSetsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DataSetsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DataSetsDeletePollerResponse{}, err
+		return DataSetsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DataSetsDeletePoller{
+	result.Poller = &DataSetsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a DataSet in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DataSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, dataSetName, options)
 	if err != nil {
 		return nil, err
@@ -147,13 +152,13 @@ func (client *DataSetsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsBeginDeleteOptions) (*policy.Request, error) {
+func (client *DataSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets/{dataSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -175,7 +180,7 @@ func (client *DataSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter dataSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataSetName}", url.PathEscape(dataSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,38 +191,30 @@ func (client *DataSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataSetsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a DataSet in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsGetOptions) (DataSetsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// dataSetName - The name of the dataSet.
+// options - DataSetsClientGetOptions contains the optional parameters for the DataSetsClient.Get method.
+func (client *DataSetsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsClientGetOptions) (DataSetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, dataSetName, options)
 	if err != nil {
-		return DataSetsGetResponse{}, err
+		return DataSetsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataSetsGetResponse{}, err
+		return DataSetsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataSetsGetResponse{}, client.getHandleError(resp)
+		return DataSetsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsGetOptions) (*policy.Request, error) {
+func (client *DataSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, options *DataSetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets/{dataSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +236,7 @@ func (client *DataSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter dataSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataSetName}", url.PathEscape(dataSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,43 +248,34 @@ func (client *DataSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataSetsClient) getHandleResponse(resp *http.Response) (DataSetsGetResponse, error) {
-	result := DataSetsGetResponse{RawResponse: resp}
+func (client *DataSetsClient) getHandleResponse(resp *http.Response) (DataSetsClientGetResponse, error) {
+	result := DataSetsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return DataSetsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataSetsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataSetsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByShare - List DataSets in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *DataSetsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *DataSetsListByShareOptions) *DataSetsListBySharePager {
-	return &DataSetsListBySharePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// options - DataSetsClientListByShareOptions contains the optional parameters for the DataSetsClient.ListByShare method.
+func (client *DataSetsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *DataSetsClientListByShareOptions) *DataSetsClientListBySharePager {
+	return &DataSetsClientListBySharePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 		},
-		advancer: func(ctx context.Context, resp DataSetsListByShareResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataSetsClientListByShareResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataSetList.NextLink)
 		},
 	}
 }
 
 // listByShareCreateRequest creates the ListByShare request.
-func (client *DataSetsClient) listByShareCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *DataSetsListByShareOptions) (*policy.Request, error) {
+func (client *DataSetsClient) listByShareCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *DataSetsClientListByShareOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -305,7 +293,7 @@ func (client *DataSetsClient) listByShareCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -326,23 +314,10 @@ func (client *DataSetsClient) listByShareCreateRequest(ctx context.Context, reso
 }
 
 // listByShareHandleResponse handles the ListByShare response.
-func (client *DataSetsClient) listByShareHandleResponse(resp *http.Response) (DataSetsListByShareResponse, error) {
-	result := DataSetsListByShareResponse{RawResponse: resp}
+func (client *DataSetsClient) listByShareHandleResponse(resp *http.Response) (DataSetsClientListByShareResponse, error) {
+	result := DataSetsClientListByShareResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataSetList); err != nil {
-		return DataSetsListByShareResponse{}, runtime.NewResponseError(err, resp)
+		return DataSetsClientListByShareResponse{}, err
 	}
 	return result, nil
-}
-
-// listByShareHandleError handles the ListByShare error response.
-func (client *DataSetsClient) listByShareHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

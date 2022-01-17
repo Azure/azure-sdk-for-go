@@ -28,12 +28,16 @@ func ExampleAccountsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armdeviceupdate.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Account.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleAccountsClient_ListByResourceGroup() {
 	client := armdeviceupdate.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Account.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/Accounts/Accounts_Head.json
@@ -104,16 +112,18 @@ func ExampleAccountsClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armdeviceupdate.Account{},
+		armdeviceupdate.Account{
+			Location:   to.StringPtr("<location>"),
+			Properties: &armdeviceupdate.AccountProperties{},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/Accounts/Accounts_Delete.json
@@ -149,10 +159,8 @@ func ExampleAccountsClient_BeginUpdate() {
 		"<resource-group-name>",
 		"<account-name>",
 		armdeviceupdate.AccountUpdate{
-			TagUpdate: armdeviceupdate.TagUpdate{
-				Tags: map[string]*string{
-					"tagKey": to.StringPtr("tagValue"),
-				},
+			Tags: map[string]*string{
+				"tagKey": to.StringPtr("tagValue"),
 			},
 		},
 		nil)
@@ -163,5 +171,5 @@ func ExampleAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Account.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }

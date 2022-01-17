@@ -18,30 +18,31 @@ import (
 )
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/GenerateManifest.json
-func ExampleProviderHubClient_GenerateManifest() {
+func ExampleClient_GenerateManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderHubClient("<subscription-id>", cred, nil)
-	_, err = client.GenerateManifest(ctx,
+	client := armproviderhub.NewClient("<subscription-id>", cred, nil)
+	res, err := client.GenerateManifest(ctx,
 		"<provider-namespace>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientGenerateManifestResult)
 }
 
 // x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/CheckinManifest.json
-func ExampleProviderHubClient_CheckinManifest() {
+func ExampleClient_CheckinManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armproviderhub.NewProviderHubClient("<subscription-id>", cred, nil)
-	_, err = client.CheckinManifest(ctx,
+	client := armproviderhub.NewClient("<subscription-id>", cred, nil)
+	res, err := client.CheckinManifest(ctx,
 		"<provider-namespace>",
 		armproviderhub.CheckinManifestParams{
 			BaselineArmManifestLocation: to.StringPtr("<baseline-arm-manifest-location>"),
@@ -51,4 +52,5 @@ func ExampleProviderHubClient_CheckinManifest() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientCheckinManifestResult)
 }

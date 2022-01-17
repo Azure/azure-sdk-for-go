@@ -19,6 +19,7 @@ type (
 		queueOrTopic   string
 		cleanupOnClose func()
 		links          internal.AMQPLinks
+		retryOptions   internal.RetryOptions
 	}
 )
 
@@ -39,19 +40,39 @@ type MessageBatchOptions struct {
 // messages. Sending a batch of messages is more efficient than sending the
 // messages one at a time.
 func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptions) (*MessageBatch, error) {
-	sender, _, _, _, err := s.links.Get(ctx)
+	var lastRevision uint64
+	var batch *MessageBatch
+
+	err := internal.Retry(ctx, "send", func(ctx context.Context, args *internal.RetryFnArgs) error {
+		if args.LastErr != nil {
+			if err := s.links.RecoverIfNeeded(ctx, lastRevision, args.LastErr); err != nil {
+				return err
+			}
+		}
+
+		sender, _, _, lr, err := s.links.Get(ctx)
+
+		if err != nil {
+			return err
+		}
+
+		lastRevision = lr
+
+		maxBytes := sender.MaxMessageSize()
+
+		if options != nil && options.MaxBytes != 0 {
+			maxBytes = options.MaxBytes
+		}
+
+		batch = newMessageBatch(maxBytes)
+		return nil
+	}, nil, s.retryOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	maxBytes := sender.MaxMessageSize()
-
-	if options != nil && options.MaxBytes != 0 {
-		maxBytes = options.MaxBytes
-	}
-
-	return newMessageBatch(maxBytes), nil
+	return batch, nil
 }
 
 // SendMessage sends a Message to a queue or topic.
@@ -59,13 +80,25 @@ func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendMessage)
 	defer span.End()
 
-	sender, _, _, _, err := s.links.Get(ctx)
+	var lastRevision uint64
 
-	if err != nil {
-		return err
-	}
+	return internal.Retry(ctx, "send", func(ctx context.Context, args *internal.RetryFnArgs) error {
+		if args.LastErr != nil {
+			if err := s.links.RecoverIfNeeded(ctx, lastRevision, args.LastErr); err != nil {
+				return err
+			}
+		}
 
-	return sender.Send(ctx, message.toAMQPMessage())
+		sender, _, _, lr, err := s.links.Get(ctx)
+
+		if err != nil {
+			return err
+		}
+
+		lastRevision = lr
+
+		return sender.Send(ctx, message.toAMQPMessage())
+	}, nil, s.retryOptions)
 }
 
 // SendMessageBatch sends a MessageBatch to a queue or topic.
@@ -74,13 +107,25 @@ func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) erro
 	ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendBatch)
 	defer span.End()
 
-	sender, _, _, _, err := s.links.Get(ctx)
+	var lastRevision uint64
 
-	if err != nil {
-		return err
-	}
+	return internal.Retry(ctx, "send", func(ctx context.Context, args *internal.RetryFnArgs) error {
+		if args.LastErr != nil {
+			if err := s.links.RecoverIfNeeded(ctx, lastRevision, args.LastErr); err != nil {
+				return err
+			}
+		}
 
-	return sender.Send(ctx, batch.toAMQPMessage())
+		sender, _, _, lr, err := s.links.Get(ctx)
+
+		if err != nil {
+			return err
+		}
+
+		lastRevision = lr
+
+		return sender.Send(ctx, batch.toAMQPMessage())
+	}, nil, s.retryOptions)
 }
 
 // ScheduleMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
@@ -143,6 +188,7 @@ func newSender(ns internal.NamespaceWithNewAMQPLinks, queueOrTopic string, clean
 	sender := &Sender{
 		queueOrTopic:   queueOrTopic,
 		cleanupOnClose: cleanupOnClose,
+		retryOptions:   internal.RetryOptions{},
 	}
 
 	sender.links = ns.NewAMQPLinks(queueOrTopic, sender.createSenderLink)

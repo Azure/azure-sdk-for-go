@@ -20,70 +20,72 @@ import (
 )
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/cancelSubscription.json
-func ExampleSubscriptionClient_Cancel() {
+func ExampleClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionClient(cred, nil)
-	_, err = client.Cancel(ctx,
+	client := armsubscription.NewClient(cred, nil)
+	res, err := client.Cancel(ctx,
 		"<subscription-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientCancelResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/renameSubscription.json
-func ExampleSubscriptionClient_Rename() {
+func ExampleClient_Rename() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionClient(cred, nil)
-	_, err = client.Rename(ctx,
+	client := armsubscription.NewClient(cred, nil)
+	res, err := client.Rename(ctx,
 		"<subscription-id>",
-		armsubscription.SubscriptionName{
+		armsubscription.Name{
 			SubscriptionName: to.StringPtr("<subscription-name>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientRenameResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/enableSubscription.json
-func ExampleSubscriptionClient_Enable() {
+func ExampleClient_Enable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionClient(cred, nil)
-	_, err = client.Enable(ctx,
+	client := armsubscription.NewClient(cred, nil)
+	res, err := client.Enable(ctx,
 		"<subscription-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientEnableResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/acceptSubscriptionOwnership.json
-func ExampleSubscriptionClient_BeginAcceptOwnership() {
+func ExampleClient_BeginAcceptOwnership() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionClient(cred, nil)
+	client := armsubscription.NewClient(cred, nil)
 	poller, err := client.BeginAcceptOwnership(ctx,
 		"<subscription-id>",
 		armsubscription.AcceptOwnershipRequest{
 			Properties: &armsubscription.AcceptOwnershipRequestProperties{
-				DisplayName:       to.StringPtr("<display-name>"),
-				ManagementGroupID: to.StringPtr("<management-group-id>"),
+				DisplayName: to.StringPtr("<display-name>"),
 				Tags: map[string]*string{
 					"tag1": to.StringPtr("Messi"),
 					"tag2": to.StringPtr("Ronaldo"),
@@ -102,17 +104,18 @@ func ExampleSubscriptionClient_BeginAcceptOwnership() {
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/acceptOwnershipStatus.json
-func ExampleSubscriptionClient_AcceptOwnershipStatus() {
+func ExampleClient_AcceptOwnershipStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsubscription.NewSubscriptionClient(cred, nil)
-	_, err = client.AcceptOwnershipStatus(ctx,
+	client := armsubscription.NewClient(cred, nil)
+	res, err := client.AcceptOwnershipStatus(ctx,
 		"<subscription-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientAcceptOwnershipStatusResult)
 }

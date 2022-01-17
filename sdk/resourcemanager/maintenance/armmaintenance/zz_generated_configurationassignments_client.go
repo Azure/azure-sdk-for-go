@@ -11,7 +11,6 @@ package armmaintenance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,59 @@ import (
 // ConfigurationAssignmentsClient contains the methods for the ConfigurationAssignments group.
 // Don't use this type directly, use NewConfigurationAssignmentsClient() instead.
 type ConfigurationAssignmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewConfigurationAssignmentsClient creates a new instance of ConfigurationAssignmentsClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewConfigurationAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationAssignmentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ConfigurationAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ConfigurationAssignmentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Register configuration for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsCreateOrUpdateOptions) (ConfigurationAssignmentsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// configurationAssignmentName - Configuration assignment name
+// configurationAssignment - The configurationAssignment
+// options - ConfigurationAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdate
+// method.
+func (client *ConfigurationAssignmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateOptions) (ConfigurationAssignmentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
-		return ConfigurationAssignmentsCreateOrUpdateResponse{}, err
+		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsCreateOrUpdateResponse{}, err
+		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +102,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,46 +114,43 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConfigurationAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (ConfigurationAssignmentsCreateOrUpdateResponse, error) {
-	result := ConfigurationAssignmentsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientCreateOrUpdateResponse, error) {
+	result := ConfigurationAssignmentsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
-		return ConfigurationAssignmentsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ConfigurationAssignmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateParent - Register configuration for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsCreateOrUpdateParentOptions) (ConfigurationAssignmentsCreateOrUpdateParentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// resourceType - Resource type
+// resourceName - Resource identifier
+// configurationAssignmentName - Configuration assignment name
+// configurationAssignment - The configurationAssignment
+// options - ConfigurationAssignmentsClientCreateOrUpdateParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdateParent
+// method.
+func (client *ConfigurationAssignmentsClient) CreateOrUpdateParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateParentOptions) (ConfigurationAssignmentsClientCreateOrUpdateParentResponse, error) {
 	req, err := client.createOrUpdateParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
-		return ConfigurationAssignmentsCreateOrUpdateParentResponse{}, err
+		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsCreateOrUpdateParentResponse{}, err
+		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsCreateOrUpdateParentResponse{}, client.createOrUpdateParentHandleError(resp)
+		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateParentHandleResponse(resp)
 }
 
 // createOrUpdateParentCreateRequest creates the CreateOrUpdateParent request.
-func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsCreateOrUpdateParentOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsClientCreateOrUpdateParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -171,7 +184,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,46 +196,40 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 }
 
 // createOrUpdateParentHandleResponse handles the CreateOrUpdateParent response.
-func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsCreateOrUpdateParentResponse, error) {
-	result := ConfigurationAssignmentsCreateOrUpdateParentResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientCreateOrUpdateParentResponse, error) {
+	result := ConfigurationAssignmentsClientCreateOrUpdateParentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
-		return ConfigurationAssignmentsCreateOrUpdateParentResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateParentHandleError handles the CreateOrUpdateParent error response.
-func (client *ConfigurationAssignmentsClient) createOrUpdateParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Unregister configuration for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsDeleteOptions) (ConfigurationAssignmentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// configurationAssignmentName - Unique configuration assignment name
+// options - ConfigurationAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationAssignmentsClient.Delete
+// method.
+func (client *ConfigurationAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteOptions) (ConfigurationAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
-		return ConfigurationAssignmentsDeleteResponse{}, err
+		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsDeleteResponse{}, err
+		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ConfigurationAssignmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return ConfigurationAssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsDeleteOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -248,7 +255,7 @@ func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -260,46 +267,42 @@ func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Co
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ConfigurationAssignmentsClient) deleteHandleResponse(resp *http.Response) (ConfigurationAssignmentsDeleteResponse, error) {
-	result := ConfigurationAssignmentsDeleteResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) deleteHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientDeleteResponse, error) {
+	result := ConfigurationAssignmentsClientDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
-		return ConfigurationAssignmentsDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ConfigurationAssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteParent - Unregister configuration for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) DeleteParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsDeleteParentOptions) (ConfigurationAssignmentsDeleteParentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// resourceType - Resource type
+// resourceName - Resource identifier
+// configurationAssignmentName - Unique configuration assignment name
+// options - ConfigurationAssignmentsClientDeleteParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.DeleteParent
+// method.
+func (client *ConfigurationAssignmentsClient) DeleteParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteParentOptions) (ConfigurationAssignmentsClientDeleteParentResponse, error) {
 	req, err := client.deleteParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
-		return ConfigurationAssignmentsDeleteParentResponse{}, err
+		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsDeleteParentResponse{}, err
+		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ConfigurationAssignmentsDeleteParentResponse{}, client.deleteParentHandleError(resp)
+		return ConfigurationAssignmentsClientDeleteParentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteParentHandleResponse(resp)
 }
 
 // deleteParentCreateRequest creates the DeleteParent request.
-func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsDeleteParentOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientDeleteParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -333,7 +336,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx cont
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,46 +348,40 @@ func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx cont
 }
 
 // deleteParentHandleResponse handles the DeleteParent response.
-func (client *ConfigurationAssignmentsClient) deleteParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsDeleteParentResponse, error) {
-	result := ConfigurationAssignmentsDeleteParentResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) deleteParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientDeleteParentResponse, error) {
+	result := ConfigurationAssignmentsClientDeleteParentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
-		return ConfigurationAssignmentsDeleteParentResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteParentHandleError handles the DeleteParent error response.
-func (client *ConfigurationAssignmentsClient) deleteParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get configuration for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsGetOptions) (ConfigurationAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// configurationAssignmentName - Configuration assignment name
+// options - ConfigurationAssignmentsClientGetOptions contains the optional parameters for the ConfigurationAssignmentsClient.Get
+// method.
+func (client *ConfigurationAssignmentsClient) Get(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetOptions) (ConfigurationAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
-		return ConfigurationAssignmentsGetResponse{}, err
+		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsGetResponse{}, err
+		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsGetResponse{}, client.getHandleError(resp)
+		return ConfigurationAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsGetOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -410,7 +407,7 @@ func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -422,46 +419,42 @@ func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationAssignmentsClient) getHandleResponse(resp *http.Response) (ConfigurationAssignmentsGetResponse, error) {
-	result := ConfigurationAssignmentsGetResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) getHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientGetResponse, error) {
+	result := ConfigurationAssignmentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
-		return ConfigurationAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ConfigurationAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetParent - Get configuration for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) GetParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsGetParentOptions) (ConfigurationAssignmentsGetParentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// resourceType - Resource type
+// resourceName - Resource identifier
+// configurationAssignmentName - Configuration assignment name
+// options - ConfigurationAssignmentsClientGetParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.GetParent
+// method.
+func (client *ConfigurationAssignmentsClient) GetParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetParentOptions) (ConfigurationAssignmentsClientGetParentResponse, error) {
 	req, err := client.getParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, configurationAssignmentName, options)
 	if err != nil {
-		return ConfigurationAssignmentsGetParentResponse{}, err
+		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsGetParentResponse{}, err
+		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsGetParentResponse{}, client.getParentHandleError(resp)
+		return ConfigurationAssignmentsClientGetParentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getParentHandleResponse(resp)
 }
 
 // getParentCreateRequest creates the GetParent request.
-func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsGetParentOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, configurationAssignmentName string, options *ConfigurationAssignmentsClientGetParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -495,7 +488,7 @@ func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationAssignmentName}", url.PathEscape(configurationAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -507,46 +500,39 @@ func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context
 }
 
 // getParentHandleResponse handles the GetParent response.
-func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsGetParentResponse, error) {
-	result := ConfigurationAssignmentsGetParentResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) getParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientGetParentResponse, error) {
+	result := ConfigurationAssignmentsClientGetParentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
-		return ConfigurationAssignmentsGetParentResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
 	return result, nil
 }
 
-// getParentHandleError handles the GetParent error response.
-func (client *ConfigurationAssignmentsClient) getParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List configurationAssignments for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) List(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsListOptions) (ConfigurationAssignmentsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// options - ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
+// method.
+func (client *ConfigurationAssignmentsClient) List(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) (ConfigurationAssignmentsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
 	if err != nil {
-		return ConfigurationAssignmentsListResponse{}, err
+		return ConfigurationAssignmentsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsListResponse{}, err
+		return ConfigurationAssignmentsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsListResponse{}, client.listHandleError(resp)
+		return ConfigurationAssignmentsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsListOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -568,7 +554,7 @@ func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -580,46 +566,41 @@ func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Response) (ConfigurationAssignmentsListResponse, error) {
-	result := ConfigurationAssignmentsListResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) listHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientListResponse, error) {
+	result := ConfigurationAssignmentsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListConfigurationAssignmentsResult); err != nil {
-		return ConfigurationAssignmentsListResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ConfigurationAssignmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListParent - List configurationAssignments for resource.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsClient) ListParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsListParentOptions) (ConfigurationAssignmentsListParentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// resourceType - Resource type
+// resourceName - Resource identifier
+// options - ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
+// method.
+func (client *ConfigurationAssignmentsClient) ListParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) (ConfigurationAssignmentsClientListParentResponse, error) {
 	req, err := client.listParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
 	if err != nil {
-		return ConfigurationAssignmentsListParentResponse{}, err
+		return ConfigurationAssignmentsClientListParentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationAssignmentsListParentResponse{}, err
+		return ConfigurationAssignmentsClientListParentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsListParentResponse{}, client.listParentHandleError(resp)
+		return ConfigurationAssignmentsClientListParentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listParentHandleResponse(resp)
 }
 
 // listParentCreateRequest creates the ListParent request.
-func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsListParentOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *ConfigurationAssignmentsClientListParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -649,7 +630,7 @@ func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -661,23 +642,10 @@ func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx contex
 }
 
 // listParentHandleResponse handles the ListParent response.
-func (client *ConfigurationAssignmentsClient) listParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsListParentResponse, error) {
-	result := ConfigurationAssignmentsListParentResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsClient) listParentHandleResponse(resp *http.Response) (ConfigurationAssignmentsClientListParentResponse, error) {
+	result := ConfigurationAssignmentsClientListParentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListConfigurationAssignmentsResult); err != nil {
-		return ConfigurationAssignmentsListParentResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsClientListParentResponse{}, err
 	}
 	return result, nil
-}
-
-// listParentHandleError handles the ListParent error response.
-func (client *ConfigurationAssignmentsClient) listParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

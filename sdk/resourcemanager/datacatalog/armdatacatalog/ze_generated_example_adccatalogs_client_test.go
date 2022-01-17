@@ -28,12 +28,13 @@ func ExampleADCCatalogsClient_ListtByResourceGroup() {
 	ctx := context.Background()
 	client := armdatacatalog.NewADCCatalogsClient("<subscription-id>",
 		"<catalog-name>", cred, nil)
-	_, err = client.ListtByResourceGroup(ctx,
+	res, err := client.ListtByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ADCCatalogsClientListtByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/datacatalog/resource-manager/Microsoft.DataCatalog/stable/2016-03-30/examples/CreateOrUpdateADCCatalog.json
@@ -48,12 +49,10 @@ func ExampleADCCatalogsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		armdatacatalog.ADCCatalog{
-			Resource: armdatacatalog.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"mykey":  to.StringPtr("myvalue"),
-					"mykey2": to.StringPtr("myvalue2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"mykey":  to.StringPtr("myvalue"),
+				"mykey2": to.StringPtr("myvalue2"),
 			},
 			Properties: &armdatacatalog.ADCCatalogProperties{
 				Admins: []*armdatacatalog.Principals{
@@ -62,7 +61,7 @@ func ExampleADCCatalogsClient_CreateOrUpdate() {
 						Upn:      to.StringPtr("<upn>"),
 					}},
 				EnableAutomaticUnitAdjustment: to.BoolPtr(false),
-				SKU:                           armdatacatalog.SKUTypeStandard.ToPtr(),
+				SKU:                           armdatacatalog.SKUType("Standard").ToPtr(),
 				Units:                         to.Int32Ptr(1),
 				Users: []*armdatacatalog.Principals{
 					{
@@ -75,7 +74,7 @@ func ExampleADCCatalogsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ADCCatalog.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ADCCatalogsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datacatalog/resource-manager/Microsoft.DataCatalog/stable/2016-03-30/examples/GetADCCatalog.json
@@ -93,7 +92,7 @@ func ExampleADCCatalogsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ADCCatalog.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ADCCatalogsClientGetResult)
 }
 
 // x-ms-original-file: specification/datacatalog/resource-manager/Microsoft.DataCatalog/stable/2016-03-30/examples/DeleteADCCatalog.json
@@ -129,12 +128,10 @@ func ExampleADCCatalogsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		armdatacatalog.ADCCatalog{
-			Resource: armdatacatalog.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"mykey":  to.StringPtr("myvalue"),
-					"mykey2": to.StringPtr("myvalue2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"mykey":  to.StringPtr("myvalue"),
+				"mykey2": to.StringPtr("myvalue2"),
 			},
 			Properties: &armdatacatalog.ADCCatalogProperties{
 				Admins: []*armdatacatalog.Principals{
@@ -143,7 +140,7 @@ func ExampleADCCatalogsClient_Update() {
 						Upn:      to.StringPtr("<upn>"),
 					}},
 				EnableAutomaticUnitAdjustment: to.BoolPtr(false),
-				SKU:                           armdatacatalog.SKUTypeStandard.ToPtr(),
+				SKU:                           armdatacatalog.SKUType("Standard").ToPtr(),
 				Units:                         to.Int32Ptr(1),
 				Users: []*armdatacatalog.Principals{
 					{
@@ -156,5 +153,5 @@ func ExampleADCCatalogsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ADCCatalog.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ADCCatalogsClientUpdateResult)
 }

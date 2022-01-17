@@ -24,39 +24,52 @@ import (
 // ServerOperationsClient contains the methods for the ServerOperations group.
 // Don't use this type directly, use NewServerOperationsClient() instead.
 type ServerOperationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerOperationsClient creates a new instance of ServerOperationsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerOperationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByServer - Gets a list of operations performed on the server.
-// If the operation fails it returns a generic error.
-func (client *ServerOperationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerOperationsListByServerOptions) *ServerOperationsListByServerPager {
-	return &ServerOperationsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerOperationsClientListByServerOptions contains the optional parameters for the ServerOperationsClient.ListByServer
+// method.
+func (client *ServerOperationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerOperationsClientListByServerOptions) *ServerOperationsClientListByServerPager {
+	return &ServerOperationsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerOperationsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerOperationsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerOperationListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerOperationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerOperationsListByServerOptions) (*policy.Request, error) {
+func (client *ServerOperationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerOperationsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -70,7 +83,7 @@ func (client *ServerOperationsClient) listByServerCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,22 +95,10 @@ func (client *ServerOperationsClient) listByServerCreateRequest(ctx context.Cont
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerOperationsClient) listByServerHandleResponse(resp *http.Response) (ServerOperationsListByServerResponse, error) {
-	result := ServerOperationsListByServerResponse{RawResponse: resp}
+func (client *ServerOperationsClient) listByServerHandleResponse(resp *http.Response) (ServerOperationsClientListByServerResponse, error) {
+	result := ServerOperationsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerOperationListResult); err != nil {
-		return ServerOperationsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServerOperationsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServerOperationsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

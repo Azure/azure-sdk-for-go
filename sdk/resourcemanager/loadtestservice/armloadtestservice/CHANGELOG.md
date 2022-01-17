@@ -1,5 +1,123 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*LoadTestsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *LoadTestsListByResourceGroupOptions)` to `(string, *LoadTestsClientListByResourceGroupOptions)`
+- Function `*LoadTestsClient.ListByResourceGroup` return value(s) have been changed from `(*LoadTestsListByResourceGroupPager)` to `(*LoadTestsClientListByResourceGroupPager)`
+- Function `*LoadTestsClient.ListBySubscription` parameter(s) have been changed from `(*LoadTestsListBySubscriptionOptions)` to `(*LoadTestsClientListBySubscriptionOptions)`
+- Function `*LoadTestsClient.ListBySubscription` return value(s) have been changed from `(*LoadTestsListBySubscriptionPager)` to `(*LoadTestsClientListBySubscriptionPager)`
+- Function `*LoadTestsClient.Update` parameter(s) have been changed from `(context.Context, string, string, LoadTestResourcePatchRequestBody, *LoadTestsUpdateOptions)` to `(context.Context, string, string, LoadTestResourcePatchRequestBody, *LoadTestsClientUpdateOptions)`
+- Function `*LoadTestsClient.Update` return value(s) have been changed from `(LoadTestsUpdateResponse, error)` to `(LoadTestsClientUpdateResponse, error)`
+- Function `*LoadTestsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *LoadTestsGetOptions)` to `(context.Context, string, string, *LoadTestsClientGetOptions)`
+- Function `*LoadTestsClient.Get` return value(s) have been changed from `(LoadTestsGetResponse, error)` to `(LoadTestsClientGetResponse, error)`
+- Function `*LoadTestsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *LoadTestsBeginDeleteOptions)` to `(context.Context, string, string, *LoadTestsClientBeginDeleteOptions)`
+- Function `*LoadTestsClient.BeginDelete` return value(s) have been changed from `(LoadTestsDeletePollerResponse, error)` to `(LoadTestsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*LoadTestsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, LoadTestResource, *LoadTestsCreateOrUpdateOptions)` to `(context.Context, string, string, LoadTestResource, *LoadTestsClientCreateOrUpdateOptions)`
+- Function `*LoadTestsClient.CreateOrUpdate` return value(s) have been changed from `(LoadTestsCreateOrUpdateResponse, error)` to `(LoadTestsClientCreateOrUpdateResponse, error)`
+- Function `*LoadTestsListByResourceGroupPager.Err` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*LoadTestsListBySubscriptionPager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*LoadTestsListByResourceGroupPager.NextPage` has been removed
+- Function `*LoadTestsListByResourceGroupPager.PageResponse` has been removed
+- Function `*LoadTestsDeletePollerResponse.Resume` has been removed
+- Function `*LoadTestsDeletePoller.Done` has been removed
+- Function `*LoadTestsListBySubscriptionPager.Err` has been removed
+- Function `*LoadTestsListBySubscriptionPager.PageResponse` has been removed
+- Function `*LoadTestsDeletePoller.FinalResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `LoadTestsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*LoadTestsDeletePoller.Poll` has been removed
+- Function `*LoadTestsDeletePoller.ResumeToken` has been removed
+- Struct `LoadTestsBeginDeleteOptions` has been removed
+- Struct `LoadTestsCreateOrUpdateOptions` has been removed
+- Struct `LoadTestsCreateOrUpdateResponse` has been removed
+- Struct `LoadTestsCreateOrUpdateResult` has been removed
+- Struct `LoadTestsDeletePoller` has been removed
+- Struct `LoadTestsDeletePollerResponse` has been removed
+- Struct `LoadTestsDeleteResponse` has been removed
+- Struct `LoadTestsGetOptions` has been removed
+- Struct `LoadTestsGetResponse` has been removed
+- Struct `LoadTestsGetResult` has been removed
+- Struct `LoadTestsListByResourceGroupOptions` has been removed
+- Struct `LoadTestsListByResourceGroupPager` has been removed
+- Struct `LoadTestsListByResourceGroupResponse` has been removed
+- Struct `LoadTestsListByResourceGroupResult` has been removed
+- Struct `LoadTestsListBySubscriptionOptions` has been removed
+- Struct `LoadTestsListBySubscriptionPager` has been removed
+- Struct `LoadTestsListBySubscriptionResponse` has been removed
+- Struct `LoadTestsListBySubscriptionResult` has been removed
+- Struct `LoadTestsUpdateOptions` has been removed
+- Struct `LoadTestsUpdateResponse` has been removed
+- Struct `LoadTestsUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `TrackedResource` of struct `LoadTestResource` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+
+### Features Added
+
+- New function `LoadTestsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (LoadTestsClientDeleteResponse, error)`
+- New function `*LoadTestsClientListByResourceGroupPager.Err() error`
+- New function `*LoadTestsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*LoadTestsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*LoadTestsClientListBySubscriptionPager.Err() error`
+- New function `*LoadTestsClientDeletePoller.Done() bool`
+- New function `*LoadTestsClientListByResourceGroupPager.PageResponse() LoadTestsClientListByResourceGroupResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*LoadTestsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*LoadTestsClientDeletePoller.FinalResponse(context.Context) (LoadTestsClientDeleteResponse, error)`
+- New function `*LoadTestsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*LoadTestsClientDeletePollerResponse.Resume(context.Context, *LoadTestsClient, string) error`
+- New function `*LoadTestsClientListBySubscriptionPager.PageResponse() LoadTestsClientListBySubscriptionResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New struct `LoadTestsClientBeginDeleteOptions`
+- New struct `LoadTestsClientCreateOrUpdateOptions`
+- New struct `LoadTestsClientCreateOrUpdateResponse`
+- New struct `LoadTestsClientCreateOrUpdateResult`
+- New struct `LoadTestsClientDeletePoller`
+- New struct `LoadTestsClientDeletePollerResponse`
+- New struct `LoadTestsClientDeleteResponse`
+- New struct `LoadTestsClientGetOptions`
+- New struct `LoadTestsClientGetResponse`
+- New struct `LoadTestsClientGetResult`
+- New struct `LoadTestsClientListByResourceGroupOptions`
+- New struct `LoadTestsClientListByResourceGroupPager`
+- New struct `LoadTestsClientListByResourceGroupResponse`
+- New struct `LoadTestsClientListByResourceGroupResult`
+- New struct `LoadTestsClientListBySubscriptionOptions`
+- New struct `LoadTestsClientListBySubscriptionPager`
+- New struct `LoadTestsClientListBySubscriptionResponse`
+- New struct `LoadTestsClientListBySubscriptionResult`
+- New struct `LoadTestsClientUpdateOptions`
+- New struct `LoadTestsClientUpdateResponse`
+- New struct `LoadTestsClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `SystemData` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `Error` in struct `ErrorResponse`
+- New field `Tags` in struct `LoadTestResource`
+- New field `ID` in struct `LoadTestResource`
+- New field `Name` in struct `LoadTestResource`
+- New field `SystemData` in struct `LoadTestResource`
+- New field `Type` in struct `LoadTestResource`
+- New field `Location` in struct `LoadTestResource`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

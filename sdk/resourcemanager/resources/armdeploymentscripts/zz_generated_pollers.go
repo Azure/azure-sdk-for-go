@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// DeploymentScriptsCreatePoller provides polling facilities until the operation reaches a terminal state.
-type DeploymentScriptsCreatePoller struct {
+// ClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type ClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *DeploymentScriptsCreatePoller) Done() bool {
+func (p *ClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *DeploymentScriptsCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *DeploymentScriptsCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final DeploymentScriptsCreateResponse will be returned.
-func (p *DeploymentScriptsCreatePoller) FinalResponse(ctx context.Context) (DeploymentScriptsCreateResponse, error) {
-	respType := DeploymentScriptsCreateResponse{}
-	resp, err := p.pt.FinalResponse(ctx, &respType.DeploymentScriptClassification)
+// If the final GET succeeded then the final ClientCreateResponse will be returned.
+func (p *ClientCreatePoller) FinalResponse(ctx context.Context) (ClientCreateResponse, error) {
+	respType := ClientCreateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.ClientCreateResult)
 	if err != nil {
-		return DeploymentScriptsCreateResponse{}, err
+		return ClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *DeploymentScriptsCreatePoller) FinalResponse(ctx context.Context) (Depl
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *DeploymentScriptsCreatePoller) ResumeToken() (string, error) {
+func (p *ClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

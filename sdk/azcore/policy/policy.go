@@ -98,7 +98,7 @@ type RetryOptions struct {
 
 // TelemetryOptions configures the telemetry policy's behavior.
 type TelemetryOptions struct {
-	// ApplicationID is an application-specific identification string used in telemetry.
+	// ApplicationID is an application-specific identification string to add to the User-Agent.
 	// It has a maximum length of 24 characters and must not contain any spaces.
 	ApplicationID string
 
@@ -107,13 +107,7 @@ type TelemetryOptions struct {
 }
 
 // TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
-type TokenRequestOptions struct {
-	// Scopes contains the list of permission scopes required for the token.
-	Scopes []string
-	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
-	// it will override the tenant ID that was added at credential creation time.
-	TenantID string
-}
+type TokenRequestOptions = shared.TokenRequestOptions
 
 // BearerTokenOptions configures the bearer token policy's behavior.
 type BearerTokenOptions struct {

@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // DataFlowsClient contains the methods for the DataFlows group.
 // Don't use this type directly, use NewDataFlowsClient() instead.
 type DataFlowsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataFlowsClient creates a new instance of DataFlowsClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataFlowsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DataFlowsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DataFlowsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a data flow.
-// If the operation fails it returns the *CloudError error type.
-func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsCreateOrUpdateOptions) (DataFlowsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// dataFlowName - The data flow name.
+// dataFlow - Data flow resource definition.
+// options - DataFlowsClientCreateOrUpdateOptions contains the optional parameters for the DataFlowsClient.CreateOrUpdate
+// method.
+func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsClientCreateOrUpdateOptions) (DataFlowsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, dataFlowName, dataFlow, options)
 	if err != nil {
-		return DataFlowsCreateOrUpdateResponse{}, err
+		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataFlowsCreateOrUpdateResponse{}, err
+		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataFlowsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return DataFlowsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,46 +106,37 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response) (DataFlowsCreateOrUpdateResponse, error) {
-	result := DataFlowsCreateOrUpdateResponse{RawResponse: resp}
+func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response) (DataFlowsClientCreateOrUpdateResponse, error) {
+	result := DataFlowsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
-		return DataFlowsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DataFlowsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a data flow.
-// If the operation fails it returns the *CloudError error type.
-func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsDeleteOptions) (DataFlowsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// dataFlowName - The data flow name.
+// options - DataFlowsClientDeleteOptions contains the optional parameters for the DataFlowsClient.Delete method.
+func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsClientDeleteOptions) (DataFlowsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, dataFlowName, options)
 	if err != nil {
-		return DataFlowsDeleteResponse{}, err
+		return DataFlowsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataFlowsDeleteResponse{}, err
+		return DataFlowsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return DataFlowsDeleteResponse{}, client.deleteHandleError(resp)
+		return DataFlowsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DataFlowsDeleteResponse{RawResponse: resp}, nil
+	return DataFlowsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsDeleteOptions) (*policy.Request, error) {
+func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +154,7 @@ func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +165,29 @@ func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataFlowsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a data flow.
-// If the operation fails it returns the *CloudError error type.
-func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsGetOptions) (DataFlowsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// dataFlowName - The data flow name.
+// options - DataFlowsClientGetOptions contains the optional parameters for the DataFlowsClient.Get method.
+func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsClientGetOptions) (DataFlowsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, dataFlowName, options)
 	if err != nil {
-		return DataFlowsGetResponse{}, err
+		return DataFlowsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataFlowsGetResponse{}, err
+		return DataFlowsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataFlowsGetResponse{}, client.getHandleError(resp)
+		return DataFlowsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsGetOptions) (*policy.Request, error) {
+func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -210,7 +205,7 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -225,43 +220,33 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlowsGetResponse, error) {
-	result := DataFlowsGetResponse{RawResponse: resp}
+func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlowsClientGetResponse, error) {
+	result := DataFlowsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
-		return DataFlowsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataFlowsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataFlowsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByFactory - Lists data flows.
-// If the operation fails it returns the *CloudError error type.
-func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsListByFactoryOptions) *DataFlowsListByFactoryPager {
-	return &DataFlowsListByFactoryPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// options - DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.ListByFactory method.
+func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *DataFlowsClientListByFactoryPager {
+	return &DataFlowsClientListByFactoryPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp DataFlowsListByFactoryResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DataFlowsClientListByFactoryResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataFlowListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *DataFlowsListByFactoryOptions) (*policy.Request, error) {
+func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,7 +260,7 @@ func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,23 +272,10 @@ func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, r
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *DataFlowsClient) listByFactoryHandleResponse(resp *http.Response) (DataFlowsListByFactoryResponse, error) {
-	result := DataFlowsListByFactoryResponse{RawResponse: resp}
+func (client *DataFlowsClient) listByFactoryHandleResponse(resp *http.Response) (DataFlowsClientListByFactoryResponse, error) {
+	result := DataFlowsClientListByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowListResponse); err != nil {
-		return DataFlowsListByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return DataFlowsClientListByFactoryResponse{}, err
 	}
 	return result, nil
-}
-
-// listByFactoryHandleError handles the ListByFactory error response.
-func (client *DataFlowsClient) listByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

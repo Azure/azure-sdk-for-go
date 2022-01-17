@@ -35,10 +35,11 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeObjectMetadataClientRefreshResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Get.json
@@ -49,15 +50,16 @@ func ExampleIntegrationRuntimeObjectMetadataClient_Get() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
-		&armdatafactory.IntegrationRuntimeObjectMetadataGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
+		&armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
 			MetadataPath: to.StringPtr("<metadata-path>"),
 		},
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeObjectMetadataClientGetResult)
 }

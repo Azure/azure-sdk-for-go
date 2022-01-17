@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // TagClient contains the methods for the Tag group.
 // Don't use this type directly, use NewTagClient() instead.
 type TagClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTagClient creates a new instance of TagClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTagClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TagClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TagClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // AssignToAPI - Assign tag to the Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) AssignToAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagAssignToAPIOptions) (TagAssignToAPIResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientAssignToAPIOptions contains the optional parameters for the TagClient.AssignToAPI method.
+func (client *TagClient) AssignToAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientAssignToAPIOptions) (TagClientAssignToAPIResponse, error) {
 	req, err := client.assignToAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
-		return TagAssignToAPIResponse{}, err
+		return TagClientAssignToAPIResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagAssignToAPIResponse{}, err
+		return TagClientAssignToAPIResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TagAssignToAPIResponse{}, client.assignToAPIHandleError(resp)
+		return TagClientAssignToAPIResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.assignToAPIHandleResponse(resp)
 }
 
 // assignToAPICreateRequest creates the AssignToAPI request.
-func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagAssignToAPIOptions) (*policy.Request, error) {
+func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientAssignToAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +97,7 @@ func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,49 +109,43 @@ func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceG
 }
 
 // assignToAPIHandleResponse handles the AssignToAPI response.
-func (client *TagClient) assignToAPIHandleResponse(resp *http.Response) (TagAssignToAPIResponse, error) {
-	result := TagAssignToAPIResponse{RawResponse: resp}
+func (client *TagClient) assignToAPIHandleResponse(resp *http.Response) (TagClientAssignToAPIResponse, error) {
+	result := TagClientAssignToAPIResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagAssignToAPIResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientAssignToAPIResponse{}, err
 	}
 	return result, nil
 }
 
-// assignToAPIHandleError handles the AssignToAPI error response.
-func (client *TagClient) assignToAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // AssignToOperation - Assign tag to the Operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) AssignToOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagAssignToOperationOptions) (TagAssignToOperationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientAssignToOperationOptions contains the optional parameters for the TagClient.AssignToOperation method.
+func (client *TagClient) AssignToOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientAssignToOperationOptions) (TagClientAssignToOperationResponse, error) {
 	req, err := client.assignToOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
-		return TagAssignToOperationResponse{}, err
+		return TagClientAssignToOperationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagAssignToOperationResponse{}, err
+		return TagClientAssignToOperationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TagAssignToOperationResponse{}, client.assignToOperationHandleError(resp)
+		return TagClientAssignToOperationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.assignToOperationHandleResponse(resp)
 }
 
 // assignToOperationCreateRequest creates the AssignToOperation request.
-func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagAssignToOperationOptions) (*policy.Request, error) {
+func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientAssignToOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -163,7 +171,7 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,46 +183,38 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 }
 
 // assignToOperationHandleResponse handles the AssignToOperation response.
-func (client *TagClient) assignToOperationHandleResponse(resp *http.Response) (TagAssignToOperationResponse, error) {
-	result := TagAssignToOperationResponse{RawResponse: resp}
+func (client *TagClient) assignToOperationHandleResponse(resp *http.Response) (TagClientAssignToOperationResponse, error) {
+	result := TagClientAssignToOperationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagAssignToOperationResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientAssignToOperationResponse{}, err
 	}
 	return result, nil
 }
 
-// assignToOperationHandleError handles the AssignToOperation error response.
-func (client *TagClient) assignToOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // AssignToProduct - Assign tag to the Product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) AssignToProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagAssignToProductOptions) (TagAssignToProductResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientAssignToProductOptions contains the optional parameters for the TagClient.AssignToProduct method.
+func (client *TagClient) AssignToProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientAssignToProductOptions) (TagClientAssignToProductResponse, error) {
 	req, err := client.assignToProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
-		return TagAssignToProductResponse{}, err
+		return TagClientAssignToProductResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagAssignToProductResponse{}, err
+		return TagClientAssignToProductResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TagAssignToProductResponse{}, client.assignToProductHandleError(resp)
+		return TagClientAssignToProductResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.assignToProductHandleResponse(resp)
 }
 
 // assignToProductCreateRequest creates the AssignToProduct request.
-func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagAssignToProductOptions) (*policy.Request, error) {
+func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientAssignToProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -236,7 +236,7 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -248,46 +248,38 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 }
 
 // assignToProductHandleResponse handles the AssignToProduct response.
-func (client *TagClient) assignToProductHandleResponse(resp *http.Response) (TagAssignToProductResponse, error) {
-	result := TagAssignToProductResponse{RawResponse: resp}
+func (client *TagClient) assignToProductHandleResponse(resp *http.Response) (TagClientAssignToProductResponse, error) {
+	result := TagClientAssignToProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagAssignToProductResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientAssignToProductResponse{}, err
 	}
 	return result, nil
 }
 
-// assignToProductHandleError handles the AssignToProduct error response.
-func (client *TagClient) assignToProductHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdate - Creates a tag.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagCreateOrUpdateOptions) (TagCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// parameters - Create parameters.
+// options - TagClientCreateOrUpdateOptions contains the optional parameters for the TagClient.CreateOrUpdate method.
+func (client *TagClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagClientCreateOrUpdateOptions) (TagClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, tagID, parameters, options)
 	if err != nil {
-		return TagCreateOrUpdateResponse{}, err
+		return TagClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagCreateOrUpdateResponse{}, err
+		return TagClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TagCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return TagClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -305,7 +297,7 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -320,49 +312,42 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TagClient) createOrUpdateHandleResponse(resp *http.Response) (TagCreateOrUpdateResponse, error) {
-	result := TagCreateOrUpdateResponse{RawResponse: resp}
+func (client *TagClient) createOrUpdateHandleResponse(resp *http.Response) (TagClientCreateOrUpdateResponse, error) {
+	result := TagClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TagClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes specific tag of the API Management service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagDeleteOptions) (TagDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - TagClientDeleteOptions contains the optional parameters for the TagClient.Delete method.
+func (client *TagClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagClientDeleteOptions) (TagClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, tagID, ifMatch, options)
 	if err != nil {
-		return TagDeleteResponse{}, err
+		return TagClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagDeleteResponse{}, err
+		return TagClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TagDeleteResponse{}, client.deleteHandleError(resp)
+		return TagClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagDeleteResponse{RawResponse: resp}, nil
+	return TagClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagDeleteOptions) (*policy.Request, error) {
+func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -380,7 +365,7 @@ func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,38 +377,31 @@ func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TagClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DetachFromAPI - Detach the tag from the Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) DetachFromAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagDetachFromAPIOptions) (TagDetachFromAPIResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientDetachFromAPIOptions contains the optional parameters for the TagClient.DetachFromAPI method.
+func (client *TagClient) DetachFromAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientDetachFromAPIOptions) (TagClientDetachFromAPIResponse, error) {
 	req, err := client.detachFromAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
-		return TagDetachFromAPIResponse{}, err
+		return TagClientDetachFromAPIResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagDetachFromAPIResponse{}, err
+		return TagClientDetachFromAPIResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TagDetachFromAPIResponse{}, client.detachFromAPIHandleError(resp)
+		return TagClientDetachFromAPIResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagDetachFromAPIResponse{RawResponse: resp}, nil
+	return TagClientDetachFromAPIResponse{RawResponse: resp}, nil
 }
 
 // detachFromAPICreateRequest creates the DetachFromAPI request.
-func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagDetachFromAPIOptions) (*policy.Request, error) {
+func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientDetachFromAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -445,7 +423,7 @@ func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -456,38 +434,32 @@ func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// detachFromAPIHandleError handles the DetachFromAPI error response.
-func (client *TagClient) detachFromAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DetachFromOperation - Detach the tag from the Operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) DetachFromOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagDetachFromOperationOptions) (TagDetachFromOperationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientDetachFromOperationOptions contains the optional parameters for the TagClient.DetachFromOperation method.
+func (client *TagClient) DetachFromOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientDetachFromOperationOptions) (TagClientDetachFromOperationResponse, error) {
 	req, err := client.detachFromOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
-		return TagDetachFromOperationResponse{}, err
+		return TagClientDetachFromOperationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagDetachFromOperationResponse{}, err
+		return TagClientDetachFromOperationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TagDetachFromOperationResponse{}, client.detachFromOperationHandleError(resp)
+		return TagClientDetachFromOperationResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagDetachFromOperationResponse{RawResponse: resp}, nil
+	return TagClientDetachFromOperationResponse{RawResponse: resp}, nil
 }
 
 // detachFromOperationCreateRequest creates the DetachFromOperation request.
-func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagDetachFromOperationOptions) (*policy.Request, error) {
+func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientDetachFromOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -513,7 +485,7 @@ func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -524,38 +496,30 @@ func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// detachFromOperationHandleError handles the DetachFromOperation error response.
-func (client *TagClient) detachFromOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DetachFromProduct - Detach the tag from the Product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) DetachFromProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagDetachFromProductOptions) (TagDetachFromProductResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientDetachFromProductOptions contains the optional parameters for the TagClient.DetachFromProduct method.
+func (client *TagClient) DetachFromProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientDetachFromProductOptions) (TagClientDetachFromProductResponse, error) {
 	req, err := client.detachFromProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
-		return TagDetachFromProductResponse{}, err
+		return TagClientDetachFromProductResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagDetachFromProductResponse{}, err
+		return TagClientDetachFromProductResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TagDetachFromProductResponse{}, client.detachFromProductHandleError(resp)
+		return TagClientDetachFromProductResponse{}, runtime.NewResponseError(resp)
 	}
-	return TagDetachFromProductResponse{RawResponse: resp}, nil
+	return TagClientDetachFromProductResponse{RawResponse: resp}, nil
 }
 
 // detachFromProductCreateRequest creates the DetachFromProduct request.
-func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagDetachFromProductOptions) (*policy.Request, error) {
+func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientDetachFromProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -577,7 +541,7 @@ func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -588,38 +552,29 @@ func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// detachFromProductHandleError handles the DetachFromProduct error response.
-func (client *TagClient) detachFromProductHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the tag specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) Get(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetOptions) (TagGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetOptions contains the optional parameters for the TagClient.Get method.
+func (client *TagClient) Get(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagClientGetOptions) (TagClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, tagID, options)
 	if err != nil {
-		return TagGetResponse{}, err
+		return TagClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetResponse{}, err
+		return TagClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagGetResponse{}, client.getHandleError(resp)
+		return TagClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetOptions) (*policy.Request, error) {
+func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -637,7 +592,7 @@ func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -649,49 +604,42 @@ func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName
 }
 
 // getHandleResponse handles the Get response.
-func (client *TagClient) getHandleResponse(resp *http.Response) (TagGetResponse, error) {
-	result := TagGetResponse{RawResponse: resp}
+func (client *TagClient) getHandleResponse(resp *http.Response) (TagClientGetResponse, error) {
+	result := TagClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TagClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByAPI - Get tag associated with the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetByAPIOptions) (TagGetByAPIResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetByAPIOptions contains the optional parameters for the TagClient.GetByAPI method.
+func (client *TagClient) GetByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientGetByAPIOptions) (TagClientGetByAPIResponse, error) {
 	req, err := client.getByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
-		return TagGetByAPIResponse{}, err
+		return TagClientGetByAPIResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetByAPIResponse{}, err
+		return TagClientGetByAPIResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagGetByAPIResponse{}, client.getByAPIHandleError(resp)
+		return TagClientGetByAPIResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByAPIHandleResponse(resp)
 }
 
 // getByAPICreateRequest creates the GetByAPI request.
-func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetByAPIOptions) (*policy.Request, error) {
+func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientGetByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -713,7 +661,7 @@ func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -725,49 +673,43 @@ func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGrou
 }
 
 // getByAPIHandleResponse handles the GetByAPI response.
-func (client *TagClient) getByAPIHandleResponse(resp *http.Response) (TagGetByAPIResponse, error) {
-	result := TagGetByAPIResponse{RawResponse: resp}
+func (client *TagClient) getByAPIHandleResponse(resp *http.Response) (TagClientGetByAPIResponse, error) {
+	result := TagClientGetByAPIResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetByAPIResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientGetByAPIResponse{}, err
 	}
 	return result, nil
 }
 
-// getByAPIHandleError handles the GetByAPI error response.
-func (client *TagClient) getByAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByOperation - Get tag associated with the Operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetByOperationOptions) (TagGetByOperationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetByOperationOptions contains the optional parameters for the TagClient.GetByOperation method.
+func (client *TagClient) GetByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientGetByOperationOptions) (TagClientGetByOperationResponse, error) {
 	req, err := client.getByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
-		return TagGetByOperationResponse{}, err
+		return TagClientGetByOperationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetByOperationResponse{}, err
+		return TagClientGetByOperationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagGetByOperationResponse{}, client.getByOperationHandleError(resp)
+		return TagClientGetByOperationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByOperationHandleResponse(resp)
 }
 
 // getByOperationCreateRequest creates the GetByOperation request.
-func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetByOperationOptions) (*policy.Request, error) {
+func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientGetByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -793,7 +735,7 @@ func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -805,49 +747,41 @@ func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resour
 }
 
 // getByOperationHandleResponse handles the GetByOperation response.
-func (client *TagClient) getByOperationHandleResponse(resp *http.Response) (TagGetByOperationResponse, error) {
-	result := TagGetByOperationResponse{RawResponse: resp}
+func (client *TagClient) getByOperationHandleResponse(resp *http.Response) (TagClientGetByOperationResponse, error) {
+	result := TagClientGetByOperationResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetByOperationResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientGetByOperationResponse{}, err
 	}
 	return result, nil
 }
 
-// getByOperationHandleError handles the GetByOperation error response.
-func (client *TagClient) getByOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByProduct - Get tag associated with the Product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetByProductOptions) (TagGetByProductResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetByProductOptions contains the optional parameters for the TagClient.GetByProduct method.
+func (client *TagClient) GetByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientGetByProductOptions) (TagClientGetByProductResponse, error) {
 	req, err := client.getByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
-		return TagGetByProductResponse{}, err
+		return TagClientGetByProductResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetByProductResponse{}, err
+		return TagClientGetByProductResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagGetByProductResponse{}, client.getByProductHandleError(resp)
+		return TagClientGetByProductResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByProductHandleResponse(resp)
 }
 
 // getByProductCreateRequest creates the GetByProduct request.
-func (client *TagClient) getByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetByProductOptions) (*policy.Request, error) {
+func (client *TagClient) getByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientGetByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -869,7 +803,7 @@ func (client *TagClient) getByProductCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -881,46 +815,36 @@ func (client *TagClient) getByProductCreateRequest(ctx context.Context, resource
 }
 
 // getByProductHandleResponse handles the GetByProduct response.
-func (client *TagClient) getByProductHandleResponse(resp *http.Response) (TagGetByProductResponse, error) {
-	result := TagGetByProductResponse{RawResponse: resp}
+func (client *TagClient) getByProductHandleResponse(resp *http.Response) (TagClientGetByProductResponse, error) {
+	result := TagClientGetByProductResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagGetByProductResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientGetByProductResponse{}, err
 	}
 	return result, nil
 }
 
-// getByProductHandleError handles the GetByProduct error response.
-func (client *TagClient) getByProductHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityState - Gets the entity state version of the tag specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetEntityState(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetEntityStateOptions) (TagGetEntityStateResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetEntityStateOptions contains the optional parameters for the TagClient.GetEntityState method.
+func (client *TagClient) GetEntityState(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagClientGetEntityStateOptions) (TagClientGetEntityStateResponse, error) {
 	req, err := client.getEntityStateCreateRequest(ctx, resourceGroupName, serviceName, tagID, options)
 	if err != nil {
-		return TagGetEntityStateResponse{}, err
+		return TagClientGetEntityStateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetEntityStateResponse{}, err
+		return TagClientGetEntityStateResponse{}, err
 	}
 	return client.getEntityStateHandleResponse(resp)
 }
 
 // getEntityStateCreateRequest creates the GetEntityState request.
-func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetEntityStateOptions) (*policy.Request, error) {
+func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagClientGetEntityStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -938,7 +862,7 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -950,8 +874,8 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 }
 
 // getEntityStateHandleResponse handles the GetEntityState response.
-func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagGetEntityStateResponse, error) {
-	result := TagGetEntityStateResponse{RawResponse: resp}
+func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagClientGetEntityStateResponse, error) {
+	result := TagClientGetEntityStateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -962,21 +886,26 @@ func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagG
 }
 
 // GetEntityStateByAPI - Gets the entity state version of the tag specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetEntityStateByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetEntityStateByAPIOptions) (TagGetEntityStateByAPIResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetEntityStateByAPIOptions contains the optional parameters for the TagClient.GetEntityStateByAPI method.
+func (client *TagClient) GetEntityStateByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientGetEntityStateByAPIOptions) (TagClientGetEntityStateByAPIResponse, error) {
 	req, err := client.getEntityStateByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, tagID, options)
 	if err != nil {
-		return TagGetEntityStateByAPIResponse{}, err
+		return TagClientGetEntityStateByAPIResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetEntityStateByAPIResponse{}, err
+		return TagClientGetEntityStateByAPIResponse{}, err
 	}
 	return client.getEntityStateByAPIHandleResponse(resp)
 }
 
 // getEntityStateByAPICreateRequest creates the GetEntityStateByAPI request.
-func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetEntityStateByAPIOptions) (*policy.Request, error) {
+func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagClientGetEntityStateByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -998,7 +927,7 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1010,8 +939,8 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 }
 
 // getEntityStateByAPIHandleResponse handles the GetEntityStateByAPI response.
-func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) (TagGetEntityStateByAPIResponse, error) {
-	result := TagGetEntityStateByAPIResponse{RawResponse: resp}
+func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) (TagClientGetEntityStateByAPIResponse, error) {
+	result := TagClientGetEntityStateByAPIResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1022,21 +951,28 @@ func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) 
 }
 
 // GetEntityStateByOperation - Gets the entity state version of the tag specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetEntityStateByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetEntityStateByOperationOptions) (TagGetEntityStateByOperationResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetEntityStateByOperationOptions contains the optional parameters for the TagClient.GetEntityStateByOperation
+// method.
+func (client *TagClient) GetEntityStateByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientGetEntityStateByOperationOptions) (TagClientGetEntityStateByOperationResponse, error) {
 	req, err := client.getEntityStateByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, tagID, options)
 	if err != nil {
-		return TagGetEntityStateByOperationResponse{}, err
+		return TagClientGetEntityStateByOperationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetEntityStateByOperationResponse{}, err
+		return TagClientGetEntityStateByOperationResponse{}, err
 	}
 	return client.getEntityStateByOperationHandleResponse(resp)
 }
 
 // getEntityStateByOperationCreateRequest creates the GetEntityStateByOperation request.
-func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetEntityStateByOperationOptions) (*policy.Request, error) {
+func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagClientGetEntityStateByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1062,7 +998,7 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1074,8 +1010,8 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 }
 
 // getEntityStateByOperationHandleResponse handles the GetEntityStateByOperation response.
-func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Response) (TagGetEntityStateByOperationResponse, error) {
-	result := TagGetEntityStateByOperationResponse{RawResponse: resp}
+func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Response) (TagClientGetEntityStateByOperationResponse, error) {
+	result := TagClientGetEntityStateByOperationResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1086,21 +1022,26 @@ func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Resp
 }
 
 // GetEntityStateByProduct - Gets the entity state version of the tag specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) GetEntityStateByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetEntityStateByProductOptions) (TagGetEntityStateByProductResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// options - TagClientGetEntityStateByProductOptions contains the optional parameters for the TagClient.GetEntityStateByProduct
+// method.
+func (client *TagClient) GetEntityStateByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientGetEntityStateByProductOptions) (TagClientGetEntityStateByProductResponse, error) {
 	req, err := client.getEntityStateByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, tagID, options)
 	if err != nil {
-		return TagGetEntityStateByProductResponse{}, err
+		return TagClientGetEntityStateByProductResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagGetEntityStateByProductResponse{}, err
+		return TagClientGetEntityStateByProductResponse{}, err
 	}
 	return client.getEntityStateByProductHandleResponse(resp)
 }
 
 // getEntityStateByProductCreateRequest creates the GetEntityStateByProduct request.
-func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetEntityStateByProductOptions) (*policy.Request, error) {
+func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagClientGetEntityStateByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1122,7 +1063,7 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1134,8 +1075,8 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 }
 
 // getEntityStateByProductHandleResponse handles the GetEntityStateByProduct response.
-func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Response) (TagGetEntityStateByProductResponse, error) {
-	result := TagGetEntityStateByProductResponse{RawResponse: resp}
+func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Response) (TagClientGetEntityStateByProductResponse, error) {
+	result := TagClientGetEntityStateByProductResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1146,21 +1087,26 @@ func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Respon
 }
 
 // ListByAPI - Lists all Tags associated with the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagListByAPIOptions) *TagListByAPIPager {
-	return &TagListByAPIPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// options - TagClientListByAPIOptions contains the optional parameters for the TagClient.ListByAPI method.
+func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) *TagClientListByAPIPager {
+	return &TagClientListByAPIPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByAPIResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TagClientListByAPIResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
-func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *TagListByAPIOptions) (*policy.Request, error) {
+func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *TagClientListByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1178,7 +1124,7 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1199,43 +1145,36 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagListByAPIResponse, error) {
-	result := TagListByAPIResponse{RawResponse: resp}
+func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagClientListByAPIResponse, error) {
+	result := TagClientListByAPIResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByAPIResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientListByAPIResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAPIHandleError handles the ListByAPI error response.
-func (client *TagClient) listByAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByOperation - Lists all Tags associated with the Operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagListByOperationOptions) *TagListByOperationPager {
-	return &TagListByOperationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// options - TagClientListByOperationOptions contains the optional parameters for the TagClient.ListByOperation method.
+func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) *TagClientListByOperationPager {
+	return &TagClientListByOperationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByOperationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TagClientListByOperationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByOperationCreateRequest creates the ListByOperation request.
-func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *TagListByOperationOptions) (*policy.Request, error) {
+func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *TagClientListByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1257,7 +1196,7 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1278,43 +1217,34 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 }
 
 // listByOperationHandleResponse handles the ListByOperation response.
-func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (TagListByOperationResponse, error) {
-	result := TagListByOperationResponse{RawResponse: resp}
+func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (TagClientListByOperationResponse, error) {
+	result := TagClientListByOperationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByOperationResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientListByOperationResponse{}, err
 	}
 	return result, nil
 }
 
-// listByOperationHandleError handles the ListByOperation error response.
-func (client *TagClient) listByOperationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProduct - Lists all Tags associated with the Product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagListByProductOptions) *TagListByProductPager {
-	return &TagListByProductPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// options - TagClientListByProductOptions contains the optional parameters for the TagClient.ListByProduct method.
+func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) *TagClientListByProductPager {
+	return &TagClientListByProductPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByProductResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TagClientListByProductResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *TagListByProductOptions) (*policy.Request, error) {
+func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *TagClientListByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1332,7 +1262,7 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1353,43 +1283,33 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagListByProductResponse, error) {
-	result := TagListByProductResponse{RawResponse: resp}
+func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagClientListByProductResponse, error) {
+	result := TagClientListByProductResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByProductResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientListByProductResponse{}, err
 	}
 	return result, nil
 }
 
-// listByProductHandleError handles the ListByProduct error response.
-func (client *TagClient) listByProductHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Lists a collection of tags defined within a service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagListByServiceOptions) *TagListByServicePager {
-	return &TagListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - TagClientListByServiceOptions contains the optional parameters for the TagClient.ListByService method.
+func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) *TagClientListByServicePager {
+	return &TagClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TagClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TagListByServiceOptions) (*policy.Request, error) {
+func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TagClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1403,7 +1323,7 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1427,46 +1347,40 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *TagClient) listByServiceHandleResponse(resp *http.Response) (TagListByServiceResponse, error) {
-	result := TagListByServiceResponse{RawResponse: resp}
+func (client *TagClient) listByServiceHandleResponse(resp *http.Response) (TagClientListByServiceResponse, error) {
+	result := TagClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
-		return TagListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *TagClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of the tag specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) Update(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagUpdateOptions) (TagUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// tagID - Tag identifier. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - TagClientUpdateOptions contains the optional parameters for the TagClient.Update method.
+func (client *TagClient) Update(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagClientUpdateOptions) (TagClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, tagID, ifMatch, parameters, options)
 	if err != nil {
-		return TagUpdateResponse{}, err
+		return TagClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TagUpdateResponse{}, err
+		return TagClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TagUpdateResponse{}, client.updateHandleError(resp)
+		return TagClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagUpdateOptions) (*policy.Request, error) {
+func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1484,7 +1398,7 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1497,26 +1411,13 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TagClient) updateHandleResponse(resp *http.Response) (TagUpdateResponse, error) {
-	result := TagUpdateResponse{RawResponse: resp}
+func (client *TagClient) updateHandleResponse(resp *http.Response) (TagClientUpdateResponse, error) {
+	result := TagClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
-		return TagUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TagClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TagClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

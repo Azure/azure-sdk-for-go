@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // OSUpdatesClient contains the methods for the OSUpdates group.
 // Don't use this type directly, use NewOSUpdatesClient() instead.
 type OSUpdatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOSUpdatesClient creates a new instance of OSUpdatesClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OSUpdatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OSUpdatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OSUpdatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets an OS Update by name in which the package was tested before.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OSUpdatesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateResourceName string, options *OSUpdatesGetOptions) (OSUpdatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// osUpdateResourceName - The resource name of an OS Update.
+// options - OSUpdatesClientGetOptions contains the optional parameters for the OSUpdatesClient.Get method.
+func (client *OSUpdatesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateResourceName string, options *OSUpdatesClientGetOptions) (OSUpdatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateResourceName, options)
 	if err != nil {
-		return OSUpdatesGetResponse{}, err
+		return OSUpdatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OSUpdatesGetResponse{}, err
+		return OSUpdatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OSUpdatesGetResponse{}, client.getHandleError(resp)
+		return OSUpdatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateResourceName string, options *OSUpdatesGetOptions) (*policy.Request, error) {
+func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateResourceName string, options *OSUpdatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/osUpdates/{osUpdateResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +94,7 @@ func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter osUpdateResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{osUpdateResourceName}", url.PathEscape(osUpdateResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,43 +106,35 @@ func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdatesGetResponse, error) {
-	result := OSUpdatesGetResponse{RawResponse: resp}
+func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdatesClientGetResponse, error) {
+	result := OSUpdatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSUpdateResource); err != nil {
-		return OSUpdatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return OSUpdatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *OSUpdatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the OS Updates in which the package were tested before.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OSUpdatesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesListOptions) *OSUpdatesListPager {
-	return &OSUpdatesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// osUpdateType - The type of the OS Update.
+// options - OSUpdatesClientListOptions contains the optional parameters for the OSUpdatesClient.List method.
+func (client *OSUpdatesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *OSUpdatesClientListPager {
+	return &OSUpdatesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateType, options)
 		},
-		advancer: func(ctx context.Context, resp OSUpdatesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OSUpdatesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OSUpdateListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesListOptions) (*policy.Request, error) {
+func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/osUpdates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +152,7 @@ func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,23 +165,10 @@ func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGr
 }
 
 // listHandleResponse handles the List response.
-func (client *OSUpdatesClient) listHandleResponse(resp *http.Response) (OSUpdatesListResponse, error) {
-	result := OSUpdatesListResponse{RawResponse: resp}
+func (client *OSUpdatesClient) listHandleResponse(resp *http.Response) (OSUpdatesClientListResponse, error) {
+	result := OSUpdatesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OSUpdateListResult); err != nil {
-		return OSUpdatesListResponse{}, runtime.NewResponseError(err, resp)
+		return OSUpdatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OSUpdatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

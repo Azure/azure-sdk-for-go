@@ -24,42 +24,54 @@ import (
 // APIKeysClient contains the methods for the APIKeys group.
 // Don't use this type directly, use NewAPIKeysClient() instead.
 type APIKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPIKeysClient creates a new instance of APIKeysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &APIKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &APIKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create an API Key of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *APIKeysClient) Create(ctx context.Context, resourceGroupName string, resourceName string, apiKeyProperties APIKeyRequest, options *APIKeysCreateOptions) (APIKeysCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// apiKeyProperties - Properties that need to be specified to create an API key of a Application Insights component.
+// options - APIKeysClientCreateOptions contains the optional parameters for the APIKeysClient.Create method.
+func (client *APIKeysClient) Create(ctx context.Context, resourceGroupName string, resourceName string, apiKeyProperties APIKeyRequest, options *APIKeysClientCreateOptions) (APIKeysClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, apiKeyProperties, options)
 	if err != nil {
-		return APIKeysCreateResponse{}, err
+		return APIKeysClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIKeysCreateResponse{}, err
+		return APIKeysClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIKeysCreateResponse{}, client.createHandleError(resp)
+		return APIKeysClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *APIKeysClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, apiKeyProperties APIKeyRequest, options *APIKeysCreateOptions) (*policy.Request, error) {
+func (client *APIKeysClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, apiKeyProperties APIKeyRequest, options *APIKeysClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *APIKeysClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +97,37 @@ func (client *APIKeysClient) createCreateRequest(ctx context.Context, resourceGr
 }
 
 // createHandleResponse handles the Create response.
-func (client *APIKeysClient) createHandleResponse(resp *http.Response) (APIKeysCreateResponse, error) {
-	result := APIKeysCreateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAPIKey); err != nil {
-		return APIKeysCreateResponse{}, runtime.NewResponseError(err, resp)
+func (client *APIKeysClient) createHandleResponse(resp *http.Response) (APIKeysClientCreateResponse, error) {
+	result := APIKeysClientCreateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKey); err != nil {
+		return APIKeysClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *APIKeysClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Delete an API Key of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *APIKeysClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysDeleteOptions) (APIKeysDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// keyID - The API Key ID. This is unique within a Application Insights component.
+// options - APIKeysClientDeleteOptions contains the optional parameters for the APIKeysClient.Delete method.
+func (client *APIKeysClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysClientDeleteOptions) (APIKeysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, keyID, options)
 	if err != nil {
-		return APIKeysDeleteResponse{}, err
+		return APIKeysClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIKeysDeleteResponse{}, err
+		return APIKeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIKeysDeleteResponse{}, client.deleteHandleError(resp)
+		return APIKeysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysDeleteOptions) (*policy.Request, error) {
+func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/APIKeys/{keyId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,7 +145,7 @@ func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter keyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyId}", url.PathEscape(keyID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,45 +157,37 @@ func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGr
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *APIKeysClient) deleteHandleResponse(resp *http.Response) (APIKeysDeleteResponse, error) {
-	result := APIKeysDeleteResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAPIKey); err != nil {
-		return APIKeysDeleteResponse{}, runtime.NewResponseError(err, resp)
+func (client *APIKeysClient) deleteHandleResponse(resp *http.Response) (APIKeysClientDeleteResponse, error) {
+	result := APIKeysClientDeleteResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKey); err != nil {
+		return APIKeysClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *APIKeysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get the API Key for this key id.
-// If the operation fails it returns a generic error.
-func (client *APIKeysClient) Get(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysGetOptions) (APIKeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// keyID - The API Key ID. This is unique within a Application Insights component.
+// options - APIKeysClientGetOptions contains the optional parameters for the APIKeysClient.Get method.
+func (client *APIKeysClient) Get(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysClientGetOptions) (APIKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, keyID, options)
 	if err != nil {
-		return APIKeysGetResponse{}, err
+		return APIKeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIKeysGetResponse{}, err
+		return APIKeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIKeysGetResponse{}, client.getHandleError(resp)
+		return APIKeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysGetOptions) (*policy.Request, error) {
+func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, keyID string, options *APIKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/APIKeys/{keyId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -209,7 +205,7 @@ func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter keyID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyId}", url.PathEscape(keyID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -221,45 +217,36 @@ func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysGetResponse, error) {
-	result := APIKeysGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAPIKey); err != nil {
-		return APIKeysGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysClientGetResponse, error) {
+	result := APIKeysClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKey); err != nil {
+		return APIKeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *APIKeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets a list of API keys of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *APIKeysClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *APIKeysListOptions) (APIKeysListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - APIKeysClientListOptions contains the optional parameters for the APIKeysClient.List method.
+func (client *APIKeysClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *APIKeysClientListOptions) (APIKeysClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return APIKeysListResponse{}, err
+		return APIKeysClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIKeysListResponse{}, err
+		return APIKeysClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIKeysListResponse{}, client.listHandleError(resp)
+		return APIKeysClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *APIKeysListOptions) (*policy.Request, error) {
+func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *APIKeysClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -273,7 +260,7 @@ func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,22 +272,10 @@ func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGrou
 }
 
 // listHandleResponse handles the List response.
-func (client *APIKeysClient) listHandleResponse(resp *http.Response) (APIKeysListResponse, error) {
-	result := APIKeysListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentAPIKeyListResult); err != nil {
-		return APIKeysListResponse{}, runtime.NewResponseError(err, resp)
+func (client *APIKeysClient) listHandleResponse(resp *http.Response) (APIKeysClientListResponse, error) {
+	result := APIKeysClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAPIKeyListResult); err != nil {
+		return APIKeysClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *APIKeysClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -11,7 +11,6 @@ package armdataprotection
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,57 @@ import (
 // ExportJobsOperationResultClient contains the methods for the ExportJobsOperationResult group.
 // Don't use this type directly, use NewExportJobsOperationResultClient() instead.
 type ExportJobsOperationResultClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExportJobsOperationResultClient creates a new instance of ExportJobsOperationResultClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExportJobsOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExportJobsOperationResultClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExportJobsOperationResultClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExportJobsOperationResultClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also contains URL of a Blob and a
-// SAS key to access the same. The blob contains exported
+// Get - Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
+// contains URL of a Blob and a SAS key to access the same. The blob contains exported
 // jobs in JSON serialized format.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExportJobsOperationResultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *ExportJobsOperationResultGetOptions) (ExportJobsOperationResultGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// operationID - OperationID which represents the export job.
+// options - ExportJobsOperationResultClientGetOptions contains the optional parameters for the ExportJobsOperationResultClient.Get
+// method.
+func (client *ExportJobsOperationResultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *ExportJobsOperationResultClientGetOptions) (ExportJobsOperationResultClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {
-		return ExportJobsOperationResultGetResponse{}, err
+		return ExportJobsOperationResultClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportJobsOperationResultGetResponse{}, err
+		return ExportJobsOperationResultClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return ExportJobsOperationResultGetResponse{}, client.getHandleError(resp)
+		return ExportJobsOperationResultClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *ExportJobsOperationResultGetOptions) (*policy.Request, error) {
+func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *ExportJobsOperationResultClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,7 +92,7 @@ func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -92,23 +104,10 @@ func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportJobsOperationResultClient) getHandleResponse(resp *http.Response) (ExportJobsOperationResultGetResponse, error) {
-	result := ExportJobsOperationResultGetResponse{RawResponse: resp}
+func (client *ExportJobsOperationResultClient) getHandleResponse(resp *http.Response) (ExportJobsOperationResultClientGetResponse, error) {
+	result := ExportJobsOperationResultClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportJobsResult); err != nil {
-		return ExportJobsOperationResultGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExportJobsOperationResultClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ExportJobsOperationResultClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

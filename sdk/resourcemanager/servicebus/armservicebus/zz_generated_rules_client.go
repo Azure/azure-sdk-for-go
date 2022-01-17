@@ -11,7 +11,6 @@ package armservicebus
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,58 @@ import (
 // RulesClient contains the methods for the Rules group.
 // Don't use this type directly, use NewRulesClient() instead.
 type RulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRulesClient creates a new instance of RulesClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new rule and updates an existing rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, parameters Rule, options *RulesCreateOrUpdateOptions) (RulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// ruleName - The rule name.
+// parameters - Parameters supplied to create a rule.
+// options - RulesClientCreateOrUpdateOptions contains the optional parameters for the RulesClient.CreateOrUpdate method.
+func (client *RulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, parameters Rule, options *RulesClientCreateOrUpdateOptions) (RulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, ruleName, parameters, options)
 	if err != nil {
-		return RulesCreateOrUpdateResponse{}, err
+		return RulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RulesCreateOrUpdateResponse{}, err
+		return RulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return RulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, parameters Rule, options *RulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, parameters Rule, options *RulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -87,58 +102,51 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (RulesCreateOrUpdateResponse, error) {
-	result := RulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (RulesClientCreateOrUpdateResponse, error) {
+	result := RulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
-		return RulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return RulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *RulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an existing rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RulesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesDeleteOptions) (RulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// ruleName - The rule name.
+// options - RulesClientDeleteOptions contains the optional parameters for the RulesClient.Delete method.
+func (client *RulesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesClientDeleteOptions) (RulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, ruleName, options)
 	if err != nil {
-		return RulesDeleteResponse{}, err
+		return RulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RulesDeleteResponse{}, err
+		return RulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return RulesDeleteResponse{}, client.deleteHandleError(resp)
+		return RulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return RulesDeleteResponse{RawResponse: resp}, nil
+	return RulesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesDeleteOptions) (*policy.Request, error) {
+func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -164,49 +172,42 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *RulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves the description for the specified rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RulesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesGetOptions) (RulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// ruleName - The rule name.
+// options - RulesClientGetOptions contains the optional parameters for the RulesClient.Get method.
+func (client *RulesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesClientGetOptions) (RulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, ruleName, options)
 	if err != nil {
-		return RulesGetResponse{}, err
+		return RulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RulesGetResponse{}, err
+		return RulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RulesGetResponse{}, client.getHandleError(resp)
+		return RulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesGetOptions) (*policy.Request, error) {
+func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, options *RulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -232,55 +233,48 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesGetResponse, error) {
-	result := RulesGetResponse{RawResponse: resp}
+func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGetResponse, error) {
+	result := RulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
-		return RulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return RulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscriptions - List all the rules within given topic-subscription
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RulesClient) ListBySubscriptions(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesListBySubscriptionsOptions) *RulesListBySubscriptionsPager {
-	return &RulesListBySubscriptionsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// options - RulesClientListBySubscriptionsOptions contains the optional parameters for the RulesClient.ListBySubscriptions
+// method.
+func (client *RulesClient) ListBySubscriptions(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) *RulesClientListBySubscriptionsPager {
+	return &RulesClientListBySubscriptionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionsCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, options)
 		},
-		advancer: func(ctx context.Context, resp RulesListBySubscriptionsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp RulesClientListBySubscriptionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RuleListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionsCreateRequest creates the ListBySubscriptions request.
-func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesListBySubscriptionsOptions) (*policy.Request, error) {
+func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}/rules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -302,12 +296,12 @@ func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -320,23 +314,10 @@ func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context,
 }
 
 // listBySubscriptionsHandleResponse handles the ListBySubscriptions response.
-func (client *RulesClient) listBySubscriptionsHandleResponse(resp *http.Response) (RulesListBySubscriptionsResponse, error) {
-	result := RulesListBySubscriptionsResponse{RawResponse: resp}
+func (client *RulesClient) listBySubscriptionsHandleResponse(resp *http.Response) (RulesClientListBySubscriptionsResponse, error) {
+	result := RulesClientListBySubscriptionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
-		return RulesListBySubscriptionsResponse{}, runtime.NewResponseError(err, resp)
+		return RulesClientListBySubscriptionsResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionsHandleError handles the ListBySubscriptions error response.
-func (client *RulesClient) listBySubscriptionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

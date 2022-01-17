@@ -25,42 +25,57 @@ import (
 // JobVersionsClient contains the methods for the JobVersions group.
 // Don't use this type directly, use NewJobVersionsClient() instead.
 type JobVersionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobVersionsClient creates a new instance of JobVersionsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobVersionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobVersionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a job version.
-// If the operation fails it returns a generic error.
-func (client *JobVersionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobVersionsGetOptions) (JobVersionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent.
+// jobName - The name of the job.
+// jobVersion - The version of the job to get.
+// options - JobVersionsClientGetOptions contains the optional parameters for the JobVersionsClient.Get method.
+func (client *JobVersionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobVersionsClientGetOptions) (JobVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, options)
 	if err != nil {
-		return JobVersionsGetResponse{}, err
+		return JobVersionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobVersionsGetResponse{}, err
+		return JobVersionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobVersionsGetResponse{}, client.getHandleError(resp)
+		return JobVersionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobVersionsGetOptions) (*policy.Request, error) {
+func (client *JobVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +98,7 @@ func (client *JobVersionsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,42 +110,36 @@ func (client *JobVersionsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobVersionsClient) getHandleResponse(resp *http.Response) (JobVersionsGetResponse, error) {
-	result := JobVersionsGetResponse{RawResponse: resp}
+func (client *JobVersionsClient) getHandleResponse(resp *http.Response) (JobVersionsClientGetResponse, error) {
+	result := JobVersionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobVersion); err != nil {
-		return JobVersionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobVersionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobVersionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByJob - Gets all versions of a job.
-// If the operation fails it returns a generic error.
-func (client *JobVersionsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsListByJobOptions) *JobVersionsListByJobPager {
-	return &JobVersionsListByJobPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent.
+// jobName - The name of the job to get.
+// options - JobVersionsClientListByJobOptions contains the optional parameters for the JobVersionsClient.ListByJob method.
+func (client *JobVersionsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsClientListByJobOptions) *JobVersionsClientListByJobPager {
+	return &JobVersionsClientListByJobPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
 		},
-		advancer: func(ctx context.Context, resp JobVersionsListByJobResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobVersionsClientListByJobResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobVersionListResult.NextLink)
 		},
 	}
 }
 
 // listByJobCreateRequest creates the ListByJob request.
-func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsListByJobOptions) (*policy.Request, error) {
+func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsClientListByJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -152,7 +161,7 @@ func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -164,22 +173,10 @@ func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, res
 }
 
 // listByJobHandleResponse handles the ListByJob response.
-func (client *JobVersionsClient) listByJobHandleResponse(resp *http.Response) (JobVersionsListByJobResponse, error) {
-	result := JobVersionsListByJobResponse{RawResponse: resp}
+func (client *JobVersionsClient) listByJobHandleResponse(resp *http.Response) (JobVersionsClientListByJobResponse, error) {
+	result := JobVersionsClientListByJobResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobVersionListResult); err != nil {
-		return JobVersionsListByJobResponse{}, runtime.NewResponseError(err, resp)
+		return JobVersionsClientListByJobResponse{}, err
 	}
 	return result, nil
-}
-
-// listByJobHandleError handles the ListByJob error response.
-func (client *JobVersionsClient) listByJobHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

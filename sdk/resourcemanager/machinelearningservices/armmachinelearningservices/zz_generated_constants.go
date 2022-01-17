@@ -9,14 +9,14 @@
 package armmachinelearningservices
 
 const (
-	module  = "armmachinelearningservices"
-	version = "v0.1.0"
+	moduleName    = "armmachinelearningservices"
+	moduleVersion = "v0.2.0"
 )
 
-// AllocationState - Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There are no changes to
-// the number of compute nodes in the compute in progress. A compute
-// enters this state when it is created and when no operations are being performed on the compute to change the number of compute nodes. resizing - Indicates
-// that the compute is resizing; that is,
+// AllocationState - Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing.
+// There are no changes to the number of compute nodes in the compute in progress. A compute
+// enters this state when it is created and when no operations are being performed on the compute to change the number of
+// compute nodes. resizing - Indicates that the compute is resizing; that is,
 // compute nodes are being added to or removed from the compute.
 type AllocationState string
 
@@ -38,8 +38,8 @@ func (c AllocationState) ToPtr() *AllocationState {
 	return &c
 }
 
-// ApplicationSharingPolicy - Policy for sharing applications on this compute instance among users of parent workspace. If Personal, only the creator can
-// access applications on this compute instance. When Shared, any workspace
+// ApplicationSharingPolicy - Policy for sharing applications on this compute instance among users of parent workspace. If
+// Personal, only the creator can access applications on this compute instance. When Shared, any workspace
 // user can access applications on this instance depending on his/her assigned role.
 type ApplicationSharingPolicy string
 
@@ -460,7 +460,8 @@ func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceC
 	return &c
 }
 
-// ProvisioningState - The current deployment state of workspace resource. The provisioningState is to indicate states for resource provisioning.
+// ProvisioningState - The current deployment state of workspace resource. The provisioningState is to indicate states for
+// resource provisioning.
 type ProvisioningState string
 
 const (
@@ -554,10 +555,10 @@ func (c ReasonCode) ToPtr() *ReasonCode {
 	return &c
 }
 
-// RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes
-// of the cluster. Enabled - Indicates that the public ssh port is open on all
-// nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public
-// nodes. It can be default only during cluster
+// RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh
+// port is closed on all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all
+// nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is
+// defined, else is open all public nodes. It can be default only during cluster
 // creation time, after creation it will be either enabled or disabled.
 type RemoteLoginPortPublicAccess string
 
@@ -606,8 +607,8 @@ func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
 	return &c
 }
 
-// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled
-// - Indicates that the public ssh port is open and accessible
+// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed
+// on this instance. Enabled - Indicates that the public ssh port is open and accessible
 // according to the VNet/subnet policy if applicable.
 type SSHPublicAccess string
 

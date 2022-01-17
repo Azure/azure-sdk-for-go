@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,50 @@ import (
 // UsageClient contains the methods for the Usage group.
 // Don't use this type directly, use NewUsageClient() instead.
 type UsageClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsageClient creates a new instance of UsageClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsageClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsageClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the usage data of a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UsageClient) List(resourceGroupName string, testBaseAccountName string, options *UsageListOptions) *UsageListPager {
-	return &UsageListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// options - UsageClientListOptions contains the optional parameters for the UsageClient.List method.
+func (client *UsageClient) List(resourceGroupName string, testBaseAccountName string, options *UsageClientListOptions) *UsageClientListPager {
+	return &UsageClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp UsageListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TestBaseAccountUsageDataList.NextLink)
+		advancer: func(ctx context.Context, resp UsageClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccountUsageDataList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UsageClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *UsageListOptions) (*policy.Request, error) {
+func (client *UsageClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *UsageClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +81,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +96,10 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // listHandleResponse handles the List response.
-func (client *UsageClient) listHandleResponse(resp *http.Response) (UsageListResponse, error) {
-	result := UsageListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TestBaseAccountUsageDataList); err != nil {
-		return UsageListResponse{}, runtime.NewResponseError(err, resp)
+func (client *UsageClient) listHandleResponse(resp *http.Response) (UsageClientListResponse, error) {
+	result := UsageClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountUsageDataList); err != nil {
+		return UsageClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *UsageClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

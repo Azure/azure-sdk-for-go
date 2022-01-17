@@ -15,88 +15,88 @@ import (
 	"time"
 )
 
-// DpsCertificateCreateOrUpdateResponse contains the response from method DpsCertificate.CreateOrUpdate.
-type DpsCertificateCreateOrUpdateResponse struct {
-	DpsCertificateCreateOrUpdateResult
+// DpsCertificateClientCreateOrUpdateResponse contains the response from method DpsCertificateClient.CreateOrUpdate.
+type DpsCertificateClientCreateOrUpdateResponse struct {
+	DpsCertificateClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DpsCertificateCreateOrUpdateResult contains the result from method DpsCertificate.CreateOrUpdate.
-type DpsCertificateCreateOrUpdateResult struct {
+// DpsCertificateClientCreateOrUpdateResult contains the result from method DpsCertificateClient.CreateOrUpdate.
+type DpsCertificateClientCreateOrUpdateResult struct {
 	CertificateResponse
 }
 
-// DpsCertificateDeleteResponse contains the response from method DpsCertificate.Delete.
-type DpsCertificateDeleteResponse struct {
+// DpsCertificateClientDeleteResponse contains the response from method DpsCertificateClient.Delete.
+type DpsCertificateClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DpsCertificateGenerateVerificationCodeResponse contains the response from method DpsCertificate.GenerateVerificationCode.
-type DpsCertificateGenerateVerificationCodeResponse struct {
-	DpsCertificateGenerateVerificationCodeResult
+// DpsCertificateClientGenerateVerificationCodeResponse contains the response from method DpsCertificateClient.GenerateVerificationCode.
+type DpsCertificateClientGenerateVerificationCodeResponse struct {
+	DpsCertificateClientGenerateVerificationCodeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DpsCertificateGenerateVerificationCodeResult contains the result from method DpsCertificate.GenerateVerificationCode.
-type DpsCertificateGenerateVerificationCodeResult struct {
+// DpsCertificateClientGenerateVerificationCodeResult contains the result from method DpsCertificateClient.GenerateVerificationCode.
+type DpsCertificateClientGenerateVerificationCodeResult struct {
 	VerificationCodeResponse
 }
 
-// DpsCertificateGetResponse contains the response from method DpsCertificate.Get.
-type DpsCertificateGetResponse struct {
-	DpsCertificateGetResult
+// DpsCertificateClientGetResponse contains the response from method DpsCertificateClient.Get.
+type DpsCertificateClientGetResponse struct {
+	DpsCertificateClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DpsCertificateGetResult contains the result from method DpsCertificate.Get.
-type DpsCertificateGetResult struct {
+// DpsCertificateClientGetResult contains the result from method DpsCertificateClient.Get.
+type DpsCertificateClientGetResult struct {
 	CertificateResponse
 }
 
-// DpsCertificateListResponse contains the response from method DpsCertificate.List.
-type DpsCertificateListResponse struct {
-	DpsCertificateListResult
+// DpsCertificateClientListResponse contains the response from method DpsCertificateClient.List.
+type DpsCertificateClientListResponse struct {
+	DpsCertificateClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DpsCertificateListResult contains the result from method DpsCertificate.List.
-type DpsCertificateListResult struct {
+// DpsCertificateClientListResult contains the result from method DpsCertificateClient.List.
+type DpsCertificateClientListResult struct {
 	CertificateListDescription
 }
 
-// DpsCertificateVerifyCertificateResponse contains the response from method DpsCertificate.VerifyCertificate.
-type DpsCertificateVerifyCertificateResponse struct {
-	DpsCertificateVerifyCertificateResult
+// DpsCertificateClientVerifyCertificateResponse contains the response from method DpsCertificateClient.VerifyCertificate.
+type DpsCertificateClientVerifyCertificateResponse struct {
+	DpsCertificateClientVerifyCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DpsCertificateVerifyCertificateResult contains the result from method DpsCertificate.VerifyCertificate.
-type DpsCertificateVerifyCertificateResult struct {
+// DpsCertificateClientVerifyCertificateResult contains the result from method DpsCertificateClient.VerifyCertificate.
+type DpsCertificateClientVerifyCertificateResult struct {
 	CertificateResponse
 }
 
-// IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse contains the response from method IotDpsResource.CheckProvisioningServiceNameAvailability.
-type IotDpsResourceCheckProvisioningServiceNameAvailabilityResponse struct {
-	IotDpsResourceCheckProvisioningServiceNameAvailabilityResult
+// IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse contains the response from method IotDpsResourceClient.CheckProvisioningServiceNameAvailability.
+type IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse struct {
+	IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceCheckProvisioningServiceNameAvailabilityResult contains the result from method IotDpsResource.CheckProvisioningServiceNameAvailability.
-type IotDpsResourceCheckProvisioningServiceNameAvailabilityResult struct {
+// IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResult contains the result from method IotDpsResourceClient.CheckProvisioningServiceNameAvailability.
+type IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResult struct {
 	NameAvailabilityInfo
 }
 
-// IotDpsResourceCreateOrUpdatePollerResponse contains the response from method IotDpsResource.CreateOrUpdate.
-type IotDpsResourceCreateOrUpdatePollerResponse struct {
+// IotDpsResourceClientCreateOrUpdatePollerResponse contains the response from method IotDpsResourceClient.CreateOrUpdate.
+type IotDpsResourceClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *IotDpsResourceCreateOrUpdatePoller
+	Poller *IotDpsResourceClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -105,8 +105,8 @@ type IotDpsResourceCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotDpsResourceCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceCreateOrUpdateResponse, error) {
-	respType := IotDpsResourceCreateOrUpdateResponse{}
+func (l IotDpsResourceClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceClientCreateOrUpdateResponse, error) {
+	respType := IotDpsResourceClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProvisioningServiceDescription)
 	if err != nil {
 		return respType, err
@@ -115,13 +115,13 @@ func (l IotDpsResourceCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a IotDpsResourceCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *IotDpsResourceCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a IotDpsResourceClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *IotDpsResourceClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &IotDpsResourceCreateOrUpdatePoller{
+	poller := &IotDpsResourceClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -133,10 +133,10 @@ func (l *IotDpsResourceCreateOrUpdatePollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse contains the response from method IotDpsResource.CreateOrUpdatePrivateEndpointConnection.
-type IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse struct {
+// IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse contains the response from method IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection.
+type IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller
+	Poller *IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -145,8 +145,8 @@ type IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse struct 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse, error) {
-	respType := IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse{}
+func (l IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse, error) {
+	respType := IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -155,13 +155,14 @@ func (l IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse) Pol
 	return respType, nil
 }
 
-// Resume rehydrates a IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection", token, client.pl, client.createOrUpdatePrivateEndpointConnectionHandleError)
+// Resume rehydrates a IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse from the provided client
+// and resume token.
+func (l *IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPoller{
+	poller := &IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -173,34 +174,34 @@ func (l *IotDpsResourceCreateOrUpdatePrivateEndpointConnectionPollerResponse) Re
 	return nil
 }
 
-// IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse contains the response from method IotDpsResource.CreateOrUpdatePrivateEndpointConnection.
-type IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResponse struct {
-	IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResult
+// IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse contains the response from method IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection.
+type IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse struct {
+	IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResult contains the result from method IotDpsResource.CreateOrUpdatePrivateEndpointConnection.
-type IotDpsResourceCreateOrUpdatePrivateEndpointConnectionResult struct {
+// IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResult contains the result from method IotDpsResourceClient.CreateOrUpdatePrivateEndpointConnection.
+type IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResult struct {
 	PrivateEndpointConnection
 }
 
-// IotDpsResourceCreateOrUpdateResponse contains the response from method IotDpsResource.CreateOrUpdate.
-type IotDpsResourceCreateOrUpdateResponse struct {
-	IotDpsResourceCreateOrUpdateResult
+// IotDpsResourceClientCreateOrUpdateResponse contains the response from method IotDpsResourceClient.CreateOrUpdate.
+type IotDpsResourceClientCreateOrUpdateResponse struct {
+	IotDpsResourceClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceCreateOrUpdateResult contains the result from method IotDpsResource.CreateOrUpdate.
-type IotDpsResourceCreateOrUpdateResult struct {
+// IotDpsResourceClientCreateOrUpdateResult contains the result from method IotDpsResourceClient.CreateOrUpdate.
+type IotDpsResourceClientCreateOrUpdateResult struct {
 	ProvisioningServiceDescription
 }
 
-// IotDpsResourceDeletePollerResponse contains the response from method IotDpsResource.Delete.
-type IotDpsResourceDeletePollerResponse struct {
+// IotDpsResourceClientDeletePollerResponse contains the response from method IotDpsResourceClient.Delete.
+type IotDpsResourceClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *IotDpsResourceDeletePoller
+	Poller *IotDpsResourceClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -209,8 +210,8 @@ type IotDpsResourceDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotDpsResourceDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceDeleteResponse, error) {
-	respType := IotDpsResourceDeleteResponse{}
+func (l IotDpsResourceClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceClientDeleteResponse, error) {
+	respType := IotDpsResourceClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -219,13 +220,13 @@ func (l IotDpsResourceDeletePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a IotDpsResourceDeletePollerResponse from the provided client and resume token.
-func (l *IotDpsResourceDeletePollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a IotDpsResourceClientDeletePollerResponse from the provided client and resume token.
+func (l *IotDpsResourceClientDeletePollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &IotDpsResourceDeletePoller{
+	poller := &IotDpsResourceClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -237,10 +238,10 @@ func (l *IotDpsResourceDeletePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// IotDpsResourceDeletePrivateEndpointConnectionPollerResponse contains the response from method IotDpsResource.DeletePrivateEndpointConnection.
-type IotDpsResourceDeletePrivateEndpointConnectionPollerResponse struct {
+// IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse contains the response from method IotDpsResourceClient.DeletePrivateEndpointConnection.
+type IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *IotDpsResourceDeletePrivateEndpointConnectionPoller
+	Poller *IotDpsResourceClientDeletePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -249,8 +250,8 @@ type IotDpsResourceDeletePrivateEndpointConnectionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotDpsResourceDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceDeletePrivateEndpointConnectionResponse, error) {
-	respType := IotDpsResourceDeletePrivateEndpointConnectionResponse{}
+func (l IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceClientDeletePrivateEndpointConnectionResponse, error) {
+	respType := IotDpsResourceClientDeletePrivateEndpointConnectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -259,13 +260,14 @@ func (l IotDpsResourceDeletePrivateEndpointConnectionPollerResponse) PollUntilDo
 	return respType, nil
 }
 
-// Resume rehydrates a IotDpsResourceDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
-func (l *IotDpsResourceDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
+// Resume rehydrates a IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse from the provided client and resume
+// token.
+func (l *IotDpsResourceClientDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.DeletePrivateEndpointConnection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &IotDpsResourceDeletePrivateEndpointConnectionPoller{
+	poller := &IotDpsResourceClientDeletePrivateEndpointConnectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -277,161 +279,161 @@ func (l *IotDpsResourceDeletePrivateEndpointConnectionPollerResponse) Resume(ctx
 	return nil
 }
 
-// IotDpsResourceDeletePrivateEndpointConnectionResponse contains the response from method IotDpsResource.DeletePrivateEndpointConnection.
-type IotDpsResourceDeletePrivateEndpointConnectionResponse struct {
-	IotDpsResourceDeletePrivateEndpointConnectionResult
+// IotDpsResourceClientDeletePrivateEndpointConnectionResponse contains the response from method IotDpsResourceClient.DeletePrivateEndpointConnection.
+type IotDpsResourceClientDeletePrivateEndpointConnectionResponse struct {
+	IotDpsResourceClientDeletePrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceDeletePrivateEndpointConnectionResult contains the result from method IotDpsResource.DeletePrivateEndpointConnection.
-type IotDpsResourceDeletePrivateEndpointConnectionResult struct {
+// IotDpsResourceClientDeletePrivateEndpointConnectionResult contains the result from method IotDpsResourceClient.DeletePrivateEndpointConnection.
+type IotDpsResourceClientDeletePrivateEndpointConnectionResult struct {
 	PrivateEndpointConnection
 }
 
-// IotDpsResourceDeleteResponse contains the response from method IotDpsResource.Delete.
-type IotDpsResourceDeleteResponse struct {
+// IotDpsResourceClientDeleteResponse contains the response from method IotDpsResourceClient.Delete.
+type IotDpsResourceClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceGetOperationResultResponse contains the response from method IotDpsResource.GetOperationResult.
-type IotDpsResourceGetOperationResultResponse struct {
-	IotDpsResourceGetOperationResultResult
+// IotDpsResourceClientGetOperationResultResponse contains the response from method IotDpsResourceClient.GetOperationResult.
+type IotDpsResourceClientGetOperationResultResponse struct {
+	IotDpsResourceClientGetOperationResultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceGetOperationResultResult contains the result from method IotDpsResource.GetOperationResult.
-type IotDpsResourceGetOperationResultResult struct {
+// IotDpsResourceClientGetOperationResultResult contains the result from method IotDpsResourceClient.GetOperationResult.
+type IotDpsResourceClientGetOperationResultResult struct {
 	AsyncOperationResult
 }
 
-// IotDpsResourceGetPrivateEndpointConnectionResponse contains the response from method IotDpsResource.GetPrivateEndpointConnection.
-type IotDpsResourceGetPrivateEndpointConnectionResponse struct {
-	IotDpsResourceGetPrivateEndpointConnectionResult
+// IotDpsResourceClientGetPrivateEndpointConnectionResponse contains the response from method IotDpsResourceClient.GetPrivateEndpointConnection.
+type IotDpsResourceClientGetPrivateEndpointConnectionResponse struct {
+	IotDpsResourceClientGetPrivateEndpointConnectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceGetPrivateEndpointConnectionResult contains the result from method IotDpsResource.GetPrivateEndpointConnection.
-type IotDpsResourceGetPrivateEndpointConnectionResult struct {
+// IotDpsResourceClientGetPrivateEndpointConnectionResult contains the result from method IotDpsResourceClient.GetPrivateEndpointConnection.
+type IotDpsResourceClientGetPrivateEndpointConnectionResult struct {
 	PrivateEndpointConnection
 }
 
-// IotDpsResourceGetPrivateLinkResourcesResponse contains the response from method IotDpsResource.GetPrivateLinkResources.
-type IotDpsResourceGetPrivateLinkResourcesResponse struct {
-	IotDpsResourceGetPrivateLinkResourcesResult
+// IotDpsResourceClientGetPrivateLinkResourcesResponse contains the response from method IotDpsResourceClient.GetPrivateLinkResources.
+type IotDpsResourceClientGetPrivateLinkResourcesResponse struct {
+	IotDpsResourceClientGetPrivateLinkResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceGetPrivateLinkResourcesResult contains the result from method IotDpsResource.GetPrivateLinkResources.
-type IotDpsResourceGetPrivateLinkResourcesResult struct {
+// IotDpsResourceClientGetPrivateLinkResourcesResult contains the result from method IotDpsResourceClient.GetPrivateLinkResources.
+type IotDpsResourceClientGetPrivateLinkResourcesResult struct {
 	GroupIDInformation
 }
 
-// IotDpsResourceGetResponse contains the response from method IotDpsResource.Get.
-type IotDpsResourceGetResponse struct {
-	IotDpsResourceGetResult
+// IotDpsResourceClientGetResponse contains the response from method IotDpsResourceClient.Get.
+type IotDpsResourceClientGetResponse struct {
+	IotDpsResourceClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceGetResult contains the result from method IotDpsResource.Get.
-type IotDpsResourceGetResult struct {
+// IotDpsResourceClientGetResult contains the result from method IotDpsResourceClient.Get.
+type IotDpsResourceClientGetResult struct {
 	ProvisioningServiceDescription
 }
 
-// IotDpsResourceListByResourceGroupResponse contains the response from method IotDpsResource.ListByResourceGroup.
-type IotDpsResourceListByResourceGroupResponse struct {
-	IotDpsResourceListByResourceGroupResult
+// IotDpsResourceClientListByResourceGroupResponse contains the response from method IotDpsResourceClient.ListByResourceGroup.
+type IotDpsResourceClientListByResourceGroupResponse struct {
+	IotDpsResourceClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListByResourceGroupResult contains the result from method IotDpsResource.ListByResourceGroup.
-type IotDpsResourceListByResourceGroupResult struct {
+// IotDpsResourceClientListByResourceGroupResult contains the result from method IotDpsResourceClient.ListByResourceGroup.
+type IotDpsResourceClientListByResourceGroupResult struct {
 	ProvisioningServiceDescriptionListResult
 }
 
-// IotDpsResourceListBySubscriptionResponse contains the response from method IotDpsResource.ListBySubscription.
-type IotDpsResourceListBySubscriptionResponse struct {
-	IotDpsResourceListBySubscriptionResult
+// IotDpsResourceClientListBySubscriptionResponse contains the response from method IotDpsResourceClient.ListBySubscription.
+type IotDpsResourceClientListBySubscriptionResponse struct {
+	IotDpsResourceClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListBySubscriptionResult contains the result from method IotDpsResource.ListBySubscription.
-type IotDpsResourceListBySubscriptionResult struct {
+// IotDpsResourceClientListBySubscriptionResult contains the result from method IotDpsResourceClient.ListBySubscription.
+type IotDpsResourceClientListBySubscriptionResult struct {
 	ProvisioningServiceDescriptionListResult
 }
 
-// IotDpsResourceListKeysForKeyNameResponse contains the response from method IotDpsResource.ListKeysForKeyName.
-type IotDpsResourceListKeysForKeyNameResponse struct {
-	IotDpsResourceListKeysForKeyNameResult
+// IotDpsResourceClientListKeysForKeyNameResponse contains the response from method IotDpsResourceClient.ListKeysForKeyName.
+type IotDpsResourceClientListKeysForKeyNameResponse struct {
+	IotDpsResourceClientListKeysForKeyNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListKeysForKeyNameResult contains the result from method IotDpsResource.ListKeysForKeyName.
-type IotDpsResourceListKeysForKeyNameResult struct {
+// IotDpsResourceClientListKeysForKeyNameResult contains the result from method IotDpsResourceClient.ListKeysForKeyName.
+type IotDpsResourceClientListKeysForKeyNameResult struct {
 	SharedAccessSignatureAuthorizationRuleAccessRightsDescription
 }
 
-// IotDpsResourceListKeysResponse contains the response from method IotDpsResource.ListKeys.
-type IotDpsResourceListKeysResponse struct {
-	IotDpsResourceListKeysResult
+// IotDpsResourceClientListKeysResponse contains the response from method IotDpsResourceClient.ListKeys.
+type IotDpsResourceClientListKeysResponse struct {
+	IotDpsResourceClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListKeysResult contains the result from method IotDpsResource.ListKeys.
-type IotDpsResourceListKeysResult struct {
+// IotDpsResourceClientListKeysResult contains the result from method IotDpsResourceClient.ListKeys.
+type IotDpsResourceClientListKeysResult struct {
 	SharedAccessSignatureAuthorizationRuleListResult
 }
 
-// IotDpsResourceListPrivateEndpointConnectionsResponse contains the response from method IotDpsResource.ListPrivateEndpointConnections.
-type IotDpsResourceListPrivateEndpointConnectionsResponse struct {
-	IotDpsResourceListPrivateEndpointConnectionsResult
+// IotDpsResourceClientListPrivateEndpointConnectionsResponse contains the response from method IotDpsResourceClient.ListPrivateEndpointConnections.
+type IotDpsResourceClientListPrivateEndpointConnectionsResponse struct {
+	IotDpsResourceClientListPrivateEndpointConnectionsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListPrivateEndpointConnectionsResult contains the result from method IotDpsResource.ListPrivateEndpointConnections.
-type IotDpsResourceListPrivateEndpointConnectionsResult struct {
+// IotDpsResourceClientListPrivateEndpointConnectionsResult contains the result from method IotDpsResourceClient.ListPrivateEndpointConnections.
+type IotDpsResourceClientListPrivateEndpointConnectionsResult struct {
 	// The list of private endpoint connections for a provisioning service
 	PrivateEndpointConnectionArray []*PrivateEndpointConnection
 }
 
-// IotDpsResourceListPrivateLinkResourcesResponse contains the response from method IotDpsResource.ListPrivateLinkResources.
-type IotDpsResourceListPrivateLinkResourcesResponse struct {
-	IotDpsResourceListPrivateLinkResourcesResult
+// IotDpsResourceClientListPrivateLinkResourcesResponse contains the response from method IotDpsResourceClient.ListPrivateLinkResources.
+type IotDpsResourceClientListPrivateLinkResourcesResponse struct {
+	IotDpsResourceClientListPrivateLinkResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListPrivateLinkResourcesResult contains the result from method IotDpsResource.ListPrivateLinkResources.
-type IotDpsResourceListPrivateLinkResourcesResult struct {
+// IotDpsResourceClientListPrivateLinkResourcesResult contains the result from method IotDpsResourceClient.ListPrivateLinkResources.
+type IotDpsResourceClientListPrivateLinkResourcesResult struct {
 	PrivateLinkResources
 }
 
-// IotDpsResourceListValidSKUsResponse contains the response from method IotDpsResource.ListValidSKUs.
-type IotDpsResourceListValidSKUsResponse struct {
-	IotDpsResourceListValidSKUsResult
+// IotDpsResourceClientListValidSKUsResponse contains the response from method IotDpsResourceClient.ListValidSKUs.
+type IotDpsResourceClientListValidSKUsResponse struct {
+	IotDpsResourceClientListValidSKUsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceListValidSKUsResult contains the result from method IotDpsResource.ListValidSKUs.
-type IotDpsResourceListValidSKUsResult struct {
+// IotDpsResourceClientListValidSKUsResult contains the result from method IotDpsResourceClient.ListValidSKUs.
+type IotDpsResourceClientListValidSKUsResult struct {
 	IotDpsSKUDefinitionListResult
 }
 
-// IotDpsResourceUpdatePollerResponse contains the response from method IotDpsResource.Update.
-type IotDpsResourceUpdatePollerResponse struct {
+// IotDpsResourceClientUpdatePollerResponse contains the response from method IotDpsResourceClient.Update.
+type IotDpsResourceClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *IotDpsResourceUpdatePoller
+	Poller *IotDpsResourceClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -440,8 +442,8 @@ type IotDpsResourceUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IotDpsResourceUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceUpdateResponse, error) {
-	respType := IotDpsResourceUpdateResponse{}
+func (l IotDpsResourceClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IotDpsResourceClientUpdateResponse, error) {
+	respType := IotDpsResourceClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProvisioningServiceDescription)
 	if err != nil {
 		return respType, err
@@ -450,13 +452,13 @@ func (l IotDpsResourceUpdatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a IotDpsResourceUpdatePollerResponse from the provided client and resume token.
-func (l *IotDpsResourceUpdatePollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a IotDpsResourceClientUpdatePollerResponse from the provided client and resume token.
+func (l *IotDpsResourceClientUpdatePollerResponse) Resume(ctx context.Context, client *IotDpsResourceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("IotDpsResourceClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &IotDpsResourceUpdatePoller{
+	poller := &IotDpsResourceClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -468,26 +470,26 @@ func (l *IotDpsResourceUpdatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// IotDpsResourceUpdateResponse contains the response from method IotDpsResource.Update.
-type IotDpsResourceUpdateResponse struct {
-	IotDpsResourceUpdateResult
+// IotDpsResourceClientUpdateResponse contains the response from method IotDpsResourceClient.Update.
+type IotDpsResourceClientUpdateResponse struct {
+	IotDpsResourceClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IotDpsResourceUpdateResult contains the result from method IotDpsResource.Update.
-type IotDpsResourceUpdateResult struct {
+// IotDpsResourceClientUpdateResult contains the result from method IotDpsResourceClient.Update.
+type IotDpsResourceClientUpdateResult struct {
 	ProvisioningServiceDescription
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

@@ -11,7 +11,6 @@ package armdeploymentmanager
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // StepsClient contains the methods for the Steps group.
 // Don't use this type directly, use NewStepsClient() instead.
 type StepsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStepsClient creates a new instance of StepsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStepsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StepsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StepsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StepsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Synchronously creates a new step or updates an existing step.
-// If the operation fails it returns the *CloudError error type.
-func (client *StepsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, stepName string, options *StepsCreateOrUpdateOptions) (StepsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// stepName - The name of the deployment step.
+// options - StepsClientCreateOrUpdateOptions contains the optional parameters for the StepsClient.CreateOrUpdate method.
+func (client *StepsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, stepName string, options *StepsClientCreateOrUpdateOptions) (StepsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, stepName, options)
 	if err != nil {
-		return StepsCreateOrUpdateResponse{}, err
+		return StepsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StepsCreateOrUpdateResponse{}, err
+		return StepsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return StepsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return StepsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StepsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, stepName string, options *StepsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *StepsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, stepName string, options *StepsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/steps/{stepName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *StepsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter stepName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{stepName}", url.PathEscape(stepName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,46 +100,36 @@ func (client *StepsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *StepsClient) createOrUpdateHandleResponse(resp *http.Response) (StepsCreateOrUpdateResponse, error) {
-	result := StepsCreateOrUpdateResponse{RawResponse: resp}
+func (client *StepsClient) createOrUpdateHandleResponse(resp *http.Response) (StepsClientCreateOrUpdateResponse, error) {
+	result := StepsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StepResource); err != nil {
-		return StepsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return StepsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *StepsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the step.
-// If the operation fails it returns the *CloudError error type.
-func (client *StepsClient) Delete(ctx context.Context, resourceGroupName string, stepName string, options *StepsDeleteOptions) (StepsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// stepName - The name of the deployment step.
+// options - StepsClientDeleteOptions contains the optional parameters for the StepsClient.Delete method.
+func (client *StepsClient) Delete(ctx context.Context, resourceGroupName string, stepName string, options *StepsClientDeleteOptions) (StepsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, stepName, options)
 	if err != nil {
-		return StepsDeleteResponse{}, err
+		return StepsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StepsDeleteResponse{}, err
+		return StepsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return StepsDeleteResponse{}, client.deleteHandleError(resp)
+		return StepsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StepsDeleteResponse{RawResponse: resp}, nil
+	return StepsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StepsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, stepName string, options *StepsDeleteOptions) (*policy.Request, error) {
+func (client *StepsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, stepName string, options *StepsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/steps/{stepName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,7 +143,7 @@ func (client *StepsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter stepName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{stepName}", url.PathEscape(stepName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,38 +154,28 @@ func (client *StepsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *StepsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the step.
-// If the operation fails it returns the *CloudError error type.
-func (client *StepsClient) Get(ctx context.Context, resourceGroupName string, stepName string, options *StepsGetOptions) (StepsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// stepName - The name of the deployment step.
+// options - StepsClientGetOptions contains the optional parameters for the StepsClient.Get method.
+func (client *StepsClient) Get(ctx context.Context, resourceGroupName string, stepName string, options *StepsClientGetOptions) (StepsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, stepName, options)
 	if err != nil {
-		return StepsGetResponse{}, err
+		return StepsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StepsGetResponse{}, err
+		return StepsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StepsGetResponse{}, client.getHandleError(resp)
+		return StepsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *StepsClient) getCreateRequest(ctx context.Context, resourceGroupName string, stepName string, options *StepsGetOptions) (*policy.Request, error) {
+func (client *StepsClient) getCreateRequest(ctx context.Context, resourceGroupName string, stepName string, options *StepsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/steps/{stepName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,7 +189,7 @@ func (client *StepsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter stepName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{stepName}", url.PathEscape(stepName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,46 +201,35 @@ func (client *StepsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *StepsClient) getHandleResponse(resp *http.Response) (StepsGetResponse, error) {
-	result := StepsGetResponse{RawResponse: resp}
+func (client *StepsClient) getHandleResponse(resp *http.Response) (StepsClientGetResponse, error) {
+	result := StepsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StepResource); err != nil {
-		return StepsGetResponse{}, runtime.NewResponseError(err, resp)
+		return StepsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *StepsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the steps in a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *StepsClient) List(ctx context.Context, resourceGroupName string, options *StepsListOptions) (StepsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - StepsClientListOptions contains the optional parameters for the StepsClient.List method.
+func (client *StepsClient) List(ctx context.Context, resourceGroupName string, options *StepsClientListOptions) (StepsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return StepsListResponse{}, err
+		return StepsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StepsListResponse{}, err
+		return StepsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StepsListResponse{}, client.listHandleError(resp)
+		return StepsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *StepsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *StepsListOptions) (*policy.Request, error) {
+func (client *StepsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *StepsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager/steps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -259,7 +239,7 @@ func (client *StepsClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,23 +251,10 @@ func (client *StepsClient) listCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // listHandleResponse handles the List response.
-func (client *StepsClient) listHandleResponse(resp *http.Response) (StepsListResponse, error) {
-	result := StepsListResponse{RawResponse: resp}
+func (client *StepsClient) listHandleResponse(resp *http.Response) (StepsClientListResponse, error) {
+	result := StepsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StepResourceArray); err != nil {
-		return StepsListResponse{}, runtime.NewResponseError(err, resp)
+		return StepsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *StepsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

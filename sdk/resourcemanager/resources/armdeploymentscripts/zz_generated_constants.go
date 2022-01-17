@@ -9,8 +9,8 @@
 package armdeploymentscripts
 
 const (
-	module  = "armdeploymentscripts"
-	version = "v0.1.1"
+	moduleName    = "armdeploymentscripts"
+	moduleVersion = "v0.2.0"
 )
 
 // CleanupOptions - The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'.

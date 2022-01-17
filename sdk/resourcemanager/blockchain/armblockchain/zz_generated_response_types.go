@@ -15,22 +15,46 @@ import (
 	"time"
 )
 
-// BlockchainMemberOperationResultsGetResponse contains the response from method BlockchainMemberOperationResults.Get.
-type BlockchainMemberOperationResultsGetResponse struct {
-	BlockchainMemberOperationResultsGetResult
+// LocationsClientCheckNameAvailabilityResponse contains the response from method LocationsClient.CheckNameAvailability.
+type LocationsClientCheckNameAvailabilityResponse struct {
+	LocationsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMemberOperationResultsGetResult contains the result from method BlockchainMemberOperationResults.Get.
-type BlockchainMemberOperationResultsGetResult struct {
+// LocationsClientCheckNameAvailabilityResult contains the result from method LocationsClient.CheckNameAvailability.
+type LocationsClientCheckNameAvailabilityResult struct {
+	NameAvailability
+}
+
+// LocationsClientListConsortiumsResponse contains the response from method LocationsClient.ListConsortiums.
+type LocationsClientListConsortiumsResponse struct {
+	LocationsClientListConsortiumsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// LocationsClientListConsortiumsResult contains the result from method LocationsClient.ListConsortiums.
+type LocationsClientListConsortiumsResult struct {
+	ConsortiumCollection
+}
+
+// MemberOperationResultsClientGetResponse contains the response from method MemberOperationResultsClient.Get.
+type MemberOperationResultsClientGetResponse struct {
+	MemberOperationResultsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// MemberOperationResultsClientGetResult contains the result from method MemberOperationResultsClient.Get.
+type MemberOperationResultsClientGetResult struct {
 	OperationResult
 }
 
-// BlockchainMembersCreatePollerResponse contains the response from method BlockchainMembers.Create.
-type BlockchainMembersCreatePollerResponse struct {
+// MembersClientCreatePollerResponse contains the response from method MembersClient.Create.
+type MembersClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BlockchainMembersCreatePoller
+	Poller *MembersClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,9 +63,9 @@ type BlockchainMembersCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BlockchainMembersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BlockchainMembersCreateResponse, error) {
-	respType := BlockchainMembersCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BlockchainMember)
+func (l MembersClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MembersClientCreateResponse, error) {
+	respType := MembersClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Member)
 	if err != nil {
 		return respType, err
 	}
@@ -49,13 +73,13 @@ func (l BlockchainMembersCreatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a BlockchainMembersCreatePollerResponse from the provided client and resume token.
-func (l *BlockchainMembersCreatePollerResponse) Resume(ctx context.Context, client *BlockchainMembersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BlockchainMembersClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a MembersClientCreatePollerResponse from the provided client and resume token.
+func (l *MembersClientCreatePollerResponse) Resume(ctx context.Context, client *MembersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MembersClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BlockchainMembersCreatePoller{
+	poller := &MembersClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,22 +91,22 @@ func (l *BlockchainMembersCreatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// BlockchainMembersCreateResponse contains the response from method BlockchainMembers.Create.
-type BlockchainMembersCreateResponse struct {
-	BlockchainMembersCreateResult
+// MembersClientCreateResponse contains the response from method MembersClient.Create.
+type MembersClientCreateResponse struct {
+	MembersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersCreateResult contains the result from method BlockchainMembers.Create.
-type BlockchainMembersCreateResult struct {
-	BlockchainMember
+// MembersClientCreateResult contains the result from method MembersClient.Create.
+type MembersClientCreateResult struct {
+	Member
 }
 
-// BlockchainMembersDeletePollerResponse contains the response from method BlockchainMembers.Delete.
-type BlockchainMembersDeletePollerResponse struct {
+// MembersClientDeletePollerResponse contains the response from method MembersClient.Delete.
+type MembersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BlockchainMembersDeletePoller
+	Poller *MembersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -91,8 +115,8 @@ type BlockchainMembersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BlockchainMembersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BlockchainMembersDeleteResponse, error) {
-	respType := BlockchainMembersDeleteResponse{}
+func (l MembersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MembersClientDeleteResponse, error) {
+	respType := MembersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -101,13 +125,13 @@ func (l BlockchainMembersDeletePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a BlockchainMembersDeletePollerResponse from the provided client and resume token.
-func (l *BlockchainMembersDeletePollerResponse) Resume(ctx context.Context, client *BlockchainMembersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BlockchainMembersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a MembersClientDeletePollerResponse from the provided client and resume token.
+func (l *MembersClientDeletePollerResponse) Resume(ctx context.Context, client *MembersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MembersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BlockchainMembersDeletePoller{
+	poller := &MembersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -119,148 +143,124 @@ func (l *BlockchainMembersDeletePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// BlockchainMembersDeleteResponse contains the response from method BlockchainMembers.Delete.
-type BlockchainMembersDeleteResponse struct {
+// MembersClientDeleteResponse contains the response from method MembersClient.Delete.
+type MembersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersGetResponse contains the response from method BlockchainMembers.Get.
-type BlockchainMembersGetResponse struct {
-	BlockchainMembersGetResult
+// MembersClientGetResponse contains the response from method MembersClient.Get.
+type MembersClientGetResponse struct {
+	MembersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersGetResult contains the result from method BlockchainMembers.Get.
-type BlockchainMembersGetResult struct {
-	BlockchainMember
+// MembersClientGetResult contains the result from method MembersClient.Get.
+type MembersClientGetResult struct {
+	Member
 }
 
-// BlockchainMembersListAPIKeysResponse contains the response from method BlockchainMembers.ListAPIKeys.
-type BlockchainMembersListAPIKeysResponse struct {
-	BlockchainMembersListAPIKeysResult
+// MembersClientListAPIKeysResponse contains the response from method MembersClient.ListAPIKeys.
+type MembersClientListAPIKeysResponse struct {
+	MembersClientListAPIKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersListAPIKeysResult contains the result from method BlockchainMembers.ListAPIKeys.
-type BlockchainMembersListAPIKeysResult struct {
+// MembersClientListAPIKeysResult contains the result from method MembersClient.ListAPIKeys.
+type MembersClientListAPIKeysResult struct {
 	APIKeyCollection
 }
 
-// BlockchainMembersListAllResponse contains the response from method BlockchainMembers.ListAll.
-type BlockchainMembersListAllResponse struct {
-	BlockchainMembersListAllResult
+// MembersClientListAllResponse contains the response from method MembersClient.ListAll.
+type MembersClientListAllResponse struct {
+	MembersClientListAllResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersListAllResult contains the result from method BlockchainMembers.ListAll.
-type BlockchainMembersListAllResult struct {
-	BlockchainMemberCollection
+// MembersClientListAllResult contains the result from method MembersClient.ListAll.
+type MembersClientListAllResult struct {
+	MemberCollection
 }
 
-// BlockchainMembersListConsortiumMembersResponse contains the response from method BlockchainMembers.ListConsortiumMembers.
-type BlockchainMembersListConsortiumMembersResponse struct {
-	BlockchainMembersListConsortiumMembersResult
+// MembersClientListConsortiumMembersResponse contains the response from method MembersClient.ListConsortiumMembers.
+type MembersClientListConsortiumMembersResponse struct {
+	MembersClientListConsortiumMembersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersListConsortiumMembersResult contains the result from method BlockchainMembers.ListConsortiumMembers.
-type BlockchainMembersListConsortiumMembersResult struct {
+// MembersClientListConsortiumMembersResult contains the result from method MembersClient.ListConsortiumMembers.
+type MembersClientListConsortiumMembersResult struct {
 	ConsortiumMemberCollection
 }
 
-// BlockchainMembersListRegenerateAPIKeysResponse contains the response from method BlockchainMembers.ListRegenerateAPIKeys.
-type BlockchainMembersListRegenerateAPIKeysResponse struct {
-	BlockchainMembersListRegenerateAPIKeysResult
+// MembersClientListRegenerateAPIKeysResponse contains the response from method MembersClient.ListRegenerateAPIKeys.
+type MembersClientListRegenerateAPIKeysResponse struct {
+	MembersClientListRegenerateAPIKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersListRegenerateAPIKeysResult contains the result from method BlockchainMembers.ListRegenerateAPIKeys.
-type BlockchainMembersListRegenerateAPIKeysResult struct {
+// MembersClientListRegenerateAPIKeysResult contains the result from method MembersClient.ListRegenerateAPIKeys.
+type MembersClientListRegenerateAPIKeysResult struct {
 	APIKeyCollection
 }
 
-// BlockchainMembersListResponse contains the response from method BlockchainMembers.List.
-type BlockchainMembersListResponse struct {
-	BlockchainMembersListResult
+// MembersClientListResponse contains the response from method MembersClient.List.
+type MembersClientListResponse struct {
+	MembersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersListResult contains the result from method BlockchainMembers.List.
-type BlockchainMembersListResult struct {
-	BlockchainMemberCollection
+// MembersClientListResult contains the result from method MembersClient.List.
+type MembersClientListResult struct {
+	MemberCollection
 }
 
-// BlockchainMembersUpdateResponse contains the response from method BlockchainMembers.Update.
-type BlockchainMembersUpdateResponse struct {
-	BlockchainMembersUpdateResult
+// MembersClientUpdateResponse contains the response from method MembersClient.Update.
+type MembersClientUpdateResponse struct {
+	MembersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BlockchainMembersUpdateResult contains the result from method BlockchainMembers.Update.
-type BlockchainMembersUpdateResult struct {
-	BlockchainMember
+// MembersClientUpdateResult contains the result from method MembersClient.Update.
+type MembersClientUpdateResult struct {
+	Member
 }
 
-// LocationsCheckNameAvailabilityResponse contains the response from method Locations.CheckNameAvailability.
-type LocationsCheckNameAvailabilityResponse struct {
-	LocationsCheckNameAvailabilityResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsCheckNameAvailabilityResult contains the result from method Locations.CheckNameAvailability.
-type LocationsCheckNameAvailabilityResult struct {
-	NameAvailability
-}
-
-// LocationsListConsortiumsResponse contains the response from method Locations.ListConsortiums.
-type LocationsListConsortiumsResponse struct {
-	LocationsListConsortiumsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationsListConsortiumsResult contains the result from method Locations.ListConsortiums.
-type LocationsListConsortiumsResult struct {
-	ConsortiumCollection
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	ResourceProviderOperationCollection
 }
 
-// SKUsListResponse contains the response from method SKUs.List.
-type SKUsListResponse struct {
-	SKUsListResult
+// SKUsClientListResponse contains the response from method SKUsClient.List.
+type SKUsClientListResponse struct {
+	SKUsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SKUsListResult contains the result from method SKUs.List.
-type SKUsListResult struct {
+// SKUsClientListResult contains the result from method SKUsClient.List.
+type SKUsClientListResult struct {
 	ResourceTypeSKUCollection
 }
 
-// TransactionNodesCreatePollerResponse contains the response from method TransactionNodes.Create.
-type TransactionNodesCreatePollerResponse struct {
+// TransactionNodesClientCreatePollerResponse contains the response from method TransactionNodesClient.Create.
+type TransactionNodesClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TransactionNodesCreatePoller
+	Poller *TransactionNodesClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -269,8 +269,8 @@ type TransactionNodesCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TransactionNodesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TransactionNodesCreateResponse, error) {
-	respType := TransactionNodesCreateResponse{}
+func (l TransactionNodesClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TransactionNodesClientCreateResponse, error) {
+	respType := TransactionNodesClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TransactionNode)
 	if err != nil {
 		return respType, err
@@ -279,13 +279,13 @@ func (l TransactionNodesCreatePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a TransactionNodesCreatePollerResponse from the provided client and resume token.
-func (l *TransactionNodesCreatePollerResponse) Resume(ctx context.Context, client *TransactionNodesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TransactionNodesClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a TransactionNodesClientCreatePollerResponse from the provided client and resume token.
+func (l *TransactionNodesClientCreatePollerResponse) Resume(ctx context.Context, client *TransactionNodesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TransactionNodesClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TransactionNodesCreatePoller{
+	poller := &TransactionNodesClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -297,22 +297,22 @@ func (l *TransactionNodesCreatePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// TransactionNodesCreateResponse contains the response from method TransactionNodes.Create.
-type TransactionNodesCreateResponse struct {
-	TransactionNodesCreateResult
+// TransactionNodesClientCreateResponse contains the response from method TransactionNodesClient.Create.
+type TransactionNodesClientCreateResponse struct {
+	TransactionNodesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesCreateResult contains the result from method TransactionNodes.Create.
-type TransactionNodesCreateResult struct {
+// TransactionNodesClientCreateResult contains the result from method TransactionNodesClient.Create.
+type TransactionNodesClientCreateResult struct {
 	TransactionNode
 }
 
-// TransactionNodesDeletePollerResponse contains the response from method TransactionNodes.Delete.
-type TransactionNodesDeletePollerResponse struct {
+// TransactionNodesClientDeletePollerResponse contains the response from method TransactionNodesClient.Delete.
+type TransactionNodesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *TransactionNodesDeletePoller
+	Poller *TransactionNodesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -321,8 +321,8 @@ type TransactionNodesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l TransactionNodesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TransactionNodesDeleteResponse, error) {
-	respType := TransactionNodesDeleteResponse{}
+func (l TransactionNodesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TransactionNodesClientDeleteResponse, error) {
+	respType := TransactionNodesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -331,13 +331,13 @@ func (l TransactionNodesDeletePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a TransactionNodesDeletePollerResponse from the provided client and resume token.
-func (l *TransactionNodesDeletePollerResponse) Resume(ctx context.Context, client *TransactionNodesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("TransactionNodesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a TransactionNodesClientDeletePollerResponse from the provided client and resume token.
+func (l *TransactionNodesClientDeletePollerResponse) Resume(ctx context.Context, client *TransactionNodesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TransactionNodesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &TransactionNodesDeletePoller{
+	poller := &TransactionNodesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -349,68 +349,68 @@ func (l *TransactionNodesDeletePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// TransactionNodesDeleteResponse contains the response from method TransactionNodes.Delete.
-type TransactionNodesDeleteResponse struct {
+// TransactionNodesClientDeleteResponse contains the response from method TransactionNodesClient.Delete.
+type TransactionNodesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesGetResponse contains the response from method TransactionNodes.Get.
-type TransactionNodesGetResponse struct {
-	TransactionNodesGetResult
+// TransactionNodesClientGetResponse contains the response from method TransactionNodesClient.Get.
+type TransactionNodesClientGetResponse struct {
+	TransactionNodesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesGetResult contains the result from method TransactionNodes.Get.
-type TransactionNodesGetResult struct {
+// TransactionNodesClientGetResult contains the result from method TransactionNodesClient.Get.
+type TransactionNodesClientGetResult struct {
 	TransactionNode
 }
 
-// TransactionNodesListAPIKeysResponse contains the response from method TransactionNodes.ListAPIKeys.
-type TransactionNodesListAPIKeysResponse struct {
-	TransactionNodesListAPIKeysResult
+// TransactionNodesClientListAPIKeysResponse contains the response from method TransactionNodesClient.ListAPIKeys.
+type TransactionNodesClientListAPIKeysResponse struct {
+	TransactionNodesClientListAPIKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesListAPIKeysResult contains the result from method TransactionNodes.ListAPIKeys.
-type TransactionNodesListAPIKeysResult struct {
+// TransactionNodesClientListAPIKeysResult contains the result from method TransactionNodesClient.ListAPIKeys.
+type TransactionNodesClientListAPIKeysResult struct {
 	APIKeyCollection
 }
 
-// TransactionNodesListRegenerateAPIKeysResponse contains the response from method TransactionNodes.ListRegenerateAPIKeys.
-type TransactionNodesListRegenerateAPIKeysResponse struct {
-	TransactionNodesListRegenerateAPIKeysResult
+// TransactionNodesClientListRegenerateAPIKeysResponse contains the response from method TransactionNodesClient.ListRegenerateAPIKeys.
+type TransactionNodesClientListRegenerateAPIKeysResponse struct {
+	TransactionNodesClientListRegenerateAPIKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesListRegenerateAPIKeysResult contains the result from method TransactionNodes.ListRegenerateAPIKeys.
-type TransactionNodesListRegenerateAPIKeysResult struct {
+// TransactionNodesClientListRegenerateAPIKeysResult contains the result from method TransactionNodesClient.ListRegenerateAPIKeys.
+type TransactionNodesClientListRegenerateAPIKeysResult struct {
 	APIKeyCollection
 }
 
-// TransactionNodesListResponse contains the response from method TransactionNodes.List.
-type TransactionNodesListResponse struct {
-	TransactionNodesListResult
+// TransactionNodesClientListResponse contains the response from method TransactionNodesClient.List.
+type TransactionNodesClientListResponse struct {
+	TransactionNodesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesListResult contains the result from method TransactionNodes.List.
-type TransactionNodesListResult struct {
+// TransactionNodesClientListResult contains the result from method TransactionNodesClient.List.
+type TransactionNodesClientListResult struct {
 	TransactionNodeCollection
 }
 
-// TransactionNodesUpdateResponse contains the response from method TransactionNodes.Update.
-type TransactionNodesUpdateResponse struct {
-	TransactionNodesUpdateResult
+// TransactionNodesClientUpdateResponse contains the response from method TransactionNodesClient.Update.
+type TransactionNodesClientUpdateResponse struct {
+	TransactionNodesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TransactionNodesUpdateResult contains the result from method TransactionNodes.Update.
-type TransactionNodesUpdateResult struct {
+// TransactionNodesClientUpdateResult contains the result from method TransactionNodesClient.Update.
+type TransactionNodesClientUpdateResult struct {
 	TransactionNode
 }

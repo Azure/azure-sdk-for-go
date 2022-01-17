@@ -24,48 +24,58 @@ import (
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
 type SKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
+// subscriptionID - Gets the subscription Id which uniquely identifies the Microsoft Azure subscription. The subscription
+// ID is part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SKUsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the Skus of the resource type.
-// If the operation fails it returns a generic error.
-func (client *SKUsClient) List(ctx context.Context, options *SKUsListOptions) (SKUsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+func (client *SKUsClient) List(ctx context.Context, options *SKUsClientListOptions) (SKUsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return SKUsListResponse{}, err
+		return SKUsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SKUsListResponse{}, err
+		return SKUsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SKUsListResponse{}, client.listHandleError(resp)
+		return SKUsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsListOptions) (*policy.Request, error) {
+func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Blockchain/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,22 +87,10 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsLi
 }
 
 // listHandleResponse handles the List response.
-func (client *SKUsClient) listHandleResponse(resp *http.Response) (SKUsListResponse, error) {
-	result := SKUsListResponse{RawResponse: resp}
+func (client *SKUsClient) listHandleResponse(resp *http.Response) (SKUsClientListResponse, error) {
+	result := SKUsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeSKUCollection); err != nil {
-		return SKUsListResponse{}, runtime.NewResponseError(err, resp)
+		return SKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

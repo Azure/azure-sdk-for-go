@@ -26,12 +26,16 @@ func ExampleComponentsClient_List() {
 	ctx := context.Background()
 	client := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationInsightsComponent.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleComponentsClient_ListByResourceGroup() {
 	client := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationInsightsComponent.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -88,7 +96,7 @@ func ExampleComponentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponent.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComponentsClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsCreate.json
@@ -102,12 +110,20 @@ func ExampleComponentsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ApplicationInsightsComponent{},
+		armapplicationinsights.Component{
+			Location: to.StringPtr("<location>"),
+			Kind:     to.StringPtr("<kind>"),
+			Properties: &armapplicationinsights.ComponentProperties{
+				ApplicationType: armapplicationinsights.ApplicationType("web").ToPtr(),
+				FlowType:        armapplicationinsights.FlowType("Bluefield").ToPtr(),
+				RequestSource:   armapplicationinsights.RequestSource("rest").ToPtr(),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponent.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComponentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsUpdateTagsOnly.json
@@ -121,12 +137,20 @@ func ExampleComponentsClient_UpdateTags() {
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.TagsResource{},
+		armapplicationinsights.TagsResource{
+			Tags: map[string]*string{
+				"ApplicationGatewayType": to.StringPtr("Internal-Only"),
+				"BillingEntity":          to.StringPtr("Self"),
+				"Color":                  to.StringPtr("AzureBlue"),
+				"CustomField_01":         to.StringPtr("Custom text in some random field named randomly"),
+				"NodeType":               to.StringPtr("Edge"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponent.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ComponentsClientUpdateTagsResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsPurge.json
@@ -163,7 +187,7 @@ func ExampleComponentsClient_GetPurgeStatus() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
-	_, err = client.GetPurgeStatus(ctx,
+	res, err := client.GetPurgeStatus(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<purge-id>",
@@ -171,4 +195,5 @@ func ExampleComponentsClient_GetPurgeStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ComponentsClientGetPurgeStatusResult)
 }

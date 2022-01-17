@@ -10,7 +10,7 @@ package armdigitaltwins
 
 import "encoding/json"
 
-func unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMsg json.RawMessage) (DigitalTwinsEndpointResourcePropertiesClassification, error) {
+func unmarshalEndpointResourcePropertiesClassification(rawMsg json.RawMessage) (EndpointResourcePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -18,7 +18,7 @@ func unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMsg json.R
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b DigitalTwinsEndpointResourcePropertiesClassification
+	var b EndpointResourcePropertiesClassification
 	switch m["endpointType"] {
 	case string(EndpointTypeEventGrid):
 		b = &EventGrid{}
@@ -27,45 +27,7 @@ func unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMsg json.R
 	case string(EndpointTypeServiceBus):
 		b = &ServiceBus{}
 	default:
-		b = &DigitalTwinsEndpointResourceProperties{}
+		b = &EndpointResourceProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalDigitalTwinsEndpointResourcePropertiesClassificationArray(rawMsg json.RawMessage) ([]DigitalTwinsEndpointResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]DigitalTwinsEndpointResourcePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalDigitalTwinsEndpointResourcePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]DigitalTwinsEndpointResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DigitalTwinsEndpointResourcePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // HcxEnterpriseSitesClient contains the methods for the HcxEnterpriseSites group.
 // Don't use this type directly, use NewHcxEnterpriseSitesClient() instead.
 type HcxEnterpriseSitesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewHcxEnterpriseSitesClient creates a new instance of HcxEnterpriseSitesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HcxEnterpriseSitesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &HcxEnterpriseSitesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &HcxEnterpriseSitesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update an HCX Enterprise Site in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite, options *HcxEnterpriseSitesCreateOrUpdateOptions) (HcxEnterpriseSitesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - The name of the private cloud.
+// hcxEnterpriseSiteName - Name of the HCX Enterprise Site in the private cloud
+// hcxEnterpriseSite - The HCX Enterprise Site
+// options - HcxEnterpriseSitesClientCreateOrUpdateOptions contains the optional parameters for the HcxEnterpriseSitesClient.CreateOrUpdate
+// method.
+func (client *HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite, options *HcxEnterpriseSitesClientCreateOrUpdateOptions) (HcxEnterpriseSitesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite, options)
 	if err != nil {
-		return HcxEnterpriseSitesCreateOrUpdateResponse{}, err
+		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HcxEnterpriseSitesCreateOrUpdateResponse{}, err
+		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return HcxEnterpriseSitesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite, options *HcxEnterpriseSitesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite, options *HcxEnterpriseSitesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter hcxEnterpriseSiteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hcxEnterpriseSiteName}", url.PathEscape(hcxEnterpriseSiteName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,38 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *HcxEnterpriseSitesClient) createOrUpdateHandleResponse(resp *http.Response) (HcxEnterpriseSitesCreateOrUpdateResponse, error) {
-	result := HcxEnterpriseSitesCreateOrUpdateResponse{RawResponse: resp}
+func (client *HcxEnterpriseSitesClient) createOrUpdateHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientCreateOrUpdateResponse, error) {
+	result := HcxEnterpriseSitesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSite); err != nil {
-		return HcxEnterpriseSitesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *HcxEnterpriseSitesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete an HCX Enterprise Site in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesDeleteOptions) (HcxEnterpriseSitesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// hcxEnterpriseSiteName - Name of the HCX Enterprise Site in the private cloud
+// options - HcxEnterpriseSitesClientDeleteOptions contains the optional parameters for the HcxEnterpriseSitesClient.Delete
+// method.
+func (client *HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientDeleteOptions) (HcxEnterpriseSitesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, hcxEnterpriseSiteName, options)
 	if err != nil {
-		return HcxEnterpriseSitesDeleteResponse{}, err
+		return HcxEnterpriseSitesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HcxEnterpriseSitesDeleteResponse{}, err
+		return HcxEnterpriseSitesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return HcxEnterpriseSitesDeleteResponse{}, client.deleteHandleError(resp)
+		return HcxEnterpriseSitesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return HcxEnterpriseSitesDeleteResponse{RawResponse: resp}, nil
+	return HcxEnterpriseSitesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesDeleteOptions) (*policy.Request, error) {
+func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +152,7 @@ func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter hcxEnterpriseSiteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hcxEnterpriseSiteName}", url.PathEscape(hcxEnterpriseSiteName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,38 +163,29 @@ func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *HcxEnterpriseSitesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an HCX Enterprise Site by name in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *HcxEnterpriseSitesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesGetOptions) (HcxEnterpriseSitesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// hcxEnterpriseSiteName - Name of the HCX Enterprise Site in the private cloud
+// options - HcxEnterpriseSitesClientGetOptions contains the optional parameters for the HcxEnterpriseSitesClient.Get method.
+func (client *HcxEnterpriseSitesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientGetOptions) (HcxEnterpriseSitesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, hcxEnterpriseSiteName, options)
 	if err != nil {
-		return HcxEnterpriseSitesGetResponse{}, err
+		return HcxEnterpriseSitesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HcxEnterpriseSitesGetResponse{}, err
+		return HcxEnterpriseSitesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return HcxEnterpriseSitesGetResponse{}, client.getHandleError(resp)
+		return HcxEnterpriseSitesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesGetOptions) (*policy.Request, error) {
+func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,7 +203,7 @@ func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter hcxEnterpriseSiteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hcxEnterpriseSiteName}", url.PathEscape(hcxEnterpriseSiteName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,43 +215,33 @@ func (client *HcxEnterpriseSitesClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (HcxEnterpriseSitesGetResponse, error) {
-	result := HcxEnterpriseSitesGetResponse{RawResponse: resp}
+func (client *HcxEnterpriseSitesClient) getHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientGetResponse, error) {
+	result := HcxEnterpriseSitesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSite); err != nil {
-		return HcxEnterpriseSitesGetResponse{}, runtime.NewResponseError(err, resp)
+		return HcxEnterpriseSitesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *HcxEnterpriseSitesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List HCX Enterprise Sites in a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *HcxEnterpriseSitesClient) List(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesListOptions) *HcxEnterpriseSitesListPager {
-	return &HcxEnterpriseSitesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.List method.
+func (client *HcxEnterpriseSitesClient) List(resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) *HcxEnterpriseSitesClientListPager {
+	return &HcxEnterpriseSitesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 		},
-		advancer: func(ctx context.Context, resp HcxEnterpriseSitesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp HcxEnterpriseSitesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.HcxEnterpriseSiteList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesListOptions) (*policy.Request, error) {
+func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *HcxEnterpriseSitesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,7 +255,7 @@ func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,23 +267,10 @@ func (client *HcxEnterpriseSitesClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *HcxEnterpriseSitesClient) listHandleResponse(resp *http.Response) (HcxEnterpriseSitesListResponse, error) {
-	result := HcxEnterpriseSitesListResponse{RawResponse: resp}
+func (client *HcxEnterpriseSitesClient) listHandleResponse(resp *http.Response) (HcxEnterpriseSitesClientListResponse, error) {
+	result := HcxEnterpriseSitesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HcxEnterpriseSiteList); err != nil {
-		return HcxEnterpriseSitesListResponse{}, runtime.NewResponseError(err, resp)
+		return HcxEnterpriseSitesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *HcxEnterpriseSitesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

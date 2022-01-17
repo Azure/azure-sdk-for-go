@@ -26,12 +26,16 @@ func ExampleRemoteRenderingAccountsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmixedreality.NewRemoteRenderingAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RemoteRenderingAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -46,12 +50,16 @@ func ExampleRemoteRenderingAccountsClient_ListByResourceGroup() {
 	client := armmixedreality.NewRemoteRenderingAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RemoteRenderingAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -88,7 +96,7 @@ func ExampleRemoteRenderingAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RemoteRenderingAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RemoteRenderingAccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/remote-rendering/Patch.json
@@ -103,12 +111,10 @@ func ExampleRemoteRenderingAccountsClient_Update() {
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.RemoteRenderingAccount{
-			TrackedResource: armmixedreality.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"hero":    to.StringPtr("romeo"),
-					"heroine": to.StringPtr("juliet"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"hero":    to.StringPtr("romeo"),
+				"heroine": to.StringPtr("juliet"),
 			},
 			Identity: &armmixedreality.Identity{
 				Type: to.StringPtr("<type>"),
@@ -118,7 +124,7 @@ func ExampleRemoteRenderingAccountsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RemoteRenderingAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RemoteRenderingAccountsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/remote-rendering/Put.json
@@ -133,9 +139,7 @@ func ExampleRemoteRenderingAccountsClient_Create() {
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.RemoteRenderingAccount{
-			TrackedResource: armmixedreality.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armmixedreality.Identity{
 				Type: to.StringPtr("<type>"),
 			},
@@ -144,7 +148,7 @@ func ExampleRemoteRenderingAccountsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RemoteRenderingAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RemoteRenderingAccountsClientCreateResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/remote-rendering/ListKeys.json
@@ -155,13 +159,14 @@ func ExampleRemoteRenderingAccountsClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armmixedreality.NewRemoteRenderingAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RemoteRenderingAccountsClientListKeysResult)
 }
 
 // x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/preview/2021-03-01-preview/examples/remote-rendering/RegenerateKey.json
@@ -172,7 +177,7 @@ func ExampleRemoteRenderingAccountsClient_RegenerateKeys() {
 	}
 	ctx := context.Background()
 	client := armmixedreality.NewRemoteRenderingAccountsClient("<subscription-id>", cred, nil)
-	_, err = client.RegenerateKeys(ctx,
+	res, err := client.RegenerateKeys(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		armmixedreality.AccountKeyRegenerateRequest{
@@ -182,4 +187,5 @@ func ExampleRemoteRenderingAccountsClient_RegenerateKeys() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RemoteRenderingAccountsClientRegenerateKeysResult)
 }

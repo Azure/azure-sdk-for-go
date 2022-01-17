@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// AccountsCheckNameAvailabilityResponse contains the response from method Accounts.CheckNameAvailability.
-type AccountsCheckNameAvailabilityResponse struct {
-	AccountsCheckNameAvailabilityResult
+// AccountsClientCheckNameAvailabilityResponse contains the response from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResponse struct {
+	AccountsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCheckNameAvailabilityResult contains the result from method Accounts.CheckNameAvailability.
-type AccountsCheckNameAvailabilityResult struct {
+// AccountsClientCheckNameAvailabilityResult contains the result from method AccountsClient.CheckNameAvailability.
+type AccountsClientCheckNameAvailabilityResult struct {
 	NameAvailabilityInformation
 }
 
-// AccountsCreatePollerResponse contains the response from method Accounts.Create.
-type AccountsCreatePollerResponse struct {
+// AccountsClientCreatePollerResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsCreatePoller
+	Poller *AccountsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,9 +39,9 @@ type AccountsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsCreateResponse, error) {
-	respType := AccountsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataLakeStoreAccount)
+func (l AccountsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientCreateResponse, error) {
+	respType := AccountsClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Account)
 	if err != nil {
 		return respType, err
 	}
@@ -49,13 +49,13 @@ func (l AccountsCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsCreatePollerResponse from the provided client and resume token.
-func (l *AccountsCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a AccountsClientCreatePollerResponse from the provided client and resume token.
+func (l *AccountsClientCreatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsCreatePoller{
+	poller := &AccountsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,22 +67,22 @@ func (l *AccountsCreatePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsCreateResponse contains the response from method Accounts.Create.
-type AccountsCreateResponse struct {
-	AccountsCreateResult
+// AccountsClientCreateResponse contains the response from method AccountsClient.Create.
+type AccountsClientCreateResponse struct {
+	AccountsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCreateResult contains the result from method Accounts.Create.
-type AccountsCreateResult struct {
-	DataLakeStoreAccount
+// AccountsClientCreateResult contains the result from method AccountsClient.Create.
+type AccountsClientCreateResult struct {
+	Account
 }
 
-// AccountsDeletePollerResponse contains the response from method Accounts.Delete.
-type AccountsDeletePollerResponse struct {
+// AccountsClientDeletePollerResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsDeletePoller
+	Poller *AccountsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -91,8 +91,8 @@ type AccountsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsDeleteResponse, error) {
-	respType := AccountsDeleteResponse{}
+func (l AccountsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientDeleteResponse, error) {
+	respType := AccountsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -101,13 +101,13 @@ func (l AccountsDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsDeletePollerResponse from the provided client and resume token.
-func (l *AccountsDeletePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a AccountsClientDeletePollerResponse from the provided client and resume token.
+func (l *AccountsClientDeletePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsDeletePoller{
+	poller := &AccountsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -119,58 +119,58 @@ func (l *AccountsDeletePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsDeleteResponse contains the response from method Accounts.Delete.
-type AccountsDeleteResponse struct {
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsEnableKeyVaultResponse contains the response from method Accounts.EnableKeyVault.
-type AccountsEnableKeyVaultResponse struct {
+// AccountsClientEnableKeyVaultResponse contains the response from method AccountsClient.EnableKeyVault.
+type AccountsClientEnableKeyVaultResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResponse contains the response from method Accounts.Get.
-type AccountsGetResponse struct {
-	AccountsGetResult
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
+	AccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResult contains the result from method Accounts.Get.
-type AccountsGetResult struct {
-	DataLakeStoreAccount
+// AccountsClientGetResult contains the result from method AccountsClient.Get.
+type AccountsClientGetResult struct {
+	Account
 }
 
-// AccountsListByResourceGroupResponse contains the response from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResponse struct {
-	AccountsListByResourceGroupResult
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResponse struct {
+	AccountsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListByResourceGroupResult contains the result from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResult struct {
-	DataLakeStoreAccountListResult
+// AccountsClientListByResourceGroupResult contains the result from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResult struct {
+	AccountListResult
 }
 
-// AccountsListResponse contains the response from method Accounts.List.
-type AccountsListResponse struct {
-	AccountsListResult
+// AccountsClientListResponse contains the response from method AccountsClient.List.
+type AccountsClientListResponse struct {
+	AccountsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListResult contains the result from method Accounts.List.
-type AccountsListResult struct {
-	DataLakeStoreAccountListResult
+// AccountsClientListResult contains the result from method AccountsClient.List.
+type AccountsClientListResult struct {
+	AccountListResult
 }
 
-// AccountsUpdatePollerResponse contains the response from method Accounts.Update.
-type AccountsUpdatePollerResponse struct {
+// AccountsClientUpdatePollerResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AccountsUpdatePoller
+	Poller *AccountsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -179,9 +179,9 @@ type AccountsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AccountsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsUpdateResponse, error) {
-	respType := AccountsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DataLakeStoreAccount)
+func (l AccountsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AccountsClientUpdateResponse, error) {
+	respType := AccountsClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Account)
 	if err != nil {
 		return respType, err
 	}
@@ -189,13 +189,13 @@ func (l AccountsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a AccountsUpdatePollerResponse from the provided client and resume token.
-func (l *AccountsUpdatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a AccountsClientUpdatePollerResponse from the provided client and resume token.
+func (l *AccountsClientUpdatePollerResponse) Resume(ctx context.Context, client *AccountsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AccountsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AccountsUpdatePoller{
+	poller := &AccountsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -207,212 +207,212 @@ func (l *AccountsUpdatePollerResponse) Resume(ctx context.Context, client *Accou
 	return nil
 }
 
-// AccountsUpdateResponse contains the response from method Accounts.Update.
-type AccountsUpdateResponse struct {
-	AccountsUpdateResult
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	AccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsUpdateResult contains the result from method Accounts.Update.
-type AccountsUpdateResult struct {
-	DataLakeStoreAccount
+// AccountsClientUpdateResult contains the result from method AccountsClient.Update.
+type AccountsClientUpdateResult struct {
+	Account
 }
 
-// FirewallRulesCreateOrUpdateResponse contains the response from method FirewallRules.CreateOrUpdate.
-type FirewallRulesCreateOrUpdateResponse struct {
-	FirewallRulesCreateOrUpdateResult
+// FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.CreateOrUpdate.
+type FirewallRulesClientCreateOrUpdateResponse struct {
+	FirewallRulesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesCreateOrUpdateResult contains the result from method FirewallRules.CreateOrUpdate.
-type FirewallRulesCreateOrUpdateResult struct {
+// FirewallRulesClientCreateOrUpdateResult contains the result from method FirewallRulesClient.CreateOrUpdate.
+type FirewallRulesClientCreateOrUpdateResult struct {
 	FirewallRule
 }
 
-// FirewallRulesDeleteResponse contains the response from method FirewallRules.Delete.
-type FirewallRulesDeleteResponse struct {
+// FirewallRulesClientDeleteResponse contains the response from method FirewallRulesClient.Delete.
+type FirewallRulesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesGetResponse contains the response from method FirewallRules.Get.
-type FirewallRulesGetResponse struct {
-	FirewallRulesGetResult
+// FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
+type FirewallRulesClientGetResponse struct {
+	FirewallRulesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesGetResult contains the result from method FirewallRules.Get.
-type FirewallRulesGetResult struct {
+// FirewallRulesClientGetResult contains the result from method FirewallRulesClient.Get.
+type FirewallRulesClientGetResult struct {
 	FirewallRule
 }
 
-// FirewallRulesListByAccountResponse contains the response from method FirewallRules.ListByAccount.
-type FirewallRulesListByAccountResponse struct {
-	FirewallRulesListByAccountResult
+// FirewallRulesClientListByAccountResponse contains the response from method FirewallRulesClient.ListByAccount.
+type FirewallRulesClientListByAccountResponse struct {
+	FirewallRulesClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesListByAccountResult contains the result from method FirewallRules.ListByAccount.
-type FirewallRulesListByAccountResult struct {
+// FirewallRulesClientListByAccountResult contains the result from method FirewallRulesClient.ListByAccount.
+type FirewallRulesClientListByAccountResult struct {
 	FirewallRuleListResult
 }
 
-// FirewallRulesUpdateResponse contains the response from method FirewallRules.Update.
-type FirewallRulesUpdateResponse struct {
-	FirewallRulesUpdateResult
+// FirewallRulesClientUpdateResponse contains the response from method FirewallRulesClient.Update.
+type FirewallRulesClientUpdateResponse struct {
+	FirewallRulesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FirewallRulesUpdateResult contains the result from method FirewallRules.Update.
-type FirewallRulesUpdateResult struct {
+// FirewallRulesClientUpdateResult contains the result from method FirewallRulesClient.Update.
+type FirewallRulesClientUpdateResult struct {
 	FirewallRule
 }
 
-// LocationsGetCapabilityResponse contains the response from method Locations.GetCapability.
-type LocationsGetCapabilityResponse struct {
-	LocationsGetCapabilityResult
+// LocationsClientGetCapabilityResponse contains the response from method LocationsClient.GetCapability.
+type LocationsClientGetCapabilityResponse struct {
+	LocationsClientGetCapabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsGetCapabilityResult contains the result from method Locations.GetCapability.
-type LocationsGetCapabilityResult struct {
+// LocationsClientGetCapabilityResult contains the result from method LocationsClient.GetCapability.
+type LocationsClientGetCapabilityResult struct {
 	CapabilityInformation
 }
 
-// LocationsGetUsageResponse contains the response from method Locations.GetUsage.
-type LocationsGetUsageResponse struct {
-	LocationsGetUsageResult
+// LocationsClientGetUsageResponse contains the response from method LocationsClient.GetUsage.
+type LocationsClientGetUsageResponse struct {
+	LocationsClientGetUsageResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LocationsGetUsageResult contains the result from method Locations.GetUsage.
-type LocationsGetUsageResult struct {
+// LocationsClientGetUsageResult contains the result from method LocationsClient.GetUsage.
+type LocationsClientGetUsageResult struct {
 	UsageListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// TrustedIDProvidersCreateOrUpdateResponse contains the response from method TrustedIDProviders.CreateOrUpdate.
-type TrustedIDProvidersCreateOrUpdateResponse struct {
-	TrustedIDProvidersCreateOrUpdateResult
+// TrustedIDProvidersClientCreateOrUpdateResponse contains the response from method TrustedIDProvidersClient.CreateOrUpdate.
+type TrustedIDProvidersClientCreateOrUpdateResponse struct {
+	TrustedIDProvidersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrustedIDProvidersCreateOrUpdateResult contains the result from method TrustedIDProviders.CreateOrUpdate.
-type TrustedIDProvidersCreateOrUpdateResult struct {
+// TrustedIDProvidersClientCreateOrUpdateResult contains the result from method TrustedIDProvidersClient.CreateOrUpdate.
+type TrustedIDProvidersClientCreateOrUpdateResult struct {
 	TrustedIDProvider
 }
 
-// TrustedIDProvidersDeleteResponse contains the response from method TrustedIDProviders.Delete.
-type TrustedIDProvidersDeleteResponse struct {
+// TrustedIDProvidersClientDeleteResponse contains the response from method TrustedIDProvidersClient.Delete.
+type TrustedIDProvidersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrustedIDProvidersGetResponse contains the response from method TrustedIDProviders.Get.
-type TrustedIDProvidersGetResponse struct {
-	TrustedIDProvidersGetResult
+// TrustedIDProvidersClientGetResponse contains the response from method TrustedIDProvidersClient.Get.
+type TrustedIDProvidersClientGetResponse struct {
+	TrustedIDProvidersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrustedIDProvidersGetResult contains the result from method TrustedIDProviders.Get.
-type TrustedIDProvidersGetResult struct {
+// TrustedIDProvidersClientGetResult contains the result from method TrustedIDProvidersClient.Get.
+type TrustedIDProvidersClientGetResult struct {
 	TrustedIDProvider
 }
 
-// TrustedIDProvidersListByAccountResponse contains the response from method TrustedIDProviders.ListByAccount.
-type TrustedIDProvidersListByAccountResponse struct {
-	TrustedIDProvidersListByAccountResult
+// TrustedIDProvidersClientListByAccountResponse contains the response from method TrustedIDProvidersClient.ListByAccount.
+type TrustedIDProvidersClientListByAccountResponse struct {
+	TrustedIDProvidersClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrustedIDProvidersListByAccountResult contains the result from method TrustedIDProviders.ListByAccount.
-type TrustedIDProvidersListByAccountResult struct {
+// TrustedIDProvidersClientListByAccountResult contains the result from method TrustedIDProvidersClient.ListByAccount.
+type TrustedIDProvidersClientListByAccountResult struct {
 	TrustedIDProviderListResult
 }
 
-// TrustedIDProvidersUpdateResponse contains the response from method TrustedIDProviders.Update.
-type TrustedIDProvidersUpdateResponse struct {
-	TrustedIDProvidersUpdateResult
+// TrustedIDProvidersClientUpdateResponse contains the response from method TrustedIDProvidersClient.Update.
+type TrustedIDProvidersClientUpdateResponse struct {
+	TrustedIDProvidersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TrustedIDProvidersUpdateResult contains the result from method TrustedIDProviders.Update.
-type TrustedIDProvidersUpdateResult struct {
+// TrustedIDProvidersClientUpdateResult contains the result from method TrustedIDProvidersClient.Update.
+type TrustedIDProvidersClientUpdateResult struct {
 	TrustedIDProvider
 }
 
-// VirtualNetworkRulesCreateOrUpdateResponse contains the response from method VirtualNetworkRules.CreateOrUpdate.
-type VirtualNetworkRulesCreateOrUpdateResponse struct {
-	VirtualNetworkRulesCreateOrUpdateResult
+// VirtualNetworkRulesClientCreateOrUpdateResponse contains the response from method VirtualNetworkRulesClient.CreateOrUpdate.
+type VirtualNetworkRulesClientCreateOrUpdateResponse struct {
+	VirtualNetworkRulesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkRulesCreateOrUpdateResult contains the result from method VirtualNetworkRules.CreateOrUpdate.
-type VirtualNetworkRulesCreateOrUpdateResult struct {
+// VirtualNetworkRulesClientCreateOrUpdateResult contains the result from method VirtualNetworkRulesClient.CreateOrUpdate.
+type VirtualNetworkRulesClientCreateOrUpdateResult struct {
 	VirtualNetworkRule
 }
 
-// VirtualNetworkRulesDeleteResponse contains the response from method VirtualNetworkRules.Delete.
-type VirtualNetworkRulesDeleteResponse struct {
+// VirtualNetworkRulesClientDeleteResponse contains the response from method VirtualNetworkRulesClient.Delete.
+type VirtualNetworkRulesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkRulesGetResponse contains the response from method VirtualNetworkRules.Get.
-type VirtualNetworkRulesGetResponse struct {
-	VirtualNetworkRulesGetResult
+// VirtualNetworkRulesClientGetResponse contains the response from method VirtualNetworkRulesClient.Get.
+type VirtualNetworkRulesClientGetResponse struct {
+	VirtualNetworkRulesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkRulesGetResult contains the result from method VirtualNetworkRules.Get.
-type VirtualNetworkRulesGetResult struct {
+// VirtualNetworkRulesClientGetResult contains the result from method VirtualNetworkRulesClient.Get.
+type VirtualNetworkRulesClientGetResult struct {
 	VirtualNetworkRule
 }
 
-// VirtualNetworkRulesListByAccountResponse contains the response from method VirtualNetworkRules.ListByAccount.
-type VirtualNetworkRulesListByAccountResponse struct {
-	VirtualNetworkRulesListByAccountResult
+// VirtualNetworkRulesClientListByAccountResponse contains the response from method VirtualNetworkRulesClient.ListByAccount.
+type VirtualNetworkRulesClientListByAccountResponse struct {
+	VirtualNetworkRulesClientListByAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkRulesListByAccountResult contains the result from method VirtualNetworkRules.ListByAccount.
-type VirtualNetworkRulesListByAccountResult struct {
+// VirtualNetworkRulesClientListByAccountResult contains the result from method VirtualNetworkRulesClient.ListByAccount.
+type VirtualNetworkRulesClientListByAccountResult struct {
 	VirtualNetworkRuleListResult
 }
 
-// VirtualNetworkRulesUpdateResponse contains the response from method VirtualNetworkRules.Update.
-type VirtualNetworkRulesUpdateResponse struct {
-	VirtualNetworkRulesUpdateResult
+// VirtualNetworkRulesClientUpdateResponse contains the response from method VirtualNetworkRulesClient.Update.
+type VirtualNetworkRulesClientUpdateResponse struct {
+	VirtualNetworkRulesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VirtualNetworkRulesUpdateResult contains the result from method VirtualNetworkRules.Update.
-type VirtualNetworkRulesUpdateResult struct {
+// VirtualNetworkRulesClientUpdateResult contains the result from method VirtualNetworkRulesClient.Update.
+type VirtualNetworkRulesClientUpdateResult struct {
 	VirtualNetworkRule
 }

@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_GetForResource.json
-func ExampleMaintenanceConfigurationsClient_Get() {
+func ExampleConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaintenance.NewMaintenanceConfigurationsClient("<subscription-id>", cred, nil)
+	client := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -32,25 +32,25 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_CreateOrUpdateForResource.json
-func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
+func ExampleConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaintenance.NewMaintenanceConfigurationsClient("<subscription-id>", cred, nil)
+	client := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armmaintenance.MaintenanceConfiguration{
+		armmaintenance.Configuration{
 			Location: to.StringPtr("<location>"),
-			Properties: &armmaintenance.MaintenanceConfigurationProperties{
-				MaintenanceScope: armmaintenance.MaintenanceScopeOSImage.ToPtr(),
-				MaintenanceWindow: &armmaintenance.MaintenanceWindow{
+			Properties: &armmaintenance.ConfigurationProperties{
+				MaintenanceScope: armmaintenance.MaintenanceScope("OSImage").ToPtr(),
+				MaintenanceWindow: &armmaintenance.Window{
 					Duration:           to.StringPtr("<duration>"),
 					ExpirationDateTime: to.StringPtr("<expiration-date-time>"),
 					RecurEvery:         to.StringPtr("<recur-every>"),
@@ -58,24 +58,24 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 					TimeZone:           to.StringPtr("<time-zone>"),
 				},
 				Namespace:  to.StringPtr("<namespace>"),
-				Visibility: armmaintenance.VisibilityCustom.ToPtr(),
+				Visibility: armmaintenance.Visibility("Custom").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_DeleteForResource.json
-func ExampleMaintenanceConfigurationsClient_Delete() {
+func ExampleConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaintenance.NewMaintenanceConfigurationsClient("<subscription-id>", cred, nil)
+	client := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -83,25 +83,25 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_UpdateForResource.json
-func ExampleMaintenanceConfigurationsClient_Update() {
+func ExampleConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaintenance.NewMaintenanceConfigurationsClient("<subscription-id>", cred, nil)
+	client := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armmaintenance.MaintenanceConfiguration{
+		armmaintenance.Configuration{
 			Location: to.StringPtr("<location>"),
-			Properties: &armmaintenance.MaintenanceConfigurationProperties{
-				MaintenanceScope: armmaintenance.MaintenanceScopeOSImage.ToPtr(),
-				MaintenanceWindow: &armmaintenance.MaintenanceWindow{
+			Properties: &armmaintenance.ConfigurationProperties{
+				MaintenanceScope: armmaintenance.MaintenanceScope("OSImage").ToPtr(),
+				MaintenanceWindow: &armmaintenance.Window{
 					Duration:           to.StringPtr("<duration>"),
 					ExpirationDateTime: to.StringPtr("<expiration-date-time>"),
 					RecurEvery:         to.StringPtr("<recur-every>"),
@@ -109,27 +109,28 @@ func ExampleMaintenanceConfigurationsClient_Update() {
 					TimeZone:           to.StringPtr("<time-zone>"),
 				},
 				Namespace:  to.StringPtr("<namespace>"),
-				Visibility: armmaintenance.VisibilityCustom.ToPtr(),
+				Visibility: armmaintenance.Visibility("Custom").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MaintenanceConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_List.json
-func ExampleMaintenanceConfigurationsClient_List() {
+func ExampleConfigurationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmaintenance.NewMaintenanceConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientListResult)
 }

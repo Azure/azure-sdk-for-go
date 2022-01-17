@@ -60,47 +60,56 @@ func (c CreateWorkspaceCollectionRequest) MarshalJSON() ([]byte, error) {
 }
 
 type Display struct {
-	// The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise. It will be used in tool-tips
-	// and detailed views.
+	// The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise.
+	// It will be used in tool-tips and detailed views.
 	Description *string `json:"description,omitempty"`
 
-	// The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs), but clear (self-documenting).
-	// Use Title Casing and include the entity/resource
+	// The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs),
+	// but clear (self-documenting). Use Title Casing and include the entity/resource
 	// to which it applies.
 	Operation *string `json:"operation,omitempty"`
 
-	// The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is 'user,system'
+	// The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default
+	// value is 'user,system'
 	Origin *string `json:"origin,omitempty"`
 
-	// The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing.
-	// Begin with "Microsoft" for 1st party services.
+	// The localized friendly form of the resource provider name. This form is also expected to include the publisher/company
+	// responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
 	Provider *string `json:"provider,omitempty"`
 
-	// The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the resource provider.
-	// Use Title Casing. For examples, refer to
+	// The localized friendly form of the resource type related to this action/operation. This form should match the public documentation
+	// for the resource provider. Use Title Casing. For examples, refer to
 	// the "name" section.
 	Resource *string `json:"resource,omitempty"`
 }
 
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw     string
 	Code    *string        `json:"code,omitempty"`
 	Details []*ErrorDetail `json:"details,omitempty"`
 	Message *string        `json:"message,omitempty"`
 	Target  *string        `json:"target,omitempty"`
 }
 
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+// MarshalJSON implements the json.Marshaller interface for type Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	populate(objectMap, "target", e.Target)
+	return json.Marshal(objectMap)
 }
 
 type ErrorDetail struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
 	Target  *string `json:"target,omitempty"`
+}
+
+// ManagementClientGetAvailableOperationsOptions contains the optional parameters for the ManagementClient.GetAvailableOperations
+// method.
+type ManagementClientGetAvailableOperationsOptions struct {
+	// placeholder for future optional parameters
 }
 
 type MigrateWorkspaceCollectionRequest struct {
@@ -121,7 +130,8 @@ func (m MigrateWorkspaceCollectionRequest) MarshalJSON() ([]byte, error) {
 type Operation struct {
 	Display *Display `json:"display,omitempty"`
 
-	// The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event service.
+	// The name of the operation being performed on this particular object. This name should match the action name that appears
+	// in RBAC / the event service.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -134,12 +144,6 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
-}
-
-// PowerBIEmbeddedManagementClientGetAvailableOperationsOptions contains the optional parameters for the PowerBIEmbeddedManagementClient.GetAvailableOperations
-// method.
-type PowerBIEmbeddedManagementClientGetAvailableOperationsOptions struct {
-	// placeholder for future optional parameters
 }
 
 type UpdateWorkspaceCollectionRequest struct {
@@ -229,53 +233,60 @@ func (w WorkspaceCollectionList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WorkspaceCollectionsBeginDeleteOptions contains the optional parameters for the WorkspaceCollections.BeginDelete method.
-type WorkspaceCollectionsBeginDeleteOptions struct {
+// WorkspaceCollectionsClientBeginDeleteOptions contains the optional parameters for the WorkspaceCollectionsClient.BeginDelete
+// method.
+type WorkspaceCollectionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceCollections.CheckNameAvailability method.
-type WorkspaceCollectionsCheckNameAvailabilityOptions struct {
+// WorkspaceCollectionsClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceCollectionsClient.CheckNameAvailability
+// method.
+type WorkspaceCollectionsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsCreateOptions contains the optional parameters for the WorkspaceCollections.Create method.
-type WorkspaceCollectionsCreateOptions struct {
+// WorkspaceCollectionsClientCreateOptions contains the optional parameters for the WorkspaceCollectionsClient.Create method.
+type WorkspaceCollectionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsGetAccessKeysOptions contains the optional parameters for the WorkspaceCollections.GetAccessKeys method.
-type WorkspaceCollectionsGetAccessKeysOptions struct {
+// WorkspaceCollectionsClientGetAccessKeysOptions contains the optional parameters for the WorkspaceCollectionsClient.GetAccessKeys
+// method.
+type WorkspaceCollectionsClientGetAccessKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsGetByNameOptions contains the optional parameters for the WorkspaceCollections.GetByName method.
-type WorkspaceCollectionsGetByNameOptions struct {
+// WorkspaceCollectionsClientGetByNameOptions contains the optional parameters for the WorkspaceCollectionsClient.GetByName
+// method.
+type WorkspaceCollectionsClientGetByNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsListByResourceGroupOptions contains the optional parameters for the WorkspaceCollections.ListByResourceGroup method.
-type WorkspaceCollectionsListByResourceGroupOptions struct {
+// WorkspaceCollectionsClientListByResourceGroupOptions contains the optional parameters for the WorkspaceCollectionsClient.ListByResourceGroup
+// method.
+type WorkspaceCollectionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsListBySubscriptionOptions contains the optional parameters for the WorkspaceCollections.ListBySubscription method.
-type WorkspaceCollectionsListBySubscriptionOptions struct {
+// WorkspaceCollectionsClientListBySubscriptionOptions contains the optional parameters for the WorkspaceCollectionsClient.ListBySubscription
+// method.
+type WorkspaceCollectionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsMigrateOptions contains the optional parameters for the WorkspaceCollections.Migrate method.
-type WorkspaceCollectionsMigrateOptions struct {
+// WorkspaceCollectionsClientMigrateOptions contains the optional parameters for the WorkspaceCollectionsClient.Migrate method.
+type WorkspaceCollectionsClientMigrateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsRegenerateKeyOptions contains the optional parameters for the WorkspaceCollections.RegenerateKey method.
-type WorkspaceCollectionsRegenerateKeyOptions struct {
+// WorkspaceCollectionsClientRegenerateKeyOptions contains the optional parameters for the WorkspaceCollectionsClient.RegenerateKey
+// method.
+type WorkspaceCollectionsClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceCollectionsUpdateOptions contains the optional parameters for the WorkspaceCollections.Update method.
-type WorkspaceCollectionsUpdateOptions struct {
+// WorkspaceCollectionsClientUpdateOptions contains the optional parameters for the WorkspaceCollectionsClient.Update method.
+type WorkspaceCollectionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -290,8 +301,8 @@ func (w WorkspaceList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WorkspacesListOptions contains the optional parameters for the Workspaces.List method.
-type WorkspacesListOptions struct {
+// WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
+type WorkspacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

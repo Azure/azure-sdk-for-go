@@ -11,7 +11,6 @@ package armkubernetesconfiguration
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,59 @@ import (
 // ClusterExtensionTypeClient contains the methods for the ClusterExtensionType group.
 // Don't use this type directly, use NewClusterExtensionTypeClient() instead.
 type ClusterExtensionTypeClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewClusterExtensionTypeClient creates a new instance of ClusterExtensionTypeClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewClusterExtensionTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterExtensionTypeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ClusterExtensionTypeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ClusterExtensionTypeClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get Extension Type details
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ClusterExtensionTypeClient) Get(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionTypeName string, options *ClusterExtensionTypeGetOptions) (ClusterExtensionTypeGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
+// OnPrem K8S clusters).
+// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
+// (for OnPrem K8S clusters).
+// clusterName - The name of the kubernetes cluster.
+// extensionTypeName - Extension type name
+// options - ClusterExtensionTypeClientGetOptions contains the optional parameters for the ClusterExtensionTypeClient.Get
+// method.
+func (client *ClusterExtensionTypeClient) Get(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionTypeName string, options *ClusterExtensionTypeClientGetOptions) (ClusterExtensionTypeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionTypeName, options)
 	if err != nil {
-		return ClusterExtensionTypeGetResponse{}, err
+		return ClusterExtensionTypeClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClusterExtensionTypeGetResponse{}, err
+		return ClusterExtensionTypeClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClusterExtensionTypeGetResponse{}, client.getHandleError(resp)
+		return ClusterExtensionTypeClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ClusterExtensionTypeClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionTypeName string, options *ClusterExtensionTypeGetOptions) (*policy.Request, error) {
+func (client *ClusterExtensionTypeClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, extensionTypeName string, options *ClusterExtensionTypeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensionTypes/{extensionTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +102,7 @@ func (client *ClusterExtensionTypeClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter extensionTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,23 +114,10 @@ func (client *ClusterExtensionTypeClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClusterExtensionTypeClient) getHandleResponse(resp *http.Response) (ClusterExtensionTypeGetResponse, error) {
-	result := ClusterExtensionTypeGetResponse{RawResponse: resp}
+func (client *ClusterExtensionTypeClient) getHandleResponse(resp *http.Response) (ClusterExtensionTypeClientGetResponse, error) {
+	result := ClusterExtensionTypeClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionType); err != nil {
-		return ClusterExtensionTypeGetResponse{}, runtime.NewResponseError(err, resp)
+		return ClusterExtensionTypeClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ClusterExtensionTypeClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

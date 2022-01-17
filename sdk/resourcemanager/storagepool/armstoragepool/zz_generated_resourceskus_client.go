@@ -11,7 +11,6 @@ package armstoragepool
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,49 @@ import (
 // ResourceSKUsClient contains the methods for the ResourceSKUs group.
 // Don't use this type directly, use NewResourceSKUsClient() instead.
 type ResourceSKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourceSKUsClient creates a new instance of ResourceSKUsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceSKUsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ResourceSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourceSKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists available StoragePool resources and skus in an Azure location.
-// If the operation fails it returns the *Error error type.
-func (client *ResourceSKUsClient) List(location string, options *ResourceSKUsListOptions) *ResourceSKUsListPager {
-	return &ResourceSKUsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location of the resource.
+// options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
+func (client *ResourceSKUsClient) List(location string, options *ResourceSKUsClientListOptions) *ResourceSKUsClientListPager {
+	return &ResourceSKUsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp ResourceSKUsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceSKUsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, location string, options *ResourceSKUsListOptions) (*policy.Request, error) {
+func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, location string, options *ResourceSKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StoragePool/locations/{location}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +76,7 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, locatio
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +88,10 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, locatio
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceSKUsClient) listHandleResponse(resp *http.Response) (ResourceSKUsListResponse, error) {
-	result := ResourceSKUsListResponse{RawResponse: resp}
+func (client *ResourceSKUsClient) listHandleResponse(resp *http.Response) (ResourceSKUsClientListResponse, error) {
+	result := ResourceSKUsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUListResult); err != nil {
-		return ResourceSKUsListResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceSKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ResourceSKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

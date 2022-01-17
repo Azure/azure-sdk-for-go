@@ -25,46 +25,60 @@ import (
 // DomainsClient contains the methods for the Domains group.
 // Don't use this type directly, use NewDomainsClient() instead.
 type DomainsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDomainsClient creates a new instance of DomainsClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DomainsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DomainsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Asynchronously creates or updates a new domain with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsBeginCreateOrUpdateOptions) (DomainsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// domainName - Name of the domain.
+// domainInfo - Domain information.
+// options - DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate
+// method.
+func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsClientBeginCreateOrUpdateOptions) (DomainsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, domainInfo, options)
 	if err != nil {
-		return DomainsCreateOrUpdatePollerResponse{}, err
+		return DomainsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DomainsCreateOrUpdatePollerResponse{
+	result := DomainsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DomainsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DomainsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DomainsCreateOrUpdatePollerResponse{}, err
+		return DomainsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DomainsCreateOrUpdatePoller{
+	result.Poller = &DomainsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Asynchronously creates or updates a new domain with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, domainInfo, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +108,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,41 +119,32 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, domainInfo)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DomainsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Delete existing domain.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, options *DomainsBeginDeleteOptions) (DomainsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// domainName - Name of the domain.
+// options - DomainsClientBeginDeleteOptions contains the optional parameters for the DomainsClient.BeginDelete method.
+func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (DomainsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, domainName, options)
 	if err != nil {
-		return DomainsDeletePollerResponse{}, err
+		return DomainsClientDeletePollerResponse{}, err
 	}
-	result := DomainsDeletePollerResponse{
+	result := DomainsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DomainsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DomainsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DomainsDeletePollerResponse{}, err
+		return DomainsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DomainsDeletePoller{
+	result.Poller = &DomainsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete existing domain.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, options *DomainsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainName, options)
 	if err != nil {
 		return nil, err
@@ -149,13 +154,13 @@ func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsBeginDeleteOptions) (*policy.Request, error) {
+func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -169,7 +174,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,37 +184,28 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DomainsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get properties of a domain.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, domainName string, options *DomainsGetOptions) (DomainsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// domainName - Name of the domain.
+// options - DomainsClientGetOptions contains the optional parameters for the DomainsClient.Get method.
+func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientGetOptions) (DomainsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, domainName, options)
 	if err != nil {
-		return DomainsGetResponse{}, err
+		return DomainsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DomainsGetResponse{}, err
+		return DomainsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DomainsGetResponse{}, client.getHandleError(resp)
+		return DomainsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsGetOptions) (*policy.Request, error) {
+func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -223,7 +219,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,42 +231,33 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsGetResponse, error) {
-	result := DomainsGetResponse{RawResponse: resp}
+func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsClientGetResponse, error) {
+	result := DomainsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
-		return DomainsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DomainsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DomainsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroup - List all the domains under a resource group.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsListByResourceGroupOptions) *DomainsListByResourceGroupPager {
-	return &DomainsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// options - DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup
+// method.
+func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsClientListByResourceGroupOptions) *DomainsClientListByResourceGroupPager {
+	return &DomainsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DomainsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DomainsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainsListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DomainsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DomainsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -280,7 +267,7 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,48 +285,38 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Response) (DomainsListByResourceGroupResponse, error) {
-	result := DomainsListByResourceGroupResponse{RawResponse: resp}
+func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Response) (DomainsClientListByResourceGroupResponse, error) {
+	result := DomainsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainsListResult); err != nil {
-		return DomainsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DomainsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DomainsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListBySubscription - List all the domains under an Azure subscription.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) ListBySubscription(options *DomainsListBySubscriptionOptions) *DomainsListBySubscriptionPager {
-	return &DomainsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DomainsClientListBySubscriptionOptions contains the optional parameters for the DomainsClient.ListBySubscription
+// method.
+func (client *DomainsClient) ListBySubscription(options *DomainsClientListBySubscriptionOptions) *DomainsClientListBySubscriptionPager {
+	return &DomainsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DomainsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DomainsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainsListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DomainsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DomainsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DomainsClient) listBySubscriptionCreateRequest(ctx context.Context, options *DomainsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/domains"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,45 +334,37 @@ func (client *DomainsClient) listBySubscriptionCreateRequest(ctx context.Context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DomainsClient) listBySubscriptionHandleResponse(resp *http.Response) (DomainsListBySubscriptionResponse, error) {
-	result := DomainsListBySubscriptionResponse{RawResponse: resp}
+func (client *DomainsClient) listBySubscriptionHandleResponse(resp *http.Response) (DomainsClientListBySubscriptionResponse, error) {
+	result := DomainsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainsListResult); err != nil {
-		return DomainsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DomainsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DomainsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListSharedAccessKeys - List the two keys used to publish to a domain.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) ListSharedAccessKeys(ctx context.Context, resourceGroupName string, domainName string, options *DomainsListSharedAccessKeysOptions) (DomainsListSharedAccessKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// domainName - Name of the domain.
+// options - DomainsClientListSharedAccessKeysOptions contains the optional parameters for the DomainsClient.ListSharedAccessKeys
+// method.
+func (client *DomainsClient) ListSharedAccessKeys(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientListSharedAccessKeysOptions) (DomainsClientListSharedAccessKeysResponse, error) {
 	req, err := client.listSharedAccessKeysCreateRequest(ctx, resourceGroupName, domainName, options)
 	if err != nil {
-		return DomainsListSharedAccessKeysResponse{}, err
+		return DomainsClientListSharedAccessKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DomainsListSharedAccessKeysResponse{}, err
+		return DomainsClientListSharedAccessKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DomainsListSharedAccessKeysResponse{}, client.listSharedAccessKeysHandleError(resp)
+		return DomainsClientListSharedAccessKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSharedAccessKeysHandleResponse(resp)
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.
-func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsListSharedAccessKeysOptions) (*policy.Request, error) {
+func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientListSharedAccessKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -409,7 +378,7 @@ func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -421,45 +390,37 @@ func (client *DomainsClient) listSharedAccessKeysCreateRequest(ctx context.Conte
 }
 
 // listSharedAccessKeysHandleResponse handles the ListSharedAccessKeys response.
-func (client *DomainsClient) listSharedAccessKeysHandleResponse(resp *http.Response) (DomainsListSharedAccessKeysResponse, error) {
-	result := DomainsListSharedAccessKeysResponse{RawResponse: resp}
+func (client *DomainsClient) listSharedAccessKeysHandleResponse(resp *http.Response) (DomainsClientListSharedAccessKeysResponse, error) {
+	result := DomainsClientListSharedAccessKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainSharedAccessKeys); err != nil {
-		return DomainsListSharedAccessKeysResponse{}, runtime.NewResponseError(err, resp)
+		return DomainsClientListSharedAccessKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listSharedAccessKeysHandleError handles the ListSharedAccessKeys error response.
-func (client *DomainsClient) listSharedAccessKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // RegenerateKey - Regenerate a shared access key for a domain.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) RegenerateKey(ctx context.Context, resourceGroupName string, domainName string, regenerateKeyRequest DomainRegenerateKeyRequest, options *DomainsRegenerateKeyOptions) (DomainsRegenerateKeyResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// domainName - Name of the domain.
+// regenerateKeyRequest - Request body to regenerate key.
+// options - DomainsClientRegenerateKeyOptions contains the optional parameters for the DomainsClient.RegenerateKey method.
+func (client *DomainsClient) RegenerateKey(ctx context.Context, resourceGroupName string, domainName string, regenerateKeyRequest DomainRegenerateKeyRequest, options *DomainsClientRegenerateKeyOptions) (DomainsClientRegenerateKeyResponse, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, domainName, regenerateKeyRequest, options)
 	if err != nil {
-		return DomainsRegenerateKeyResponse{}, err
+		return DomainsClientRegenerateKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DomainsRegenerateKeyResponse{}, err
+		return DomainsClientRegenerateKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DomainsRegenerateKeyResponse{}, client.regenerateKeyHandleError(resp)
+		return DomainsClientRegenerateKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateKeyHandleResponse(resp)
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, domainName string, regenerateKeyRequest DomainRegenerateKeyRequest, options *DomainsRegenerateKeyOptions) (*policy.Request, error) {
+func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, domainName string, regenerateKeyRequest DomainRegenerateKeyRequest, options *DomainsClientRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/regenerateKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -473,7 +434,7 @@ func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -485,49 +446,41 @@ func (client *DomainsClient) regenerateKeyCreateRequest(ctx context.Context, res
 }
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
-func (client *DomainsClient) regenerateKeyHandleResponse(resp *http.Response) (DomainsRegenerateKeyResponse, error) {
-	result := DomainsRegenerateKeyResponse{RawResponse: resp}
+func (client *DomainsClient) regenerateKeyHandleResponse(resp *http.Response) (DomainsClientRegenerateKeyResponse, error) {
+	result := DomainsClientRegenerateKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainSharedAccessKeys); err != nil {
-		return DomainsRegenerateKeyResponse{}, runtime.NewResponseError(err, resp)
+		return DomainsClientRegenerateKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// regenerateKeyHandleError handles the RegenerateKey error response.
-func (client *DomainsClient) regenerateKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Asynchronously updates a domain with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsBeginUpdateOptions) (DomainsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// domainName - Name of the domain.
+// domainUpdateParameters - Domain update information.
+// options - DomainsClientBeginUpdateOptions contains the optional parameters for the DomainsClient.BeginUpdate method.
+func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsClientBeginUpdateOptions) (DomainsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, domainName, domainUpdateParameters, options)
 	if err != nil {
-		return DomainsUpdatePollerResponse{}, err
+		return DomainsClientUpdatePollerResponse{}, err
 	}
-	result := DomainsUpdatePollerResponse{
+	result := DomainsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DomainsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("DomainsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return DomainsUpdatePollerResponse{}, err
+		return DomainsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &DomainsUpdatePoller{
+	result.Poller = &DomainsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Asynchronously updates a domain with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *DomainsClient) update(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainsClient) update(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainName, domainUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -537,13 +490,13 @@ func (client *DomainsClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsBeginUpdateOptions) (*policy.Request, error) {
+func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters, options *DomainsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -557,7 +510,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -566,16 +519,4 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, domainUpdateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *DomainsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

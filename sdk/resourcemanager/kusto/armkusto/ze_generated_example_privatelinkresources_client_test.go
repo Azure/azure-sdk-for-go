@@ -24,13 +24,14 @@ func ExamplePrivateLinkResourcesClient_List() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientListResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoPrivateLinkResourcesGet.json
@@ -49,5 +50,5 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientGetResult)
 }

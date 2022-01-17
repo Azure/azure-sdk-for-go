@@ -49,48 +49,40 @@ func (b BotResponseList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BotsBeginCreateOptions contains the optional parameters for the Bots.BeginCreate method.
-type BotsBeginCreateOptions struct {
+// BotsClientBeginCreateOptions contains the optional parameters for the BotsClient.BeginCreate method.
+type BotsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsBeginDeleteOptions contains the optional parameters for the Bots.BeginDelete method.
-type BotsBeginDeleteOptions struct {
+// BotsClientBeginDeleteOptions contains the optional parameters for the BotsClient.BeginDelete method.
+type BotsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsGetOptions contains the optional parameters for the Bots.Get method.
-type BotsGetOptions struct {
+// BotsClientGetOptions contains the optional parameters for the BotsClient.Get method.
+type BotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsListByResourceGroupOptions contains the optional parameters for the Bots.ListByResourceGroup method.
-type BotsListByResourceGroupOptions struct {
+// BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.ListByResourceGroup method.
+type BotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsListOptions contains the optional parameters for the Bots.List method.
-type BotsListOptions struct {
+// BotsClientListOptions contains the optional parameters for the BotsClient.List method.
+type BotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsUpdateOptions contains the optional parameters for the Bots.Update method.
-type BotsUpdateOptions struct {
+// BotsClientUpdateOptions contains the optional parameters for the BotsClient.Update method.
+type BotsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Error - The resource management error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw string
 	// The error object.
-	InnerError *ErrorError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	Error *ErrorError `json:"error,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -133,7 +125,9 @@ func (e ErrorError) MarshalJSON() ([]byte, error) {
 
 // HealthBot - Azure Health Bot resource definition
 type HealthBot struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; SKU of the Azure Health Bot.
 	SKU *SKU `json:"sku,omitempty"`
 
@@ -141,61 +135,48 @@ type HealthBot struct {
 	Identity *Identity `json:"identity,omitempty"`
 
 	// The set of properties specific to Azure Health Bot resource.
-	Properties *HealthBotProperties `json:"properties,omitempty"`
+	Properties *Properties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type HealthBot.
 func (h HealthBot) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	h.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", h.Identity)
-	populate(objectMap, "properties", h.Properties)
-	populate(objectMap, "sku", h.SKU)
-	return json.Marshal(objectMap)
-}
-
-// HealthBotProperties - The properties of a Azure Health Bot. The Health Bot Service is a cloud platform that empowers developers in Healthcare organizations
-// to build and deploy their compliant, AI-powered virtual health
-// assistants and health bots, that help them improve processes and reduce costs.
-type HealthBotProperties struct {
-	// READ-ONLY; The link.
-	BotManagementPortalLink *string `json:"botManagementPortalLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state of the Azure Health Bot resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// HealthBotUpdateParameters - Parameters for updating a Azure Health Bot.
-type HealthBotUpdateParameters struct {
-	// The identity of the Azure Health Bot.
-	Identity *Identity `json:"identity,omitempty"`
-	Location *string   `json:"location,omitempty"`
-
-	// SKU of the Azure Health Bot.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// Tags for a Azure Health Bot.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HealthBotUpdateParameters.
-func (h HealthBotUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", h.ID)
 	populate(objectMap, "identity", h.Identity)
 	populate(objectMap, "location", h.Location)
+	populate(objectMap, "name", h.Name)
+	populate(objectMap, "properties", h.Properties)
 	populate(objectMap, "sku", h.SKU)
+	populate(objectMap, "systemData", h.SystemData)
 	populate(objectMap, "tags", h.Tags)
+	populate(objectMap, "type", h.Type)
 	return json.Marshal(objectMap)
 }
 
 // Identity for the resource.
 type Identity struct {
-	// The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
-	// 'None' will remove any identities from the Azure
+	// The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user
+	// assigned identities. The type 'None' will remove any identities from the Azure
 	// Health Bot
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -249,9 +230,20 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Properties - The properties of a Azure Health Bot. The Health Bot Service is a cloud platform that empowers developers
+// in Healthcare organizations to build and deploy their compliant, AI-powered virtual health
+// assistants and health bots, that help them improve processes and reduce costs.
+type Properties struct {
+	// READ-ONLY; The link.
+	BotManagementPortalLink *string `json:"botManagementPortalLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the Azure Health Bot resource.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // Resource - The resource model definition for a ARM tracked top level resource
@@ -267,20 +259,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "type", r.Type)
 }
 
 // SKU - The resource model definition representing SKU
@@ -359,25 +337,58 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
+// UpdateParameters - Parameters for updating a Azure Health Bot.
+type UpdateParameters struct {
+	// The identity of the Azure Health Bot.
+	Identity *Identity `json:"identity,omitempty"`
+	Location *string   `json:"location,omitempty"`
+
+	// SKU of the Azure Health Bot.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Tags for a Azure Health Bot.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UpdateParameters.
+func (u UpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "identity", u.Identity)
+	populate(objectMap, "location", u.Location)
+	populate(objectMap, "sku", u.SKU)
+	populate(objectMap, "tags", u.Tags)
+	return json.Marshal(objectMap)
 }
 
 // UserAssignedIdentity - The details of the user assigned managed identity used by the Video Analyzer resource.

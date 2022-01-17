@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,60 @@ import (
 // DisksClient contains the methods for the Disks group.
 // Don't use this type directly, use NewDisksClient() instead.
 type DisksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDisksClient creates a new instance of DisksClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DisksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DisksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DisksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginAttach - Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) BeginAttach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksBeginAttachOptions) (DisksAttachPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the disk.
+// attachDiskProperties - Properties of the disk to attach.
+// options - DisksClientBeginAttachOptions contains the optional parameters for the DisksClient.BeginAttach method.
+func (client *DisksClient) BeginAttach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksClientBeginAttachOptions) (DisksClientAttachPollerResponse, error) {
 	resp, err := client.attach(ctx, resourceGroupName, labName, userName, name, attachDiskProperties, options)
 	if err != nil {
-		return DisksAttachPollerResponse{}, err
+		return DisksClientAttachPollerResponse{}, err
 	}
-	result := DisksAttachPollerResponse{
+	result := DisksClientAttachPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DisksClient.Attach", "", resp, client.pl, client.attachHandleError)
+	pt, err := armruntime.NewPoller("DisksClient.Attach", "", resp, client.pl)
 	if err != nil {
-		return DisksAttachPollerResponse{}, err
+		return DisksClientAttachPollerResponse{}, err
 	}
-	result.Poller = &DisksAttachPoller{
+	result.Poller = &DisksClientAttachPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Attach - Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) attach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksBeginAttachOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DisksClient) attach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksClientBeginAttachOptions) (*http.Response, error) {
 	req, err := client.attachCreateRequest(ctx, resourceGroupName, labName, userName, name, attachDiskProperties, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +88,13 @@ func (client *DisksClient) attach(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.attachHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // attachCreateRequest creates the Attach request.
-func (client *DisksClient) attachCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksBeginAttachOptions) (*policy.Request, error) {
+func (client *DisksClient) attachCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, options *DisksClientBeginAttachOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}/attach"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,7 +116,7 @@ func (client *DisksClient) attachCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -114,42 +127,36 @@ func (client *DisksClient) attachCreateRequest(ctx context.Context, resourceGrou
 	return req, runtime.MarshalAsJSON(req, attachDiskProperties)
 }
 
-// attachHandleError handles the Attach error response.
-func (client *DisksClient) attachHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Create or replace an existing disk. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (DisksCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the disk.
+// disk - A Disk.
+// options - DisksClientBeginCreateOrUpdateOptions contains the optional parameters for the DisksClient.BeginCreateOrUpdate
+// method.
+func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksClientBeginCreateOrUpdateOptions) (DisksClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, disk, options)
 	if err != nil {
-		return DisksCreateOrUpdatePollerResponse{}, err
+		return DisksClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DisksCreateOrUpdatePollerResponse{
+	result := DisksClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DisksClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DisksClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DisksCreateOrUpdatePollerResponse{}, err
+		return DisksClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DisksCreateOrUpdatePoller{
+	result.Poller = &DisksClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing disk. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DisksClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, userName, name, disk, options)
 	if err != nil {
 		return nil, err
@@ -159,13 +166,13 @@ func (client *DisksClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk Disk, options *DisksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -187,7 +194,7 @@ func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -198,42 +205,34 @@ func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	return req, runtime.MarshalAsJSON(req, disk)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DisksClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete disk. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksBeginDeleteOptions) (DisksDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the disk.
+// options - DisksClientBeginDeleteOptions contains the optional parameters for the DisksClient.BeginDelete method.
+func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientBeginDeleteOptions) (DisksClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return DisksDeletePollerResponse{}, err
+		return DisksClientDeletePollerResponse{}, err
 	}
-	result := DisksDeletePollerResponse{
+	result := DisksClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DisksClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DisksClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DisksDeletePollerResponse{}, err
+		return DisksClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DisksDeletePoller{
+	result.Poller = &DisksClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete disk. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DisksClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
 		return nil, err
@@ -243,13 +242,13 @@ func (client *DisksClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksBeginDeleteOptions) (*policy.Request, error) {
+func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -271,7 +270,7 @@ func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -282,42 +281,36 @@ func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DisksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDetach - Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) BeginDetach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksBeginDetachOptions) (DisksDetachPollerResponse, error) {
+// BeginDetach - Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
+// complete.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the disk.
+// detachDiskProperties - Properties of the disk to detach.
+// options - DisksClientBeginDetachOptions contains the optional parameters for the DisksClient.BeginDetach method.
+func (client *DisksClient) BeginDetach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksClientBeginDetachOptions) (DisksClientDetachPollerResponse, error) {
 	resp, err := client.detach(ctx, resourceGroupName, labName, userName, name, detachDiskProperties, options)
 	if err != nil {
-		return DisksDetachPollerResponse{}, err
+		return DisksClientDetachPollerResponse{}, err
 	}
-	result := DisksDetachPollerResponse{
+	result := DisksClientDetachPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DisksClient.Detach", "", resp, client.pl, client.detachHandleError)
+	pt, err := armruntime.NewPoller("DisksClient.Detach", "", resp, client.pl)
 	if err != nil {
-		return DisksDetachPollerResponse{}, err
+		return DisksClientDetachPollerResponse{}, err
 	}
-	result.Poller = &DisksDetachPoller{
+	result.Poller = &DisksClientDetachPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Detach - Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) detach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksBeginDetachOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DisksClient) detach(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksClientBeginDetachOptions) (*http.Response, error) {
 	req, err := client.detachCreateRequest(ctx, resourceGroupName, labName, userName, name, detachDiskProperties, options)
 	if err != nil {
 		return nil, err
@@ -327,13 +320,13 @@ func (client *DisksClient) detach(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.detachHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // detachCreateRequest creates the Detach request.
-func (client *DisksClient) detachCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksBeginDetachOptions) (*policy.Request, error) {
+func (client *DisksClient) detachCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, options *DisksClientBeginDetachOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}/detach"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -355,7 +348,7 @@ func (client *DisksClient) detachCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -366,38 +359,30 @@ func (client *DisksClient) detachCreateRequest(ctx context.Context, resourceGrou
 	return req, runtime.MarshalAsJSON(req, detachDiskProperties)
 }
 
-// detachHandleError handles the Detach error response.
-func (client *DisksClient) detachHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get disk.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksGetOptions) (DisksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the disk.
+// options - DisksClientGetOptions contains the optional parameters for the DisksClient.Get method.
+func (client *DisksClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientGetOptions) (DisksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return DisksGetResponse{}, err
+		return DisksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisksGetResponse{}, err
+		return DisksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisksGetResponse{}, client.getHandleError(resp)
+		return DisksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksGetOptions) (*policy.Request, error) {
+func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *DisksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -419,7 +404,7 @@ func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -434,43 +419,34 @@ func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksGetResponse, error) {
-	result := DisksGetResponse{RawResponse: resp}
+func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksClientGetResponse, error) {
+	result := DisksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Disk); err != nil {
-		return DisksGetResponse{}, runtime.NewResponseError(err, resp)
+		return DisksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DisksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List disks in a given user profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) List(resourceGroupName string, labName string, userName string, options *DisksListOptions) *DisksListPager {
-	return &DisksListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// options - DisksClientListOptions contains the optional parameters for the DisksClient.List method.
+func (client *DisksClient) List(resourceGroupName string, labName string, userName string, options *DisksClientListOptions) *DisksClientListPager {
+	return &DisksClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
 		},
-		advancer: func(ctx context.Context, resp DisksListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DisksClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DisksClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, options *DisksListOptions) (*policy.Request, error) {
+func (client *DisksClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, options *DisksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -488,7 +464,7 @@ func (client *DisksClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter userName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userName}", url.PathEscape(userName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -512,46 +488,39 @@ func (client *DisksClient) listCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // listHandleResponse handles the List response.
-func (client *DisksClient) listHandleResponse(resp *http.Response) (DisksListResponse, error) {
-	result := DisksListResponse{RawResponse: resp}
+func (client *DisksClient) listHandleResponse(resp *http.Response) (DisksClientListResponse, error) {
+	result := DisksClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskList); err != nil {
-		return DisksListResponse{}, runtime.NewResponseError(err, resp)
+		return DisksClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DisksClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of disks. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *DisksClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk DiskFragment, options *DisksUpdateOptions) (DisksUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the disk.
+// disk - A Disk.
+// options - DisksClientUpdateOptions contains the optional parameters for the DisksClient.Update method.
+func (client *DisksClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk DiskFragment, options *DisksClientUpdateOptions) (DisksClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, userName, name, disk, options)
 	if err != nil {
-		return DisksUpdateResponse{}, err
+		return DisksClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DisksUpdateResponse{}, err
+		return DisksClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DisksUpdateResponse{}, client.updateHandleError(resp)
+		return DisksClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk DiskFragment, options *DisksUpdateOptions) (*policy.Request, error) {
+func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, disk DiskFragment, options *DisksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -573,7 +542,7 @@ func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -585,23 +554,10 @@ func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DisksClient) updateHandleResponse(resp *http.Response) (DisksUpdateResponse, error) {
-	result := DisksUpdateResponse{RawResponse: resp}
+func (client *DisksClient) updateHandleResponse(resp *http.Response) (DisksClientUpdateResponse, error) {
+	result := DisksClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Disk); err != nil {
-		return DisksUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DisksClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DisksClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

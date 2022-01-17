@@ -24,11 +24,12 @@ func ExampleMicrosoftSerialConsoleClient_ListOperations() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
-	_, err = client.ListOperations(ctx,
+	res, err := client.ListOperations(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MicrosoftSerialConsoleClientListOperationsResult)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/SerialConsoleStatus.json
@@ -39,12 +40,13 @@ func ExampleMicrosoftSerialConsoleClient_GetConsoleStatus() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
-	_, err = client.GetConsoleStatus(ctx,
+	res, err := client.GetConsoleStatus(ctx,
 		"<default-param>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.Value)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/DisableConsoleExamples.json
@@ -55,12 +57,13 @@ func ExampleMicrosoftSerialConsoleClient_DisableConsole() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
-	_, err = client.DisableConsole(ctx,
+	res, err := client.DisableConsole(ctx,
 		"<default-param>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.Value)
 }
 
 // x-ms-original-file: specification/serialconsole/resource-manager/Microsoft.SerialConsole/stable/2018-05-01/examples/EnableConsoleExamples.json
@@ -71,10 +74,11 @@ func ExampleMicrosoftSerialConsoleClient_EnableConsole() {
 	}
 	ctx := context.Background()
 	client := armserialconsole.NewMicrosoftSerialConsoleClient("<subscription-id>", cred, nil)
-	_, err = client.EnableConsole(ctx,
+	res, err := client.EnableConsole(ctx,
 		"<default-param>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.Value)
 }

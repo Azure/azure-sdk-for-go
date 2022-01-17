@@ -11,7 +11,6 @@ package armservicefabric
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // ClusterVersionsClient contains the methods for the ClusterVersions group.
 // Don't use this type directly, use NewClusterVersionsClient() instead.
 type ClusterVersionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewClusterVersionsClient creates a new instance of ClusterVersionsClient with the specified values.
+// subscriptionID - The customer subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterVersionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ClusterVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ClusterVersionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets information about an available Service Fabric cluster code version.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ClusterVersionsClient) Get(ctx context.Context, location string, clusterVersion string, options *ClusterVersionsGetOptions) (ClusterVersionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for the cluster code versions. This is different from cluster location.
+// clusterVersion - The cluster code version.
+// options - ClusterVersionsClientGetOptions contains the optional parameters for the ClusterVersionsClient.Get method.
+func (client *ClusterVersionsClient) Get(ctx context.Context, location string, clusterVersion string, options *ClusterVersionsClientGetOptions) (ClusterVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, clusterVersion, options)
 	if err != nil {
-		return ClusterVersionsGetResponse{}, err
+		return ClusterVersionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClusterVersionsGetResponse{}, err
+		return ClusterVersionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClusterVersionsGetResponse{}, client.getHandleError(resp)
+		return ClusterVersionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, location string, clusterVersion string, options *ClusterVersionsGetOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, location string, clusterVersion string, options *ClusterVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions/{clusterVersion}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -74,7 +84,7 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, errors.New("parameter clusterVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterVersion}", url.PathEscape(clusterVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +96,38 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (ClusterVersionsGetResponse, error) {
-	result := ClusterVersionsGetResponse{RawResponse: resp}
+func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (ClusterVersionsClientGetResponse, error) {
+	result := ClusterVersionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ClusterVersionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ClusterVersionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByEnvironment - Gets information about an available Service Fabric cluster code version by environment.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment Enum14, clusterVersion string, options *ClusterVersionsGetByEnvironmentOptions) (ClusterVersionsGetByEnvironmentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for the cluster code versions. This is different from cluster location.
+// environment - The operating system of the cluster. The default means all.
+// clusterVersion - The cluster code version.
+// options - ClusterVersionsClientGetByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.GetByEnvironment
+// method.
+func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment Enum14, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (ClusterVersionsClientGetByEnvironmentResponse, error) {
 	req, err := client.getByEnvironmentCreateRequest(ctx, location, environment, clusterVersion, options)
 	if err != nil {
-		return ClusterVersionsGetByEnvironmentResponse{}, err
+		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClusterVersionsGetByEnvironmentResponse{}, err
+		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClusterVersionsGetByEnvironmentResponse{}, client.getByEnvironmentHandleError(resp)
+		return ClusterVersionsClientGetByEnvironmentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByEnvironmentHandleResponse(resp)
 }
 
 // getByEnvironmentCreateRequest creates the GetByEnvironment request.
-func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment Enum14, clusterVersion string, options *ClusterVersionsGetByEnvironmentOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.Context, location string, environment Enum14, clusterVersion string, options *ClusterVersionsClientGetByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions/{clusterVersion}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -143,7 +145,7 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 		return nil, errors.New("parameter clusterVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterVersion}", url.PathEscape(clusterVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,46 +157,35 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 }
 
 // getByEnvironmentHandleResponse handles the GetByEnvironment response.
-func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsGetByEnvironmentResponse, error) {
-	result := ClusterVersionsGetByEnvironmentResponse{RawResponse: resp}
+func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsClientGetByEnvironmentResponse, error) {
+	result := ClusterVersionsClientGetByEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsGetByEnvironmentResponse{}, runtime.NewResponseError(err, resp)
+		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
 	return result, nil
 }
 
-// getByEnvironmentHandleError handles the GetByEnvironment error response.
-func (client *ClusterVersionsClient) getByEnvironmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all available code versions for Service Fabric cluster resources by location.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ClusterVersionsClient) List(ctx context.Context, location string, options *ClusterVersionsListOptions) (ClusterVersionsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for the cluster code versions. This is different from cluster location.
+// options - ClusterVersionsClientListOptions contains the optional parameters for the ClusterVersionsClient.List method.
+func (client *ClusterVersionsClient) List(ctx context.Context, location string, options *ClusterVersionsClientListOptions) (ClusterVersionsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, location, options)
 	if err != nil {
-		return ClusterVersionsListResponse{}, err
+		return ClusterVersionsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClusterVersionsListResponse{}, err
+		return ClusterVersionsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClusterVersionsListResponse{}, client.listHandleError(resp)
+		return ClusterVersionsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, location string, options *ClusterVersionsListOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, location string, options *ClusterVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -204,7 +195,7 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,46 +207,37 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 }
 
 // listHandleResponse handles the List response.
-func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (ClusterVersionsListResponse, error) {
-	result := ClusterVersionsListResponse{RawResponse: resp}
+func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (ClusterVersionsClientListResponse, error) {
+	result := ClusterVersionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsListResponse{}, runtime.NewResponseError(err, resp)
+		return ClusterVersionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ClusterVersionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByEnvironment - Gets all available code versions for Service Fabric cluster resources by environment.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment Enum14, options *ClusterVersionsListByEnvironmentOptions) (ClusterVersionsListByEnvironmentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The location for the cluster code versions. This is different from cluster location.
+// environment - The operating system of the cluster. The default means all.
+// options - ClusterVersionsClientListByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.ListByEnvironment
+// method.
+func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment Enum14, options *ClusterVersionsClientListByEnvironmentOptions) (ClusterVersionsClientListByEnvironmentResponse, error) {
 	req, err := client.listByEnvironmentCreateRequest(ctx, location, environment, options)
 	if err != nil {
-		return ClusterVersionsListByEnvironmentResponse{}, err
+		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClusterVersionsListByEnvironmentResponse{}, err
+		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClusterVersionsListByEnvironmentResponse{}, client.listByEnvironmentHandleError(resp)
+		return ClusterVersionsClientListByEnvironmentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByEnvironmentHandleResponse(resp)
 }
 
 // listByEnvironmentCreateRequest creates the ListByEnvironment request.
-func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment Enum14, options *ClusterVersionsListByEnvironmentOptions) (*policy.Request, error) {
+func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.Context, location string, environment Enum14, options *ClusterVersionsClientListByEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -269,7 +251,7 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,23 +263,10 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 }
 
 // listByEnvironmentHandleResponse handles the ListByEnvironment response.
-func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsListByEnvironmentResponse, error) {
-	result := ClusterVersionsListByEnvironmentResponse{RawResponse: resp}
+func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsClientListByEnvironmentResponse, error) {
+	result := ClusterVersionsClientListByEnvironmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
-		return ClusterVersionsListByEnvironmentResponse{}, runtime.NewResponseError(err, resp)
+		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}
 	return result, nil
-}
-
-// listByEnvironmentHandleError handles the ListByEnvironment error response.
-func (client *ClusterVersionsClient) listByEnvironmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

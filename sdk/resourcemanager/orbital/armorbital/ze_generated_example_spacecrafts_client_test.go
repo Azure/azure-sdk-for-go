@@ -27,11 +27,12 @@ func ExampleSpacecraftsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SpacecraftsClientListBySubscriptionResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftsByResourceGroupList.json
@@ -42,12 +43,13 @@ func ExampleSpacecraftsClient_List() {
 	}
 	ctx := context.Background()
 	client := armorbital.NewSpacecraftsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SpacecraftsClientListResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftGet.json
@@ -65,7 +67,7 @@ func ExampleSpacecraftsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Spacecraft.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SpacecraftsClientGetResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftCreate.json
@@ -80,22 +82,20 @@ func ExampleSpacecraftsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<spacecraft-name>",
 		armorbital.Spacecraft{
-			TrackedResource: armorbital.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armorbital.SpacecraftsProperties{
 				Links: []*armorbital.SpacecraftLink{
 					{
 						BandwidthMHz:       to.Float32Ptr(0.036),
 						CenterFrequencyMHz: to.Float32Ptr(2106.4063),
-						Direction:          armorbital.DirectionUplink.ToPtr(),
-						Polarization:       armorbital.PolarizationRHCP.ToPtr(),
+						Direction:          armorbital.Direction("uplink").ToPtr(),
+						Polarization:       armorbital.Polarization("RHCP").ToPtr(),
 					},
 					{
 						BandwidthMHz:       to.Float32Ptr(150),
 						CenterFrequencyMHz: to.Float32Ptr(8125),
-						Direction:          armorbital.DirectionDownlink.ToPtr(),
-						Polarization:       armorbital.PolarizationRHCP.ToPtr(),
+						Direction:          armorbital.Direction("downlink").ToPtr(),
+						Polarization:       armorbital.Polarization("RHCP").ToPtr(),
 					}},
 				NoradID:   to.StringPtr("<norad-id>"),
 				TitleLine: to.StringPtr("<title-line>"),
@@ -111,7 +111,7 @@ func ExampleSpacecraftsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Spacecraft.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SpacecraftsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/SpacecraftDelete.json
@@ -156,7 +156,7 @@ func ExampleSpacecraftsClient_UpdateTags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Spacecraft.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SpacecraftsClientUpdateTagsResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/AvailableContactsList.json
@@ -182,8 +182,9 @@ func ExampleSpacecraftsClient_BeginListAvailableContacts() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SpacecraftsClientListAvailableContactsResult)
 }

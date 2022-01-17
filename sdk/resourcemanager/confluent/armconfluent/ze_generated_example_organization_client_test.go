@@ -28,12 +28,16 @@ func ExampleOrganizationClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armconfluent.NewOrganizationClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrganizationResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleOrganizationClient_ListByResourceGroup() {
 	client := armconfluent.NewOrganizationClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrganizationResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleOrganizationClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrganizationResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OrganizationClientGetResult)
 }
 
 // x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Create.json
@@ -87,7 +95,7 @@ func ExampleOrganizationClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<organization-name>",
-		&armconfluent.OrganizationBeginCreateOptions{Body: &armconfluent.OrganizationResource{
+		&armconfluent.OrganizationClientBeginCreateOptions{Body: &armconfluent.OrganizationResource{
 			Location: to.StringPtr("<location>"),
 			Properties: &armconfluent.OrganizationResourceProperties{
 				OfferDetail: &armconfluent.OfferDetail{
@@ -115,7 +123,7 @@ func ExampleOrganizationClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrganizationResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OrganizationClientCreateResult)
 }
 
 // x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Update.json
@@ -129,7 +137,7 @@ func ExampleOrganizationClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<organization-name>",
-		&armconfluent.OrganizationUpdateOptions{Body: &armconfluent.OrganizationResourceUpdate{
+		&armconfluent.OrganizationClientUpdateOptions{Body: &armconfluent.OrganizationResourceUpdate{
 			Tags: map[string]*string{
 				"client": to.StringPtr("dev-client"),
 				"env":    to.StringPtr("dev"),
@@ -139,7 +147,7 @@ func ExampleOrganizationClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OrganizationResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OrganizationClientUpdateResult)
 }
 
 // x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/preview/2021-09-01-preview/examples/Organization_Delete.json

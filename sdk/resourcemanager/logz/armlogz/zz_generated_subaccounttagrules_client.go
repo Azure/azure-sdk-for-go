@@ -11,7 +11,6 @@ package armlogz
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // SubAccountTagRulesClient contains the methods for the SubAccountTagRules group.
 // Don't use this type directly, use NewSubAccountTagRulesClient() instead.
 type SubAccountTagRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubAccountTagRulesClient creates a new instance of SubAccountTagRulesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSubAccountTagRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubAccountTagRulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SubAccountTagRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SubAccountTagRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a tag rule set for a given sub account resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountTagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesCreateOrUpdateOptions) (SubAccountTagRulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountTagRulesClientCreateOrUpdateOptions contains the optional parameters for the SubAccountTagRulesClient.CreateOrUpdate
+// method.
+func (client *SubAccountTagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesClientCreateOrUpdateOptions) (SubAccountTagRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, ruleSetName, options)
 	if err != nil {
-		return SubAccountTagRulesCreateOrUpdateResponse{}, err
+		return SubAccountTagRulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubAccountTagRulesCreateOrUpdateResponse{}, err
+		return SubAccountTagRulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubAccountTagRulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SubAccountTagRulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SubAccountTagRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SubAccountTagRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules/{ruleSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +94,7 @@ func (client *SubAccountTagRulesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,46 +109,38 @@ func (client *SubAccountTagRulesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SubAccountTagRulesClient) createOrUpdateHandleResponse(resp *http.Response) (SubAccountTagRulesCreateOrUpdateResponse, error) {
-	result := SubAccountTagRulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *SubAccountTagRulesClient) createOrUpdateHandleResponse(resp *http.Response) (SubAccountTagRulesClientCreateOrUpdateResponse, error) {
+	result := SubAccountTagRulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringTagRules); err != nil {
-		return SubAccountTagRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountTagRulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SubAccountTagRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a tag rule set for a given monitor resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountTagRulesClient) Delete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesDeleteOptions) (SubAccountTagRulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountTagRulesClientDeleteOptions contains the optional parameters for the SubAccountTagRulesClient.Delete
+// method.
+func (client *SubAccountTagRulesClient) Delete(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesClientDeleteOptions) (SubAccountTagRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, ruleSetName, options)
 	if err != nil {
-		return SubAccountTagRulesDeleteResponse{}, err
+		return SubAccountTagRulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubAccountTagRulesDeleteResponse{}, err
+		return SubAccountTagRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return SubAccountTagRulesDeleteResponse{}, client.deleteHandleError(resp)
+		return SubAccountTagRulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubAccountTagRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesDeleteOptions) (*policy.Request, error) {
+func (client *SubAccountTagRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules/{ruleSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,7 +162,7 @@ func (client *SubAccountTagRulesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,46 +174,37 @@ func (client *SubAccountTagRulesClient) deleteCreateRequest(ctx context.Context,
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *SubAccountTagRulesClient) deleteHandleResponse(resp *http.Response) (SubAccountTagRulesDeleteResponse, error) {
-	result := SubAccountTagRulesDeleteResponse{RawResponse: resp}
+func (client *SubAccountTagRulesClient) deleteHandleResponse(resp *http.Response) (SubAccountTagRulesClientDeleteResponse, error) {
+	result := SubAccountTagRulesClientDeleteResponse{RawResponse: resp}
 	if val := resp.Header.Get("location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SubAccountTagRulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a tag rule set for a given monitor resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountTagRulesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesGetOptions) (SubAccountTagRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountTagRulesClientGetOptions contains the optional parameters for the SubAccountTagRulesClient.Get method.
+func (client *SubAccountTagRulesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesClientGetOptions) (SubAccountTagRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, ruleSetName, options)
 	if err != nil {
-		return SubAccountTagRulesGetResponse{}, err
+		return SubAccountTagRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubAccountTagRulesGetResponse{}, err
+		return SubAccountTagRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubAccountTagRulesGetResponse{}, client.getHandleError(resp)
+		return SubAccountTagRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubAccountTagRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesGetOptions) (*policy.Request, error) {
+func (client *SubAccountTagRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, ruleSetName string, options *SubAccountTagRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules/{ruleSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -231,7 +226,7 @@ func (client *SubAccountTagRulesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter ruleSetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleSetName}", url.PathEscape(ruleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,43 +238,34 @@ func (client *SubAccountTagRulesClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubAccountTagRulesClient) getHandleResponse(resp *http.Response) (SubAccountTagRulesGetResponse, error) {
-	result := SubAccountTagRulesGetResponse{RawResponse: resp}
+func (client *SubAccountTagRulesClient) getHandleResponse(resp *http.Response) (SubAccountTagRulesClientGetResponse, error) {
+	result := SubAccountTagRulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringTagRules); err != nil {
-		return SubAccountTagRulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountTagRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SubAccountTagRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List the tag rules for a given sub account resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubAccountTagRulesClient) List(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesListOptions) *SubAccountTagRulesListPager {
-	return &SubAccountTagRulesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// monitorName - Monitor resource name
+// subAccountName - Sub Account resource name
+// options - SubAccountTagRulesClientListOptions contains the optional parameters for the SubAccountTagRulesClient.List method.
+func (client *SubAccountTagRulesClient) List(resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesClientListOptions) *SubAccountTagRulesClientListPager {
+	return &SubAccountTagRulesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, monitorName, subAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp SubAccountTagRulesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubAccountTagRulesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MonitoringTagRulesListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SubAccountTagRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesListOptions) (*policy.Request, error) {
+func (client *SubAccountTagRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, subAccountName string, options *SubAccountTagRulesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/tagRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -297,7 +283,7 @@ func (client *SubAccountTagRulesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter subAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAccountName}", url.PathEscape(subAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -309,23 +295,10 @@ func (client *SubAccountTagRulesClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *SubAccountTagRulesClient) listHandleResponse(resp *http.Response) (SubAccountTagRulesListResponse, error) {
-	result := SubAccountTagRulesListResponse{RawResponse: resp}
+func (client *SubAccountTagRulesClient) listHandleResponse(resp *http.Response) (SubAccountTagRulesClientListResponse, error) {
+	result := SubAccountTagRulesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringTagRulesListResponse); err != nil {
-		return SubAccountTagRulesListResponse{}, runtime.NewResponseError(err, resp)
+		return SubAccountTagRulesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SubAccountTagRulesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

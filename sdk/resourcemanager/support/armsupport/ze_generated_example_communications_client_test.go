@@ -27,7 +27,7 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<support-ticket-name>",
 		armsupport.CheckNameAvailabilityInput{
 			Name: to.StringPtr("<name>"),
@@ -37,6 +37,7 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.CommunicationsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
@@ -48,15 +49,19 @@ func ExampleCommunicationsClient_List() {
 	ctx := context.Background()
 	client := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
 	pager := client.List("<support-ticket-name>",
-		&armsupport.CommunicationsListOptions{Top: nil,
+		&armsupport.CommunicationsClientListOptions{Top: nil,
 			Filter: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CommunicationDetails.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -76,7 +81,7 @@ func ExampleCommunicationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CommunicationDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CommunicationsClientGetResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSupportTicketCommunication.json
@@ -105,5 +110,5 @@ func ExampleCommunicationsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CommunicationDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CommunicationsClientCreateResult)
 }

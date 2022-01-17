@@ -10,326 +10,326 @@ package armmarketplace
 
 import "net/http"
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateStoreAcknowledgeOfferNotificationResponse contains the response from method PrivateStore.AcknowledgeOfferNotification.
-type PrivateStoreAcknowledgeOfferNotificationResponse struct {
+// PrivateStoreClientAcknowledgeOfferNotificationResponse contains the response from method PrivateStoreClient.AcknowledgeOfferNotification.
+type PrivateStoreClientAcknowledgeOfferNotificationResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreAdminRequestApprovalsListResponse contains the response from method PrivateStore.AdminRequestApprovalsList.
-type PrivateStoreAdminRequestApprovalsListResponse struct {
-	PrivateStoreAdminRequestApprovalsListResult
+// PrivateStoreClientAdminRequestApprovalsListResponse contains the response from method PrivateStoreClient.AdminRequestApprovalsList.
+type PrivateStoreClientAdminRequestApprovalsListResponse struct {
+	PrivateStoreClientAdminRequestApprovalsListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreAdminRequestApprovalsListResult contains the result from method PrivateStore.AdminRequestApprovalsList.
-type PrivateStoreAdminRequestApprovalsListResult struct {
+// PrivateStoreClientAdminRequestApprovalsListResult contains the result from method PrivateStoreClient.AdminRequestApprovalsList.
+type PrivateStoreClientAdminRequestApprovalsListResult struct {
 	AdminRequestApprovalsList
 }
 
-// PrivateStoreBillingAccountsResponse contains the response from method PrivateStore.BillingAccounts.
-type PrivateStoreBillingAccountsResponse struct {
-	PrivateStoreBillingAccountsResult
+// PrivateStoreClientBillingAccountsResponse contains the response from method PrivateStoreClient.BillingAccounts.
+type PrivateStoreClientBillingAccountsResponse struct {
+	PrivateStoreClientBillingAccountsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreBillingAccountsResult contains the result from method PrivateStore.BillingAccounts.
-type PrivateStoreBillingAccountsResult struct {
+// PrivateStoreClientBillingAccountsResult contains the result from method PrivateStoreClient.BillingAccounts.
+type PrivateStoreClientBillingAccountsResult struct {
 	BillingAccountsResponse
 }
 
-// PrivateStoreBulkCollectionsActionResponse contains the response from method PrivateStore.BulkCollectionsAction.
-type PrivateStoreBulkCollectionsActionResponse struct {
-	PrivateStoreBulkCollectionsActionResult
+// PrivateStoreClientBulkCollectionsActionResponse contains the response from method PrivateStoreClient.BulkCollectionsAction.
+type PrivateStoreClientBulkCollectionsActionResponse struct {
+	PrivateStoreClientBulkCollectionsActionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreBulkCollectionsActionResult contains the result from method PrivateStore.BulkCollectionsAction.
-type PrivateStoreBulkCollectionsActionResult struct {
+// PrivateStoreClientBulkCollectionsActionResult contains the result from method PrivateStoreClient.BulkCollectionsAction.
+type PrivateStoreClientBulkCollectionsActionResult struct {
 	BulkCollectionsResponse
 }
 
-// PrivateStoreCollectionCreateOrUpdateResponse contains the response from method PrivateStoreCollection.CreateOrUpdate.
-type PrivateStoreCollectionCreateOrUpdateResponse struct {
-	PrivateStoreCollectionCreateOrUpdateResult
+// PrivateStoreClientCollectionsToSubscriptionsMappingResponse contains the response from method PrivateStoreClient.CollectionsToSubscriptionsMapping.
+type PrivateStoreClientCollectionsToSubscriptionsMappingResponse struct {
+	PrivateStoreClientCollectionsToSubscriptionsMappingResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreCollectionCreateOrUpdateResult contains the result from method PrivateStoreCollection.CreateOrUpdate.
-type PrivateStoreCollectionCreateOrUpdateResult struct {
-	Collection
-}
-
-// PrivateStoreCollectionDeleteResponse contains the response from method PrivateStoreCollection.Delete.
-type PrivateStoreCollectionDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionGetResponse contains the response from method PrivateStoreCollection.Get.
-type PrivateStoreCollectionGetResponse struct {
-	PrivateStoreCollectionGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionGetResult contains the result from method PrivateStoreCollection.Get.
-type PrivateStoreCollectionGetResult struct {
-	Collection
-}
-
-// PrivateStoreCollectionListResponse contains the response from method PrivateStoreCollection.List.
-type PrivateStoreCollectionListResponse struct {
-	PrivateStoreCollectionListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionListResult contains the result from method PrivateStoreCollection.List.
-type PrivateStoreCollectionListResult struct {
-	CollectionsList
-}
-
-// PrivateStoreCollectionOfferCreateOrUpdateResponse contains the response from method PrivateStoreCollectionOffer.CreateOrUpdate.
-type PrivateStoreCollectionOfferCreateOrUpdateResponse struct {
-	PrivateStoreCollectionOfferCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionOfferCreateOrUpdateResult contains the result from method PrivateStoreCollectionOffer.CreateOrUpdate.
-type PrivateStoreCollectionOfferCreateOrUpdateResult struct {
-	Offer
-}
-
-// PrivateStoreCollectionOfferDeleteResponse contains the response from method PrivateStoreCollectionOffer.Delete.
-type PrivateStoreCollectionOfferDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionOfferGetResponse contains the response from method PrivateStoreCollectionOffer.Get.
-type PrivateStoreCollectionOfferGetResponse struct {
-	PrivateStoreCollectionOfferGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionOfferGetResult contains the result from method PrivateStoreCollectionOffer.Get.
-type PrivateStoreCollectionOfferGetResult struct {
-	Offer
-}
-
-// PrivateStoreCollectionOfferListResponse contains the response from method PrivateStoreCollectionOffer.List.
-type PrivateStoreCollectionOfferListResponse struct {
-	PrivateStoreCollectionOfferListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionOfferListResult contains the result from method PrivateStoreCollectionOffer.List.
-type PrivateStoreCollectionOfferListResult struct {
-	OfferListResponse
-}
-
-// PrivateStoreCollectionOfferPostResponse contains the response from method PrivateStoreCollectionOffer.Post.
-type PrivateStoreCollectionOfferPostResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionPostResponse contains the response from method PrivateStoreCollection.Post.
-type PrivateStoreCollectionPostResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionTransferOffersResponse contains the response from method PrivateStoreCollection.TransferOffers.
-type PrivateStoreCollectionTransferOffersResponse struct {
-	PrivateStoreCollectionTransferOffersResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionTransferOffersResult contains the result from method PrivateStoreCollection.TransferOffers.
-type PrivateStoreCollectionTransferOffersResult struct {
-	TransferOffersResponse
-}
-
-// PrivateStoreCollectionsToSubscriptionsMappingResponse contains the response from method PrivateStore.CollectionsToSubscriptionsMapping.
-type PrivateStoreCollectionsToSubscriptionsMappingResponse struct {
-	PrivateStoreCollectionsToSubscriptionsMappingResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateStoreCollectionsToSubscriptionsMappingResult contains the result from method PrivateStore.CollectionsToSubscriptionsMapping.
-type PrivateStoreCollectionsToSubscriptionsMappingResult struct {
+// PrivateStoreClientCollectionsToSubscriptionsMappingResult contains the result from method PrivateStoreClient.CollectionsToSubscriptionsMapping.
+type PrivateStoreClientCollectionsToSubscriptionsMappingResult struct {
 	CollectionsToSubscriptionsMappingResponse
 }
 
-// PrivateStoreCreateApprovalRequestResponse contains the response from method PrivateStore.CreateApprovalRequest.
-type PrivateStoreCreateApprovalRequestResponse struct {
-	PrivateStoreCreateApprovalRequestResult
+// PrivateStoreClientCreateApprovalRequestResponse contains the response from method PrivateStoreClient.CreateApprovalRequest.
+type PrivateStoreClientCreateApprovalRequestResponse struct {
+	PrivateStoreClientCreateApprovalRequestResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreCreateApprovalRequestResult contains the result from method PrivateStore.CreateApprovalRequest.
-type PrivateStoreCreateApprovalRequestResult struct {
+// PrivateStoreClientCreateApprovalRequestResult contains the result from method PrivateStoreClient.CreateApprovalRequest.
+type PrivateStoreClientCreateApprovalRequestResult struct {
 	RequestApprovalResource
 }
 
-// PrivateStoreCreateOrUpdateResponse contains the response from method PrivateStore.CreateOrUpdate.
-type PrivateStoreCreateOrUpdateResponse struct {
+// PrivateStoreClientCreateOrUpdateResponse contains the response from method PrivateStoreClient.CreateOrUpdate.
+type PrivateStoreClientCreateOrUpdateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreDeleteResponse contains the response from method PrivateStore.Delete.
-type PrivateStoreDeleteResponse struct {
+// PrivateStoreClientDeleteResponse contains the response from method PrivateStoreClient.Delete.
+type PrivateStoreClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreGetAdminRequestApprovalResponse contains the response from method PrivateStore.GetAdminRequestApproval.
-type PrivateStoreGetAdminRequestApprovalResponse struct {
-	PrivateStoreGetAdminRequestApprovalResult
+// PrivateStoreClientGetAdminRequestApprovalResponse contains the response from method PrivateStoreClient.GetAdminRequestApproval.
+type PrivateStoreClientGetAdminRequestApprovalResponse struct {
+	PrivateStoreClientGetAdminRequestApprovalResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreGetAdminRequestApprovalResult contains the result from method PrivateStore.GetAdminRequestApproval.
-type PrivateStoreGetAdminRequestApprovalResult struct {
+// PrivateStoreClientGetAdminRequestApprovalResult contains the result from method PrivateStoreClient.GetAdminRequestApproval.
+type PrivateStoreClientGetAdminRequestApprovalResult struct {
 	AdminRequestApprovalsResource
 }
 
-// PrivateStoreGetApprovalRequestsListResponse contains the response from method PrivateStore.GetApprovalRequestsList.
-type PrivateStoreGetApprovalRequestsListResponse struct {
-	PrivateStoreGetApprovalRequestsListResult
+// PrivateStoreClientGetApprovalRequestsListResponse contains the response from method PrivateStoreClient.GetApprovalRequestsList.
+type PrivateStoreClientGetApprovalRequestsListResponse struct {
+	PrivateStoreClientGetApprovalRequestsListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreGetApprovalRequestsListResult contains the result from method PrivateStore.GetApprovalRequestsList.
-type PrivateStoreGetApprovalRequestsListResult struct {
+// PrivateStoreClientGetApprovalRequestsListResult contains the result from method PrivateStoreClient.GetApprovalRequestsList.
+type PrivateStoreClientGetApprovalRequestsListResult struct {
 	RequestApprovalsList
 }
 
-// PrivateStoreGetRequestApprovalResponse contains the response from method PrivateStore.GetRequestApproval.
-type PrivateStoreGetRequestApprovalResponse struct {
-	PrivateStoreGetRequestApprovalResult
+// PrivateStoreClientGetRequestApprovalResponse contains the response from method PrivateStoreClient.GetRequestApproval.
+type PrivateStoreClientGetRequestApprovalResponse struct {
+	PrivateStoreClientGetRequestApprovalResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreGetRequestApprovalResult contains the result from method PrivateStore.GetRequestApproval.
-type PrivateStoreGetRequestApprovalResult struct {
+// PrivateStoreClientGetRequestApprovalResult contains the result from method PrivateStoreClient.GetRequestApproval.
+type PrivateStoreClientGetRequestApprovalResult struct {
 	RequestApprovalResource
 }
 
-// PrivateStoreGetResponse contains the response from method PrivateStore.Get.
-type PrivateStoreGetResponse struct {
-	PrivateStoreGetResult
+// PrivateStoreClientGetResponse contains the response from method PrivateStoreClient.Get.
+type PrivateStoreClientGetResponse struct {
+	PrivateStoreClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreGetResult contains the result from method PrivateStore.Get.
-type PrivateStoreGetResult struct {
+// PrivateStoreClientGetResult contains the result from method PrivateStoreClient.Get.
+type PrivateStoreClientGetResult struct {
 	PrivateStore
 }
 
-// PrivateStoreListResponse contains the response from method PrivateStore.List.
-type PrivateStoreListResponse struct {
-	PrivateStoreListResult
+// PrivateStoreClientListResponse contains the response from method PrivateStoreClient.List.
+type PrivateStoreClientListResponse struct {
+	PrivateStoreClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreListResult contains the result from method PrivateStore.List.
-type PrivateStoreListResult struct {
+// PrivateStoreClientListResult contains the result from method PrivateStoreClient.List.
+type PrivateStoreClientListResult struct {
 	PrivateStoreList
 }
 
-// PrivateStoreQueryApprovedPlansResponse contains the response from method PrivateStore.QueryApprovedPlans.
-type PrivateStoreQueryApprovedPlansResponse struct {
-	PrivateStoreQueryApprovedPlansResult
+// PrivateStoreClientQueryApprovedPlansResponse contains the response from method PrivateStoreClient.QueryApprovedPlans.
+type PrivateStoreClientQueryApprovedPlansResponse struct {
+	PrivateStoreClientQueryApprovedPlansResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreQueryApprovedPlansResult contains the result from method PrivateStore.QueryApprovedPlans.
-type PrivateStoreQueryApprovedPlansResult struct {
+// PrivateStoreClientQueryApprovedPlansResult contains the result from method PrivateStoreClient.QueryApprovedPlans.
+type PrivateStoreClientQueryApprovedPlansResult struct {
 	QueryApprovedPlansResponse
 }
 
-// PrivateStoreQueryNotificationsStateResponse contains the response from method PrivateStore.QueryNotificationsState.
-type PrivateStoreQueryNotificationsStateResponse struct {
-	PrivateStoreQueryNotificationsStateResult
+// PrivateStoreClientQueryNotificationsStateResponse contains the response from method PrivateStoreClient.QueryNotificationsState.
+type PrivateStoreClientQueryNotificationsStateResponse struct {
+	PrivateStoreClientQueryNotificationsStateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreQueryNotificationsStateResult contains the result from method PrivateStore.QueryNotificationsState.
-type PrivateStoreQueryNotificationsStateResult struct {
+// PrivateStoreClientQueryNotificationsStateResult contains the result from method PrivateStoreClient.QueryNotificationsState.
+type PrivateStoreClientQueryNotificationsStateResult struct {
 	PrivateStoreNotificationsState
 }
 
-// PrivateStoreQueryOffersResponse contains the response from method PrivateStore.QueryOffers.
-type PrivateStoreQueryOffersResponse struct {
-	PrivateStoreQueryOffersResult
+// PrivateStoreClientQueryOffersResponse contains the response from method PrivateStoreClient.QueryOffers.
+type PrivateStoreClientQueryOffersResponse struct {
+	PrivateStoreClientQueryOffersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreQueryOffersResult contains the result from method PrivateStore.QueryOffers.
-type PrivateStoreQueryOffersResult struct {
+// PrivateStoreClientQueryOffersResult contains the result from method PrivateStoreClient.QueryOffers.
+type PrivateStoreClientQueryOffersResult struct {
 	QueryOffers
 }
 
-// PrivateStoreQueryRequestApprovalResponse contains the response from method PrivateStore.QueryRequestApproval.
-type PrivateStoreQueryRequestApprovalResponse struct {
-	PrivateStoreQueryRequestApprovalResult
+// PrivateStoreClientQueryRequestApprovalResponse contains the response from method PrivateStoreClient.QueryRequestApproval.
+type PrivateStoreClientQueryRequestApprovalResponse struct {
+	PrivateStoreClientQueryRequestApprovalResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreQueryRequestApprovalResult contains the result from method PrivateStore.QueryRequestApproval.
-type PrivateStoreQueryRequestApprovalResult struct {
+// PrivateStoreClientQueryRequestApprovalResult contains the result from method PrivateStoreClient.QueryRequestApproval.
+type PrivateStoreClientQueryRequestApprovalResult struct {
 	QueryRequestApproval
 }
 
-// PrivateStoreUpdateAdminRequestApprovalResponse contains the response from method PrivateStore.UpdateAdminRequestApproval.
-type PrivateStoreUpdateAdminRequestApprovalResponse struct {
-	PrivateStoreUpdateAdminRequestApprovalResult
+// PrivateStoreClientUpdateAdminRequestApprovalResponse contains the response from method PrivateStoreClient.UpdateAdminRequestApproval.
+type PrivateStoreClientUpdateAdminRequestApprovalResponse struct {
+	PrivateStoreClientUpdateAdminRequestApprovalResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateStoreUpdateAdminRequestApprovalResult contains the result from method PrivateStore.UpdateAdminRequestApproval.
-type PrivateStoreUpdateAdminRequestApprovalResult struct {
+// PrivateStoreClientUpdateAdminRequestApprovalResult contains the result from method PrivateStoreClient.UpdateAdminRequestApproval.
+type PrivateStoreClientUpdateAdminRequestApprovalResult struct {
 	AdminRequestApprovalsResource
 }
 
-// PrivateStoreWithdrawPlanResponse contains the response from method PrivateStore.WithdrawPlan.
-type PrivateStoreWithdrawPlanResponse struct {
+// PrivateStoreClientWithdrawPlanResponse contains the response from method PrivateStoreClient.WithdrawPlan.
+type PrivateStoreClientWithdrawPlanResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientCreateOrUpdateResponse contains the response from method PrivateStoreCollectionClient.CreateOrUpdate.
+type PrivateStoreCollectionClientCreateOrUpdateResponse struct {
+	PrivateStoreCollectionClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientCreateOrUpdateResult contains the result from method PrivateStoreCollectionClient.CreateOrUpdate.
+type PrivateStoreCollectionClientCreateOrUpdateResult struct {
+	Collection
+}
+
+// PrivateStoreCollectionClientDeleteResponse contains the response from method PrivateStoreCollectionClient.Delete.
+type PrivateStoreCollectionClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientGetResponse contains the response from method PrivateStoreCollectionClient.Get.
+type PrivateStoreCollectionClientGetResponse struct {
+	PrivateStoreCollectionClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientGetResult contains the result from method PrivateStoreCollectionClient.Get.
+type PrivateStoreCollectionClientGetResult struct {
+	Collection
+}
+
+// PrivateStoreCollectionClientListResponse contains the response from method PrivateStoreCollectionClient.List.
+type PrivateStoreCollectionClientListResponse struct {
+	PrivateStoreCollectionClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientListResult contains the result from method PrivateStoreCollectionClient.List.
+type PrivateStoreCollectionClientListResult struct {
+	CollectionsList
+}
+
+// PrivateStoreCollectionClientPostResponse contains the response from method PrivateStoreCollectionClient.Post.
+type PrivateStoreCollectionClientPostResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientTransferOffersResponse contains the response from method PrivateStoreCollectionClient.TransferOffers.
+type PrivateStoreCollectionClientTransferOffersResponse struct {
+	PrivateStoreCollectionClientTransferOffersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionClientTransferOffersResult contains the result from method PrivateStoreCollectionClient.TransferOffers.
+type PrivateStoreCollectionClientTransferOffersResult struct {
+	TransferOffersResponse
+}
+
+// PrivateStoreCollectionOfferClientCreateOrUpdateResponse contains the response from method PrivateStoreCollectionOfferClient.CreateOrUpdate.
+type PrivateStoreCollectionOfferClientCreateOrUpdateResponse struct {
+	PrivateStoreCollectionOfferClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionOfferClientCreateOrUpdateResult contains the result from method PrivateStoreCollectionOfferClient.CreateOrUpdate.
+type PrivateStoreCollectionOfferClientCreateOrUpdateResult struct {
+	Offer
+}
+
+// PrivateStoreCollectionOfferClientDeleteResponse contains the response from method PrivateStoreCollectionOfferClient.Delete.
+type PrivateStoreCollectionOfferClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionOfferClientGetResponse contains the response from method PrivateStoreCollectionOfferClient.Get.
+type PrivateStoreCollectionOfferClientGetResponse struct {
+	PrivateStoreCollectionOfferClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionOfferClientGetResult contains the result from method PrivateStoreCollectionOfferClient.Get.
+type PrivateStoreCollectionOfferClientGetResult struct {
+	Offer
+}
+
+// PrivateStoreCollectionOfferClientListResponse contains the response from method PrivateStoreCollectionOfferClient.List.
+type PrivateStoreCollectionOfferClientListResponse struct {
+	PrivateStoreCollectionOfferClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateStoreCollectionOfferClientListResult contains the result from method PrivateStoreCollectionOfferClient.List.
+type PrivateStoreCollectionOfferClientListResult struct {
+	OfferListResponse
+}
+
+// PrivateStoreCollectionOfferClientPostResponse contains the response from method PrivateStoreCollectionOfferClient.Post.
+type PrivateStoreCollectionOfferClientPostResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

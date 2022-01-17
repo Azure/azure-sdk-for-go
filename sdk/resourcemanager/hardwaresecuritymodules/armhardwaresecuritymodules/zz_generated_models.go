@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+	"time"
 )
 
 // APIEntityReference - The API entity reference.
@@ -22,63 +23,94 @@ type APIEntityReference struct {
 
 // DedicatedHsm - Resource information with extended details.
 type DedicatedHsm struct {
-	Resource
+	// REQUIRED; The supported Azure location where the dedicated HSM should be created.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Properties of the dedicated HSM
 	Properties *DedicatedHsmProperties `json:"properties,omitempty"`
+
+	// SKU details
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The Dedicated Hsm zones.
+	Zones []*string `json:"zones,omitempty"`
+
+	// READ-ONLY; The Azure Resource Manager resource ID for the dedicated HSM.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the dedicated HSM.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type of the dedicated HSM.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DedicatedHsm.
 func (d DedicatedHsm) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "sku", d.SKU)
+	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
+	populate(objectMap, "zones", d.Zones)
 	return json.Marshal(objectMap)
 }
 
-// DedicatedHsmBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedHsm.BeginCreateOrUpdate method.
-type DedicatedHsmBeginCreateOrUpdateOptions struct {
+// DedicatedHsmClientBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedHsmClient.BeginCreateOrUpdate
+// method.
+type DedicatedHsmClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedHsmBeginDeleteOptions contains the optional parameters for the DedicatedHsm.BeginDelete method.
-type DedicatedHsmBeginDeleteOptions struct {
+// DedicatedHsmClientBeginDeleteOptions contains the optional parameters for the DedicatedHsmClient.BeginDelete method.
+type DedicatedHsmClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DedicatedHsmBeginUpdateOptions contains the optional parameters for the DedicatedHsm.BeginUpdate method.
-type DedicatedHsmBeginUpdateOptions struct {
+// DedicatedHsmClientBeginUpdateOptions contains the optional parameters for the DedicatedHsmClient.BeginUpdate method.
+type DedicatedHsmClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DedicatedHsmClientGetOptions contains the optional parameters for the DedicatedHsmClient.Get method.
+type DedicatedHsmClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DedicatedHsmClientListByResourceGroupOptions contains the optional parameters for the DedicatedHsmClient.ListByResourceGroup
+// method.
+type DedicatedHsmClientListByResourceGroupOptions struct {
+	// Maximum number of results to return.
+	Top *int32
+}
+
+// DedicatedHsmClientListBySubscriptionOptions contains the optional parameters for the DedicatedHsmClient.ListBySubscription
+// method.
+type DedicatedHsmClientListBySubscriptionOptions struct {
+	// Maximum number of results to return.
+	Top *int32
+}
+
+// DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+type DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DedicatedHsmError - The error exception.
-// Implements the error and azcore.HTTPResponse interfaces.
 type DedicatedHsmError struct {
-	raw string
-	// READ-ONLY; The key vault server error.
-	InnerError *Error `json:"error,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type DedicatedHsmError.
-// The contents of the error text are not contractual and subject to change.
-func (e DedicatedHsmError) Error() string {
-	return e.raw
-}
-
-// DedicatedHsmGetOptions contains the optional parameters for the DedicatedHsm.Get method.
-type DedicatedHsmGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DedicatedHsmListByResourceGroupOptions contains the optional parameters for the DedicatedHsm.ListByResourceGroup method.
-type DedicatedHsmListByResourceGroupOptions struct {
-	// Maximum number of results to return.
-	Top *int32
-}
-
-// DedicatedHsmListBySubscriptionOptions contains the optional parameters for the DedicatedHsm.ListBySubscription method.
-type DedicatedHsmListBySubscriptionOptions struct {
-	// Maximum number of results to return.
-	Top *int32
+	// READ-ONLY; The error detail of the operation if any.
+	Error *Error `json:"error,omitempty" azure:"ro"`
 }
 
 // DedicatedHsmListResult - List of dedicated HSMs
@@ -100,6 +132,7 @@ func (d DedicatedHsmListResult) MarshalJSON() ([]byte, error) {
 
 // DedicatedHsmOperation - REST API operation
 type DedicatedHsmOperation struct {
+	// The display string.
 	Display *DedicatedHsmOperationDisplay `json:"display,omitempty"`
 
 	// The name of the Dedicated HSM Resource Provider Operation.
@@ -109,6 +142,7 @@ type DedicatedHsmOperation struct {
 	IsDataAction *string `json:"isDataAction,omitempty" azure:"ro"`
 }
 
+// DedicatedHsmOperationDisplay - The display string.
 type DedicatedHsmOperationDisplay struct {
 	// The object that represents the operation.
 	Description *string `json:"description,omitempty"`
@@ -123,7 +157,8 @@ type DedicatedHsmOperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// DedicatedHsmOperationListResult - Result of the request to list Dedicated HSM Provider operations. It contains a list of operations.
+// DedicatedHsmOperationListResult - Result of the request to list Dedicated HSM Provider operations. It contains a list of
+// operations.
 type DedicatedHsmOperationListResult struct {
 	// List of Dedicated HSM Resource Provider operations.
 	Value []*DedicatedHsmOperation `json:"value,omitempty"`
@@ -151,6 +186,9 @@ func (d DedicatedHsmPatchParameters) MarshalJSON() ([]byte, error) {
 
 // DedicatedHsmProperties - Properties of the dedicated hsm
 type DedicatedHsmProperties struct {
+	// Specifies the management network interfaces of the dedicated hsm.
+	ManagementNetworkProfile *NetworkProfile `json:"managementNetworkProfile,omitempty"`
+
 	// Specifies the network interfaces of the dedicated hsm.
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
 
@@ -164,12 +202,44 @@ type DedicatedHsmProperties struct {
 	StatusMessage *string `json:"statusMessage,omitempty" azure:"ro"`
 }
 
+// EndpointDependency - A domain name that dedicated hsm services are reaching at.
+type EndpointDependency struct {
+	// The domain name of the dependency.
+	DomainName *string `json:"domainName,omitempty"`
+
+	// The Ports and Protocols used when connecting to domainName.
+	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EndpointDependency.
+func (e EndpointDependency) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "domainName", e.DomainName)
+	populate(objectMap, "endpointDetails", e.EndpointDetails)
+	return json.Marshal(objectMap)
+}
+
+// EndpointDetail - Connect information from the dedicated hsm service to a single endpoint.
+type EndpointDetail struct {
+	// Description of the detail
+	Description *string `json:"description,omitempty"`
+
+	// An IP Address that Domain Name currently resolves to.
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// The port an endpoint is connected to.
+	Port *int32 `json:"port,omitempty"`
+
+	// The protocol used for connection
+	Protocol *string `json:"protocol,omitempty"`
+}
+
 // Error - The key vault server error.
 type Error struct {
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
-	// READ-ONLY; The key vault server error.
+	// READ-ONLY; Contains more specific error that narrows down the cause. May be null.
 	InnerError *Error `json:"innererror,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error message.
@@ -185,6 +255,7 @@ type NetworkInterface struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+// NetworkProfile - The network profile definition.
 type NetworkProfile struct {
 	// Specifies the list of resource Ids for the network interfaces associated with the dedicated HSM.
 	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
@@ -201,9 +272,43 @@ func (n NetworkProfile) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OutboundEnvironmentEndpoint - Egress endpoints which dedicated hsm service connects to for common purpose.
+type OutboundEnvironmentEndpoint struct {
+	// The category of endpoints accessed by the dedicated hsm service, e.g. azure-resource-management, apiserver, etc.
+	Category *string `json:"category,omitempty"`
+
+	// The endpoints that dedicated hsm service connects to
+	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpoint.
+func (o OutboundEnvironmentEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "category", o.Category)
+	populate(objectMap, "endpoints", o.Endpoints)
+	return json.Marshal(objectMap)
+}
+
+// OutboundEnvironmentEndpointCollection - Collection of OutboundEnvironmentEndpoint
+type OutboundEnvironmentEndpointCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*OutboundEnvironmentEndpoint `json:"value,omitempty"`
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpointCollection.
+func (o OutboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", o.NextLink)
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
 }
 
 // Resource - Dedicated HSM resource
@@ -233,11 +338,6 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -245,6 +345,7 @@ func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
 	populate(objectMap, "zones", r.Zones)
+	return json.Marshal(objectMap)
 }
 
 // ResourceListResult - List of dedicated HSM resources.
@@ -264,9 +365,78 @@ func (r ResourceListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// SKU of the dedicated HSM
 type SKU struct {
 	// SKU of the dedicated HSM
 	Name *SKUName `json:"name,omitempty"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of dedicated hsm resource.
+type SystemData struct {
+	// The timestamp of dedicated hsm resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created dedicated hsm resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created dedicated hsm resource.
+	CreatedByType *IdentityType `json:"createdByType,omitempty"`
+
+	// The timestamp of dedicated hsm resource last modification (UTC).
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified dedicated hsm resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified dedicated hsm resource.
+	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populate(objectMap, "createdBy", s.CreatedBy)
+	populate(objectMap, "createdByType", s.CreatedByType)
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
+	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			delete(rawMsg, key)
+		case "createdBy":
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
+		case "createdByType":
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
+		case "lastModifiedAt":
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedByType":
+			err = unpopulate(val, &s.LastModifiedByType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {
@@ -277,4 +447,11 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	} else if !reflect.ValueOf(v).IsNil() {
 		m[k] = v
 	}
+}
+
+func unpopulate(data json.RawMessage, v interface{}) error {
+	if data == nil {
+		return nil
+	}
+	return json.Unmarshal(data, v)
 }

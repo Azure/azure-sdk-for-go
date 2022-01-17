@@ -25,13 +25,14 @@ func ExampleOperationsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armappconfiguration.NewOperationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armappconfiguration.CheckNameAvailabilityParameters{
 			Name: to.StringPtr("<name>"),
-			Type: armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores.ToPtr(),
+			Type: armappconfiguration.ConfigurationResourceType("Microsoft.AppConfiguration/configurationStores").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OperationsClientCheckNameAvailabilityResult)
 }

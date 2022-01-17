@@ -28,10 +28,10 @@ func ExampleSQLPoolConnectionPoliciesClient_Get() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		armsynapse.ConnectionPolicyNameDefault,
+		armsynapse.ConnectionPolicyName("default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLPoolConnectionPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolConnectionPoliciesClientGetResult)
 }

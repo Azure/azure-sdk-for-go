@@ -12,44 +12,36 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automanage/armautomanage"
 )
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2020-06-30-preview/examples/createOrUpdateConfigurationProfileAssignment.json
-func ExampleConfigurationProfileAssignmentsClient_BeginCreateOrUpdate() {
+// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/createOrUpdateConfigurationProfileAssignment.json
+func ExampleConfigurationProfileAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
 	client := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginCreateOrUpdate(ctx,
+	res, err := client.CreateOrUpdate(ctx,
 		"<configuration-profile-assignment-name>",
 		"<resource-group-name>",
 		"<vm-name>",
 		armautomanage.ConfigurationProfileAssignment{
 			Properties: &armautomanage.ConfigurationProfileAssignmentProperties{
-				AccountID:                        to.StringPtr("<account-id>"),
-				ConfigurationProfile:             armautomanage.ConfigurationProfileAzureVirtualMachineBestPracticesProduction.ToPtr(),
-				ConfigurationProfilePreferenceID: to.StringPtr("<configuration-profile-preference-id>"),
+				ConfigurationProfile: to.StringPtr("<configuration-profile>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("ConfigurationProfileAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationProfileAssignmentsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2020-06-30-preview/examples/getConfigurationProfileAssignment.json
+// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getConfigurationProfileAssignment.json
 func ExampleConfigurationProfileAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,10 +57,10 @@ func ExampleConfigurationProfileAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationProfileAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationProfileAssignmentsClientGetResult)
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2020-06-30-preview/examples/deleteConfigurationProfileAssignment.json
+// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/deleteConfigurationProfileAssignment.json
 func ExampleConfigurationProfileAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +78,7 @@ func ExampleConfigurationProfileAssignmentsClient_Delete() {
 	}
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2020-06-30-preview/examples/listConfigurationProfileAssignments.json
+// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileAssignmentsByResourceGroup.json
 func ExampleConfigurationProfileAssignmentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,15 +86,16 @@ func ExampleConfigurationProfileAssignmentsClient_List() {
 	}
 	ctx := context.Background()
 	client := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationProfileAssignmentsClientListResult)
 }
 
-// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2020-06-30-preview/examples/listConfigurationProfileAssignmentsBySubscription.json
+// x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileAssignmentsBySubscription.json
 func ExampleConfigurationProfileAssignmentsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,9 +103,10 @@ func ExampleConfigurationProfileAssignmentsClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationProfileAssignmentsClientListBySubscriptionResult)
 }

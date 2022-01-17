@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/TagRules_List.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/TagRules_List.json
 func ExampleTagRulesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,17 +29,21 @@ func ExampleTagRulesClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MonitoringTagRules.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/TagRules_CreateOrUpdate.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/TagRules_CreateOrUpdate.json
 func ExampleTagRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,14 +55,14 @@ func ExampleTagRulesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<monitor-name>",
 		"<rule-set-name>",
-		&armelastic.TagRulesCreateOrUpdateOptions{Body: nil})
+		&armelastic.TagRulesClientCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MonitoringTagRules.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TagRulesClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/TagRules_Get.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/TagRules_Get.json
 func ExampleTagRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,10 +78,10 @@ func ExampleTagRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MonitoringTagRules.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TagRulesClientGetResult)
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/TagRules_Delete.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/TagRules_Delete.json
 func ExampleTagRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

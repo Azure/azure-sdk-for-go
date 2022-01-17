@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/VMIngestion_Details.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/VMIngestion_Details.json
 func ExampleVMIngestionClient_Details() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,11 +24,12 @@ func ExampleVMIngestionClient_Details() {
 	}
 	ctx := context.Background()
 	client := armelastic.NewVMIngestionClient("<subscription-id>", cred, nil)
-	_, err = client.Details(ctx,
+	res, err := client.Details(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.VMIngestionClientDetailsResult)
 }

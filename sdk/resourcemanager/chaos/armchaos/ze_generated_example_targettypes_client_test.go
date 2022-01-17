@@ -26,13 +26,17 @@ func ExampleTargetTypesClient_List() {
 	ctx := context.Background()
 	client := armchaos.NewTargetTypesClient("<subscription-id>", cred, nil)
 	pager := client.List("<location-name>",
-		&armchaos.TargetTypesListOptions{ContinuationToken: to.StringPtr("<continuation-token>")})
-	for pager.NextPage(ctx) {
+		&armchaos.TargetTypesClientListOptions{ContinuationToken: to.StringPtr("<continuation-token>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TargetType.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -52,5 +56,5 @@ func ExampleTargetTypesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TargetType.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TargetTypesClientGetResult)
 }

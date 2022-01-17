@@ -10,7 +10,6 @@ package armmysqlflexibleservers
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,43 +21,51 @@ import (
 // GetPrivateDNSZoneSuffixClient contains the methods for the GetPrivateDNSZoneSuffix group.
 // Don't use this type directly, use NewGetPrivateDNSZoneSuffixClient() instead.
 type GetPrivateDNSZoneSuffixClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options *arm.ClientOptions) *GetPrivateDNSZoneSuffixClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GetPrivateDNSZoneSuffixClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GetPrivateDNSZoneSuffixClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Execute - Get private DNS zone suffix in the cloud.
-// If the operation fails it returns the *CloudError error type.
-func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, options *GetPrivateDNSZoneSuffixExecuteOptions) (GetPrivateDNSZoneSuffixExecuteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
+// method.
+func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
 	req, err := client.executeCreateRequest(ctx, options)
 	if err != nil {
-		return GetPrivateDNSZoneSuffixExecuteResponse{}, err
+		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GetPrivateDNSZoneSuffixExecuteResponse{}, err
+		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GetPrivateDNSZoneSuffixExecuteResponse{}, client.executeHandleError(resp)
+		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Context, options *GetPrivateDNSZoneSuffixExecuteOptions) (*policy.Request, error) {
+func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DBforMySQL/getPrivateDnsZoneSuffix"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -70,23 +77,10 @@ func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Co
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *http.Response) (GetPrivateDNSZoneSuffixExecuteResponse, error) {
-	result := GetPrivateDNSZoneSuffixExecuteResponse{RawResponse: resp}
+func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *http.Response) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
+	result := GetPrivateDNSZoneSuffixClientExecuteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetPrivateDNSZoneSuffixResponse); err != nil {
-		return GetPrivateDNSZoneSuffixExecuteResponse{}, runtime.NewResponseError(err, resp)
+		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
 	}
 	return result, nil
-}
-
-// executeHandleError handles the Execute error response.
-func (client *GetPrivateDNSZoneSuffixClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armkubernetesconfiguration
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,55 @@ import (
 // ClusterExtensionTypesClient contains the methods for the ClusterExtensionTypes group.
 // Don't use this type directly, use NewClusterExtensionTypesClient() instead.
 type ClusterExtensionTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewClusterExtensionTypesClient creates a new instance of ClusterExtensionTypesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewClusterExtensionTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterExtensionTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ClusterExtensionTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ClusterExtensionTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get Extension Types
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ClusterExtensionTypesClient) List(resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *ClusterExtensionTypesListOptions) *ClusterExtensionTypesListPager {
-	return &ClusterExtensionTypesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterRp - The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for
+// OnPrem K8S clusters).
+// clusterResourceName - The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters
+// (for OnPrem K8S clusters).
+// clusterName - The name of the kubernetes cluster.
+// options - ClusterExtensionTypesClientListOptions contains the optional parameters for the ClusterExtensionTypesClient.List
+// method.
+func (client *ClusterExtensionTypesClient) List(resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *ClusterExtensionTypesClientListOptions) *ClusterExtensionTypesClientListPager {
+	return &ClusterExtensionTypesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, options)
 		},
-		advancer: func(ctx context.Context, resp ClusterExtensionTypesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ClusterExtensionTypesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExtensionTypeList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ClusterExtensionTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *ClusterExtensionTypesListOptions) (*policy.Request, error) {
+func (client *ClusterExtensionTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterRp Enum0, clusterResourceName Enum1, clusterName string, options *ClusterExtensionTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensionTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +94,7 @@ func (client *ClusterExtensionTypesClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,23 +106,10 @@ func (client *ClusterExtensionTypesClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *ClusterExtensionTypesClient) listHandleResponse(resp *http.Response) (ClusterExtensionTypesListResponse, error) {
-	result := ClusterExtensionTypesListResponse{RawResponse: resp}
+func (client *ClusterExtensionTypesClient) listHandleResponse(resp *http.Response) (ClusterExtensionTypesClientListResponse, error) {
+	result := ClusterExtensionTypesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeList); err != nil {
-		return ClusterExtensionTypesListResponse{}, runtime.NewResponseError(err, resp)
+		return ClusterExtensionTypesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ClusterExtensionTypesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

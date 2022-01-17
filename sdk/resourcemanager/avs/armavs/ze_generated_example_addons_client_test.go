@@ -30,12 +30,16 @@ func ExampleAddonsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Addon.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleAddonsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Addon.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AddonsClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_CreateOrUpdate_HCX.json
@@ -73,10 +77,8 @@ func ExampleAddonsClient_BeginCreateOrUpdate() {
 		"<addon-name>",
 		armavs.Addon{
 			Properties: &armavs.AddonHcxProperties{
-				AddonProperties: armavs.AddonProperties{
-					AddonType: armavs.AddonTypeHCX.ToPtr(),
-				},
-				Offer: to.StringPtr("<offer>"),
+				AddonType: armavs.AddonType("HCX").ToPtr(),
+				Offer:     to.StringPtr("<offer>"),
 			},
 		},
 		nil)
@@ -87,7 +89,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Addon.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AddonsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Delete.json

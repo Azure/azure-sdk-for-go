@@ -15,6 +15,16 @@ import (
 	"time"
 )
 
+// ClientResourcesHistoryOptions contains the optional parameters for the Client.ResourcesHistory method.
+type ClientResourcesHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientResourcesOptions contains the optional parameters for the Client.Resources method.
+type ClientResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Column - Query result column descriptor.
 type Column struct {
 	// REQUIRED; Column name.
@@ -24,14 +34,15 @@ type Column struct {
 	Type *ColumnDataType `json:"type,omitempty"`
 }
 
-// DateTimeInterval - An interval in time specifying the date and time for the inclusive start and exclusive end, i.e. [start, end).
+// DateTimeInterval - An interval in time specifying the date and time for the inclusive start and exclusive end, i.e. [start,
+// end).
 type DateTimeInterval struct {
-	// REQUIRED; A datetime indicating the exclusive/open end of the time interval, i.e. [start,end). Specifying an end that occurs chronologically before start
-	// will result in an error.
+	// REQUIRED; A datetime indicating the exclusive/open end of the time interval, i.e. [start,end). Specifying an end that occurs
+	// chronologically before start will result in an error.
 	End *time.Time `json:"end,omitempty"`
 
-	// REQUIRED; A datetime indicating the inclusive/closed start of the time interval, i.e. [start, end). Specifying a start that occurs chronologically after
-	// end will result in an error.
+	// REQUIRED; A datetime indicating the inclusive/closed start of the time interval, i.e. [start, end). Specifying a start
+	// that occurs chronologically after end will result in an error.
 	Start *time.Time `json:"start,omitempty"`
 }
 
@@ -146,17 +157,9 @@ func (e *ErrorDetails) UnmarshalJSON(data []byte) error {
 }
 
 // ErrorResponse - An error response from the API.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// REQUIRED; Error information.
-	InnerError *Error `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *Error `json:"error,omitempty"`
 }
 
 // FacetClassification provides polymorphic access to related types.
@@ -180,51 +183,32 @@ type Facet struct {
 // GetFacet implements the FacetClassification interface for type Facet.
 func (f *Facet) GetFacet() *Facet { return f }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Facet.
-func (f *Facet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return f.unmarshalInternal(rawMsg)
-}
-
-func (f Facet) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "expression", f.Expression)
-	f.ResultType = &discValue
-	objectMap["resultType"] = f.ResultType
-}
-
-func (f *Facet) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expression":
-			err = unpopulate(val, &f.Expression)
-			delete(rawMsg, key)
-		case "resultType":
-			err = unpopulate(val, &f.ResultType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FacetError - A facet whose execution resulted in an error.
 type FacetError struct {
-	Facet
 	// REQUIRED; An array containing detected facet errors with details.
 	Errors []*ErrorDetails `json:"errors,omitempty"`
+
+	// REQUIRED; Facet expression, same as in the corresponding facet request.
+	Expression *string `json:"expression,omitempty"`
+
+	// REQUIRED; Result type
+	ResultType *string `json:"resultType,omitempty"`
+}
+
+// GetFacet implements the FacetClassification interface for type FacetError.
+func (f *FacetError) GetFacet() *Facet {
+	return &Facet{
+		Expression: f.Expression,
+		ResultType: f.ResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FacetError.
 func (f FacetError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.Facet.marshalInternal(objectMap, "FacetError")
 	populate(objectMap, "errors", f.Errors)
+	populate(objectMap, "expression", f.Expression)
+	objectMap["resultType"] = "FacetError"
 	return json.Marshal(objectMap)
 }
 
@@ -240,13 +224,16 @@ func (f *FacetError) UnmarshalJSON(data []byte) error {
 		case "errors":
 			err = unpopulate(val, &f.Errors)
 			delete(rawMsg, key)
+		case "expression":
+			err = unpopulate(val, &f.Expression)
+			delete(rawMsg, key)
+		case "resultType":
+			err = unpopulate(val, &f.ResultType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := f.Facet.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -262,7 +249,8 @@ type FacetRequest struct {
 
 // FacetRequestOptions - The options for facet evaluation
 type FacetRequestOptions struct {
-	// Specifies the filter condition for the 'where' clause which will be run on main query's result, just before the actual faceting.
+	// Specifies the filter condition for the 'where' clause which will be run on main query's result, just before the actual
+	// faceting.
 	Filter *string `json:"filter,omitempty"`
 
 	// The column name or query expression to sort on. Defaults to count if not present.
@@ -277,23 +265,37 @@ type FacetRequestOptions struct {
 
 // FacetResult - Successfully executed facet containing additional statistics on the response of a query.
 type FacetResult struct {
-	Facet
 	// REQUIRED; Number of records returned in the facet response.
 	Count *int32 `json:"count,omitempty"`
 
 	// REQUIRED; A JObject array or Table containing the desired facets. Only present if the facet is valid.
 	Data map[string]interface{} `json:"data,omitempty"`
 
+	// REQUIRED; Facet expression, same as in the corresponding facet request.
+	Expression *string `json:"expression,omitempty"`
+
+	// REQUIRED; Result type
+	ResultType *string `json:"resultType,omitempty"`
+
 	// REQUIRED; Number of total records in the facet results.
 	TotalRecords *int64 `json:"totalRecords,omitempty"`
+}
+
+// GetFacet implements the FacetClassification interface for type FacetResult.
+func (f *FacetResult) GetFacet() *Facet {
+	return &Facet{
+		Expression: f.Expression,
+		ResultType: f.ResultType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FacetResult.
 func (f FacetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	f.Facet.marshalInternal(objectMap, "FacetResult")
 	populate(objectMap, "count", f.Count)
 	populate(objectMap, "data", f.Data)
+	populate(objectMap, "expression", f.Expression)
+	objectMap["resultType"] = "FacetResult"
 	populate(objectMap, "totalRecords", f.TotalRecords)
 	return json.Marshal(objectMap)
 }
@@ -313,6 +315,12 @@ func (f *FacetResult) UnmarshalJSON(data []byte) error {
 		case "data":
 			err = unpopulate(val, &f.Data)
 			delete(rawMsg, key)
+		case "expression":
+			err = unpopulate(val, &f.Expression)
+			delete(rawMsg, key)
+		case "resultType":
+			err = unpopulate(val, &f.ResultType)
+			delete(rawMsg, key)
 		case "totalRecords":
 			err = unpopulate(val, &f.TotalRecords)
 			delete(rawMsg, key)
@@ -320,9 +328,6 @@ func (f *FacetResult) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := f.Facet.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -354,8 +359,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Resource Graph operations. It contains a list of operations and a URL link to get the next set of
-// results.
+// OperationListResult - Result of the request to list Resource Graph operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	// List of Resource Graph operations supported by the Resource Graph resource provider.
 	Value []*Operation `json:"value,omitempty"`
@@ -368,8 +373,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -404,17 +409,19 @@ func (q QueryRequest) MarshalJSON() ([]byte, error) {
 
 // QueryRequestOptions - The options for query evaluation
 type QueryRequestOptions struct {
-	// Only applicable for tenant and management group level queries to decide whether to allow partial scopes for result in case the number of subscriptions
-	// exceed allowed limits.
+	// Only applicable for tenant and management group level queries to decide whether to allow partial scopes for result in case
+	// the number of subscriptions exceed allowed limits.
 	AllowPartialScopes *bool `json:"allowPartialScopes,omitempty"`
 
-	// Defines what level of authorization resources should be returned based on the which subscriptions and management groups are passed as scopes.
+	// Defines what level of authorization resources should be returned based on the which subscriptions and management groups
+	// are passed as scopes.
 	AuthorizationScopeFilter *AuthorizationScopeFilter `json:"authorizationScopeFilter,omitempty"`
 
 	// Defines in which format query result returned.
 	ResultFormat *ResultFormat `json:"resultFormat,omitempty"`
 
-	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is present.
+	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is
+	// present.
 	Skip *int32 `json:"$skip,omitempty"`
 
 	// Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
@@ -426,7 +433,8 @@ type QueryRequestOptions struct {
 
 // QueryResponse - Query result.
 type QueryResponse struct {
-	// REQUIRED; Number of records returned in the current response. In the case of paging, this is the number of records in the current page.
+	// REQUIRED; Number of records returned in the current response. In the case of paging, this is the number of records in the
+	// current page.
 	Count *int64 `json:"count,omitempty"`
 
 	// REQUIRED; Query output in JObject array or Table format.
@@ -441,8 +449,8 @@ type QueryResponse struct {
 	// Query facets.
 	Facets []FacetClassification `json:"facets,omitempty"`
 
-	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current request) to retrieve the
-	// next page of data.
+	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
+	// request) to retrieve the next page of data.
 	SkipToken *string `json:"$skipToken,omitempty"`
 }
 
@@ -493,16 +501,6 @@ func (q *QueryResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ResourceGraphClientResourcesHistoryOptions contains the optional parameters for the ResourceGraphClient.ResourcesHistory method.
-type ResourceGraphClientResourcesHistoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceGraphClientResourcesOptions contains the optional parameters for the ResourceGraphClient.Resources method.
-type ResourceGraphClientResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ResourcesHistoryRequest - Describes a history request to be executed.
 type ResourcesHistoryRequest struct {
 	// Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
@@ -536,7 +534,8 @@ type ResourcesHistoryRequestOptions struct {
 	// Defines in which format query result returned.
 	ResultFormat *ResultFormat `json:"resultFormat,omitempty"`
 
-	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is present.
+	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is
+	// present.
 	Skip *int32 `json:"$skip,omitempty"`
 
 	// Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.

@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// PrivateZonesListByResourceGroupPager provides operations for iterating over paged responses.
-type PrivateZonesListByResourceGroupPager struct {
+// PrivateZonesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type PrivateZonesClientListByResourceGroupPager struct {
 	client    *PrivateZonesClient
-	current   PrivateZonesListByResourceGroupResponse
+	current   PrivateZonesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateZonesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateZonesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateZonesListByResourceGroupPager) Err() error {
+func (p *PrivateZonesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateZonesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *PrivateZonesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *PrivateZonesListByResourceGroupPager) NextPage(ctx context.Context) boo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *PrivateZonesListByResourceGroupPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-// PageResponse returns the current PrivateZonesListByResourceGroupResponse page.
-func (p *PrivateZonesListByResourceGroupPager) PageResponse() PrivateZonesListByResourceGroupResponse {
+// PageResponse returns the current PrivateZonesClientListByResourceGroupResponse page.
+func (p *PrivateZonesClientListByResourceGroupPager) PageResponse() PrivateZonesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// PrivateZonesListPager provides operations for iterating over paged responses.
-type PrivateZonesListPager struct {
+// PrivateZonesClientListPager provides operations for iterating over paged responses.
+type PrivateZonesClientListPager struct {
 	client    *PrivateZonesClient
-	current   PrivateZonesListResponse
+	current   PrivateZonesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateZonesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateZonesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateZonesListPager) Err() error {
+func (p *PrivateZonesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateZonesListPager) NextPage(ctx context.Context) bool {
+func (p *PrivateZonesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *PrivateZonesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *PrivateZonesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current PrivateZonesListResponse page.
-func (p *PrivateZonesListPager) PageResponse() PrivateZonesListResponse {
+// PageResponse returns the current PrivateZonesClientListResponse page.
+func (p *PrivateZonesClientListPager) PageResponse() PrivateZonesClientListResponse {
 	return p.current
 }
 
-// RecordSetsListByTypePager provides operations for iterating over paged responses.
-type RecordSetsListByTypePager struct {
+// RecordSetsClientListByTypePager provides operations for iterating over paged responses.
+type RecordSetsClientListByTypePager struct {
 	client    *RecordSetsClient
-	current   RecordSetsListByTypeResponse
+	current   RecordSetsClientListByTypeResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RecordSetsListByTypeResponse) (*policy.Request, error)
+	advancer  func(context.Context, RecordSetsClientListByTypeResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RecordSetsListByTypePager) Err() error {
+func (p *RecordSetsClientListByTypePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RecordSetsListByTypePager) NextPage(ctx context.Context) bool {
+func (p *RecordSetsClientListByTypePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *RecordSetsListByTypePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByTypeHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByTypeHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *RecordSetsListByTypePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RecordSetsListByTypeResponse page.
-func (p *RecordSetsListByTypePager) PageResponse() RecordSetsListByTypeResponse {
+// PageResponse returns the current RecordSetsClientListByTypeResponse page.
+func (p *RecordSetsClientListByTypePager) PageResponse() RecordSetsClientListByTypeResponse {
 	return p.current
 }
 
-// RecordSetsListPager provides operations for iterating over paged responses.
-type RecordSetsListPager struct {
+// RecordSetsClientListPager provides operations for iterating over paged responses.
+type RecordSetsClientListPager struct {
 	client    *RecordSetsClient
-	current   RecordSetsListResponse
+	current   RecordSetsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, RecordSetsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, RecordSetsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *RecordSetsListPager) Err() error {
+func (p *RecordSetsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *RecordSetsListPager) NextPage(ctx context.Context) bool {
+func (p *RecordSetsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *RecordSetsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *RecordSetsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current RecordSetsListResponse page.
-func (p *RecordSetsListPager) PageResponse() RecordSetsListResponse {
+// PageResponse returns the current RecordSetsClientListResponse page.
+func (p *RecordSetsClientListPager) PageResponse() RecordSetsClientListResponse {
 	return p.current
 }
 
-// VirtualNetworkLinksListPager provides operations for iterating over paged responses.
-type VirtualNetworkLinksListPager struct {
+// VirtualNetworkLinksClientListPager provides operations for iterating over paged responses.
+type VirtualNetworkLinksClientListPager struct {
 	client    *VirtualNetworkLinksClient
-	current   VirtualNetworkLinksListResponse
+	current   VirtualNetworkLinksClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualNetworkLinksListResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualNetworkLinksClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualNetworkLinksListPager) Err() error {
+func (p *VirtualNetworkLinksClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualNetworkLinksListPager) NextPage(ctx context.Context) bool {
+func (p *VirtualNetworkLinksClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *VirtualNetworkLinksListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -281,7 +281,7 @@ func (p *VirtualNetworkLinksListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current VirtualNetworkLinksListResponse page.
-func (p *VirtualNetworkLinksListPager) PageResponse() VirtualNetworkLinksListResponse {
+// PageResponse returns the current VirtualNetworkLinksClientListResponse page.
+func (p *VirtualNetworkLinksClientListPager) PageResponse() VirtualNetworkLinksClientListResponse {
 	return p.current
 }

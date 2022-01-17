@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/SupportedOperatingSystems_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/SupportedOperatingSystems_Get.json
 func ExampleSupportedOperatingSystemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,9 +27,9 @@ func ExampleSupportedOperatingSystemsClient_Get() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
-		&armrecoveryservicessiterecovery.SupportedOperatingSystemsGetOptions{InstanceType: nil})
+		&armrecoveryservicessiterecovery.SupportedOperatingSystemsClientGetOptions{InstanceType: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SupportedOperatingSystems.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SupportedOperatingSystemsClientGetResult)
 }

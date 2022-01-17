@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // TriggerRunsClient contains the methods for the TriggerRuns group.
 // Don't use this type directly, use NewTriggerRunsClient() instead.
 type TriggerRunsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTriggerRunsClient creates a new instance of TriggerRunsClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTriggerRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TriggerRunsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TriggerRunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TriggerRunsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Cancel - Cancel a single trigger instance by runId.
-// If the operation fails it returns the *CloudError error type.
-func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsCancelOptions) (TriggerRunsCancelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// triggerName - The trigger name.
+// runID - The pipeline run identifier.
+// options - TriggerRunsClientCancelOptions contains the optional parameters for the TriggerRunsClient.Cancel method.
+func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientCancelOptions) (TriggerRunsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, factoryName, triggerName, runID, options)
 	if err != nil {
-		return TriggerRunsCancelResponse{}, err
+		return TriggerRunsClientCancelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TriggerRunsCancelResponse{}, err
+		return TriggerRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TriggerRunsCancelResponse{}, client.cancelHandleError(resp)
+		return TriggerRunsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return TriggerRunsCancelResponse{RawResponse: resp}, nil
+	return TriggerRunsClientCancelResponse{RawResponse: resp}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsCancelOptions) (*policy.Request, error) {
+func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +94,7 @@ func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,38 +105,30 @@ func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// cancelHandleError handles the Cancel error response.
-func (client *TriggerRunsClient) cancelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // QueryByFactory - Query trigger runs.
-// If the operation fails it returns the *CloudError error type.
-func (client *TriggerRunsClient) QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *TriggerRunsQueryByFactoryOptions) (TriggerRunsQueryByFactoryResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// filterParameters - Parameters to filter the pipeline run.
+// options - TriggerRunsClientQueryByFactoryOptions contains the optional parameters for the TriggerRunsClient.QueryByFactory
+// method.
+func (client *TriggerRunsClient) QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *TriggerRunsClientQueryByFactoryOptions) (TriggerRunsClientQueryByFactoryResponse, error) {
 	req, err := client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, filterParameters, options)
 	if err != nil {
-		return TriggerRunsQueryByFactoryResponse{}, err
+		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TriggerRunsQueryByFactoryResponse{}, err
+		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TriggerRunsQueryByFactoryResponse{}, client.queryByFactoryHandleError(resp)
+		return TriggerRunsClientQueryByFactoryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryByFactoryHandleResponse(resp)
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
-func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *TriggerRunsQueryByFactoryOptions) (*policy.Request, error) {
+func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *TriggerRunsClientQueryByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryTriggerRuns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,7 +142,7 @@ func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,46 +154,38 @@ func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Response) (TriggerRunsQueryByFactoryResponse, error) {
-	result := TriggerRunsQueryByFactoryResponse{RawResponse: resp}
+func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Response) (TriggerRunsClientQueryByFactoryResponse, error) {
+	result := TriggerRunsClientQueryByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerRunsQueryResponse); err != nil {
-		return TriggerRunsQueryByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
-// queryByFactoryHandleError handles the QueryByFactory error response.
-func (client *TriggerRunsClient) queryByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Rerun - Rerun single trigger instance by runId.
-// If the operation fails it returns the *CloudError error type.
-func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsRerunOptions) (TriggerRunsRerunResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// triggerName - The trigger name.
+// runID - The pipeline run identifier.
+// options - TriggerRunsClientRerunOptions contains the optional parameters for the TriggerRunsClient.Rerun method.
+func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientRerunOptions) (TriggerRunsClientRerunResponse, error) {
 	req, err := client.rerunCreateRequest(ctx, resourceGroupName, factoryName, triggerName, runID, options)
 	if err != nil {
-		return TriggerRunsRerunResponse{}, err
+		return TriggerRunsClientRerunResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TriggerRunsRerunResponse{}, err
+		return TriggerRunsClientRerunResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TriggerRunsRerunResponse{}, client.rerunHandleError(resp)
+		return TriggerRunsClientRerunResponse{}, runtime.NewResponseError(resp)
 	}
-	return TriggerRunsRerunResponse{RawResponse: resp}, nil
+	return TriggerRunsClientRerunResponse{RawResponse: resp}, nil
 }
 
 // rerunCreateRequest creates the Rerun request.
-func (client *TriggerRunsClient) rerunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsRerunOptions) (*policy.Request, error) {
+func (client *TriggerRunsClient) rerunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientRerunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/rerun"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -211,7 +207,7 @@ func (client *TriggerRunsClient) rerunCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,17 +216,4 @@ func (client *TriggerRunsClient) rerunCreateRequest(ctx context.Context, resourc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// rerunHandleError handles the Rerun error response.
-func (client *TriggerRunsClient) rerunHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

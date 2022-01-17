@@ -14,6 +14,7 @@ import (
 
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes"
 )
@@ -29,7 +30,16 @@ func ExampleConnectedClusterClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		armhybridkubernetes.ConnectedCluster{},
+		armhybridkubernetes.ConnectedCluster{
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
+			Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+				Type: armhybridkubernetes.ResourceIdentityTypeSystemAssigned.ToPtr(),
+			},
+			Properties: &armhybridkubernetes.ConnectedClusterProperties{
+				AgentPublicKeyCertificate: to.StringPtr("<agent-public-key-certificate>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -38,7 +48,7 @@ func ExampleConnectedClusterClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConnectedCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConnectedClusterClientCreateResult)
 }
 
 // x-ms-original-file: specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/UpdateClusterExample.json
@@ -52,12 +62,17 @@ func ExampleConnectedClusterClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		armhybridkubernetes.ConnectedClusterPatch{},
+		armhybridkubernetes.ConnectedClusterPatch{
+			Tags: map[string]*string{
+				"tag1": to.StringPtr("value1"),
+				"tag2": to.StringPtr("value2"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConnectedCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConnectedClusterClientUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClusterExample.json
@@ -75,7 +90,7 @@ func ExampleConnectedClusterClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConnectedCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConnectedClusterClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/DeleteClusterExample.json
@@ -107,14 +122,18 @@ func ExampleConnectedClusterClient_ListClusterUserCredential() {
 	}
 	ctx := context.Background()
 	client := armhybridkubernetes.NewConnectedClusterClient("<subscription-id>", cred, nil)
-	_, err = client.ListClusterUserCredential(ctx,
+	res, err := client.ListClusterUserCredential(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
-		armhybridkubernetes.ListClusterUserCredentialProperties{},
+		armhybridkubernetes.ListClusterUserCredentialProperties{
+			AuthenticationMethod: armhybridkubernetes.AuthenticationMethod("AAD").ToPtr(),
+			ClientProxy:          to.BoolPtr(false),
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConnectedClusterClientListClusterUserCredentialResult)
 }
 
 // x-ms-original-file: specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClustersByResourceGroupExample.json
@@ -127,12 +146,16 @@ func ExampleConnectedClusterClient_ListByResourceGroup() {
 	client := armhybridkubernetes.NewConnectedClusterClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ConnectedCluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -146,12 +169,16 @@ func ExampleConnectedClusterClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armhybridkubernetes.NewConnectedClusterClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ConnectedCluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

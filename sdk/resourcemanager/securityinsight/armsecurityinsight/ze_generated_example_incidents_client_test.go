@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/incidents/GetIncidents.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/GetIncidents.json
 func ExampleIncidentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,22 +29,26 @@ func ExampleIncidentsClient_List() {
 	client := armsecurityinsight.NewIncidentsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
-		&armsecurityinsight.IncidentsListOptions{Filter: nil,
+		&armsecurityinsight.IncidentsClientListOptions{Filter: nil,
 			Orderby:   to.StringPtr("<orderby>"),
 			Top:       to.Int32Ptr(1),
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Incident.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/incidents/GetIncidentById.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/GetIncidentById.json
 func ExampleIncidentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,10 +64,10 @@ func ExampleIncidentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Incident.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IncidentsClientGetResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/incidents/CreateIncident.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/CreateIncident.json
 func ExampleIncidentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,21 +80,19 @@ func ExampleIncidentsClient_CreateOrUpdate() {
 		"<workspace-name>",
 		"<incident-id>",
 		armsecurityinsight.Incident{
-			ResourceWithEtag: armsecurityinsight.ResourceWithEtag{
-				Etag: to.StringPtr("<etag>"),
-			},
+			Etag: to.StringPtr("<etag>"),
 			Properties: &armsecurityinsight.IncidentProperties{
 				Description:           to.StringPtr("<description>"),
-				Classification:        armsecurityinsight.IncidentClassificationFalsePositive.ToPtr(),
+				Classification:        armsecurityinsight.IncidentClassification("FalsePositive").ToPtr(),
 				ClassificationComment: to.StringPtr("<classification-comment>"),
-				ClassificationReason:  armsecurityinsight.IncidentClassificationReasonIncorrectAlertLogic.ToPtr(),
+				ClassificationReason:  armsecurityinsight.IncidentClassificationReason("IncorrectAlertLogic").ToPtr(),
 				FirstActivityTimeUTC:  to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t }()),
 				LastActivityTimeUTC:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t }()),
 				Owner: &armsecurityinsight.IncidentOwnerInfo{
 					ObjectID: to.StringPtr("<object-id>"),
 				},
-				Severity: armsecurityinsight.IncidentSeverityHigh.ToPtr(),
-				Status:   armsecurityinsight.IncidentStatusClosed.ToPtr(),
+				Severity: armsecurityinsight.IncidentSeverity("High").ToPtr(),
+				Status:   armsecurityinsight.IncidentStatus("Closed").ToPtr(),
 				Title:    to.StringPtr("<title>"),
 			},
 		},
@@ -98,10 +100,10 @@ func ExampleIncidentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Incident.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IncidentsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/incidents/DeleteIncident.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/DeleteIncident.json
 func ExampleIncidentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,4 +119,84 @@ func ExampleIncidentsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/CreateTeam.json
+func ExampleIncidentsClient_CreateTeam() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armsecurityinsight.NewIncidentsClient("<subscription-id>", cred, nil)
+	res, err := client.CreateTeam(ctx,
+		"<resource-group-name>",
+		"<workspace-name>",
+		"<incident-id>",
+		armsecurityinsight.TeamProperties{
+			TeamDescription: to.StringPtr("<team-description>"),
+			TeamName:        to.StringPtr("<team-name>"),
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.IncidentsClientCreateTeamResult)
+}
+
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/GetAllIncidentAlerts.json
+func ExampleIncidentsClient_ListAlerts() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armsecurityinsight.NewIncidentsClient("<subscription-id>", cred, nil)
+	res, err := client.ListAlerts(ctx,
+		"<resource-group-name>",
+		"<workspace-name>",
+		"<incident-id>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.IncidentsClientListAlertsResult)
+}
+
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/GetAllIncidentBookmarks.json
+func ExampleIncidentsClient_ListBookmarks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armsecurityinsight.NewIncidentsClient("<subscription-id>", cred, nil)
+	res, err := client.ListBookmarks(ctx,
+		"<resource-group-name>",
+		"<workspace-name>",
+		"<incident-id>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.IncidentsClientListBookmarksResult)
+}
+
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/incidents/entities/GetAllIncidentEntities.json
+func ExampleIncidentsClient_ListEntities() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armsecurityinsight.NewIncidentsClient("<subscription-id>", cred, nil)
+	res, err := client.ListEntities(ctx,
+		"<resource-group-name>",
+		"<workspace-name>",
+		"<incident-id>",
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.IncidentsClientListEntitiesResult)
 }

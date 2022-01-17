@@ -35,7 +35,7 @@ func ExampleBigDataPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BigDataPoolResourceInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BigDataPoolsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/UpdateBigDataPool.json
@@ -59,7 +59,7 @@ func ExampleBigDataPoolsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BigDataPoolResourceInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BigDataPoolsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/CreateOrUpdateBigDataPool.json
@@ -75,11 +75,9 @@ func ExampleBigDataPoolsClient_BeginCreateOrUpdate() {
 		"<workspace-name>",
 		"<big-data-pool-name>",
 		armsynapse.BigDataPoolResourceInfo{
-			TrackedResource: armsynapse.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key": to.StringPtr("value"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key": to.StringPtr("value"),
 			},
 			Properties: &armsynapse.BigDataPoolResourceProperties{
 				AutoPause: &armsynapse.AutoPauseProperties{
@@ -97,13 +95,13 @@ func ExampleBigDataPoolsClient_BeginCreateOrUpdate() {
 					Filename: to.StringPtr("<filename>"),
 				},
 				NodeCount:         to.Int32Ptr(4),
-				NodeSize:          armsynapse.NodeSizeMedium.ToPtr(),
-				NodeSizeFamily:    armsynapse.NodeSizeFamilyMemoryOptimized.ToPtr(),
+				NodeSize:          armsynapse.NodeSize("Medium").ToPtr(),
+				NodeSizeFamily:    armsynapse.NodeSizeFamily("MemoryOptimized").ToPtr(),
 				SparkEventsFolder: to.StringPtr("<spark-events-folder>"),
 				SparkVersion:      to.StringPtr("<spark-version>"),
 			},
 		},
-		&armsynapse.BigDataPoolsBeginCreateOrUpdateOptions{Force: nil})
+		&armsynapse.BigDataPoolsClientBeginCreateOrUpdateOptions{Force: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -111,7 +109,7 @@ func ExampleBigDataPoolsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BigDataPoolResourceInfo.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BigDataPoolsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/DeleteBigDataPool.json
@@ -130,10 +128,11 @@ func ExampleBigDataPoolsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BigDataPoolsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/ListBigDataPoolsInWorkspace.json
@@ -147,12 +146,16 @@ func ExampleBigDataPoolsClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BigDataPoolResourceInfo.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,54 @@ import (
 // WorkflowRunsClient contains the methods for the WorkflowRuns group.
 // Don't use this type directly, use NewWorkflowRunsClient() instead.
 type WorkflowRunsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunsClient creates a new instance of WorkflowRunsClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowRunsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkflowRunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkflowRunsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Cancel - Cancels a workflow run.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunsClient) Cancel(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsCancelOptions) (WorkflowRunsCancelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// options - WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
+func (client *WorkflowRunsClient) Cancel(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsClientCancelOptions) (WorkflowRunsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, workflowName, runName, options)
 	if err != nil {
-		return WorkflowRunsCancelResponse{}, err
+		return WorkflowRunsClientCancelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunsCancelResponse{}, err
+		return WorkflowRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunsCancelResponse{}, client.cancelHandleError(resp)
+		return WorkflowRunsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkflowRunsCancelResponse{RawResponse: resp}, nil
+	return WorkflowRunsClientCancelResponse{RawResponse: resp}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsCancelOptions) (*policy.Request, error) {
+func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +90,7 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,38 +101,29 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// cancelHandleError handles the Cancel error response.
-func (client *WorkflowRunsClient) cancelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a workflow run.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsGetOptions) (WorkflowRunsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// runName - The workflow run name.
+// options - WorkflowRunsClientGetOptions contains the optional parameters for the WorkflowRunsClient.Get method.
+func (client *WorkflowRunsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsClientGetOptions) (WorkflowRunsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workflowName, runName, options)
 	if err != nil {
-		return WorkflowRunsGetResponse{}, err
+		return WorkflowRunsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkflowRunsGetResponse{}, err
+		return WorkflowRunsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkflowRunsGetResponse{}, client.getHandleError(resp)
+		return WorkflowRunsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsGetOptions) (*policy.Request, error) {
+func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, runName string, options *WorkflowRunsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +141,7 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,43 +153,33 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (WorkflowRunsGetResponse, error) {
-	result := WorkflowRunsGetResponse{RawResponse: resp}
+func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (WorkflowRunsClientGetResponse, error) {
+	result := WorkflowRunsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRun); err != nil {
-		return WorkflowRunsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkflowRunsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of workflow runs.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkflowRunsClient) List(resourceGroupName string, workflowName string, options *WorkflowRunsListOptions) *WorkflowRunsListPager {
-	return &WorkflowRunsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// workflowName - The workflow name.
+// options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
+func (client *WorkflowRunsClient) List(resourceGroupName string, workflowName string, options *WorkflowRunsClientListOptions) *WorkflowRunsClientListPager {
+	return &WorkflowRunsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workflowName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkflowRunsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkflowRunsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkflowRunListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowRunsListOptions) (*policy.Request, error) {
+func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowRunsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,7 +193,7 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter workflowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,23 +211,10 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkflowRunsClient) listHandleResponse(resp *http.Response) (WorkflowRunsListResponse, error) {
-	result := WorkflowRunsListResponse{RawResponse: resp}
+func (client *WorkflowRunsClient) listHandleResponse(resp *http.Response) (WorkflowRunsClientListResponse, error) {
+	result := WorkflowRunsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowRunListResult); err != nil {
-		return WorkflowRunsListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkflowRunsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkflowRunsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

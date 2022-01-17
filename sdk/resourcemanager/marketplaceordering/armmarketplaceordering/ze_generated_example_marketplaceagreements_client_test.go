@@ -28,7 +28,7 @@ func ExampleMarketplaceAgreementsClient_Get() {
 	ctx := context.Background()
 	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
-		armmarketplaceordering.OfferTypeVirtualmachine,
+		armmarketplaceordering.OfferType("virtualmachine"),
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
@@ -36,7 +36,7 @@ func ExampleMarketplaceAgreementsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgreementTerms.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientGetResult)
 }
 
 // x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/SetMarketplaceTerms.json
@@ -48,7 +48,7 @@ func ExampleMarketplaceAgreementsClient_Create() {
 	ctx := context.Background()
 	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
 	res, err := client.Create(ctx,
-		armmarketplaceordering.OfferTypeVirtualmachine,
+		armmarketplaceordering.OfferType("virtualmachine"),
 		"<publisher-id>",
 		"<offer-id>",
 		"<plan-id>",
@@ -69,7 +69,7 @@ func ExampleMarketplaceAgreementsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgreementTerms.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientCreateResult)
 }
 
 // x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/SignMarketplaceTerms.json
@@ -88,7 +88,7 @@ func ExampleMarketplaceAgreementsClient_Sign() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgreementTerms.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientSignResult)
 }
 
 // x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/CancelMarketplaceTerms.json
@@ -107,7 +107,7 @@ func ExampleMarketplaceAgreementsClient_Cancel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgreementTerms.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientCancelResult)
 }
 
 // x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/GetAgreementMarketplaceTerms.json
@@ -126,7 +126,7 @@ func ExampleMarketplaceAgreementsClient_GetAgreement() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AgreementTerms.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientGetAgreementResult)
 }
 
 // x-ms-original-file: specification/marketplaceordering/resource-manager/Microsoft.MarketplaceOrdering/stable/2021-01-01/examples/ListMarketplaceTerms.json
@@ -137,9 +137,10 @@ func ExampleMarketplaceAgreementsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmarketplaceordering.NewMarketplaceAgreementsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MarketplaceAgreementsClientListResult)
 }

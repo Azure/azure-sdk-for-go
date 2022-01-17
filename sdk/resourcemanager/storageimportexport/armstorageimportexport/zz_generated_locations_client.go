@@ -11,7 +11,6 @@ package armstorageimportexport
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	acceptLanguage *string
+	pl             runtime.Pipeline
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
+// acceptLanguage - Specifies the preferred language for the response.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLocationsClient(acceptLanguage *string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LocationsClient{acceptLanguage: acceptLanguage, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LocationsClient{
+		acceptLanguage: acceptLanguage,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - Returns the details about a location to which you can ship the disks associated with an import or export job. A location is an Azure region.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) Get(ctx context.Context, locationName string, options *LocationsGetOptions) (LocationsGetResponse, error) {
+// Get - Returns the details about a location to which you can ship the disks associated with an import or export job. A location
+// is an Azure region.
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The name of the location. For example, West US or westus.
+// options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
+func (client *LocationsClient) Get(ctx context.Context, locationName string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, options)
 	if err != nil {
-		return LocationsGetResponse{}, err
+		return LocationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsGetResponse{}, err
+		return LocationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsGetResponse{}, client.getHandleError(resp)
+		return LocationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LocationsClient) getCreateRequest(ctx context.Context, locationName string, options *LocationsGetOptions) (*policy.Request, error) {
+func (client *LocationsClient) getCreateRequest(ctx context.Context, locationName string, options *LocationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ImportExport/locations/{locationName}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,48 +91,37 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, locationNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *LocationsClient) getHandleResponse(resp *http.Response) (LocationsGetResponse, error) {
-	result := LocationsGetResponse{RawResponse: resp}
+func (client *LocationsClient) getHandleResponse(resp *http.Response) (LocationsClientGetResponse, error) {
+	result := LocationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Location); err != nil {
-		return LocationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LocationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Returns a list of locations to which you can ship the disks associated with an import or export job. A location is a Microsoft data center region.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) List(ctx context.Context, options *LocationsListOptions) (LocationsListResponse, error) {
+// List - Returns a list of locations to which you can ship the disks associated with an import or export job. A location
+// is a Microsoft data center region.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
+func (client *LocationsClient) List(ctx context.Context, options *LocationsClientListOptions) (LocationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return LocationsListResponse{}, err
+		return LocationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsListResponse{}, err
+		return LocationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsListResponse{}, client.listHandleError(resp)
+		return LocationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationsClient) listCreateRequest(ctx context.Context, options *LocationsListOptions) (*policy.Request, error) {
+func (client *LocationsClient) listCreateRequest(ctx context.Context, options *LocationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ImportExport/locations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -137,23 +136,10 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 }
 
 // listHandleResponse handles the List response.
-func (client *LocationsClient) listHandleResponse(resp *http.Response) (LocationsListResponse, error) {
-	result := LocationsListResponse{RawResponse: resp}
+func (client *LocationsClient) listHandleResponse(resp *http.Response) (LocationsClientListResponse, error) {
+	result := LocationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationsResponse); err != nil {
-		return LocationsListResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LocationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

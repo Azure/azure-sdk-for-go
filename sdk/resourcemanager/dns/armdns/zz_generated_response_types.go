@@ -15,112 +15,112 @@ import (
 	"time"
 )
 
-// DNSResourceReferenceGetByTargetResourcesResponse contains the response from method DNSResourceReference.GetByTargetResources.
-type DNSResourceReferenceGetByTargetResourcesResponse struct {
-	DNSResourceReferenceGetByTargetResourcesResult
+// RecordSetsClientCreateOrUpdateResponse contains the response from method RecordSetsClient.CreateOrUpdate.
+type RecordSetsClientCreateOrUpdateResponse struct {
+	RecordSetsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DNSResourceReferenceGetByTargetResourcesResult contains the result from method DNSResourceReference.GetByTargetResources.
-type DNSResourceReferenceGetByTargetResourcesResult struct {
-	DNSResourceReferenceResult
-}
-
-// RecordSetsCreateOrUpdateResponse contains the response from method RecordSets.CreateOrUpdate.
-type RecordSetsCreateOrUpdateResponse struct {
-	RecordSetsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecordSetsCreateOrUpdateResult contains the result from method RecordSets.CreateOrUpdate.
-type RecordSetsCreateOrUpdateResult struct {
+// RecordSetsClientCreateOrUpdateResult contains the result from method RecordSetsClient.CreateOrUpdate.
+type RecordSetsClientCreateOrUpdateResult struct {
 	RecordSet
 }
 
-// RecordSetsDeleteResponse contains the response from method RecordSets.Delete.
-type RecordSetsDeleteResponse struct {
+// RecordSetsClientDeleteResponse contains the response from method RecordSetsClient.Delete.
+type RecordSetsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsGetResponse contains the response from method RecordSets.Get.
-type RecordSetsGetResponse struct {
-	RecordSetsGetResult
+// RecordSetsClientGetResponse contains the response from method RecordSetsClient.Get.
+type RecordSetsClientGetResponse struct {
+	RecordSetsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsGetResult contains the result from method RecordSets.Get.
-type RecordSetsGetResult struct {
+// RecordSetsClientGetResult contains the result from method RecordSetsClient.Get.
+type RecordSetsClientGetResult struct {
 	RecordSet
 }
 
-// RecordSetsListAllByDNSZoneResponse contains the response from method RecordSets.ListAllByDNSZone.
-type RecordSetsListAllByDNSZoneResponse struct {
-	RecordSetsListAllByDNSZoneResult
+// RecordSetsClientListAllByDNSZoneResponse contains the response from method RecordSetsClient.ListAllByDNSZone.
+type RecordSetsClientListAllByDNSZoneResponse struct {
+	RecordSetsClientListAllByDNSZoneResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsListAllByDNSZoneResult contains the result from method RecordSets.ListAllByDNSZone.
-type RecordSetsListAllByDNSZoneResult struct {
+// RecordSetsClientListAllByDNSZoneResult contains the result from method RecordSetsClient.ListAllByDNSZone.
+type RecordSetsClientListAllByDNSZoneResult struct {
 	RecordSetListResult
 }
 
-// RecordSetsListByDNSZoneResponse contains the response from method RecordSets.ListByDNSZone.
-type RecordSetsListByDNSZoneResponse struct {
-	RecordSetsListByDNSZoneResult
+// RecordSetsClientListByDNSZoneResponse contains the response from method RecordSetsClient.ListByDNSZone.
+type RecordSetsClientListByDNSZoneResponse struct {
+	RecordSetsClientListByDNSZoneResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsListByDNSZoneResult contains the result from method RecordSets.ListByDNSZone.
-type RecordSetsListByDNSZoneResult struct {
+// RecordSetsClientListByDNSZoneResult contains the result from method RecordSetsClient.ListByDNSZone.
+type RecordSetsClientListByDNSZoneResult struct {
 	RecordSetListResult
 }
 
-// RecordSetsListByTypeResponse contains the response from method RecordSets.ListByType.
-type RecordSetsListByTypeResponse struct {
-	RecordSetsListByTypeResult
+// RecordSetsClientListByTypeResponse contains the response from method RecordSetsClient.ListByType.
+type RecordSetsClientListByTypeResponse struct {
+	RecordSetsClientListByTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsListByTypeResult contains the result from method RecordSets.ListByType.
-type RecordSetsListByTypeResult struct {
+// RecordSetsClientListByTypeResult contains the result from method RecordSetsClient.ListByType.
+type RecordSetsClientListByTypeResult struct {
 	RecordSetListResult
 }
 
-// RecordSetsUpdateResponse contains the response from method RecordSets.Update.
-type RecordSetsUpdateResponse struct {
-	RecordSetsUpdateResult
+// RecordSetsClientUpdateResponse contains the response from method RecordSetsClient.Update.
+type RecordSetsClientUpdateResponse struct {
+	RecordSetsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecordSetsUpdateResult contains the result from method RecordSets.Update.
-type RecordSetsUpdateResult struct {
+// RecordSetsClientUpdateResult contains the result from method RecordSetsClient.Update.
+type RecordSetsClientUpdateResult struct {
 	RecordSet
 }
 
-// ZonesCreateOrUpdateResponse contains the response from method Zones.CreateOrUpdate.
-type ZonesCreateOrUpdateResponse struct {
-	ZonesCreateOrUpdateResult
+// ResourceReferenceClientGetByTargetResourcesResponse contains the response from method ResourceReferenceClient.GetByTargetResources.
+type ResourceReferenceClientGetByTargetResourcesResponse struct {
+	ResourceReferenceClientGetByTargetResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ZonesCreateOrUpdateResult contains the result from method Zones.CreateOrUpdate.
-type ZonesCreateOrUpdateResult struct {
+// ResourceReferenceClientGetByTargetResourcesResult contains the result from method ResourceReferenceClient.GetByTargetResources.
+type ResourceReferenceClientGetByTargetResourcesResult struct {
+	ResourceReferenceResult
+}
+
+// ZonesClientCreateOrUpdateResponse contains the response from method ZonesClient.CreateOrUpdate.
+type ZonesClientCreateOrUpdateResponse struct {
+	ZonesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ZonesClientCreateOrUpdateResult contains the result from method ZonesClient.CreateOrUpdate.
+type ZonesClientCreateOrUpdateResult struct {
 	Zone
 }
 
-// ZonesDeletePollerResponse contains the response from method Zones.Delete.
-type ZonesDeletePollerResponse struct {
+// ZonesClientDeletePollerResponse contains the response from method ZonesClient.Delete.
+type ZonesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ZonesDeletePoller
+	Poller *ZonesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -129,8 +129,8 @@ type ZonesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ZonesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ZonesDeleteResponse, error) {
-	respType := ZonesDeleteResponse{}
+func (l ZonesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ZonesClientDeleteResponse, error) {
+	respType := ZonesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -139,13 +139,13 @@ func (l ZonesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.
 	return respType, nil
 }
 
-// Resume rehydrates a ZonesDeletePollerResponse from the provided client and resume token.
-func (l *ZonesDeletePollerResponse) Resume(ctx context.Context, client *ZonesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ZonesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ZonesClientDeletePollerResponse from the provided client and resume token.
+func (l *ZonesClientDeletePollerResponse) Resume(ctx context.Context, client *ZonesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ZonesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ZonesDeletePoller{
+	poller := &ZonesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -157,56 +157,56 @@ func (l *ZonesDeletePollerResponse) Resume(ctx context.Context, client *ZonesCli
 	return nil
 }
 
-// ZonesDeleteResponse contains the response from method Zones.Delete.
-type ZonesDeleteResponse struct {
+// ZonesClientDeleteResponse contains the response from method ZonesClient.Delete.
+type ZonesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ZonesGetResponse contains the response from method Zones.Get.
-type ZonesGetResponse struct {
-	ZonesGetResult
+// ZonesClientGetResponse contains the response from method ZonesClient.Get.
+type ZonesClientGetResponse struct {
+	ZonesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ZonesGetResult contains the result from method Zones.Get.
-type ZonesGetResult struct {
+// ZonesClientGetResult contains the result from method ZonesClient.Get.
+type ZonesClientGetResult struct {
 	Zone
 }
 
-// ZonesListByResourceGroupResponse contains the response from method Zones.ListByResourceGroup.
-type ZonesListByResourceGroupResponse struct {
-	ZonesListByResourceGroupResult
+// ZonesClientListByResourceGroupResponse contains the response from method ZonesClient.ListByResourceGroup.
+type ZonesClientListByResourceGroupResponse struct {
+	ZonesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ZonesListByResourceGroupResult contains the result from method Zones.ListByResourceGroup.
-type ZonesListByResourceGroupResult struct {
+// ZonesClientListByResourceGroupResult contains the result from method ZonesClient.ListByResourceGroup.
+type ZonesClientListByResourceGroupResult struct {
 	ZoneListResult
 }
 
-// ZonesListResponse contains the response from method Zones.List.
-type ZonesListResponse struct {
-	ZonesListResult
+// ZonesClientListResponse contains the response from method ZonesClient.List.
+type ZonesClientListResponse struct {
+	ZonesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ZonesListResult contains the result from method Zones.List.
-type ZonesListResult struct {
+// ZonesClientListResult contains the result from method ZonesClient.List.
+type ZonesClientListResult struct {
 	ZoneListResult
 }
 
-// ZonesUpdateResponse contains the response from method Zones.Update.
-type ZonesUpdateResponse struct {
-	ZonesUpdateResult
+// ZonesClientUpdateResponse contains the response from method ZonesClient.Update.
+type ZonesClientUpdateResponse struct {
+	ZonesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ZonesUpdateResult contains the result from method Zones.Update.
-type ZonesUpdateResult struct {
+// ZonesClientUpdateResult contains the result from method ZonesClient.Update.
+type ZonesClientUpdateResult struct {
 	Zone
 }

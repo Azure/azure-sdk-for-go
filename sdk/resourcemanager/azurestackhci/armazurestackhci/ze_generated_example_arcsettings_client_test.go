@@ -29,12 +29,16 @@ func ExampleArcSettingsClient_ListByCluster() {
 	pager := client.ListByCluster("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ArcSetting.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,7 +59,7 @@ func ExampleArcSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ArcSetting.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ArcSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/PutArcSetting.json
@@ -75,7 +79,7 @@ func ExampleArcSettingsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ArcSetting.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ArcSettingsClientCreateResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/DeleteArcSetting.json

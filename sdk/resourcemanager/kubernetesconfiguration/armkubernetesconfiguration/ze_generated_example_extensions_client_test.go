@@ -29,8 +29,8 @@ func ExampleExtensionsClient_BeginCreate() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		armkubernetesconfiguration.Extension{
@@ -60,7 +60,7 @@ func ExampleExtensionsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetExtension.json
@@ -73,15 +73,15 @@ func ExampleExtensionsClient_Get() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientGetResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteExtension.json
@@ -94,11 +94,11 @@ func ExampleExtensionsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
-		&armkubernetesconfiguration.ExtensionsBeginDeleteOptions{ForceDelete: nil})
+		&armkubernetesconfiguration.ExtensionsClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -118,8 +118,8 @@ func ExampleExtensionsClient_BeginUpdate() {
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<extension-name>",
 		armkubernetesconfiguration.PatchExtension{
@@ -139,11 +139,10 @@ func ExampleExtensionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListExtensions.json
@@ -155,16 +154,20 @@ func ExampleExtensionsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Extension.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

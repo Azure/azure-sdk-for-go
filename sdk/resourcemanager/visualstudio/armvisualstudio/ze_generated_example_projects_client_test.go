@@ -27,13 +27,14 @@ func ExampleProjectsClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armvisualstudio.NewProjectsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		"<root-resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProjectsClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/CreateProjectResource.json
@@ -49,19 +50,17 @@ func ExampleProjectsClient_BeginCreate() {
 		"<root-resource-name>",
 		"<resource-name>",
 		armvisualstudio.ProjectResource{
-			Resource: armvisualstudio.Resource{
-				Name:     to.StringPtr("<name>"),
-				Type:     to.StringPtr("<type>"),
-				ID:       to.StringPtr("<id>"),
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Name:     to.StringPtr("<name>"),
+			Type:     to.StringPtr("<type>"),
+			ID:       to.StringPtr("<id>"),
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: map[string]*string{
 				"ProcessTemplateId":    to.StringPtr("6B724908-EF14-45CF-84F8-768B5384DA45"),
 				"VersionControlOption": to.StringPtr("Git"),
 			},
 		},
-		&armvisualstudio.ProjectsBeginCreateOptions{Validating: nil})
+		&armvisualstudio.ProjectsClientBeginCreateOptions{Validating: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,7 +68,7 @@ func ExampleProjectsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProjectResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProjectsClientCreateResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetProjectResource.json
@@ -88,7 +87,7 @@ func ExampleProjectsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProjectResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProjectsClientGetResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/UpdateProjectResource.json
@@ -104,20 +103,18 @@ func ExampleProjectsClient_Update() {
 		"<root-resource-name>",
 		"<resource-name>",
 		armvisualstudio.ProjectResource{
-			Resource: armvisualstudio.Resource{
-				Name:     to.StringPtr("<name>"),
-				Type:     to.StringPtr("<type>"),
-				ID:       to.StringPtr("<id>"),
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Name:       to.StringPtr("<name>"),
+			Type:       to.StringPtr("<type>"),
+			ID:         to.StringPtr("<id>"),
+			Location:   to.StringPtr("<location>"),
+			Tags:       map[string]*string{},
 			Properties: map[string]*string{},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProjectResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProjectsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/visualstudio/resource-manager/Microsoft.VisualStudio/preview/2014-04-01-preview/examples/GetProjectJobStatus.json
@@ -134,9 +131,9 @@ func ExampleProjectsClient_GetJobStatus() {
 		"<resource-name>",
 		"<sub-container-name>",
 		"<operation>",
-		&armvisualstudio.ProjectsGetJobStatusOptions{JobID: to.StringPtr("<job-id>")})
+		&armvisualstudio.ProjectsClientGetJobStatusOptions{JobID: to.StringPtr("<job-id>")})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProjectResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProjectsClientGetJobStatusResult)
 }

@@ -10,7 +10,6 @@ package armsubscriptions
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,24 +21,33 @@ import (
 // SubscriptionClient contains the methods for the SubscriptionClient group.
 // Don't use this type directly, use NewSubscriptionClient() instead.
 type SubscriptionClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewSubscriptionClient creates a new instance of SubscriptionClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SubscriptionClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SubscriptionClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CheckResourceName - A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word
-// If the operation fails it returns the *CloudError error type.
+// CheckResourceName - A resource name is valid if it is not a reserved word, does not contains a reserved word and does not
+// start with a reserved word
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName
+// method.
 func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options *SubscriptionClientCheckResourceNameOptions) (SubscriptionClientCheckResourceNameResponse, error) {
 	req, err := client.checkResourceNameCreateRequest(ctx, options)
 	if err != nil {
@@ -50,7 +58,7 @@ func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options
 		return SubscriptionClientCheckResourceNameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionClientCheckResourceNameResponse{}, client.checkResourceNameHandleError(resp)
+		return SubscriptionClientCheckResourceNameResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkResourceNameHandleResponse(resp)
 }
@@ -58,7 +66,7 @@ func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options
 // checkResourceNameCreateRequest creates the CheckResourceName request.
 func (client *SubscriptionClient) checkResourceNameCreateRequest(ctx context.Context, options *SubscriptionClientCheckResourceNameOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/checkResourceName"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -76,20 +84,7 @@ func (client *SubscriptionClient) checkResourceNameCreateRequest(ctx context.Con
 func (client *SubscriptionClient) checkResourceNameHandleResponse(resp *http.Response) (SubscriptionClientCheckResourceNameResponse, error) {
 	result := SubscriptionClientCheckResourceNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckResourceNameResult); err != nil {
-		return SubscriptionClientCheckResourceNameResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionClientCheckResourceNameResponse{}, err
 	}
 	return result, nil
-}
-
-// checkResourceNameHandleError handles the CheckResourceName error response.
-func (client *SubscriptionClient) checkResourceNameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

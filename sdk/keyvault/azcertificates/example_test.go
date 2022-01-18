@@ -60,7 +60,14 @@ func ExampleClient_BeginCreateCertificate() {
 			Subject: to.StringPtr("CN=DefaultPolicy"),
 		},
 	}, nil)
+	if err != nil {
+		panic(err)
+	}
+
 	finalResponse, err := resp.PollUntilDone(context.TODO(), time.Second)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Created a certificate with ID: ", *finalResponse.ID)
 }

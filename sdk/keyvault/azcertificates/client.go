@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -1564,4 +1565,75 @@ func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions
 	return &listDeletedCertificatesPager{
 		genPager: c.genClient.GetDeletedCertificates(c.vaultURL, options.toGenerated()),
 	}
+}
+
+// CancelCertificateOperationOptions contains the optional parameters for the Client.CancelCertificateOperation function
+type CancelCertificateOperationOptions struct{}
+
+func (c *CancelCertificateOperationOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOperationOptions {
+	return &generated.KeyVaultClientUpdateCertificateOperationOptions{}
+}
+
+// CancelCertificateOperationResponse contains the response models for the Client.CancelCertificateOperation function
+type CancelCertificateOperationResponse struct {
+	CertificateOperation
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// Cancels a certificate creation operation that is already in progress. This operation requires the certificates/update permission.
+func (c *Client) CancelCertificateOperation(ctx context.Context, certName string, options *CancelCertificateOperationOptions) (CancelCertificateOperationResponse, error) {
+	resp, err := c.genClient.UpdateCertificateOperation(
+		ctx,
+		c.vaultURL,
+		certName,
+		generated.CertificateOperationUpdateParameter{
+			CancellationRequested: to.BoolPtr(true),
+		},
+		options.toGenerated(),
+	)
+	if err != nil {
+		return CancelCertificateOperationResponse{}, err
+	}
+
+	return CancelCertificateOperationResponse{
+		RawResponse:          resp.RawResponse,
+		CertificateOperation: certificateOperationFromGenerated(resp.CertificateOperation),
+	}, nil
+}
+
+// DeleteCertificateOperationsOptions contains the optional parameters for the Client.DeleteCertificateOperation function.
+type DeleteCertificateOperationOptions struct{}
+
+func (d *DeleteCertificateOperationOptions) toGenerated() *generated.KeyVaultClientDeleteCertificateOperationOptions {
+	return &generated.KeyVaultClientDeleteCertificateOperationOptions{}
+}
+
+// DeleteCertificateOperationResponse contains the response for the Client.DeleteCertificateOperation function.
+type DeleteCertificateOperationResponse struct {
+	CertificateOperation
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// Deletes the creation operation for a specified certificate that is in the process of being created. The certificate is no
+// longer created. This operation requires the certificates/update permission.
+func (c *Client) DeleteCertificateOperation(ctx context.Context, certName string, options *DeleteCertificateOperationOptions) (DeleteCertificateOperationResponse, error) {
+	resp, err := c.genClient.DeleteCertificateOperation(
+		ctx,
+		c.vaultURL,
+		certName,
+		options.toGenerated(),
+	)
+
+	if err != nil {
+		return DeleteCertificateOperationResponse{}, err
+	}
+
+	return DeleteCertificateOperationResponse{
+		RawResponse:          resp.RawResponse,
+		CertificateOperation: certificateOperationFromGenerated(resp.CertificateOperation),
+	}, nil
+
 }

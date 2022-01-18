@@ -134,6 +134,41 @@ func TestClient_GetCertificateOperation(t *testing.T) {
 
 	cleanUp(t, client, certName)
 }
+func TestClient_CancelCertificateOperation(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "cert")
+	require.NoError(t, err)
+
+	_, err = client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	cancelResp, err := client.CancelCertificateOperation(ctx, certName, nil)
+	require.NoError(t, err)
+	require.Contains(t, *cancelResp.ID, certName)
+
+	getResp, err := client.GetCertificateOperation(ctx, certName, nil)
+	require.NoError(t, err)
+	require.Equal(t, true, *getResp.CancellationRequested)
+
+	_, err = client.DeleteCertificateOperation(ctx, certName, nil)
+	require.NoError(t, err)
+
+	// Get should fail now
+	_, err = client.GetCertificateOperation(ctx, certName, nil)
+	require.Error(t, err)
+}
 
 func TestClient_BackupCertificate(t *testing.T) {
 	stop := startTest(t)

@@ -269,6 +269,20 @@ type CertificateOperation struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+func certificateOperationFromGenerated(g generated.CertificateOperation) CertificateOperation {
+	return CertificateOperation{
+		CancellationRequested: g.CancellationRequested,
+		Csr:                   g.Csr,
+		Error:                 certificateErrorFromGenerated(g.Error),
+		IssuerParameters:      issuerParametersFromGenerated(g.IssuerParameters),
+		RequestID:             g.RequestID,
+		Status:                g.Status,
+		StatusDetails:         g.StatusDetails,
+		Target:                g.Target,
+		ID:                    g.ID,
+	}
+}
+
 // CertificatePolicy - Management policy for a certificate.
 type CertificatePolicy struct {
 	// The certificate attributes.

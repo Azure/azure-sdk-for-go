@@ -34,7 +34,7 @@ func ExampleApplicationDefinitionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationDefinitionsClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationDefinition.json
@@ -70,11 +70,7 @@ func ExampleApplicationDefinitionsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<application-definition-name>",
 		armmanagedapplications.ApplicationDefinition{
-			GenericResource: armmanagedapplications.GenericResource{
-				Resource: armmanagedapplications.Resource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armmanagedapplications.ApplicationDefinitionProperties{
 				Description: to.StringPtr("<description>"),
 				Authorizations: []*armmanagedapplications.ApplicationProviderAuthorization{
@@ -95,7 +91,7 @@ func ExampleApplicationDefinitionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationDefinitionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationDefinitionsByResourceGroup.json
@@ -108,91 +104,16 @@ func ExampleApplicationDefinitionsClient_ListByResourceGroup() {
 	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/getApplicationDefinition.json
-func ExampleApplicationDefinitionsClient_GetByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	res, err := client.GetByID(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationDefinition.json
-func ExampleApplicationDefinitionsClient_BeginDeleteByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDeleteByID(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationDefinition.json
-func ExampleApplicationDefinitionsClient_BeginCreateOrUpdateByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginCreateOrUpdateByID(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
-		armmanagedapplications.ApplicationDefinition{
-			GenericResource: armmanagedapplications.GenericResource{
-				Resource: armmanagedapplications.Resource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Properties: &armmanagedapplications.ApplicationDefinitionProperties{
-				Description: to.StringPtr("<description>"),
-				Authorizations: []*armmanagedapplications.ApplicationProviderAuthorization{
-					{
-						PrincipalID:      to.StringPtr("<principal-id>"),
-						RoleDefinitionID: to.StringPtr("<role-definition-id>"),
-					}},
-				DisplayName:    to.StringPtr("<display-name>"),
-				LockLevel:      armmanagedapplications.ApplicationLockLevelNone.ToPtr(),
-				PackageFileURI: to.StringPtr("<package-file-uri>"),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
 }

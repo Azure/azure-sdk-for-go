@@ -11,7 +11,6 @@ package armbotservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,57 @@ import (
 // HostSettingsClient contains the methods for the HostSettings group.
 // Don't use this type directly, use NewHostSettingsClient() instead.
 type HostSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewHostSettingsClient creates a new instance of HostSettingsClient with the specified values.
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewHostSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HostSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &HostSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &HostSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get per subscription settings needed to host bot in compute resource such as Azure App Service
-// If the operation fails it returns the *Error error type.
-func (client *HostSettingsClient) Get(ctx context.Context, options *HostSettingsGetOptions) (HostSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - HostSettingsClientGetOptions contains the optional parameters for the HostSettingsClient.Get method.
+func (client *HostSettingsClient) Get(ctx context.Context, options *HostSettingsClientGetOptions) (HostSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return HostSettingsGetResponse{}, err
+		return HostSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HostSettingsGetResponse{}, err
+		return HostSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return HostSettingsGetResponse{}, client.getHandleError(resp)
+		return HostSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *HostSettingsClient) getCreateRequest(ctx context.Context, options *HostSettingsGetOptions) (*policy.Request, error) {
+func (client *HostSettingsClient) getCreateRequest(ctx context.Context, options *HostSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/hostSettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +86,10 @@ func (client *HostSettingsClient) getCreateRequest(ctx context.Context, options 
 }
 
 // getHandleResponse handles the Get response.
-func (client *HostSettingsClient) getHandleResponse(resp *http.Response) (HostSettingsGetResponse, error) {
-	result := HostSettingsGetResponse{RawResponse: resp}
+func (client *HostSettingsClient) getHandleResponse(resp *http.Response) (HostSettingsClientGetResponse, error) {
+	result := HostSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostSettingsResponse); err != nil {
-		return HostSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return HostSettingsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *HostSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

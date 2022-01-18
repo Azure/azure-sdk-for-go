@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/alertRuleTemplates/GetAlertRuleTemplates.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplates.json
 func ExampleAlertRuleTemplatesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,17 +27,21 @@ func ExampleAlertRuleTemplatesClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AlertRuleTemplateClassification.GetAlertRuleTemplate().ID: %s\n", *v.GetAlertRuleTemplate().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/alertRuleTemplates/GetAlertRuleTemplateById.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplateById.json
 func ExampleAlertRuleTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,5 +57,5 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AlertRuleTemplateClassification.GetAlertRuleTemplate().ID: %s\n", *res.GetAlertRuleTemplate().ID)
+	log.Printf("Response result: %#v\n", res.AlertRuleTemplatesClientGetResult)
 }

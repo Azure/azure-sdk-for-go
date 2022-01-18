@@ -1,5 +1,1246 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ProductsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ProductsGetOptions)` to `(context.Context, string, string, *ProductsClientGetOptions)`
+- Function `*ProductsClient.Get` return value(s) have been changed from `(ProductsGetResponse, error)` to `(ProductsClientGetResponse, error)`
+- Function `*TransactionsClient.ListByInvoice` parameter(s) have been changed from `(string, string, *TransactionsListByInvoiceOptions)` to `(string, string, *TransactionsClientListByInvoiceOptions)`
+- Function `*TransactionsClient.ListByInvoice` return value(s) have been changed from `(*TransactionsListByInvoicePager)` to `(*TransactionsClientListByInvoicePager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ProductsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *ProductsListByBillingProfileOptions)` to `(string, string, *ProductsClientListByBillingProfileOptions)`
+- Function `*ProductsClient.ListByBillingProfile` return value(s) have been changed from `(*ProductsListByBillingProfilePager)` to `(*ProductsClientListByBillingProfilePager)`
+- Function `*ProductsClient.Update` parameter(s) have been changed from `(context.Context, string, string, Product, *ProductsUpdateOptions)` to `(context.Context, string, string, Product, *ProductsClientUpdateOptions)`
+- Function `*ProductsClient.Update` return value(s) have been changed from `(ProductsUpdateResponse, error)` to `(ProductsClientUpdateResponse, error)`
+- Function `*ProductsClient.Move` parameter(s) have been changed from `(context.Context, string, string, TransferProductRequestProperties, *ProductsMoveOptions)` to `(context.Context, string, string, TransferProductRequestProperties, *ProductsClientMoveOptions)`
+- Function `*ProductsClient.Move` return value(s) have been changed from `(ProductsMoveResponse, error)` to `(ProductsClientMoveResponse, error)`
+- Function `*InvoicesClient.ListByBillingSubscription` parameter(s) have been changed from `(string, string, *InvoicesListByBillingSubscriptionOptions)` to `(string, string, *InvoicesClientListByBillingSubscriptionOptions)`
+- Function `*InvoicesClient.ListByBillingSubscription` return value(s) have been changed from `(*InvoicesListByBillingSubscriptionPager)` to `(*InvoicesClientListByBillingSubscriptionPager)`
+- Function `*ProductsClient.ListByInvoiceSection` parameter(s) have been changed from `(string, string, string, *ProductsListByInvoiceSectionOptions)` to `(string, string, string, *ProductsClientListByInvoiceSectionOptions)`
+- Function `*ProductsClient.ListByInvoiceSection` return value(s) have been changed from `(*ProductsListByInvoiceSectionPager)` to `(*ProductsClientListByInvoiceSectionPager)`
+- Function `*InvoicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *InvoicesGetOptions)` to `(context.Context, string, string, *InvoicesClientGetOptions)`
+- Function `*InvoicesClient.Get` return value(s) have been changed from `(InvoicesGetResponse, error)` to `(InvoicesClientGetResponse, error)`
+- Function `*AgreementsClient.ListByBillingAccount` parameter(s) have been changed from `(string, *AgreementsListByBillingAccountOptions)` to `(string, *AgreementsClientListByBillingAccountOptions)`
+- Function `*AgreementsClient.ListByBillingAccount` return value(s) have been changed from `(*AgreementsListByBillingAccountPager)` to `(*AgreementsClientListByBillingAccountPager)`
+- Function `*ReservationsClient.ListByBillingAccount` parameter(s) have been changed from `(string, *ReservationsListByBillingAccountOptions)` to `(string, *ReservationsClientListByBillingAccountOptions)`
+- Function `*ReservationsClient.ListByBillingAccount` return value(s) have been changed from `(*ReservationsListByBillingAccountPager)` to `(*ReservationsClientListByBillingAccountPager)`
+- Function `*PoliciesClient.GetByBillingProfile` parameter(s) have been changed from `(context.Context, string, string, *PoliciesGetByBillingProfileOptions)` to `(context.Context, string, string, *PoliciesClientGetByBillingProfileOptions)`
+- Function `*PoliciesClient.GetByBillingProfile` return value(s) have been changed from `(PoliciesGetByBillingProfileResponse, error)` to `(PoliciesClientGetByBillingProfileResponse, error)`
+- Function `*InvoiceSectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, InvoiceSection, *InvoiceSectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, InvoiceSection, *InvoiceSectionsClientBeginCreateOrUpdateOptions)`
+- Function `*InvoiceSectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(InvoiceSectionsCreateOrUpdatePollerResponse, error)` to `(InvoiceSectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*EnrollmentAccountsClient.List` parameter(s) have been changed from `(*EnrollmentAccountsListOptions)` to `(*EnrollmentAccountsClientListOptions)`
+- Function `*EnrollmentAccountsClient.List` return value(s) have been changed from `(*EnrollmentAccountsListPager)` to `(*EnrollmentAccountsClientListPager)`
+- Function `*InvoiceSectionsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *InvoiceSectionsListByBillingProfileOptions)` to `(string, string, *InvoiceSectionsClientListByBillingProfileOptions)`
+- Function `*InvoiceSectionsClient.ListByBillingProfile` return value(s) have been changed from `(*InvoiceSectionsListByBillingProfilePager)` to `(*InvoiceSectionsClientListByBillingProfilePager)`
+- Function `*InvoicesClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, string, string, *InvoicesListByBillingProfileOptions)` to `(string, string, string, string, *InvoicesClientListByBillingProfileOptions)`
+- Function `*InvoicesClient.ListByBillingProfile` return value(s) have been changed from `(*InvoicesListByBillingProfilePager)` to `(*InvoicesClientListByBillingProfilePager)`
+- Function `*InvoicesClient.BeginDownloadMultipleBillingProfileInvoices` parameter(s) have been changed from `(context.Context, string, []*string, *InvoicesBeginDownloadMultipleBillingProfileInvoicesOptions)` to `(context.Context, string, []*string, *InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions)`
+- Function `*InvoicesClient.BeginDownloadMultipleBillingProfileInvoices` return value(s) have been changed from `(InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse, error)` to `(InvoicesClientDownloadMultipleBillingProfileInvoicesPollerResponse, error)`
+- Function `*AgreementsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AgreementsGetOptions)` to `(context.Context, string, string, *AgreementsClientGetOptions)`
+- Function `*AgreementsClient.Get` return value(s) have been changed from `(AgreementsGetResponse, error)` to `(AgreementsClientGetResponse, error)`
+- Function `*CustomersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CustomersGetOptions)` to `(context.Context, string, string, *CustomersClientGetOptions)`
+- Function `*CustomersClient.Get` return value(s) have been changed from `(CustomersGetResponse, error)` to `(CustomersClientGetResponse, error)`
+- Function `*InvoicesClient.BeginDownloadBillingSubscriptionInvoice` parameter(s) have been changed from `(context.Context, string, string, *InvoicesBeginDownloadBillingSubscriptionInvoiceOptions)` to `(context.Context, string, string, *InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions)`
+- Function `*InvoicesClient.BeginDownloadBillingSubscriptionInvoice` return value(s) have been changed from `(InvoicesDownloadBillingSubscriptionInvoicePollerResponse, error)` to `(InvoicesClientDownloadBillingSubscriptionInvoicePollerResponse, error)`
+- Function `*InvoicesClient.GetByID` parameter(s) have been changed from `(context.Context, string, *InvoicesGetByIDOptions)` to `(context.Context, string, *InvoicesClientGetByIDOptions)`
+- Function `*InvoicesClient.GetByID` return value(s) have been changed from `(InvoicesGetByIDResponse, error)` to `(InvoicesClientGetByIDResponse, error)`
+- Function `*InstructionsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *InstructionsListByBillingProfileOptions)` to `(string, string, *InstructionsClientListByBillingProfileOptions)`
+- Function `*InstructionsClient.ListByBillingProfile` return value(s) have been changed from `(*InstructionsListByBillingProfilePager)` to `(*InstructionsClientListByBillingProfilePager)`
+- Function `*InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices` parameter(s) have been changed from `(context.Context, []*string, *InvoicesBeginDownloadMultipleBillingSubscriptionInvoicesOptions)` to `(context.Context, []*string, *InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions)`
+- Function `*InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices` return value(s) have been changed from `(InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse, error)` to `(InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPollerResponse, error)`
+- Function `*EnrollmentAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, *EnrollmentAccountsGetOptions)` to `(context.Context, string, *EnrollmentAccountsClientGetOptions)`
+- Function `*EnrollmentAccountsClient.Get` return value(s) have been changed from `(EnrollmentAccountsGetResponse, error)` to `(EnrollmentAccountsClientGetResponse, error)`
+- Function `*ReservationsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *ReservationsListByBillingProfileOptions)` to `(string, string, *ReservationsClientListByBillingProfileOptions)`
+- Function `*ReservationsClient.ListByBillingProfile` return value(s) have been changed from `(*ReservationsListByBillingProfilePager)` to `(*ReservationsClientListByBillingProfilePager)`
+- Function `*PoliciesClient.UpdateCustomer` parameter(s) have been changed from `(context.Context, string, string, CustomerPolicy, *PoliciesUpdateCustomerOptions)` to `(context.Context, string, string, CustomerPolicy, *PoliciesClientUpdateCustomerOptions)`
+- Function `*PoliciesClient.UpdateCustomer` return value(s) have been changed from `(PoliciesUpdateCustomerResponse, error)` to `(PoliciesClientUpdateCustomerResponse, error)`
+- Function `*PoliciesClient.Update` parameter(s) have been changed from `(context.Context, string, string, Policy, *PoliciesUpdateOptions)` to `(context.Context, string, string, Policy, *PoliciesClientUpdateOptions)`
+- Function `*PoliciesClient.Update` return value(s) have been changed from `(PoliciesUpdateResponse, error)` to `(PoliciesClientUpdateResponse, error)`
+- Function `*AvailableBalancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AvailableBalancesGetOptions)` to `(context.Context, string, string, *AvailableBalancesClientGetOptions)`
+- Function `*AvailableBalancesClient.Get` return value(s) have been changed from `(AvailableBalancesGetResponse, error)` to `(AvailableBalancesClientGetResponse, error)`
+- Function `*ProductsClient.ListByBillingAccount` parameter(s) have been changed from `(string, *ProductsListByBillingAccountOptions)` to `(string, *ProductsClientListByBillingAccountOptions)`
+- Function `*ProductsClient.ListByBillingAccount` return value(s) have been changed from `(*ProductsListByBillingAccountPager)` to `(*ProductsClientListByBillingAccountPager)`
+- Function `*InvoicesClient.GetBySubscriptionAndInvoiceID` parameter(s) have been changed from `(context.Context, string, *InvoicesGetBySubscriptionAndInvoiceIDOptions)` to `(context.Context, string, *InvoicesClientGetBySubscriptionAndInvoiceIDOptions)`
+- Function `*InvoicesClient.GetBySubscriptionAndInvoiceID` return value(s) have been changed from `(InvoicesGetBySubscriptionAndInvoiceIDResponse, error)` to `(InvoicesClientGetBySubscriptionAndInvoiceIDResponse, error)`
+- Function `*CustomersClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *CustomersListByBillingProfileOptions)` to `(string, string, *CustomersClientListByBillingProfileOptions)`
+- Function `*CustomersClient.ListByBillingProfile` return value(s) have been changed from `(*CustomersListByBillingProfilePager)` to `(*CustomersClientListByBillingProfilePager)`
+- Function `*InvoiceSectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *InvoiceSectionsGetOptions)` to `(context.Context, string, string, string, *InvoiceSectionsClientGetOptions)`
+- Function `*InvoiceSectionsClient.Get` return value(s) have been changed from `(InvoiceSectionsGetResponse, error)` to `(InvoiceSectionsClientGetResponse, error)`
+- Function `*CustomersClient.ListByBillingAccount` parameter(s) have been changed from `(string, *CustomersListByBillingAccountOptions)` to `(string, *CustomersClientListByBillingAccountOptions)`
+- Function `*CustomersClient.ListByBillingAccount` return value(s) have been changed from `(*CustomersListByBillingAccountPager)` to `(*CustomersClientListByBillingAccountPager)`
+- Function `*AddressClient.Validate` parameter(s) have been changed from `(context.Context, AddressDetails, *AddressValidateOptions)` to `(context.Context, AddressDetails, *AddressClientValidateOptions)`
+- Function `*AddressClient.Validate` return value(s) have been changed from `(AddressValidateResponse, error)` to `(AddressClientValidateResponse, error)`
+- Function `*PoliciesClient.GetByCustomer` parameter(s) have been changed from `(context.Context, string, string, *PoliciesGetByCustomerOptions)` to `(context.Context, string, string, *PoliciesClientGetByCustomerOptions)`
+- Function `*PoliciesClient.GetByCustomer` return value(s) have been changed from `(PoliciesGetByCustomerResponse, error)` to `(PoliciesClientGetByCustomerResponse, error)`
+- Function `*InstructionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *InstructionsGetOptions)` to `(context.Context, string, string, string, *InstructionsClientGetOptions)`
+- Function `*InstructionsClient.Get` return value(s) have been changed from `(InstructionsGetResponse, error)` to `(InstructionsClientGetResponse, error)`
+- Function `*ProductsClient.ListByCustomer` parameter(s) have been changed from `(string, string, *ProductsListByCustomerOptions)` to `(string, string, *ProductsClientListByCustomerOptions)`
+- Function `*ProductsClient.ListByCustomer` return value(s) have been changed from `(*ProductsListByCustomerPager)` to `(*ProductsClientListByCustomerPager)`
+- Function `*InvoicesClient.ListByBillingAccount` parameter(s) have been changed from `(string, string, string, *InvoicesListByBillingAccountOptions)` to `(string, string, string, *InvoicesClientListByBillingAccountOptions)`
+- Function `*InvoicesClient.ListByBillingAccount` return value(s) have been changed from `(*InvoicesListByBillingAccountPager)` to `(*InvoicesClientListByBillingAccountPager)`
+- Function `*ProductsClient.ValidateMove` parameter(s) have been changed from `(context.Context, string, string, TransferProductRequestProperties, *ProductsValidateMoveOptions)` to `(context.Context, string, string, TransferProductRequestProperties, *ProductsClientValidateMoveOptions)`
+- Function `*ProductsClient.ValidateMove` return value(s) have been changed from `(ProductsValidateMoveResponse, error)` to `(ProductsClientValidateMoveResponse, error)`
+- Function `*InstructionsClient.Put` parameter(s) have been changed from `(context.Context, string, string, string, Instruction, *InstructionsPutOptions)` to `(context.Context, string, string, string, Instruction, *InstructionsClientPutOptions)`
+- Function `*InstructionsClient.Put` return value(s) have been changed from `(InstructionsPutResponse, error)` to `(InstructionsClientPutResponse, error)`
+- Function `*InvoicesClient.BeginDownloadInvoice` parameter(s) have been changed from `(context.Context, string, string, string, *InvoicesBeginDownloadInvoiceOptions)` to `(context.Context, string, string, string, *InvoicesClientBeginDownloadInvoiceOptions)`
+- Function `*InvoicesClient.BeginDownloadInvoice` return value(s) have been changed from `(InvoicesDownloadInvoicePollerResponse, error)` to `(InvoicesClientDownloadInvoicePollerResponse, error)`
+- Function `*BillingSubscriptionsClient.ListByInvoiceSection` has been removed
+- Function `BillingAccount.MarshalJSON` has been removed
+- Function `AvailableBalance.MarshalJSON` has been removed
+- Function `*BillingSubscriptionsListByBillingProfilePager.Err` has been removed
+- Function `*ProductsListByBillingAccountPager.NextPage` has been removed
+- Function `BillingPeriod.MarshalJSON` has been removed
+- Function `*BillingAccountsUpdatePoller.Poll` has been removed
+- Function `*BillingPermissionsListByBillingProfilePager.NextPage` has been removed
+- Function `*InvoiceSectionsListByBillingProfilePager.Err` has been removed
+- Function `*BillingRoleAssignmentsClient.DeleteByBillingAccount` has been removed
+- Function `*InvoicesDownloadInvoicePoller.ResumeToken` has been removed
+- Function `BillingRoleDefinition.MarshalJSON` has been removed
+- Function `*CustomersListByBillingProfilePager.NextPage` has been removed
+- Function `BillingRoleAssignmentListResult.MarshalJSON` has been removed
+- Function `BillingRoleAssignment.MarshalJSON` has been removed
+- Function `*BillingProfilesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `BillingSubscription.MarshalJSON` has been removed
+- Function `*BillingAccountsListPager.Err` has been removed
+- Function `*BillingRoleDefinitionsClient.GetByBillingAccount` has been removed
+- Function `*BillingPermissionsListByInvoiceSectionsPager.Err` has been removed
+- Function `*BillingRoleAssignmentsClient.DeleteByBillingProfile` has been removed
+- Function `*InvoicesDownloadBillingSubscriptionInvoicePoller.ResumeToken` has been removed
+- Function `*BillingRoleAssignmentsListByBillingAccountPager.Err` has been removed
+- Function `*BillingRoleDefinitionsListByInvoiceSectionPager.PageResponse` has been removed
+- Function `*InvoiceSectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*InvoicesDownloadMultipleBillingProfileInvoicesPoller.ResumeToken` has been removed
+- Function `*ReservationsListByBillingProfilePager.NextPage` has been removed
+- Function `BillingProperty.MarshalJSON` has been removed
+- Function `BillingPermissionsListResult.MarshalJSON` has been removed
+- Function `*BillingRoleAssignmentsListByBillingProfilePager.NextPage` has been removed
+- Function `*BillingRoleAssignmentsClient.ListByInvoiceSection` has been removed
+- Function `*BillingPermissionsListByBillingAccountPager.Err` has been removed
+- Function `*BillingRoleAssignmentsClient.GetByInvoiceSection` has been removed
+- Function `NewBillingRoleDefinitionsClient` has been removed
+- Function `*BillingSubscriptionsMovePoller.Done` has been removed
+- Function `CustomerPolicy.MarshalJSON` has been removed
+- Function `*BillingRoleAssignmentsListByInvoiceSectionPager.Err` has been removed
+- Function `*ProductsListByBillingProfilePager.NextPage` has been removed
+- Function `Customer.MarshalJSON` has been removed
+- Function `*InstructionsListByBillingProfilePager.NextPage` has been removed
+- Function `*BillingPermissionsClient.ListByInvoiceSections` has been removed
+- Function `*ReservationsListByBillingAccountPager.NextPage` has been removed
+- Function `*BillingSubscriptionsListByBillingProfilePager.PageResponse` has been removed
+- Function `*InvoicesListByBillingSubscriptionPager.NextPage` has been removed
+- Function `*BillingRoleAssignmentsClient.GetByBillingProfile` has been removed
+- Function `*InvoicesListByBillingAccountPager.PageResponse` has been removed
+- Function `*BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionPager.Err` has been removed
+- Function `*BillingRoleAssignmentsListByInvoiceSectionPager.NextPage` has been removed
+- Function `*BillingRoleDefinitionsListByBillingAccountPager.Err` has been removed
+- Function `*InvoicesDownloadMultipleBillingProfileInvoicesPoller.Done` has been removed
+- Function `*BillingAccountsClient.BeginUpdate` has been removed
+- Function `BillingProfileCreationRequest.MarshalJSON` has been removed
+- Function `*BillingSubscriptionsListByInvoiceSectionPager.NextPage` has been removed
+- Function `*BillingRoleDefinitionsClient.GetByInvoiceSection` has been removed
+- Function `*InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse.Resume` has been removed
+- Function `*InvoicesListByBillingSubscriptionPager.Err` has been removed
+- Function `*BillingRoleDefinitionsClient.ListByBillingAccount` has been removed
+- Function `NewBillingAccountsClient` has been removed
+- Function `*InvoiceSectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*BillingSubscriptionsClient.ValidateMove` has been removed
+- Function `*BillingAccountsListPager.PageResponse` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*InvoicesListByBillingProfilePager.NextPage` has been removed
+- Function `*InstructionsListByBillingProfilePager.PageResponse` has been removed
+- Function `*ProductsListByInvoiceSectionPager.NextPage` has been removed
+- Function `*EnrollmentAccountsListPager.Err` has been removed
+- Function `*BillingAccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission` has been removed
+- Function `EnrollmentAccountSummary.MarshalJSON` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*BillingProfilesClient.BeginCreateOrUpdate` has been removed
+- Function `*BillingSubscriptionsListByCustomerPager.NextPage` has been removed
+- Function `*BillingRoleDefinitionsListByBillingAccountPager.PageResponse` has been removed
+- Function `BillingProfileProperties.MarshalJSON` has been removed
+- Function `*BillingAccountsListPager.NextPage` has been removed
+- Function `*BillingSubscriptionsListByBillingProfilePager.NextPage` has been removed
+- Function `NewBillingRoleAssignmentsClient` has been removed
+- Function `*BillingPermissionsListByCustomerPager.PageResponse` has been removed
+- Function `*BillingRoleAssignmentsClient.ListByBillingProfile` has been removed
+- Function `*ProductsListByBillingAccountPager.Err` has been removed
+- Function `*CustomersListByBillingAccountPager.NextPage` has been removed
+- Function `*BillingSubscriptionsClient.Get` has been removed
+- Function `*ProductsListByInvoiceSectionPager.Err` has been removed
+- Function `*BillingRoleAssignmentsListByBillingAccountPager.NextPage` has been removed
+- Function `*BillingRoleDefinitionsClient.GetByBillingProfile` has been removed
+- Function `InvoiceSection.MarshalJSON` has been removed
+- Function `*InvoicesDownloadInvoicePoller.FinalResponse` has been removed
+- Function `BillingProfileListResult.MarshalJSON` has been removed
+- Function `*BillingRoleAssignmentsListByBillingProfilePager.PageResponse` has been removed
+- Function `Department.MarshalJSON` has been removed
+- Function `*BillingSubscriptionsListByInvoiceSectionPager.Err` has been removed
+- Function `InvoicesDownloadInvoicePollerResponse.PollUntilDone` has been removed
+- Function `*InvoiceSectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*InvoiceSectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller.Poll` has been removed
+- Function `*InvoicesListByBillingAccountPager.NextPage` has been removed
+- Function `BillingPermissionsProperties.MarshalJSON` has been removed
+- Function `*BillingAccountsUpdatePoller.Done` has been removed
+- Function `*BillingRoleAssignmentsListByInvoiceSectionPager.PageResponse` has been removed
+- Function `*BillingRoleAssignmentsClient.GetByBillingAccount` has been removed
+- Function `*ReservationsListByBillingAccountPager.Err` has been removed
+- Function `*InvoicesDownloadMultipleBillingProfileInvoicesPoller.FinalResponse` has been removed
+- Function `*ProductsListByBillingProfilePager.PageResponse` has been removed
+- Function `*BillingPermissionsListByInvoiceSectionsPager.NextPage` has been removed
+- Function `*InvoicesListByBillingProfilePager.Err` has been removed
+- Function `*BillingPermissionsClient.ListByBillingAccount` has been removed
+- Function `*BillingPermissionsClient.ListByBillingProfile` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*InvoicesDownloadBillingSubscriptionInvoicePollerResponse.Resume` has been removed
+- Function `*BillingSubscriptionsClient.Update` has been removed
+- Function `*InvoicesListByBillingSubscriptionPager.PageResponse` has been removed
+- Function `*BillingProfilesListByBillingAccountPager.Err` has been removed
+- Function `InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse.PollUntilDone` has been removed
+- Function `*BillingRoleDefinitionsListByInvoiceSectionPager.NextPage` has been removed
+- Function `*ProductsListByBillingProfilePager.Err` has been removed
+- Function `NewBillingProfilesClient` has been removed
+- Function `*InvoicesDownloadBillingSubscriptionInvoicePoller.Done` has been removed
+- Function `*BillingAccountsClient.Get` has been removed
+- Function `*BillingSubscriptionsListByCustomerPager.Err` has been removed
+- Function `Instruction.MarshalJSON` has been removed
+- Function `NewBillingPropertyClient` has been removed
+- Function `BillingAccountUpdateRequest.MarshalJSON` has been removed
+- Function `*InstructionsListByBillingProfilePager.Err` has been removed
+- Function `*BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionPager.PageResponse` has been removed
+- Function `*BillingRoleDefinitionsClient.ListByBillingProfile` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*InvoiceSectionsListByBillingProfilePager.PageResponse` has been removed
+- Function `*BillingRoleAssignmentsClient.ListByBillingAccount` has been removed
+- Function `*BillingProfilesClient.ListByBillingAccount` has been removed
+- Function `InvoicesDownloadBillingSubscriptionInvoicePollerResponse.PollUntilDone` has been removed
+- Function `Transaction.MarshalJSON` has been removed
+- Function `*ReservationsListByBillingProfilePager.PageResponse` has been removed
+- Function `*BillingAccountsUpdatePollerResponse.Resume` has been removed
+- Function `BillingProfilesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*InvoicesListByBillingProfilePager.PageResponse` has been removed
+- Function `NewBillingPermissionsClient` has been removed
+- Function `*InvoiceSectionsCreateOrUpdatePoller.Done` has been removed
+- Function `*BillingPermissionsListByCustomerPager.NextPage` has been removed
+- Function `*InvoicesListByBillingAccountPager.Err` has been removed
+- Function `*BillingPeriodsListPager.NextPage` has been removed
+- Function `*BillingSubscriptionsClient.ListByCustomer` has been removed
+- Function `*BillingSubscriptionsClient.ListByBillingProfile` has been removed
+- Function `*InvoiceSectionsListByBillingProfilePager.NextPage` has been removed
+- Function `*BillingSubscriptionsListByBillingAccountPager.Err` has been removed
+- Function `InvoiceSectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*BillingSubscriptionsListByInvoiceSectionPager.PageResponse` has been removed
+- Function `BillingSubscriptionsMovePollerResponse.PollUntilDone` has been removed
+- Function `*BillingSubscriptionsListByCustomerPager.PageResponse` has been removed
+- Function `*BillingSubscriptionsClient.BeginMove` has been removed
+- Function `BillingSubscriptionProperties.MarshalJSON` has been removed
+- Function `NewBillingPeriodsClient` has been removed
+- Function `*BillingProfilesListByBillingAccountPager.PageResponse` has been removed
+- Function `*AgreementsListByBillingAccountPager.PageResponse` has been removed
+- Function `*BillingPermissionsListByBillingAccountPager.PageResponse` has been removed
+- Function `*BillingRoleDefinitionsListByBillingAccountPager.NextPage` has been removed
+- Function `*BillingSubscriptionsMovePoller.Poll` has been removed
+- Function `*EnrollmentAccountsListPager.PageResponse` has been removed
+- Function `*AgreementsListByBillingAccountPager.NextPage` has been removed
+- Function `*InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse.Resume` has been removed
+- Function `BillingProfile.MarshalJSON` has been removed
+- Function `*BillingPermissionsListByBillingProfilePager.Err` has been removed
+- Function `BillingAccountProperties.MarshalJSON` has been removed
+- Function `*BillingPermissionsListByBillingProfilePager.PageResponse` has been removed
+- Function `*InvoicesDownloadInvoicePoller.Poll` has been removed
+- Function `*BillingRoleDefinitionsListByBillingProfilePager.PageResponse` has been removed
+- Function `Agreement.MarshalJSON` has been removed
+- Function `*BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionPager.NextPage` has been removed
+- Function `*BillingAccountsUpdatePoller.ResumeToken` has been removed
+- Function `*BillingRoleDefinitionsListByBillingProfilePager.NextPage` has been removed
+- Function `*BillingPeriodsListPager.Err` has been removed
+- Function `*CustomersListByBillingProfilePager.PageResponse` has been removed
+- Function `*BillingPermissionsClient.ListByCustomer` has been removed
+- Function `BillingAccountListResult.MarshalJSON` has been removed
+- Function `*BillingPermissionsListByInvoiceSectionsPager.PageResponse` has been removed
+- Function `*ProductsListByBillingAccountPager.PageResponse` has been removed
+- Function `*BillingSubscriptionsListByBillingAccountPager.NextPage` has been removed
+- Function `*BillingProfilesCreateOrUpdatePoller.Done` has been removed
+- Function `*BillingProfilesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ProductsListByCustomerPager.PageResponse` has been removed
+- Function `*BillingAccountsUpdatePoller.FinalResponse` has been removed
+- Function `*BillingRoleDefinitionsListByBillingProfilePager.Err` has been removed
+- Function `*CustomersListByBillingAccountPager.PageResponse` has been removed
+- Function `BillingPeriodsListResult.MarshalJSON` has been removed
+- Function `*ReservationsListByBillingProfilePager.Err` has been removed
+- Function `*BillingProfilesListByBillingAccountPager.NextPage` has been removed
+- Function `BillingPeriodProperties.MarshalJSON` has been removed
+- Function `*TransactionsListByInvoicePager.PageResponse` has been removed
+- Function `*InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller.Done` has been removed
+- Function `*BillingProfilesClient.Get` has been removed
+- Function `*BillingPeriodsClient.List` has been removed
+- Function `*BillingRoleDefinitionsListByInvoiceSectionPager.Err` has been removed
+- Function `*BillingSubscriptionsMovePoller.ResumeToken` has been removed
+- Function `*InvoicesDownloadInvoicePoller.Done` has been removed
+- Function `*InvoicesDownloadInvoicePollerResponse.Resume` has been removed
+- Function `*InvoicesDownloadBillingSubscriptionInvoicePoller.FinalResponse` has been removed
+- Function `*TransactionsListByInvoicePager.NextPage` has been removed
+- Function `*BillingSubscriptionsListByBillingAccountPager.PageResponse` has been removed
+- Function `*AgreementsListByBillingAccountPager.Err` has been removed
+- Function `*BillingSubscriptionsClient.ListByBillingAccount` has been removed
+- Function `BillingSubscriptionsListResult.MarshalJSON` has been removed
+- Function `*BillingPeriodsListPager.PageResponse` has been removed
+- Function `NewBillingSubscriptionsClient` has been removed
+- Function `BillingRoleDefinitionListResult.MarshalJSON` has been removed
+- Function `BillingAccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*TransactionsListByInvoicePager.Err` has been removed
+- Function `*BillingPermissionsListByBillingAccountPager.NextPage` has been removed
+- Function `*BillingSubscriptionsMovePollerResponse.Resume` has been removed
+- Function `*BillingSubscriptionsMovePoller.FinalResponse` has been removed
+- Function `InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse.PollUntilDone` has been removed
+- Function `*BillingPeriodsClient.Get` has been removed
+- Function `Policy.MarshalJSON` has been removed
+- Function `*BillingRoleAssignmentsListByBillingAccountPager.PageResponse` has been removed
+- Function `*ProductsListByInvoiceSectionPager.PageResponse` has been removed
+- Function `*InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller.FinalResponse` has been removed
+- Function `*EnrollmentAccountsListPager.NextPage` has been removed
+- Function `*InvoicesDownloadBillingSubscriptionInvoicePoller.Poll` has been removed
+- Function `Invoice.MarshalJSON` has been removed
+- Function `*BillingPeriodProperties.UnmarshalJSON` has been removed
+- Function `BillingProfilesOnExpand.MarshalJSON` has been removed
+- Function `BillingRoleDefinitionProperties.MarshalJSON` has been removed
+- Function `*CustomersListByBillingProfilePager.Err` has been removed
+- Function `*BillingRoleAssignmentsListByBillingProfilePager.Err` has been removed
+- Function `*InvoicesDownloadMultipleBillingProfileInvoicesPoller.Poll` has been removed
+- Function `*BillingRoleAssignmentsClient.DeleteByInvoiceSection` has been removed
+- Function `*BillingPropertyClient.Get` has been removed
+- Function `*BillingPropertyClient.Update` has been removed
+- Function `*BillingRoleDefinitionsClient.ListByInvoiceSection` has been removed
+- Function `*ProductsListByCustomerPager.Err` has been removed
+- Function `*BillingProfilesCreateOrUpdatePoller.Poll` has been removed
+- Function `*ReservationsListByBillingAccountPager.PageResponse` has been removed
+- Function `*InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller.ResumeToken` has been removed
+- Function `*ProductsListByCustomerPager.NextPage` has been removed
+- Function `EnrollmentAccount.MarshalJSON` has been removed
+- Function `*BillingAccountsClient.List` has been removed
+- Function `*BillingPermissionsListByCustomerPager.Err` has been removed
+- Function `*BillingProfilesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*CustomersListByBillingAccountPager.Err` has been removed
+- Struct `AddressValidateOptions` has been removed
+- Struct `AddressValidateResponse` has been removed
+- Struct `AddressValidateResult` has been removed
+- Struct `AgreementsGetOptions` has been removed
+- Struct `AgreementsGetResponse` has been removed
+- Struct `AgreementsGetResult` has been removed
+- Struct `AgreementsListByBillingAccountOptions` has been removed
+- Struct `AgreementsListByBillingAccountPager` has been removed
+- Struct `AgreementsListByBillingAccountResponse` has been removed
+- Struct `AgreementsListByBillingAccountResult` has been removed
+- Struct `AvailableBalancesGetOptions` has been removed
+- Struct `AvailableBalancesGetResponse` has been removed
+- Struct `AvailableBalancesGetResult` has been removed
+- Struct `BillingAccount` has been removed
+- Struct `BillingAccountListResult` has been removed
+- Struct `BillingAccountProperties` has been removed
+- Struct `BillingAccountUpdateRequest` has been removed
+- Struct `BillingAccountsBeginUpdateOptions` has been removed
+- Struct `BillingAccountsClient` has been removed
+- Struct `BillingAccountsGetOptions` has been removed
+- Struct `BillingAccountsGetResponse` has been removed
+- Struct `BillingAccountsGetResult` has been removed
+- Struct `BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionOptions` has been removed
+- Struct `BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionPager` has been removed
+- Struct `BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResponse` has been removed
+- Struct `BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResult` has been removed
+- Struct `BillingAccountsListOptions` has been removed
+- Struct `BillingAccountsListPager` has been removed
+- Struct `BillingAccountsListResponse` has been removed
+- Struct `BillingAccountsListResult` has been removed
+- Struct `BillingAccountsUpdatePoller` has been removed
+- Struct `BillingAccountsUpdatePollerResponse` has been removed
+- Struct `BillingAccountsUpdateResponse` has been removed
+- Struct `BillingAccountsUpdateResult` has been removed
+- Struct `BillingPeriod` has been removed
+- Struct `BillingPeriodProperties` has been removed
+- Struct `BillingPeriodsClient` has been removed
+- Struct `BillingPeriodsGetOptions` has been removed
+- Struct `BillingPeriodsGetResponse` has been removed
+- Struct `BillingPeriodsGetResult` has been removed
+- Struct `BillingPeriodsListOptions` has been removed
+- Struct `BillingPeriodsListPager` has been removed
+- Struct `BillingPeriodsListResponse` has been removed
+- Struct `BillingPeriodsListResult` has been removed
+- Struct `BillingPeriodsListResultEnvelope` has been removed
+- Struct `BillingPermissionsClient` has been removed
+- Struct `BillingPermissionsListByBillingAccountOptions` has been removed
+- Struct `BillingPermissionsListByBillingAccountPager` has been removed
+- Struct `BillingPermissionsListByBillingAccountResponse` has been removed
+- Struct `BillingPermissionsListByBillingAccountResult` has been removed
+- Struct `BillingPermissionsListByBillingProfileOptions` has been removed
+- Struct `BillingPermissionsListByBillingProfilePager` has been removed
+- Struct `BillingPermissionsListByBillingProfileResponse` has been removed
+- Struct `BillingPermissionsListByBillingProfileResult` has been removed
+- Struct `BillingPermissionsListByCustomerOptions` has been removed
+- Struct `BillingPermissionsListByCustomerPager` has been removed
+- Struct `BillingPermissionsListByCustomerResponse` has been removed
+- Struct `BillingPermissionsListByCustomerResult` has been removed
+- Struct `BillingPermissionsListByInvoiceSectionsOptions` has been removed
+- Struct `BillingPermissionsListByInvoiceSectionsPager` has been removed
+- Struct `BillingPermissionsListByInvoiceSectionsResponse` has been removed
+- Struct `BillingPermissionsListByInvoiceSectionsResult` has been removed
+- Struct `BillingPermissionsListResult` has been removed
+- Struct `BillingPermissionsProperties` has been removed
+- Struct `BillingProfile` has been removed
+- Struct `BillingProfileCreationRequest` has been removed
+- Struct `BillingProfileListResult` has been removed
+- Struct `BillingProfileProperties` has been removed
+- Struct `BillingProfilesBeginCreateOrUpdateOptions` has been removed
+- Struct `BillingProfilesClient` has been removed
+- Struct `BillingProfilesCreateOrUpdatePoller` has been removed
+- Struct `BillingProfilesCreateOrUpdatePollerResponse` has been removed
+- Struct `BillingProfilesCreateOrUpdateResponse` has been removed
+- Struct `BillingProfilesCreateOrUpdateResult` has been removed
+- Struct `BillingProfilesGetOptions` has been removed
+- Struct `BillingProfilesGetResponse` has been removed
+- Struct `BillingProfilesGetResult` has been removed
+- Struct `BillingProfilesListByBillingAccountOptions` has been removed
+- Struct `BillingProfilesListByBillingAccountPager` has been removed
+- Struct `BillingProfilesListByBillingAccountResponse` has been removed
+- Struct `BillingProfilesListByBillingAccountResult` has been removed
+- Struct `BillingProfilesOnExpand` has been removed
+- Struct `BillingProperty` has been removed
+- Struct `BillingPropertyClient` has been removed
+- Struct `BillingPropertyGetOptions` has been removed
+- Struct `BillingPropertyGetResponse` has been removed
+- Struct `BillingPropertyGetResult` has been removed
+- Struct `BillingPropertyProperties` has been removed
+- Struct `BillingPropertyUpdateOptions` has been removed
+- Struct `BillingPropertyUpdateResponse` has been removed
+- Struct `BillingPropertyUpdateResult` has been removed
+- Struct `BillingRoleAssignment` has been removed
+- Struct `BillingRoleAssignmentListResult` has been removed
+- Struct `BillingRoleAssignmentProperties` has been removed
+- Struct `BillingRoleAssignmentsClient` has been removed
+- Struct `BillingRoleAssignmentsDeleteByBillingAccountOptions` has been removed
+- Struct `BillingRoleAssignmentsDeleteByBillingAccountResponse` has been removed
+- Struct `BillingRoleAssignmentsDeleteByBillingAccountResult` has been removed
+- Struct `BillingRoleAssignmentsDeleteByBillingProfileOptions` has been removed
+- Struct `BillingRoleAssignmentsDeleteByBillingProfileResponse` has been removed
+- Struct `BillingRoleAssignmentsDeleteByBillingProfileResult` has been removed
+- Struct `BillingRoleAssignmentsDeleteByInvoiceSectionOptions` has been removed
+- Struct `BillingRoleAssignmentsDeleteByInvoiceSectionResponse` has been removed
+- Struct `BillingRoleAssignmentsDeleteByInvoiceSectionResult` has been removed
+- Struct `BillingRoleAssignmentsGetByBillingAccountOptions` has been removed
+- Struct `BillingRoleAssignmentsGetByBillingAccountResponse` has been removed
+- Struct `BillingRoleAssignmentsGetByBillingAccountResult` has been removed
+- Struct `BillingRoleAssignmentsGetByBillingProfileOptions` has been removed
+- Struct `BillingRoleAssignmentsGetByBillingProfileResponse` has been removed
+- Struct `BillingRoleAssignmentsGetByBillingProfileResult` has been removed
+- Struct `BillingRoleAssignmentsGetByInvoiceSectionOptions` has been removed
+- Struct `BillingRoleAssignmentsGetByInvoiceSectionResponse` has been removed
+- Struct `BillingRoleAssignmentsGetByInvoiceSectionResult` has been removed
+- Struct `BillingRoleAssignmentsListByBillingAccountOptions` has been removed
+- Struct `BillingRoleAssignmentsListByBillingAccountPager` has been removed
+- Struct `BillingRoleAssignmentsListByBillingAccountResponse` has been removed
+- Struct `BillingRoleAssignmentsListByBillingAccountResult` has been removed
+- Struct `BillingRoleAssignmentsListByBillingProfileOptions` has been removed
+- Struct `BillingRoleAssignmentsListByBillingProfilePager` has been removed
+- Struct `BillingRoleAssignmentsListByBillingProfileResponse` has been removed
+- Struct `BillingRoleAssignmentsListByBillingProfileResult` has been removed
+- Struct `BillingRoleAssignmentsListByInvoiceSectionOptions` has been removed
+- Struct `BillingRoleAssignmentsListByInvoiceSectionPager` has been removed
+- Struct `BillingRoleAssignmentsListByInvoiceSectionResponse` has been removed
+- Struct `BillingRoleAssignmentsListByInvoiceSectionResult` has been removed
+- Struct `BillingRoleDefinition` has been removed
+- Struct `BillingRoleDefinitionListResult` has been removed
+- Struct `BillingRoleDefinitionProperties` has been removed
+- Struct `BillingRoleDefinitionsClient` has been removed
+- Struct `BillingRoleDefinitionsGetByBillingAccountOptions` has been removed
+- Struct `BillingRoleDefinitionsGetByBillingAccountResponse` has been removed
+- Struct `BillingRoleDefinitionsGetByBillingAccountResult` has been removed
+- Struct `BillingRoleDefinitionsGetByBillingProfileOptions` has been removed
+- Struct `BillingRoleDefinitionsGetByBillingProfileResponse` has been removed
+- Struct `BillingRoleDefinitionsGetByBillingProfileResult` has been removed
+- Struct `BillingRoleDefinitionsGetByInvoiceSectionOptions` has been removed
+- Struct `BillingRoleDefinitionsGetByInvoiceSectionResponse` has been removed
+- Struct `BillingRoleDefinitionsGetByInvoiceSectionResult` has been removed
+- Struct `BillingRoleDefinitionsListByBillingAccountOptions` has been removed
+- Struct `BillingRoleDefinitionsListByBillingAccountPager` has been removed
+- Struct `BillingRoleDefinitionsListByBillingAccountResponse` has been removed
+- Struct `BillingRoleDefinitionsListByBillingAccountResult` has been removed
+- Struct `BillingRoleDefinitionsListByBillingProfileOptions` has been removed
+- Struct `BillingRoleDefinitionsListByBillingProfilePager` has been removed
+- Struct `BillingRoleDefinitionsListByBillingProfileResponse` has been removed
+- Struct `BillingRoleDefinitionsListByBillingProfileResult` has been removed
+- Struct `BillingRoleDefinitionsListByInvoiceSectionOptions` has been removed
+- Struct `BillingRoleDefinitionsListByInvoiceSectionPager` has been removed
+- Struct `BillingRoleDefinitionsListByInvoiceSectionResponse` has been removed
+- Struct `BillingRoleDefinitionsListByInvoiceSectionResult` has been removed
+- Struct `BillingSubscription` has been removed
+- Struct `BillingSubscriptionProperties` has been removed
+- Struct `BillingSubscriptionsBeginMoveOptions` has been removed
+- Struct `BillingSubscriptionsClient` has been removed
+- Struct `BillingSubscriptionsGetOptions` has been removed
+- Struct `BillingSubscriptionsGetResponse` has been removed
+- Struct `BillingSubscriptionsGetResult` has been removed
+- Struct `BillingSubscriptionsListByBillingAccountOptions` has been removed
+- Struct `BillingSubscriptionsListByBillingAccountPager` has been removed
+- Struct `BillingSubscriptionsListByBillingAccountResponse` has been removed
+- Struct `BillingSubscriptionsListByBillingAccountResult` has been removed
+- Struct `BillingSubscriptionsListByBillingProfileOptions` has been removed
+- Struct `BillingSubscriptionsListByBillingProfilePager` has been removed
+- Struct `BillingSubscriptionsListByBillingProfileResponse` has been removed
+- Struct `BillingSubscriptionsListByBillingProfileResult` has been removed
+- Struct `BillingSubscriptionsListByCustomerOptions` has been removed
+- Struct `BillingSubscriptionsListByCustomerPager` has been removed
+- Struct `BillingSubscriptionsListByCustomerResponse` has been removed
+- Struct `BillingSubscriptionsListByCustomerResult` has been removed
+- Struct `BillingSubscriptionsListByInvoiceSectionOptions` has been removed
+- Struct `BillingSubscriptionsListByInvoiceSectionPager` has been removed
+- Struct `BillingSubscriptionsListByInvoiceSectionResponse` has been removed
+- Struct `BillingSubscriptionsListByInvoiceSectionResult` has been removed
+- Struct `BillingSubscriptionsListResult` has been removed
+- Struct `BillingSubscriptionsMovePoller` has been removed
+- Struct `BillingSubscriptionsMovePollerResponse` has been removed
+- Struct `BillingSubscriptionsMoveResponse` has been removed
+- Struct `BillingSubscriptionsMoveResult` has been removed
+- Struct `BillingSubscriptionsUpdateOptions` has been removed
+- Struct `BillingSubscriptionsUpdateResponse` has been removed
+- Struct `BillingSubscriptionsUpdateResult` has been removed
+- Struct `BillingSubscriptionsValidateMoveOptions` has been removed
+- Struct `BillingSubscriptionsValidateMoveResponse` has been removed
+- Struct `BillingSubscriptionsValidateMoveResult` has been removed
+- Struct `CustomersGetOptions` has been removed
+- Struct `CustomersGetResponse` has been removed
+- Struct `CustomersGetResult` has been removed
+- Struct `CustomersListByBillingAccountOptions` has been removed
+- Struct `CustomersListByBillingAccountPager` has been removed
+- Struct `CustomersListByBillingAccountResponse` has been removed
+- Struct `CustomersListByBillingAccountResult` has been removed
+- Struct `CustomersListByBillingProfileOptions` has been removed
+- Struct `CustomersListByBillingProfilePager` has been removed
+- Struct `CustomersListByBillingProfileResponse` has been removed
+- Struct `CustomersListByBillingProfileResult` has been removed
+- Struct `EnrollmentAccountsGetOptions` has been removed
+- Struct `EnrollmentAccountsGetResponse` has been removed
+- Struct `EnrollmentAccountsGetResult` has been removed
+- Struct `EnrollmentAccountsListOptions` has been removed
+- Struct `EnrollmentAccountsListPager` has been removed
+- Struct `EnrollmentAccountsListResponse` has been removed
+- Struct `EnrollmentAccountsListResult` has been removed
+- Struct `InstructionsGetOptions` has been removed
+- Struct `InstructionsGetResponse` has been removed
+- Struct `InstructionsGetResult` has been removed
+- Struct `InstructionsListByBillingProfileOptions` has been removed
+- Struct `InstructionsListByBillingProfilePager` has been removed
+- Struct `InstructionsListByBillingProfileResponse` has been removed
+- Struct `InstructionsListByBillingProfileResult` has been removed
+- Struct `InstructionsPutOptions` has been removed
+- Struct `InstructionsPutResponse` has been removed
+- Struct `InstructionsPutResult` has been removed
+- Struct `InvoiceSectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `InvoiceSectionsCreateOrUpdatePoller` has been removed
+- Struct `InvoiceSectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `InvoiceSectionsCreateOrUpdateResponse` has been removed
+- Struct `InvoiceSectionsCreateOrUpdateResult` has been removed
+- Struct `InvoiceSectionsGetOptions` has been removed
+- Struct `InvoiceSectionsGetResponse` has been removed
+- Struct `InvoiceSectionsGetResult` has been removed
+- Struct `InvoiceSectionsListByBillingProfileOptions` has been removed
+- Struct `InvoiceSectionsListByBillingProfilePager` has been removed
+- Struct `InvoiceSectionsListByBillingProfileResponse` has been removed
+- Struct `InvoiceSectionsListByBillingProfileResult` has been removed
+- Struct `InvoicesBeginDownloadBillingSubscriptionInvoiceOptions` has been removed
+- Struct `InvoicesBeginDownloadInvoiceOptions` has been removed
+- Struct `InvoicesBeginDownloadMultipleBillingProfileInvoicesOptions` has been removed
+- Struct `InvoicesBeginDownloadMultipleBillingSubscriptionInvoicesOptions` has been removed
+- Struct `InvoicesDownloadBillingSubscriptionInvoicePoller` has been removed
+- Struct `InvoicesDownloadBillingSubscriptionInvoicePollerResponse` has been removed
+- Struct `InvoicesDownloadBillingSubscriptionInvoiceResponse` has been removed
+- Struct `InvoicesDownloadBillingSubscriptionInvoiceResult` has been removed
+- Struct `InvoicesDownloadInvoicePoller` has been removed
+- Struct `InvoicesDownloadInvoicePollerResponse` has been removed
+- Struct `InvoicesDownloadInvoiceResponse` has been removed
+- Struct `InvoicesDownloadInvoiceResult` has been removed
+- Struct `InvoicesDownloadMultipleBillingProfileInvoicesPoller` has been removed
+- Struct `InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse` has been removed
+- Struct `InvoicesDownloadMultipleBillingProfileInvoicesResponse` has been removed
+- Struct `InvoicesDownloadMultipleBillingProfileInvoicesResult` has been removed
+- Struct `InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller` has been removed
+- Struct `InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse` has been removed
+- Struct `InvoicesDownloadMultipleBillingSubscriptionInvoicesResponse` has been removed
+- Struct `InvoicesDownloadMultipleBillingSubscriptionInvoicesResult` has been removed
+- Struct `InvoicesGetByIDOptions` has been removed
+- Struct `InvoicesGetByIDResponse` has been removed
+- Struct `InvoicesGetByIDResult` has been removed
+- Struct `InvoicesGetBySubscriptionAndInvoiceIDOptions` has been removed
+- Struct `InvoicesGetBySubscriptionAndInvoiceIDResponse` has been removed
+- Struct `InvoicesGetBySubscriptionAndInvoiceIDResult` has been removed
+- Struct `InvoicesGetOptions` has been removed
+- Struct `InvoicesGetResponse` has been removed
+- Struct `InvoicesGetResult` has been removed
+- Struct `InvoicesListByBillingAccountOptions` has been removed
+- Struct `InvoicesListByBillingAccountPager` has been removed
+- Struct `InvoicesListByBillingAccountResponse` has been removed
+- Struct `InvoicesListByBillingAccountResult` has been removed
+- Struct `InvoicesListByBillingProfileOptions` has been removed
+- Struct `InvoicesListByBillingProfilePager` has been removed
+- Struct `InvoicesListByBillingProfileResponse` has been removed
+- Struct `InvoicesListByBillingProfileResult` has been removed
+- Struct `InvoicesListByBillingSubscriptionOptions` has been removed
+- Struct `InvoicesListByBillingSubscriptionPager` has been removed
+- Struct `InvoicesListByBillingSubscriptionResponse` has been removed
+- Struct `InvoicesListByBillingSubscriptionResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PoliciesGetByBillingProfileOptions` has been removed
+- Struct `PoliciesGetByBillingProfileResponse` has been removed
+- Struct `PoliciesGetByBillingProfileResult` has been removed
+- Struct `PoliciesGetByCustomerOptions` has been removed
+- Struct `PoliciesGetByCustomerResponse` has been removed
+- Struct `PoliciesGetByCustomerResult` has been removed
+- Struct `PoliciesUpdateCustomerOptions` has been removed
+- Struct `PoliciesUpdateCustomerResponse` has been removed
+- Struct `PoliciesUpdateCustomerResult` has been removed
+- Struct `PoliciesUpdateOptions` has been removed
+- Struct `PoliciesUpdateResponse` has been removed
+- Struct `PoliciesUpdateResult` has been removed
+- Struct `ProductsGetOptions` has been removed
+- Struct `ProductsGetResponse` has been removed
+- Struct `ProductsGetResult` has been removed
+- Struct `ProductsListByBillingAccountOptions` has been removed
+- Struct `ProductsListByBillingAccountPager` has been removed
+- Struct `ProductsListByBillingAccountResponse` has been removed
+- Struct `ProductsListByBillingAccountResult` has been removed
+- Struct `ProductsListByBillingProfileOptions` has been removed
+- Struct `ProductsListByBillingProfilePager` has been removed
+- Struct `ProductsListByBillingProfileResponse` has been removed
+- Struct `ProductsListByBillingProfileResult` has been removed
+- Struct `ProductsListByCustomerOptions` has been removed
+- Struct `ProductsListByCustomerPager` has been removed
+- Struct `ProductsListByCustomerResponse` has been removed
+- Struct `ProductsListByCustomerResult` has been removed
+- Struct `ProductsListByInvoiceSectionOptions` has been removed
+- Struct `ProductsListByInvoiceSectionPager` has been removed
+- Struct `ProductsListByInvoiceSectionResponse` has been removed
+- Struct `ProductsListByInvoiceSectionResult` has been removed
+- Struct `ProductsMoveOptions` has been removed
+- Struct `ProductsMoveResponse` has been removed
+- Struct `ProductsMoveResult` has been removed
+- Struct `ProductsUpdateOptions` has been removed
+- Struct `ProductsUpdateResponse` has been removed
+- Struct `ProductsUpdateResult` has been removed
+- Struct `ProductsValidateMoveOptions` has been removed
+- Struct `ProductsValidateMoveResponse` has been removed
+- Struct `ProductsValidateMoveResult` has been removed
+- Struct `ReservationsListByBillingAccountOptions` has been removed
+- Struct `ReservationsListByBillingAccountPager` has been removed
+- Struct `ReservationsListByBillingAccountResponse` has been removed
+- Struct `ReservationsListByBillingAccountResult` has been removed
+- Struct `ReservationsListByBillingProfileOptions` has been removed
+- Struct `ReservationsListByBillingProfilePager` has been removed
+- Struct `ReservationsListByBillingProfileResponse` has been removed
+- Struct `ReservationsListByBillingProfileResult` has been removed
+- Struct `TransactionsListByInvoiceOptions` has been removed
+- Struct `TransactionsListByInvoicePager` has been removed
+- Struct `TransactionsListByInvoiceResponse` has been removed
+- Struct `TransactionsListByInvoiceResult` has been removed
+- Field `Resource` of struct `Policy` has been removed
+- Field `Resource` of struct `InvoiceSection` has been removed
+- Field `Resource` of struct `EnrollmentAccountSummary` has been removed
+- Field `Resource` of struct `Invoice` has been removed
+- Field `Resource` of struct `CustomerPolicy` has been removed
+- Field `Resource` of struct `Instruction` has been removed
+- Field `Resource` of struct `Product` has been removed
+- Field `Resource` of struct `AvailableBalance` has been removed
+- Field `Resource` of struct `Agreement` has been removed
+- Field `Resource` of struct `Customer` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `Transaction` has been removed
+- Field `Resource` of struct `EnrollmentAccount` has been removed
+- Field `Resource` of struct `Department` has been removed
+
+### Features Added
+
+- New function `*ReservationsClientListByBillingAccountPager.PageResponse() ReservationsClientListByBillingAccountResponse`
+- New function `*ProductsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*ReservationsClientListByBillingProfilePager.Err() error`
+- New function `*PermissionsClientListByInvoiceSectionsPager.PageResponse() PermissionsClientListByInvoiceSectionsResponse`
+- New function `*InvoiceSectionsClientListByBillingProfilePager.PageResponse() InvoiceSectionsClientListByBillingProfileResponse`
+- New function `*AgreementsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClient.ListByBillingProfile(string, string, *SubscriptionsClientListByBillingProfileOptions) *SubscriptionsClientListByBillingProfilePager`
+- New function `*PermissionsClientListByBillingAccountPager.Err() error`
+- New function `*PropertyClient.Get(context.Context, *PropertyClientGetOptions) (PropertyClientGetResponse, error)`
+- New function `*RoleAssignmentsClient.DeleteByInvoiceSection(context.Context, string, string, string, string, *RoleAssignmentsClientDeleteByInvoiceSectionOptions) (RoleAssignmentsClientDeleteByInvoiceSectionResponse, error)`
+- New function `*SubscriptionsClientListByCustomerPager.Err() error`
+- New function `NewAccountsClient(azcore.TokenCredential, *arm.ClientOptions) *AccountsClient`
+- New function `*RoleAssignmentsClientListByInvoiceSectionPager.Err() error`
+- New function `*InvoicesClientDownloadBillingSubscriptionInvoicePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*TransactionsClientListByInvoicePager.NextPage(context.Context) bool`
+- New function `NewPropertyClient(string, azcore.TokenCredential, *arm.ClientOptions) *PropertyClient`
+- New function `PeriodsListResult.MarshalJSON() ([]byte, error)`
+- New function `*SubscriptionsClient.BeginMove(context.Context, string, TransferBillingSubscriptionRequestProperties, *SubscriptionsClientBeginMoveOptions) (SubscriptionsClientMovePollerResponse, error)`
+- New function `*InvoicesClientListByBillingProfilePager.Err() error`
+- New function `*ProfilesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ProfilesClient, string) error`
+- New function `*InvoicesClientDownloadMultipleBillingProfileInvoicesPoller.Done() bool`
+- New function `*PermissionsClientListByInvoiceSectionsPager.NextPage(context.Context) bool`
+- New function `NewSubscriptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) *SubscriptionsClient`
+- New function `*CustomersClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClientListByBillingAccountPager.PageResponse() SubscriptionsClientListByBillingAccountResponse`
+- New function `*AccountsClientListPager.PageResponse() AccountsClientListResponse`
+- New function `*ProfilesClient.ListByBillingAccount(string, *ProfilesClientListByBillingAccountOptions) *ProfilesClientListByBillingAccountPager`
+- New function `*RoleAssignmentsClient.ListByBillingProfile(string, string, *RoleAssignmentsClientListByBillingProfileOptions) *RoleAssignmentsClientListByBillingProfilePager`
+- New function `*ReservationsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*RoleDefinitionsClient.ListByInvoiceSection(string, string, string, *RoleDefinitionsClientListByInvoiceSectionOptions) *RoleDefinitionsClientListByInvoiceSectionPager`
+- New function `*RoleAssignmentsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*RoleDefinitionsClientListByBillingProfilePager.PageResponse() RoleDefinitionsClientListByBillingProfileResponse`
+- New function `NewRoleAssignmentsClient(azcore.TokenCredential, *arm.ClientOptions) *RoleAssignmentsClient`
+- New function `RoleDefinitionListResult.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*InvoicesClientDownloadBillingSubscriptionInvoicePoller.Done() bool`
+- New function `*ProfilesClientCreateOrUpdatePoller.Done() bool`
+- New function `*AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager.Err() error`
+- New function `*CustomersClientListByBillingProfilePager.PageResponse() CustomersClientListByBillingProfileResponse`
+- New function `*ReservationsClientListByBillingProfilePager.PageResponse() ReservationsClientListByBillingProfileResponse`
+- New function `*ReservationsClientListByBillingAccountPager.Err() error`
+- New function `*RoleAssignmentsClientListByInvoiceSectionPager.NextPage(context.Context) bool`
+- New function `InvoicesClientDownloadBillingSubscriptionInvoicePollerResponse.PollUntilDone(context.Context, time.Duration) (InvoicesClientDownloadBillingSubscriptionInvoiceResponse, error)`
+- New function `*RoleDefinitionsClientListByInvoiceSectionPager.PageResponse() RoleDefinitionsClientListByInvoiceSectionResponse`
+- New function `*InvoiceSectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (InvoiceSectionsClientCreateOrUpdateResponse, error)`
+- New function `*PeriodsClientListPager.PageResponse() PeriodsClientListResponse`
+- New function `*InvoicesClientDownloadInvoicePoller.Done() bool`
+- New function `*InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPoller.FinalResponse(context.Context) (InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse, error)`
+- New function `*ProductsClientListByCustomerPager.NextPage(context.Context) bool`
+- New function `*InvoicesClientListByBillingAccountPager.Err() error`
+- New function `*PropertyClient.Update(context.Context, Property, *PropertyClientUpdateOptions) (PropertyClientUpdateResponse, error)`
+- New function `*ProfilesClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*InvoicesClientDownloadMultipleBillingProfileInvoicesPoller.ResumeToken() (string, error)`
+- New function `*InvoicesClientDownloadInvoicePollerResponse.Resume(context.Context, *InvoicesClient, string) error`
+- New function `*InstructionsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `ProfileListResult.MarshalJSON() ([]byte, error)`
+- New function `*InvoicesClientListByBillingSubscriptionPager.Err() error`
+- New function `*PermissionsClientListByCustomerPager.PageResponse() PermissionsClientListByCustomerResponse`
+- New function `*ProductsClientListByInvoiceSectionPager.NextPage(context.Context) bool`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RoleDefinitionsClientListByBillingAccountPager.PageResponse() RoleDefinitionsClientListByBillingAccountResponse`
+- New function `*RoleAssignmentsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClient.ListByCustomer(string, string, *SubscriptionsClientListByCustomerOptions) *SubscriptionsClientListByCustomerPager`
+- New function `InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPollerResponse.PollUntilDone(context.Context, time.Duration) (InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse, error)`
+- New function `*RoleDefinitionsClient.ListByBillingAccount(string, *RoleDefinitionsClientListByBillingAccountOptions) *RoleDefinitionsClientListByBillingAccountPager`
+- New function `*AccountsClient.BeginUpdate(context.Context, string, AccountUpdateRequest, *AccountsClientBeginUpdateOptions) (AccountsClientUpdatePollerResponse, error)`
+- New function `*SubscriptionsClient.Update(context.Context, string, Subscription, *SubscriptionsClientUpdateOptions) (SubscriptionsClientUpdateResponse, error)`
+- New function `*ProductsClientListByCustomerPager.PageResponse() ProductsClientListByCustomerResponse`
+- New function `*ProfilesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ProfilesClientListByBillingAccountPager.PageResponse() ProfilesClientListByBillingAccountResponse`
+- New function `*AgreementsClientListByBillingAccountPager.PageResponse() AgreementsClientListByBillingAccountResponse`
+- New function `*InvoicesClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentsClientListByBillingProfilePager.Err() error`
+- New function `*SubscriptionsClientMovePoller.FinalResponse(context.Context) (SubscriptionsClientMoveResponse, error)`
+- New function `*AccountsClient.List(*AccountsClientListOptions) *AccountsClientListPager`
+- New function `*AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager.PageResponse() AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse`
+- New function `AccountProperties.MarshalJSON() ([]byte, error)`
+- New function `*RoleDefinitionsClientListByBillingProfilePager.Err() error`
+- New function `*RoleAssignmentsClient.DeleteByBillingAccount(context.Context, string, string, *RoleAssignmentsClientDeleteByBillingAccountOptions) (RoleAssignmentsClientDeleteByBillingAccountResponse, error)`
+- New function `*ProfilesClient.Get(context.Context, string, string, *ProfilesClientGetOptions) (ProfilesClientGetResponse, error)`
+- New function `PermissionsProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New function `*InvoicesClientListByBillingSubscriptionPager.PageResponse() InvoicesClientListByBillingSubscriptionResponse`
+- New function `*ReservationsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClientMovePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RoleDefinitionsClientListByBillingAccountPager.Err() error`
+- New function `*PeriodsClientListPager.Err() error`
+- New function `PeriodProperties.MarshalJSON() ([]byte, error)`
+- New function `*ProductsClientListByCustomerPager.Err() error`
+- New function `Property.MarshalJSON() ([]byte, error)`
+- New function `Subscription.MarshalJSON() ([]byte, error)`
+- New function `*ProductsClientListByInvoiceSectionPager.PageResponse() ProductsClientListByInvoiceSectionResponse`
+- New function `ProfilesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ProfilesClientCreateOrUpdateResponse, error)`
+- New function `*InvoiceSectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ProductsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*EnrollmentAccountsClientListPager.PageResponse() EnrollmentAccountsClientListResponse`
+- New function `*CustomersClientListByBillingAccountPager.PageResponse() CustomersClientListByBillingAccountResponse`
+- New function `*RoleDefinitionsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*ProductsClientListByBillingAccountPager.Err() error`
+- New function `*SubscriptionsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentsClientListByBillingAccountPager.Err() error`
+- New function `*RoleAssignmentsClient.ListByBillingAccount(string, *RoleAssignmentsClientListByBillingAccountOptions) *RoleAssignmentsClientListByBillingAccountPager`
+- New function `SubscriptionProperties.MarshalJSON() ([]byte, error)`
+- New function `*PermissionsClientListByInvoiceSectionsPager.Err() error`
+- New function `*InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPollerResponse.Resume(context.Context, *InvoicesClient, string) error`
+- New function `*InvoicesClientDownloadBillingSubscriptionInvoicePoller.ResumeToken() (string, error)`
+- New function `*InvoicesClientListByBillingAccountPager.PageResponse() InvoicesClientListByBillingAccountResponse`
+- New function `*RoleAssignmentsClientListByBillingProfilePager.PageResponse() RoleAssignmentsClientListByBillingProfileResponse`
+- New function `ProfileCreationRequest.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*SubscriptionsClient.ValidateMove(context.Context, string, TransferBillingSubscriptionRequestProperties, *SubscriptionsClientValidateMoveOptions) (SubscriptionsClientValidateMoveResponse, error)`
+- New function `*InstructionsClientListByBillingProfilePager.PageResponse() InstructionsClientListByBillingProfileResponse`
+- New function `*InvoicesClientDownloadMultipleBillingProfileInvoicesPoller.FinalResponse(context.Context) (InvoicesClientDownloadMultipleBillingProfileInvoicesResponse, error)`
+- New function `InvoicesClientDownloadMultipleBillingProfileInvoicesPollerResponse.PollUntilDone(context.Context, time.Duration) (InvoicesClientDownloadMultipleBillingProfileInvoicesResponse, error)`
+- New function `PermissionsListResult.MarshalJSON() ([]byte, error)`
+- New function `*SubscriptionsClient.ListByBillingAccount(string, *SubscriptionsClientListByBillingAccountOptions) *SubscriptionsClientListByBillingAccountPager`
+- New function `*PermissionsClient.ListByCustomer(string, string, *PermissionsClientListByCustomerOptions) *PermissionsClientListByCustomerPager`
+- New function `*SubscriptionsClientListByInvoiceSectionPager.Err() error`
+- New function `ProfileProperties.MarshalJSON() ([]byte, error)`
+- New function `*RoleDefinitionsClient.GetByBillingProfile(context.Context, string, string, string, *RoleDefinitionsClientGetByBillingProfileOptions) (RoleDefinitionsClientGetByBillingProfileResponse, error)`
+- New function `*EnrollmentAccountsClientListPager.Err() error`
+- New function `*InvoicesClientDownloadInvoicePoller.ResumeToken() (string, error)`
+- New function `*SubscriptionsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*AccountsClientListPager.NextPage(context.Context) bool`
+- New function `*PermissionsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClientListByInvoiceSectionPager.PageResponse() SubscriptionsClientListByInvoiceSectionResponse`
+- New function `*RoleAssignmentsClient.GetByBillingProfile(context.Context, string, string, string, *RoleAssignmentsClientGetByBillingProfileOptions) (RoleAssignmentsClientGetByBillingProfileResponse, error)`
+- New function `*SubscriptionsClientListByBillingProfilePager.PageResponse() SubscriptionsClientListByBillingProfileResponse`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `*InvoicesClientDownloadBillingSubscriptionInvoicePollerResponse.Resume(context.Context, *InvoicesClient, string) error`
+- New function `*CustomersClientListByBillingProfilePager.Err() error`
+- New function `NewPeriodsClient(string, azcore.TokenCredential, *arm.ClientOptions) *PeriodsClient`
+- New function `*SubscriptionsClientListByCustomerPager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClientListByInvoiceSectionPager.NextPage(context.Context) bool`
+- New function `*RoleDefinitionsClientListByInvoiceSectionPager.NextPage(context.Context) bool`
+- New function `NewProfilesClient(azcore.TokenCredential, *arm.ClientOptions) *ProfilesClient`
+- New function `*SubscriptionsClientMovePoller.Done() bool`
+- New function `*ProductsClientListByBillingAccountPager.PageResponse() ProductsClientListByBillingAccountResponse`
+- New function `*InvoicesClientListByBillingSubscriptionPager.NextPage(context.Context) bool`
+- New function `*InvoicesClientDownloadInvoicePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InvoiceSectionsClientListByBillingProfilePager.Err() error`
+- New function `*InvoiceSectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*InvoicesClientDownloadMultipleBillingProfileInvoicesPollerResponse.Resume(context.Context, *InvoicesClient, string) error`
+- New function `RoleDefinitionProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission(string, *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager`
+- New function `*ProductsClientListByInvoiceSectionPager.Err() error`
+- New function `*PeriodsClient.List(*PeriodsClientListOptions) *PeriodsClientListPager`
+- New function `*AgreementsClientListByBillingAccountPager.Err() error`
+- New function `*PermissionsClient.ListByInvoiceSections(string, string, string, *PermissionsClientListByInvoiceSectionsOptions) *PermissionsClientListByInvoiceSectionsPager`
+- New function `*RoleDefinitionsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*PermissionsClient.ListByBillingProfile(string, string, *PermissionsClientListByBillingProfileOptions) *PermissionsClientListByBillingProfilePager`
+- New function `*RoleDefinitionsClient.GetByInvoiceSection(context.Context, string, string, string, string, *RoleDefinitionsClientGetByInvoiceSectionOptions) (RoleDefinitionsClientGetByInvoiceSectionResponse, error)`
+- New function `NewPermissionsClient(azcore.TokenCredential, *arm.ClientOptions) *PermissionsClient`
+- New function `*SubscriptionsClientListByBillingAccountPager.Err() error`
+- New function `*RoleAssignmentsClient.ListByInvoiceSection(string, string, string, *RoleAssignmentsClientListByInvoiceSectionOptions) *RoleAssignmentsClientListByInvoiceSectionPager`
+- New function `*RoleAssignmentsClient.GetByInvoiceSection(context.Context, string, string, string, string, *RoleAssignmentsClientGetByInvoiceSectionOptions) (RoleAssignmentsClientGetByInvoiceSectionResponse, error)`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `InvoiceSectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (InvoiceSectionsClientCreateOrUpdateResponse, error)`
+- New function `*InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPoller.ResumeToken() (string, error)`
+- New function `*CustomersClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*SubscriptionsClient.Get(context.Context, string, *SubscriptionsClientGetOptions) (SubscriptionsClientGetResponse, error)`
+- New function `*ProfilesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ProfilesClientCreateOrUpdateResponse, error)`
+- New function `*PermissionsClientListByBillingAccountPager.PageResponse() PermissionsClientListByBillingAccountResponse`
+- New function `*RoleDefinitionsClient.ListByBillingProfile(string, string, *RoleDefinitionsClientListByBillingProfileOptions) *RoleDefinitionsClientListByBillingProfilePager`
+- New function `*InvoicesClientListByBillingProfilePager.PageResponse() InvoicesClientListByBillingProfileResponse`
+- New function `*PermissionsClient.ListByBillingAccount(string, *PermissionsClientListByBillingAccountOptions) *PermissionsClientListByBillingAccountPager`
+- New function `AccountListResult.MarshalJSON() ([]byte, error)`
+- New function `*PeriodsClient.Get(context.Context, string, *PeriodsClientGetOptions) (PeriodsClientGetResponse, error)`
+- New function `ProfilesOnExpand.MarshalJSON() ([]byte, error)`
+- New function `*InvoicesClientDownloadBillingSubscriptionInvoicePoller.FinalResponse(context.Context) (InvoicesClientDownloadBillingSubscriptionInvoiceResponse, error)`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*TransactionsClientListByInvoicePager.Err() error`
+- New function `*SubscriptionsClient.ListByInvoiceSection(string, string, string, *SubscriptionsClientListByInvoiceSectionOptions) *SubscriptionsClientListByInvoiceSectionPager`
+- New function `SubscriptionsClientMovePollerResponse.PollUntilDone(context.Context, time.Duration) (SubscriptionsClientMoveResponse, error)`
+- New function `*PermissionsClientListByCustomerPager.Err() error`
+- New function `SubscriptionsListResult.MarshalJSON() ([]byte, error)`
+- New function `InvoicesClientDownloadInvoicePollerResponse.PollUntilDone(context.Context, time.Duration) (InvoicesClientDownloadInvoiceResponse, error)`
+- New function `*AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager.NextPage(context.Context) bool`
+- New function `*InstructionsClientListByBillingProfilePager.Err() error`
+- New function `AccountUpdateRequest.MarshalJSON() ([]byte, error)`
+- New function `*RoleAssignmentsClient.DeleteByBillingProfile(context.Context, string, string, string, *RoleAssignmentsClientDeleteByBillingProfileOptions) (RoleAssignmentsClientDeleteByBillingProfileResponse, error)`
+- New function `*RoleAssignmentsClientListByInvoiceSectionPager.PageResponse() RoleAssignmentsClientListByInvoiceSectionResponse`
+- New function `RoleAssignmentListResult.MarshalJSON() ([]byte, error)`
+- New function `*InvoicesClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*ProfilesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PermissionsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*PermissionsClientListByBillingProfilePager.PageResponse() PermissionsClientListByBillingProfileResponse`
+- New function `*ProfilesClient.BeginCreateOrUpdate(context.Context, string, string, Profile, *ProfilesClientBeginCreateOrUpdateOptions) (ProfilesClientCreateOrUpdatePollerResponse, error)`
+- New function `*TransactionsClientListByInvoicePager.PageResponse() TransactionsClientListByInvoiceResponse`
+- New function `*EnrollmentAccountsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClient.Get(context.Context, string, *AccountsClientGetOptions) (AccountsClientGetResponse, error)`
+- New function `*ProductsClientListByBillingProfilePager.Err() error`
+- New function `*PermissionsClientListByBillingProfilePager.Err() error`
+- New function `*PeriodsClientListPager.NextPage(context.Context) bool`
+- New function `*ProductsClientListByBillingProfilePager.PageResponse() ProductsClientListByBillingProfileResponse`
+- New function `*RoleAssignmentsClientListByBillingAccountPager.PageResponse() RoleAssignmentsClientListByBillingAccountResponse`
+- New function `*RoleAssignmentsClient.GetByBillingAccount(context.Context, string, string, *RoleAssignmentsClientGetByBillingAccountOptions) (RoleAssignmentsClientGetByBillingAccountResponse, error)`
+- New function `*PeriodProperties.UnmarshalJSON([]byte) error`
+- New function `*AccountsClientListPager.Err() error`
+- New function `*InvoiceSectionsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*InvoicesClientDownloadInvoicePoller.FinalResponse(context.Context) (InvoicesClientDownloadInvoiceResponse, error)`
+- New function `*InvoiceSectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *InvoiceSectionsClient, string) error`
+- New function `*InvoiceSectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*RoleDefinitionsClient.GetByBillingAccount(context.Context, string, string, *RoleDefinitionsClientGetByBillingAccountOptions) (RoleDefinitionsClientGetByBillingAccountResponse, error)`
+- New function `*InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPoller.Done() bool`
+- New function `*ProfilesClientListByBillingAccountPager.Err() error`
+- New function `NewRoleDefinitionsClient(azcore.TokenCredential, *arm.ClientOptions) *RoleDefinitionsClient`
+- New function `*SubscriptionsClientMovePoller.ResumeToken() (string, error)`
+- New function `*SubscriptionsClientListByBillingProfilePager.Err() error`
+- New function `*InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*RoleDefinitionsClientListByInvoiceSectionPager.Err() error`
+- New function `*SubscriptionsClientMovePollerResponse.Resume(context.Context, *SubscriptionsClient, string) error`
+- New function `*InvoicesClientDownloadMultipleBillingProfileInvoicesPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*CustomersClientListByBillingAccountPager.Err() error`
+- New function `*SubscriptionsClientListByCustomerPager.PageResponse() SubscriptionsClientListByCustomerResponse`
+- New function `*PermissionsClientListByCustomerPager.NextPage(context.Context) bool`
+- New struct `Account`
+- New struct `AccountListResult`
+- New struct `AccountProperties`
+- New struct `AccountUpdateRequest`
+- New struct `AccountsClient`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions`
+- New struct `AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionPager`
+- New struct `AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse`
+- New struct `AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResult`
+- New struct `AccountsClientListOptions`
+- New struct `AccountsClientListPager`
+- New struct `AccountsClientListResponse`
+- New struct `AccountsClientListResult`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `AddressClientValidateOptions`
+- New struct `AddressClientValidateResponse`
+- New struct `AddressClientValidateResult`
+- New struct `AgreementsClientGetOptions`
+- New struct `AgreementsClientGetResponse`
+- New struct `AgreementsClientGetResult`
+- New struct `AgreementsClientListByBillingAccountOptions`
+- New struct `AgreementsClientListByBillingAccountPager`
+- New struct `AgreementsClientListByBillingAccountResponse`
+- New struct `AgreementsClientListByBillingAccountResult`
+- New struct `AvailableBalancesClientGetOptions`
+- New struct `AvailableBalancesClientGetResponse`
+- New struct `AvailableBalancesClientGetResult`
+- New struct `CustomersClientGetOptions`
+- New struct `CustomersClientGetResponse`
+- New struct `CustomersClientGetResult`
+- New struct `CustomersClientListByBillingAccountOptions`
+- New struct `CustomersClientListByBillingAccountPager`
+- New struct `CustomersClientListByBillingAccountResponse`
+- New struct `CustomersClientListByBillingAccountResult`
+- New struct `CustomersClientListByBillingProfileOptions`
+- New struct `CustomersClientListByBillingProfilePager`
+- New struct `CustomersClientListByBillingProfileResponse`
+- New struct `CustomersClientListByBillingProfileResult`
+- New struct `EnrollmentAccountsClientGetOptions`
+- New struct `EnrollmentAccountsClientGetResponse`
+- New struct `EnrollmentAccountsClientGetResult`
+- New struct `EnrollmentAccountsClientListOptions`
+- New struct `EnrollmentAccountsClientListPager`
+- New struct `EnrollmentAccountsClientListResponse`
+- New struct `EnrollmentAccountsClientListResult`
+- New struct `InstructionsClientGetOptions`
+- New struct `InstructionsClientGetResponse`
+- New struct `InstructionsClientGetResult`
+- New struct `InstructionsClientListByBillingProfileOptions`
+- New struct `InstructionsClientListByBillingProfilePager`
+- New struct `InstructionsClientListByBillingProfileResponse`
+- New struct `InstructionsClientListByBillingProfileResult`
+- New struct `InstructionsClientPutOptions`
+- New struct `InstructionsClientPutResponse`
+- New struct `InstructionsClientPutResult`
+- New struct `InvoiceSectionsClientBeginCreateOrUpdateOptions`
+- New struct `InvoiceSectionsClientCreateOrUpdatePoller`
+- New struct `InvoiceSectionsClientCreateOrUpdatePollerResponse`
+- New struct `InvoiceSectionsClientCreateOrUpdateResponse`
+- New struct `InvoiceSectionsClientCreateOrUpdateResult`
+- New struct `InvoiceSectionsClientGetOptions`
+- New struct `InvoiceSectionsClientGetResponse`
+- New struct `InvoiceSectionsClientGetResult`
+- New struct `InvoiceSectionsClientListByBillingProfileOptions`
+- New struct `InvoiceSectionsClientListByBillingProfilePager`
+- New struct `InvoiceSectionsClientListByBillingProfileResponse`
+- New struct `InvoiceSectionsClientListByBillingProfileResult`
+- New struct `InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions`
+- New struct `InvoicesClientBeginDownloadInvoiceOptions`
+- New struct `InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions`
+- New struct `InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions`
+- New struct `InvoicesClientDownloadBillingSubscriptionInvoicePoller`
+- New struct `InvoicesClientDownloadBillingSubscriptionInvoicePollerResponse`
+- New struct `InvoicesClientDownloadBillingSubscriptionInvoiceResponse`
+- New struct `InvoicesClientDownloadBillingSubscriptionInvoiceResult`
+- New struct `InvoicesClientDownloadInvoicePoller`
+- New struct `InvoicesClientDownloadInvoicePollerResponse`
+- New struct `InvoicesClientDownloadInvoiceResponse`
+- New struct `InvoicesClientDownloadInvoiceResult`
+- New struct `InvoicesClientDownloadMultipleBillingProfileInvoicesPoller`
+- New struct `InvoicesClientDownloadMultipleBillingProfileInvoicesPollerResponse`
+- New struct `InvoicesClientDownloadMultipleBillingProfileInvoicesResponse`
+- New struct `InvoicesClientDownloadMultipleBillingProfileInvoicesResult`
+- New struct `InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPoller`
+- New struct `InvoicesClientDownloadMultipleBillingSubscriptionInvoicesPollerResponse`
+- New struct `InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse`
+- New struct `InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResult`
+- New struct `InvoicesClientGetByIDOptions`
+- New struct `InvoicesClientGetByIDResponse`
+- New struct `InvoicesClientGetByIDResult`
+- New struct `InvoicesClientGetBySubscriptionAndInvoiceIDOptions`
+- New struct `InvoicesClientGetBySubscriptionAndInvoiceIDResponse`
+- New struct `InvoicesClientGetBySubscriptionAndInvoiceIDResult`
+- New struct `InvoicesClientGetOptions`
+- New struct `InvoicesClientGetResponse`
+- New struct `InvoicesClientGetResult`
+- New struct `InvoicesClientListByBillingAccountOptions`
+- New struct `InvoicesClientListByBillingAccountPager`
+- New struct `InvoicesClientListByBillingAccountResponse`
+- New struct `InvoicesClientListByBillingAccountResult`
+- New struct `InvoicesClientListByBillingProfileOptions`
+- New struct `InvoicesClientListByBillingProfilePager`
+- New struct `InvoicesClientListByBillingProfileResponse`
+- New struct `InvoicesClientListByBillingProfileResult`
+- New struct `InvoicesClientListByBillingSubscriptionOptions`
+- New struct `InvoicesClientListByBillingSubscriptionPager`
+- New struct `InvoicesClientListByBillingSubscriptionResponse`
+- New struct `InvoicesClientListByBillingSubscriptionResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `Period`
+- New struct `PeriodProperties`
+- New struct `PeriodsClient`
+- New struct `PeriodsClientGetOptions`
+- New struct `PeriodsClientGetResponse`
+- New struct `PeriodsClientGetResult`
+- New struct `PeriodsClientListOptions`
+- New struct `PeriodsClientListPager`
+- New struct `PeriodsClientListResponse`
+- New struct `PeriodsClientListResult`
+- New struct `PeriodsListResult`
+- New struct `PermissionsClient`
+- New struct `PermissionsClientListByBillingAccountOptions`
+- New struct `PermissionsClientListByBillingAccountPager`
+- New struct `PermissionsClientListByBillingAccountResponse`
+- New struct `PermissionsClientListByBillingAccountResult`
+- New struct `PermissionsClientListByBillingProfileOptions`
+- New struct `PermissionsClientListByBillingProfilePager`
+- New struct `PermissionsClientListByBillingProfileResponse`
+- New struct `PermissionsClientListByBillingProfileResult`
+- New struct `PermissionsClientListByCustomerOptions`
+- New struct `PermissionsClientListByCustomerPager`
+- New struct `PermissionsClientListByCustomerResponse`
+- New struct `PermissionsClientListByCustomerResult`
+- New struct `PermissionsClientListByInvoiceSectionsOptions`
+- New struct `PermissionsClientListByInvoiceSectionsPager`
+- New struct `PermissionsClientListByInvoiceSectionsResponse`
+- New struct `PermissionsClientListByInvoiceSectionsResult`
+- New struct `PermissionsListResult`
+- New struct `PermissionsProperties`
+- New struct `PoliciesClientGetByBillingProfileOptions`
+- New struct `PoliciesClientGetByBillingProfileResponse`
+- New struct `PoliciesClientGetByBillingProfileResult`
+- New struct `PoliciesClientGetByCustomerOptions`
+- New struct `PoliciesClientGetByCustomerResponse`
+- New struct `PoliciesClientGetByCustomerResult`
+- New struct `PoliciesClientUpdateCustomerOptions`
+- New struct `PoliciesClientUpdateCustomerResponse`
+- New struct `PoliciesClientUpdateCustomerResult`
+- New struct `PoliciesClientUpdateOptions`
+- New struct `PoliciesClientUpdateResponse`
+- New struct `PoliciesClientUpdateResult`
+- New struct `ProductsClientGetOptions`
+- New struct `ProductsClientGetResponse`
+- New struct `ProductsClientGetResult`
+- New struct `ProductsClientListByBillingAccountOptions`
+- New struct `ProductsClientListByBillingAccountPager`
+- New struct `ProductsClientListByBillingAccountResponse`
+- New struct `ProductsClientListByBillingAccountResult`
+- New struct `ProductsClientListByBillingProfileOptions`
+- New struct `ProductsClientListByBillingProfilePager`
+- New struct `ProductsClientListByBillingProfileResponse`
+- New struct `ProductsClientListByBillingProfileResult`
+- New struct `ProductsClientListByCustomerOptions`
+- New struct `ProductsClientListByCustomerPager`
+- New struct `ProductsClientListByCustomerResponse`
+- New struct `ProductsClientListByCustomerResult`
+- New struct `ProductsClientListByInvoiceSectionOptions`
+- New struct `ProductsClientListByInvoiceSectionPager`
+- New struct `ProductsClientListByInvoiceSectionResponse`
+- New struct `ProductsClientListByInvoiceSectionResult`
+- New struct `ProductsClientMoveOptions`
+- New struct `ProductsClientMoveResponse`
+- New struct `ProductsClientMoveResult`
+- New struct `ProductsClientUpdateOptions`
+- New struct `ProductsClientUpdateResponse`
+- New struct `ProductsClientUpdateResult`
+- New struct `ProductsClientValidateMoveOptions`
+- New struct `ProductsClientValidateMoveResponse`
+- New struct `ProductsClientValidateMoveResult`
+- New struct `Profile`
+- New struct `ProfileCreationRequest`
+- New struct `ProfileListResult`
+- New struct `ProfileProperties`
+- New struct `ProfilesClient`
+- New struct `ProfilesClientBeginCreateOrUpdateOptions`
+- New struct `ProfilesClientCreateOrUpdatePoller`
+- New struct `ProfilesClientCreateOrUpdatePollerResponse`
+- New struct `ProfilesClientCreateOrUpdateResponse`
+- New struct `ProfilesClientCreateOrUpdateResult`
+- New struct `ProfilesClientGetOptions`
+- New struct `ProfilesClientGetResponse`
+- New struct `ProfilesClientGetResult`
+- New struct `ProfilesClientListByBillingAccountOptions`
+- New struct `ProfilesClientListByBillingAccountPager`
+- New struct `ProfilesClientListByBillingAccountResponse`
+- New struct `ProfilesClientListByBillingAccountResult`
+- New struct `ProfilesOnExpand`
+- New struct `Property`
+- New struct `PropertyClient`
+- New struct `PropertyClientGetOptions`
+- New struct `PropertyClientGetResponse`
+- New struct `PropertyClientGetResult`
+- New struct `PropertyClientUpdateOptions`
+- New struct `PropertyClientUpdateResponse`
+- New struct `PropertyClientUpdateResult`
+- New struct `PropertyProperties`
+- New struct `ReservationsClientListByBillingAccountOptions`
+- New struct `ReservationsClientListByBillingAccountPager`
+- New struct `ReservationsClientListByBillingAccountResponse`
+- New struct `ReservationsClientListByBillingAccountResult`
+- New struct `ReservationsClientListByBillingProfileOptions`
+- New struct `ReservationsClientListByBillingProfilePager`
+- New struct `ReservationsClientListByBillingProfileResponse`
+- New struct `ReservationsClientListByBillingProfileResult`
+- New struct `RoleAssignment`
+- New struct `RoleAssignmentListResult`
+- New struct `RoleAssignmentProperties`
+- New struct `RoleAssignmentsClient`
+- New struct `RoleAssignmentsClientDeleteByBillingAccountOptions`
+- New struct `RoleAssignmentsClientDeleteByBillingAccountResponse`
+- New struct `RoleAssignmentsClientDeleteByBillingAccountResult`
+- New struct `RoleAssignmentsClientDeleteByBillingProfileOptions`
+- New struct `RoleAssignmentsClientDeleteByBillingProfileResponse`
+- New struct `RoleAssignmentsClientDeleteByBillingProfileResult`
+- New struct `RoleAssignmentsClientDeleteByInvoiceSectionOptions`
+- New struct `RoleAssignmentsClientDeleteByInvoiceSectionResponse`
+- New struct `RoleAssignmentsClientDeleteByInvoiceSectionResult`
+- New struct `RoleAssignmentsClientGetByBillingAccountOptions`
+- New struct `RoleAssignmentsClientGetByBillingAccountResponse`
+- New struct `RoleAssignmentsClientGetByBillingAccountResult`
+- New struct `RoleAssignmentsClientGetByBillingProfileOptions`
+- New struct `RoleAssignmentsClientGetByBillingProfileResponse`
+- New struct `RoleAssignmentsClientGetByBillingProfileResult`
+- New struct `RoleAssignmentsClientGetByInvoiceSectionOptions`
+- New struct `RoleAssignmentsClientGetByInvoiceSectionResponse`
+- New struct `RoleAssignmentsClientGetByInvoiceSectionResult`
+- New struct `RoleAssignmentsClientListByBillingAccountOptions`
+- New struct `RoleAssignmentsClientListByBillingAccountPager`
+- New struct `RoleAssignmentsClientListByBillingAccountResponse`
+- New struct `RoleAssignmentsClientListByBillingAccountResult`
+- New struct `RoleAssignmentsClientListByBillingProfileOptions`
+- New struct `RoleAssignmentsClientListByBillingProfilePager`
+- New struct `RoleAssignmentsClientListByBillingProfileResponse`
+- New struct `RoleAssignmentsClientListByBillingProfileResult`
+- New struct `RoleAssignmentsClientListByInvoiceSectionOptions`
+- New struct `RoleAssignmentsClientListByInvoiceSectionPager`
+- New struct `RoleAssignmentsClientListByInvoiceSectionResponse`
+- New struct `RoleAssignmentsClientListByInvoiceSectionResult`
+- New struct `RoleDefinition`
+- New struct `RoleDefinitionListResult`
+- New struct `RoleDefinitionProperties`
+- New struct `RoleDefinitionsClient`
+- New struct `RoleDefinitionsClientGetByBillingAccountOptions`
+- New struct `RoleDefinitionsClientGetByBillingAccountResponse`
+- New struct `RoleDefinitionsClientGetByBillingAccountResult`
+- New struct `RoleDefinitionsClientGetByBillingProfileOptions`
+- New struct `RoleDefinitionsClientGetByBillingProfileResponse`
+- New struct `RoleDefinitionsClientGetByBillingProfileResult`
+- New struct `RoleDefinitionsClientGetByInvoiceSectionOptions`
+- New struct `RoleDefinitionsClientGetByInvoiceSectionResponse`
+- New struct `RoleDefinitionsClientGetByInvoiceSectionResult`
+- New struct `RoleDefinitionsClientListByBillingAccountOptions`
+- New struct `RoleDefinitionsClientListByBillingAccountPager`
+- New struct `RoleDefinitionsClientListByBillingAccountResponse`
+- New struct `RoleDefinitionsClientListByBillingAccountResult`
+- New struct `RoleDefinitionsClientListByBillingProfileOptions`
+- New struct `RoleDefinitionsClientListByBillingProfilePager`
+- New struct `RoleDefinitionsClientListByBillingProfileResponse`
+- New struct `RoleDefinitionsClientListByBillingProfileResult`
+- New struct `RoleDefinitionsClientListByInvoiceSectionOptions`
+- New struct `RoleDefinitionsClientListByInvoiceSectionPager`
+- New struct `RoleDefinitionsClientListByInvoiceSectionResponse`
+- New struct `RoleDefinitionsClientListByInvoiceSectionResult`
+- New struct `Subscription`
+- New struct `SubscriptionProperties`
+- New struct `SubscriptionsClient`
+- New struct `SubscriptionsClientBeginMoveOptions`
+- New struct `SubscriptionsClientGetOptions`
+- New struct `SubscriptionsClientGetResponse`
+- New struct `SubscriptionsClientGetResult`
+- New struct `SubscriptionsClientListByBillingAccountOptions`
+- New struct `SubscriptionsClientListByBillingAccountPager`
+- New struct `SubscriptionsClientListByBillingAccountResponse`
+- New struct `SubscriptionsClientListByBillingAccountResult`
+- New struct `SubscriptionsClientListByBillingProfileOptions`
+- New struct `SubscriptionsClientListByBillingProfilePager`
+- New struct `SubscriptionsClientListByBillingProfileResponse`
+- New struct `SubscriptionsClientListByBillingProfileResult`
+- New struct `SubscriptionsClientListByCustomerOptions`
+- New struct `SubscriptionsClientListByCustomerPager`
+- New struct `SubscriptionsClientListByCustomerResponse`
+- New struct `SubscriptionsClientListByCustomerResult`
+- New struct `SubscriptionsClientListByInvoiceSectionOptions`
+- New struct `SubscriptionsClientListByInvoiceSectionPager`
+- New struct `SubscriptionsClientListByInvoiceSectionResponse`
+- New struct `SubscriptionsClientListByInvoiceSectionResult`
+- New struct `SubscriptionsClientMovePoller`
+- New struct `SubscriptionsClientMovePollerResponse`
+- New struct `SubscriptionsClientMoveResponse`
+- New struct `SubscriptionsClientMoveResult`
+- New struct `SubscriptionsClientUpdateOptions`
+- New struct `SubscriptionsClientUpdateResponse`
+- New struct `SubscriptionsClientUpdateResult`
+- New struct `SubscriptionsClientValidateMoveOptions`
+- New struct `SubscriptionsClientValidateMoveResponse`
+- New struct `SubscriptionsClientValidateMoveResult`
+- New struct `SubscriptionsListResult`
+- New struct `TransactionsClientListByInvoiceOptions`
+- New struct `TransactionsClientListByInvoicePager`
+- New struct `TransactionsClientListByInvoiceResponse`
+- New struct `TransactionsClientListByInvoiceResult`
+- New field `Name` in struct `Transaction`
+- New field `Type` in struct `Transaction`
+- New field `ID` in struct `Transaction`
+- New field `ID` in struct `InvoiceSection`
+- New field `Name` in struct `InvoiceSection`
+- New field `Type` in struct `InvoiceSection`
+- New field `Error` in struct `ErrorResponse`
+- New field `Type` in struct `Agreement`
+- New field `ID` in struct `Agreement`
+- New field `Name` in struct `Agreement`
+- New field `ID` in struct `Invoice`
+- New field `Name` in struct `Invoice`
+- New field `Type` in struct `Invoice`
+- New field `ID` in struct `Department`
+- New field `Name` in struct `Department`
+- New field `Type` in struct `Department`
+- New field `ID` in struct `Customer`
+- New field `Name` in struct `Customer`
+- New field `Type` in struct `Customer`
+- New field `Name` in struct `EnrollmentAccountSummary`
+- New field `Type` in struct `EnrollmentAccountSummary`
+- New field `ID` in struct `EnrollmentAccountSummary`
+- New field `ID` in struct `AvailableBalance`
+- New field `Name` in struct `AvailableBalance`
+- New field `Type` in struct `AvailableBalance`
+- New field `ID` in struct `CustomerPolicy`
+- New field `Name` in struct `CustomerPolicy`
+- New field `Type` in struct `CustomerPolicy`
+- New field `Type` in struct `Product`
+- New field `ID` in struct `Product`
+- New field `Name` in struct `Product`
+- New field `ID` in struct `Policy`
+- New field `Name` in struct `Policy`
+- New field `Type` in struct `Policy`
+- New field `ID` in struct `Instruction`
+- New field `Name` in struct `Instruction`
+- New field `Type` in struct `Instruction`
+- New field `ID` in struct `EnrollmentAccount`
+- New field `Name` in struct `EnrollmentAccount`
+- New field `Type` in struct `EnrollmentAccount`
+
+
 ## 0.1.0 (2021-11-30)
 
 - Initial preview release.

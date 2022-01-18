@@ -28,12 +28,16 @@ func ExampleMultipleActivationKeysClient_List() {
 	ctx := context.Background()
 	client := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MultipleActivationKey.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleMultipleActivationKeysClient_ListByResourceGroup() {
 	client := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MultipleActivationKey.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleMultipleActivationKeysClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MultipleActivationKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MultipleActivationKeysClientGetResult)
 }
 
 // x-ms-original-file: specification/windowsesu/resource-manager/Microsoft.WindowsESU/preview/2019-09-16-preview/examples/CreateMultipleActivationKey.json
@@ -88,15 +96,13 @@ func ExampleMultipleActivationKeysClient_BeginCreate() {
 		"<resource-group-name>",
 		"<multiple-activation-key-name>",
 		armwindowsesu.MultipleActivationKey{
-			TrackedResource: armwindowsesu.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armwindowsesu.MultipleActivationKeyProperties{
 				AgreementNumber:       to.StringPtr("<agreement-number>"),
 				InstalledServerNumber: to.Int32Ptr(100),
 				IsEligible:            to.BoolPtr(true),
-				OSType:                armwindowsesu.OsTypeWindowsServer2008.ToPtr(),
-				SupportType:           armwindowsesu.SupportTypeSupplementalServicing.ToPtr(),
+				OSType:                armwindowsesu.OsType("WindowsServer2008").ToPtr(),
+				SupportType:           armwindowsesu.SupportType("SupplementalServicing").ToPtr(),
 			},
 		},
 		nil)
@@ -107,7 +113,7 @@ func ExampleMultipleActivationKeysClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MultipleActivationKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MultipleActivationKeysClientCreateResult)
 }
 
 // x-ms-original-file: specification/windowsesu/resource-manager/Microsoft.WindowsESU/preview/2019-09-16-preview/examples/UpdateMultipleActivationKey.json
@@ -131,7 +137,7 @@ func ExampleMultipleActivationKeysClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MultipleActivationKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MultipleActivationKeysClientUpdateResult)
 }
 
 // x-ms-original-file: specification/windowsesu/resource-manager/Microsoft.WindowsESU/preview/2019-09-16-preview/examples/DeleteMultipleActivationKey.json

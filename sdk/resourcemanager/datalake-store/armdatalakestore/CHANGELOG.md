@@ -1,14 +1,334 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*VirtualNetworkRulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualNetworkRulesUpdateOptions)` to `(context.Context, string, string, string, *VirtualNetworkRulesClientUpdateOptions)`
+- Function `*VirtualNetworkRulesClient.Update` return value(s) have been changed from `(VirtualNetworkRulesUpdateResponse, error)` to `(VirtualNetworkRulesClientUpdateResponse, error)`
+- Function `*AccountsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *AccountsBeginDeleteOptions)` to `(context.Context, string, string, *AccountsClientBeginDeleteOptions)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsDeletePollerResponse, error)` to `(AccountsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*FirewallRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *FirewallRulesGetOptions)` to `(context.Context, string, string, string, *FirewallRulesClientGetOptions)`
+- Function `*FirewallRulesClient.Get` return value(s) have been changed from `(FirewallRulesGetResponse, error)` to `(FirewallRulesClientGetResponse, error)`
+- Function `*AccountsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, UpdateDataLakeStoreAccountParameters, *AccountsBeginUpdateOptions)` to `(context.Context, string, string, UpdateDataLakeStoreAccountParameters, *AccountsClientBeginUpdateOptions)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsUpdatePollerResponse, error)` to `(AccountsClientUpdatePollerResponse, error)`
+- Function `*VirtualNetworkRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CreateOrUpdateVirtualNetworkRuleParameters, *VirtualNetworkRulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, CreateOrUpdateVirtualNetworkRuleParameters, *VirtualNetworkRulesClientCreateOrUpdateOptions)`
+- Function `*VirtualNetworkRulesClient.CreateOrUpdate` return value(s) have been changed from `(VirtualNetworkRulesCreateOrUpdateResponse, error)` to `(VirtualNetworkRulesClientCreateOrUpdateResponse, error)`
+- Function `*TrustedIDProvidersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *TrustedIDProvidersDeleteOptions)` to `(context.Context, string, string, string, *TrustedIDProvidersClientDeleteOptions)`
+- Function `*TrustedIDProvidersClient.Delete` return value(s) have been changed from `(TrustedIDProvidersDeleteResponse, error)` to `(TrustedIDProvidersClientDeleteResponse, error)`
+- Function `*AccountsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, string, CheckNameAvailabilityParameters, *AccountsCheckNameAvailabilityOptions)` to `(context.Context, string, CheckNameAvailabilityParameters, *AccountsClientCheckNameAvailabilityOptions)`
+- Function `*AccountsClient.CheckNameAvailability` return value(s) have been changed from `(AccountsCheckNameAvailabilityResponse, error)` to `(AccountsClientCheckNameAvailabilityResponse, error)`
+- Function `*LocationsClient.GetUsage` parameter(s) have been changed from `(context.Context, string, *LocationsGetUsageOptions)` to `(context.Context, string, *LocationsClientGetUsageOptions)`
+- Function `*LocationsClient.GetUsage` return value(s) have been changed from `(LocationsGetUsageResponse, error)` to `(LocationsClientGetUsageResponse, error)`
+- Function `*VirtualNetworkRulesClient.ListByAccount` parameter(s) have been changed from `(string, string, *VirtualNetworkRulesListByAccountOptions)` to `(string, string, *VirtualNetworkRulesClientListByAccountOptions)`
+- Function `*VirtualNetworkRulesClient.ListByAccount` return value(s) have been changed from `(*VirtualNetworkRulesListByAccountPager)` to `(*VirtualNetworkRulesClientListByAccountPager)`
+- Function `*AccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AccountsGetOptions)` to `(context.Context, string, string, *AccountsClientGetOptions)`
+- Function `*AccountsClient.Get` return value(s) have been changed from `(AccountsGetResponse, error)` to `(AccountsClientGetResponse, error)`
+- Function `*FirewallRulesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *FirewallRulesUpdateOptions)` to `(context.Context, string, string, string, *FirewallRulesClientUpdateOptions)`
+- Function `*FirewallRulesClient.Update` return value(s) have been changed from `(FirewallRulesUpdateResponse, error)` to `(FirewallRulesClientUpdateResponse, error)`
+- Function `*TrustedIDProvidersClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *TrustedIDProvidersGetOptions)` to `(context.Context, string, string, string, *TrustedIDProvidersClientGetOptions)`
+- Function `*TrustedIDProvidersClient.Get` return value(s) have been changed from `(TrustedIDProvidersGetResponse, error)` to `(TrustedIDProvidersClientGetResponse, error)`
+- Function `*LocationsClient.GetCapability` parameter(s) have been changed from `(context.Context, string, *LocationsGetCapabilityOptions)` to `(context.Context, string, *LocationsClientGetCapabilityOptions)`
+- Function `*LocationsClient.GetCapability` return value(s) have been changed from `(LocationsGetCapabilityResponse, error)` to `(LocationsClientGetCapabilityResponse, error)`
+- Function `*TrustedIDProvidersClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, *TrustedIDProvidersUpdateOptions)` to `(context.Context, string, string, string, *TrustedIDProvidersClientUpdateOptions)`
+- Function `*TrustedIDProvidersClient.Update` return value(s) have been changed from `(TrustedIDProvidersUpdateResponse, error)` to `(TrustedIDProvidersClientUpdateResponse, error)`
+- Function `*TrustedIDProvidersClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CreateOrUpdateTrustedIDProviderParameters, *TrustedIDProvidersCreateOrUpdateOptions)` to `(context.Context, string, string, string, CreateOrUpdateTrustedIDProviderParameters, *TrustedIDProvidersClientCreateOrUpdateOptions)`
+- Function `*TrustedIDProvidersClient.CreateOrUpdate` return value(s) have been changed from `(TrustedIDProvidersCreateOrUpdateResponse, error)` to `(TrustedIDProvidersClientCreateOrUpdateResponse, error)`
+- Function `*AccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AccountsListByResourceGroupOptions)` to `(string, *AccountsClientListByResourceGroupOptions)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsListByResourceGroupPager)` to `(*AccountsClientListByResourceGroupPager)`
+- Function `*VirtualNetworkRulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualNetworkRulesGetOptions)` to `(context.Context, string, string, string, *VirtualNetworkRulesClientGetOptions)`
+- Function `*VirtualNetworkRulesClient.Get` return value(s) have been changed from `(VirtualNetworkRulesGetResponse, error)` to `(VirtualNetworkRulesClientGetResponse, error)`
+- Function `*VirtualNetworkRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *VirtualNetworkRulesDeleteOptions)` to `(context.Context, string, string, string, *VirtualNetworkRulesClientDeleteOptions)`
+- Function `*VirtualNetworkRulesClient.Delete` return value(s) have been changed from `(VirtualNetworkRulesDeleteResponse, error)` to `(VirtualNetworkRulesClientDeleteResponse, error)`
+- Function `*AccountsClient.List` parameter(s) have been changed from `(*AccountsListOptions)` to `(*AccountsClientListOptions)`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsListPager)` to `(*AccountsClientListPager)`
+- Function `*FirewallRulesClient.ListByAccount` parameter(s) have been changed from `(string, string, *FirewallRulesListByAccountOptions)` to `(string, string, *FirewallRulesClientListByAccountOptions)`
+- Function `*FirewallRulesClient.ListByAccount` return value(s) have been changed from `(*FirewallRulesListByAccountPager)` to `(*FirewallRulesClientListByAccountPager)`
+- Function `*AccountsClient.EnableKeyVault` parameter(s) have been changed from `(context.Context, string, string, *AccountsEnableKeyVaultOptions)` to `(context.Context, string, string, *AccountsClientEnableKeyVaultOptions)`
+- Function `*AccountsClient.EnableKeyVault` return value(s) have been changed from `(AccountsEnableKeyVaultResponse, error)` to `(AccountsClientEnableKeyVaultResponse, error)`
+- Function `*TrustedIDProvidersClient.ListByAccount` parameter(s) have been changed from `(string, string, *TrustedIDProvidersListByAccountOptions)` to `(string, string, *TrustedIDProvidersClientListByAccountOptions)`
+- Function `*TrustedIDProvidersClient.ListByAccount` return value(s) have been changed from `(*TrustedIDProvidersListByAccountPager)` to `(*TrustedIDProvidersClientListByAccountPager)`
+- Function `*AccountsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, CreateDataLakeStoreAccountParameters, *AccountsBeginCreateOptions)` to `(context.Context, string, string, CreateDataLakeStoreAccountParameters, *AccountsClientBeginCreateOptions)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsCreatePollerResponse, error)` to `(AccountsClientCreatePollerResponse, error)`
+- Function `*FirewallRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CreateOrUpdateFirewallRuleParameters, *FirewallRulesCreateOrUpdateOptions)` to `(context.Context, string, string, string, CreateOrUpdateFirewallRuleParameters, *FirewallRulesClientCreateOrUpdateOptions)`
+- Function `*FirewallRulesClient.CreateOrUpdate` return value(s) have been changed from `(FirewallRulesCreateOrUpdateResponse, error)` to `(FirewallRulesClientCreateOrUpdateResponse, error)`
+- Function `*FirewallRulesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *FirewallRulesDeleteOptions)` to `(context.Context, string, string, string, *FirewallRulesClientDeleteOptions)`
+- Function `*FirewallRulesClient.Delete` return value(s) have been changed from `(FirewallRulesDeleteResponse, error)` to `(FirewallRulesClientDeleteResponse, error)`
+- Function `*AccountsUpdatePoller.Poll` has been removed
+- Function `*AccountsListPager.Err` has been removed
+- Function `*AccountsCreatePoller.Done` has been removed
+- Function `*AccountsUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsDeletePoller.FinalResponse` has been removed
+- Function `*FirewallRulesListByAccountPager.Err` has been removed
+- Function `*DataLakeStoreAccountPropertiesBasic.UnmarshalJSON` has been removed
+- Function `*AccountsListPager.PageResponse` has been removed
+- Function `*AccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `*TrustedIDProvidersListByAccountPager.PageResponse` has been removed
+- Function `*AccountsUpdatePoller.Done` has been removed
+- Function `*VirtualNetworkRulesListByAccountPager.PageResponse` has been removed
+- Function `DataLakeStoreAccount.MarshalJSON` has been removed
+- Function `*AccountsUpdatePoller.ResumeToken` has been removed
+- Function `*VirtualNetworkRulesListByAccountPager.NextPage` has been removed
+- Function `DataLakeStoreAccountListResult.MarshalJSON` has been removed
+- Function `*AccountsCreatePoller.Poll` has been removed
+- Function `*DataLakeStoreAccountProperties.UnmarshalJSON` has been removed
+- Function `AccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsListByResourceGroupPager.Err` has been removed
+- Function `*FirewallRulesListByAccountPager.PageResponse` has been removed
+- Function `AccountsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsDeletePollerResponse.Resume` has been removed
+- Function `DataLakeStoreAccountPropertiesBasic.MarshalJSON` has been removed
+- Function `*AccountsDeletePoller.ResumeToken` has been removed
+- Function `*AccountsListByResourceGroupPager.NextPage` has been removed
+- Function `AccountsCreatePollerResponse.PollUntilDone` has been removed
+- Function `DataLakeStoreAccountProperties.MarshalJSON` has been removed
+- Function `*FirewallRulesListByAccountPager.NextPage` has been removed
+- Function `*AccountsDeletePoller.Done` has been removed
+- Function `*AccountsCreatePollerResponse.Resume` has been removed
+- Function `*AccountsUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsCreatePoller.ResumeToken` has been removed
+- Function `DataLakeStoreAccountBasic.MarshalJSON` has been removed
+- Function `*TrustedIDProvidersListByAccountPager.NextPage` has been removed
+- Function `*AccountsCreatePoller.FinalResponse` has been removed
+- Function `*AccountsListPager.NextPage` has been removed
+- Function `*AccountsDeletePoller.Poll` has been removed
+- Function `*TrustedIDProvidersListByAccountPager.Err` has been removed
+- Function `*VirtualNetworkRulesListByAccountPager.Err` has been removed
+- Struct `AccountsBeginCreateOptions` has been removed
+- Struct `AccountsBeginDeleteOptions` has been removed
+- Struct `AccountsBeginUpdateOptions` has been removed
+- Struct `AccountsCheckNameAvailabilityOptions` has been removed
+- Struct `AccountsCheckNameAvailabilityResponse` has been removed
+- Struct `AccountsCheckNameAvailabilityResult` has been removed
+- Struct `AccountsCreatePoller` has been removed
+- Struct `AccountsCreatePollerResponse` has been removed
+- Struct `AccountsCreateResponse` has been removed
+- Struct `AccountsCreateResult` has been removed
+- Struct `AccountsDeletePoller` has been removed
+- Struct `AccountsDeletePollerResponse` has been removed
+- Struct `AccountsDeleteResponse` has been removed
+- Struct `AccountsEnableKeyVaultOptions` has been removed
+- Struct `AccountsEnableKeyVaultResponse` has been removed
+- Struct `AccountsGetOptions` has been removed
+- Struct `AccountsGetResponse` has been removed
+- Struct `AccountsGetResult` has been removed
+- Struct `AccountsListByResourceGroupOptions` has been removed
+- Struct `AccountsListByResourceGroupPager` has been removed
+- Struct `AccountsListByResourceGroupResponse` has been removed
+- Struct `AccountsListByResourceGroupResult` has been removed
+- Struct `AccountsListOptions` has been removed
+- Struct `AccountsListPager` has been removed
+- Struct `AccountsListResponse` has been removed
+- Struct `AccountsListResult` has been removed
+- Struct `AccountsUpdatePoller` has been removed
+- Struct `AccountsUpdatePollerResponse` has been removed
+- Struct `AccountsUpdateResponse` has been removed
+- Struct `AccountsUpdateResult` has been removed
+- Struct `DataLakeStoreAccount` has been removed
+- Struct `DataLakeStoreAccountBasic` has been removed
+- Struct `DataLakeStoreAccountListResult` has been removed
+- Struct `DataLakeStoreAccountProperties` has been removed
+- Struct `DataLakeStoreAccountPropertiesBasic` has been removed
+- Struct `FirewallRulesCreateOrUpdateOptions` has been removed
+- Struct `FirewallRulesCreateOrUpdateResponse` has been removed
+- Struct `FirewallRulesCreateOrUpdateResult` has been removed
+- Struct `FirewallRulesDeleteOptions` has been removed
+- Struct `FirewallRulesDeleteResponse` has been removed
+- Struct `FirewallRulesGetOptions` has been removed
+- Struct `FirewallRulesGetResponse` has been removed
+- Struct `FirewallRulesGetResult` has been removed
+- Struct `FirewallRulesListByAccountOptions` has been removed
+- Struct `FirewallRulesListByAccountPager` has been removed
+- Struct `FirewallRulesListByAccountResponse` has been removed
+- Struct `FirewallRulesListByAccountResult` has been removed
+- Struct `FirewallRulesUpdateOptions` has been removed
+- Struct `FirewallRulesUpdateResponse` has been removed
+- Struct `FirewallRulesUpdateResult` has been removed
+- Struct `LocationsGetCapabilityOptions` has been removed
+- Struct `LocationsGetCapabilityResponse` has been removed
+- Struct `LocationsGetCapabilityResult` has been removed
+- Struct `LocationsGetUsageOptions` has been removed
+- Struct `LocationsGetUsageResponse` has been removed
+- Struct `LocationsGetUsageResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `TrustedIDProvidersCreateOrUpdateOptions` has been removed
+- Struct `TrustedIDProvidersCreateOrUpdateResponse` has been removed
+- Struct `TrustedIDProvidersCreateOrUpdateResult` has been removed
+- Struct `TrustedIDProvidersDeleteOptions` has been removed
+- Struct `TrustedIDProvidersDeleteResponse` has been removed
+- Struct `TrustedIDProvidersGetOptions` has been removed
+- Struct `TrustedIDProvidersGetResponse` has been removed
+- Struct `TrustedIDProvidersGetResult` has been removed
+- Struct `TrustedIDProvidersListByAccountOptions` has been removed
+- Struct `TrustedIDProvidersListByAccountPager` has been removed
+- Struct `TrustedIDProvidersListByAccountResponse` has been removed
+- Struct `TrustedIDProvidersListByAccountResult` has been removed
+- Struct `TrustedIDProvidersUpdateOptions` has been removed
+- Struct `TrustedIDProvidersUpdateResponse` has been removed
+- Struct `TrustedIDProvidersUpdateResult` has been removed
+- Struct `VirtualNetworkRulesCreateOrUpdateOptions` has been removed
+- Struct `VirtualNetworkRulesCreateOrUpdateResponse` has been removed
+- Struct `VirtualNetworkRulesCreateOrUpdateResult` has been removed
+- Struct `VirtualNetworkRulesDeleteOptions` has been removed
+- Struct `VirtualNetworkRulesDeleteResponse` has been removed
+- Struct `VirtualNetworkRulesGetOptions` has been removed
+- Struct `VirtualNetworkRulesGetResponse` has been removed
+- Struct `VirtualNetworkRulesGetResult` has been removed
+- Struct `VirtualNetworkRulesListByAccountOptions` has been removed
+- Struct `VirtualNetworkRulesListByAccountPager` has been removed
+- Struct `VirtualNetworkRulesListByAccountResponse` has been removed
+- Struct `VirtualNetworkRulesListByAccountResult` has been removed
+- Struct `VirtualNetworkRulesUpdateOptions` has been removed
+- Struct `VirtualNetworkRulesUpdateResponse` has been removed
+- Struct `VirtualNetworkRulesUpdateResult` has been removed
+- Field `SubResource` of struct `TrustedIDProvider` has been removed
+- Field `SubResource` of struct `VirtualNetworkRule` has been removed
+- Field `SubResource` of struct `FirewallRule` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `AccountListResult.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientDeletePoller.Done() bool`
+- New function `*AccountsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClientListByResourceGroupPager.PageResponse() AccountsClientListByResourceGroupResponse`
+- New function `*AccountsClientListPager.PageResponse() AccountsClientListResponse`
+- New function `AccountProperties.MarshalJSON() ([]byte, error)`
+- New function `AccountPropertiesBasic.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AccountPropertiesBasic.UnmarshalJSON([]byte) error`
+- New function `AccountsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientCreateResponse, error)`
+- New function `*AccountsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientDeletePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `AccountBasic.MarshalJSON() ([]byte, error)`
+- New function `*AccountsClientCreatePoller.FinalResponse(context.Context) (AccountsClientCreateResponse, error)`
+- New function `*TrustedIDProvidersClientListByAccountPager.Err() error`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New function `*AccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*TrustedIDProvidersClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `Account.MarshalJSON() ([]byte, error)`
+- New function `AccountsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientDeleteResponse, error)`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientListPager.Err() error`
+- New function `*TrustedIDProvidersClientListByAccountPager.PageResponse() TrustedIDProvidersClientListByAccountResponse`
+- New function `*AccountsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientListByResourceGroupPager.Err() error`
+- New function `*AccountsClientDeletePoller.FinalResponse(context.Context) (AccountsClientDeleteResponse, error)`
+- New function `*AccountProperties.UnmarshalJSON([]byte) error`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*FirewallRulesClientListByAccountPager.NextPage(context.Context) bool`
+- New function `*AccountsClientCreatePoller.Done() bool`
+- New function `*VirtualNetworkRulesClientListByAccountPager.Err() error`
+- New function `*FirewallRulesClientListByAccountPager.PageResponse() FirewallRulesClientListByAccountResponse`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*FirewallRulesClientListByAccountPager.Err() error`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `*AccountsClientCreatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*VirtualNetworkRulesClientListByAccountPager.PageResponse() VirtualNetworkRulesClientListByAccountResponse`
+- New function `*VirtualNetworkRulesClientListByAccountPager.NextPage(context.Context) bool`
+- New struct `Account`
+- New struct `AccountBasic`
+- New struct `AccountListResult`
+- New struct `AccountProperties`
+- New struct `AccountPropertiesBasic`
+- New struct `AccountsClientBeginCreateOptions`
+- New struct `AccountsClientBeginDeleteOptions`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientCheckNameAvailabilityOptions`
+- New struct `AccountsClientCheckNameAvailabilityResponse`
+- New struct `AccountsClientCheckNameAvailabilityResult`
+- New struct `AccountsClientCreatePoller`
+- New struct `AccountsClientCreatePollerResponse`
+- New struct `AccountsClientCreateResponse`
+- New struct `AccountsClientCreateResult`
+- New struct `AccountsClientDeletePoller`
+- New struct `AccountsClientDeletePollerResponse`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientEnableKeyVaultOptions`
+- New struct `AccountsClientEnableKeyVaultResponse`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListByResourceGroupOptions`
+- New struct `AccountsClientListByResourceGroupPager`
+- New struct `AccountsClientListByResourceGroupResponse`
+- New struct `AccountsClientListByResourceGroupResult`
+- New struct `AccountsClientListOptions`
+- New struct `AccountsClientListPager`
+- New struct `AccountsClientListResponse`
+- New struct `AccountsClientListResult`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `FirewallRulesClientCreateOrUpdateOptions`
+- New struct `FirewallRulesClientCreateOrUpdateResponse`
+- New struct `FirewallRulesClientCreateOrUpdateResult`
+- New struct `FirewallRulesClientDeleteOptions`
+- New struct `FirewallRulesClientDeleteResponse`
+- New struct `FirewallRulesClientGetOptions`
+- New struct `FirewallRulesClientGetResponse`
+- New struct `FirewallRulesClientGetResult`
+- New struct `FirewallRulesClientListByAccountOptions`
+- New struct `FirewallRulesClientListByAccountPager`
+- New struct `FirewallRulesClientListByAccountResponse`
+- New struct `FirewallRulesClientListByAccountResult`
+- New struct `FirewallRulesClientUpdateOptions`
+- New struct `FirewallRulesClientUpdateResponse`
+- New struct `FirewallRulesClientUpdateResult`
+- New struct `LocationsClientGetCapabilityOptions`
+- New struct `LocationsClientGetCapabilityResponse`
+- New struct `LocationsClientGetCapabilityResult`
+- New struct `LocationsClientGetUsageOptions`
+- New struct `LocationsClientGetUsageResponse`
+- New struct `LocationsClientGetUsageResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `TrustedIDProvidersClientCreateOrUpdateOptions`
+- New struct `TrustedIDProvidersClientCreateOrUpdateResponse`
+- New struct `TrustedIDProvidersClientCreateOrUpdateResult`
+- New struct `TrustedIDProvidersClientDeleteOptions`
+- New struct `TrustedIDProvidersClientDeleteResponse`
+- New struct `TrustedIDProvidersClientGetOptions`
+- New struct `TrustedIDProvidersClientGetResponse`
+- New struct `TrustedIDProvidersClientGetResult`
+- New struct `TrustedIDProvidersClientListByAccountOptions`
+- New struct `TrustedIDProvidersClientListByAccountPager`
+- New struct `TrustedIDProvidersClientListByAccountResponse`
+- New struct `TrustedIDProvidersClientListByAccountResult`
+- New struct `TrustedIDProvidersClientUpdateOptions`
+- New struct `TrustedIDProvidersClientUpdateResponse`
+- New struct `TrustedIDProvidersClientUpdateResult`
+- New struct `VirtualNetworkRulesClientCreateOrUpdateOptions`
+- New struct `VirtualNetworkRulesClientCreateOrUpdateResponse`
+- New struct `VirtualNetworkRulesClientCreateOrUpdateResult`
+- New struct `VirtualNetworkRulesClientDeleteOptions`
+- New struct `VirtualNetworkRulesClientDeleteResponse`
+- New struct `VirtualNetworkRulesClientGetOptions`
+- New struct `VirtualNetworkRulesClientGetResponse`
+- New struct `VirtualNetworkRulesClientGetResult`
+- New struct `VirtualNetworkRulesClientListByAccountOptions`
+- New struct `VirtualNetworkRulesClientListByAccountPager`
+- New struct `VirtualNetworkRulesClientListByAccountResponse`
+- New struct `VirtualNetworkRulesClientListByAccountResult`
+- New struct `VirtualNetworkRulesClientUpdateOptions`
+- New struct `VirtualNetworkRulesClientUpdateResponse`
+- New struct `VirtualNetworkRulesClientUpdateResult`
+- New field `Type` in struct `FirewallRule`
+- New field `ID` in struct `FirewallRule`
+- New field `Name` in struct `FirewallRule`
+- New field `Name` in struct `TrustedIDProvider`
+- New field `Type` in struct `TrustedIDProvider`
+- New field `ID` in struct `TrustedIDProvider`
+- New field `ID` in struct `VirtualNetworkRule`
+- New field `Name` in struct `VirtualNetworkRule`
+- New field `Type` in struct `VirtualNetworkRule`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

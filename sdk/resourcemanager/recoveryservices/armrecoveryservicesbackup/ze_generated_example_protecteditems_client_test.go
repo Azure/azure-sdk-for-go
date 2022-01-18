@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
 func ExampleProtectedItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,14 +31,14 @@ func ExampleProtectedItemsClient_Get() {
 		"<fabric-name>",
 		"<container-name>",
 		"<protected-item-name>",
-		&armrecoveryservicesbackup.ProtectedItemsGetOptions{Filter: nil})
+		&armrecoveryservicesbackup.ProtectedItemsClientGetOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectedItemResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProtectedItemsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/ConfigureProtection.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/ConfigureProtection.json
 func ExampleProtectedItemsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,23 +54,19 @@ func ExampleProtectedItemsClient_CreateOrUpdate() {
 		"<protected-item-name>",
 		armrecoveryservicesbackup.ProtectedItemResource{
 			Properties: &armrecoveryservicesbackup.AzureIaaSComputeVMProtectedItem{
-				AzureIaaSVMProtectedItem: armrecoveryservicesbackup.AzureIaaSVMProtectedItem{
-					ProtectedItem: armrecoveryservicesbackup.ProtectedItem{
-						PolicyID:          to.StringPtr("<policy-id>"),
-						ProtectedItemType: to.StringPtr("<protected-item-type>"),
-						SourceResourceID:  to.StringPtr("<source-resource-id>"),
-					},
-				},
+				PolicyID:          to.StringPtr("<policy-id>"),
+				ProtectedItemType: to.StringPtr("<protected-item-type>"),
+				SourceResourceID:  to.StringPtr("<source-resource-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProtectedItemResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProtectedItemsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/ProtectedItem_Delete.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/ProtectedItem_Delete.json
 func ExampleProtectedItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

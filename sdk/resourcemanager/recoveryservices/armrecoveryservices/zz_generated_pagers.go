@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// PrivateLinkResourcesListPager provides operations for iterating over paged responses.
-type PrivateLinkResourcesListPager struct {
+// PrivateLinkResourcesClientListPager provides operations for iterating over paged responses.
+type PrivateLinkResourcesClientListPager struct {
 	client    *PrivateLinkResourcesClient
-	current   PrivateLinkResourcesListResponse
+	current   PrivateLinkResourcesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateLinkResourcesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateLinkResourcesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateLinkResourcesListPager) Err() error {
+func (p *PrivateLinkResourcesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateLinkResourcesListPager) NextPage(ctx context.Context) bool {
+func (p *PrivateLinkResourcesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *PrivateLinkResourcesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *PrivateLinkResourcesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current PrivateLinkResourcesListResponse page.
-func (p *PrivateLinkResourcesListPager) PageResponse() PrivateLinkResourcesListResponse {
+// PageResponse returns the current PrivateLinkResourcesClientListResponse page.
+func (p *PrivateLinkResourcesClientListPager) PageResponse() PrivateLinkResourcesClientListResponse {
 	return p.current
 }
 
-// VaultsListByResourceGroupPager provides operations for iterating over paged responses.
-type VaultsListByResourceGroupPager struct {
+// VaultsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type VaultsClientListByResourceGroupPager struct {
 	client    *VaultsClient
-	current   VaultsListByResourceGroupResponse
+	current   VaultsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VaultsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, VaultsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VaultsListByResourceGroupPager) Err() error {
+func (p *VaultsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VaultsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *VaultsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *VaultsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *VaultsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current VaultsListByResourceGroupResponse page.
-func (p *VaultsListByResourceGroupPager) PageResponse() VaultsListByResourceGroupResponse {
+// PageResponse returns the current VaultsClientListByResourceGroupResponse page.
+func (p *VaultsClientListByResourceGroupPager) PageResponse() VaultsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// VaultsListBySubscriptionIDPager provides operations for iterating over paged responses.
-type VaultsListBySubscriptionIDPager struct {
+// VaultsClientListBySubscriptionIDPager provides operations for iterating over paged responses.
+type VaultsClientListBySubscriptionIDPager struct {
 	client    *VaultsClient
-	current   VaultsListBySubscriptionIDResponse
+	current   VaultsClientListBySubscriptionIDResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VaultsListBySubscriptionIDResponse) (*policy.Request, error)
+	advancer  func(context.Context, VaultsClientListBySubscriptionIDResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VaultsListBySubscriptionIDPager) Err() error {
+func (p *VaultsClientListBySubscriptionIDPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VaultsListBySubscriptionIDPager) NextPage(ctx context.Context) bool {
+func (p *VaultsClientListBySubscriptionIDPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *VaultsListBySubscriptionIDPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionIDHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionIDHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *VaultsListBySubscriptionIDPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current VaultsListBySubscriptionIDResponse page.
-func (p *VaultsListBySubscriptionIDPager) PageResponse() VaultsListBySubscriptionIDResponse {
+// PageResponse returns the current VaultsClientListBySubscriptionIDResponse page.
+func (p *VaultsClientListBySubscriptionIDPager) PageResponse() VaultsClientListBySubscriptionIDResponse {
 	return p.current
 }

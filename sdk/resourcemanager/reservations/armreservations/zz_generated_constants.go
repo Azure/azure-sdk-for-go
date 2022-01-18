@@ -9,8 +9,8 @@
 package armreservations
 
 const (
-	module  = "armreservations"
-	version = "v0.1.0"
+	moduleName    = "armreservations"
+	moduleVersion = "v0.2.0"
 )
 
 // AppliedScopeType - Type of the Applied Scope.
@@ -268,8 +268,8 @@ func (c ExchangeOperationResultStatus) ToPtr() *ExchangeOperationResultStatus {
 	return &c
 }
 
-// InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines reserved
-// resource type.
+// InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group. Only
+// specify for VirtualMachines reserved resource type.
 type InstanceFlexibility string
 
 const (

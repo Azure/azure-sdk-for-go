@@ -29,13 +29,17 @@ func ExampleTargetsClient_List() {
 		"<parent-provider-namespace>",
 		"<parent-resource-type>",
 		"<parent-resource-name>",
-		&armchaos.TargetsListOptions{ContinuationToken: to.StringPtr("<continuation-token>")})
-	for pager.NextPage(ctx) {
+		&armchaos.TargetsClientListOptions{ContinuationToken: to.StringPtr("<continuation-token>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Target.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExampleTargetsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Target.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TargetsClientGetResult)
 }
 
 // x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/DeleteATarget.json
@@ -109,5 +113,5 @@ func ExampleTargetsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Target.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TargetsClientCreateOrUpdateResult)
 }

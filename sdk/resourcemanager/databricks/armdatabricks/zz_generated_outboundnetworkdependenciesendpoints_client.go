@@ -11,7 +11,6 @@ package armdatabricks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,56 @@ import (
 // OutboundNetworkDependenciesEndpointsClient contains the methods for the OutboundNetworkDependenciesEndpoints group.
 // Don't use this type directly, use NewOutboundNetworkDependenciesEndpointsClient() instead.
 type OutboundNetworkDependenciesEndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOutboundNetworkDependenciesEndpointsClient creates a new instance of OutboundNetworkDependenciesEndpointsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OutboundNetworkDependenciesEndpointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OutboundNetworkDependenciesEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OutboundNetworkDependenciesEndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure outbound access with these endpoints.
-// For more information, see
+// List - Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure
+// outbound access with these endpoints. For more information, see
 // https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OutboundNetworkDependenciesEndpointsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *OutboundNetworkDependenciesEndpointsListOptions) (OutboundNetworkDependenciesEndpointsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
+// method.
+func (client *OutboundNetworkDependenciesEndpointsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *OutboundNetworkDependenciesEndpointsClientListOptions) (OutboundNetworkDependenciesEndpointsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return OutboundNetworkDependenciesEndpointsListResponse{}, err
+		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OutboundNetworkDependenciesEndpointsListResponse{}, err
+		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OutboundNetworkDependenciesEndpointsListResponse{}, client.listHandleError(resp)
+		return OutboundNetworkDependenciesEndpointsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *OutboundNetworkDependenciesEndpointsListOptions) (*policy.Request, error) {
+func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *OutboundNetworkDependenciesEndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -76,7 +87,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -88,23 +99,10 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx 
 }
 
 // listHandleResponse handles the List response.
-func (client *OutboundNetworkDependenciesEndpointsClient) listHandleResponse(resp *http.Response) (OutboundNetworkDependenciesEndpointsListResponse, error) {
-	result := OutboundNetworkDependenciesEndpointsListResponse{RawResponse: resp}
+func (client *OutboundNetworkDependenciesEndpointsClient) listHandleResponse(resp *http.Response) (OutboundNetworkDependenciesEndpointsClientListResponse, error) {
+	result := OutboundNetworkDependenciesEndpointsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointArray); err != nil {
-		return OutboundNetworkDependenciesEndpointsListResponse{}, runtime.NewResponseError(err, resp)
+		return OutboundNetworkDependenciesEndpointsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OutboundNetworkDependenciesEndpointsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

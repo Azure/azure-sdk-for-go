@@ -9,8 +9,8 @@
 package armavs
 
 const (
-	module  = "armavs"
-	version = "v0.1.0"
+	moduleName    = "armavs"
+	moduleVersion = "v0.2.0"
 )
 
 // AddonProvisioningState - The state of the addon provisioning
@@ -677,8 +677,8 @@ func (c QuotaEnabled) ToPtr() *QuotaEnabled {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created identity. The type
-// 'None' will remove any identities from the Private Cloud.
+// ResourceIdentityType - The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly
+// created identity. The type 'None' will remove any identities from the Private Cloud.
 type ResourceIdentityType string
 
 const (

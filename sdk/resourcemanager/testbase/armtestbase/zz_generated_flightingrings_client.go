@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // FlightingRingsClient contains the methods for the FlightingRings group.
 // Don't use this type directly, use NewFlightingRingsClient() instead.
 type FlightingRingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFlightingRingsClient creates a new instance of FlightingRingsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFlightingRingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FlightingRingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FlightingRingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FlightingRingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a flighting ring of a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FlightingRingsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, flightingRingResourceName string, options *FlightingRingsGetOptions) (FlightingRingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// flightingRingResourceName - The resource name of a flighting ring.
+// options - FlightingRingsClientGetOptions contains the optional parameters for the FlightingRingsClient.Get method.
+func (client *FlightingRingsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, flightingRingResourceName string, options *FlightingRingsClientGetOptions) (FlightingRingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, flightingRingResourceName, options)
 	if err != nil {
-		return FlightingRingsGetResponse{}, err
+		return FlightingRingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FlightingRingsGetResponse{}, err
+		return FlightingRingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FlightingRingsGetResponse{}, client.getHandleError(resp)
+		return FlightingRingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FlightingRingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, flightingRingResourceName string, options *FlightingRingsGetOptions) (*policy.Request, error) {
+func (client *FlightingRingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, flightingRingResourceName string, options *FlightingRingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/flightingRings/{flightingRingResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *FlightingRingsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter flightingRingResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{flightingRingResourceName}", url.PathEscape(flightingRingResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *FlightingRingsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *FlightingRingsClient) getHandleResponse(resp *http.Response) (FlightingRingsGetResponse, error) {
-	result := FlightingRingsGetResponse{RawResponse: resp}
+func (client *FlightingRingsClient) getHandleResponse(resp *http.Response) (FlightingRingsClientGetResponse, error) {
+	result := FlightingRingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlightingRingResource); err != nil {
-		return FlightingRingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return FlightingRingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FlightingRingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the flighting rings of a Test Base Account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FlightingRingsClient) List(resourceGroupName string, testBaseAccountName string, options *FlightingRingsListOptions) *FlightingRingsListPager {
-	return &FlightingRingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// options - FlightingRingsClientListOptions contains the optional parameters for the FlightingRingsClient.List method.
+func (client *FlightingRingsClient) List(resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) *FlightingRingsClientListPager {
+	return &FlightingRingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp FlightingRingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FlightingRingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FlightingRingListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *FlightingRingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *FlightingRingsListOptions) (*policy.Request, error) {
+func (client *FlightingRingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/flightingRings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *FlightingRingsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +153,10 @@ func (client *FlightingRingsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *FlightingRingsClient) listHandleResponse(resp *http.Response) (FlightingRingsListResponse, error) {
-	result := FlightingRingsListResponse{RawResponse: resp}
+func (client *FlightingRingsClient) listHandleResponse(resp *http.Response) (FlightingRingsClientListResponse, error) {
+	result := FlightingRingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlightingRingListResult); err != nil {
-		return FlightingRingsListResponse{}, runtime.NewResponseError(err, resp)
+		return FlightingRingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *FlightingRingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

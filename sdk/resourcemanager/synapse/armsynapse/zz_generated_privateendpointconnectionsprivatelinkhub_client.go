@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // PrivateEndpointConnectionsPrivateLinkHubClient contains the methods for the PrivateEndpointConnectionsPrivateLinkHub group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsPrivateLinkHubClient() instead.
 type PrivateEndpointConnectionsPrivateLinkHubClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointConnectionsPrivateLinkHubClient creates a new instance of PrivateEndpointConnectionsPrivateLinkHubClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsPrivateLinkHubClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateEndpointConnectionsPrivateLinkHubClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateEndpointConnectionsPrivateLinkHubClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get all PrivateEndpointConnection in the PrivateLinkHub by name
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) Get(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsPrivateLinkHubGetOptions) (PrivateEndpointConnectionsPrivateLinkHubGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateLinkHubName - Name of the privateLinkHub
+// privateEndpointConnectionName - Name of the privateEndpointConnection
+// options - PrivateEndpointConnectionsPrivateLinkHubClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsPrivateLinkHubClient.Get
+// method.
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) Get(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsPrivateLinkHubClientGetOptions) (PrivateEndpointConnectionsPrivateLinkHubClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateLinkHubName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsPrivateLinkHubGetResponse{}, err
+		return PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsPrivateLinkHubGetResponse{}, err
+		return PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsPrivateLinkHubGetResponse{}, client.getHandleError(resp)
+		return PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsPrivateLinkHubGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsPrivateLinkHubClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getCreateRequest(c
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +102,34 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getCreateRequest(c
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsPrivateLinkHubGetResponse, error) {
-	result := PrivateEndpointConnectionsPrivateLinkHubGetResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsPrivateLinkHubClientGetResponse, error) {
+	result := PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionForPrivateLinkHub); err != nil {
-		return PrivateEndpointConnectionsPrivateLinkHubGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsPrivateLinkHubClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get all PrivateEndpointConnections in the PrivateLinkHub
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubListOptions) *PrivateEndpointConnectionsPrivateLinkHubListPager {
-	return &PrivateEndpointConnectionsPrivateLinkHubListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateLinkHubName - Name of the privateLinkHub
+// options - PrivateEndpointConnectionsPrivateLinkHubClientListOptions contains the optional parameters for the PrivateEndpointConnectionsPrivateLinkHubClient.List
+// method.
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) List(resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubClientListOptions) *PrivateEndpointConnectionsPrivateLinkHubClientListPager {
+	return &PrivateEndpointConnectionsPrivateLinkHubClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateLinkHubName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsPrivateLinkHubListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsPrivateLinkHubClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubListOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +143,7 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listCreateRequest(
 		return nil, errors.New("parameter privateLinkHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateLinkHubName}", url.PathEscape(privateLinkHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +155,10 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listCreateRequest(
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listHandleResponse(resp *http.Response) (PrivateEndpointConnectionsPrivateLinkHubListResponse, error) {
-	result := PrivateEndpointConnectionsPrivateLinkHubListResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listHandleResponse(resp *http.Response) (PrivateEndpointConnectionsPrivateLinkHubClientListResponse, error) {
+	result := PrivateEndpointConnectionsPrivateLinkHubClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse); err != nil {
-		return PrivateEndpointConnectionsPrivateLinkHubListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsPrivateLinkHubClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

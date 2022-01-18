@@ -28,12 +28,16 @@ func ExampleBackupVaultsClient_GetInSubscription() {
 	ctx := context.Background()
 	client := armdataprotection.NewBackupVaultsClient("<subscription-id>", cred, nil)
 	pager := client.GetInSubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BackupVaultResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleBackupVaultsClient_GetInResourceGroup() {
 	client := armdataprotection.NewBackupVaultsClient("<subscription-id>", cred, nil)
 	pager := client.GetInResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BackupVaultResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleBackupVaultsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupVaultResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupVaultsClientGetResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/PutBackupVault.json
@@ -88,20 +96,18 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 		"<vault-name>",
 		"<resource-group-name>",
 		armdataprotection.BackupVaultResource{
-			DppTrackedResource: armdataprotection.DppTrackedResource{
-				Identity: &armdataprotection.DppIdentityDetails{
-					Type: to.StringPtr("<type>"),
-				},
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key1": to.StringPtr("val1"),
-				},
+			Identity: &armdataprotection.DppIdentityDetails{
+				Type: to.StringPtr("<type>"),
+			},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key1": to.StringPtr("val1"),
 			},
 			Properties: &armdataprotection.BackupVault{
 				StorageSettings: []*armdataprotection.StorageSetting{
 					{
-						Type:          armdataprotection.StorageSettingTypesLocallyRedundant.ToPtr(),
-						DatastoreType: armdataprotection.StorageSettingStoreTypesVaultStore.ToPtr(),
+						Type:          armdataprotection.StorageSettingTypes("LocallyRedundant").ToPtr(),
+						DatastoreType: armdataprotection.StorageSettingStoreTypes("VaultStore").ToPtr(),
 					}},
 			},
 		},
@@ -113,7 +119,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupVaultResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupVaultsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/DeleteBackupVault.json
@@ -157,7 +163,7 @@ func ExampleBackupVaultsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupVaultResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupVaultsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
@@ -168,7 +174,7 @@ func ExampleBackupVaultsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armdataprotection.NewBackupVaultsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<location>",
 		armdataprotection.CheckNameAvailabilityRequest{
@@ -179,4 +185,5 @@ func ExampleBackupVaultsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BackupVaultsClientCheckNameAvailabilityResult)
 }

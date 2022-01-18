@@ -9,8 +9,8 @@
 package armmaps
 
 const (
-	module  = "armmaps"
-	version = "v0.1.0"
+	moduleName    = "armmaps"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

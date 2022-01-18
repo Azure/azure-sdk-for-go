@@ -11,7 +11,6 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // OnPremiseSensorsClient contains the methods for the OnPremiseSensors group.
 // Don't use this type directly, use NewOnPremiseSensorsClient() instead.
 type OnPremiseSensorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOnPremiseSensorsClient creates a new instance of OnPremiseSensorsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOnPremiseSensorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OnPremiseSensorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OnPremiseSensorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OnPremiseSensorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update on-premise IoT sensor
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OnPremiseSensorsClient) CreateOrUpdate(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsCreateOrUpdateOptions) (OnPremiseSensorsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// onPremiseSensorName - Name of the on-premise IoT sensor
+// options - OnPremiseSensorsClientCreateOrUpdateOptions contains the optional parameters for the OnPremiseSensorsClient.CreateOrUpdate
+// method.
+func (client *OnPremiseSensorsClient) CreateOrUpdate(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientCreateOrUpdateOptions) (OnPremiseSensorsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, onPremiseSensorName, options)
 	if err != nil {
-		return OnPremiseSensorsCreateOrUpdateResponse{}, err
+		return OnPremiseSensorsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OnPremiseSensorsCreateOrUpdateResponse{}, err
+		return OnPremiseSensorsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return OnPremiseSensorsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return OnPremiseSensorsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OnPremiseSensorsClient) createOrUpdateCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OnPremiseSensorsClient) createOrUpdateCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors/{onPremiseSensorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +80,7 @@ func (client *OnPremiseSensorsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter onPremiseSensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{onPremiseSensorName}", url.PathEscape(onPremiseSensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,46 +92,35 @@ func (client *OnPremiseSensorsClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *OnPremiseSensorsClient) createOrUpdateHandleResponse(resp *http.Response) (OnPremiseSensorsCreateOrUpdateResponse, error) {
-	result := OnPremiseSensorsCreateOrUpdateResponse{RawResponse: resp}
+func (client *OnPremiseSensorsClient) createOrUpdateHandleResponse(resp *http.Response) (OnPremiseSensorsClientCreateOrUpdateResponse, error) {
+	result := OnPremiseSensorsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OnPremiseSensor); err != nil {
-		return OnPremiseSensorsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return OnPremiseSensorsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *OnPremiseSensorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete on-premise IoT sensor
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OnPremiseSensorsClient) Delete(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsDeleteOptions) (OnPremiseSensorsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// onPremiseSensorName - Name of the on-premise IoT sensor
+// options - OnPremiseSensorsClientDeleteOptions contains the optional parameters for the OnPremiseSensorsClient.Delete method.
+func (client *OnPremiseSensorsClient) Delete(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientDeleteOptions) (OnPremiseSensorsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, onPremiseSensorName, options)
 	if err != nil {
-		return OnPremiseSensorsDeleteResponse{}, err
+		return OnPremiseSensorsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OnPremiseSensorsDeleteResponse{}, err
+		return OnPremiseSensorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return OnPremiseSensorsDeleteResponse{}, client.deleteHandleError(resp)
+		return OnPremiseSensorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OnPremiseSensorsDeleteResponse{RawResponse: resp}, nil
+	return OnPremiseSensorsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OnPremiseSensorsClient) deleteCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsDeleteOptions) (*policy.Request, error) {
+func (client *OnPremiseSensorsClient) deleteCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors/{onPremiseSensorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,7 +130,7 @@ func (client *OnPremiseSensorsClient) deleteCreateRequest(ctx context.Context, o
 		return nil, errors.New("parameter onPremiseSensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{onPremiseSensorName}", url.PathEscape(onPremiseSensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,38 +141,28 @@ func (client *OnPremiseSensorsClient) deleteCreateRequest(ctx context.Context, o
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *OnPremiseSensorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DownloadActivation - Download sensor activation file
-// If the operation fails it returns a generic error.
-func (client *OnPremiseSensorsClient) DownloadActivation(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsDownloadActivationOptions) (OnPremiseSensorsDownloadActivationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// onPremiseSensorName - Name of the on-premise IoT sensor
+// options - OnPremiseSensorsClientDownloadActivationOptions contains the optional parameters for the OnPremiseSensorsClient.DownloadActivation
+// method.
+func (client *OnPremiseSensorsClient) DownloadActivation(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientDownloadActivationOptions) (OnPremiseSensorsClientDownloadActivationResponse, error) {
 	req, err := client.downloadActivationCreateRequest(ctx, onPremiseSensorName, options)
 	if err != nil {
-		return OnPremiseSensorsDownloadActivationResponse{}, err
+		return OnPremiseSensorsClientDownloadActivationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OnPremiseSensorsDownloadActivationResponse{}, err
+		return OnPremiseSensorsClientDownloadActivationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OnPremiseSensorsDownloadActivationResponse{}, client.downloadActivationHandleError(resp)
+		return OnPremiseSensorsClientDownloadActivationResponse{}, runtime.NewResponseError(resp)
 	}
-	return OnPremiseSensorsDownloadActivationResponse{RawResponse: resp}, nil
+	return OnPremiseSensorsClientDownloadActivationResponse{RawResponse: resp}, nil
 }
 
 // downloadActivationCreateRequest creates the DownloadActivation request.
-func (client *OnPremiseSensorsClient) downloadActivationCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsDownloadActivationOptions) (*policy.Request, error) {
+func (client *OnPremiseSensorsClient) downloadActivationCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientDownloadActivationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors/{onPremiseSensorName}/downloadActivation"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -183,49 +172,41 @@ func (client *OnPremiseSensorsClient) downloadActivationCreateRequest(ctx contex
 		return nil, errors.New("parameter onPremiseSensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{onPremiseSensorName}", url.PathEscape(onPremiseSensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header.Set("Accept", "application/zip")
 	return req, nil
 }
 
-// downloadActivationHandleError handles the DownloadActivation error response.
-func (client *OnPremiseSensorsClient) downloadActivationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // DownloadResetPassword - Download file for reset password of the sensor
-// If the operation fails it returns a generic error.
-func (client *OnPremiseSensorsClient) DownloadResetPassword(ctx context.Context, onPremiseSensorName string, body ResetPasswordInput, options *OnPremiseSensorsDownloadResetPasswordOptions) (OnPremiseSensorsDownloadResetPasswordResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// onPremiseSensorName - Name of the on-premise IoT sensor
+// body - Input for reset password.
+// options - OnPremiseSensorsClientDownloadResetPasswordOptions contains the optional parameters for the OnPremiseSensorsClient.DownloadResetPassword
+// method.
+func (client *OnPremiseSensorsClient) DownloadResetPassword(ctx context.Context, onPremiseSensorName string, body ResetPasswordInput, options *OnPremiseSensorsClientDownloadResetPasswordOptions) (OnPremiseSensorsClientDownloadResetPasswordResponse, error) {
 	req, err := client.downloadResetPasswordCreateRequest(ctx, onPremiseSensorName, body, options)
 	if err != nil {
-		return OnPremiseSensorsDownloadResetPasswordResponse{}, err
+		return OnPremiseSensorsClientDownloadResetPasswordResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OnPremiseSensorsDownloadResetPasswordResponse{}, err
+		return OnPremiseSensorsClientDownloadResetPasswordResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OnPremiseSensorsDownloadResetPasswordResponse{}, client.downloadResetPasswordHandleError(resp)
+		return OnPremiseSensorsClientDownloadResetPasswordResponse{}, runtime.NewResponseError(resp)
 	}
-	return OnPremiseSensorsDownloadResetPasswordResponse{RawResponse: resp}, nil
+	return OnPremiseSensorsClientDownloadResetPasswordResponse{RawResponse: resp}, nil
 }
 
 // downloadResetPasswordCreateRequest creates the DownloadResetPassword request.
-func (client *OnPremiseSensorsClient) downloadResetPasswordCreateRequest(ctx context.Context, onPremiseSensorName string, body ResetPasswordInput, options *OnPremiseSensorsDownloadResetPasswordOptions) (*policy.Request, error) {
+func (client *OnPremiseSensorsClient) downloadResetPasswordCreateRequest(ctx context.Context, onPremiseSensorName string, body ResetPasswordInput, options *OnPremiseSensorsClientDownloadResetPasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors/{onPremiseSensorName}/downloadResetPassword"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -235,49 +216,39 @@ func (client *OnPremiseSensorsClient) downloadResetPasswordCreateRequest(ctx con
 		return nil, errors.New("parameter onPremiseSensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{onPremiseSensorName}", url.PathEscape(onPremiseSensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header.Set("Accept", "application/zip")
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// downloadResetPasswordHandleError handles the DownloadResetPassword error response.
-func (client *OnPremiseSensorsClient) downloadResetPasswordHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get on-premise IoT sensor
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OnPremiseSensorsClient) Get(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsGetOptions) (OnPremiseSensorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// onPremiseSensorName - Name of the on-premise IoT sensor
+// options - OnPremiseSensorsClientGetOptions contains the optional parameters for the OnPremiseSensorsClient.Get method.
+func (client *OnPremiseSensorsClient) Get(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientGetOptions) (OnPremiseSensorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, onPremiseSensorName, options)
 	if err != nil {
-		return OnPremiseSensorsGetResponse{}, err
+		return OnPremiseSensorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OnPremiseSensorsGetResponse{}, err
+		return OnPremiseSensorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OnPremiseSensorsGetResponse{}, client.getHandleError(resp)
+		return OnPremiseSensorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OnPremiseSensorsClient) getCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsGetOptions) (*policy.Request, error) {
+func (client *OnPremiseSensorsClient) getCreateRequest(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors/{onPremiseSensorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -287,7 +258,7 @@ func (client *OnPremiseSensorsClient) getCreateRequest(ctx context.Context, onPr
 		return nil, errors.New("parameter onPremiseSensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{onPremiseSensorName}", url.PathEscape(onPremiseSensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -299,52 +270,40 @@ func (client *OnPremiseSensorsClient) getCreateRequest(ctx context.Context, onPr
 }
 
 // getHandleResponse handles the Get response.
-func (client *OnPremiseSensorsClient) getHandleResponse(resp *http.Response) (OnPremiseSensorsGetResponse, error) {
-	result := OnPremiseSensorsGetResponse{RawResponse: resp}
+func (client *OnPremiseSensorsClient) getHandleResponse(resp *http.Response) (OnPremiseSensorsClientGetResponse, error) {
+	result := OnPremiseSensorsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OnPremiseSensor); err != nil {
-		return OnPremiseSensorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return OnPremiseSensorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *OnPremiseSensorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List on-premise IoT sensors
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OnPremiseSensorsClient) List(ctx context.Context, options *OnPremiseSensorsListOptions) (OnPremiseSensorsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - OnPremiseSensorsClientListOptions contains the optional parameters for the OnPremiseSensorsClient.List method.
+func (client *OnPremiseSensorsClient) List(ctx context.Context, options *OnPremiseSensorsClientListOptions) (OnPremiseSensorsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return OnPremiseSensorsListResponse{}, err
+		return OnPremiseSensorsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OnPremiseSensorsListResponse{}, err
+		return OnPremiseSensorsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OnPremiseSensorsListResponse{}, client.listHandleError(resp)
+		return OnPremiseSensorsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *OnPremiseSensorsClient) listCreateRequest(ctx context.Context, options *OnPremiseSensorsListOptions) (*policy.Request, error) {
+func (client *OnPremiseSensorsClient) listCreateRequest(ctx context.Context, options *OnPremiseSensorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/onPremiseSensors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,23 +315,10 @@ func (client *OnPremiseSensorsClient) listCreateRequest(ctx context.Context, opt
 }
 
 // listHandleResponse handles the List response.
-func (client *OnPremiseSensorsClient) listHandleResponse(resp *http.Response) (OnPremiseSensorsListResponse, error) {
-	result := OnPremiseSensorsListResponse{RawResponse: resp}
+func (client *OnPremiseSensorsClient) listHandleResponse(resp *http.Response) (OnPremiseSensorsClientListResponse, error) {
+	result := OnPremiseSensorsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OnPremiseSensorsList); err != nil {
-		return OnPremiseSensorsListResponse{}, runtime.NewResponseError(err, resp)
+		return OnPremiseSensorsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OnPremiseSensorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

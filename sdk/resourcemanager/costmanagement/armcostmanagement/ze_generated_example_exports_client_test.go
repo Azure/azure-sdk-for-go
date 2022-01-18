@@ -27,12 +27,13 @@ func ExampleExportsClient_List() {
 	}
 	ctx := context.Background()
 	client := armcostmanagement.NewExportsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<scope>",
-		&armcostmanagement.ExportsListOptions{Expand: nil})
+		&armcostmanagement.ExportsClientListOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportsClientListResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByBillingAccount.json
@@ -46,11 +47,11 @@ func ExampleExportsClient_Get() {
 	res, err := client.Get(ctx,
 		"<scope>",
 		"<export-name>",
-		&armcostmanagement.ExportsGetOptions{Expand: nil})
+		&armcostmanagement.ExportsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Export.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExportsClientGetResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
@@ -66,38 +67,36 @@ func ExampleExportsClient_CreateOrUpdate() {
 		"<export-name>",
 		armcostmanagement.Export{
 			Properties: &armcostmanagement.ExportProperties{
-				CommonExportProperties: armcostmanagement.CommonExportProperties{
-					Format: armcostmanagement.FormatTypeCSV.ToPtr(),
-					Definition: &armcostmanagement.ExportDefinition{
-						Type: armcostmanagement.ExportTypeActualCost.ToPtr(),
-						DataSet: &armcostmanagement.ExportDataset{
-							Configuration: &armcostmanagement.ExportDatasetConfiguration{
-								Columns: []*string{
-									to.StringPtr("Date"),
-									to.StringPtr("MeterId"),
-									to.StringPtr("ResourceId"),
-									to.StringPtr("ResourceLocation"),
-									to.StringPtr("Quantity")},
-							},
-							Granularity: armcostmanagement.GranularityTypeDaily.ToPtr(),
+				Format: armcostmanagement.FormatType("Csv").ToPtr(),
+				Definition: &armcostmanagement.ExportDefinition{
+					Type: armcostmanagement.ExportType("ActualCost").ToPtr(),
+					DataSet: &armcostmanagement.ExportDataset{
+						Configuration: &armcostmanagement.ExportDatasetConfiguration{
+							Columns: []*string{
+								to.StringPtr("Date"),
+								to.StringPtr("MeterId"),
+								to.StringPtr("ResourceId"),
+								to.StringPtr("ResourceLocation"),
+								to.StringPtr("Quantity")},
 						},
-						Timeframe: armcostmanagement.TimeframeTypeMonthToDate.ToPtr(),
+						Granularity: armcostmanagement.GranularityType("Daily").ToPtr(),
 					},
-					DeliveryInfo: &armcostmanagement.ExportDeliveryInfo{
-						Destination: &armcostmanagement.ExportDeliveryDestination{
-							Container:      to.StringPtr("<container>"),
-							ResourceID:     to.StringPtr("<resource-id>"),
-							RootFolderPath: to.StringPtr("<root-folder-path>"),
-						},
+					Timeframe: armcostmanagement.TimeframeType("MonthToDate").ToPtr(),
+				},
+				DeliveryInfo: &armcostmanagement.ExportDeliveryInfo{
+					Destination: &armcostmanagement.ExportDeliveryDestination{
+						Container:      to.StringPtr("<container>"),
+						ResourceID:     to.StringPtr("<resource-id>"),
+						RootFolderPath: to.StringPtr("<root-folder-path>"),
 					},
 				},
 				Schedule: &armcostmanagement.ExportSchedule{
-					Recurrence: armcostmanagement.RecurrenceTypeWeekly.ToPtr(),
+					Recurrence: armcostmanagement.RecurrenceType("Weekly").ToPtr(),
 					RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
 						From: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
 						To:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
 					},
-					Status: armcostmanagement.StatusTypeActive.ToPtr(),
+					Status: armcostmanagement.StatusType("Active").ToPtr(),
 				},
 			},
 		},
@@ -105,7 +104,7 @@ func ExampleExportsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Export.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExportsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByBillingAccount.json
@@ -150,11 +149,12 @@ func ExampleExportsClient_GetExecutionHistory() {
 	}
 	ctx := context.Background()
 	client := armcostmanagement.NewExportsClient(cred, nil)
-	_, err = client.GetExecutionHistory(ctx,
+	res, err := client.GetExecutionHistory(ctx,
 		"<scope>",
 		"<export-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportsClientGetExecutionHistoryResult)
 }

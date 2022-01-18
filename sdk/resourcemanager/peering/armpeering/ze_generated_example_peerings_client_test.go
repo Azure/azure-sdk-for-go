@@ -32,7 +32,7 @@ func ExamplePeeringsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Peering.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PeeringsClientGetResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreateDirectPeering.json
@@ -47,10 +47,10 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<peering-name>",
 		armpeering.Peering{
-			Kind:     armpeering.KindDirect.ToPtr(),
+			Kind:     armpeering.Kind("Direct").ToPtr(),
 			Location: to.StringPtr("<location>"),
-			Properties: &armpeering.PeeringProperties{
-				Direct: &armpeering.PeeringPropertiesDirect{
+			Properties: &armpeering.Properties{
+				Direct: &armpeering.PropertiesDirect{
 					Connections: []*armpeering.DirectConnection{
 						{
 							BandwidthInMbps: to.Int32Ptr(10000),
@@ -63,7 +63,7 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 							},
 							ConnectionIdentifier:   to.StringPtr("<connection-identifier>"),
 							PeeringDBFacilityID:    to.Int32Ptr(99999),
-							SessionAddressProvider: armpeering.SessionAddressProviderPeer.ToPtr(),
+							SessionAddressProvider: armpeering.SessionAddressProvider("Peer").ToPtr(),
 							UseForPeeringService:   to.BoolPtr(false),
 						},
 						{
@@ -77,10 +77,10 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 							},
 							ConnectionIdentifier:   to.StringPtr("<connection-identifier>"),
 							PeeringDBFacilityID:    to.Int32Ptr(99999),
-							SessionAddressProvider: armpeering.SessionAddressProviderMicrosoft.ToPtr(),
+							SessionAddressProvider: armpeering.SessionAddressProvider("Microsoft").ToPtr(),
 							UseForPeeringService:   to.BoolPtr(true),
 						}},
-					DirectPeeringType: armpeering.DirectPeeringTypeEdge.ToPtr(),
+					DirectPeeringType: armpeering.DirectPeeringType("Edge").ToPtr(),
 					PeerAsn: &armpeering.SubResource{
 						ID: to.StringPtr("<id>"),
 					},
@@ -88,15 +88,15 @@ func ExamplePeeringsClient_CreateOrUpdate() {
 				},
 				PeeringLocation: to.StringPtr("<peering-location>"),
 			},
-			SKU: &armpeering.PeeringSKU{
-				Name: armpeering.NameBasicDirectFree.ToPtr(),
+			SKU: &armpeering.SKU{
+				Name: armpeering.Name("Basic_Direct_Free").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Peering.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PeeringsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeering.json
@@ -137,7 +137,7 @@ func ExamplePeeringsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Peering.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PeeringsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringsByResourceGroup.json
@@ -150,12 +150,16 @@ func ExamplePeeringsClient_ListByResourceGroup() {
 	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Peering.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -169,12 +173,16 @@ func ExamplePeeringsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Peering.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

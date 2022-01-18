@@ -31,7 +31,8 @@ type DiagnosticSettings struct {
 	// The resource ID of the storage account to which you would like to send Diagnostic Logs.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 
-	// The workspace ID (resource ID of a Log Analytics workspace) for a Log Analytics workspace to which you would like to send Diagnostic Logs. Example:
+	// The workspace ID (resource ID of a Log Analytics workspace) for a Log Analytics workspace to which you would like to send
+	// Diagnostic Logs. Example:
 	// /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
@@ -54,16 +55,25 @@ type DiagnosticSettingsCategory struct {
 	CategoryType *CategoryType `json:"categoryType,omitempty"`
 }
 
-// DiagnosticSettingsCategoryListOptions contains the optional parameters for the DiagnosticSettingsCategory.List method.
-type DiagnosticSettingsCategoryListOptions struct {
+// DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
+// method.
+type DiagnosticSettingsCategoryClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DiagnosticSettingsCategoryResource - The diagnostic settings category resource.
 type DiagnosticSettingsCategoryResource struct {
-	ProxyOnlyResource
 	// The properties of a Diagnostic Settings Category.
 	Properties *DiagnosticSettingsCategory `json:"properties,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticSettingsCategoryResourceCollection - Represents a collection of diagnostic setting category resources.
@@ -79,31 +89,40 @@ func (d DiagnosticSettingsCategoryResourceCollection) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
-// DiagnosticSettingsCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettings.CreateOrUpdate method.
-type DiagnosticSettingsCreateOrUpdateOptions struct {
+// DiagnosticSettingsClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettingsClient.CreateOrUpdate
+// method.
+type DiagnosticSettingsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsDeleteOptions contains the optional parameters for the DiagnosticSettings.Delete method.
-type DiagnosticSettingsDeleteOptions struct {
+// DiagnosticSettingsClientDeleteOptions contains the optional parameters for the DiagnosticSettingsClient.Delete method.
+type DiagnosticSettingsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsGetOptions contains the optional parameters for the DiagnosticSettings.Get method.
-type DiagnosticSettingsGetOptions struct {
+// DiagnosticSettingsClientGetOptions contains the optional parameters for the DiagnosticSettingsClient.Get method.
+type DiagnosticSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsListOptions contains the optional parameters for the DiagnosticSettings.List method.
-type DiagnosticSettingsListOptions struct {
+// DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.List method.
+type DiagnosticSettingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // DiagnosticSettingsResource - The diagnostic setting resource.
 type DiagnosticSettingsResource struct {
-	ProxyOnlyResource
 	// Properties of a Diagnostic Settings Resource.
 	Properties *DiagnosticSettings `json:"properties,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // DiagnosticSettingsResourceCollection - Represents a collection of alert rule resources.
@@ -119,35 +138,35 @@ func (d DiagnosticSettingsResourceCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Display - Contains the localized display information for this particular operation / action. These value will be used by several clients for (1) custom
-// role definitions for RBAC; (2) complex query filters for
+// Display - Contains the localized display information for this particular operation / action. These value will be used by
+// several clients for (1) custom role definitions for RBAC; (2) complex query filters for
 // the event service; and (3) audit history / records for management operations.
 type Display struct {
-	// The description. The localized friendly description for the operation, as it should be shown to the user. It should be thorough, yet concise – it will
-	// be used in tool tips and detailed views.
-	// Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any 'display.provider' resource Delete any 'display.provider'
-	// resource Perform any other action on any
-	// 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update any 'display.resource' Delete any 'display.resource'
-	// 'ActionName' any 'display.resources'
+	// The description. The localized friendly description for the operation, as it should be shown to the user. It should be
+	// thorough, yet concise – it will be used in tool tips and detailed views.
+	// Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any 'display.provider' resource
+	// Delete any 'display.provider' resource Perform any other action on any
+	// 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update any 'display.resource'
+	// Delete any 'display.resource' 'ActionName' any 'display.resources'
 	Description *string `json:"description,omitempty"`
 
-	// The operation. The localized friendly name for the operation, as it should be shown to the user. It should be concise (to fit in drop downs) but clear
-	// (i.e. self-documenting). It should use Title
+	// The operation. The localized friendly name for the operation, as it should be shown to the user. It should be concise (to
+	// fit in drop downs) but clear (i.e. self-documenting). It should use Title
 	// Casing. Prescriptive guidance: Read Create or Update Delete 'ActionName'
 	Operation *string `json:"operation,omitempty"`
 
-	// The provider. The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible. It should
-	// use Title Casing and begin with "Microsoft" for
+	// The provider. The localized friendly form of the resource provider name – it is expected to also include the publisher/company
+	// responsible. It should use Title Casing and begin with "Microsoft" for
 	// 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute."
 	Provider *string `json:"provider,omitempty"`
 
 	// The publisher. The localized friendly form of the resource publisher name.
 	Publisher *string `json:"publisher,omitempty"`
 
-	// The resource. The localized friendly form of the resource related to this action/operation – it should match the public documentation for the resource
-	// provider. It should use Title Casing. This value
-	// should be unique for a particular URL type (e.g. nested types should not reuse their parent’s display.resource field). e.g. "Virtual Machines" or "Scheduler
-	// Job Collections", or "Virtual Machine VM
+	// The resource. The localized friendly form of the resource related to this action/operation – it should match the public
+	// documentation for the resource provider. It should use Title Casing. This value
+	// should be unique for a particular URL type (e.g. nested types should not reuse their parent’s display.resource field).
+	// e.g. "Virtual Machines" or "Scheduler Job Collections", or "Virtual Machine VM
 	// Sizes" or "Scheduler Jobs"
 	Resource *string `json:"resource,omitempty"`
 }
@@ -174,17 +193,9 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // LogSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
@@ -192,12 +203,17 @@ type LogSettings struct {
 	// REQUIRED; A value indicating whether this log is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log categories for a resource, first
-	// perform a GET diagnostic settings operation.
+	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
+	// categories for a resource, first perform a GET diagnostic settings operation.
 	Category *Category `json:"category,omitempty"`
 
 	// The retention policy for this log.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsDiscovery - Operations discovery class.
@@ -205,21 +221,23 @@ type OperationsDiscovery struct {
 	// Object type
 	Display *Display `json:"display,omitempty"`
 
-	// Indicates whether the operation applies to data-plane. Set the value to true for data-plane operations and false for ARM/control-plane operations.
+	// Indicates whether the operation applies to data-plane. Set the value to true for data-plane operations and false for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 
-	// Name of the API. The name of the operation being performed on this particular object. It should match the action name that appears in RBAC / the event
-	// service. Examples of operations include: *
-	// Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read
-	// *
-	// Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2) Type hierarchy for which the action
-	// applies (e.g. server/databases for a SQL Azure
-	// database) (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should be used.
-	// If it is a GET, Read should be used. If it is a
+	// Name of the API. The name of the operation being performed on this particular object. It should match the action name that
+	// appears in RBAC / the event service. Examples of operations include: *
+	// Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action * Microsoft.Compute/virtualMachine/write
+	// * Microsoft.Compute/virtualMachine/read *
+	// Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2) Type
+	// hierarchy for which the action applies (e.g. server/databases for a SQL Azure
+	// database) (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named
+	// value, Write should be used. If it is a GET, Read should be used. If it is a
 	// DELETE, Delete should be used. If it is a POST, Action should be used.
 	Name *string `json:"name,omitempty"`
 
-	// Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is "user,system"
+	// Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
+	// UX. Default value is "user,system"
 	Origin *string `json:"origin,omitempty"`
 
 	// Properties. Reserved for future use.
@@ -237,11 +255,6 @@ func (o OperationsDiscoveryCollection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ProxyOnlyResource - A proxy only azure resource object.

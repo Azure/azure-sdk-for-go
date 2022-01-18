@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// VirtualMachineImageTemplatesListByResourceGroupPager provides operations for iterating over paged responses.
-type VirtualMachineImageTemplatesListByResourceGroupPager struct {
+// VirtualMachineImageTemplatesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type VirtualMachineImageTemplatesClientListByResourceGroupPager struct {
 	client    *VirtualMachineImageTemplatesClient
-	current   VirtualMachineImageTemplatesListByResourceGroupResponse
+	current   VirtualMachineImageTemplatesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualMachineImageTemplatesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualMachineImageTemplatesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualMachineImageTemplatesListByResourceGroupPager) Err() error {
+func (p *VirtualMachineImageTemplatesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualMachineImageTemplatesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *VirtualMachineImageTemplatesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *VirtualMachineImageTemplatesListByResourceGroupPager) NextPage(ctx cont
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *VirtualMachineImageTemplatesListByResourceGroupPager) NextPage(ctx cont
 	return true
 }
 
-// PageResponse returns the current VirtualMachineImageTemplatesListByResourceGroupResponse page.
-func (p *VirtualMachineImageTemplatesListByResourceGroupPager) PageResponse() VirtualMachineImageTemplatesListByResourceGroupResponse {
+// PageResponse returns the current VirtualMachineImageTemplatesClientListByResourceGroupResponse page.
+func (p *VirtualMachineImageTemplatesClientListByResourceGroupPager) PageResponse() VirtualMachineImageTemplatesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// VirtualMachineImageTemplatesListPager provides operations for iterating over paged responses.
-type VirtualMachineImageTemplatesListPager struct {
+// VirtualMachineImageTemplatesClientListPager provides operations for iterating over paged responses.
+type VirtualMachineImageTemplatesClientListPager struct {
 	client    *VirtualMachineImageTemplatesClient
-	current   VirtualMachineImageTemplatesListResponse
+	current   VirtualMachineImageTemplatesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualMachineImageTemplatesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualMachineImageTemplatesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualMachineImageTemplatesListPager) Err() error {
+func (p *VirtualMachineImageTemplatesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualMachineImageTemplatesListPager) NextPage(ctx context.Context) bool {
+func (p *VirtualMachineImageTemplatesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *VirtualMachineImageTemplatesListPager) NextPage(ctx context.Context) bo
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *VirtualMachineImageTemplatesListPager) NextPage(ctx context.Context) bo
 	return true
 }
 
-// PageResponse returns the current VirtualMachineImageTemplatesListResponse page.
-func (p *VirtualMachineImageTemplatesListPager) PageResponse() VirtualMachineImageTemplatesListResponse {
+// PageResponse returns the current VirtualMachineImageTemplatesClientListResponse page.
+func (p *VirtualMachineImageTemplatesClientListPager) PageResponse() VirtualMachineImageTemplatesClientListResponse {
 	return p.current
 }
 
-// VirtualMachineImageTemplatesListRunOutputsPager provides operations for iterating over paged responses.
-type VirtualMachineImageTemplatesListRunOutputsPager struct {
+// VirtualMachineImageTemplatesClientListRunOutputsPager provides operations for iterating over paged responses.
+type VirtualMachineImageTemplatesClientListRunOutputsPager struct {
 	client    *VirtualMachineImageTemplatesClient
-	current   VirtualMachineImageTemplatesListRunOutputsResponse
+	current   VirtualMachineImageTemplatesClientListRunOutputsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualMachineImageTemplatesListRunOutputsResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualMachineImageTemplatesClientListRunOutputsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualMachineImageTemplatesListRunOutputsPager) Err() error {
+func (p *VirtualMachineImageTemplatesClientListRunOutputsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualMachineImageTemplatesListRunOutputsPager) NextPage(ctx context.Context) bool {
+func (p *VirtualMachineImageTemplatesClientListRunOutputsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *VirtualMachineImageTemplatesListRunOutputsPager) NextPage(ctx context.C
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listRunOutputsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listRunOutputsHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *VirtualMachineImageTemplatesListRunOutputsPager) NextPage(ctx context.C
 	return true
 }
 
-// PageResponse returns the current VirtualMachineImageTemplatesListRunOutputsResponse page.
-func (p *VirtualMachineImageTemplatesListRunOutputsPager) PageResponse() VirtualMachineImageTemplatesListRunOutputsResponse {
+// PageResponse returns the current VirtualMachineImageTemplatesClientListRunOutputsResponse page.
+func (p *VirtualMachineImageTemplatesClientListRunOutputsPager) PageResponse() VirtualMachineImageTemplatesClientListRunOutputsResponse {
 	return p.current
 }

@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // IntegrationServiceEnvironmentNetworkHealthClient contains the methods for the IntegrationServiceEnvironmentNetworkHealth group.
 // Don't use this type directly, use NewIntegrationServiceEnvironmentNetworkHealthClient() instead.
 type IntegrationServiceEnvironmentNetworkHealthClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationServiceEnvironmentNetworkHealthClient creates a new instance of IntegrationServiceEnvironmentNetworkHealthClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationServiceEnvironmentNetworkHealthClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentNetworkHealthClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationServiceEnvironmentNetworkHealthClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationServiceEnvironmentNetworkHealthClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the integration service environment network health.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentNetworkHealthGetOptions) (IntegrationServiceEnvironmentNetworkHealthGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// options - IntegrationServiceEnvironmentNetworkHealthClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentNetworkHealthClient.Get
+// method.
+func (client *IntegrationServiceEnvironmentNetworkHealthClient) Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentNetworkHealthClientGetOptions) (IntegrationServiceEnvironmentNetworkHealthClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, err
+		return IntegrationServiceEnvironmentNetworkHealthClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, err
+		return IntegrationServiceEnvironmentNetworkHealthClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, client.getHandleError(resp)
+		return IntegrationServiceEnvironmentNetworkHealthClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentNetworkHealthGetOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentNetworkHealthClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/health/network"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +97,10 @@ func (client *IntegrationServiceEnvironmentNetworkHealthClient) getCreateRequest
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentNetworkHealthGetResponse, error) {
-	result := IntegrationServiceEnvironmentNetworkHealthGetResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentNetworkHealthClientGetResponse, error) {
+	result := IntegrationServiceEnvironmentNetworkHealthClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
-		return IntegrationServiceEnvironmentNetworkHealthGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentNetworkHealthClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *IntegrationServiceEnvironmentNetworkHealthClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

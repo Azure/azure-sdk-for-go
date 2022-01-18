@@ -9,8 +9,8 @@
 package armstorageimportexport
 
 const (
-	module  = "armstorageimportexport"
-	version = "v0.1.0"
+	moduleName    = "armstorageimportexport"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

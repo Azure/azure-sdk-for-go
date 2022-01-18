@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // AccessReviewInstancesClient contains the methods for the AccessReviewInstances group.
 // Don't use this type directly, use NewAccessReviewInstancesClient() instead.
 type AccessReviewInstancesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccessReviewInstancesClient creates a new instance of AccessReviewInstancesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AccessReviewInstancesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AccessReviewInstancesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetByID - Get access review instances
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstancesClient) GetByID(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesGetByIDOptions) (AccessReviewInstancesGetByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scheduleDefinitionID - The id of the access review schedule definition.
+// id - The id of the access review instance.
+// options - AccessReviewInstancesClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesClient.GetByID
+// method.
+func (client *AccessReviewInstancesClient) GetByID(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesClientGetByIDOptions) (AccessReviewInstancesClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, scheduleDefinitionID, id, options)
 	if err != nil {
-		return AccessReviewInstancesGetByIDResponse{}, err
+		return AccessReviewInstancesClientGetByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewInstancesGetByIDResponse{}, err
+		return AccessReviewInstancesClientGetByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewInstancesGetByIDResponse{}, client.getByIDHandleError(resp)
+		return AccessReviewInstancesClientGetByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,43 +97,33 @@ func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Cont
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *AccessReviewInstancesClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstancesGetByIDResponse, error) {
-	result := AccessReviewInstancesGetByIDResponse{RawResponse: resp}
+func (client *AccessReviewInstancesClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstancesClientGetByIDResponse, error) {
+	result := AccessReviewInstancesClientGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewInstance); err != nil {
-		return AccessReviewInstancesGetByIDResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstancesClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// getByIDHandleError handles the GetByID error response.
-func (client *AccessReviewInstancesClient) getByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get access review instances
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstancesClient) List(scheduleDefinitionID string, options *AccessReviewInstancesListOptions) *AccessReviewInstancesListPager {
-	return &AccessReviewInstancesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scheduleDefinitionID - The id of the access review schedule definition.
+// options - AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.List
+// method.
+func (client *AccessReviewInstancesClient) List(scheduleDefinitionID string, options *AccessReviewInstancesClientListOptions) *AccessReviewInstancesClientListPager {
+	return &AccessReviewInstancesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scheduleDefinitionID, options)
 		},
-		advancer: func(ctx context.Context, resp AccessReviewInstancesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AccessReviewInstancesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewInstanceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewInstancesClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewInstancesListOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -132,7 +133,7 @@ func (client *AccessReviewInstancesClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,23 +145,10 @@ func (client *AccessReviewInstancesClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessReviewInstancesClient) listHandleResponse(resp *http.Response) (AccessReviewInstancesListResponse, error) {
-	result := AccessReviewInstancesListResponse{RawResponse: resp}
+func (client *AccessReviewInstancesClient) listHandleResponse(resp *http.Response) (AccessReviewInstancesClientListResponse, error) {
+	result := AccessReviewInstancesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewInstanceListResult); err != nil {
-		return AccessReviewInstancesListResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstancesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AccessReviewInstancesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

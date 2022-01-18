@@ -15,18 +15,59 @@ import (
 	"time"
 )
 
-// AccountBackupsBeginDeleteOptions contains the optional parameters for the AccountBackups.BeginDelete method.
-type AccountBackupsBeginDeleteOptions struct {
+// Account - NetApp account resource
+type Account struct {
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
+	// NetApp Account properties
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", a.Etag)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// AccountBackupsClientBeginDeleteOptions contains the optional parameters for the AccountBackupsClient.BeginDelete method.
+type AccountBackupsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountBackupsGetOptions contains the optional parameters for the AccountBackups.Get method.
-type AccountBackupsGetOptions struct {
+// AccountBackupsClientGetOptions contains the optional parameters for the AccountBackupsClient.Get method.
+type AccountBackupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountBackupsListOptions contains the optional parameters for the AccountBackups.List method.
-type AccountBackupsListOptions struct {
+// AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.List method.
+type AccountBackupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -34,6 +75,56 @@ type AccountBackupsListOptions struct {
 type AccountEncryption struct {
 	// Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
 	KeySource *string `json:"keySource,omitempty"`
+}
+
+// AccountList - List of NetApp account resources
+type AccountList struct {
+	// URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Multiple NetApp accounts
+	Value []*Account `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountList.
+func (a AccountList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccountPatch - NetApp account patch resource
+type AccountPatch struct {
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// NetApp Account properties
+	Properties *AccountProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccountPatch.
+func (a AccountPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
 }
 
 // AccountProperties - NetApp account properties
@@ -57,33 +148,33 @@ func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountsBeginCreateOrUpdateOptions contains the optional parameters for the Accounts.BeginCreateOrUpdate method.
-type AccountsBeginCreateOrUpdateOptions struct {
+// AccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccountsClient.BeginCreateOrUpdate method.
+type AccountsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsBeginDeleteOptions contains the optional parameters for the Accounts.BeginDelete method.
-type AccountsBeginDeleteOptions struct {
+// AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
+type AccountsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsBeginUpdateOptions contains the optional parameters for the Accounts.BeginUpdate method.
-type AccountsBeginUpdateOptions struct {
+// AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+type AccountsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsGetOptions contains the optional parameters for the Accounts.Get method.
-type AccountsGetOptions struct {
+// AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListBySubscriptionOptions contains the optional parameters for the Accounts.ListBySubscription method.
-type AccountsListBySubscriptionOptions struct {
+// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription method.
+type AccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsListOptions contains the optional parameters for the Accounts.List method.
-type AccountsListOptions struct {
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -116,7 +207,8 @@ type ActiveDirectory struct {
 	// If enabled, Traffic between the SMB server to Domain Controller (DC) will be encrypted.
 	EncryptDCConnections *bool `json:"encryptDCConnections,omitempty"`
 
-	// kdc server IP addresses for the active directory machine. This optional parameter is used only while creating kerberos volume.
+	// kdc server IP addresses for the active directory machine. This optional parameter is used only while creating kerberos
+	// volume.
 	KdcIP *string `json:"kdcIP,omitempty"`
 
 	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
@@ -131,12 +223,12 @@ type ActiveDirectory struct {
 	// Plain text password of Active Directory domain administrator, value is masked in the response
 	Password *string `json:"password,omitempty"`
 
-	// Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares for SQL). A list of unique
-	// usernames without domain specifier
+	// Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares
+	// for SQL). A list of unique usernames without domain specifier
 	SecurityOperators []*string `json:"securityOperators,omitempty"`
 
-	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory Certificate Service's self-signed root CA certificate,
-	// this optional parameter is used only for
+	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory Certificate Service's
+	// self-signed root CA certificate, this optional parameter is used only for
 	// dual protocol with LDAP user-mapping volumes.
 	ServerRootCACertificate *string `json:"serverRootCACertificate,omitempty"`
 
@@ -224,23 +316,28 @@ func (b BackupPatch) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BackupPoliciesBeginCreateOptions contains the optional parameters for the BackupPolicies.BeginCreate method.
-type BackupPoliciesBeginCreateOptions struct {
+// BackupPoliciesClientBeginCreateOptions contains the optional parameters for the BackupPoliciesClient.BeginCreate method.
+type BackupPoliciesClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupPoliciesBeginDeleteOptions contains the optional parameters for the BackupPolicies.BeginDelete method.
-type BackupPoliciesBeginDeleteOptions struct {
+// BackupPoliciesClientBeginDeleteOptions contains the optional parameters for the BackupPoliciesClient.BeginDelete method.
+type BackupPoliciesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupPoliciesBeginUpdateOptions contains the optional parameters for the BackupPolicies.BeginUpdate method.
-type BackupPoliciesBeginUpdateOptions struct {
+// BackupPoliciesClientBeginUpdateOptions contains the optional parameters for the BackupPoliciesClient.BeginUpdate method.
+type BackupPoliciesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupPoliciesGetOptions contains the optional parameters for the BackupPolicies.Get method.
-type BackupPoliciesGetOptions struct {
+// BackupPoliciesClientGetOptions contains the optional parameters for the BackupPoliciesClient.Get method.
+type BackupPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
+type BackupPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -255,11 +352,6 @@ func (b BackupPoliciesList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", b.Value)
 	return json.Marshal(objectMap)
-}
-
-// BackupPoliciesListOptions contains the optional parameters for the BackupPolicies.List method.
-type BackupPoliciesListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // BackupPolicy - Backup policy information
@@ -522,34 +614,40 @@ type BackupStatus struct {
 	UnhealthyReason *string `json:"unhealthyReason,omitempty" azure:"ro"`
 }
 
-// BackupsBeginCreateOptions contains the optional parameters for the Backups.BeginCreate method.
-type BackupsBeginCreateOptions struct {
+// BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
+type BackupsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsBeginDeleteOptions contains the optional parameters for the Backups.BeginDelete method.
-type BackupsBeginDeleteOptions struct {
+// BackupsClientBeginDeleteOptions contains the optional parameters for the BackupsClient.BeginDelete method.
+type BackupsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsBeginUpdateOptions contains the optional parameters for the Backups.BeginUpdate method.
-type BackupsBeginUpdateOptions struct {
+// BackupsClientBeginUpdateOptions contains the optional parameters for the BackupsClient.BeginUpdate method.
+type BackupsClientBeginUpdateOptions struct {
 	// Backup object supplied in the body of the operation.
 	Body *BackupPatch
 }
 
-// BackupsGetOptions contains the optional parameters for the Backups.Get method.
-type BackupsGetOptions struct {
+// BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
+type BackupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsGetStatusOptions contains the optional parameters for the Backups.GetStatus method.
-type BackupsGetStatusOptions struct {
+// BackupsClientGetStatusOptions contains the optional parameters for the BackupsClient.GetStatus method.
+type BackupsClientGetStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupsGetVolumeRestoreStatusOptions contains the optional parameters for the Backups.GetVolumeRestoreStatus method.
-type BackupsGetVolumeRestoreStatusOptions struct {
+// BackupsClientGetVolumeRestoreStatusOptions contains the optional parameters for the BackupsClient.GetVolumeRestoreStatus
+// method.
+type BackupsClientGetVolumeRestoreStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientListOptions contains the optional parameters for the BackupsClient.List method.
+type BackupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -564,11 +662,6 @@ func (b BackupsList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", b.Value)
 	return json.Marshal(objectMap)
-}
-
-// BackupsListOptions contains the optional parameters for the Backups.List method.
-type BackupsListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // BreakReplicationRequest - Break replication request
@@ -669,28 +762,20 @@ type CheckAvailabilityResponse struct {
 	// true indicates name is valid and available. false indicates the name is invalid, unavailable, or both.
 	IsAvailable *bool `json:"isAvailable,omitempty"`
 
-	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can
-	// select a valid name. If reason == AlreadyExists,
+	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements
+	// so that the user can select a valid name. If reason == AlreadyExists,
 	// explain that resource name is already in use, and direct them to select a different name.
 	Message *string `json:"message,omitempty"`
 
-	// Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that the name is already in use and
-	// is therefore unavailable.
+	// Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that
+	// the name is already in use and is therefore unavailable.
 	Reason *InAvailabilityReasonType `json:"reason,omitempty"`
 }
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Cloud error body.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the service.
@@ -731,8 +816,8 @@ type ExportPolicyRule struct {
 	// Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
 	AllowedClients *string `json:"allowedClients,omitempty"`
 
-	// This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change the ownership of the file. unrestricted
-	// - Non-root users can change ownership of
+	// This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change the
+	// ownership of the file. unrestricted - Non-root users can change ownership of
 	// files that they own.
 	ChownMode *ChownMode `json:"chownMode,omitempty"`
 
@@ -945,122 +1030,6 @@ type MountTargetProperties struct {
 	MountTargetID *string `json:"mountTargetId,omitempty" azure:"ro"`
 }
 
-// NetAppAccount - NetApp account resource
-type NetAppAccount struct {
-	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
-
-	// NetApp Account properties
-	Properties *AccountProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetAppAccount.
-func (n NetAppAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", n.Etag)
-	populate(objectMap, "id", n.ID)
-	populate(objectMap, "location", n.Location)
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "systemData", n.SystemData)
-	populate(objectMap, "tags", n.Tags)
-	populate(objectMap, "type", n.Type)
-	return json.Marshal(objectMap)
-}
-
-// NetAppAccountList - List of NetApp account resources
-type NetAppAccountList struct {
-	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Multiple NetApp accounts
-	Value []*NetAppAccount `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetAppAccountList.
-func (n NetAppAccountList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
-// NetAppAccountPatch - NetApp account patch resource
-type NetAppAccountPatch struct {
-	// Resource location
-	Location *string `json:"location,omitempty"`
-
-	// NetApp Account properties
-	Properties *AccountProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetAppAccountPatch.
-func (n NetAppAccountPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", n.ID)
-	populate(objectMap, "location", n.Location)
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "tags", n.Tags)
-	populate(objectMap, "type", n.Type)
-	return json.Marshal(objectMap)
-}
-
-// NetAppResourceCheckFilePathAvailabilityOptions contains the optional parameters for the NetAppResource.CheckFilePathAvailability method.
-type NetAppResourceCheckFilePathAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetAppResourceCheckNameAvailabilityOptions contains the optional parameters for the NetAppResource.CheckNameAvailability method.
-type NetAppResourceCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetAppResourceCheckQuotaAvailabilityOptions contains the optional parameters for the NetAppResource.CheckQuotaAvailability method.
-type NetAppResourceCheckQuotaAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetAppResourceQuotaLimitsGetOptions contains the optional parameters for the NetAppResourceQuotaLimits.Get method.
-type NetAppResourceQuotaLimitsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NetAppResourceQuotaLimitsListOptions contains the optional parameters for the NetAppResourceQuotaLimits.List method.
-type NetAppResourceQuotaLimitsListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Operation - Microsoft.NetApp REST API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
@@ -1091,7 +1060,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Cloud Volume operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Cloud Volume operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	// List of Storage operations supported by the Storage resource provider.
 	Value []*Operation `json:"value,omitempty"`
@@ -1110,8 +1080,8 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1150,8 +1120,8 @@ type PoolProperties struct {
 	// If enabled (true) the pool can contain cool Access enabled volumes.
 	CoolAccess *bool `json:"coolAccess,omitempty"`
 
-	// Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating
-	// new pool.
+	// Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value
+	// can only be set when creating new pool.
 	EncryptionType *EncryptionType `json:"encryptionType,omitempty"`
 
 	// The qos type of the pool
@@ -1170,34 +1140,42 @@ type PoolProperties struct {
 	UtilizedThroughputMibps *float32 `json:"utilizedThroughputMibps,omitempty" azure:"ro"`
 }
 
-// PoolsBeginCreateOrUpdateOptions contains the optional parameters for the Pools.BeginCreateOrUpdate method.
-type PoolsBeginCreateOrUpdateOptions struct {
+// PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate method.
+type PoolsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsBeginDeleteOptions contains the optional parameters for the Pools.BeginDelete method.
-type PoolsBeginDeleteOptions struct {
+// PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
+type PoolsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsBeginUpdateOptions contains the optional parameters for the Pools.BeginUpdate method.
-type PoolsBeginUpdateOptions struct {
+// PoolsClientBeginUpdateOptions contains the optional parameters for the PoolsClient.BeginUpdate method.
+type PoolsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsGetOptions contains the optional parameters for the Pools.Get method.
-type PoolsGetOptions struct {
+// PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
+type PoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsListOptions contains the optional parameters for the Pools.List method.
-type PoolsListOptions struct {
+// PoolsClientListOptions contains the optional parameters for the PoolsClient.List method.
+type PoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // QuotaAvailabilityRequest - Quota availability request content.
@@ -1260,6 +1238,24 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
+// method.
+type ResourceClientCheckFilePathAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
+// method.
+type ResourceClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
+// method.
+type ResourceClientCheckQuotaAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ResourceIdentity - Identity for the resource.
 type ResourceIdentity struct {
 	// Type of Identity. Supported values are: 'None', 'SystemAssigned'
@@ -1282,6 +1278,16 @@ type ResourceNameAvailabilityRequest struct {
 
 	// REQUIRED; Resource type used for verification.
 	Type *CheckNameResourceTypes `json:"type,omitempty"`
+}
+
+// ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
+type ResourceQuotaLimitsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.List method.
+type ResourceQuotaLimitsClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // RestoreStatus - Restore status
@@ -1340,23 +1346,33 @@ type Snapshot struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SnapshotPoliciesBeginDeleteOptions contains the optional parameters for the SnapshotPolicies.BeginDelete method.
-type SnapshotPoliciesBeginDeleteOptions struct {
+// SnapshotPoliciesClientBeginDeleteOptions contains the optional parameters for the SnapshotPoliciesClient.BeginDelete method.
+type SnapshotPoliciesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotPoliciesBeginUpdateOptions contains the optional parameters for the SnapshotPolicies.BeginUpdate method.
-type SnapshotPoliciesBeginUpdateOptions struct {
+// SnapshotPoliciesClientBeginUpdateOptions contains the optional parameters for the SnapshotPoliciesClient.BeginUpdate method.
+type SnapshotPoliciesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotPoliciesCreateOptions contains the optional parameters for the SnapshotPolicies.Create method.
-type SnapshotPoliciesCreateOptions struct {
+// SnapshotPoliciesClientCreateOptions contains the optional parameters for the SnapshotPoliciesClient.Create method.
+type SnapshotPoliciesClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotPoliciesGetOptions contains the optional parameters for the SnapshotPolicies.Get method.
-type SnapshotPoliciesGetOptions struct {
+// SnapshotPoliciesClientGetOptions contains the optional parameters for the SnapshotPoliciesClient.Get method.
+type SnapshotPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SnapshotPoliciesClientListOptions contains the optional parameters for the SnapshotPoliciesClient.List method.
+type SnapshotPoliciesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SnapshotPoliciesClientListVolumesOptions contains the optional parameters for the SnapshotPoliciesClient.ListVolumes method.
+type SnapshotPoliciesClientListVolumesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1371,16 +1387,6 @@ func (s SnapshotPoliciesList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
-}
-
-// SnapshotPoliciesListOptions contains the optional parameters for the SnapshotPolicies.List method.
-type SnapshotPoliciesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SnapshotPoliciesListVolumesOptions contains the optional parameters for the SnapshotPolicies.ListVolumes method.
-type SnapshotPoliciesListVolumesOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SnapshotPolicy - Snapshot policy information
@@ -1567,23 +1573,28 @@ func (s *SnapshotProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SnapshotsBeginCreateOptions contains the optional parameters for the Snapshots.BeginCreate method.
-type SnapshotsBeginCreateOptions struct {
+// SnapshotsClientBeginCreateOptions contains the optional parameters for the SnapshotsClient.BeginCreate method.
+type SnapshotsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsBeginDeleteOptions contains the optional parameters for the Snapshots.BeginDelete method.
-type SnapshotsBeginDeleteOptions struct {
+// SnapshotsClientBeginDeleteOptions contains the optional parameters for the SnapshotsClient.BeginDelete method.
+type SnapshotsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsBeginUpdateOptions contains the optional parameters for the Snapshots.BeginUpdate method.
-type SnapshotsBeginUpdateOptions struct {
+// SnapshotsClientBeginUpdateOptions contains the optional parameters for the SnapshotsClient.BeginUpdate method.
+type SnapshotsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SnapshotsGetOptions contains the optional parameters for the Snapshots.Get method.
-type SnapshotsGetOptions struct {
+// SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
+type SnapshotsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
+type SnapshotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1600,19 +1611,22 @@ func (s SnapshotsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SnapshotsListOptions contains the optional parameters for the Snapshots.List method.
-type SnapshotsListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // SubscriptionQuotaItem - Information regarding Subscription Quota Item.
 type SubscriptionQuotaItem struct {
-	ProxyResource
 	// SubscriptionQuotaItem properties
 	Properties *SubscriptionQuotaItemProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SubscriptionQuotaItemList - List of Subscription Quota Items
@@ -1742,8 +1756,8 @@ type VaultProperties struct {
 	VaultName *string `json:"vaultName,omitempty"`
 }
 
-// VaultsListOptions contains the optional parameters for the Vaults.List method.
-type VaultsListOptions struct {
+// VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
+type VaultsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1982,23 +1996,24 @@ func (v VolumeGroupVolumeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VolumeGroupsBeginCreateOptions contains the optional parameters for the VolumeGroups.BeginCreate method.
-type VolumeGroupsBeginCreateOptions struct {
+// VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate method.
+type VolumeGroupsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumeGroupsBeginDeleteOptions contains the optional parameters for the VolumeGroups.BeginDelete method.
-type VolumeGroupsBeginDeleteOptions struct {
+// VolumeGroupsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupsClient.BeginDelete method.
+type VolumeGroupsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumeGroupsGetOptions contains the optional parameters for the VolumeGroups.Get method.
-type VolumeGroupsGetOptions struct {
+// VolumeGroupsClientGetOptions contains the optional parameters for the VolumeGroupsClient.Get method.
+type VolumeGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumeGroupsListByNetAppAccountOptions contains the optional parameters for the VolumeGroups.ListByNetAppAccount method.
-type VolumeGroupsListByNetAppAccountOptions struct {
+// VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.ListByNetAppAccount
+// method.
+type VolumeGroupsClientListByNetAppAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2072,11 +2087,12 @@ type VolumePatchProperties struct {
 	// The service level of the file system
 	ServiceLevel *ServiceLevel `json:"serviceLevel,omitempty"`
 
-	// Maximum throughput in Mibps that can be achieved by this volume and this will be accepted as input only for manual qosType volume
+	// Maximum throughput in Mibps that can be achieved by this volume and this will be accepted as input only for manual qosType
+	// volume
 	ThroughputMibps *float32 `json:"throughputMibps,omitempty"`
 
-	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
-	// Specified in bytes.
+	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is
+	// 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 }
 
@@ -2110,8 +2126,8 @@ type VolumeProperties struct {
 	// REQUIRED; The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
 
-	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit
-	// is 100TiB. Specified in bytes.
+	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+	// size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
@@ -2177,26 +2193,30 @@ type VolumeProperties struct {
 	// Enables continuously available share property for smb volume. Only applicable for SMB volume
 	SmbContinuouslyAvailable *bool `json:"smbContinuouslyAvailable,omitempty"`
 
-	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger version 2020-08-01 or later
+	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger version
+	// 2020-08-01 or later
 	SmbEncryption *bool `json:"smbEncryption,omitempty"`
 
-	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's snapshots (default to true).
+	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's
+	// snapshots (default to true).
 	SnapshotDirectoryVisible *bool `json:"snapshotDirectoryVisible,omitempty"`
 
 	// UUID v4 or resource identifier used to identify the Snapshot.
 	SnapshotID *string `json:"snapshotId,omitempty"`
 
-	// Maximum throughput in Mibps that can be achieved by this volume and this will be accepted as input only for manual qosType volume
+	// Maximum throughput in Mibps that can be achieved by this volume and this will be accepted as input only for manual qosType
+	// volume
 	ThroughputMibps *float32 `json:"throughputMibps,omitempty"`
 
-	// UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes.
-	// Second digit selects permission for the owner of
-	// the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other users not in the group.
-	// 0755 - gives read/write/execute permissions to
+	// UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID
+	// (2) and sticky (1) attributes. Second digit selects permission for the owner of
+	// the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth
+	// for other users not in the group. 0755 - gives read/write/execute permissions to
 	// owner and read/execute to group and other users.
 	UnixPermissions *string `json:"unixPermissions,omitempty"`
 
-	// Volume spec name is the application specific designation or identifier for the particular volume in a volume group for e.g. data, log
+	// Volume spec name is the application specific designation or identifier for the particular volume in a volume group for
+	// e.g. data, log
 	VolumeSpecName *string `json:"volumeSpecName,omitempty"`
 
 	// What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
@@ -2205,8 +2225,8 @@ type VolumeProperties struct {
 	// READ-ONLY; Unique Baremetal Tenant Identifier.
 	BaremetalTenantID *string `json:"baremetalTenantId,omitempty" azure:"ro"`
 
-	// READ-ONLY; When a volume is being restored from another volume's snapshot, will show the percentage completion of this cloning process. When this value
-	// is empty/null there is no cloning process currently
+	// READ-ONLY; When a volume is being restored from another volume's snapshot, will show the percentage completion of this
+	// cloning process. When this value is empty/null there is no cloning process currently
 	// happening on this volume. This value will update every 5 minutes during cloning.
 	CloneProgress *int32 `json:"cloneProgress,omitempty" azure:"ro"`
 
@@ -2315,69 +2335,74 @@ type VolumeSnapshotProperties struct {
 	SnapshotPolicyID *string `json:"snapshotPolicyId,omitempty"`
 }
 
-// VolumesBeginAuthorizeReplicationOptions contains the optional parameters for the Volumes.BeginAuthorizeReplication method.
-type VolumesBeginAuthorizeReplicationOptions struct {
+// VolumesClientBeginAuthorizeReplicationOptions contains the optional parameters for the VolumesClient.BeginAuthorizeReplication
+// method.
+type VolumesClientBeginAuthorizeReplicationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginBreakReplicationOptions contains the optional parameters for the Volumes.BeginBreakReplication method.
-type VolumesBeginBreakReplicationOptions struct {
+// VolumesClientBeginBreakReplicationOptions contains the optional parameters for the VolumesClient.BeginBreakReplication
+// method.
+type VolumesClientBeginBreakReplicationOptions struct {
 	// Optional body to force break the replication.
 	Body *BreakReplicationRequest
 }
 
-// VolumesBeginCreateOrUpdateOptions contains the optional parameters for the Volumes.BeginCreateOrUpdate method.
-type VolumesBeginCreateOrUpdateOptions struct {
+// VolumesClientBeginCreateOrUpdateOptions contains the optional parameters for the VolumesClient.BeginCreateOrUpdate method.
+type VolumesClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginDeleteOptions contains the optional parameters for the Volumes.BeginDelete method.
-type VolumesBeginDeleteOptions struct {
+// VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
+type VolumesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginDeleteReplicationOptions contains the optional parameters for the Volumes.BeginDeleteReplication method.
-type VolumesBeginDeleteReplicationOptions struct {
+// VolumesClientBeginDeleteReplicationOptions contains the optional parameters for the VolumesClient.BeginDeleteReplication
+// method.
+type VolumesClientBeginDeleteReplicationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginPoolChangeOptions contains the optional parameters for the Volumes.BeginPoolChange method.
-type VolumesBeginPoolChangeOptions struct {
+// VolumesClientBeginPoolChangeOptions contains the optional parameters for the VolumesClient.BeginPoolChange method.
+type VolumesClientBeginPoolChangeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginReInitializeReplicationOptions contains the optional parameters for the Volumes.BeginReInitializeReplication method.
-type VolumesBeginReInitializeReplicationOptions struct {
+// VolumesClientBeginReInitializeReplicationOptions contains the optional parameters for the VolumesClient.BeginReInitializeReplication
+// method.
+type VolumesClientBeginReInitializeReplicationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginResyncReplicationOptions contains the optional parameters for the Volumes.BeginResyncReplication method.
-type VolumesBeginResyncReplicationOptions struct {
+// VolumesClientBeginResyncReplicationOptions contains the optional parameters for the VolumesClient.BeginResyncReplication
+// method.
+type VolumesClientBeginResyncReplicationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginRevertOptions contains the optional parameters for the Volumes.BeginRevert method.
-type VolumesBeginRevertOptions struct {
+// VolumesClientBeginRevertOptions contains the optional parameters for the VolumesClient.BeginRevert method.
+type VolumesClientBeginRevertOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesBeginUpdateOptions contains the optional parameters for the Volumes.BeginUpdate method.
-type VolumesBeginUpdateOptions struct {
+// VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
+type VolumesClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesGetOptions contains the optional parameters for the Volumes.Get method.
-type VolumesGetOptions struct {
+// VolumesClientGetOptions contains the optional parameters for the VolumesClient.Get method.
+type VolumesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesListOptions contains the optional parameters for the Volumes.List method.
-type VolumesListOptions struct {
+// VolumesClientListOptions contains the optional parameters for the VolumesClient.List method.
+type VolumesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VolumesReplicationStatusOptions contains the optional parameters for the Volumes.ReplicationStatus method.
-type VolumesReplicationStatusOptions struct {
+// VolumesClientReplicationStatusOptions contains the optional parameters for the VolumesClient.ReplicationStatus method.
+type VolumesClientReplicationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

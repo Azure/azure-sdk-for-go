@@ -9,11 +9,12 @@
 package armprivatedns
 
 const (
-	module  = "armprivatedns"
-	version = "v0.2.1"
+	moduleName    = "armprivatedns"
+	moduleVersion = "v0.3.0"
 )
 
-// ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored.
+// ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value
+// will be ignored.
 type ProvisioningState string
 
 const (
@@ -74,8 +75,8 @@ func (c RecordType) ToPtr() *RecordType {
 	return &c
 }
 
-// VirtualNetworkLinkState - The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only
-// property and any attempt to set this value will be ignored.
+// VirtualNetworkLinkState - The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress'
+// and 'Done'. This is a read-only property and any attempt to set this value will be ignored.
 type VirtualNetworkLinkState string
 
 const (

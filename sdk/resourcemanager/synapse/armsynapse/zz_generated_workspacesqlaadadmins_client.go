@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // WorkspaceSQLAADAdminsClient contains the methods for the WorkspaceSQLAADAdmins group.
 // Don't use this type directly, use NewWorkspaceSQLAADAdminsClient() instead.
 type WorkspaceSQLAADAdminsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceSQLAADAdminsClient creates a new instance of WorkspaceSQLAADAdminsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceSQLAADAdminsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceSQLAADAdminsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceSQLAADAdminsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceSQLAADAdminsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a workspace SQL active directory admin
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceSQLAADAdminsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAADAdminInfo, options *WorkspaceSQLAADAdminsBeginCreateOrUpdateOptions) (WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// aadAdminInfo - Workspace active directory administrator properties
+// options - WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspaceSQLAADAdminsClient.BeginCreateOrUpdate
+// method.
+func (client *WorkspaceSQLAADAdminsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAADAdminInfo, options *WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions) (WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, aadAdminInfo, options)
 	if err != nil {
-		return WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse{}, err
+		return WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse{
+	result := WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkspaceSQLAADAdminsClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("WorkspaceSQLAADAdminsClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return WorkspaceSQLAADAdminsCreateOrUpdatePollerResponse{}, err
+		return WorkspaceSQLAADAdminsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &WorkspaceSQLAADAdminsCreateOrUpdatePoller{
+	result.Poller = &WorkspaceSQLAADAdminsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a workspace SQL active directory admin
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceSQLAADAdminsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAADAdminInfo, options *WorkspaceSQLAADAdminsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspaceSQLAADAdminsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAADAdminInfo, options *WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, aadAdminInfo, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *WorkspaceSQLAADAdminsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkspaceSQLAADAdminsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAADAdminInfo, options *WorkspaceSQLAADAdminsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkspaceSQLAADAdminsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAADAdminInfo, options *WorkspaceSQLAADAdminsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlAdministrators/activeDirectory"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *WorkspaceSQLAADAdminsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,33 @@ func (client *WorkspaceSQLAADAdminsClient) createOrUpdateCreateRequest(ctx conte
 	return req, runtime.MarshalAsJSON(req, aadAdminInfo)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WorkspaceSQLAADAdminsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a workspace SQL active directory admin
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceSQLAADAdminsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsBeginDeleteOptions) (WorkspaceSQLAADAdminsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspaceSQLAADAdminsClientBeginDeleteOptions contains the optional parameters for the WorkspaceSQLAADAdminsClient.BeginDelete
+// method.
+func (client *WorkspaceSQLAADAdminsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsClientBeginDeleteOptions) (WorkspaceSQLAADAdminsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return WorkspaceSQLAADAdminsDeletePollerResponse{}, err
+		return WorkspaceSQLAADAdminsClientDeletePollerResponse{}, err
 	}
-	result := WorkspaceSQLAADAdminsDeletePollerResponse{
+	result := WorkspaceSQLAADAdminsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("WorkspaceSQLAADAdminsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("WorkspaceSQLAADAdminsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return WorkspaceSQLAADAdminsDeletePollerResponse{}, err
+		return WorkspaceSQLAADAdminsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &WorkspaceSQLAADAdminsDeletePoller{
+	result.Poller = &WorkspaceSQLAADAdminsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a workspace SQL active directory admin
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceSQLAADAdminsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspaceSQLAADAdminsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +153,13 @@ func (client *WorkspaceSQLAADAdminsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkspaceSQLAADAdminsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsBeginDeleteOptions) (*policy.Request, error) {
+func (client *WorkspaceSQLAADAdminsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlAdministrators/activeDirectory"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +173,7 @@ func (client *WorkspaceSQLAADAdminsClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +184,29 @@ func (client *WorkspaceSQLAADAdminsClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WorkspaceSQLAADAdminsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a workspace SQL active directory admin
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceSQLAADAdminsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsGetOptions) (WorkspaceSQLAADAdminsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspaceSQLAADAdminsClientGetOptions contains the optional parameters for the WorkspaceSQLAADAdminsClient.Get
+// method.
+func (client *WorkspaceSQLAADAdminsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsClientGetOptions) (WorkspaceSQLAADAdminsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return WorkspaceSQLAADAdminsGetResponse{}, err
+		return WorkspaceSQLAADAdminsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceSQLAADAdminsGetResponse{}, err
+		return WorkspaceSQLAADAdminsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceSQLAADAdminsGetResponse{}, client.getHandleError(resp)
+		return WorkspaceSQLAADAdminsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspaceSQLAADAdminsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsGetOptions) (*policy.Request, error) {
+func (client *WorkspaceSQLAADAdminsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceSQLAADAdminsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlAdministrators/activeDirectory"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +220,7 @@ func (client *WorkspaceSQLAADAdminsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,23 +232,10 @@ func (client *WorkspaceSQLAADAdminsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceSQLAADAdminsClient) getHandleResponse(resp *http.Response) (WorkspaceSQLAADAdminsGetResponse, error) {
-	result := WorkspaceSQLAADAdminsGetResponse{RawResponse: resp}
+func (client *WorkspaceSQLAADAdminsClient) getHandleResponse(resp *http.Response) (WorkspaceSQLAADAdminsClientGetResponse, error) {
+	result := WorkspaceSQLAADAdminsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceAADAdminInfo); err != nil {
-		return WorkspaceSQLAADAdminsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceSQLAADAdminsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *WorkspaceSQLAADAdminsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

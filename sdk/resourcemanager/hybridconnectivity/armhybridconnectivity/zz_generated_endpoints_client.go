@@ -10,7 +10,6 @@ package armhybridconnectivity
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -24,45 +23,56 @@ import (
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
 type EndpointsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EndpointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EndpointsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EndpointsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update the endpoint to the target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsCreateOrUpdateOptions) (EndpointsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// endpointName - The endpoint name.
+// endpointResource - Endpoint details
+// options - EndpointsClientCreateOrUpdateOptions contains the optional parameters for the EndpointsClient.CreateOrUpdate
+// method.
+func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsClientCreateOrUpdateOptions) (EndpointsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceURI, endpointName, endpointResource, options)
 	if err != nil {
-		return EndpointsCreateOrUpdateResponse{}, err
+		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EndpointsCreateOrUpdateResponse{}, err
+		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EndpointsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return EndpointsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -74,50 +84,40 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (EndpointsCreateOrUpdateResponse, error) {
-	result := EndpointsCreateOrUpdateResponse{RawResponse: resp}
+func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (EndpointsClientCreateOrUpdateResponse, error) {
+	result := EndpointsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
-		return EndpointsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *EndpointsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the endpoint access to the target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, endpointName string, options *EndpointsDeleteOptions) (EndpointsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// endpointName - The endpoint name.
+// options - EndpointsClientDeleteOptions contains the optional parameters for the EndpointsClient.Delete method.
+func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientDeleteOptions) (EndpointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
-		return EndpointsDeleteResponse{}, err
+		return EndpointsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EndpointsDeleteResponse{}, err
+		return EndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return EndpointsDeleteResponse{}, client.deleteHandleError(resp)
+		return EndpointsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return EndpointsDeleteResponse{RawResponse: resp}, nil
+	return EndpointsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsDeleteOptions) (*policy.Request, error) {
+func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,42 +128,32 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *EndpointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the endpoint to the resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) Get(ctx context.Context, resourceURI string, endpointName string, options *EndpointsGetOptions) (EndpointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// endpointName - The endpoint name.
+// options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
+func (client *EndpointsClient) Get(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
-		return EndpointsGetResponse{}, err
+		return EndpointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EndpointsGetResponse{}, err
+		return EndpointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EndpointsGetResponse{}, client.getHandleError(resp)
+		return EndpointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsGetOptions) (*policy.Request, error) {
+func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,46 +165,35 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI
 }
 
 // getHandleResponse handles the Get response.
-func (client *EndpointsClient) getHandleResponse(resp *http.Response) (EndpointsGetResponse, error) {
-	result := EndpointsGetResponse{RawResponse: resp}
+func (client *EndpointsClient) getHandleResponse(resp *http.Response) (EndpointsClientGetResponse, error) {
+	result := EndpointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
-		return EndpointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return EndpointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *EndpointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List of endpoints to the target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) List(resourceURI string, options *EndpointsListOptions) *EndpointsListPager {
-	return &EndpointsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// options - EndpointsClientListOptions contains the optional parameters for the EndpointsClient.List method.
+func (client *EndpointsClient) List(resourceURI string, options *EndpointsClientListOptions) *EndpointsClientListPager {
+	return &EndpointsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceURI, options)
 		},
-		advancer: func(ctx context.Context, resp EndpointsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EndpointsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EndpointsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceURI string, options *EndpointsListOptions) (*policy.Request, error) {
+func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceURI string, options *EndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -226,50 +205,41 @@ func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceUR
 }
 
 // listHandleResponse handles the List response.
-func (client *EndpointsClient) listHandleResponse(resp *http.Response) (EndpointsListResponse, error) {
-	result := EndpointsListResponse{RawResponse: resp}
+func (client *EndpointsClient) listHandleResponse(resp *http.Response) (EndpointsClientListResponse, error) {
+	result := EndpointsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointsList); err != nil {
-		return EndpointsListResponse{}, runtime.NewResponseError(err, resp)
+		return EndpointsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *EndpointsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListCredentials - Gets the endpoint access credentials to the resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsListCredentialsOptions) (EndpointsListCredentialsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// endpointName - The endpoint name.
+// options - EndpointsClientListCredentialsOptions contains the optional parameters for the EndpointsClient.ListCredentials
+// method.
+func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (EndpointsClientListCredentialsResponse, error) {
 	req, err := client.listCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
-		return EndpointsListCredentialsResponse{}, err
+		return EndpointsClientListCredentialsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EndpointsListCredentialsResponse{}, err
+		return EndpointsClientListCredentialsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EndpointsListCredentialsResponse{}, client.listCredentialsHandleError(resp)
+		return EndpointsClientListCredentialsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listCredentialsHandleResponse(resp)
 }
 
 // listCredentialsCreateRequest creates the ListCredentials request.
-func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsListCredentialsOptions) (*policy.Request, error) {
+func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -284,50 +254,41 @@ func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context,
 }
 
 // listCredentialsHandleResponse handles the ListCredentials response.
-func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response) (EndpointsListCredentialsResponse, error) {
-	result := EndpointsListCredentialsResponse{RawResponse: resp}
+func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response) (EndpointsClientListCredentialsResponse, error) {
+	result := EndpointsClientListCredentialsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAccessResource); err != nil {
-		return EndpointsListCredentialsResponse{}, runtime.NewResponseError(err, resp)
+		return EndpointsClientListCredentialsResponse{}, err
 	}
 	return result, nil
 }
 
-// listCredentialsHandleError handles the ListCredentials error response.
-func (client *EndpointsClient) listCredentialsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update the endpoint to the target resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) Update(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsUpdateOptions) (EndpointsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// endpointName - The endpoint name.
+// endpointResource - Endpoint details
+// options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
+func (client *EndpointsClient) Update(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceURI, endpointName, endpointResource, options)
 	if err != nil {
-		return EndpointsUpdateResponse{}, err
+		return EndpointsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EndpointsUpdateResponse{}, err
+		return EndpointsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EndpointsUpdateResponse{}, client.updateHandleError(resp)
+		return EndpointsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsUpdateOptions) (*policy.Request, error) {
+func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -339,23 +300,10 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EndpointsClient) updateHandleResponse(resp *http.Response) (EndpointsUpdateResponse, error) {
-	result := EndpointsUpdateResponse{RawResponse: resp}
+func (client *EndpointsClient) updateHandleResponse(resp *http.Response) (EndpointsClientUpdateResponse, error) {
+	result := EndpointsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
-		return EndpointsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return EndpointsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *EndpointsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

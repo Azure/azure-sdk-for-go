@@ -10,7 +10,6 @@ package armauthorization
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,41 +22,50 @@ import (
 // EligibleChildResourcesClient contains the methods for the EligibleChildResources group.
 // Don't use this type directly, use NewEligibleChildResourcesClient() instead.
 type EligibleChildResourcesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEligibleChildResourcesClient creates a new instance of EligibleChildResourcesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEligibleChildResourcesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EligibleChildResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EligibleChildResourcesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EligibleChildResourcesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the child resources of a resource on which user has eligible access
-// If the operation fails it returns the *CloudError error type.
-func (client *EligibleChildResourcesClient) Get(scope string, options *EligibleChildResourcesGetOptions) *EligibleChildResourcesGetPager {
-	return &EligibleChildResourcesGetPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the role management policy.
+// options - EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.Get
+// method.
+func (client *EligibleChildResourcesClient) Get(scope string, options *EligibleChildResourcesClientGetOptions) *EligibleChildResourcesClientGetPager {
+	return &EligibleChildResourcesClientGetPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp EligibleChildResourcesGetResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EligibleChildResourcesClientGetResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EligibleChildResourcesListResult.NextLink)
 		},
 	}
 }
 
 // getCreateRequest creates the Get request.
-func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context, scope string, options *EligibleChildResourcesGetOptions) (*policy.Request, error) {
+func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context, scope string, options *EligibleChildResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/eligibleChildResources"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -72,23 +80,10 @@ func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *EligibleChildResourcesClient) getHandleResponse(resp *http.Response) (EligibleChildResourcesGetResponse, error) {
-	result := EligibleChildResourcesGetResponse{RawResponse: resp}
+func (client *EligibleChildResourcesClient) getHandleResponse(resp *http.Response) (EligibleChildResourcesClientGetResponse, error) {
+	result := EligibleChildResourcesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EligibleChildResourcesListResult); err != nil {
-		return EligibleChildResourcesGetResponse{}, runtime.NewResponseError(err, resp)
+		return EligibleChildResourcesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *EligibleChildResourcesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

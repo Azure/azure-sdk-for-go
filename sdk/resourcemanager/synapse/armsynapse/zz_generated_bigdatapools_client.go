@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,46 +25,60 @@ import (
 // BigDataPoolsClient contains the methods for the BigDataPools group.
 // Don't use this type directly, use NewBigDataPoolsClient() instead.
 type BigDataPoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBigDataPoolsClient creates a new instance of BigDataPoolsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBigDataPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BigDataPoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BigDataPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BigDataPoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create a new Big Data pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsBeginCreateOrUpdateOptions) (BigDataPoolsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bigDataPoolName - Big Data pool name
+// bigDataPoolInfo - The Big Data pool to create.
+// options - BigDataPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the BigDataPoolsClient.BeginCreateOrUpdate
+// method.
+func (client *BigDataPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsClientBeginCreateOrUpdateOptions) (BigDataPoolsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, bigDataPoolName, bigDataPoolInfo, options)
 	if err != nil {
-		return BigDataPoolsCreateOrUpdatePollerResponse{}, err
+		return BigDataPoolsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := BigDataPoolsCreateOrUpdatePollerResponse{
+	result := BigDataPoolsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BigDataPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("BigDataPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return BigDataPoolsCreateOrUpdatePollerResponse{}, err
+		return BigDataPoolsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &BigDataPoolsCreateOrUpdatePoller{
+	result.Poller = &BigDataPoolsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create a new Big Data pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BigDataPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, bigDataPoolName, bigDataPoolInfo, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +88,13 @@ func (client *BigDataPoolsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BigDataPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BigDataPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolInfo BigDataPoolResourceInfo, options *BigDataPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/bigDataPools/{bigDataPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,7 +112,7 @@ func (client *BigDataPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter bigDataPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bigDataPoolName}", url.PathEscape(bigDataPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,42 +126,34 @@ func (client *BigDataPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, bigDataPoolInfo)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *BigDataPoolsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a Big Data pool from the workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsBeginDeleteOptions) (BigDataPoolsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bigDataPoolName - Big Data pool name
+// options - BigDataPoolsClientBeginDeleteOptions contains the optional parameters for the BigDataPoolsClient.BeginDelete
+// method.
+func (client *BigDataPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientBeginDeleteOptions) (BigDataPoolsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, bigDataPoolName, options)
 	if err != nil {
-		return BigDataPoolsDeletePollerResponse{}, err
+		return BigDataPoolsClientDeletePollerResponse{}, err
 	}
-	result := BigDataPoolsDeletePollerResponse{
+	result := BigDataPoolsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BigDataPoolsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("BigDataPoolsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return BigDataPoolsDeletePollerResponse{}, err
+		return BigDataPoolsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &BigDataPoolsDeletePoller{
+	result.Poller = &BigDataPoolsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a Big Data pool from the workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BigDataPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, bigDataPoolName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +163,13 @@ func (client *BigDataPoolsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BigDataPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsBeginDeleteOptions) (*policy.Request, error) {
+func (client *BigDataPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/bigDataPools/{bigDataPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -182,7 +187,7 @@ func (client *BigDataPoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter bigDataPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bigDataPoolName}", url.PathEscape(bigDataPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -193,38 +198,29 @@ func (client *BigDataPoolsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BigDataPoolsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a Big Data pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsGetOptions) (BigDataPoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bigDataPoolName - Big Data pool name
+// options - BigDataPoolsClientGetOptions contains the optional parameters for the BigDataPoolsClient.Get method.
+func (client *BigDataPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientGetOptions) (BigDataPoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, bigDataPoolName, options)
 	if err != nil {
-		return BigDataPoolsGetResponse{}, err
+		return BigDataPoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BigDataPoolsGetResponse{}, err
+		return BigDataPoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BigDataPoolsGetResponse{}, client.getHandleError(resp)
+		return BigDataPoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BigDataPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsGetOptions) (*policy.Request, error) {
+func (client *BigDataPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, options *BigDataPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/bigDataPools/{bigDataPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -242,7 +238,7 @@ func (client *BigDataPoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter bigDataPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bigDataPoolName}", url.PathEscape(bigDataPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,43 +250,34 @@ func (client *BigDataPoolsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *BigDataPoolsClient) getHandleResponse(resp *http.Response) (BigDataPoolsGetResponse, error) {
-	result := BigDataPoolsGetResponse{RawResponse: resp}
+func (client *BigDataPoolsClient) getHandleResponse(resp *http.Response) (BigDataPoolsClientGetResponse, error) {
+	result := BigDataPoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BigDataPoolResourceInfo); err != nil {
-		return BigDataPoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return BigDataPoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BigDataPoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - List Big Data pools in a workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *BigDataPoolsListByWorkspaceOptions) *BigDataPoolsListByWorkspacePager {
-	return &BigDataPoolsListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - BigDataPoolsClientListByWorkspaceOptions contains the optional parameters for the BigDataPoolsClient.ListByWorkspace
+// method.
+func (client *BigDataPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *BigDataPoolsClientListByWorkspaceOptions) *BigDataPoolsClientListByWorkspacePager {
+	return &BigDataPoolsClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp BigDataPoolsListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BigDataPoolsClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.BigDataPoolResourceInfoListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *BigDataPoolsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *BigDataPoolsListByWorkspaceOptions) (*policy.Request, error) {
+func (client *BigDataPoolsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *BigDataPoolsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/bigDataPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,7 +291,7 @@ func (client *BigDataPoolsClient) listByWorkspaceCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -316,46 +303,38 @@ func (client *BigDataPoolsClient) listByWorkspaceCreateRequest(ctx context.Conte
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *BigDataPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (BigDataPoolsListByWorkspaceResponse, error) {
-	result := BigDataPoolsListByWorkspaceResponse{RawResponse: resp}
+func (client *BigDataPoolsClient) listByWorkspaceHandleResponse(resp *http.Response) (BigDataPoolsClientListByWorkspaceResponse, error) {
+	result := BigDataPoolsClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BigDataPoolResourceInfoListResult); err != nil {
-		return BigDataPoolsListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return BigDataPoolsClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *BigDataPoolsClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Patch a Big Data pool.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BigDataPoolsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolPatchInfo BigDataPoolPatchInfo, options *BigDataPoolsUpdateOptions) (BigDataPoolsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bigDataPoolName - Big Data pool name
+// bigDataPoolPatchInfo - The updated Big Data pool properties
+// options - BigDataPoolsClientUpdateOptions contains the optional parameters for the BigDataPoolsClient.Update method.
+func (client *BigDataPoolsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolPatchInfo BigDataPoolPatchInfo, options *BigDataPoolsClientUpdateOptions) (BigDataPoolsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, bigDataPoolName, bigDataPoolPatchInfo, options)
 	if err != nil {
-		return BigDataPoolsUpdateResponse{}, err
+		return BigDataPoolsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BigDataPoolsUpdateResponse{}, err
+		return BigDataPoolsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BigDataPoolsUpdateResponse{}, client.updateHandleError(resp)
+		return BigDataPoolsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *BigDataPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolPatchInfo BigDataPoolPatchInfo, options *BigDataPoolsUpdateOptions) (*policy.Request, error) {
+func (client *BigDataPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bigDataPoolName string, bigDataPoolPatchInfo BigDataPoolPatchInfo, options *BigDataPoolsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/bigDataPools/{bigDataPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -373,7 +352,7 @@ func (client *BigDataPoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter bigDataPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bigDataPoolName}", url.PathEscape(bigDataPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -385,23 +364,10 @@ func (client *BigDataPoolsClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *BigDataPoolsClient) updateHandleResponse(resp *http.Response) (BigDataPoolsUpdateResponse, error) {
-	result := BigDataPoolsUpdateResponse{RawResponse: resp}
+func (client *BigDataPoolsClient) updateHandleResponse(resp *http.Response) (BigDataPoolsClientUpdateResponse, error) {
+	result := BigDataPoolsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BigDataPoolResourceInfo); err != nil {
-		return BigDataPoolsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return BigDataPoolsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *BigDataPoolsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

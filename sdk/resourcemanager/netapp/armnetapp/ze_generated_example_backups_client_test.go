@@ -27,7 +27,7 @@ func ExampleBackupsClient_GetStatus() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
-	_, err = client.GetStatus(ctx,
+	res, err := client.GetStatus(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<pool-name>",
@@ -36,6 +36,7 @@ func ExampleBackupsClient_GetStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BackupsClientGetStatusResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Volumes_RestoreStatus.json
@@ -46,7 +47,7 @@ func ExampleBackupsClient_GetVolumeRestoreStatus() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
-	_, err = client.GetVolumeRestoreStatus(ctx,
+	res, err := client.GetVolumeRestoreStatus(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<pool-name>",
@@ -55,6 +56,7 @@ func ExampleBackupsClient_GetVolumeRestoreStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BackupsClientGetVolumeRestoreStatusResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_List.json
@@ -65,7 +67,7 @@ func ExampleBackupsClient_List() {
 	}
 	ctx := context.Background()
 	client := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<account-name>",
 		"<pool-name>",
@@ -74,6 +76,7 @@ func ExampleBackupsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BackupsClientListResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_Get.json
@@ -94,7 +97,7 @@ func ExampleBackupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Backup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupsClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_Create.json
@@ -125,7 +128,7 @@ func ExampleBackupsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Backup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupsClientCreateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_Update.json
@@ -142,7 +145,7 @@ func ExampleBackupsClient_BeginUpdate() {
 		"<pool-name>",
 		"<volume-name>",
 		"<backup-name>",
-		&armnetapp.BackupsBeginUpdateOptions{Body: &armnetapp.BackupPatch{}})
+		&armnetapp.BackupsClientBeginUpdateOptions{Body: &armnetapp.BackupPatch{}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -150,7 +153,7 @@ func ExampleBackupsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Backup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Backups_Delete.json

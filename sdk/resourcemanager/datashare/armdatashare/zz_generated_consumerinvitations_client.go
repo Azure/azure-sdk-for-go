@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,50 @@ import (
 // ConsumerInvitationsClient contains the methods for the ConsumerInvitations group.
 // Don't use this type directly, use NewConsumerInvitationsClient() instead.
 type ConsumerInvitationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewConsumerInvitationsClient creates a new instance of ConsumerInvitationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewConsumerInvitationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ConsumerInvitationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ConsumerInvitationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ConsumerInvitationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get an invitation
-// If the operation fails it returns the *DataShareError error type.
-func (client *ConsumerInvitationsClient) Get(ctx context.Context, location string, invitationID string, options *ConsumerInvitationsGetOptions) (ConsumerInvitationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Location of the invitation
+// invitationID - An invitation id
+// options - ConsumerInvitationsClientGetOptions contains the optional parameters for the ConsumerInvitationsClient.Get method.
+func (client *ConsumerInvitationsClient) Get(ctx context.Context, location string, invitationID string, options *ConsumerInvitationsClientGetOptions) (ConsumerInvitationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, invitationID, options)
 	if err != nil {
-		return ConsumerInvitationsGetResponse{}, err
+		return ConsumerInvitationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConsumerInvitationsGetResponse{}, err
+		return ConsumerInvitationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConsumerInvitationsGetResponse{}, client.getHandleError(resp)
+		return ConsumerInvitationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConsumerInvitationsClient) getCreateRequest(ctx context.Context, location string, invitationID string, options *ConsumerInvitationsGetOptions) (*policy.Request, error) {
+func (client *ConsumerInvitationsClient) getCreateRequest(ctx context.Context, location string, invitationID string, options *ConsumerInvitationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataShare/locations/{location}/consumerInvitations/{invitationId}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -69,7 +77,7 @@ func (client *ConsumerInvitationsClient) getCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter invitationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invitationId}", url.PathEscape(invitationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,45 +89,34 @@ func (client *ConsumerInvitationsClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConsumerInvitationsClient) getHandleResponse(resp *http.Response) (ConsumerInvitationsGetResponse, error) {
-	result := ConsumerInvitationsGetResponse{RawResponse: resp}
+func (client *ConsumerInvitationsClient) getHandleResponse(resp *http.Response) (ConsumerInvitationsClientGetResponse, error) {
+	result := ConsumerInvitationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerInvitation); err != nil {
-		return ConsumerInvitationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ConsumerInvitationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ConsumerInvitationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListInvitations - Lists invitations
-// If the operation fails it returns the *DataShareError error type.
-func (client *ConsumerInvitationsClient) ListInvitations(options *ConsumerInvitationsListInvitationsOptions) *ConsumerInvitationsListInvitationsPager {
-	return &ConsumerInvitationsListInvitationsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ConsumerInvitationsClientListInvitationsOptions contains the optional parameters for the ConsumerInvitationsClient.ListInvitations
+// method.
+func (client *ConsumerInvitationsClient) ListInvitations(options *ConsumerInvitationsClientListInvitationsOptions) *ConsumerInvitationsClientListInvitationsPager {
+	return &ConsumerInvitationsClientListInvitationsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listInvitationsCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ConsumerInvitationsListInvitationsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ConsumerInvitationsClientListInvitationsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConsumerInvitationList.NextLink)
 		},
 	}
 }
 
 // listInvitationsCreateRequest creates the ListInvitations request.
-func (client *ConsumerInvitationsClient) listInvitationsCreateRequest(ctx context.Context, options *ConsumerInvitationsListInvitationsOptions) (*policy.Request, error) {
+func (client *ConsumerInvitationsClient) listInvitationsCreateRequest(ctx context.Context, options *ConsumerInvitationsClientListInvitationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataShare/listInvitations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,52 +131,43 @@ func (client *ConsumerInvitationsClient) listInvitationsCreateRequest(ctx contex
 }
 
 // listInvitationsHandleResponse handles the ListInvitations response.
-func (client *ConsumerInvitationsClient) listInvitationsHandleResponse(resp *http.Response) (ConsumerInvitationsListInvitationsResponse, error) {
-	result := ConsumerInvitationsListInvitationsResponse{RawResponse: resp}
+func (client *ConsumerInvitationsClient) listInvitationsHandleResponse(resp *http.Response) (ConsumerInvitationsClientListInvitationsResponse, error) {
+	result := ConsumerInvitationsClientListInvitationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerInvitationList); err != nil {
-		return ConsumerInvitationsListInvitationsResponse{}, runtime.NewResponseError(err, resp)
+		return ConsumerInvitationsClientListInvitationsResponse{}, err
 	}
 	return result, nil
 }
 
-// listInvitationsHandleError handles the ListInvitations error response.
-func (client *ConsumerInvitationsClient) listInvitationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RejectInvitation - Reject an invitation
-// If the operation fails it returns the *DataShareError error type.
-func (client *ConsumerInvitationsClient) RejectInvitation(ctx context.Context, location string, invitation ConsumerInvitation, options *ConsumerInvitationsRejectInvitationOptions) (ConsumerInvitationsRejectInvitationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - Location of the invitation
+// invitation - An invitation payload
+// options - ConsumerInvitationsClientRejectInvitationOptions contains the optional parameters for the ConsumerInvitationsClient.RejectInvitation
+// method.
+func (client *ConsumerInvitationsClient) RejectInvitation(ctx context.Context, location string, invitation ConsumerInvitation, options *ConsumerInvitationsClientRejectInvitationOptions) (ConsumerInvitationsClientRejectInvitationResponse, error) {
 	req, err := client.rejectInvitationCreateRequest(ctx, location, invitation, options)
 	if err != nil {
-		return ConsumerInvitationsRejectInvitationResponse{}, err
+		return ConsumerInvitationsClientRejectInvitationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConsumerInvitationsRejectInvitationResponse{}, err
+		return ConsumerInvitationsClientRejectInvitationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConsumerInvitationsRejectInvitationResponse{}, client.rejectInvitationHandleError(resp)
+		return ConsumerInvitationsClientRejectInvitationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.rejectInvitationHandleResponse(resp)
 }
 
 // rejectInvitationCreateRequest creates the RejectInvitation request.
-func (client *ConsumerInvitationsClient) rejectInvitationCreateRequest(ctx context.Context, location string, invitation ConsumerInvitation, options *ConsumerInvitationsRejectInvitationOptions) (*policy.Request, error) {
+func (client *ConsumerInvitationsClient) rejectInvitationCreateRequest(ctx context.Context, location string, invitation ConsumerInvitation, options *ConsumerInvitationsClientRejectInvitationOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataShare/locations/{location}/rejectInvitation"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -191,23 +179,10 @@ func (client *ConsumerInvitationsClient) rejectInvitationCreateRequest(ctx conte
 }
 
 // rejectInvitationHandleResponse handles the RejectInvitation response.
-func (client *ConsumerInvitationsClient) rejectInvitationHandleResponse(resp *http.Response) (ConsumerInvitationsRejectInvitationResponse, error) {
-	result := ConsumerInvitationsRejectInvitationResponse{RawResponse: resp}
+func (client *ConsumerInvitationsClient) rejectInvitationHandleResponse(resp *http.Response) (ConsumerInvitationsClientRejectInvitationResponse, error) {
+	result := ConsumerInvitationsClientRejectInvitationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerInvitation); err != nil {
-		return ConsumerInvitationsRejectInvitationResponse{}, runtime.NewResponseError(err, resp)
+		return ConsumerInvitationsClientRejectInvitationResponse{}, err
 	}
 	return result, nil
-}
-
-// rejectInvitationHandleError handles the RejectInvitation error response.
-func (client *ConsumerInvitationsClient) rejectInvitationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

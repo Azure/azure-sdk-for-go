@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // OpenIDConnectProviderClient contains the methods for the OpenIDConnectProvider group.
 // Don't use this type directly, use NewOpenIDConnectProviderClient() instead.
 type OpenIDConnectProviderClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOpenIDConnectProviderClient creates a new instance of OpenIDConnectProviderClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OpenIDConnectProviderClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OpenIDConnectProviderClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OpenIDConnectProviderClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the OpenID Connect Provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, options *OpenIDConnectProviderCreateOrUpdateOptions) (OpenIDConnectProviderCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// opid - Identifier of the OpenID Connect Provider.
+// parameters - Create parameters.
+// options - OpenIDConnectProviderClientCreateOrUpdateOptions contains the optional parameters for the OpenIDConnectProviderClient.CreateOrUpdate
+// method.
+func (client *OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, options *OpenIDConnectProviderClientCreateOrUpdateOptions) (OpenIDConnectProviderClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, opid, parameters, options)
 	if err != nil {
-		return OpenIDConnectProviderCreateOrUpdateResponse{}, err
+		return OpenIDConnectProviderClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OpenIDConnectProviderCreateOrUpdateResponse{}, err
+		return OpenIDConnectProviderClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return OpenIDConnectProviderCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return OpenIDConnectProviderClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, options *OpenIDConnectProviderCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, options *OpenIDConnectProviderClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +93,7 @@ func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,49 +108,43 @@ func (client *OpenIDConnectProviderClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *OpenIDConnectProviderClient) createOrUpdateHandleResponse(resp *http.Response) (OpenIDConnectProviderCreateOrUpdateResponse, error) {
-	result := OpenIDConnectProviderCreateOrUpdateResponse{RawResponse: resp}
+func (client *OpenIDConnectProviderClient) createOrUpdateHandleResponse(resp *http.Response) (OpenIDConnectProviderClientCreateOrUpdateResponse, error) {
+	result := OpenIDConnectProviderClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenidConnectProviderContract); err != nil {
-		return OpenIDConnectProviderCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return OpenIDConnectProviderClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *OpenIDConnectProviderClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes specific OpenID Connect Provider of the API Management service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, options *OpenIDConnectProviderDeleteOptions) (OpenIDConnectProviderDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// opid - Identifier of the OpenID Connect Provider.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - OpenIDConnectProviderClientDeleteOptions contains the optional parameters for the OpenIDConnectProviderClient.Delete
+// method.
+func (client *OpenIDConnectProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, options *OpenIDConnectProviderClientDeleteOptions) (OpenIDConnectProviderClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, opid, ifMatch, options)
 	if err != nil {
-		return OpenIDConnectProviderDeleteResponse{}, err
+		return OpenIDConnectProviderClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OpenIDConnectProviderDeleteResponse{}, err
+		return OpenIDConnectProviderClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return OpenIDConnectProviderDeleteResponse{}, client.deleteHandleError(resp)
+		return OpenIDConnectProviderClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return OpenIDConnectProviderDeleteResponse{RawResponse: resp}, nil
+	return OpenIDConnectProviderClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, options *OpenIDConnectProviderDeleteOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, options *OpenIDConnectProviderClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,7 +162,7 @@ func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +174,30 @@ func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *OpenIDConnectProviderClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets specific OpenID Connect Provider without secrets.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderGetOptions) (OpenIDConnectProviderGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// opid - Identifier of the OpenID Connect Provider.
+// options - OpenIDConnectProviderClientGetOptions contains the optional parameters for the OpenIDConnectProviderClient.Get
+// method.
+func (client *OpenIDConnectProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientGetOptions) (OpenIDConnectProviderClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, opid, options)
 	if err != nil {
-		return OpenIDConnectProviderGetResponse{}, err
+		return OpenIDConnectProviderClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OpenIDConnectProviderGetResponse{}, err
+		return OpenIDConnectProviderClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OpenIDConnectProviderGetResponse{}, client.getHandleError(resp)
+		return OpenIDConnectProviderClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderGetOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,7 +215,7 @@ func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,46 +227,37 @@ func (client *OpenIDConnectProviderClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *OpenIDConnectProviderClient) getHandleResponse(resp *http.Response) (OpenIDConnectProviderGetResponse, error) {
-	result := OpenIDConnectProviderGetResponse{RawResponse: resp}
+func (client *OpenIDConnectProviderClient) getHandleResponse(resp *http.Response) (OpenIDConnectProviderClientGetResponse, error) {
+	result := OpenIDConnectProviderClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenidConnectProviderContract); err != nil {
-		return OpenIDConnectProviderGetResponse{}, runtime.NewResponseError(err, resp)
+		return OpenIDConnectProviderClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *OpenIDConnectProviderClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderGetEntityTagOptions) (OpenIDConnectProviderGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// opid - Identifier of the OpenID Connect Provider.
+// options - OpenIDConnectProviderClientGetEntityTagOptions contains the optional parameters for the OpenIDConnectProviderClient.GetEntityTag
+// method.
+func (client *OpenIDConnectProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientGetEntityTagOptions) (OpenIDConnectProviderClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, opid, options)
 	if err != nil {
-		return OpenIDConnectProviderGetEntityTagResponse{}, err
+		return OpenIDConnectProviderClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OpenIDConnectProviderGetEntityTagResponse{}, err
+		return OpenIDConnectProviderClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderGetEntityTagOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +275,7 @@ func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +287,8 @@ func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http.Response) (OpenIDConnectProviderGetEntityTagResponse, error) {
-	result := OpenIDConnectProviderGetEntityTagResponse{RawResponse: resp}
+func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http.Response) (OpenIDConnectProviderClientGetEntityTagResponse, error) {
+	result := OpenIDConnectProviderClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -308,21 +299,25 @@ func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http
 }
 
 // ListByService - Lists of all the OpenId Connect Providers.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) ListByService(resourceGroupName string, serviceName string, options *OpenIDConnectProviderListByServiceOptions) *OpenIDConnectProviderListByServicePager {
-	return &OpenIDConnectProviderListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - OpenIDConnectProviderClientListByServiceOptions contains the optional parameters for the OpenIDConnectProviderClient.ListByService
+// method.
+func (client *OpenIDConnectProviderClient) ListByService(resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) *OpenIDConnectProviderClientListByServicePager {
+	return &OpenIDConnectProviderClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp OpenIDConnectProviderListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OpenIDConnectProviderClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OpenIDConnectProviderCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *OpenIDConnectProviderListByServiceOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *OpenIDConnectProviderClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -336,7 +331,7 @@ func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,46 +352,38 @@ func (client *OpenIDConnectProviderClient) listByServiceCreateRequest(ctx contex
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *OpenIDConnectProviderClient) listByServiceHandleResponse(resp *http.Response) (OpenIDConnectProviderListByServiceResponse, error) {
-	result := OpenIDConnectProviderListByServiceResponse{RawResponse: resp}
+func (client *OpenIDConnectProviderClient) listByServiceHandleResponse(resp *http.Response) (OpenIDConnectProviderClientListByServiceResponse, error) {
+	result := OpenIDConnectProviderClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenIDConnectProviderCollection); err != nil {
-		return OpenIDConnectProviderListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return OpenIDConnectProviderClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *OpenIDConnectProviderClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSecrets - Gets the client secret details of the OpenID Connect Provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderListSecretsOptions) (OpenIDConnectProviderListSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// opid - Identifier of the OpenID Connect Provider.
+// options - OpenIDConnectProviderClientListSecretsOptions contains the optional parameters for the OpenIDConnectProviderClient.ListSecrets
+// method.
+func (client *OpenIDConnectProviderClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientListSecretsOptions) (OpenIDConnectProviderClientListSecretsResponse, error) {
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, opid, options)
 	if err != nil {
-		return OpenIDConnectProviderListSecretsResponse{}, err
+		return OpenIDConnectProviderClientListSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OpenIDConnectProviderListSecretsResponse{}, err
+		return OpenIDConnectProviderClientListSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OpenIDConnectProviderListSecretsResponse{}, client.listSecretsHandleError(resp)
+		return OpenIDConnectProviderClientListSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSecretsHandleResponse(resp)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
-func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderListSecretsOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -414,7 +401,7 @@ func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -426,49 +413,44 @@ func (client *OpenIDConnectProviderClient) listSecretsCreateRequest(ctx context.
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *OpenIDConnectProviderClient) listSecretsHandleResponse(resp *http.Response) (OpenIDConnectProviderListSecretsResponse, error) {
-	result := OpenIDConnectProviderListSecretsResponse{RawResponse: resp}
+func (client *OpenIDConnectProviderClient) listSecretsHandleResponse(resp *http.Response) (OpenIDConnectProviderClientListSecretsResponse, error) {
+	result := OpenIDConnectProviderClientListSecretsResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientSecretContract); err != nil {
-		return OpenIDConnectProviderListSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return OpenIDConnectProviderClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSecretsHandleError handles the ListSecrets error response.
-func (client *OpenIDConnectProviderClient) listSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the specific OpenID Connect Provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OpenIDConnectProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, parameters OpenidConnectProviderUpdateContract, options *OpenIDConnectProviderUpdateOptions) (OpenIDConnectProviderUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// opid - Identifier of the OpenID Connect Provider.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - OpenIDConnectProviderClientUpdateOptions contains the optional parameters for the OpenIDConnectProviderClient.Update
+// method.
+func (client *OpenIDConnectProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, parameters OpenidConnectProviderUpdateContract, options *OpenIDConnectProviderClientUpdateOptions) (OpenIDConnectProviderClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, opid, ifMatch, parameters, options)
 	if err != nil {
-		return OpenIDConnectProviderUpdateResponse{}, err
+		return OpenIDConnectProviderClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OpenIDConnectProviderUpdateResponse{}, err
+		return OpenIDConnectProviderClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OpenIDConnectProviderUpdateResponse{}, client.updateHandleError(resp)
+		return OpenIDConnectProviderClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, parameters OpenidConnectProviderUpdateContract, options *OpenIDConnectProviderUpdateOptions) (*policy.Request, error) {
+func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, parameters OpenidConnectProviderUpdateContract, options *OpenIDConnectProviderClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -486,7 +468,7 @@ func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -499,26 +481,13 @@ func (client *OpenIDConnectProviderClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *OpenIDConnectProviderClient) updateHandleResponse(resp *http.Response) (OpenIDConnectProviderUpdateResponse, error) {
-	result := OpenIDConnectProviderUpdateResponse{RawResponse: resp}
+func (client *OpenIDConnectProviderClient) updateHandleResponse(resp *http.Response) (OpenIDConnectProviderClientUpdateResponse, error) {
+	result := OpenIDConnectProviderClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenidConnectProviderContract); err != nil {
-		return OpenIDConnectProviderUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return OpenIDConnectProviderClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *OpenIDConnectProviderClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

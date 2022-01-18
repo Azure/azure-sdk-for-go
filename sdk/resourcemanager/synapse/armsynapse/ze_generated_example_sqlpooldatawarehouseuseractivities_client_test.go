@@ -28,10 +28,10 @@ func ExampleSQLPoolDataWarehouseUserActivitiesClient_Get() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		armsynapse.DataWarehouseUserActivityNameCurrent,
+		armsynapse.DataWarehouseUserActivityName("current"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataWarehouseUserActivities.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolDataWarehouseUserActivitiesClientGetResult)
 }

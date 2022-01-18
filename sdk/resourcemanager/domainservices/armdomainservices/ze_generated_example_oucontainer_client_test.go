@@ -30,12 +30,16 @@ func ExampleOuContainerClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<domain-service-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OuContainer.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleOuContainerClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OuContainer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OuContainerClientGetResult)
 }
 
 // x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/CreateOuContainer.json
@@ -84,7 +88,7 @@ func ExampleOuContainerClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OuContainer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OuContainerClientCreateResult)
 }
 
 // x-ms-original-file: specification/domainservices/resource-manager/Microsoft.AAD/stable/2021-05-01/examples/DeleteOuContainer.json
@@ -134,5 +138,5 @@ func ExampleOuContainerClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OuContainer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OuContainerClientUpdateResult)
 }

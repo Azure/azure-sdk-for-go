@@ -11,7 +11,6 @@ package armredisenterprise
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,53 @@ import (
 // OperationsStatusClient contains the methods for the OperationsStatus group.
 // Don't use this type directly, use NewOperationsStatusClient() instead.
 type OperationsStatusClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOperationsStatusClient creates a new instance of OperationsStatusClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOperationsStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsStatusClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OperationsStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OperationsStatusClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the status of operation.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *OperationsStatusClient) Get(ctx context.Context, location string, operationID string, options *OperationsStatusGetOptions) (OperationsStatusGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The region the operation is in.
+// operationID - The operation's unique identifier.
+// options - OperationsStatusClientGetOptions contains the optional parameters for the OperationsStatusClient.Get method.
+func (client *OperationsStatusClient) Get(ctx context.Context, location string, operationID string, options *OperationsStatusClientGetOptions) (OperationsStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return OperationsStatusGetResponse{}, err
+		return OperationsStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OperationsStatusGetResponse{}, err
+		return OperationsStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationsStatusGetResponse{}, client.getHandleError(resp)
+		return OperationsStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationsStatusClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationsStatusGetOptions) (*policy.Request, error) {
+func (client *OperationsStatusClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationsStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/operationsStatus/{operationId}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -74,7 +84,7 @@ func (client *OperationsStatusClient) getCreateRequest(ctx context.Context, loca
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +96,10 @@ func (client *OperationsStatusClient) getCreateRequest(ctx context.Context, loca
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationsStatusClient) getHandleResponse(resp *http.Response) (OperationsStatusGetResponse, error) {
-	result := OperationsStatusGetResponse{RawResponse: resp}
+func (client *OperationsStatusClient) getHandleResponse(resp *http.Response) (OperationsStatusClientGetResponse, error) {
+	result := OperationsStatusClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return OperationsStatusGetResponse{}, runtime.NewResponseError(err, resp)
+		return OperationsStatusClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *OperationsStatusClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

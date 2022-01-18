@@ -15,16 +15,16 @@ import (
 	"time"
 )
 
-// EdgeOrderManagementClientCancelOrderItemResponse contains the response from method EdgeOrderManagementClient.CancelOrderItem.
-type EdgeOrderManagementClientCancelOrderItemResponse struct {
+// ManagementClientCancelOrderItemResponse contains the response from method ManagementClient.CancelOrderItem.
+type ManagementClientCancelOrderItemResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientCreateAddressPollerResponse contains the response from method EdgeOrderManagementClient.CreateAddress.
-type EdgeOrderManagementClientCreateAddressPollerResponse struct {
+// ManagementClientCreateAddressPollerResponse contains the response from method ManagementClient.CreateAddress.
+type ManagementClientCreateAddressPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientCreateAddressPoller
+	Poller *ManagementClientCreateAddressPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -33,8 +33,8 @@ type EdgeOrderManagementClientCreateAddressPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientCreateAddressPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientCreateAddressResponse, error) {
-	respType := EdgeOrderManagementClientCreateAddressResponse{}
+func (l ManagementClientCreateAddressPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientCreateAddressResponse, error) {
+	respType := ManagementClientCreateAddressResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AddressResource)
 	if err != nil {
 		return respType, err
@@ -43,13 +43,13 @@ func (l EdgeOrderManagementClientCreateAddressPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientCreateAddressPollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientCreateAddressPollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.CreateAddress", token, client.pl, client.createAddressHandleError)
+// Resume rehydrates a ManagementClientCreateAddressPollerResponse from the provided client and resume token.
+func (l *ManagementClientCreateAddressPollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.CreateAddress", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientCreateAddressPoller{
+	poller := &ManagementClientCreateAddressPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -61,22 +61,22 @@ func (l *EdgeOrderManagementClientCreateAddressPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// EdgeOrderManagementClientCreateAddressResponse contains the response from method EdgeOrderManagementClient.CreateAddress.
-type EdgeOrderManagementClientCreateAddressResponse struct {
-	EdgeOrderManagementClientCreateAddressResult
+// ManagementClientCreateAddressResponse contains the response from method ManagementClient.CreateAddress.
+type ManagementClientCreateAddressResponse struct {
+	ManagementClientCreateAddressResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientCreateAddressResult contains the result from method EdgeOrderManagementClient.CreateAddress.
-type EdgeOrderManagementClientCreateAddressResult struct {
+// ManagementClientCreateAddressResult contains the result from method ManagementClient.CreateAddress.
+type ManagementClientCreateAddressResult struct {
 	AddressResource
 }
 
-// EdgeOrderManagementClientCreateOrderItemPollerResponse contains the response from method EdgeOrderManagementClient.CreateOrderItem.
-type EdgeOrderManagementClientCreateOrderItemPollerResponse struct {
+// ManagementClientCreateOrderItemPollerResponse contains the response from method ManagementClient.CreateOrderItem.
+type ManagementClientCreateOrderItemPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientCreateOrderItemPoller
+	Poller *ManagementClientCreateOrderItemPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -85,8 +85,8 @@ type EdgeOrderManagementClientCreateOrderItemPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientCreateOrderItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientCreateOrderItemResponse, error) {
-	respType := EdgeOrderManagementClientCreateOrderItemResponse{}
+func (l ManagementClientCreateOrderItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientCreateOrderItemResponse, error) {
+	respType := ManagementClientCreateOrderItemResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OrderItemResource)
 	if err != nil {
 		return respType, err
@@ -95,13 +95,13 @@ func (l EdgeOrderManagementClientCreateOrderItemPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientCreateOrderItemPollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientCreateOrderItemPollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.CreateOrderItem", token, client.pl, client.createOrderItemHandleError)
+// Resume rehydrates a ManagementClientCreateOrderItemPollerResponse from the provided client and resume token.
+func (l *ManagementClientCreateOrderItemPollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.CreateOrderItem", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientCreateOrderItemPoller{
+	poller := &ManagementClientCreateOrderItemPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -113,22 +113,22 @@ func (l *EdgeOrderManagementClientCreateOrderItemPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// EdgeOrderManagementClientCreateOrderItemResponse contains the response from method EdgeOrderManagementClient.CreateOrderItem.
-type EdgeOrderManagementClientCreateOrderItemResponse struct {
-	EdgeOrderManagementClientCreateOrderItemResult
+// ManagementClientCreateOrderItemResponse contains the response from method ManagementClient.CreateOrderItem.
+type ManagementClientCreateOrderItemResponse struct {
+	ManagementClientCreateOrderItemResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientCreateOrderItemResult contains the result from method EdgeOrderManagementClient.CreateOrderItem.
-type EdgeOrderManagementClientCreateOrderItemResult struct {
+// ManagementClientCreateOrderItemResult contains the result from method ManagementClient.CreateOrderItem.
+type ManagementClientCreateOrderItemResult struct {
 	OrderItemResource
 }
 
-// EdgeOrderManagementClientDeleteAddressByNamePollerResponse contains the response from method EdgeOrderManagementClient.DeleteAddressByName.
-type EdgeOrderManagementClientDeleteAddressByNamePollerResponse struct {
+// ManagementClientDeleteAddressByNamePollerResponse contains the response from method ManagementClient.DeleteAddressByName.
+type ManagementClientDeleteAddressByNamePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientDeleteAddressByNamePoller
+	Poller *ManagementClientDeleteAddressByNamePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -137,8 +137,8 @@ type EdgeOrderManagementClientDeleteAddressByNamePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientDeleteAddressByNamePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientDeleteAddressByNameResponse, error) {
-	respType := EdgeOrderManagementClientDeleteAddressByNameResponse{}
+func (l ManagementClientDeleteAddressByNamePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientDeleteAddressByNameResponse, error) {
+	respType := ManagementClientDeleteAddressByNameResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -147,13 +147,13 @@ func (l EdgeOrderManagementClientDeleteAddressByNamePollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientDeleteAddressByNamePollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientDeleteAddressByNamePollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.DeleteAddressByName", token, client.pl, client.deleteAddressByNameHandleError)
+// Resume rehydrates a ManagementClientDeleteAddressByNamePollerResponse from the provided client and resume token.
+func (l *ManagementClientDeleteAddressByNamePollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.DeleteAddressByName", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientDeleteAddressByNamePoller{
+	poller := &ManagementClientDeleteAddressByNamePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -165,16 +165,16 @@ func (l *EdgeOrderManagementClientDeleteAddressByNamePollerResponse) Resume(ctx 
 	return nil
 }
 
-// EdgeOrderManagementClientDeleteAddressByNameResponse contains the response from method EdgeOrderManagementClient.DeleteAddressByName.
-type EdgeOrderManagementClientDeleteAddressByNameResponse struct {
+// ManagementClientDeleteAddressByNameResponse contains the response from method ManagementClient.DeleteAddressByName.
+type ManagementClientDeleteAddressByNameResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse contains the response from method EdgeOrderManagementClient.DeleteOrderItemByName.
-type EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse struct {
+// ManagementClientDeleteOrderItemByNamePollerResponse contains the response from method ManagementClient.DeleteOrderItemByName.
+type ManagementClientDeleteOrderItemByNamePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientDeleteOrderItemByNamePoller
+	Poller *ManagementClientDeleteOrderItemByNamePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -183,8 +183,8 @@ type EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientDeleteOrderItemByNameResponse, error) {
-	respType := EdgeOrderManagementClientDeleteOrderItemByNameResponse{}
+func (l ManagementClientDeleteOrderItemByNamePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientDeleteOrderItemByNameResponse, error) {
+	respType := ManagementClientDeleteOrderItemByNameResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -193,13 +193,13 @@ func (l EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.DeleteOrderItemByName", token, client.pl, client.deleteOrderItemByNameHandleError)
+// Resume rehydrates a ManagementClientDeleteOrderItemByNamePollerResponse from the provided client and resume token.
+func (l *ManagementClientDeleteOrderItemByNamePollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.DeleteOrderItemByName", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientDeleteOrderItemByNamePoller{
+	poller := &ManagementClientDeleteOrderItemByNamePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -211,172 +211,172 @@ func (l *EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse) Resume(ct
 	return nil
 }
 
-// EdgeOrderManagementClientDeleteOrderItemByNameResponse contains the response from method EdgeOrderManagementClient.DeleteOrderItemByName.
-type EdgeOrderManagementClientDeleteOrderItemByNameResponse struct {
+// ManagementClientDeleteOrderItemByNameResponse contains the response from method ManagementClient.DeleteOrderItemByName.
+type ManagementClientDeleteOrderItemByNameResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientGetAddressByNameResponse contains the response from method EdgeOrderManagementClient.GetAddressByName.
-type EdgeOrderManagementClientGetAddressByNameResponse struct {
-	EdgeOrderManagementClientGetAddressByNameResult
+// ManagementClientGetAddressByNameResponse contains the response from method ManagementClient.GetAddressByName.
+type ManagementClientGetAddressByNameResponse struct {
+	ManagementClientGetAddressByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientGetAddressByNameResult contains the result from method EdgeOrderManagementClient.GetAddressByName.
-type EdgeOrderManagementClientGetAddressByNameResult struct {
+// ManagementClientGetAddressByNameResult contains the result from method ManagementClient.GetAddressByName.
+type ManagementClientGetAddressByNameResult struct {
 	AddressResource
 }
 
-// EdgeOrderManagementClientGetOrderByNameResponse contains the response from method EdgeOrderManagementClient.GetOrderByName.
-type EdgeOrderManagementClientGetOrderByNameResponse struct {
-	EdgeOrderManagementClientGetOrderByNameResult
+// ManagementClientGetOrderByNameResponse contains the response from method ManagementClient.GetOrderByName.
+type ManagementClientGetOrderByNameResponse struct {
+	ManagementClientGetOrderByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientGetOrderByNameResult contains the result from method EdgeOrderManagementClient.GetOrderByName.
-type EdgeOrderManagementClientGetOrderByNameResult struct {
+// ManagementClientGetOrderByNameResult contains the result from method ManagementClient.GetOrderByName.
+type ManagementClientGetOrderByNameResult struct {
 	OrderResource
 }
 
-// EdgeOrderManagementClientGetOrderItemByNameResponse contains the response from method EdgeOrderManagementClient.GetOrderItemByName.
-type EdgeOrderManagementClientGetOrderItemByNameResponse struct {
-	EdgeOrderManagementClientGetOrderItemByNameResult
+// ManagementClientGetOrderItemByNameResponse contains the response from method ManagementClient.GetOrderItemByName.
+type ManagementClientGetOrderItemByNameResponse struct {
+	ManagementClientGetOrderItemByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientGetOrderItemByNameResult contains the result from method EdgeOrderManagementClient.GetOrderItemByName.
-type EdgeOrderManagementClientGetOrderItemByNameResult struct {
+// ManagementClientGetOrderItemByNameResult contains the result from method ManagementClient.GetOrderItemByName.
+type ManagementClientGetOrderItemByNameResult struct {
 	OrderItemResource
 }
 
-// EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse contains the response from method EdgeOrderManagementClient.ListAddressesAtResourceGroupLevel.
-type EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse struct {
-	EdgeOrderManagementClientListAddressesAtResourceGroupLevelResult
+// ManagementClientListAddressesAtResourceGroupLevelResponse contains the response from method ManagementClient.ListAddressesAtResourceGroupLevel.
+type ManagementClientListAddressesAtResourceGroupLevelResponse struct {
+	ManagementClientListAddressesAtResourceGroupLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListAddressesAtResourceGroupLevelResult contains the result from method EdgeOrderManagementClient.ListAddressesAtResourceGroupLevel.
-type EdgeOrderManagementClientListAddressesAtResourceGroupLevelResult struct {
+// ManagementClientListAddressesAtResourceGroupLevelResult contains the result from method ManagementClient.ListAddressesAtResourceGroupLevel.
+type ManagementClientListAddressesAtResourceGroupLevelResult struct {
 	AddressResourceList
 }
 
-// EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse contains the response from method EdgeOrderManagementClient.ListAddressesAtSubscriptionLevel.
-type EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse struct {
-	EdgeOrderManagementClientListAddressesAtSubscriptionLevelResult
+// ManagementClientListAddressesAtSubscriptionLevelResponse contains the response from method ManagementClient.ListAddressesAtSubscriptionLevel.
+type ManagementClientListAddressesAtSubscriptionLevelResponse struct {
+	ManagementClientListAddressesAtSubscriptionLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListAddressesAtSubscriptionLevelResult contains the result from method EdgeOrderManagementClient.ListAddressesAtSubscriptionLevel.
-type EdgeOrderManagementClientListAddressesAtSubscriptionLevelResult struct {
+// ManagementClientListAddressesAtSubscriptionLevelResult contains the result from method ManagementClient.ListAddressesAtSubscriptionLevel.
+type ManagementClientListAddressesAtSubscriptionLevelResult struct {
 	AddressResourceList
 }
 
-// EdgeOrderManagementClientListConfigurationsResponse contains the response from method EdgeOrderManagementClient.ListConfigurations.
-type EdgeOrderManagementClientListConfigurationsResponse struct {
-	EdgeOrderManagementClientListConfigurationsResult
+// ManagementClientListConfigurationsResponse contains the response from method ManagementClient.ListConfigurations.
+type ManagementClientListConfigurationsResponse struct {
+	ManagementClientListConfigurationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListConfigurationsResult contains the result from method EdgeOrderManagementClient.ListConfigurations.
-type EdgeOrderManagementClientListConfigurationsResult struct {
+// ManagementClientListConfigurationsResult contains the result from method ManagementClient.ListConfigurations.
+type ManagementClientListConfigurationsResult struct {
 	Configurations
 }
 
-// EdgeOrderManagementClientListOperationsResponse contains the response from method EdgeOrderManagementClient.ListOperations.
-type EdgeOrderManagementClientListOperationsResponse struct {
-	EdgeOrderManagementClientListOperationsResult
+// ManagementClientListOperationsResponse contains the response from method ManagementClient.ListOperations.
+type ManagementClientListOperationsResponse struct {
+	ManagementClientListOperationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListOperationsResult contains the result from method EdgeOrderManagementClient.ListOperations.
-type EdgeOrderManagementClientListOperationsResult struct {
+// ManagementClientListOperationsResult contains the result from method ManagementClient.ListOperations.
+type ManagementClientListOperationsResult struct {
 	OperationListResult
 }
 
-// EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse contains the response from method EdgeOrderManagementClient.ListOrderAtResourceGroupLevel.
-type EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse struct {
-	EdgeOrderManagementClientListOrderAtResourceGroupLevelResult
+// ManagementClientListOrderAtResourceGroupLevelResponse contains the response from method ManagementClient.ListOrderAtResourceGroupLevel.
+type ManagementClientListOrderAtResourceGroupLevelResponse struct {
+	ManagementClientListOrderAtResourceGroupLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListOrderAtResourceGroupLevelResult contains the result from method EdgeOrderManagementClient.ListOrderAtResourceGroupLevel.
-type EdgeOrderManagementClientListOrderAtResourceGroupLevelResult struct {
+// ManagementClientListOrderAtResourceGroupLevelResult contains the result from method ManagementClient.ListOrderAtResourceGroupLevel.
+type ManagementClientListOrderAtResourceGroupLevelResult struct {
 	OrderResourceList
 }
 
-// EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse contains the response from method EdgeOrderManagementClient.ListOrderAtSubscriptionLevel.
-type EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse struct {
-	EdgeOrderManagementClientListOrderAtSubscriptionLevelResult
+// ManagementClientListOrderAtSubscriptionLevelResponse contains the response from method ManagementClient.ListOrderAtSubscriptionLevel.
+type ManagementClientListOrderAtSubscriptionLevelResponse struct {
+	ManagementClientListOrderAtSubscriptionLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListOrderAtSubscriptionLevelResult contains the result from method EdgeOrderManagementClient.ListOrderAtSubscriptionLevel.
-type EdgeOrderManagementClientListOrderAtSubscriptionLevelResult struct {
+// ManagementClientListOrderAtSubscriptionLevelResult contains the result from method ManagementClient.ListOrderAtSubscriptionLevel.
+type ManagementClientListOrderAtSubscriptionLevelResult struct {
 	OrderResourceList
 }
 
-// EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse contains the response from method EdgeOrderManagementClient.ListOrderItemsAtResourceGroupLevel.
-type EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse struct {
-	EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResult
+// ManagementClientListOrderItemsAtResourceGroupLevelResponse contains the response from method ManagementClient.ListOrderItemsAtResourceGroupLevel.
+type ManagementClientListOrderItemsAtResourceGroupLevelResponse struct {
+	ManagementClientListOrderItemsAtResourceGroupLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResult contains the result from method EdgeOrderManagementClient.ListOrderItemsAtResourceGroupLevel.
-type EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResult struct {
+// ManagementClientListOrderItemsAtResourceGroupLevelResult contains the result from method ManagementClient.ListOrderItemsAtResourceGroupLevel.
+type ManagementClientListOrderItemsAtResourceGroupLevelResult struct {
 	OrderItemResourceList
 }
 
-// EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse contains the response from method EdgeOrderManagementClient.ListOrderItemsAtSubscriptionLevel.
-type EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse struct {
-	EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResult
+// ManagementClientListOrderItemsAtSubscriptionLevelResponse contains the response from method ManagementClient.ListOrderItemsAtSubscriptionLevel.
+type ManagementClientListOrderItemsAtSubscriptionLevelResponse struct {
+	ManagementClientListOrderItemsAtSubscriptionLevelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResult contains the result from method EdgeOrderManagementClient.ListOrderItemsAtSubscriptionLevel.
-type EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResult struct {
+// ManagementClientListOrderItemsAtSubscriptionLevelResult contains the result from method ManagementClient.ListOrderItemsAtSubscriptionLevel.
+type ManagementClientListOrderItemsAtSubscriptionLevelResult struct {
 	OrderItemResourceList
 }
 
-// EdgeOrderManagementClientListProductFamiliesMetadataResponse contains the response from method EdgeOrderManagementClient.ListProductFamiliesMetadata.
-type EdgeOrderManagementClientListProductFamiliesMetadataResponse struct {
-	EdgeOrderManagementClientListProductFamiliesMetadataResult
+// ManagementClientListProductFamiliesMetadataResponse contains the response from method ManagementClient.ListProductFamiliesMetadata.
+type ManagementClientListProductFamiliesMetadataResponse struct {
+	ManagementClientListProductFamiliesMetadataResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListProductFamiliesMetadataResult contains the result from method EdgeOrderManagementClient.ListProductFamiliesMetadata.
-type EdgeOrderManagementClientListProductFamiliesMetadataResult struct {
+// ManagementClientListProductFamiliesMetadataResult contains the result from method ManagementClient.ListProductFamiliesMetadata.
+type ManagementClientListProductFamiliesMetadataResult struct {
 	ProductFamiliesMetadata
 }
 
-// EdgeOrderManagementClientListProductFamiliesResponse contains the response from method EdgeOrderManagementClient.ListProductFamilies.
-type EdgeOrderManagementClientListProductFamiliesResponse struct {
-	EdgeOrderManagementClientListProductFamiliesResult
+// ManagementClientListProductFamiliesResponse contains the response from method ManagementClient.ListProductFamilies.
+type ManagementClientListProductFamiliesResponse struct {
+	ManagementClientListProductFamiliesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientListProductFamiliesResult contains the result from method EdgeOrderManagementClient.ListProductFamilies.
-type EdgeOrderManagementClientListProductFamiliesResult struct {
+// ManagementClientListProductFamiliesResult contains the result from method ManagementClient.ListProductFamilies.
+type ManagementClientListProductFamiliesResult struct {
 	ProductFamilies
 }
 
-// EdgeOrderManagementClientReturnOrderItemPollerResponse contains the response from method EdgeOrderManagementClient.ReturnOrderItem.
-type EdgeOrderManagementClientReturnOrderItemPollerResponse struct {
+// ManagementClientReturnOrderItemPollerResponse contains the response from method ManagementClient.ReturnOrderItem.
+type ManagementClientReturnOrderItemPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientReturnOrderItemPoller
+	Poller *ManagementClientReturnOrderItemPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -385,8 +385,8 @@ type EdgeOrderManagementClientReturnOrderItemPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientReturnOrderItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientReturnOrderItemResponse, error) {
-	respType := EdgeOrderManagementClientReturnOrderItemResponse{}
+func (l ManagementClientReturnOrderItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientReturnOrderItemResponse, error) {
+	respType := ManagementClientReturnOrderItemResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -395,13 +395,13 @@ func (l EdgeOrderManagementClientReturnOrderItemPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientReturnOrderItemPollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientReturnOrderItemPollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.ReturnOrderItem", token, client.pl, client.returnOrderItemHandleError)
+// Resume rehydrates a ManagementClientReturnOrderItemPollerResponse from the provided client and resume token.
+func (l *ManagementClientReturnOrderItemPollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.ReturnOrderItem", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientReturnOrderItemPoller{
+	poller := &ManagementClientReturnOrderItemPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -413,16 +413,16 @@ func (l *EdgeOrderManagementClientReturnOrderItemPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// EdgeOrderManagementClientReturnOrderItemResponse contains the response from method EdgeOrderManagementClient.ReturnOrderItem.
-type EdgeOrderManagementClientReturnOrderItemResponse struct {
+// ManagementClientReturnOrderItemResponse contains the response from method ManagementClient.ReturnOrderItem.
+type ManagementClientReturnOrderItemResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientUpdateAddressPollerResponse contains the response from method EdgeOrderManagementClient.UpdateAddress.
-type EdgeOrderManagementClientUpdateAddressPollerResponse struct {
+// ManagementClientUpdateAddressPollerResponse contains the response from method ManagementClient.UpdateAddress.
+type ManagementClientUpdateAddressPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientUpdateAddressPoller
+	Poller *ManagementClientUpdateAddressPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -431,8 +431,8 @@ type EdgeOrderManagementClientUpdateAddressPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientUpdateAddressPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientUpdateAddressResponse, error) {
-	respType := EdgeOrderManagementClientUpdateAddressResponse{}
+func (l ManagementClientUpdateAddressPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientUpdateAddressResponse, error) {
+	respType := ManagementClientUpdateAddressResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AddressResource)
 	if err != nil {
 		return respType, err
@@ -441,13 +441,13 @@ func (l EdgeOrderManagementClientUpdateAddressPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientUpdateAddressPollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientUpdateAddressPollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.UpdateAddress", token, client.pl, client.updateAddressHandleError)
+// Resume rehydrates a ManagementClientUpdateAddressPollerResponse from the provided client and resume token.
+func (l *ManagementClientUpdateAddressPollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.UpdateAddress", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientUpdateAddressPoller{
+	poller := &ManagementClientUpdateAddressPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -459,22 +459,22 @@ func (l *EdgeOrderManagementClientUpdateAddressPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// EdgeOrderManagementClientUpdateAddressResponse contains the response from method EdgeOrderManagementClient.UpdateAddress.
-type EdgeOrderManagementClientUpdateAddressResponse struct {
-	EdgeOrderManagementClientUpdateAddressResult
+// ManagementClientUpdateAddressResponse contains the response from method ManagementClient.UpdateAddress.
+type ManagementClientUpdateAddressResponse struct {
+	ManagementClientUpdateAddressResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientUpdateAddressResult contains the result from method EdgeOrderManagementClient.UpdateAddress.
-type EdgeOrderManagementClientUpdateAddressResult struct {
+// ManagementClientUpdateAddressResult contains the result from method ManagementClient.UpdateAddress.
+type ManagementClientUpdateAddressResult struct {
 	AddressResource
 }
 
-// EdgeOrderManagementClientUpdateOrderItemPollerResponse contains the response from method EdgeOrderManagementClient.UpdateOrderItem.
-type EdgeOrderManagementClientUpdateOrderItemPollerResponse struct {
+// ManagementClientUpdateOrderItemPollerResponse contains the response from method ManagementClient.UpdateOrderItem.
+type ManagementClientUpdateOrderItemPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *EdgeOrderManagementClientUpdateOrderItemPoller
+	Poller *ManagementClientUpdateOrderItemPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -483,8 +483,8 @@ type EdgeOrderManagementClientUpdateOrderItemPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderManagementClientUpdateOrderItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderManagementClientUpdateOrderItemResponse, error) {
-	respType := EdgeOrderManagementClientUpdateOrderItemResponse{}
+func (l ManagementClientUpdateOrderItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagementClientUpdateOrderItemResponse, error) {
+	respType := ManagementClientUpdateOrderItemResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OrderItemResource)
 	if err != nil {
 		return respType, err
@@ -493,13 +493,13 @@ func (l EdgeOrderManagementClientUpdateOrderItemPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a EdgeOrderManagementClientUpdateOrderItemPollerResponse from the provided client and resume token.
-func (l *EdgeOrderManagementClientUpdateOrderItemPollerResponse) Resume(ctx context.Context, client *EdgeOrderManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderManagementClient.UpdateOrderItem", token, client.pl, client.updateOrderItemHandleError)
+// Resume rehydrates a ManagementClientUpdateOrderItemPollerResponse from the provided client and resume token.
+func (l *ManagementClientUpdateOrderItemPollerResponse) Resume(ctx context.Context, client *ManagementClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ManagementClient.UpdateOrderItem", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &EdgeOrderManagementClientUpdateOrderItemPoller{
+	poller := &ManagementClientUpdateOrderItemPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -511,14 +511,14 @@ func (l *EdgeOrderManagementClientUpdateOrderItemPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// EdgeOrderManagementClientUpdateOrderItemResponse contains the response from method EdgeOrderManagementClient.UpdateOrderItem.
-type EdgeOrderManagementClientUpdateOrderItemResponse struct {
-	EdgeOrderManagementClientUpdateOrderItemResult
+// ManagementClientUpdateOrderItemResponse contains the response from method ManagementClient.UpdateOrderItem.
+type ManagementClientUpdateOrderItemResponse struct {
+	ManagementClientUpdateOrderItemResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EdgeOrderManagementClientUpdateOrderItemResult contains the result from method EdgeOrderManagementClient.UpdateOrderItem.
-type EdgeOrderManagementClientUpdateOrderItemResult struct {
+// ManagementClientUpdateOrderItemResult contains the result from method ManagementClient.UpdateOrderItem.
+type ManagementClientUpdateOrderItemResult struct {
 	OrderItemResource
 }

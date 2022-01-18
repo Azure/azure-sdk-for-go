@@ -32,7 +32,7 @@ func ExampleQueryTextsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QueryText.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.QueryTextsClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/QueryTextsListByServer.json
@@ -49,12 +49,16 @@ func ExampleQueryTextsClient_ListByServer() {
 			"1",
 			"2"},
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("QueryText.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

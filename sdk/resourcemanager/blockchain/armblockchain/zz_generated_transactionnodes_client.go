@@ -24,46 +24,61 @@ import (
 // TransactionNodesClient contains the methods for the TransactionNodes group.
 // Don't use this type directly, use NewTransactionNodesClient() instead.
 type TransactionNodesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTransactionNodesClient creates a new instance of TransactionNodesClient with the specified values.
+// subscriptionID - Gets the subscription Id which uniquely identifies the Microsoft Azure subscription. The subscription
+// ID is part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTransactionNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TransactionNodesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TransactionNodesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TransactionNodesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create or update the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) BeginCreate(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesBeginCreateOptions) (TransactionNodesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// transactionNodeName - Transaction node name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientBeginCreateOptions contains the optional parameters for the TransactionNodesClient.BeginCreate
+// method.
+func (client *TransactionNodesClient) BeginCreate(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (TransactionNodesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
-		return TransactionNodesCreatePollerResponse{}, err
+		return TransactionNodesClientCreatePollerResponse{}, err
 	}
-	result := TransactionNodesCreatePollerResponse{
+	result := TransactionNodesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TransactionNodesClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("TransactionNodesClient.Create", "", resp, client.pl)
 	if err != nil {
-		return TransactionNodesCreatePollerResponse{}, err
+		return TransactionNodesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &TransactionNodesCreatePoller{
+	result.Poller = &TransactionNodesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create or update the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) create(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransactionNodesClient) create(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *TransactionNodesClient) create(ctx context.Context, blockchainMemb
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesBeginCreateOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes/{transactionNodeName}"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -97,7 +112,7 @@ func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,41 +126,35 @@ func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, b
 	return req, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *TransactionNodesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Delete the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) BeginDelete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesBeginDeleteOptions) (TransactionNodesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// transactionNodeName - Transaction node name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientBeginDeleteOptions contains the optional parameters for the TransactionNodesClient.BeginDelete
+// method.
+func (client *TransactionNodesClient) BeginDelete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (TransactionNodesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
-		return TransactionNodesDeletePollerResponse{}, err
+		return TransactionNodesClientDeletePollerResponse{}, err
 	}
-	result := TransactionNodesDeletePollerResponse{
+	result := TransactionNodesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TransactionNodesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("TransactionNodesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return TransactionNodesDeletePollerResponse{}, err
+		return TransactionNodesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &TransactionNodesDeletePoller{
+	result.Poller = &TransactionNodesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) deleteOperation(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransactionNodesClient) deleteOperation(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -155,13 +164,13 @@ func (client *TransactionNodesClient) deleteOperation(ctx context.Context, block
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TransactionNodesClient) deleteCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesBeginDeleteOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) deleteCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes/{transactionNodeName}"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -179,7 +188,7 @@ func (client *TransactionNodesClient) deleteCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,37 +198,30 @@ func (client *TransactionNodesClient) deleteCreateRequest(ctx context.Context, b
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TransactionNodesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get the details of the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) Get(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesGetOptions) (TransactionNodesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// transactionNodeName - Transaction node name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientGetOptions contains the optional parameters for the TransactionNodesClient.Get method.
+func (client *TransactionNodesClient) Get(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientGetOptions) (TransactionNodesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
-		return TransactionNodesGetResponse{}, err
+		return TransactionNodesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransactionNodesGetResponse{}, err
+		return TransactionNodesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransactionNodesGetResponse{}, client.getHandleError(resp)
+		return TransactionNodesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TransactionNodesClient) getCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesGetOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) getCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes/{transactionNodeName}"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -237,7 +239,7 @@ func (client *TransactionNodesClient) getCreateRequest(ctx context.Context, bloc
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,42 +251,34 @@ func (client *TransactionNodesClient) getCreateRequest(ctx context.Context, bloc
 }
 
 // getHandleResponse handles the Get response.
-func (client *TransactionNodesClient) getHandleResponse(resp *http.Response) (TransactionNodesGetResponse, error) {
-	result := TransactionNodesGetResponse{RawResponse: resp}
+func (client *TransactionNodesClient) getHandleResponse(resp *http.Response) (TransactionNodesClientGetResponse, error) {
+	result := TransactionNodesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionNode); err != nil {
-		return TransactionNodesGetResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionNodesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TransactionNodesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists the transaction nodes for a blockchain member.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) List(blockchainMemberName string, resourceGroupName string, options *TransactionNodesListOptions) *TransactionNodesListPager {
-	return &TransactionNodesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientListOptions contains the optional parameters for the TransactionNodesClient.List method.
+func (client *TransactionNodesClient) List(blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) *TransactionNodesClientListPager {
+	return &TransactionNodesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp TransactionNodesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TransactionNodesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TransactionNodeCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TransactionNodesClient) listCreateRequest(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *TransactionNodesListOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) listCreateRequest(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -298,7 +292,7 @@ func (client *TransactionNodesClient) listCreateRequest(ctx context.Context, blo
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,45 +304,39 @@ func (client *TransactionNodesClient) listCreateRequest(ctx context.Context, blo
 }
 
 // listHandleResponse handles the List response.
-func (client *TransactionNodesClient) listHandleResponse(resp *http.Response) (TransactionNodesListResponse, error) {
-	result := TransactionNodesListResponse{RawResponse: resp}
+func (client *TransactionNodesClient) listHandleResponse(resp *http.Response) (TransactionNodesClientListResponse, error) {
+	result := TransactionNodesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionNodeCollection); err != nil {
-		return TransactionNodesListResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionNodesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *TransactionNodesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListAPIKeys - List the API keys for the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) ListAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesListAPIKeysOptions) (TransactionNodesListAPIKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// transactionNodeName - Transaction node name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientListAPIKeysOptions contains the optional parameters for the TransactionNodesClient.ListAPIKeys
+// method.
+func (client *TransactionNodesClient) ListAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientListAPIKeysOptions) (TransactionNodesClientListAPIKeysResponse, error) {
 	req, err := client.listAPIKeysCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
-		return TransactionNodesListAPIKeysResponse{}, err
+		return TransactionNodesClientListAPIKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransactionNodesListAPIKeysResponse{}, err
+		return TransactionNodesClientListAPIKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransactionNodesListAPIKeysResponse{}, client.listAPIKeysHandleError(resp)
+		return TransactionNodesClientListAPIKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listAPIKeysHandleResponse(resp)
 }
 
 // listAPIKeysCreateRequest creates the ListAPIKeys request.
-func (client *TransactionNodesClient) listAPIKeysCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesListAPIKeysOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) listAPIKeysCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientListAPIKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes/{transactionNodeName}/listApiKeys"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -366,7 +354,7 @@ func (client *TransactionNodesClient) listAPIKeysCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -378,45 +366,39 @@ func (client *TransactionNodesClient) listAPIKeysCreateRequest(ctx context.Conte
 }
 
 // listAPIKeysHandleResponse handles the ListAPIKeys response.
-func (client *TransactionNodesClient) listAPIKeysHandleResponse(resp *http.Response) (TransactionNodesListAPIKeysResponse, error) {
-	result := TransactionNodesListAPIKeysResponse{RawResponse: resp}
+func (client *TransactionNodesClient) listAPIKeysHandleResponse(resp *http.Response) (TransactionNodesClientListAPIKeysResponse, error) {
+	result := TransactionNodesClientListAPIKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyCollection); err != nil {
-		return TransactionNodesListAPIKeysResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionNodesClientListAPIKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listAPIKeysHandleError handles the ListAPIKeys error response.
-func (client *TransactionNodesClient) listAPIKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListRegenerateAPIKeys - Regenerate the API keys for the blockchain member.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesListRegenerateAPIKeysOptions) (TransactionNodesListRegenerateAPIKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// transactionNodeName - Transaction node name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientListRegenerateAPIKeysOptions contains the optional parameters for the TransactionNodesClient.ListRegenerateAPIKeys
+// method.
+func (client *TransactionNodesClient) ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientListRegenerateAPIKeysOptions) (TransactionNodesClientListRegenerateAPIKeysResponse, error) {
 	req, err := client.listRegenerateAPIKeysCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
-		return TransactionNodesListRegenerateAPIKeysResponse{}, err
+		return TransactionNodesClientListRegenerateAPIKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransactionNodesListRegenerateAPIKeysResponse{}, err
+		return TransactionNodesClientListRegenerateAPIKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransactionNodesListRegenerateAPIKeysResponse{}, client.listRegenerateAPIKeysHandleError(resp)
+		return TransactionNodesClientListRegenerateAPIKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listRegenerateAPIKeysHandleResponse(resp)
 }
 
 // listRegenerateAPIKeysCreateRequest creates the ListRegenerateAPIKeys request.
-func (client *TransactionNodesClient) listRegenerateAPIKeysCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesListRegenerateAPIKeysOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) listRegenerateAPIKeysCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientListRegenerateAPIKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes/{transactionNodeName}/regenerateApiKeys"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -434,7 +416,7 @@ func (client *TransactionNodesClient) listRegenerateAPIKeysCreateRequest(ctx con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -449,45 +431,38 @@ func (client *TransactionNodesClient) listRegenerateAPIKeysCreateRequest(ctx con
 }
 
 // listRegenerateAPIKeysHandleResponse handles the ListRegenerateAPIKeys response.
-func (client *TransactionNodesClient) listRegenerateAPIKeysHandleResponse(resp *http.Response) (TransactionNodesListRegenerateAPIKeysResponse, error) {
-	result := TransactionNodesListRegenerateAPIKeysResponse{RawResponse: resp}
+func (client *TransactionNodesClient) listRegenerateAPIKeysHandleResponse(resp *http.Response) (TransactionNodesClientListRegenerateAPIKeysResponse, error) {
+	result := TransactionNodesClientListRegenerateAPIKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyCollection); err != nil {
-		return TransactionNodesListRegenerateAPIKeysResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionNodesClientListRegenerateAPIKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listRegenerateAPIKeysHandleError handles the ListRegenerateAPIKeys error response.
-func (client *TransactionNodesClient) listRegenerateAPIKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update the transaction node.
-// If the operation fails it returns a generic error.
-func (client *TransactionNodesClient) Update(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesUpdateOptions) (TransactionNodesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// blockchainMemberName - Blockchain member name.
+// transactionNodeName - Transaction node name.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// options - TransactionNodesClientUpdateOptions contains the optional parameters for the TransactionNodesClient.Update method.
+func (client *TransactionNodesClient) Update(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientUpdateOptions) (TransactionNodesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
-		return TransactionNodesUpdateResponse{}, err
+		return TransactionNodesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TransactionNodesUpdateResponse{}, err
+		return TransactionNodesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TransactionNodesUpdateResponse{}, client.updateHandleError(resp)
+		return TransactionNodesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TransactionNodesClient) updateCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesUpdateOptions) (*policy.Request, error) {
+func (client *TransactionNodesClient) updateCreateRequest(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Blockchain/blockchainMembers/{blockchainMemberName}/transactionNodes/{transactionNodeName}"
 	if blockchainMemberName == "" {
 		return nil, errors.New("parameter blockchainMemberName cannot be empty")
@@ -505,7 +480,7 @@ func (client *TransactionNodesClient) updateCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -520,22 +495,10 @@ func (client *TransactionNodesClient) updateCreateRequest(ctx context.Context, b
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TransactionNodesClient) updateHandleResponse(resp *http.Response) (TransactionNodesUpdateResponse, error) {
-	result := TransactionNodesUpdateResponse{RawResponse: resp}
+func (client *TransactionNodesClient) updateHandleResponse(resp *http.Response) (TransactionNodesClientUpdateResponse, error) {
+	result := TransactionNodesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransactionNode); err != nil {
-		return TransactionNodesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TransactionNodesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TransactionNodesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

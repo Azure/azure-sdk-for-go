@@ -26,15 +26,19 @@ func ExampleCustomersClient_ListByBillingProfile() {
 	client := armbilling.NewCustomersClient(cred, nil)
 	pager := client.ListByBillingProfile("<billing-account-name>",
 		"<billing-profile-name>",
-		&armbilling.CustomersListByBillingProfileOptions{Search: nil,
+		&armbilling.CustomersClientListByBillingProfileOptions{Search: nil,
 			Filter: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Customer.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,15 +52,19 @@ func ExampleCustomersClient_ListByBillingAccount() {
 	ctx := context.Background()
 	client := armbilling.NewCustomersClient(cred, nil)
 	pager := client.ListByBillingAccount("<billing-account-name>",
-		&armbilling.CustomersListByBillingAccountOptions{Search: nil,
+		&armbilling.CustomersClientListByBillingAccountOptions{Search: nil,
 			Filter: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Customer.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -72,9 +80,9 @@ func ExampleCustomersClient_Get() {
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
 		"<customer-name>",
-		&armbilling.CustomersGetOptions{Expand: nil})
+		&armbilling.CustomersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Customer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomersClientGetResult)
 }

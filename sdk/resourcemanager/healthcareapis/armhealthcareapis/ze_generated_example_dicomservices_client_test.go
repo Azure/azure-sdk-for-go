@@ -30,12 +30,16 @@ func ExampleDicomServicesClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DicomService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleDicomServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DicomService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DicomServicesClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/dicomservices/DicomServices_Create.json
@@ -72,11 +76,7 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 		"<workspace-name>",
 		"<dicom-service-name>",
 		armhealthcareapis.DicomService{
-			TaggedResource: armhealthcareapis.TaggedResource{
-				LocationBasedResource: armhealthcareapis.LocationBasedResource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
+			Location:   to.StringPtr("<location>"),
 			Properties: &armhealthcareapis.DicomServiceProperties{},
 		},
 		nil)
@@ -87,7 +87,7 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DicomService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DicomServicesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/dicomservices/DicomServices_Patch.json
@@ -103,10 +103,8 @@ func ExampleDicomServicesClient_BeginUpdate() {
 		"<dicom-service-name>",
 		"<workspace-name>",
 		armhealthcareapis.DicomServicePatchResource{
-			ResourceTags: armhealthcareapis.ResourceTags{
-				Tags: map[string]*string{
-					"tagKey": to.StringPtr("tagValue"),
-				},
+			Tags: map[string]*string{
+				"tagKey": to.StringPtr("tagValue"),
 			},
 		},
 		nil)
@@ -117,7 +115,7 @@ func ExampleDicomServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DicomService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DicomServicesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/dicomservices/DicomServices_Delete.json

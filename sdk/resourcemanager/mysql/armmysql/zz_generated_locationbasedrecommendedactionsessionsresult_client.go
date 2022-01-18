@@ -24,39 +24,51 @@ import (
 // LocationBasedRecommendedActionSessionsResultClient contains the methods for the LocationBasedRecommendedActionSessionsResult group.
 // Don't use this type directly, use NewLocationBasedRecommendedActionSessionsResultClient() instead.
 type LocationBasedRecommendedActionSessionsResultClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationBasedRecommendedActionSessionsResultClient creates a new instance of LocationBasedRecommendedActionSessionsResultClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLocationBasedRecommendedActionSessionsResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationBasedRecommendedActionSessionsResultClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LocationBasedRecommendedActionSessionsResultClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LocationBasedRecommendedActionSessionsResultClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Recommendation action session operation result.
-// If the operation fails it returns a generic error.
-func (client *LocationBasedRecommendedActionSessionsResultClient) List(locationName string, operationID string, options *LocationBasedRecommendedActionSessionsResultListOptions) *LocationBasedRecommendedActionSessionsResultListPager {
-	return &LocationBasedRecommendedActionSessionsResultListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The name of the location.
+// operationID - The operation identifier.
+// options - LocationBasedRecommendedActionSessionsResultClientListOptions contains the optional parameters for the LocationBasedRecommendedActionSessionsResultClient.List
+// method.
+func (client *LocationBasedRecommendedActionSessionsResultClient) List(locationName string, operationID string, options *LocationBasedRecommendedActionSessionsResultClientListOptions) *LocationBasedRecommendedActionSessionsResultClientListPager {
+	return &LocationBasedRecommendedActionSessionsResultClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, locationName, operationID, options)
 		},
-		advancer: func(ctx context.Context, resp LocationBasedRecommendedActionSessionsResultListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LocationBasedRecommendedActionSessionsResultClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationActionsResultList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationBasedRecommendedActionSessionsResultClient) listCreateRequest(ctx context.Context, locationName string, operationID string, options *LocationBasedRecommendedActionSessionsResultListOptions) (*policy.Request, error) {
+func (client *LocationBasedRecommendedActionSessionsResultClient) listCreateRequest(ctx context.Context, locationName string, operationID string, options *LocationBasedRecommendedActionSessionsResultClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/recommendedActionSessionsOperationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +82,7 @@ func (client *LocationBasedRecommendedActionSessionsResultClient) listCreateRequ
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,22 +94,10 @@ func (client *LocationBasedRecommendedActionSessionsResultClient) listCreateRequ
 }
 
 // listHandleResponse handles the List response.
-func (client *LocationBasedRecommendedActionSessionsResultClient) listHandleResponse(resp *http.Response) (LocationBasedRecommendedActionSessionsResultListResponse, error) {
-	result := LocationBasedRecommendedActionSessionsResultListResponse{RawResponse: resp}
+func (client *LocationBasedRecommendedActionSessionsResultClient) listHandleResponse(resp *http.Response) (LocationBasedRecommendedActionSessionsResultClientListResponse, error) {
+	result := LocationBasedRecommendedActionSessionsResultClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationActionsResultList); err != nil {
-		return LocationBasedRecommendedActionSessionsResultListResponse{}, runtime.NewResponseError(err, resp)
+		return LocationBasedRecommendedActionSessionsResultClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LocationBasedRecommendedActionSessionsResultClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

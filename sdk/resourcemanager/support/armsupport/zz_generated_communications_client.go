@@ -11,7 +11,6 @@ package armsupport
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,43 +25,55 @@ import (
 // CommunicationsClient contains the methods for the Communications group.
 // Don't use this type directly, use NewCommunicationsClient() instead.
 type CommunicationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCommunicationsClient creates a new instance of CommunicationsClient with the specified values.
+// subscriptionID - Azure subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCommunicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CommunicationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CommunicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CommunicationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CheckNameAvailability - Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding a new communication
-// to the support ticket.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *CommunicationsClient) CheckNameAvailability(ctx context.Context, supportTicketName string, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CommunicationsCheckNameAvailabilityOptions) (CommunicationsCheckNameAvailabilityResponse, error) {
+// CheckNameAvailability - Check the availability of a resource name. This API should be used to check the uniqueness of the
+// name for adding a new communication to the support ticket.
+// If the operation fails it returns an *azcore.ResponseError type.
+// supportTicketName - Support ticket name.
+// checkNameAvailabilityInput - Input to check.
+// options - CommunicationsClientCheckNameAvailabilityOptions contains the optional parameters for the CommunicationsClient.CheckNameAvailability
+// method.
+func (client *CommunicationsClient) CheckNameAvailability(ctx context.Context, supportTicketName string, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CommunicationsClientCheckNameAvailabilityOptions) (CommunicationsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, supportTicketName, checkNameAvailabilityInput, options)
 	if err != nil {
-		return CommunicationsCheckNameAvailabilityResponse{}, err
+		return CommunicationsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CommunicationsCheckNameAvailabilityResponse{}, err
+		return CommunicationsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CommunicationsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return CommunicationsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, supportTicketName string, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CommunicationsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, supportTicketName string, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CommunicationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/checkNameAvailability"
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -72,7 +83,7 @@ func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -84,50 +95,42 @@ func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx conte
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *CommunicationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CommunicationsCheckNameAvailabilityResponse, error) {
-	result := CommunicationsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *CommunicationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CommunicationsClientCheckNameAvailabilityResponse, error) {
+	result := CommunicationsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
-		return CommunicationsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return CommunicationsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *CommunicationsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreate - Adds a new customer communication to an Azure support ticket.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *CommunicationsClient) BeginCreate(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsBeginCreateOptions) (CommunicationsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// supportTicketName - Support ticket name.
+// communicationName - Communication name.
+// createCommunicationParameters - Communication object.
+// options - CommunicationsClientBeginCreateOptions contains the optional parameters for the CommunicationsClient.BeginCreate
+// method.
+func (client *CommunicationsClient) BeginCreate(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (CommunicationsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
 	if err != nil {
-		return CommunicationsCreatePollerResponse{}, err
+		return CommunicationsClientCreatePollerResponse{}, err
 	}
-	result := CommunicationsCreatePollerResponse{
+	result := CommunicationsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CommunicationsClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("CommunicationsClient.Create", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return CommunicationsCreatePollerResponse{}, err
+		return CommunicationsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &CommunicationsCreatePoller{
+	result.Poller = &CommunicationsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Adds a new customer communication to an Azure support ticket.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *CommunicationsClient) create(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CommunicationsClient) create(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
 	if err != nil {
 		return nil, err
@@ -137,13 +140,13 @@ func (client *CommunicationsClient) create(ctx context.Context, supportTicketNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *CommunicationsClient) createCreateRequest(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsBeginCreateOptions) (*policy.Request, error) {
+func (client *CommunicationsClient) createCreateRequest(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}"
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -157,7 +160,7 @@ func (client *CommunicationsClient) createCreateRequest(ctx context.Context, sup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -168,38 +171,28 @@ func (client *CommunicationsClient) createCreateRequest(ctx context.Context, sup
 	return req, runtime.MarshalAsJSON(req, createCommunicationParameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *CommunicationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns communication details for a support ticket.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *CommunicationsClient) Get(ctx context.Context, supportTicketName string, communicationName string, options *CommunicationsGetOptions) (CommunicationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// supportTicketName - Support ticket name.
+// communicationName - Communication name.
+// options - CommunicationsClientGetOptions contains the optional parameters for the CommunicationsClient.Get method.
+func (client *CommunicationsClient) Get(ctx context.Context, supportTicketName string, communicationName string, options *CommunicationsClientGetOptions) (CommunicationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, supportTicketName, communicationName, options)
 	if err != nil {
-		return CommunicationsGetResponse{}, err
+		return CommunicationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CommunicationsGetResponse{}, err
+		return CommunicationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CommunicationsGetResponse{}, client.getHandleError(resp)
+		return CommunicationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CommunicationsClient) getCreateRequest(ctx context.Context, supportTicketName string, communicationName string, options *CommunicationsGetOptions) (*policy.Request, error) {
+func (client *CommunicationsClient) getCreateRequest(ctx context.Context, supportTicketName string, communicationName string, options *CommunicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}"
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -213,7 +206,7 @@ func (client *CommunicationsClient) getCreateRequest(ctx context.Context, suppor
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -225,48 +218,37 @@ func (client *CommunicationsClient) getCreateRequest(ctx context.Context, suppor
 }
 
 // getHandleResponse handles the Get response.
-func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (CommunicationsGetResponse, error) {
-	result := CommunicationsGetResponse{RawResponse: resp}
+func (client *CommunicationsClient) getHandleResponse(resp *http.Response) (CommunicationsClientGetResponse, error) {
+	result := CommunicationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunicationDetails); err != nil {
-		return CommunicationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CommunicationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CommunicationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all communications (attachments not included) for a support ticket.
-// You can also filter support ticket communications by CreatedDate or CommunicationType using the $filter parameter. The only type of communication supported
-// today is Web. Output will be a paged result
+// You can also filter support ticket communications by CreatedDate or CommunicationType using the $filter parameter. The
+// only type of communication supported today is Web. Output will be a paged result
 // with nextLink, using which you can retrieve the next set of Communication results.
-// Support ticket data is available for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause
-// an error.
-// If the operation fails it returns the *ExceptionResponse error type.
-func (client *CommunicationsClient) List(supportTicketName string, options *CommunicationsListOptions) *CommunicationsListPager {
-	return &CommunicationsListPager{
+// Support ticket data is available for 18 months after ticket creation. If a ticket was created more than 18 months ago,
+// a request for data might cause an error.
+// If the operation fails it returns an *azcore.ResponseError type.
+// supportTicketName - Support ticket name.
+// options - CommunicationsClientListOptions contains the optional parameters for the CommunicationsClient.List method.
+func (client *CommunicationsClient) List(supportTicketName string, options *CommunicationsClientListOptions) *CommunicationsClientListPager {
+	return &CommunicationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, supportTicketName, options)
 		},
-		advancer: func(ctx context.Context, resp CommunicationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CommunicationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CommunicationsListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CommunicationsClient) listCreateRequest(ctx context.Context, supportTicketName string, options *CommunicationsListOptions) (*policy.Request, error) {
+func (client *CommunicationsClient) listCreateRequest(ctx context.Context, supportTicketName string, options *CommunicationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications"
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -276,7 +258,7 @@ func (client *CommunicationsClient) listCreateRequest(ctx context.Context, suppo
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -294,23 +276,10 @@ func (client *CommunicationsClient) listCreateRequest(ctx context.Context, suppo
 }
 
 // listHandleResponse handles the List response.
-func (client *CommunicationsClient) listHandleResponse(resp *http.Response) (CommunicationsListResponse, error) {
-	result := CommunicationsListResponse{RawResponse: resp}
+func (client *CommunicationsClient) listHandleResponse(resp *http.Response) (CommunicationsClientListResponse, error) {
+	result := CommunicationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunicationsListResult); err != nil {
-		return CommunicationsListResponse{}, runtime.NewResponseError(err, resp)
+		return CommunicationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *CommunicationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ExceptionResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

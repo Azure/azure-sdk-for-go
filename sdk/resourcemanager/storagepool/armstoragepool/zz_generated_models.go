@@ -40,12 +40,20 @@ type Disk struct {
 
 // DiskPool - Response for Disk Pool request.
 type DiskPool struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Properties of Disk Pool.
 	Properties *DiskPoolProperties `json:"properties,omitempty"`
 
 	// Determines the SKU of the Disk pool
 	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure resource id. Indicates if this resource is managed by another Azure resource.
 	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
@@ -53,19 +61,29 @@ type DiskPool struct {
 	// READ-ONLY; List of Azure resource ids that manage this resource.
 	ManagedByExtended []*string `json:"managedByExtended,omitempty" azure:"ro"`
 
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Resource metadata required by ARM RPC
 	SystemData *SystemMetadata `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DiskPool.
 func (d DiskPool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
 	populate(objectMap, "managedBy", d.ManagedBy)
 	populate(objectMap, "managedByExtended", d.ManagedByExtended)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -269,59 +287,61 @@ func (d DiskPoolZoneListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DiskPoolZonesListOptions contains the optional parameters for the DiskPoolZones.List method.
-type DiskPoolZonesListOptions struct {
+// DiskPoolZonesClientListOptions contains the optional parameters for the DiskPoolZonesClient.List method.
+type DiskPoolZonesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiskPoolsBeginCreateOrUpdateOptions contains the optional parameters for the DiskPools.BeginCreateOrUpdate method.
-type DiskPoolsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsBeginDeallocateOptions contains the optional parameters for the DiskPools.BeginDeallocate method.
-type DiskPoolsBeginDeallocateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsBeginDeleteOptions contains the optional parameters for the DiskPools.BeginDelete method.
-type DiskPoolsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsBeginStartOptions contains the optional parameters for the DiskPools.BeginStart method.
-type DiskPoolsBeginStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsBeginUpdateOptions contains the optional parameters for the DiskPools.BeginUpdate method.
-type DiskPoolsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsBeginUpgradeOptions contains the optional parameters for the DiskPools.BeginUpgrade method.
-type DiskPoolsBeginUpgradeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsGetOptions contains the optional parameters for the DiskPools.Get method.
-type DiskPoolsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsListByResourceGroupOptions contains the optional parameters for the DiskPools.ListByResourceGroup method.
-type DiskPoolsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsListBySubscriptionOptions contains the optional parameters for the DiskPools.ListBySubscription method.
-type DiskPoolsListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DiskPoolsListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DiskPools.ListOutboundNetworkDependenciesEndpoints
+// DiskPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the DiskPoolsClient.BeginCreateOrUpdate
 // method.
-type DiskPoolsListOutboundNetworkDependenciesEndpointsOptions struct {
+type DiskPoolsClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientBeginDeallocateOptions contains the optional parameters for the DiskPoolsClient.BeginDeallocate method.
+type DiskPoolsClientBeginDeallocateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientBeginDeleteOptions contains the optional parameters for the DiskPoolsClient.BeginDelete method.
+type DiskPoolsClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientBeginStartOptions contains the optional parameters for the DiskPoolsClient.BeginStart method.
+type DiskPoolsClientBeginStartOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientBeginUpdateOptions contains the optional parameters for the DiskPoolsClient.BeginUpdate method.
+type DiskPoolsClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientBeginUpgradeOptions contains the optional parameters for the DiskPoolsClient.BeginUpgrade method.
+type DiskPoolsClientBeginUpgradeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientGetOptions contains the optional parameters for the DiskPoolsClient.Get method.
+type DiskPoolsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientListByResourceGroupOptions contains the optional parameters for the DiskPoolsClient.ListByResourceGroup
+// method.
+type DiskPoolsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientListBySubscriptionOptions contains the optional parameters for the DiskPoolsClient.ListBySubscription method.
+type DiskPoolsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DiskPoolsClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+type DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -350,7 +370,8 @@ type EndpointDetail struct {
 	// Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
 	IsAccessible *bool `json:"isAccessible,omitempty"`
 
-	// The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
+	// The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress
+	// at this Port.
 	Latency *float64 `json:"latency,omitempty"`
 
 	// The port an endpoint is connected to.
@@ -358,17 +379,9 @@ type EndpointDetail struct {
 }
 
 // Error - The resource management error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw string
 	// RP error response.
-	InnerError *ErrorResponse `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -423,9 +436,11 @@ type IscsiLun struct {
 
 // IscsiTarget - Response for iSCSI Target requests.
 type IscsiTarget struct {
-	ProxyResource
 	// REQUIRED; Properties for iSCSI Target operations.
 	Properties *IscsiTargetProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure resource id. Indicates if this resource is managed by another Azure resource.
 	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
@@ -433,24 +448,31 @@ type IscsiTarget struct {
 	// READ-ONLY; List of Azure resource ids that manage this resource.
 	ManagedByExtended []*string `json:"managedByExtended,omitempty" azure:"ro"`
 
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Resource metadata required by ARM RPC
 	SystemData *SystemMetadata `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IscsiTarget.
 func (i IscsiTarget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", i.ID)
 	populate(objectMap, "managedBy", i.ManagedBy)
 	populate(objectMap, "managedByExtended", i.ManagedByExtended)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
 	populate(objectMap, "systemData", i.SystemData)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
 // IscsiTargetCreate - Payload for iSCSI Target create or update requests.
 type IscsiTargetCreate struct {
-	ProxyResource
 	// REQUIRED; Properties for iSCSI Target create request.
 	Properties *IscsiTargetCreateProperties `json:"properties,omitempty"`
 
@@ -459,15 +481,26 @@ type IscsiTargetCreate struct {
 
 	// List of Azure resource ids that manage this resource.
 	ManagedByExtended []*string `json:"managedByExtended,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IscsiTargetCreate.
 func (i IscsiTargetCreate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", i.ID)
 	populate(objectMap, "managedBy", i.ManagedBy)
 	populate(objectMap, "managedByExtended", i.ManagedByExtended)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -560,7 +593,6 @@ func (i IscsiTargetProperties) MarshalJSON() ([]byte, error) {
 
 // IscsiTargetUpdate - Payload for iSCSI Target update requests.
 type IscsiTargetUpdate struct {
-	ProxyResource
 	// REQUIRED; Properties for iSCSI Target update request.
 	Properties *IscsiTargetUpdateProperties `json:"properties,omitempty"`
 
@@ -569,15 +601,26 @@ type IscsiTargetUpdate struct {
 
 	// List of Azure resource ids that manage this resource.
 	ManagedByExtended []*string `json:"managedByExtended,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IscsiTargetUpdate.
 func (i IscsiTargetUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", i.ID)
 	populate(objectMap, "managedBy", i.ManagedBy)
 	populate(objectMap, "managedByExtended", i.ManagedByExtended)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -598,39 +641,74 @@ func (i IscsiTargetUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IscsiTargetsBeginCreateOrUpdateOptions contains the optional parameters for the IscsiTargets.BeginCreateOrUpdate method.
-type IscsiTargetsBeginCreateOrUpdateOptions struct {
+// IscsiTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the IscsiTargetsClient.BeginCreateOrUpdate
+// method.
+type IscsiTargetsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IscsiTargetsBeginDeleteOptions contains the optional parameters for the IscsiTargets.BeginDelete method.
-type IscsiTargetsBeginDeleteOptions struct {
+// IscsiTargetsClientBeginDeleteOptions contains the optional parameters for the IscsiTargetsClient.BeginDelete method.
+type IscsiTargetsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IscsiTargetsBeginUpdateOptions contains the optional parameters for the IscsiTargets.BeginUpdate method.
-type IscsiTargetsBeginUpdateOptions struct {
+// IscsiTargetsClientBeginUpdateOptions contains the optional parameters for the IscsiTargetsClient.BeginUpdate method.
+type IscsiTargetsClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IscsiTargetsGetOptions contains the optional parameters for the IscsiTargets.Get method.
-type IscsiTargetsGetOptions struct {
+// IscsiTargetsClientGetOptions contains the optional parameters for the IscsiTargetsClient.Get method.
+type IscsiTargetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IscsiTargetsListByDiskPoolOptions contains the optional parameters for the IscsiTargets.ListByDiskPool method.
-type IscsiTargetsListByDiskPoolOptions struct {
+// IscsiTargetsClientListByDiskPoolOptions contains the optional parameters for the IscsiTargetsClient.ListByDiskPool method.
+type IscsiTargetsClientListByDiskPoolOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationDisplay - Metadata about an operation.
+type OperationDisplay struct {
+	// REQUIRED; Localized friendly description for the operation, as it should be shown to the user.
+	Description *string `json:"description,omitempty"`
+
+	// REQUIRED; Localized friendly name for the operation, as it should be shown to the user.
+	Operation *string `json:"operation,omitempty"`
+
+	// REQUIRED; Localized friendly form of the resource provider name.
+	Provider *string `json:"provider,omitempty"`
+
+	// REQUIRED; Localized friendly form of the resource type related to this action/operation.
+	Resource *string `json:"resource,omitempty"`
+}
+
+// OperationListResult - List of operations supported by the RP.
+type OperationListResult struct {
+	// REQUIRED; An array of operations supported by the StoragePool RP.
+	Value []*RPOperation `json:"value,omitempty"`
+
+	// URI to fetch the next section of the paginated response.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
+func (o OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", o.NextLink)
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the App Service Environment requires outbound network access to.
+// OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the App Service Environment requires outbound
+// network access to.
 type OutboundEnvironmentEndpoint struct {
-	// The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+	// The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active
+	// Directory.
 	Category *string `json:"category,omitempty"`
 
 	// The endpoints that the App Service Environment reaches the service at.
@@ -662,13 +740,35 @@ func (o OutboundEnvironmentEndpointList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location and tags
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+// RPOperation - Description of a StoragePool RP Operation
+type RPOperation struct {
+	// REQUIRED; Additional metadata about RP operation.
+	Display *OperationDisplay `json:"display,omitempty"`
+
+	// REQUIRED; Indicates whether the operation applies to data-plane.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// REQUIRED; The name of the operation being performed on this particular object
+	Name *string `json:"name,omitempty"`
+
+	// Indicates the action type.
+	ActionType *string `json:"actionType,omitempty"`
+
+	// The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
+	Origin *string `json:"origin,omitempty"`
 }
 
 // Resource - ARM resource model definition.
@@ -681,19 +781,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceSKUCapability - Capability a resource SKU has.
@@ -808,7 +895,8 @@ type ResourceSKURestrictions struct {
 	// READ-ONLY; The type of restrictions.
 	Type *ResourceSKURestrictionsType `json:"type,omitempty" azure:"ro"`
 
-	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
+	// the SKU is restricted.
 	Values []*string `json:"values,omitempty" azure:"ro"`
 }
 
@@ -839,8 +927,8 @@ func (r ResourceSKUZoneDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceSKUsListOptions contains the optional parameters for the ResourceSKUs.List method.
-type ResourceSKUsListOptions struct {
+// ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
+type ResourceSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -851,56 +939,6 @@ type SKU struct {
 
 	// Sku tier
 	Tier *string `json:"tier,omitempty"`
-}
-
-// StoragePoolOperationDisplay - Metadata about an operation.
-type StoragePoolOperationDisplay struct {
-	// REQUIRED; Localized friendly description for the operation, as it should be shown to the user.
-	Description *string `json:"description,omitempty"`
-
-	// REQUIRED; Localized friendly name for the operation, as it should be shown to the user.
-	Operation *string `json:"operation,omitempty"`
-
-	// REQUIRED; Localized friendly form of the resource provider name.
-	Provider *string `json:"provider,omitempty"`
-
-	// REQUIRED; Localized friendly form of the resource type related to this action/operation.
-	Resource *string `json:"resource,omitempty"`
-}
-
-// StoragePoolOperationListResult - List of operations supported by the RP.
-type StoragePoolOperationListResult struct {
-	// REQUIRED; An array of operations supported by the StoragePool RP.
-	Value []*StoragePoolRPOperation `json:"value,omitempty"`
-
-	// URI to fetch the next section of the paginated response.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StoragePoolOperationListResult.
-func (s StoragePoolOperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// StoragePoolRPOperation - Description of a StoragePool RP Operation
-type StoragePoolRPOperation struct {
-	// REQUIRED; Additional metadata about RP operation.
-	Display *StoragePoolOperationDisplay `json:"display,omitempty"`
-
-	// REQUIRED; Indicates whether the operation applies to data-plane.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
-
-	// REQUIRED; The name of the operation being performed on this particular object
-	Name *string `json:"name,omitempty"`
-
-	// Indicates the action type.
-	ActionType *string `json:"actionType,omitempty"`
-
-	// The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
-	Origin *string `json:"origin,omitempty"`
 }
 
 // SystemMetadata - Metadata pertaining to creation and last modification of the resource.
@@ -973,25 +1011,31 @@ func (s *SystemMetadata) UnmarshalJSON(data []byte) error {
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives.
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -1,14 +1,856 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*DenyAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DenyAssignmentsGetOptions)` to `(context.Context, string, string, *DenyAssignmentsClientGetOptions)`
+- Function `*DenyAssignmentsClient.Get` return value(s) have been changed from `(DenyAssignmentsGetResponse, error)` to `(DenyAssignmentsClientGetResponse, error)`
+- Function `*RoleManagementPoliciesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *RoleManagementPoliciesDeleteOptions)` to `(context.Context, string, string, *RoleManagementPoliciesClientDeleteOptions)`
+- Function `*RoleManagementPoliciesClient.Delete` return value(s) have been changed from `(RoleManagementPoliciesDeleteResponse, error)` to `(RoleManagementPoliciesClientDeleteResponse, error)`
+- Function `*AccessReviewInstanceMyDecisionsClient.Patch` parameter(s) have been changed from `(context.Context, string, string, string, AccessReviewDecisionProperties, *AccessReviewInstanceMyDecisionsPatchOptions)` to `(context.Context, string, string, string, AccessReviewDecisionProperties, *AccessReviewInstanceMyDecisionsClientPatchOptions)`
+- Function `*AccessReviewInstanceMyDecisionsClient.Patch` return value(s) have been changed from `(AccessReviewInstanceMyDecisionsPatchResponse, error)` to `(AccessReviewInstanceMyDecisionsClientPatchResponse, error)`
+- Function `*DenyAssignmentsClient.List` parameter(s) have been changed from `(*DenyAssignmentsListOptions)` to `(*DenyAssignmentsClientListOptions)`
+- Function `*DenyAssignmentsClient.List` return value(s) have been changed from `(*DenyAssignmentsListPager)` to `(*DenyAssignmentsClientListPager)`
+- Function `*DenyAssignmentsClient.ListForScope` parameter(s) have been changed from `(string, *DenyAssignmentsListForScopeOptions)` to `(string, *DenyAssignmentsClientListForScopeOptions)`
+- Function `*DenyAssignmentsClient.ListForScope` return value(s) have been changed from `(*DenyAssignmentsListForScopePager)` to `(*DenyAssignmentsClientListForScopePager)`
+- Function `*AccessReviewInstancesClient.GetByID` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstancesGetByIDOptions)` to `(context.Context, string, string, *AccessReviewInstancesClientGetByIDOptions)`
+- Function `*AccessReviewInstancesClient.GetByID` return value(s) have been changed from `(AccessReviewInstancesGetByIDResponse, error)` to `(AccessReviewInstancesClientGetByIDResponse, error)`
+- Function `*RoleManagementPoliciesClient.ListForScope` parameter(s) have been changed from `(string, *RoleManagementPoliciesListForScopeOptions)` to `(string, *RoleManagementPoliciesClientListForScopeOptions)`
+- Function `*RoleManagementPoliciesClient.ListForScope` return value(s) have been changed from `(*RoleManagementPoliciesListForScopePager)` to `(*RoleManagementPoliciesClientListForScopePager)`
+- Function `*RoleEligibilityScheduleInstancesClient.ListForScope` parameter(s) have been changed from `(string, *RoleEligibilityScheduleInstancesListForScopeOptions)` to `(string, *RoleEligibilityScheduleInstancesClientListForScopeOptions)`
+- Function `*RoleEligibilityScheduleInstancesClient.ListForScope` return value(s) have been changed from `(*RoleEligibilityScheduleInstancesListForScopePager)` to `(*RoleEligibilityScheduleInstancesClientListForScopePager)`
+- Function `*ProviderOperationsMetadataClient.List` parameter(s) have been changed from `(*ProviderOperationsMetadataListOptions)` to `(*ProviderOperationsMetadataClientListOptions)`
+- Function `*ProviderOperationsMetadataClient.List` return value(s) have been changed from `(*ProviderOperationsMetadataListPager)` to `(*ProviderOperationsMetadataClientListPager)`
+- Function `*RoleEligibilityScheduleRequestsClient.Cancel` parameter(s) have been changed from `(context.Context, string, string, *RoleEligibilityScheduleRequestsCancelOptions)` to `(context.Context, string, string, *RoleEligibilityScheduleRequestsClientCancelOptions)`
+- Function `*RoleEligibilityScheduleRequestsClient.Cancel` return value(s) have been changed from `(RoleEligibilityScheduleRequestsCancelResponse, error)` to `(RoleEligibilityScheduleRequestsClientCancelResponse, error)`
+- Function `*RoleAssignmentScheduleRequestsClient.Cancel` parameter(s) have been changed from `(context.Context, string, string, *RoleAssignmentScheduleRequestsCancelOptions)` to `(context.Context, string, string, *RoleAssignmentScheduleRequestsClientCancelOptions)`
+- Function `*RoleAssignmentScheduleRequestsClient.Cancel` return value(s) have been changed from `(RoleAssignmentScheduleRequestsCancelResponse, error)` to `(RoleAssignmentScheduleRequestsClientCancelResponse, error)`
+- Function `*RoleEligibilitySchedulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleEligibilitySchedulesGetOptions)` to `(context.Context, string, string, *RoleEligibilitySchedulesClientGetOptions)`
+- Function `*RoleEligibilitySchedulesClient.Get` return value(s) have been changed from `(RoleEligibilitySchedulesGetResponse, error)` to `(RoleEligibilitySchedulesClientGetResponse, error)`
+- Function `*RoleAssignmentsClient.ListForSubscription` parameter(s) have been changed from `(*RoleAssignmentsListForSubscriptionOptions)` to `(*RoleAssignmentsClientListForSubscriptionOptions)`
+- Function `*RoleAssignmentsClient.ListForSubscription` return value(s) have been changed from `(*RoleAssignmentsListForSubscriptionPager)` to `(*RoleAssignmentsClientListForSubscriptionPager)`
+- Function `*ProviderOperationsMetadataClient.Get` parameter(s) have been changed from `(context.Context, string, *ProviderOperationsMetadataGetOptions)` to `(context.Context, string, *ProviderOperationsMetadataClientGetOptions)`
+- Function `*ProviderOperationsMetadataClient.Get` return value(s) have been changed from `(ProviderOperationsMetadataGetResponse, error)` to `(ProviderOperationsMetadataClientGetResponse, error)`
+- Function `*RoleAssignmentsClient.CreateByID` parameter(s) have been changed from `(context.Context, string, RoleAssignmentCreateParameters, *RoleAssignmentsCreateByIDOptions)` to `(context.Context, string, RoleAssignmentCreateParameters, *RoleAssignmentsClientCreateByIDOptions)`
+- Function `*RoleAssignmentsClient.CreateByID` return value(s) have been changed from `(RoleAssignmentsCreateByIDResponse, error)` to `(RoleAssignmentsClientCreateByIDResponse, error)`
+- Function `*RoleAssignmentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *RoleAssignmentsDeleteOptions)` to `(context.Context, string, string, *RoleAssignmentsClientDeleteOptions)`
+- Function `*RoleAssignmentsClient.Delete` return value(s) have been changed from `(RoleAssignmentsDeleteResponse, error)` to `(RoleAssignmentsClientDeleteResponse, error)`
+- Function `*RoleManagementPoliciesClient.Update` parameter(s) have been changed from `(context.Context, string, string, RoleManagementPolicy, *RoleManagementPoliciesUpdateOptions)` to `(context.Context, string, string, RoleManagementPolicy, *RoleManagementPoliciesClientUpdateOptions)`
+- Function `*RoleManagementPoliciesClient.Update` return value(s) have been changed from `(RoleManagementPoliciesUpdateResponse, error)` to `(RoleManagementPoliciesClientUpdateResponse, error)`
+- Function `*AccessReviewInstanceMyDecisionsClient.GetByID` parameter(s) have been changed from `(context.Context, string, string, string, *AccessReviewInstanceMyDecisionsGetByIDOptions)` to `(context.Context, string, string, string, *AccessReviewInstanceMyDecisionsClientGetByIDOptions)`
+- Function `*AccessReviewInstanceMyDecisionsClient.GetByID` return value(s) have been changed from `(AccessReviewInstanceMyDecisionsGetByIDResponse, error)` to `(AccessReviewInstanceMyDecisionsClientGetByIDResponse, error)`
+- Function `*RoleEligibilityScheduleRequestsClient.ListForScope` parameter(s) have been changed from `(string, *RoleEligibilityScheduleRequestsListForScopeOptions)` to `(string, *RoleEligibilityScheduleRequestsClientListForScopeOptions)`
+- Function `*RoleEligibilityScheduleRequestsClient.ListForScope` return value(s) have been changed from `(*RoleEligibilityScheduleRequestsListForScopePager)` to `(*RoleEligibilityScheduleRequestsClientListForScopePager)`
+- Function `*RoleDefinitionsClient.List` parameter(s) have been changed from `(string, *RoleDefinitionsListOptions)` to `(string, *RoleDefinitionsClientListOptions)`
+- Function `*RoleDefinitionsClient.List` return value(s) have been changed from `(*RoleDefinitionsListPager)` to `(*RoleDefinitionsClientListPager)`
+- Function `*RoleManagementPolicyAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleManagementPolicyAssignmentsGetOptions)` to `(context.Context, string, string, *RoleManagementPolicyAssignmentsClientGetOptions)`
+- Function `*RoleManagementPolicyAssignmentsClient.Get` return value(s) have been changed from `(RoleManagementPolicyAssignmentsGetResponse, error)` to `(RoleManagementPolicyAssignmentsClientGetResponse, error)`
+- Function `*RoleManagementPolicyAssignmentsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *RoleManagementPolicyAssignmentsDeleteOptions)` to `(context.Context, string, string, *RoleManagementPolicyAssignmentsClientDeleteOptions)`
+- Function `*RoleManagementPolicyAssignmentsClient.Delete` return value(s) have been changed from `(RoleManagementPolicyAssignmentsDeleteResponse, error)` to `(RoleManagementPolicyAssignmentsClientDeleteResponse, error)`
+- Function `*DenyAssignmentsClient.ListForResource` parameter(s) have been changed from `(string, string, string, string, string, *DenyAssignmentsListForResourceOptions)` to `(string, string, string, string, string, *DenyAssignmentsClientListForResourceOptions)`
+- Function `*DenyAssignmentsClient.ListForResource` return value(s) have been changed from `(*DenyAssignmentsListForResourcePager)` to `(*DenyAssignmentsClientListForResourcePager)`
+- Function `*RoleManagementPolicyAssignmentsClient.Create` parameter(s) have been changed from `(context.Context, string, string, RoleManagementPolicyAssignment, *RoleManagementPolicyAssignmentsCreateOptions)` to `(context.Context, string, string, RoleManagementPolicyAssignment, *RoleManagementPolicyAssignmentsClientCreateOptions)`
+- Function `*RoleManagementPolicyAssignmentsClient.Create` return value(s) have been changed from `(RoleManagementPolicyAssignmentsCreateResponse, error)` to `(RoleManagementPolicyAssignmentsClientCreateResponse, error)`
+- Function `*RoleAssignmentsClient.ListForResourceGroup` parameter(s) have been changed from `(string, *RoleAssignmentsListForResourceGroupOptions)` to `(string, *RoleAssignmentsClientListForResourceGroupOptions)`
+- Function `*RoleAssignmentsClient.ListForResourceGroup` return value(s) have been changed from `(*RoleAssignmentsListForResourceGroupPager)` to `(*RoleAssignmentsClientListForResourceGroupPager)`
+- Function `*RoleAssignmentScheduleInstancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleAssignmentScheduleInstancesGetOptions)` to `(context.Context, string, string, *RoleAssignmentScheduleInstancesClientGetOptions)`
+- Function `*RoleAssignmentScheduleInstancesClient.Get` return value(s) have been changed from `(RoleAssignmentScheduleInstancesGetResponse, error)` to `(RoleAssignmentScheduleInstancesClientGetResponse, error)`
+- Function `*AccessReviewScheduleDefinitionsClient.GetByID` parameter(s) have been changed from `(context.Context, string, *AccessReviewScheduleDefinitionsGetByIDOptions)` to `(context.Context, string, *AccessReviewScheduleDefinitionsClientGetByIDOptions)`
+- Function `*AccessReviewScheduleDefinitionsClient.GetByID` return value(s) have been changed from `(AccessReviewScheduleDefinitionsGetByIDResponse, error)` to `(AccessReviewScheduleDefinitionsClientGetByIDResponse, error)`
+- Function `*RoleDefinitionsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, RoleDefinition, *RoleDefinitionsCreateOrUpdateOptions)` to `(context.Context, string, string, RoleDefinition, *RoleDefinitionsClientCreateOrUpdateOptions)`
+- Function `*RoleDefinitionsClient.CreateOrUpdate` return value(s) have been changed from `(RoleDefinitionsCreateOrUpdateResponse, error)` to `(RoleDefinitionsClientCreateOrUpdateResponse, error)`
+- Function `*AccessReviewInstanceClient.AcceptRecommendations` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstanceAcceptRecommendationsOptions)` to `(context.Context, string, string, *AccessReviewInstanceClientAcceptRecommendationsOptions)`
+- Function `*AccessReviewInstanceClient.AcceptRecommendations` return value(s) have been changed from `(AccessReviewInstanceAcceptRecommendationsResponse, error)` to `(AccessReviewInstanceClientAcceptRecommendationsResponse, error)`
+- Function `*AccessReviewInstanceClient.ApplyDecisions` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstanceApplyDecisionsOptions)` to `(context.Context, string, string, *AccessReviewInstanceClientApplyDecisionsOptions)`
+- Function `*AccessReviewInstanceClient.ApplyDecisions` return value(s) have been changed from `(AccessReviewInstanceApplyDecisionsResponse, error)` to `(AccessReviewInstanceClientApplyDecisionsResponse, error)`
+- Function `*AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID` parameter(s) have been changed from `(context.Context, string, AccessReviewScheduleDefinitionProperties, *AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions)` to `(context.Context, string, AccessReviewScheduleDefinitionProperties, *AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions)`
+- Function `*AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID` return value(s) have been changed from `(AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse, error)` to `(AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse, error)`
+- Function `*DenyAssignmentsClient.GetByID` parameter(s) have been changed from `(context.Context, string, *DenyAssignmentsGetByIDOptions)` to `(context.Context, string, *DenyAssignmentsClientGetByIDOptions)`
+- Function `*DenyAssignmentsClient.GetByID` return value(s) have been changed from `(DenyAssignmentsGetByIDResponse, error)` to `(DenyAssignmentsClientGetByIDResponse, error)`
+- Function `*RoleAssignmentSchedulesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleAssignmentSchedulesGetOptions)` to `(context.Context, string, string, *RoleAssignmentSchedulesClientGetOptions)`
+- Function `*RoleAssignmentSchedulesClient.Get` return value(s) have been changed from `(RoleAssignmentSchedulesGetResponse, error)` to `(RoleAssignmentSchedulesClientGetResponse, error)`
+- Function `*AccessReviewInstanceClient.Stop` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstanceStopOptions)` to `(context.Context, string, string, *AccessReviewInstanceClientStopOptions)`
+- Function `*AccessReviewInstanceClient.Stop` return value(s) have been changed from `(AccessReviewInstanceStopResponse, error)` to `(AccessReviewInstanceClientStopResponse, error)`
+- Function `*RoleEligibilityScheduleRequestsClient.Create` parameter(s) have been changed from `(context.Context, string, string, RoleEligibilityScheduleRequest, *RoleEligibilityScheduleRequestsCreateOptions)` to `(context.Context, string, string, RoleEligibilityScheduleRequest, *RoleEligibilityScheduleRequestsClientCreateOptions)`
+- Function `*RoleEligibilityScheduleRequestsClient.Create` return value(s) have been changed from `(RoleEligibilityScheduleRequestsCreateResponse, error)` to `(RoleEligibilityScheduleRequestsClientCreateResponse, error)`
+- Function `*RoleAssignmentScheduleRequestsClient.Create` parameter(s) have been changed from `(context.Context, string, string, RoleAssignmentScheduleRequest, *RoleAssignmentScheduleRequestsCreateOptions)` to `(context.Context, string, string, RoleAssignmentScheduleRequest, *RoleAssignmentScheduleRequestsClientCreateOptions)`
+- Function `*RoleAssignmentScheduleRequestsClient.Create` return value(s) have been changed from `(RoleAssignmentScheduleRequestsCreateResponse, error)` to `(RoleAssignmentScheduleRequestsClientCreateResponse, error)`
+- Function `*AccessReviewScheduleDefinitionsClient.Stop` parameter(s) have been changed from `(context.Context, string, *AccessReviewScheduleDefinitionsStopOptions)` to `(context.Context, string, *AccessReviewScheduleDefinitionsClientStopOptions)`
+- Function `*AccessReviewScheduleDefinitionsClient.Stop` return value(s) have been changed from `(AccessReviewScheduleDefinitionsStopResponse, error)` to `(AccessReviewScheduleDefinitionsClientStopResponse, error)`
+- Function `*RoleAssignmentScheduleInstancesClient.ListForScope` parameter(s) have been changed from `(string, *RoleAssignmentScheduleInstancesListForScopeOptions)` to `(string, *RoleAssignmentScheduleInstancesClientListForScopeOptions)`
+- Function `*RoleAssignmentScheduleInstancesClient.ListForScope` return value(s) have been changed from `(*RoleAssignmentScheduleInstancesListForScopePager)` to `(*RoleAssignmentScheduleInstancesClientListForScopePager)`
+- Function `*AccessReviewScheduleDefinitionsClient.DeleteByID` parameter(s) have been changed from `(context.Context, string, *AccessReviewScheduleDefinitionsDeleteByIDOptions)` to `(context.Context, string, *AccessReviewScheduleDefinitionsClientDeleteByIDOptions)`
+- Function `*AccessReviewScheduleDefinitionsClient.DeleteByID` return value(s) have been changed from `(AccessReviewScheduleDefinitionsDeleteByIDResponse, error)` to `(AccessReviewScheduleDefinitionsClientDeleteByIDResponse, error)`
+- Function `*AccessReviewInstanceClient.ResetDecisions` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstanceResetDecisionsOptions)` to `(context.Context, string, string, *AccessReviewInstanceClientResetDecisionsOptions)`
+- Function `*AccessReviewInstanceClient.ResetDecisions` return value(s) have been changed from `(AccessReviewInstanceResetDecisionsResponse, error)` to `(AccessReviewInstanceClientResetDecisionsResponse, error)`
+- Function `*AccessReviewInstanceClient.SendReminders` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstanceSendRemindersOptions)` to `(context.Context, string, string, *AccessReviewInstanceClientSendRemindersOptions)`
+- Function `*AccessReviewInstanceClient.SendReminders` return value(s) have been changed from `(AccessReviewInstanceSendRemindersResponse, error)` to `(AccessReviewInstanceClientSendRemindersResponse, error)`
+- Function `*RoleAssignmentsClient.DeleteByID` parameter(s) have been changed from `(context.Context, string, *RoleAssignmentsDeleteByIDOptions)` to `(context.Context, string, *RoleAssignmentsClientDeleteByIDOptions)`
+- Function `*RoleAssignmentsClient.DeleteByID` return value(s) have been changed from `(RoleAssignmentsDeleteByIDResponse, error)` to `(RoleAssignmentsClientDeleteByIDResponse, error)`
+- Function `*AccessReviewScheduleDefinitionsClient.List` parameter(s) have been changed from `(*AccessReviewScheduleDefinitionsListOptions)` to `(*AccessReviewScheduleDefinitionsClientListOptions)`
+- Function `*AccessReviewScheduleDefinitionsClient.List` return value(s) have been changed from `(*AccessReviewScheduleDefinitionsListPager)` to `(*AccessReviewScheduleDefinitionsClientListPager)`
+- Function `*RoleAssignmentsClient.ListForScope` parameter(s) have been changed from `(string, *RoleAssignmentsListForScopeOptions)` to `(string, *RoleAssignmentsClientListForScopeOptions)`
+- Function `*RoleAssignmentsClient.ListForScope` return value(s) have been changed from `(*RoleAssignmentsListForScopePager)` to `(*RoleAssignmentsClientListForScopePager)`
+- Function `*DenyAssignmentsClient.ListForResourceGroup` parameter(s) have been changed from `(string, *DenyAssignmentsListForResourceGroupOptions)` to `(string, *DenyAssignmentsClientListForResourceGroupOptions)`
+- Function `*DenyAssignmentsClient.ListForResourceGroup` return value(s) have been changed from `(*DenyAssignmentsListForResourceGroupPager)` to `(*DenyAssignmentsClientListForResourceGroupPager)`
+- Function `*AccessReviewInstanceDecisionsClient.List` parameter(s) have been changed from `(string, string, *AccessReviewInstanceDecisionsListOptions)` to `(string, string, *AccessReviewInstanceDecisionsClientListOptions)`
+- Function `*AccessReviewInstanceDecisionsClient.List` return value(s) have been changed from `(*AccessReviewInstanceDecisionsListPager)` to `(*AccessReviewInstanceDecisionsClientListPager)`
+- Function `*RoleAssignmentSchedulesClient.ListForScope` parameter(s) have been changed from `(string, *RoleAssignmentSchedulesListForScopeOptions)` to `(string, *RoleAssignmentSchedulesClientListForScopeOptions)`
+- Function `*RoleAssignmentSchedulesClient.ListForScope` return value(s) have been changed from `(*RoleAssignmentSchedulesListForScopePager)` to `(*RoleAssignmentSchedulesClientListForScopePager)`
+- Function `*RoleAssignmentsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleAssignmentsGetOptions)` to `(context.Context, string, string, *RoleAssignmentsClientGetOptions)`
+- Function `*RoleAssignmentsClient.Get` return value(s) have been changed from `(RoleAssignmentsGetResponse, error)` to `(RoleAssignmentsClientGetResponse, error)`
+- Function `*AccessReviewDefaultSettingsClient.Put` parameter(s) have been changed from `(context.Context, AccessReviewScheduleSettings, *AccessReviewDefaultSettingsPutOptions)` to `(context.Context, AccessReviewScheduleSettings, *AccessReviewDefaultSettingsClientPutOptions)`
+- Function `*AccessReviewDefaultSettingsClient.Put` return value(s) have been changed from `(AccessReviewDefaultSettingsPutResponse, error)` to `(AccessReviewDefaultSettingsClientPutResponse, error)`
+- Function `*RoleManagementPoliciesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleManagementPoliciesGetOptions)` to `(context.Context, string, string, *RoleManagementPoliciesClientGetOptions)`
+- Function `*RoleManagementPoliciesClient.Get` return value(s) have been changed from `(RoleManagementPoliciesGetResponse, error)` to `(RoleManagementPoliciesClientGetResponse, error)`
+- Function `*AccessReviewInstancesClient.List` parameter(s) have been changed from `(string, *AccessReviewInstancesListOptions)` to `(string, *AccessReviewInstancesClientListOptions)`
+- Function `*AccessReviewInstancesClient.List` return value(s) have been changed from `(*AccessReviewInstancesListPager)` to `(*AccessReviewInstancesClientListPager)`
+- Function `*RoleAssignmentScheduleRequestsClient.ListForScope` parameter(s) have been changed from `(string, *RoleAssignmentScheduleRequestsListForScopeOptions)` to `(string, *RoleAssignmentScheduleRequestsClientListForScopeOptions)`
+- Function `*RoleAssignmentScheduleRequestsClient.ListForScope` return value(s) have been changed from `(*RoleAssignmentScheduleRequestsListForScopePager)` to `(*RoleAssignmentScheduleRequestsClientListForScopePager)`
+- Function `*RoleEligibilitySchedulesClient.ListForScope` parameter(s) have been changed from `(string, *RoleEligibilitySchedulesListForScopeOptions)` to `(string, *RoleEligibilitySchedulesClientListForScopeOptions)`
+- Function `*RoleEligibilitySchedulesClient.ListForScope` return value(s) have been changed from `(*RoleEligibilitySchedulesListForScopePager)` to `(*RoleEligibilitySchedulesClientListForScopePager)`
+- Function `*RoleAssignmentsClient.ListForResource` parameter(s) have been changed from `(string, string, string, string, *RoleAssignmentsListForResourceOptions)` to `(string, string, string, string, *RoleAssignmentsClientListForResourceOptions)`
+- Function `*RoleAssignmentsClient.ListForResource` return value(s) have been changed from `(*RoleAssignmentsListForResourcePager)` to `(*RoleAssignmentsClientListForResourcePager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*AccessReviewInstanceMyDecisionsClient.List` parameter(s) have been changed from `(string, string, *AccessReviewInstanceMyDecisionsListOptions)` to `(string, string, *AccessReviewInstanceMyDecisionsClientListOptions)`
+- Function `*AccessReviewInstanceMyDecisionsClient.List` return value(s) have been changed from `(*AccessReviewInstanceMyDecisionsListPager)` to `(*AccessReviewInstanceMyDecisionsClientListPager)`
+- Function `*RoleDefinitionsClient.GetByID` parameter(s) have been changed from `(context.Context, string, *RoleDefinitionsGetByIDOptions)` to `(context.Context, string, *RoleDefinitionsClientGetByIDOptions)`
+- Function `*RoleDefinitionsClient.GetByID` return value(s) have been changed from `(RoleDefinitionsGetByIDResponse, error)` to `(RoleDefinitionsClientGetByIDResponse, error)`
+- Function `*RoleDefinitionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleDefinitionsGetOptions)` to `(context.Context, string, string, *RoleDefinitionsClientGetOptions)`
+- Function `*RoleDefinitionsClient.Get` return value(s) have been changed from `(RoleDefinitionsGetResponse, error)` to `(RoleDefinitionsClientGetResponse, error)`
+- Function `*PermissionsClient.ListForResourceGroup` parameter(s) have been changed from `(string, *PermissionsListForResourceGroupOptions)` to `(string, *PermissionsClientListForResourceGroupOptions)`
+- Function `*PermissionsClient.ListForResourceGroup` return value(s) have been changed from `(*PermissionsListForResourceGroupPager)` to `(*PermissionsClientListForResourceGroupPager)`
+- Function `*RoleAssignmentMetricsClient.GetMetricsForSubscription` parameter(s) have been changed from `(context.Context, *RoleAssignmentMetricsGetMetricsForSubscriptionOptions)` to `(context.Context, *RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions)`
+- Function `*RoleAssignmentMetricsClient.GetMetricsForSubscription` return value(s) have been changed from `(RoleAssignmentMetricsGetMetricsForSubscriptionResponse, error)` to `(RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse, error)`
+- Function `*AccessReviewInstancesAssignedForMyApprovalClient.List` parameter(s) have been changed from `(string, *AccessReviewInstancesAssignedForMyApprovalListOptions)` to `(string, *AccessReviewInstancesAssignedForMyApprovalClientListOptions)`
+- Function `*AccessReviewInstancesAssignedForMyApprovalClient.List` return value(s) have been changed from `(*AccessReviewInstancesAssignedForMyApprovalListPager)` to `(*AccessReviewInstancesAssignedForMyApprovalClientListPager)`
+- Function `*RoleAssignmentsClient.Validate` parameter(s) have been changed from `(context.Context, string, string, RoleAssignmentCreateParameters, *RoleAssignmentsValidateOptions)` to `(context.Context, string, string, RoleAssignmentCreateParameters, *RoleAssignmentsClientValidateOptions)`
+- Function `*RoleAssignmentsClient.Validate` return value(s) have been changed from `(RoleAssignmentsValidateResponse, error)` to `(RoleAssignmentsClientValidateResponse, error)`
+- Function `*RoleAssignmentsClient.Create` parameter(s) have been changed from `(context.Context, string, string, RoleAssignmentCreateParameters, *RoleAssignmentsCreateOptions)` to `(context.Context, string, string, RoleAssignmentCreateParameters, *RoleAssignmentsClientCreateOptions)`
+- Function `*RoleAssignmentsClient.Create` return value(s) have been changed from `(RoleAssignmentsCreateResponse, error)` to `(RoleAssignmentsClientCreateResponse, error)`
+- Function `*RoleManagementPolicyAssignmentsClient.ListForScope` parameter(s) have been changed from `(string, *RoleManagementPolicyAssignmentsListForScopeOptions)` to `(string, *RoleManagementPolicyAssignmentsClientListForScopeOptions)`
+- Function `*RoleManagementPolicyAssignmentsClient.ListForScope` return value(s) have been changed from `(*RoleManagementPolicyAssignmentsListForScopePager)` to `(*RoleManagementPolicyAssignmentsClientListForScopePager)`
+- Function `*RoleDefinitionsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *RoleDefinitionsDeleteOptions)` to `(context.Context, string, string, *RoleDefinitionsClientDeleteOptions)`
+- Function `*RoleDefinitionsClient.Delete` return value(s) have been changed from `(RoleDefinitionsDeleteResponse, error)` to `(RoleDefinitionsClientDeleteResponse, error)`
+- Function `*AccessReviewDefaultSettingsClient.Get` parameter(s) have been changed from `(context.Context, *AccessReviewDefaultSettingsGetOptions)` to `(context.Context, *AccessReviewDefaultSettingsClientGetOptions)`
+- Function `*AccessReviewDefaultSettingsClient.Get` return value(s) have been changed from `(AccessReviewDefaultSettingsGetResponse, error)` to `(AccessReviewDefaultSettingsClientGetResponse, error)`
+- Function `*RoleAssignmentsClient.GetByID` parameter(s) have been changed from `(context.Context, string, *RoleAssignmentsGetByIDOptions)` to `(context.Context, string, *RoleAssignmentsClientGetByIDOptions)`
+- Function `*RoleAssignmentsClient.GetByID` return value(s) have been changed from `(RoleAssignmentsGetByIDResponse, error)` to `(RoleAssignmentsClientGetByIDResponse, error)`
+- Function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List` parameter(s) have been changed from `(*AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions)` to `(*AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions)`
+- Function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List` return value(s) have been changed from `(*AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager)` to `(*AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager)`
+- Function `*RoleAssignmentsClient.ValidateByID` parameter(s) have been changed from `(context.Context, string, RoleAssignmentCreateParameters, *RoleAssignmentsValidateByIDOptions)` to `(context.Context, string, RoleAssignmentCreateParameters, *RoleAssignmentsClientValidateByIDOptions)`
+- Function `*RoleAssignmentsClient.ValidateByID` return value(s) have been changed from `(RoleAssignmentsValidateByIDResponse, error)` to `(RoleAssignmentsClientValidateByIDResponse, error)`
+- Function `*EligibleChildResourcesClient.Get` parameter(s) have been changed from `(string, *EligibleChildResourcesGetOptions)` to `(string, *EligibleChildResourcesClientGetOptions)`
+- Function `*EligibleChildResourcesClient.Get` return value(s) have been changed from `(*EligibleChildResourcesGetPager)` to `(*EligibleChildResourcesClientGetPager)`
+- Function `*AccessReviewInstancesAssignedForMyApprovalClient.GetByID` parameter(s) have been changed from `(context.Context, string, string, *AccessReviewInstancesAssignedForMyApprovalGetByIDOptions)` to `(context.Context, string, string, *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions)`
+- Function `*AccessReviewInstancesAssignedForMyApprovalClient.GetByID` return value(s) have been changed from `(AccessReviewInstancesAssignedForMyApprovalGetByIDResponse, error)` to `(AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse, error)`
+- Function `*PermissionsClient.ListForResource` parameter(s) have been changed from `(string, string, string, string, string, *PermissionsListForResourceOptions)` to `(string, string, string, string, string, *PermissionsClientListForResourceOptions)`
+- Function `*PermissionsClient.ListForResource` return value(s) have been changed from `(*PermissionsListForResourcePager)` to `(*PermissionsClientListForResourcePager)`
+- Function `*RoleAssignmentScheduleRequestsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleAssignmentScheduleRequestsGetOptions)` to `(context.Context, string, string, *RoleAssignmentScheduleRequestsClientGetOptions)`
+- Function `*RoleAssignmentScheduleRequestsClient.Get` return value(s) have been changed from `(RoleAssignmentScheduleRequestsGetResponse, error)` to `(RoleAssignmentScheduleRequestsClientGetResponse, error)`
+- Function `*RoleEligibilityScheduleRequestsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleEligibilityScheduleRequestsGetOptions)` to `(context.Context, string, string, *RoleEligibilityScheduleRequestsClientGetOptions)`
+- Function `*RoleEligibilityScheduleRequestsClient.Get` return value(s) have been changed from `(RoleEligibilityScheduleRequestsGetResponse, error)` to `(RoleEligibilityScheduleRequestsClientGetResponse, error)`
+- Function `*RoleEligibilityScheduleInstancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *RoleEligibilityScheduleInstancesGetOptions)` to `(context.Context, string, string, *RoleEligibilityScheduleInstancesClientGetOptions)`
+- Function `*RoleEligibilityScheduleInstancesClient.Get` return value(s) have been changed from `(RoleEligibilityScheduleInstancesGetResponse, error)` to `(RoleEligibilityScheduleInstancesClientGetResponse, error)`
+- Function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager.NextPage` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*DenyAssignmentsListForResourceGroupPager.PageResponse` has been removed
+- Function `*RoleAssignmentsListForResourcePager.NextPage` has been removed
+- Function `*AccessReviewInstancesAssignedForMyApprovalListPager.NextPage` has been removed
+- Function `*DenyAssignmentsListPager.Err` has been removed
+- Function `*AccessReviewInstanceDecisionsListPager.PageResponse` has been removed
+- Function `*DenyAssignmentsListPager.NextPage` has been removed
+- Function `*EligibleChildResourcesGetPager.PageResponse` has been removed
+- Function `*RoleManagementPolicyAssignmentsListForScopePager.PageResponse` has been removed
+- Function `*RoleAssignmentSchedulesListForScopePager.NextPage` has been removed
+- Function `*AccessReviewScheduleDefinitionsListPager.PageResponse` has been removed
+- Function `*DenyAssignmentsListForScopePager.NextPage` has been removed
+- Function `*RoleAssignmentsListForResourceGroupPager.PageResponse` has been removed
+- Function `*AccessReviewInstancesAssignedForMyApprovalListPager.PageResponse` has been removed
+- Function `*RoleAssignmentsListForScopePager.NextPage` has been removed
+- Function `*RoleAssignmentSchedulesListForScopePager.Err` has been removed
+- Function `*RoleDefinitionsListPager.PageResponse` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*ProviderOperationsMetadataListPager.NextPage` has been removed
+- Function `*AccessReviewDecisionTarget.UnmarshalJSON` has been removed
+- Function `*AccessReviewInstanceMyDecisionsListPager.NextPage` has been removed
+- Function `*RoleManagementPoliciesListForScopePager.NextPage` has been removed
+- Function `*DenyAssignmentsListForResourceGroupPager.Err` has been removed
+- Function `*ProviderOperationsMetadataListPager.Err` has been removed
+- Function `*DenyAssignmentsListForScopePager.PageResponse` has been removed
+- Function `*RoleEligibilitySchedulesListForScopePager.NextPage` has been removed
+- Function `*RoleEligibilityScheduleInstancesListForScopePager.NextPage` has been removed
+- Function `*EligibleChildResourcesGetPager.Err` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*RoleAssignmentsListForResourceGroupPager.NextPage` has been removed
+- Function `*AccessReviewInstanceDecisionsListPager.Err` has been removed
+- Function `*RoleManagementPolicyAssignmentsListForScopePager.NextPage` has been removed
+- Function `*PermissionsListForResourceGroupPager.NextPage` has been removed
+- Function `*PermissionsListForResourceGroupPager.PageResponse` has been removed
+- Function `*EligibleChildResourcesGetPager.NextPage` has been removed
+- Function `*RoleAssignmentsListForResourceGroupPager.Err` has been removed
+- Function `*RoleAssignmentScheduleRequestsListForScopePager.Err` has been removed
+- Function `*RoleEligibilitySchedulesListForScopePager.Err` has been removed
+- Function `*AccessReviewScheduleDefinitionsListPager.Err` has been removed
+- Function `*RoleAssignmentsListForSubscriptionPager.PageResponse` has been removed
+- Function `*RoleEligibilityScheduleRequestsListForScopePager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*RoleAssignmentScheduleRequestsListForScopePager.NextPage` has been removed
+- Function `*RoleAssignmentScheduleInstancesListForScopePager.PageResponse` has been removed
+- Function `*DenyAssignmentsListForScopePager.Err` has been removed
+- Function `*PermissionsListForResourcePager.Err` has been removed
+- Function `*RoleAssignmentScheduleInstancesListForScopePager.NextPage` has been removed
+- Function `*RoleEligibilitySchedulesListForScopePager.PageResponse` has been removed
+- Function `*AccessReviewInstanceMyDecisionsListPager.PageResponse` has been removed
+- Function `*RoleAssignmentsListForScopePager.Err` has been removed
+- Function `*AccessReviewInstanceDecisionsListPager.NextPage` has been removed
+- Function `*RoleManagementPoliciesListForScopePager.PageResponse` has been removed
+- Function `*RoleAssignmentsListForSubscriptionPager.Err` has been removed
+- Function `*RoleAssignmentsListForResourcePager.Err` has been removed
+- Function `*RoleAssignmentsListForScopePager.PageResponse` has been removed
+- Function `*DenyAssignmentsListForResourcePager.NextPage` has been removed
+- Function `*AccessReviewInstanceMyDecisionsListPager.Err` has been removed
+- Function `*DenyAssignmentsListPager.PageResponse` has been removed
+- Function `*RoleAssignmentScheduleRequestsListForScopePager.PageResponse` has been removed
+- Function `*PermissionsListForResourceGroupPager.Err` has been removed
+- Function `*ProviderOperationsMetadataListPager.PageResponse` has been removed
+- Function `*AccessReviewInstancesListPager.Err` has been removed
+- Function `*DenyAssignmentsListForResourceGroupPager.NextPage` has been removed
+- Function `*RoleManagementPolicyRule.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentsListForSubscriptionPager.NextPage` has been removed
+- Function `*RoleEligibilityScheduleRequestsListForScopePager.Err` has been removed
+- Function `*AccessReviewInstancesListPager.NextPage` has been removed
+- Function `*RoleAssignmentSchedulesListForScopePager.PageResponse` has been removed
+- Function `*PermissionsListForResourcePager.NextPage` has been removed
+- Function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager.Err` has been removed
+- Function `*RoleEligibilityScheduleInstancesListForScopePager.Err` has been removed
+- Function `*RoleAssignmentScheduleInstancesListForScopePager.Err` has been removed
+- Function `*AccessReviewInstancesListPager.PageResponse` has been removed
+- Function `*DenyAssignmentsListForResourcePager.Err` has been removed
+- Function `*RoleManagementPoliciesListForScopePager.Err` has been removed
+- Function `*RoleEligibilityScheduleRequestsListForScopePager.PageResponse` has been removed
+- Function `*RoleManagementPolicyAssignmentsListForScopePager.Err` has been removed
+- Function `*DenyAssignmentsListForResourcePager.PageResponse` has been removed
+- Function `ErrorDefinition.Error` has been removed
+- Function `*RoleEligibilityScheduleInstancesListForScopePager.PageResponse` has been removed
+- Function `*RoleDefinitionsListPager.Err` has been removed
+- Function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager.PageResponse` has been removed
+- Function `*RoleAssignmentsListForResourcePager.PageResponse` has been removed
+- Function `*RoleDefinitionsListPager.NextPage` has been removed
+- Function `*AccessReviewInstancesAssignedForMyApprovalListPager.Err` has been removed
+- Function `*AccessReviewScheduleDefinitionsListPager.NextPage` has been removed
+- Function `*PermissionsListForResourcePager.PageResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Struct `AccessReviewDefaultSettingsGetOptions` has been removed
+- Struct `AccessReviewDefaultSettingsGetResponse` has been removed
+- Struct `AccessReviewDefaultSettingsGetResult` has been removed
+- Struct `AccessReviewDefaultSettingsPutOptions` has been removed
+- Struct `AccessReviewDefaultSettingsPutResponse` has been removed
+- Struct `AccessReviewDefaultSettingsPutResult` has been removed
+- Struct `AccessReviewInstanceAcceptRecommendationsOptions` has been removed
+- Struct `AccessReviewInstanceAcceptRecommendationsResponse` has been removed
+- Struct `AccessReviewInstanceApplyDecisionsOptions` has been removed
+- Struct `AccessReviewInstanceApplyDecisionsResponse` has been removed
+- Struct `AccessReviewInstanceDecisionsListOptions` has been removed
+- Struct `AccessReviewInstanceDecisionsListPager` has been removed
+- Struct `AccessReviewInstanceDecisionsListResponse` has been removed
+- Struct `AccessReviewInstanceDecisionsListResult` has been removed
+- Struct `AccessReviewInstanceMyDecisionsGetByIDOptions` has been removed
+- Struct `AccessReviewInstanceMyDecisionsGetByIDResponse` has been removed
+- Struct `AccessReviewInstanceMyDecisionsGetByIDResult` has been removed
+- Struct `AccessReviewInstanceMyDecisionsListOptions` has been removed
+- Struct `AccessReviewInstanceMyDecisionsListPager` has been removed
+- Struct `AccessReviewInstanceMyDecisionsListResponse` has been removed
+- Struct `AccessReviewInstanceMyDecisionsListResult` has been removed
+- Struct `AccessReviewInstanceMyDecisionsPatchOptions` has been removed
+- Struct `AccessReviewInstanceMyDecisionsPatchResponse` has been removed
+- Struct `AccessReviewInstanceMyDecisionsPatchResult` has been removed
+- Struct `AccessReviewInstanceResetDecisionsOptions` has been removed
+- Struct `AccessReviewInstanceResetDecisionsResponse` has been removed
+- Struct `AccessReviewInstanceSendRemindersOptions` has been removed
+- Struct `AccessReviewInstanceSendRemindersResponse` has been removed
+- Struct `AccessReviewInstanceStopOptions` has been removed
+- Struct `AccessReviewInstanceStopResponse` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalGetByIDOptions` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalGetByIDResponse` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalGetByIDResult` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalListOptions` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalListPager` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalListResponse` has been removed
+- Struct `AccessReviewInstancesAssignedForMyApprovalListResult` has been removed
+- Struct `AccessReviewInstancesGetByIDOptions` has been removed
+- Struct `AccessReviewInstancesGetByIDResponse` has been removed
+- Struct `AccessReviewInstancesGetByIDResult` has been removed
+- Struct `AccessReviewInstancesListOptions` has been removed
+- Struct `AccessReviewInstancesListPager` has been removed
+- Struct `AccessReviewInstancesListResponse` has been removed
+- Struct `AccessReviewInstancesListResult` has been removed
+- Struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions` has been removed
+- Struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalListPager` has been removed
+- Struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse` has been removed
+- Struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalListResult` has been removed
+- Struct `AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions` has been removed
+- Struct `AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse` has been removed
+- Struct `AccessReviewScheduleDefinitionsCreateOrUpdateByIDResult` has been removed
+- Struct `AccessReviewScheduleDefinitionsDeleteByIDOptions` has been removed
+- Struct `AccessReviewScheduleDefinitionsDeleteByIDResponse` has been removed
+- Struct `AccessReviewScheduleDefinitionsGetByIDOptions` has been removed
+- Struct `AccessReviewScheduleDefinitionsGetByIDResponse` has been removed
+- Struct `AccessReviewScheduleDefinitionsGetByIDResult` has been removed
+- Struct `AccessReviewScheduleDefinitionsListOptions` has been removed
+- Struct `AccessReviewScheduleDefinitionsListPager` has been removed
+- Struct `AccessReviewScheduleDefinitionsListResponse` has been removed
+- Struct `AccessReviewScheduleDefinitionsListResult` has been removed
+- Struct `AccessReviewScheduleDefinitionsStopOptions` has been removed
+- Struct `AccessReviewScheduleDefinitionsStopResponse` has been removed
+- Struct `DenyAssignmentsGetByIDOptions` has been removed
+- Struct `DenyAssignmentsGetByIDResponse` has been removed
+- Struct `DenyAssignmentsGetByIDResult` has been removed
+- Struct `DenyAssignmentsGetOptions` has been removed
+- Struct `DenyAssignmentsGetResponse` has been removed
+- Struct `DenyAssignmentsGetResult` has been removed
+- Struct `DenyAssignmentsListForResourceGroupOptions` has been removed
+- Struct `DenyAssignmentsListForResourceGroupPager` has been removed
+- Struct `DenyAssignmentsListForResourceGroupResponse` has been removed
+- Struct `DenyAssignmentsListForResourceGroupResult` has been removed
+- Struct `DenyAssignmentsListForResourceOptions` has been removed
+- Struct `DenyAssignmentsListForResourcePager` has been removed
+- Struct `DenyAssignmentsListForResourceResponse` has been removed
+- Struct `DenyAssignmentsListForResourceResult` has been removed
+- Struct `DenyAssignmentsListForScopeOptions` has been removed
+- Struct `DenyAssignmentsListForScopePager` has been removed
+- Struct `DenyAssignmentsListForScopeResponse` has been removed
+- Struct `DenyAssignmentsListForScopeResult` has been removed
+- Struct `DenyAssignmentsListOptions` has been removed
+- Struct `DenyAssignmentsListPager` has been removed
+- Struct `DenyAssignmentsListResponse` has been removed
+- Struct `DenyAssignmentsListResult` has been removed
+- Struct `EligibleChildResourcesGetOptions` has been removed
+- Struct `EligibleChildResourcesGetPager` has been removed
+- Struct `EligibleChildResourcesGetResponse` has been removed
+- Struct `EligibleChildResourcesGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PermissionsListForResourceGroupOptions` has been removed
+- Struct `PermissionsListForResourceGroupPager` has been removed
+- Struct `PermissionsListForResourceGroupResponse` has been removed
+- Struct `PermissionsListForResourceGroupResult` has been removed
+- Struct `PermissionsListForResourceOptions` has been removed
+- Struct `PermissionsListForResourcePager` has been removed
+- Struct `PermissionsListForResourceResponse` has been removed
+- Struct `PermissionsListForResourceResult` has been removed
+- Struct `ProviderOperationsMetadataGetOptions` has been removed
+- Struct `ProviderOperationsMetadataGetResponse` has been removed
+- Struct `ProviderOperationsMetadataGetResult` has been removed
+- Struct `ProviderOperationsMetadataListOptions` has been removed
+- Struct `ProviderOperationsMetadataListPager` has been removed
+- Struct `ProviderOperationsMetadataListResponse` has been removed
+- Struct `ProviderOperationsMetadataListResultEnvelope` has been removed
+- Struct `RoleAssignmentMetricsGetMetricsForSubscriptionOptions` has been removed
+- Struct `RoleAssignmentMetricsGetMetricsForSubscriptionResponse` has been removed
+- Struct `RoleAssignmentMetricsGetMetricsForSubscriptionResult` has been removed
+- Struct `RoleAssignmentScheduleInstancesGetOptions` has been removed
+- Struct `RoleAssignmentScheduleInstancesGetResponse` has been removed
+- Struct `RoleAssignmentScheduleInstancesGetResult` has been removed
+- Struct `RoleAssignmentScheduleInstancesListForScopeOptions` has been removed
+- Struct `RoleAssignmentScheduleInstancesListForScopePager` has been removed
+- Struct `RoleAssignmentScheduleInstancesListForScopeResponse` has been removed
+- Struct `RoleAssignmentScheduleInstancesListForScopeResult` has been removed
+- Struct `RoleAssignmentScheduleRequestsCancelOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsCancelResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsCreateOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsCreateResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsCreateResult` has been removed
+- Struct `RoleAssignmentScheduleRequestsGetOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsGetResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsGetResult` has been removed
+- Struct `RoleAssignmentScheduleRequestsListForScopeOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsListForScopePager` has been removed
+- Struct `RoleAssignmentScheduleRequestsListForScopeResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsListForScopeResult` has been removed
+- Struct `RoleAssignmentSchedulesGetOptions` has been removed
+- Struct `RoleAssignmentSchedulesGetResponse` has been removed
+- Struct `RoleAssignmentSchedulesGetResult` has been removed
+- Struct `RoleAssignmentSchedulesListForScopeOptions` has been removed
+- Struct `RoleAssignmentSchedulesListForScopePager` has been removed
+- Struct `RoleAssignmentSchedulesListForScopeResponse` has been removed
+- Struct `RoleAssignmentSchedulesListForScopeResult` has been removed
+- Struct `RoleAssignmentsCreateByIDOptions` has been removed
+- Struct `RoleAssignmentsCreateByIDResponse` has been removed
+- Struct `RoleAssignmentsCreateByIDResult` has been removed
+- Struct `RoleAssignmentsCreateOptions` has been removed
+- Struct `RoleAssignmentsCreateResponse` has been removed
+- Struct `RoleAssignmentsCreateResult` has been removed
+- Struct `RoleAssignmentsDeleteByIDOptions` has been removed
+- Struct `RoleAssignmentsDeleteByIDResponse` has been removed
+- Struct `RoleAssignmentsDeleteByIDResult` has been removed
+- Struct `RoleAssignmentsDeleteOptions` has been removed
+- Struct `RoleAssignmentsDeleteResponse` has been removed
+- Struct `RoleAssignmentsDeleteResult` has been removed
+- Struct `RoleAssignmentsGetByIDOptions` has been removed
+- Struct `RoleAssignmentsGetByIDResponse` has been removed
+- Struct `RoleAssignmentsGetByIDResult` has been removed
+- Struct `RoleAssignmentsGetOptions` has been removed
+- Struct `RoleAssignmentsGetResponse` has been removed
+- Struct `RoleAssignmentsGetResult` has been removed
+- Struct `RoleAssignmentsListForResourceGroupOptions` has been removed
+- Struct `RoleAssignmentsListForResourceGroupPager` has been removed
+- Struct `RoleAssignmentsListForResourceGroupResponse` has been removed
+- Struct `RoleAssignmentsListForResourceGroupResult` has been removed
+- Struct `RoleAssignmentsListForResourceOptions` has been removed
+- Struct `RoleAssignmentsListForResourcePager` has been removed
+- Struct `RoleAssignmentsListForResourceResponse` has been removed
+- Struct `RoleAssignmentsListForResourceResult` has been removed
+- Struct `RoleAssignmentsListForScopeOptions` has been removed
+- Struct `RoleAssignmentsListForScopePager` has been removed
+- Struct `RoleAssignmentsListForScopeResponse` has been removed
+- Struct `RoleAssignmentsListForScopeResult` has been removed
+- Struct `RoleAssignmentsListForSubscriptionOptions` has been removed
+- Struct `RoleAssignmentsListForSubscriptionPager` has been removed
+- Struct `RoleAssignmentsListForSubscriptionResponse` has been removed
+- Struct `RoleAssignmentsListForSubscriptionResult` has been removed
+- Struct `RoleAssignmentsValidateByIDOptions` has been removed
+- Struct `RoleAssignmentsValidateByIDResponse` has been removed
+- Struct `RoleAssignmentsValidateByIDResult` has been removed
+- Struct `RoleAssignmentsValidateOptions` has been removed
+- Struct `RoleAssignmentsValidateResponse` has been removed
+- Struct `RoleAssignmentsValidateResult` has been removed
+- Struct `RoleDefinitionsCreateOrUpdateOptions` has been removed
+- Struct `RoleDefinitionsCreateOrUpdateResponse` has been removed
+- Struct `RoleDefinitionsCreateOrUpdateResult` has been removed
+- Struct `RoleDefinitionsDeleteOptions` has been removed
+- Struct `RoleDefinitionsDeleteResponse` has been removed
+- Struct `RoleDefinitionsDeleteResult` has been removed
+- Struct `RoleDefinitionsGetByIDOptions` has been removed
+- Struct `RoleDefinitionsGetByIDResponse` has been removed
+- Struct `RoleDefinitionsGetByIDResult` has been removed
+- Struct `RoleDefinitionsGetOptions` has been removed
+- Struct `RoleDefinitionsGetResponse` has been removed
+- Struct `RoleDefinitionsGetResult` has been removed
+- Struct `RoleDefinitionsListOptions` has been removed
+- Struct `RoleDefinitionsListPager` has been removed
+- Struct `RoleDefinitionsListResponse` has been removed
+- Struct `RoleDefinitionsListResult` has been removed
+- Struct `RoleEligibilityScheduleInstancesGetOptions` has been removed
+- Struct `RoleEligibilityScheduleInstancesGetResponse` has been removed
+- Struct `RoleEligibilityScheduleInstancesGetResult` has been removed
+- Struct `RoleEligibilityScheduleInstancesListForScopeOptions` has been removed
+- Struct `RoleEligibilityScheduleInstancesListForScopePager` has been removed
+- Struct `RoleEligibilityScheduleInstancesListForScopeResponse` has been removed
+- Struct `RoleEligibilityScheduleInstancesListForScopeResult` has been removed
+- Struct `RoleEligibilityScheduleRequestsCancelOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsCancelResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsCreateOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsCreateResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsCreateResult` has been removed
+- Struct `RoleEligibilityScheduleRequestsGetOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsGetResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsGetResult` has been removed
+- Struct `RoleEligibilityScheduleRequestsListForScopeOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsListForScopePager` has been removed
+- Struct `RoleEligibilityScheduleRequestsListForScopeResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsListForScopeResult` has been removed
+- Struct `RoleEligibilitySchedulesGetOptions` has been removed
+- Struct `RoleEligibilitySchedulesGetResponse` has been removed
+- Struct `RoleEligibilitySchedulesGetResult` has been removed
+- Struct `RoleEligibilitySchedulesListForScopeOptions` has been removed
+- Struct `RoleEligibilitySchedulesListForScopePager` has been removed
+- Struct `RoleEligibilitySchedulesListForScopeResponse` has been removed
+- Struct `RoleEligibilitySchedulesListForScopeResult` has been removed
+- Struct `RoleManagementPoliciesDeleteOptions` has been removed
+- Struct `RoleManagementPoliciesDeleteResponse` has been removed
+- Struct `RoleManagementPoliciesGetOptions` has been removed
+- Struct `RoleManagementPoliciesGetResponse` has been removed
+- Struct `RoleManagementPoliciesGetResult` has been removed
+- Struct `RoleManagementPoliciesListForScopeOptions` has been removed
+- Struct `RoleManagementPoliciesListForScopePager` has been removed
+- Struct `RoleManagementPoliciesListForScopeResponse` has been removed
+- Struct `RoleManagementPoliciesListForScopeResult` has been removed
+- Struct `RoleManagementPoliciesUpdateOptions` has been removed
+- Struct `RoleManagementPoliciesUpdateResponse` has been removed
+- Struct `RoleManagementPoliciesUpdateResult` has been removed
+- Struct `RoleManagementPolicyAssignmentsCreateOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsCreateResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsCreateResult` has been removed
+- Struct `RoleManagementPolicyAssignmentsDeleteOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsDeleteResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsGetOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsGetResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsGetResult` has been removed
+- Struct `RoleManagementPolicyAssignmentsListForScopeOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsListForScopePager` has been removed
+- Struct `RoleManagementPolicyAssignmentsListForScopeResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsListForScopeResult` has been removed
+- Field `RoleManagementPolicyRule` of struct `RoleManagementPolicyEnablementRule` has been removed
+- Field `InnerError` of struct `ErrorDefinition` has been removed
+- Field `RoleManagementPolicyRule` of struct `RoleManagementPolicyAuthenticationContextRule` has been removed
+- Field `RoleManagementPolicyRule` of struct `RoleManagementPolicyExpirationRule` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `RoleManagementPolicyRule` of struct `RoleManagementPolicyNotificationRule` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `RoleManagementPolicyRule` of struct `RoleManagementPolicyApprovalRule` has been removed
+- Field `AccessReviewDecisionTarget` of struct `ServicePrincipalDecisionTarget` has been removed
+- Field `AccessReviewDecisionTarget` of struct `UserDecisionTarget` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*DenyAssignmentsClientListPager.Err() error`
+- New function `*RoleManagementPolicyAuthenticationContextRule.GetRoleManagementPolicyRule() *RoleManagementPolicyRule`
+- New function `*AccessReviewInstancesClientListPager.Err() error`
+- New function `*RoleAssignmentScheduleInstancesClientListForScopePager.PageResponse() RoleAssignmentScheduleInstancesClientListForScopeResponse`
+- New function `*RoleEligibilityScheduleInstancesClientListForScopePager.Err() error`
+- New function `*RoleManagementPolicyAssignmentsClientListForScopePager.PageResponse() RoleManagementPolicyAssignmentsClientListForScopeResponse`
+- New function `*RoleAssignmentScheduleRequestsClientListForScopePager.NextPage(context.Context) bool`
+- New function `*AccessReviewInstancesAssignedForMyApprovalClientListPager.Err() error`
+- New function `*RoleAssignmentsClientListForResourceGroupPager.Err() error`
+- New function `*PermissionsClientListForResourceGroupPager.Err() error`
+- New function `*PermissionsClientListForResourceGroupPager.PageResponse() PermissionsClientListForResourceGroupResponse`
+- New function `*DenyAssignmentsClientListForResourcePager.Err() error`
+- New function `*RoleEligibilityScheduleRequestsClientListForScopePager.PageResponse() RoleEligibilityScheduleRequestsClientListForScopeResponse`
+- New function `*RoleEligibilityScheduleInstancesClientListForScopePager.PageResponse() RoleEligibilityScheduleInstancesClientListForScopeResponse`
+- New function `*RoleDefinitionsClientListPager.PageResponse() RoleDefinitionsClientListResponse`
+- New function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager.PageResponse() AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse`
+- New function `*RoleAssignmentScheduleInstancesClientListForScopePager.Err() error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager.NextPage(context.Context) bool`
+- New function `*AccessReviewInstanceMyDecisionsClientListPager.PageResponse() AccessReviewInstanceMyDecisionsClientListResponse`
+- New function `*RoleAssignmentSchedulesClientListForScopePager.Err() error`
+- New function `*AccessReviewInstanceDecisionsClientListPager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentScheduleRequestsClientListForScopePager.PageResponse() RoleAssignmentScheduleRequestsClientListForScopeResponse`
+- New function `*RoleAssignmentsClientListForResourcePager.PageResponse() RoleAssignmentsClientListForResourceResponse`
+- New function `*RoleAssignmentSchedulesClientListForScopePager.PageResponse() RoleAssignmentSchedulesClientListForScopeResponse`
+- New function `*RoleEligibilityScheduleRequestsClientListForScopePager.Err() error`
+- New function `*PermissionsClientListForResourcePager.Err() error`
+- New function `*AccessReviewInstanceDecisionsClientListPager.Err() error`
+- New function `*AccessReviewInstancesClientListPager.PageResponse() AccessReviewInstancesClientListResponse`
+- New function `*DenyAssignmentsClientListForScopePager.Err() error`
+- New function `*AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager.Err() error`
+- New function `*RoleAssignmentsClientListForScopePager.Err() error`
+- New function `*AccessReviewInstanceDecisionsClientListPager.PageResponse() AccessReviewInstanceDecisionsClientListResponse`
+- New function `*AccessReviewScheduleDefinitionsClientListPager.Err() error`
+- New function `*RoleEligibilitySchedulesClientListForScopePager.NextPage(context.Context) bool`
+- New function `*RoleManagementPoliciesClientListForScopePager.NextPage(context.Context) bool`
+- New function `*AccessReviewScheduleDefinitionsClientListPager.PageResponse() AccessReviewScheduleDefinitionsClientListResponse`
+- New function `*RoleAssignmentsClientListForSubscriptionPager.PageResponse() RoleAssignmentsClientListForSubscriptionResponse`
+- New function `*RoleAssignmentSchedulesClientListForScopePager.NextPage(context.Context) bool`
+- New function `*ProviderOperationsMetadataClientListPager.Err() error`
+- New function `*RoleAssignmentsClientListForSubscriptionPager.NextPage(context.Context) bool`
+- New function `*UserDecisionTarget.GetAccessReviewDecisionTarget() *AccessReviewDecisionTarget`
+- New function `*RoleEligibilitySchedulesClientListForScopePager.Err() error`
+- New function `*EligibleChildResourcesClientGetPager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentsClientListForResourceGroupPager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentScheduleInstancesClientListForScopePager.NextPage(context.Context) bool`
+- New function `*EligibleChildResourcesClientGetPager.Err() error`
+- New function `*DenyAssignmentsClientListForResourceGroupPager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentsClientListForScopePager.NextPage(context.Context) bool`
+- New function `*DenyAssignmentsClientListForScopePager.PageResponse() DenyAssignmentsClientListForScopeResponse`
+- New function `*PermissionsClientListForResourceGroupPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*DenyAssignmentsClientListForResourceGroupPager.PageResponse() DenyAssignmentsClientListForResourceGroupResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ServicePrincipalDecisionTarget.GetAccessReviewDecisionTarget() *AccessReviewDecisionTarget`
+- New function `*RoleManagementPolicyAssignmentsClientListForScopePager.Err() error`
+- New function `*AccessReviewInstancesClientListPager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentsClientListForResourcePager.Err() error`
+- New function `*RoleEligibilityScheduleInstancesClientListForScopePager.NextPage(context.Context) bool`
+- New function `*AccessReviewInstancesAssignedForMyApprovalClientListPager.PageResponse() AccessReviewInstancesAssignedForMyApprovalClientListResponse`
+- New function `*AccessReviewInstancesAssignedForMyApprovalClientListPager.NextPage(context.Context) bool`
+- New function `*EligibleChildResourcesClientGetPager.PageResponse() EligibleChildResourcesClientGetResponse`
+- New function `*RoleAssignmentsClientListForResourceGroupPager.PageResponse() RoleAssignmentsClientListForResourceGroupResponse`
+- New function `*RoleDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentsClientListForSubscriptionPager.Err() error`
+- New function `*RoleEligibilityScheduleRequestsClientListForScopePager.NextPage(context.Context) bool`
+- New function `*DenyAssignmentsClientListForResourceGroupPager.Err() error`
+- New function `*PermissionsClientListForResourcePager.NextPage(context.Context) bool`
+- New function `*RoleAssignmentScheduleRequestsClientListForScopePager.Err() error`
+- New function `*RoleManagementPoliciesClientListForScopePager.Err() error`
+- New function `*ProviderOperationsMetadataClientListPager.PageResponse() ProviderOperationsMetadataClientListResponse`
+- New function `*DenyAssignmentsClientListPager.PageResponse() DenyAssignmentsClientListResponse`
+- New function `*RoleEligibilitySchedulesClientListForScopePager.PageResponse() RoleEligibilitySchedulesClientListForScopeResponse`
+- New function `*RoleManagementPolicyEnablementRule.GetRoleManagementPolicyRule() *RoleManagementPolicyRule`
+- New function `*RoleManagementPoliciesClientListForScopePager.PageResponse() RoleManagementPoliciesClientListForScopeResponse`
+- New function `*RoleAssignmentsClientListForResourcePager.NextPage(context.Context) bool`
+- New function `*DenyAssignmentsClientListForScopePager.NextPage(context.Context) bool`
+- New function `*PermissionsClientListForResourcePager.PageResponse() PermissionsClientListForResourceResponse`
+- New function `*RoleAssignmentsClientListForScopePager.PageResponse() RoleAssignmentsClientListForScopeResponse`
+- New function `*RoleManagementPolicyAssignmentsClientListForScopePager.NextPage(context.Context) bool`
+- New function `*ProviderOperationsMetadataClientListPager.NextPage(context.Context) bool`
+- New function `*RoleManagementPolicyApprovalRule.GetRoleManagementPolicyRule() *RoleManagementPolicyRule`
+- New function `*DenyAssignmentsClientListForResourcePager.NextPage(context.Context) bool`
+- New function `*DenyAssignmentsClientListForResourcePager.PageResponse() DenyAssignmentsClientListForResourceResponse`
+- New function `*RoleManagementPolicyExpirationRule.GetRoleManagementPolicyRule() *RoleManagementPolicyRule`
+- New function `*AccessReviewScheduleDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*AccessReviewInstanceMyDecisionsClientListPager.Err() error`
+- New function `*AccessReviewInstanceMyDecisionsClientListPager.NextPage(context.Context) bool`
+- New function `*RoleManagementPolicyNotificationRule.GetRoleManagementPolicyRule() *RoleManagementPolicyRule`
+- New function `*DenyAssignmentsClientListPager.NextPage(context.Context) bool`
+- New function `*RoleDefinitionsClientListPager.Err() error`
+- New struct `AccessReviewDefaultSettingsClientGetOptions`
+- New struct `AccessReviewDefaultSettingsClientGetResponse`
+- New struct `AccessReviewDefaultSettingsClientGetResult`
+- New struct `AccessReviewDefaultSettingsClientPutOptions`
+- New struct `AccessReviewDefaultSettingsClientPutResponse`
+- New struct `AccessReviewDefaultSettingsClientPutResult`
+- New struct `AccessReviewInstanceClientAcceptRecommendationsOptions`
+- New struct `AccessReviewInstanceClientAcceptRecommendationsResponse`
+- New struct `AccessReviewInstanceClientApplyDecisionsOptions`
+- New struct `AccessReviewInstanceClientApplyDecisionsResponse`
+- New struct `AccessReviewInstanceClientResetDecisionsOptions`
+- New struct `AccessReviewInstanceClientResetDecisionsResponse`
+- New struct `AccessReviewInstanceClientSendRemindersOptions`
+- New struct `AccessReviewInstanceClientSendRemindersResponse`
+- New struct `AccessReviewInstanceClientStopOptions`
+- New struct `AccessReviewInstanceClientStopResponse`
+- New struct `AccessReviewInstanceDecisionsClientListOptions`
+- New struct `AccessReviewInstanceDecisionsClientListPager`
+- New struct `AccessReviewInstanceDecisionsClientListResponse`
+- New struct `AccessReviewInstanceDecisionsClientListResult`
+- New struct `AccessReviewInstanceMyDecisionsClientGetByIDOptions`
+- New struct `AccessReviewInstanceMyDecisionsClientGetByIDResponse`
+- New struct `AccessReviewInstanceMyDecisionsClientGetByIDResult`
+- New struct `AccessReviewInstanceMyDecisionsClientListOptions`
+- New struct `AccessReviewInstanceMyDecisionsClientListPager`
+- New struct `AccessReviewInstanceMyDecisionsClientListResponse`
+- New struct `AccessReviewInstanceMyDecisionsClientListResult`
+- New struct `AccessReviewInstanceMyDecisionsClientPatchOptions`
+- New struct `AccessReviewInstanceMyDecisionsClientPatchResponse`
+- New struct `AccessReviewInstanceMyDecisionsClientPatchResult`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientGetByIDResult`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientListOptions`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientListPager`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientListResponse`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientListResult`
+- New struct `AccessReviewInstancesClientGetByIDOptions`
+- New struct `AccessReviewInstancesClientGetByIDResponse`
+- New struct `AccessReviewInstancesClientGetByIDResult`
+- New struct `AccessReviewInstancesClientListOptions`
+- New struct `AccessReviewInstancesClientListPager`
+- New struct `AccessReviewInstancesClientListResponse`
+- New struct `AccessReviewInstancesClientListResult`
+- New struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions`
+- New struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListPager`
+- New struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse`
+- New struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResult`
+- New struct `AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions`
+- New struct `AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse`
+- New struct `AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResult`
+- New struct `AccessReviewScheduleDefinitionsClientDeleteByIDOptions`
+- New struct `AccessReviewScheduleDefinitionsClientDeleteByIDResponse`
+- New struct `AccessReviewScheduleDefinitionsClientGetByIDOptions`
+- New struct `AccessReviewScheduleDefinitionsClientGetByIDResponse`
+- New struct `AccessReviewScheduleDefinitionsClientGetByIDResult`
+- New struct `AccessReviewScheduleDefinitionsClientListOptions`
+- New struct `AccessReviewScheduleDefinitionsClientListPager`
+- New struct `AccessReviewScheduleDefinitionsClientListResponse`
+- New struct `AccessReviewScheduleDefinitionsClientListResult`
+- New struct `AccessReviewScheduleDefinitionsClientStopOptions`
+- New struct `AccessReviewScheduleDefinitionsClientStopResponse`
+- New struct `DenyAssignmentsClientGetByIDOptions`
+- New struct `DenyAssignmentsClientGetByIDResponse`
+- New struct `DenyAssignmentsClientGetByIDResult`
+- New struct `DenyAssignmentsClientGetOptions`
+- New struct `DenyAssignmentsClientGetResponse`
+- New struct `DenyAssignmentsClientGetResult`
+- New struct `DenyAssignmentsClientListForResourceGroupOptions`
+- New struct `DenyAssignmentsClientListForResourceGroupPager`
+- New struct `DenyAssignmentsClientListForResourceGroupResponse`
+- New struct `DenyAssignmentsClientListForResourceGroupResult`
+- New struct `DenyAssignmentsClientListForResourceOptions`
+- New struct `DenyAssignmentsClientListForResourcePager`
+- New struct `DenyAssignmentsClientListForResourceResponse`
+- New struct `DenyAssignmentsClientListForResourceResult`
+- New struct `DenyAssignmentsClientListForScopeOptions`
+- New struct `DenyAssignmentsClientListForScopePager`
+- New struct `DenyAssignmentsClientListForScopeResponse`
+- New struct `DenyAssignmentsClientListForScopeResult`
+- New struct `DenyAssignmentsClientListOptions`
+- New struct `DenyAssignmentsClientListPager`
+- New struct `DenyAssignmentsClientListResponse`
+- New struct `DenyAssignmentsClientListResult`
+- New struct `EligibleChildResourcesClientGetOptions`
+- New struct `EligibleChildResourcesClientGetPager`
+- New struct `EligibleChildResourcesClientGetResponse`
+- New struct `EligibleChildResourcesClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PermissionsClientListForResourceGroupOptions`
+- New struct `PermissionsClientListForResourceGroupPager`
+- New struct `PermissionsClientListForResourceGroupResponse`
+- New struct `PermissionsClientListForResourceGroupResult`
+- New struct `PermissionsClientListForResourceOptions`
+- New struct `PermissionsClientListForResourcePager`
+- New struct `PermissionsClientListForResourceResponse`
+- New struct `PermissionsClientListForResourceResult`
+- New struct `ProviderOperationsMetadataClientGetOptions`
+- New struct `ProviderOperationsMetadataClientGetResponse`
+- New struct `ProviderOperationsMetadataClientGetResult`
+- New struct `ProviderOperationsMetadataClientListOptions`
+- New struct `ProviderOperationsMetadataClientListPager`
+- New struct `ProviderOperationsMetadataClientListResponse`
+- New struct `ProviderOperationsMetadataClientListResult`
+- New struct `RoleAssignmentMetricsClientGetMetricsForSubscriptionOptions`
+- New struct `RoleAssignmentMetricsClientGetMetricsForSubscriptionResponse`
+- New struct `RoleAssignmentMetricsClientGetMetricsForSubscriptionResult`
+- New struct `RoleAssignmentScheduleInstancesClientGetOptions`
+- New struct `RoleAssignmentScheduleInstancesClientGetResponse`
+- New struct `RoleAssignmentScheduleInstancesClientGetResult`
+- New struct `RoleAssignmentScheduleInstancesClientListForScopeOptions`
+- New struct `RoleAssignmentScheduleInstancesClientListForScopePager`
+- New struct `RoleAssignmentScheduleInstancesClientListForScopeResponse`
+- New struct `RoleAssignmentScheduleInstancesClientListForScopeResult`
+- New struct `RoleAssignmentScheduleRequestsClientCancelOptions`
+- New struct `RoleAssignmentScheduleRequestsClientCancelResponse`
+- New struct `RoleAssignmentScheduleRequestsClientCreateOptions`
+- New struct `RoleAssignmentScheduleRequestsClientCreateResponse`
+- New struct `RoleAssignmentScheduleRequestsClientCreateResult`
+- New struct `RoleAssignmentScheduleRequestsClientGetOptions`
+- New struct `RoleAssignmentScheduleRequestsClientGetResponse`
+- New struct `RoleAssignmentScheduleRequestsClientGetResult`
+- New struct `RoleAssignmentScheduleRequestsClientListForScopeOptions`
+- New struct `RoleAssignmentScheduleRequestsClientListForScopePager`
+- New struct `RoleAssignmentScheduleRequestsClientListForScopeResponse`
+- New struct `RoleAssignmentScheduleRequestsClientListForScopeResult`
+- New struct `RoleAssignmentSchedulesClientGetOptions`
+- New struct `RoleAssignmentSchedulesClientGetResponse`
+- New struct `RoleAssignmentSchedulesClientGetResult`
+- New struct `RoleAssignmentSchedulesClientListForScopeOptions`
+- New struct `RoleAssignmentSchedulesClientListForScopePager`
+- New struct `RoleAssignmentSchedulesClientListForScopeResponse`
+- New struct `RoleAssignmentSchedulesClientListForScopeResult`
+- New struct `RoleAssignmentsClientCreateByIDOptions`
+- New struct `RoleAssignmentsClientCreateByIDResponse`
+- New struct `RoleAssignmentsClientCreateByIDResult`
+- New struct `RoleAssignmentsClientCreateOptions`
+- New struct `RoleAssignmentsClientCreateResponse`
+- New struct `RoleAssignmentsClientCreateResult`
+- New struct `RoleAssignmentsClientDeleteByIDOptions`
+- New struct `RoleAssignmentsClientDeleteByIDResponse`
+- New struct `RoleAssignmentsClientDeleteByIDResult`
+- New struct `RoleAssignmentsClientDeleteOptions`
+- New struct `RoleAssignmentsClientDeleteResponse`
+- New struct `RoleAssignmentsClientDeleteResult`
+- New struct `RoleAssignmentsClientGetByIDOptions`
+- New struct `RoleAssignmentsClientGetByIDResponse`
+- New struct `RoleAssignmentsClientGetByIDResult`
+- New struct `RoleAssignmentsClientGetOptions`
+- New struct `RoleAssignmentsClientGetResponse`
+- New struct `RoleAssignmentsClientGetResult`
+- New struct `RoleAssignmentsClientListForResourceGroupOptions`
+- New struct `RoleAssignmentsClientListForResourceGroupPager`
+- New struct `RoleAssignmentsClientListForResourceGroupResponse`
+- New struct `RoleAssignmentsClientListForResourceGroupResult`
+- New struct `RoleAssignmentsClientListForResourceOptions`
+- New struct `RoleAssignmentsClientListForResourcePager`
+- New struct `RoleAssignmentsClientListForResourceResponse`
+- New struct `RoleAssignmentsClientListForResourceResult`
+- New struct `RoleAssignmentsClientListForScopeOptions`
+- New struct `RoleAssignmentsClientListForScopePager`
+- New struct `RoleAssignmentsClientListForScopeResponse`
+- New struct `RoleAssignmentsClientListForScopeResult`
+- New struct `RoleAssignmentsClientListForSubscriptionOptions`
+- New struct `RoleAssignmentsClientListForSubscriptionPager`
+- New struct `RoleAssignmentsClientListForSubscriptionResponse`
+- New struct `RoleAssignmentsClientListForSubscriptionResult`
+- New struct `RoleAssignmentsClientValidateByIDOptions`
+- New struct `RoleAssignmentsClientValidateByIDResponse`
+- New struct `RoleAssignmentsClientValidateByIDResult`
+- New struct `RoleAssignmentsClientValidateOptions`
+- New struct `RoleAssignmentsClientValidateResponse`
+- New struct `RoleAssignmentsClientValidateResult`
+- New struct `RoleDefinitionsClientCreateOrUpdateOptions`
+- New struct `RoleDefinitionsClientCreateOrUpdateResponse`
+- New struct `RoleDefinitionsClientCreateOrUpdateResult`
+- New struct `RoleDefinitionsClientDeleteOptions`
+- New struct `RoleDefinitionsClientDeleteResponse`
+- New struct `RoleDefinitionsClientDeleteResult`
+- New struct `RoleDefinitionsClientGetByIDOptions`
+- New struct `RoleDefinitionsClientGetByIDResponse`
+- New struct `RoleDefinitionsClientGetByIDResult`
+- New struct `RoleDefinitionsClientGetOptions`
+- New struct `RoleDefinitionsClientGetResponse`
+- New struct `RoleDefinitionsClientGetResult`
+- New struct `RoleDefinitionsClientListOptions`
+- New struct `RoleDefinitionsClientListPager`
+- New struct `RoleDefinitionsClientListResponse`
+- New struct `RoleDefinitionsClientListResult`
+- New struct `RoleEligibilityScheduleInstancesClientGetOptions`
+- New struct `RoleEligibilityScheduleInstancesClientGetResponse`
+- New struct `RoleEligibilityScheduleInstancesClientGetResult`
+- New struct `RoleEligibilityScheduleInstancesClientListForScopeOptions`
+- New struct `RoleEligibilityScheduleInstancesClientListForScopePager`
+- New struct `RoleEligibilityScheduleInstancesClientListForScopeResponse`
+- New struct `RoleEligibilityScheduleInstancesClientListForScopeResult`
+- New struct `RoleEligibilityScheduleRequestsClientCancelOptions`
+- New struct `RoleEligibilityScheduleRequestsClientCancelResponse`
+- New struct `RoleEligibilityScheduleRequestsClientCreateOptions`
+- New struct `RoleEligibilityScheduleRequestsClientCreateResponse`
+- New struct `RoleEligibilityScheduleRequestsClientCreateResult`
+- New struct `RoleEligibilityScheduleRequestsClientGetOptions`
+- New struct `RoleEligibilityScheduleRequestsClientGetResponse`
+- New struct `RoleEligibilityScheduleRequestsClientGetResult`
+- New struct `RoleEligibilityScheduleRequestsClientListForScopeOptions`
+- New struct `RoleEligibilityScheduleRequestsClientListForScopePager`
+- New struct `RoleEligibilityScheduleRequestsClientListForScopeResponse`
+- New struct `RoleEligibilityScheduleRequestsClientListForScopeResult`
+- New struct `RoleEligibilitySchedulesClientGetOptions`
+- New struct `RoleEligibilitySchedulesClientGetResponse`
+- New struct `RoleEligibilitySchedulesClientGetResult`
+- New struct `RoleEligibilitySchedulesClientListForScopeOptions`
+- New struct `RoleEligibilitySchedulesClientListForScopePager`
+- New struct `RoleEligibilitySchedulesClientListForScopeResponse`
+- New struct `RoleEligibilitySchedulesClientListForScopeResult`
+- New struct `RoleManagementPoliciesClientDeleteOptions`
+- New struct `RoleManagementPoliciesClientDeleteResponse`
+- New struct `RoleManagementPoliciesClientGetOptions`
+- New struct `RoleManagementPoliciesClientGetResponse`
+- New struct `RoleManagementPoliciesClientGetResult`
+- New struct `RoleManagementPoliciesClientListForScopeOptions`
+- New struct `RoleManagementPoliciesClientListForScopePager`
+- New struct `RoleManagementPoliciesClientListForScopeResponse`
+- New struct `RoleManagementPoliciesClientListForScopeResult`
+- New struct `RoleManagementPoliciesClientUpdateOptions`
+- New struct `RoleManagementPoliciesClientUpdateResponse`
+- New struct `RoleManagementPoliciesClientUpdateResult`
+- New struct `RoleManagementPolicyAssignmentsClientCreateOptions`
+- New struct `RoleManagementPolicyAssignmentsClientCreateResponse`
+- New struct `RoleManagementPolicyAssignmentsClientCreateResult`
+- New struct `RoleManagementPolicyAssignmentsClientDeleteOptions`
+- New struct `RoleManagementPolicyAssignmentsClientDeleteResponse`
+- New struct `RoleManagementPolicyAssignmentsClientGetOptions`
+- New struct `RoleManagementPolicyAssignmentsClientGetResponse`
+- New struct `RoleManagementPolicyAssignmentsClientGetResult`
+- New struct `RoleManagementPolicyAssignmentsClientListForScopeOptions`
+- New struct `RoleManagementPolicyAssignmentsClientListForScopePager`
+- New struct `RoleManagementPolicyAssignmentsClientListForScopeResponse`
+- New struct `RoleManagementPolicyAssignmentsClientListForScopeResult`
+- New field `RuleType` in struct `RoleManagementPolicyExpirationRule`
+- New field `ID` in struct `RoleManagementPolicyExpirationRule`
+- New field `Target` in struct `RoleManagementPolicyExpirationRule`
+- New field `ID` in struct `RoleManagementPolicyAuthenticationContextRule`
+- New field `Target` in struct `RoleManagementPolicyAuthenticationContextRule`
+- New field `RuleType` in struct `RoleManagementPolicyAuthenticationContextRule`
+- New field `Error` in struct `CloudError`
+- New field `RuleType` in struct `RoleManagementPolicyEnablementRule`
+- New field `ID` in struct `RoleManagementPolicyEnablementRule`
+- New field `Target` in struct `RoleManagementPolicyEnablementRule`
+- New field `Type` in struct `UserDecisionTarget`
+- New field `Error` in struct `ErrorResponse`
+- New field `Type` in struct `ServicePrincipalDecisionTarget`
+- New field `Target` in struct `RoleManagementPolicyNotificationRule`
+- New field `RuleType` in struct `RoleManagementPolicyNotificationRule`
+- New field `ID` in struct `RoleManagementPolicyNotificationRule`
+- New field `Target` in struct `RoleManagementPolicyApprovalRule`
+- New field `RuleType` in struct `RoleManagementPolicyApprovalRule`
+- New field `ID` in struct `RoleManagementPolicyApprovalRule`
+- New field `Error` in struct `ErrorDefinition`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

@@ -25,13 +25,17 @@ func ExampleConsumerInvitationsClient_ListInvitations() {
 	}
 	ctx := context.Background()
 	client := armdatashare.NewConsumerInvitationsClient(cred, nil)
-	pager := client.ListInvitations(&armdatashare.ConsumerInvitationsListInvitationsOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListInvitations(&armdatashare.ConsumerInvitationsClientListInvitationsOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ConsumerInvitation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,7 +55,7 @@ func ExampleConsumerInvitationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConsumerInvitation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConsumerInvitationsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ConsumerInvitations_RejectInvitation.json
@@ -73,5 +77,5 @@ func ExampleConsumerInvitationsClient_RejectInvitation() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConsumerInvitation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConsumerInvitationsClientRejectInvitationResult)
 }

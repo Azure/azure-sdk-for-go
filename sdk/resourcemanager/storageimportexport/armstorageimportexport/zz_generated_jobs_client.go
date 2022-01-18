@@ -11,7 +11,6 @@ package armstorageimportexport
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,43 +25,57 @@ import (
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
 type JobsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
 	acceptLanguage *string
+	pl             runtime.Pipeline
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
+// subscriptionID - The subscription ID for the Azure user.
+// acceptLanguage - Specifies the preferred language for the response.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, acceptLanguage *string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobsClient{subscriptionID: subscriptionID, acceptLanguage: acceptLanguage, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobsClient{
+		subscriptionID: subscriptionID,
+		acceptLanguage: acceptLanguage,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Creates a new job or updates an existing job in the specified subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobsClient) Create(ctx context.Context, jobName string, resourceGroupName string, body PutJobParameters, options *JobsCreateOptions) (JobsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// jobName - The name of the import/export job.
+// resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
+// body - The parameters used for creating the job
+// options - JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
+func (client *JobsClient) Create(ctx context.Context, jobName string, resourceGroupName string, body PutJobParameters, options *JobsClientCreateOptions) (JobsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, jobName, resourceGroupName, body, options)
 	if err != nil {
-		return JobsCreateResponse{}, err
+		return JobsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsCreateResponse{}, err
+		return JobsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return JobsCreateResponse{}, client.createHandleError(resp)
+		return JobsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *JobsClient) createCreateRequest(ctx context.Context, jobName string, resourceGroupName string, body PutJobParameters, options *JobsCreateOptions) (*policy.Request, error) {
+func (client *JobsClient) createCreateRequest(ctx context.Context, jobName string, resourceGroupName string, body PutJobParameters, options *JobsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}"
 	if jobName == "" {
 		return nil, errors.New("parameter jobName cannot be empty")
@@ -76,7 +89,7 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, jobName strin
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +107,36 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, jobName strin
 }
 
 // createHandleResponse handles the Create response.
-func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsCreateResponse, error) {
-	result := JobsCreateResponse{RawResponse: resp}
+func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsClientCreateResponse, error) {
+	result := JobsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return JobsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *JobsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobsClient) Delete(ctx context.Context, jobName string, resourceGroupName string, options *JobsDeleteOptions) (JobsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// jobName - The name of the import/export job.
+// resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
+// options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
+func (client *JobsClient) Delete(ctx context.Context, jobName string, resourceGroupName string, options *JobsClientDeleteOptions) (JobsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, jobName, resourceGroupName, options)
 	if err != nil {
-		return JobsDeleteResponse{}, err
+		return JobsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsDeleteResponse{}, err
+		return JobsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsDeleteResponse{}, client.deleteHandleError(resp)
+		return JobsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobsDeleteResponse{RawResponse: resp}, nil
+	return JobsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobsClient) deleteCreateRequest(ctx context.Context, jobName string, resourceGroupName string, options *JobsDeleteOptions) (*policy.Request, error) {
+func (client *JobsClient) deleteCreateRequest(ctx context.Context, jobName string, resourceGroupName string, options *JobsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}"
 	if jobName == "" {
 		return nil, errors.New("parameter jobName cannot be empty")
@@ -147,7 +150,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, jobName strin
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +164,28 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, jobName strin
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *JobsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about an existing job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobsClient) Get(ctx context.Context, jobName string, resourceGroupName string, options *JobsGetOptions) (JobsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// jobName - The name of the import/export job.
+// resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
+// options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+func (client *JobsClient) Get(ctx context.Context, jobName string, resourceGroupName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, jobName, resourceGroupName, options)
 	if err != nil {
-		return JobsGetResponse{}, err
+		return JobsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsGetResponse{}, err
+		return JobsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsGetResponse{}, client.getHandleError(resp)
+		return JobsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobsClient) getCreateRequest(ctx context.Context, jobName string, resourceGroupName string, options *JobsGetOptions) (*policy.Request, error) {
+func (client *JobsClient) getCreateRequest(ctx context.Context, jobName string, resourceGroupName string, options *JobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}"
 	if jobName == "" {
 		return nil, errors.New("parameter jobName cannot be empty")
@@ -206,7 +199,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, jobName string, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -221,43 +214,33 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, jobName string, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsGetResponse, error) {
-	result := JobsGetResponse{RawResponse: resp}
+func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
+	result := JobsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return JobsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Returns all active and completed jobs in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobsClient) ListByResourceGroup(resourceGroupName string, options *JobsListByResourceGroupOptions) *JobsListByResourceGroupPager {
-	return &JobsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
+// options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup
+// method.
+func (client *JobsClient) ListByResourceGroup(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *JobsClientListByResourceGroupPager {
+	return &JobsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp JobsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListJobsResponse.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JobsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *JobsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -267,7 +250,7 @@ func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,49 +271,37 @@ func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response) (JobsListByResourceGroupResponse, error) {
-	result := JobsListByResourceGroupResponse{RawResponse: resp}
+func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response) (JobsClientListByResourceGroupResponse, error) {
+	result := JobsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListJobsResponse); err != nil {
-		return JobsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *JobsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Returns all active and completed jobs in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobsClient) ListBySubscription(options *JobsListBySubscriptionOptions) *JobsListBySubscriptionPager {
-	return &JobsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.ListBySubscription method.
+func (client *JobsClient) ListBySubscription(options *JobsClientListBySubscriptionOptions) *JobsClientListBySubscriptionPager {
+	return &JobsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp JobsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListJobsResponse.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *JobsClient) listBySubscriptionCreateRequest(ctx context.Context, options *JobsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *JobsClient) listBySubscriptionCreateRequest(ctx context.Context, options *JobsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ImportExport/jobs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,48 +322,39 @@ func (client *JobsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *JobsClient) listBySubscriptionHandleResponse(resp *http.Response) (JobsListBySubscriptionResponse, error) {
-	result := JobsListBySubscriptionResponse{RawResponse: resp}
+func (client *JobsClient) listBySubscriptionHandleResponse(resp *http.Response) (JobsClientListBySubscriptionResponse, error) {
+	result := JobsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListJobsResponse); err != nil {
-		return JobsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *JobsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates specific properties of a job. You can call this operation to notify the Import/Export service that the hard drives comprising the import
-// or export job have been shipped to the Microsoft data
+// Update - Updates specific properties of a job. You can call this operation to notify the Import/Export service that the
+// hard drives comprising the import or export job have been shipped to the Microsoft data
 // center. It can also be used to cancel an existing job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobsClient) Update(ctx context.Context, jobName string, resourceGroupName string, body UpdateJobParameters, options *JobsUpdateOptions) (JobsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// jobName - The name of the import/export job.
+// resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
+// body - The parameters to update in the job
+// options - JobsClientUpdateOptions contains the optional parameters for the JobsClient.Update method.
+func (client *JobsClient) Update(ctx context.Context, jobName string, resourceGroupName string, body UpdateJobParameters, options *JobsClientUpdateOptions) (JobsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, jobName, resourceGroupName, body, options)
 	if err != nil {
-		return JobsUpdateResponse{}, err
+		return JobsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsUpdateResponse{}, err
+		return JobsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsUpdateResponse{}, client.updateHandleError(resp)
+		return JobsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *JobsClient) updateCreateRequest(ctx context.Context, jobName string, resourceGroupName string, body UpdateJobParameters, options *JobsUpdateOptions) (*policy.Request, error) {
+func (client *JobsClient) updateCreateRequest(ctx context.Context, jobName string, resourceGroupName string, body UpdateJobParameters, options *JobsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}"
 	if jobName == "" {
 		return nil, errors.New("parameter jobName cannot be empty")
@@ -406,7 +368,7 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, jobName strin
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -421,23 +383,10 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, jobName strin
 }
 
 // updateHandleResponse handles the Update response.
-func (client *JobsClient) updateHandleResponse(resp *http.Response) (JobsUpdateResponse, error) {
-	result := JobsUpdateResponse{RawResponse: resp}
+func (client *JobsClient) updateHandleResponse(resp *http.Response) (JobsClientUpdateResponse, error) {
+	result := JobsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return JobsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *JobsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

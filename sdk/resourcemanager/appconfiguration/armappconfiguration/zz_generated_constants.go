@@ -9,8 +9,8 @@
 package armappconfiguration
 
 const (
-	module  = "armappconfiguration"
-	version = "v0.1.0"
+	moduleName    = "armappconfiguration"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionsRequired - Any action that is required beyond basic workflow (approve/ reject/ disconnect)
@@ -103,8 +103,8 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned
-// identities. The type 'None' will remove any
+// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+// identity and a set of user-assigned identities. The type 'None' will remove any
 // identities.
 type IdentityType string
 

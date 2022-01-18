@@ -7,12 +7,13 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"net/http"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 
 	"bytes"
 	"errors"
@@ -230,24 +231,21 @@ func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count 
 	}
 }
 
-// downloadBlobToWriterAt downloads an Azure blob to a buffer with parallel.
-func (b BlobClient) downloadBlobToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o HighLevelDownloadFromBlobOptions, initialDownloadResponse *DownloadResponse) error {
+// DownloadBlobToWriterAt downloads an Azure blob to a WriterAt with parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (b BlobClient) DownloadBlobToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o HighLevelDownloadFromBlobOptions) error {
 	if o.BlockSize == 0 {
 		o.BlockSize = BlobDefaultDownloadBlockSize
 	}
 
 	if count == CountToEnd { // If size not specified, calculate it
-		if initialDownloadResponse != nil {
-			count = *initialDownloadResponse.ContentLength - offset // if we have the length, use it
-		} else {
-			// If we don't have the length at all, get it
-			downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
-			dr, err := b.Download(ctx, downloadBlobOptions)
-			if err != nil {
-				return err
-			}
-			count = *dr.ContentLength - offset
+		// If we don't have the length at all, get it
+		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
+		dr, err := b.Download(ctx, downloadBlobOptions)
+		if err != nil {
+			return err
 		}
+		count = *dr.ContentLength - offset
 	}
 
 	if count <= 0 {
@@ -281,7 +279,7 @@ func (b BlobClient) downloadBlobToWriterAt(ctx context.Context, offset int64, co
 						rangeProgress = bytesTransferred
 						progressLock.Lock()
 						progress += diff
-						//o.Progress(progress)
+						o.Progress(progress)
 						progressLock.Unlock()
 					})
 			}
@@ -302,7 +300,7 @@ func (b BlobClient) downloadBlobToWriterAt(ctx context.Context, offset int64, co
 // DownloadBlobToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
 func (b BlobClient) DownloadBlobToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o HighLevelDownloadFromBlobOptions) error {
-	return b.downloadBlobToWriterAt(ctx, offset, count, newBytesWriter(_bytes), o, nil)
+	return b.DownloadBlobToWriterAt(ctx, offset, count, newBytesWriter(_bytes), o)
 }
 
 // DownloadBlobToFile downloads an Azure blob to a local file.
@@ -336,7 +334,7 @@ func (b BlobClient) DownloadBlobToFile(ctx context.Context, offset int64, count 
 	}
 
 	if size > 0 {
-		return b.downloadBlobToWriterAt(ctx, offset, size, file, o, nil)
+		return b.DownloadBlobToWriterAt(ctx, offset, size, file, o)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return nil
 	}
@@ -598,7 +596,7 @@ func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBloc
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.Reader, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}

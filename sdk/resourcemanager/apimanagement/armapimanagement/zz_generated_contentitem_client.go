@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // ContentItemClient contains the methods for the ContentItem group.
 // Don't use this type directly, use NewContentItemClient() instead.
 type ContentItemClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewContentItemClient creates a new instance of ContentItemClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewContentItemClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContentItemClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ContentItemClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ContentItemClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new developer portal's content item specified by the provided content type.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentItemClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemCreateOrUpdateOptions) (ContentItemCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// contentTypeID - Content type identifier.
+// contentItemID - Content item identifier.
+// options - ContentItemClientCreateOrUpdateOptions contains the optional parameters for the ContentItemClient.CreateOrUpdate
+// method.
+func (client *ContentItemClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientCreateOrUpdateOptions) (ContentItemClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, options)
 	if err != nil {
-		return ContentItemCreateOrUpdateResponse{}, err
+		return ContentItemClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentItemCreateOrUpdateResponse{}, err
+		return ContentItemClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ContentItemCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ContentItemClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,7 +96,7 @@ func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,49 +111,43 @@ func (client *ContentItemClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ContentItemClient) createOrUpdateHandleResponse(resp *http.Response) (ContentItemCreateOrUpdateResponse, error) {
-	result := ContentItemCreateOrUpdateResponse{RawResponse: resp}
+func (client *ContentItemClient) createOrUpdateHandleResponse(resp *http.Response) (ContentItemClientCreateOrUpdateResponse, error) {
+	result := ContentItemClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentItemContract); err != nil {
-		return ContentItemCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ContentItemClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ContentItemClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Removes the specified developer portal's content item.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentItemClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, ifMatch string, options *ContentItemDeleteOptions) (ContentItemDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// contentTypeID - Content type identifier.
+// contentItemID - Content item identifier.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - ContentItemClientDeleteOptions contains the optional parameters for the ContentItemClient.Delete method.
+func (client *ContentItemClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, ifMatch string, options *ContentItemClientDeleteOptions) (ContentItemClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, ifMatch, options)
 	if err != nil {
-		return ContentItemDeleteResponse{}, err
+		return ContentItemClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentItemDeleteResponse{}, err
+		return ContentItemClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ContentItemDeleteResponse{}, client.deleteHandleError(resp)
+		return ContentItemClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContentItemDeleteResponse{RawResponse: resp}, nil
+	return ContentItemClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, ifMatch string, options *ContentItemDeleteOptions) (*policy.Request, error) {
+func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, ifMatch string, options *ContentItemClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -161,7 +169,7 @@ func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,38 +181,30 @@ func (client *ContentItemClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ContentItemClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns the developer portal's content item specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentItemClient) Get(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemGetOptions) (ContentItemGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// contentTypeID - Content type identifier.
+// contentItemID - Content item identifier.
+// options - ContentItemClientGetOptions contains the optional parameters for the ContentItemClient.Get method.
+func (client *ContentItemClient) Get(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientGetOptions) (ContentItemClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, options)
 	if err != nil {
-		return ContentItemGetResponse{}, err
+		return ContentItemClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentItemGetResponse{}, err
+		return ContentItemClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContentItemGetResponse{}, client.getHandleError(resp)
+		return ContentItemClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContentItemClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemGetOptions) (*policy.Request, error) {
+func (client *ContentItemClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,7 +226,7 @@ func (client *ContentItemClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,46 +238,38 @@ func (client *ContentItemClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContentItemClient) getHandleResponse(resp *http.Response) (ContentItemGetResponse, error) {
-	result := ContentItemGetResponse{RawResponse: resp}
+func (client *ContentItemClient) getHandleResponse(resp *http.Response) (ContentItemClientGetResponse, error) {
+	result := ContentItemClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentItemContract); err != nil {
-		return ContentItemGetResponse{}, runtime.NewResponseError(err, resp)
+		return ContentItemClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ContentItemClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentItemClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemGetEntityTagOptions) (ContentItemGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// contentTypeID - Content type identifier.
+// contentItemID - Content item identifier.
+// options - ContentItemClientGetEntityTagOptions contains the optional parameters for the ContentItemClient.GetEntityTag
+// method.
+func (client *ContentItemClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientGetEntityTagOptions) (ContentItemClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, contentItemID, options)
 	if err != nil {
-		return ContentItemGetEntityTagResponse{}, err
+		return ContentItemClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentItemGetEntityTagResponse{}, err
+		return ContentItemClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemGetEntityTagOptions) (*policy.Request, error) {
+func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string, options *ContentItemClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -299,7 +291,7 @@ func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -311,8 +303,8 @@ func (client *ContentItemClient) getEntityTagCreateRequest(ctx context.Context, 
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response) (ContentItemGetEntityTagResponse, error) {
-	result := ContentItemGetEntityTagResponse{RawResponse: resp}
+func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response) (ContentItemClientGetEntityTagResponse, error) {
+	result := ContentItemClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -323,21 +315,26 @@ func (client *ContentItemClient) getEntityTagHandleResponse(resp *http.Response)
 }
 
 // ListByService - Lists developer portal's content items specified by the provided content type.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentItemClient) ListByService(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemListByServiceOptions) *ContentItemListByServicePager {
-	return &ContentItemListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// contentTypeID - Content type identifier.
+// options - ContentItemClientListByServiceOptions contains the optional parameters for the ContentItemClient.ListByService
+// method.
+func (client *ContentItemClient) ListByService(resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) *ContentItemClientListByServicePager {
+	return &ContentItemClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, options)
 		},
-		advancer: func(ctx context.Context, resp ContentItemListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ContentItemClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContentItemCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemListByServiceOptions) (*policy.Request, error) {
+func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentItemClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -355,7 +352,7 @@ func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -367,23 +364,10 @@ func (client *ContentItemClient) listByServiceCreateRequest(ctx context.Context,
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *ContentItemClient) listByServiceHandleResponse(resp *http.Response) (ContentItemListByServiceResponse, error) {
-	result := ContentItemListByServiceResponse{RawResponse: resp}
+func (client *ContentItemClient) listByServiceHandleResponse(resp *http.Response) (ContentItemClientListByServiceResponse, error) {
+	result := ContentItemClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentItemCollection); err != nil {
-		return ContentItemListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return ContentItemClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *ContentItemClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // TenantSettingsClient contains the methods for the TenantSettings group.
 // Don't use this type directly, use NewTenantSettingsClient() instead.
 type TenantSettingsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTenantSettingsClient creates a new instance of TenantSettingsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTenantSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TenantSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TenantSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TenantSettingsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get tenant settings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, settingsType SettingsTypeName, options *TenantSettingsGetOptions) (TenantSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// settingsType - The identifier of the settings.
+// options - TenantSettingsClientGetOptions contains the optional parameters for the TenantSettingsClient.Get method.
+func (client *TenantSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, settingsType SettingsTypeName, options *TenantSettingsClientGetOptions) (TenantSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, settingsType, options)
 	if err != nil {
-		return TenantSettingsGetResponse{}, err
+		return TenantSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TenantSettingsGetResponse{}, err
+		return TenantSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TenantSettingsGetResponse{}, client.getHandleError(resp)
+		return TenantSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TenantSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, settingsType SettingsTypeName, options *TenantSettingsGetOptions) (*policy.Request, error) {
+func (client *TenantSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, settingsType SettingsTypeName, options *TenantSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings/{settingsType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +90,7 @@ func (client *TenantSettingsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter settingsType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{settingsType}", url.PathEscape(string(settingsType)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,37 @@ func (client *TenantSettingsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (TenantSettingsGetResponse, error) {
-	result := TenantSettingsGetResponse{RawResponse: resp}
+func (client *TenantSettingsClient) getHandleResponse(resp *http.Response) (TenantSettingsClientGetResponse, error) {
+	result := TenantSettingsClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantSettingsContract); err != nil {
-		return TenantSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TenantSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TenantSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Public settings.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantSettingsClient) ListByService(resourceGroupName string, serviceName string, options *TenantSettingsListByServiceOptions) *TenantSettingsListByServicePager {
-	return &TenantSettingsListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - TenantSettingsClientListByServiceOptions contains the optional parameters for the TenantSettingsClient.ListByService
+// method.
+func (client *TenantSettingsClient) ListByService(resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) *TenantSettingsClientListByServicePager {
+	return &TenantSettingsClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp TenantSettingsListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TenantSettingsClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TenantSettingsCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *TenantSettingsClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TenantSettingsListByServiceOptions) (*policy.Request, error) {
+func (client *TenantSettingsClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TenantSettingsClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,7 +146,7 @@ func (client *TenantSettingsClient) listByServiceCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,23 +161,10 @@ func (client *TenantSettingsClient) listByServiceCreateRequest(ctx context.Conte
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *TenantSettingsClient) listByServiceHandleResponse(resp *http.Response) (TenantSettingsListByServiceResponse, error) {
-	result := TenantSettingsListByServiceResponse{RawResponse: resp}
+func (client *TenantSettingsClient) listByServiceHandleResponse(resp *http.Response) (TenantSettingsClientListByServiceResponse, error) {
+	result := TenantSettingsClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantSettingsCollection); err != nil {
-		return TenantSettingsListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return TenantSettingsClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *TenantSettingsClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

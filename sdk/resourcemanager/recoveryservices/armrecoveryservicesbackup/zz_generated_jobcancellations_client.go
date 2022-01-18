@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // JobCancellationsClient contains the methods for the JobCancellations group.
 // Don't use this type directly, use NewJobCancellationsClient() instead.
 type JobCancellationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobCancellationsClient creates a new instance of JobCancellationsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobCancellationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobCancellationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobCancellationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Trigger - Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call GetCancelOperationResult API.
-// If the operation fails it returns the *CloudError error type.
-func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobCancellationsTriggerOptions) (JobCancellationsTriggerResponse, error) {
+// Trigger - Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call GetCancelOperationResult
+// API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// jobName - Name of the job to cancel.
+// options - JobCancellationsClientTriggerOptions contains the optional parameters for the JobCancellationsClient.Trigger
+// method.
+func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobCancellationsClientTriggerOptions) (JobCancellationsClientTriggerResponse, error) {
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, jobName, options)
 	if err != nil {
-		return JobCancellationsTriggerResponse{}, err
+		return JobCancellationsClientTriggerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobCancellationsTriggerResponse{}, err
+		return JobCancellationsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return JobCancellationsTriggerResponse{}, client.triggerHandleError(resp)
+		return JobCancellationsClientTriggerResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobCancellationsTriggerResponse{RawResponse: resp}, nil
+	return JobCancellationsClientTriggerResponse{RawResponse: resp}, nil
 }
 
 // triggerCreateRequest creates the Trigger request.
-func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobCancellationsTriggerOptions) (*policy.Request, error) {
+func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobCancellationsClientTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}/cancel"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -78,26 +91,13 @@ func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// triggerHandleError handles the Trigger error response.
-func (client *JobCancellationsClient) triggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

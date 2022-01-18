@@ -9,8 +9,8 @@
 package armstorage
 
 const (
-	module  = "armstorage"
-	version = "v0.2.1"
+	moduleName    = "armstorage"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing.
@@ -34,10 +34,10 @@ func (c AccessTier) ToPtr() *AccessTier {
 	return &c
 }
 
-// AccountImmutabilityPolicyState - The ImmutabilityPolicy state defines the mode of the policy. Disabled state disables the policy, Unlocked state allows
-// increase and decrease of immutability retention time and also allows toggling
-// allowProtectedAppendWrites property, Locked state only allows the increase of the immutability retention time. A policy can only be created in a Disabled
-// or Unlocked state and can be toggled between
+// AccountImmutabilityPolicyState - The ImmutabilityPolicy state defines the mode of the policy. Disabled state disables the
+// policy, Unlocked state allows increase and decrease of immutability retention time and also allows toggling
+// allowProtectedAppendWrites property, Locked state only allows the increase of the immutability retention time. A policy
+// can only be created in a Disabled or Unlocked state and can be toggled between
 // the two states. Only a policy in an Unlocked state can transition to a Locked state which cannot be reverted.
 type AccountImmutabilityPolicyState string
 
@@ -82,6 +82,48 @@ func (c AccountStatus) ToPtr() *AccountStatus {
 	return &c
 }
 
+// ActiveDirectoryPropertiesAccountType - Specifies the Active Directory account type for Azure Storage.
+type ActiveDirectoryPropertiesAccountType string
+
+const (
+	ActiveDirectoryPropertiesAccountTypeComputer ActiveDirectoryPropertiesAccountType = "Computer"
+	ActiveDirectoryPropertiesAccountTypeUser     ActiveDirectoryPropertiesAccountType = "User"
+)
+
+// PossibleActiveDirectoryPropertiesAccountTypeValues returns the possible values for the ActiveDirectoryPropertiesAccountType const type.
+func PossibleActiveDirectoryPropertiesAccountTypeValues() []ActiveDirectoryPropertiesAccountType {
+	return []ActiveDirectoryPropertiesAccountType{
+		ActiveDirectoryPropertiesAccountTypeComputer,
+		ActiveDirectoryPropertiesAccountTypeUser,
+	}
+}
+
+// ToPtr returns a *ActiveDirectoryPropertiesAccountType pointing to the current value.
+func (c ActiveDirectoryPropertiesAccountType) ToPtr() *ActiveDirectoryPropertiesAccountType {
+	return &c
+}
+
+// AllowedCopyScope - Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
+type AllowedCopyScope string
+
+const (
+	AllowedCopyScopeAAD         AllowedCopyScope = "AAD"
+	AllowedCopyScopePrivateLink AllowedCopyScope = "PrivateLink"
+)
+
+// PossibleAllowedCopyScopeValues returns the possible values for the AllowedCopyScope const type.
+func PossibleAllowedCopyScopeValues() []AllowedCopyScope {
+	return []AllowedCopyScope{
+		AllowedCopyScopeAAD,
+		AllowedCopyScopePrivateLink,
+	}
+}
+
+// ToPtr returns a *AllowedCopyScope pointing to the current value.
+func (c AllowedCopyScope) ToPtr() *AllowedCopyScope {
+	return &c
+}
+
 type BlobInventoryPolicyName string
 
 const (
@@ -100,8 +142,8 @@ func (c BlobInventoryPolicyName) ToPtr() *BlobInventoryPolicyName {
 	return &c
 }
 
-// BlobRestoreProgressStatus - The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. - Complete:
-// Indicates that blob restore has been completed successfully. - Failed:
+// BlobRestoreProgressStatus - The status of blob restore progress. Possible values are: - InProgress: Indicates that blob
+// restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed:
 // Indicates that blob restore is failed.
 type BlobRestoreProgressStatus string
 
@@ -125,8 +167,8 @@ func (c BlobRestoreProgressStatus) ToPtr() *BlobRestoreProgressStatus {
 	return &c
 }
 
-// Bypass - Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices
-// (For example, "Logging, Metrics"), or None to bypass none
+// Bypass - Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of
+// Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none
 // of those traffics.
 type Bypass string
 
@@ -398,10 +440,10 @@ func (c Format) ToPtr() *Format {
 	return &c
 }
 
-// GeoReplicationStatus - The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is active and operational.
-// - Bootstrap: Indicates initial synchronization from the primary
-// location to the secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable: Indicates that the secondary
-// location is temporarily unavailable.
+// GeoReplicationStatus - The status of the secondary location. Possible values are: - Live: Indicates that the secondary
+// location is active and operational. - Bootstrap: Indicates initial synchronization from the primary
+// location to the secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable:
+// Indicates that the secondary location is temporarily unavailable.
 type GeoReplicationStatus string
 
 const (
@@ -491,7 +533,8 @@ func (c ImmutabilityPolicyState) ToPtr() *ImmutabilityPolicyState {
 	return &c
 }
 
-// ImmutabilityPolicyUpdateType - The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend.
+// ImmutabilityPolicyUpdateType - The ImmutabilityPolicy update type of a blob container, possible values include: put, lock
+// and extend.
 type ImmutabilityPolicyUpdateType string
 
 const (
@@ -575,8 +618,8 @@ func (c KeySource) ToPtr() *KeySource {
 	return &c
 }
 
-// KeyType - Encryption key type to be used for the encryption service. 'Account' key type implies that an account-scoped encryption key will be used. 'Service'
-// key type implies that a default service key is used.
+// KeyType - Encryption key type to be used for the encryption service. 'Account' key type implies that an account-scoped
+// encryption key will be used. 'Service' key type implies that a default service key is used.
 type KeyType string
 
 const (
@@ -672,7 +715,8 @@ func (c LeaseContainerRequestAction) ToPtr() *LeaseContainerRequestAction {
 	return &c
 }
 
-// LeaseDuration - Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased.
+// LeaseDuration - Specifies whether the lease on a container is of infinite or fixed duration, only when the container is
+// leased.
 type LeaseDuration string
 
 const (
@@ -825,7 +869,8 @@ func (c MigrationState) ToPtr() *MigrationState {
 	return &c
 }
 
-// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS
+// 1.0 for this property.
 type MinimumTLSVersion string
 
 const (
@@ -867,7 +912,8 @@ func (c Name) ToPtr() *Name {
 	return &c
 }
 
-// ObjectType - This is a required field. This field specifies the scope of the inventory created either at the blob or container level.
+// ObjectType - This is a required field. This field specifies the scope of the inventory created either at the blob or container
+// level.
 type ObjectType string
 
 const (
@@ -888,8 +934,8 @@ func (c ObjectType) ToPtr() *ObjectType {
 	return &c
 }
 
-// Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update
-// (u) and Process (p).
+// Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List
+// (l), Add (a), Create (c), Update (u) and Process (p).
 type Permissions string
 
 const (
@@ -1016,7 +1062,8 @@ func (c PublicAccess) ToPtr() *PublicAccess {
 	return &c
 }
 
-// PublicNetworkAccess - Allow or disallow public network access to Storage Account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+// PublicNetworkAccess - Allow or disallow public network access to Storage Account. Value is optional but if passed in, must
+// be 'Enabled' or 'Disabled'.
 type PublicNetworkAccess string
 
 const (
@@ -1037,7 +1084,8 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// Reason - Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable is false.
+// Reason - Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable
+// is false.
 type Reason string
 
 const (
@@ -1058,8 +1106,8 @@ func (c Reason) ToPtr() *Reason {
 	return &c
 }
 
-// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas
-// parameter as the subscription does not belong to that
+// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id
+// is set when the SKU has requiredQuotas parameter as the subscription does not belong to that
 // quota. The "NotAvailableForSubscription" is related to capacity at DC.
 type ReasonCode string
 
@@ -1144,7 +1192,8 @@ func (c RuleType) ToPtr() *RuleType {
 	return &c
 }
 
-// SKUName - The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType.
+// SKUName - The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called
+// accountType.
 type SKUName string
 
 const (
@@ -1219,7 +1268,8 @@ func (c Schedule) ToPtr() *Schedule {
 	return &c
 }
 
-// Services - The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t), File (f).
+// Services - The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t),
+// File (f).
 type Services string
 
 const (
@@ -1244,8 +1294,8 @@ func (c Services) ToPtr() *Services {
 	return &c
 }
 
-// ShareAccessTier - Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account
-// can choose Premium.
+// ShareAccessTier - Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot,
+// and Cool. FileStorage account can choose Premium.
 type ShareAccessTier string
 
 const (
@@ -1270,7 +1320,8 @@ func (c ShareAccessTier) ToPtr() *ShareAccessTier {
 	return &c
 }
 
-// SignedResource - The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share (s).
+// SignedResource - The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c),
+// File (f), Share (s).
 type SignedResource string
 
 const (
@@ -1295,8 +1346,8 @@ func (c SignedResource) ToPtr() *SignedResource {
 	return &c
 }
 
-// SignedResourceTypes - The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs; Container (c): Access
-// to container-level APIs; Object (o): Access to object-level APIs
+// SignedResourceTypes - The signed resource types that are accessible with the account SAS. Service (s): Access to service-level
+// APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs
 // for blobs, queue messages, table entities, and files.
 type SignedResourceTypes string
 

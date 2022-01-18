@@ -11,7 +11,6 @@ package armdataprotection
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // RestorableTimeRangesClient contains the methods for the RestorableTimeRanges group.
 // Don't use this type directly, use NewRestorableTimeRangesClient() instead.
 type RestorableTimeRangesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRestorableTimeRangesClient creates a new instance of RestorableTimeRangesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RestorableTimeRangesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &RestorableTimeRangesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &RestorableTimeRangesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Find -
-// If the operation fails it returns the *CloudError error type.
-func (client *RestorableTimeRangesClient) Find(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesFindOptions) (RestorableTimeRangesFindResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// parameters - Request body for operation
+// options - RestorableTimeRangesClientFindOptions contains the optional parameters for the RestorableTimeRangesClient.Find
+// method.
+func (client *RestorableTimeRangesClient) Find(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesClientFindOptions) (RestorableTimeRangesClientFindResponse, error) {
 	req, err := client.findCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
-		return RestorableTimeRangesFindResponse{}, err
+		return RestorableTimeRangesClientFindResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RestorableTimeRangesFindResponse{}, err
+		return RestorableTimeRangesClientFindResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RestorableTimeRangesFindResponse{}, client.findHandleError(resp)
+		return RestorableTimeRangesClientFindResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.findHandleResponse(resp)
 }
 
 // findCreateRequest creates the Find request.
-func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesFindOptions) (*policy.Request, error) {
+func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesClientFindOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/findRestorableTimeRanges"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -78,7 +91,7 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +103,10 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 }
 
 // findHandleResponse handles the Find response.
-func (client *RestorableTimeRangesClient) findHandleResponse(resp *http.Response) (RestorableTimeRangesFindResponse, error) {
-	result := RestorableTimeRangesFindResponse{RawResponse: resp}
+func (client *RestorableTimeRangesClient) findHandleResponse(resp *http.Response) (RestorableTimeRangesClientFindResponse, error) {
+	result := RestorableTimeRangesClientFindResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupFindRestorableTimeRangesResponseResource); err != nil {
-		return RestorableTimeRangesFindResponse{}, runtime.NewResponseError(err, resp)
+		return RestorableTimeRangesClientFindResponse{}, err
 	}
 	return result, nil
-}
-
-// findHandleError handles the Find error response.
-func (client *RestorableTimeRangesClient) findHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

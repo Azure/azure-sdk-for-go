@@ -24,39 +24,51 @@ import (
 // WorkspaceManagedSQLServerUsagesClient contains the methods for the WorkspaceManagedSQLServerUsages group.
 // Don't use this type directly, use NewWorkspaceManagedSQLServerUsagesClient() instead.
 type WorkspaceManagedSQLServerUsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceManagedSQLServerUsagesClient creates a new instance of WorkspaceManagedSQLServerUsagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceManagedSQLServerUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceManagedSQLServerUsagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceManagedSQLServerUsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceManagedSQLServerUsagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Get list of server usages metric for workspace managed sql server.
-// If the operation fails it returns a generic error.
-func (client *WorkspaceManagedSQLServerUsagesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerUsagesListOptions) *WorkspaceManagedSQLServerUsagesListPager {
-	return &WorkspaceManagedSQLServerUsagesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspaceManagedSQLServerUsagesClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerUsagesClient.List
+// method.
+func (client *WorkspaceManagedSQLServerUsagesClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerUsagesClientListOptions) *WorkspaceManagedSQLServerUsagesClientListPager {
+	return &WorkspaceManagedSQLServerUsagesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspaceManagedSQLServerUsagesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspaceManagedSQLServerUsagesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerUsageListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceManagedSQLServerUsagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerUsagesListOptions) (*policy.Request, error) {
+func (client *WorkspaceManagedSQLServerUsagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerUsagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlUsages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +82,7 @@ func (client *WorkspaceManagedSQLServerUsagesClient) listCreateRequest(ctx conte
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,22 +94,10 @@ func (client *WorkspaceManagedSQLServerUsagesClient) listCreateRequest(ctx conte
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceManagedSQLServerUsagesClient) listHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerUsagesListResponse, error) {
-	result := WorkspaceManagedSQLServerUsagesListResponse{RawResponse: resp}
+func (client *WorkspaceManagedSQLServerUsagesClient) listHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerUsagesClientListResponse, error) {
+	result := WorkspaceManagedSQLServerUsagesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerUsageListResult); err != nil {
-		return WorkspaceManagedSQLServerUsagesListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceManagedSQLServerUsagesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkspaceManagedSQLServerUsagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

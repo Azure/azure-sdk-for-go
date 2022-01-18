@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,35 +24,49 @@ import (
 // NotificationRecipientEmailClient contains the methods for the NotificationRecipientEmail group.
 // Don't use this type directly, use NewNotificationRecipientEmailClient() instead.
 type NotificationRecipientEmailClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNotificationRecipientEmailClient creates a new instance of NotificationRecipientEmailClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNotificationRecipientEmailClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationRecipientEmailClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NotificationRecipientEmailClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NotificationRecipientEmailClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckEntityExists - Determine if Notification Recipient Email subscribed to the notification.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailCheckEntityExistsOptions) (NotificationRecipientEmailCheckEntityExistsResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// notificationName - Notification Name Identifier.
+// email - Email identifier.
+// options - NotificationRecipientEmailClientCheckEntityExistsOptions contains the optional parameters for the NotificationRecipientEmailClient.CheckEntityExists
+// method.
+func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientCheckEntityExistsOptions) (NotificationRecipientEmailClientCheckEntityExistsResponse, error) {
 	req, err := client.checkEntityExistsCreateRequest(ctx, resourceGroupName, serviceName, notificationName, email, options)
 	if err != nil {
-		return NotificationRecipientEmailCheckEntityExistsResponse{}, err
+		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRecipientEmailCheckEntityExistsResponse{}, err
+		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
 	}
-	result := NotificationRecipientEmailCheckEntityExistsResponse{RawResponse: resp}
+	result := NotificationRecipientEmailClientCheckEntityExistsResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -61,7 +74,7 @@ func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Co
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
-func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailCheckEntityExistsOptions) (*policy.Request, error) {
+func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails/{email}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +96,7 @@ func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,24 +108,30 @@ func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(c
 }
 
 // CreateOrUpdate - Adds the Email address to the list of Recipients for the Notification.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRecipientEmailClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailCreateOrUpdateOptions) (NotificationRecipientEmailCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// notificationName - Notification Name Identifier.
+// email - Email identifier.
+// options - NotificationRecipientEmailClientCreateOrUpdateOptions contains the optional parameters for the NotificationRecipientEmailClient.CreateOrUpdate
+// method.
+func (client *NotificationRecipientEmailClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientCreateOrUpdateOptions) (NotificationRecipientEmailClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, notificationName, email, options)
 	if err != nil {
-		return NotificationRecipientEmailCreateOrUpdateResponse{}, err
+		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRecipientEmailCreateOrUpdateResponse{}, err
+		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return NotificationRecipientEmailCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails/{email}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -134,7 +153,7 @@ func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -146,46 +165,39 @@ func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRecipientEmailCreateOrUpdateResponse, error) {
-	result := NotificationRecipientEmailCreateOrUpdateResponse{RawResponse: resp}
+func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRecipientEmailClientCreateOrUpdateResponse, error) {
+	result := NotificationRecipientEmailClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientEmailContract); err != nil {
-		return NotificationRecipientEmailCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *NotificationRecipientEmailClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Removes the email from the list of Notification.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRecipientEmailClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailDeleteOptions) (NotificationRecipientEmailDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// notificationName - Notification Name Identifier.
+// email - Email identifier.
+// options - NotificationRecipientEmailClientDeleteOptions contains the optional parameters for the NotificationRecipientEmailClient.Delete
+// method.
+func (client *NotificationRecipientEmailClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientDeleteOptions) (NotificationRecipientEmailClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, notificationName, email, options)
 	if err != nil {
-		return NotificationRecipientEmailDeleteResponse{}, err
+		return NotificationRecipientEmailClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRecipientEmailDeleteResponse{}, err
+		return NotificationRecipientEmailClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return NotificationRecipientEmailDeleteResponse{}, client.deleteHandleError(resp)
+		return NotificationRecipientEmailClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return NotificationRecipientEmailDeleteResponse{RawResponse: resp}, nil
+	return NotificationRecipientEmailClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailDeleteOptions) (*policy.Request, error) {
+func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails/{email}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +219,7 @@ func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,38 +230,30 @@ func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *NotificationRecipientEmailClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByNotification - Gets the list of the Notification Recipient Emails subscribed to a notification.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NotificationRecipientEmailClient) ListByNotification(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientEmailListByNotificationOptions) (NotificationRecipientEmailListByNotificationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// notificationName - Notification Name Identifier.
+// options - NotificationRecipientEmailClientListByNotificationOptions contains the optional parameters for the NotificationRecipientEmailClient.ListByNotification
+// method.
+func (client *NotificationRecipientEmailClient) ListByNotification(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientEmailClientListByNotificationOptions) (NotificationRecipientEmailClientListByNotificationResponse, error) {
 	req, err := client.listByNotificationCreateRequest(ctx, resourceGroupName, serviceName, notificationName, options)
 	if err != nil {
-		return NotificationRecipientEmailListByNotificationResponse{}, err
+		return NotificationRecipientEmailClientListByNotificationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NotificationRecipientEmailListByNotificationResponse{}, err
+		return NotificationRecipientEmailClientListByNotificationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NotificationRecipientEmailListByNotificationResponse{}, client.listByNotificationHandleError(resp)
+		return NotificationRecipientEmailClientListByNotificationResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByNotificationHandleResponse(resp)
 }
 
 // listByNotificationCreateRequest creates the ListByNotification request.
-func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientEmailListByNotificationOptions) (*policy.Request, error) {
+func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientEmailClientListByNotificationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientEmails"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -267,7 +271,7 @@ func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,23 +283,10 @@ func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(
 }
 
 // listByNotificationHandleResponse handles the ListByNotification response.
-func (client *NotificationRecipientEmailClient) listByNotificationHandleResponse(resp *http.Response) (NotificationRecipientEmailListByNotificationResponse, error) {
-	result := NotificationRecipientEmailListByNotificationResponse{RawResponse: resp}
+func (client *NotificationRecipientEmailClient) listByNotificationHandleResponse(resp *http.Response) (NotificationRecipientEmailClientListByNotificationResponse, error) {
+	result := NotificationRecipientEmailClientListByNotificationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientEmailCollection); err != nil {
-		return NotificationRecipientEmailListByNotificationResponse{}, runtime.NewResponseError(err, resp)
+		return NotificationRecipientEmailClientListByNotificationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByNotificationHandleError handles the ListByNotification error response.
-func (client *NotificationRecipientEmailClient) listByNotificationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

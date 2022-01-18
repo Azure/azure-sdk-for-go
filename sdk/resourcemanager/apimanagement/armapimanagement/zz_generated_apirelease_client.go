@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,58 @@ import (
 // APIReleaseClient contains the methods for the APIRelease group.
 // Don't use this type directly, use NewAPIReleaseClient() instead.
 type APIReleaseClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPIReleaseClient creates a new instance of APIReleaseClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAPIReleaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIReleaseClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &APIReleaseClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &APIReleaseClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a new Release for the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIReleaseClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, parameters APIReleaseContract, options *APIReleaseCreateOrUpdateOptions) (APIReleaseCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// releaseID - Release identifier within an API. Must be unique in the current API Management service instance.
+// parameters - Create parameters.
+// options - APIReleaseClientCreateOrUpdateOptions contains the optional parameters for the APIReleaseClient.CreateOrUpdate
+// method.
+func (client *APIReleaseClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, parameters APIReleaseContract, options *APIReleaseClientCreateOrUpdateOptions) (APIReleaseClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, parameters, options)
 	if err != nil {
-		return APIReleaseCreateOrUpdateResponse{}, err
+		return APIReleaseClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIReleaseCreateOrUpdateResponse{}, err
+		return APIReleaseClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return APIReleaseCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return APIReleaseClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIReleaseClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, parameters APIReleaseContract, options *APIReleaseCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *APIReleaseClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, parameters APIReleaseContract, options *APIReleaseClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +98,7 @@ func (client *APIReleaseClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,49 +113,43 @@ func (client *APIReleaseClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIReleaseClient) createOrUpdateHandleResponse(resp *http.Response) (APIReleaseCreateOrUpdateResponse, error) {
-	result := APIReleaseCreateOrUpdateResponse{RawResponse: resp}
+func (client *APIReleaseClient) createOrUpdateHandleResponse(resp *http.Response) (APIReleaseClientCreateOrUpdateResponse, error) {
+	result := APIReleaseClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseContract); err != nil {
-		return APIReleaseCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return APIReleaseClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *APIReleaseClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified release in the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIReleaseClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, options *APIReleaseDeleteOptions) (APIReleaseDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// releaseID - Release identifier within an API. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - APIReleaseClientDeleteOptions contains the optional parameters for the APIReleaseClient.Delete method.
+func (client *APIReleaseClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, options *APIReleaseClientDeleteOptions) (APIReleaseClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, ifMatch, options)
 	if err != nil {
-		return APIReleaseDeleteResponse{}, err
+		return APIReleaseClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIReleaseDeleteResponse{}, err
+		return APIReleaseClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return APIReleaseDeleteResponse{}, client.deleteHandleError(resp)
+		return APIReleaseClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return APIReleaseDeleteResponse{RawResponse: resp}, nil
+	return APIReleaseClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIReleaseClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, options *APIReleaseDeleteOptions) (*policy.Request, error) {
+func (client *APIReleaseClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, options *APIReleaseClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -162,7 +171,7 @@ func (client *APIReleaseClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,38 +183,30 @@ func (client *APIReleaseClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *APIReleaseClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns the details of an API release.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIReleaseClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseGetOptions) (APIReleaseGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// releaseID - Release identifier within an API. Must be unique in the current API Management service instance.
+// options - APIReleaseClientGetOptions contains the optional parameters for the APIReleaseClient.Get method.
+func (client *APIReleaseClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseClientGetOptions) (APIReleaseClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, options)
 	if err != nil {
-		return APIReleaseGetResponse{}, err
+		return APIReleaseClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIReleaseGetResponse{}, err
+		return APIReleaseClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIReleaseGetResponse{}, client.getHandleError(resp)
+		return APIReleaseClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIReleaseClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseGetOptions) (*policy.Request, error) {
+func (client *APIReleaseClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -227,7 +228,7 @@ func (client *APIReleaseClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,46 +240,37 @@ func (client *APIReleaseClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIReleaseClient) getHandleResponse(resp *http.Response) (APIReleaseGetResponse, error) {
-	result := APIReleaseGetResponse{RawResponse: resp}
+func (client *APIReleaseClient) getHandleResponse(resp *http.Response) (APIReleaseClientGetResponse, error) {
+	result := APIReleaseClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseContract); err != nil {
-		return APIReleaseGetResponse{}, runtime.NewResponseError(err, resp)
+		return APIReleaseClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *APIReleaseClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Returns the etag of an API release.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIReleaseClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseGetEntityTagOptions) (APIReleaseGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// releaseID - Release identifier within an API. Must be unique in the current API Management service instance.
+// options - APIReleaseClientGetEntityTagOptions contains the optional parameters for the APIReleaseClient.GetEntityTag method.
+func (client *APIReleaseClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseClientGetEntityTagOptions) (APIReleaseClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, options)
 	if err != nil {
-		return APIReleaseGetEntityTagResponse{}, err
+		return APIReleaseClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIReleaseGetEntityTagResponse{}, err
+		return APIReleaseClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *APIReleaseClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseGetEntityTagOptions) (*policy.Request, error) {
+func (client *APIReleaseClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,7 +292,7 @@ func (client *APIReleaseClient) getEntityTagCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,8 +304,8 @@ func (client *APIReleaseClient) getEntityTagCreateRequest(ctx context.Context, r
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) (APIReleaseGetEntityTagResponse, error) {
-	result := APIReleaseGetEntityTagResponse{RawResponse: resp}
+func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) (APIReleaseClientGetEntityTagResponse, error) {
+	result := APIReleaseClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -323,24 +315,29 @@ func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByService - Lists all releases of an API. An API release is created when making an API Revision current. Releases are also used to rollback to previous
-// revisions. Results will be paged and can be constrained by
+// ListByService - Lists all releases of an API. An API release is created when making an API Revision current. Releases are
+// also used to rollback to previous revisions. Results will be paged and can be constrained by
 // the $top and $skip parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIReleaseClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIReleaseListByServiceOptions) *APIReleaseListByServicePager {
-	return &APIReleaseListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// options - APIReleaseClientListByServiceOptions contains the optional parameters for the APIReleaseClient.ListByService
+// method.
+func (client *APIReleaseClient) ListByService(resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) *APIReleaseClientListByServicePager {
+	return &APIReleaseClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp APIReleaseListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp APIReleaseClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIReleaseCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *APIReleaseClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIReleaseListByServiceOptions) (*policy.Request, error) {
+func (client *APIReleaseClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIReleaseClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -358,7 +355,7 @@ func (client *APIReleaseClient) listByServiceCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -379,46 +376,41 @@ func (client *APIReleaseClient) listByServiceCreateRequest(ctx context.Context, 
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *APIReleaseClient) listByServiceHandleResponse(resp *http.Response) (APIReleaseListByServiceResponse, error) {
-	result := APIReleaseListByServiceResponse{RawResponse: resp}
+func (client *APIReleaseClient) listByServiceHandleResponse(resp *http.Response) (APIReleaseClientListByServiceResponse, error) {
+	result := APIReleaseClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseCollection); err != nil {
-		return APIReleaseListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return APIReleaseClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *APIReleaseClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of the release of the API specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIReleaseClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, parameters APIReleaseContract, options *APIReleaseUpdateOptions) (APIReleaseUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API identifier. Must be unique in the current API Management service instance.
+// releaseID - Release identifier within an API. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - API Release Update parameters.
+// options - APIReleaseClientUpdateOptions contains the optional parameters for the APIReleaseClient.Update method.
+func (client *APIReleaseClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, parameters APIReleaseContract, options *APIReleaseClientUpdateOptions) (APIReleaseClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, ifMatch, parameters, options)
 	if err != nil {
-		return APIReleaseUpdateResponse{}, err
+		return APIReleaseClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIReleaseUpdateResponse{}, err
+		return APIReleaseClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIReleaseUpdateResponse{}, client.updateHandleError(resp)
+		return APIReleaseClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *APIReleaseClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, parameters APIReleaseContract, options *APIReleaseUpdateOptions) (*policy.Request, error) {
+func (client *APIReleaseClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, parameters APIReleaseContract, options *APIReleaseClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/releases/{releaseId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -440,7 +432,7 @@ func (client *APIReleaseClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -453,26 +445,13 @@ func (client *APIReleaseClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *APIReleaseClient) updateHandleResponse(resp *http.Response) (APIReleaseUpdateResponse, error) {
-	result := APIReleaseUpdateResponse{RawResponse: resp}
+func (client *APIReleaseClient) updateHandleResponse(resp *http.Response) (APIReleaseClientUpdateResponse, error) {
+	result := APIReleaseClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIReleaseContract); err != nil {
-		return APIReleaseUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return APIReleaseClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *APIReleaseClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

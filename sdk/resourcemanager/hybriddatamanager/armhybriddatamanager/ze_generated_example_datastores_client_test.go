@@ -29,13 +29,17 @@ func ExampleDataStoresClient_ListByDataManager() {
 	client := armhybriddatamanager.NewDataStoresClient("<subscription-id>", cred, nil)
 	pager := client.ListByDataManager("<resource-group-name>",
 		"<data-manager-name>",
-		&armhybriddatamanager.DataStoresListByDataManagerOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armhybriddatamanager.DataStoresClientListByDataManagerOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataStore.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleDataStoresClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataStore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataStoresClientGetResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataStores_CreateOrUpdate_DataSink-PUT-example-162.json
@@ -102,7 +106,7 @@ func ExampleDataStoresClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataStore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataStoresClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/DataStores_Delete_DataSink-DELETE-example-161.json

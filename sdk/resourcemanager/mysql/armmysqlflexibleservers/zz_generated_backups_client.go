@@ -11,7 +11,6 @@ package armmysqlflexibleservers
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
 type BackupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupsClient creates a new instance of BackupsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - List all the backups for a given server.
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsGetOptions) (BackupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// backupName - The name of the backup.
+// options - BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
+func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientGetOptions) (BackupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, backupName, options)
 	if err != nil {
-		return BackupsGetResponse{}, err
+		return BackupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupsGetResponse{}, err
+		return BackupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupsGetResponse{}, client.getHandleError(resp)
+		return BackupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsGetOptions) (*policy.Request, error) {
+func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups/{backupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter backupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsGetResponse, error) {
-	result := BackupsGetResponse{RawResponse: resp}
+func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClientGetResponse, error) {
+	result := BackupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackup); err != nil {
-		return BackupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return BackupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BackupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServer - List all the backups for a given server.
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupsClient) ListByServer(resourceGroupName string, serverName string, options *BackupsListByServerOptions) *BackupsListByServerPager {
-	return &BackupsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// options - BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.ListByServer method.
+func (client *BackupsClient) ListByServer(resourceGroupName string, serverName string, options *BackupsClientListByServerOptions) *BackupsClientListByServerPager {
+	return &BackupsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp BackupsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BackupsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerBackupListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *BackupsListByServerOptions) (*policy.Request, error) {
+func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *BackupsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +153,10 @@ func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, reso
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *BackupsClient) listByServerHandleResponse(resp *http.Response) (BackupsListByServerResponse, error) {
-	result := BackupsListByServerResponse{RawResponse: resp}
+func (client *BackupsClient) listByServerHandleResponse(resp *http.Response) (BackupsClientListByServerResponse, error) {
+	result := BackupsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackupListResult); err != nil {
-		return BackupsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return BackupsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *BackupsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

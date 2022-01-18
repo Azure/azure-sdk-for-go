@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,57 @@ import (
 // CertificateClient contains the methods for the Certificate group.
 // Don't use this type directly, use NewCertificateClient() instead.
 type CertificateClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCertificateClient creates a new instance of CertificateClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CertificateClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CertificateClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the certificate being used for authentication with the backend.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, parameters CertificateCreateOrUpdateParameters, options *CertificateCreateOrUpdateOptions) (CertificateCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
+// parameters - Create or Update parameters.
+// options - CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate
+// method.
+func (client *CertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientCreateOrUpdateOptions) (CertificateClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, certificateID, parameters, options)
 	if err != nil {
-		return CertificateCreateOrUpdateResponse{}, err
+		return CertificateClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateCreateOrUpdateResponse{}, err
+		return CertificateClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CertificateCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CertificateClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, parameters CertificateCreateOrUpdateParameters, options *CertificateCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/certificates/{certificateId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +93,7 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,49 +108,42 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Response) (CertificateCreateOrUpdateResponse, error) {
-	result := CertificateCreateOrUpdateResponse{RawResponse: resp}
+func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Response) (CertificateClientCreateOrUpdateResponse, error) {
+	result := CertificateClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateContract); err != nil {
-		return CertificateCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CertificateClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes specific certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, ifMatch string, options *CertificateDeleteOptions) (CertificateDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - CertificateClientDeleteOptions contains the optional parameters for the CertificateClient.Delete method.
+func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, ifMatch string, options *CertificateClientDeleteOptions) (CertificateClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, certificateID, ifMatch, options)
 	if err != nil {
-		return CertificateDeleteResponse{}, err
+		return CertificateClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateDeleteResponse{}, err
+		return CertificateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CertificateDeleteResponse{}, client.deleteHandleError(resp)
+		return CertificateClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CertificateDeleteResponse{RawResponse: resp}, nil
+	return CertificateClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, ifMatch string, options *CertificateDeleteOptions) (*policy.Request, error) {
+func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, ifMatch string, options *CertificateClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/certificates/{certificateId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,7 +161,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +173,29 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CertificateClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the certificate specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) Get(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateGetOptions) (CertificateGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
+// options - CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+func (client *CertificateClient) Get(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateClientGetOptions) (CertificateClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, certificateID, options)
 	if err != nil {
-		return CertificateGetResponse{}, err
+		return CertificateClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateGetResponse{}, err
+		return CertificateClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificateGetResponse{}, client.getHandleError(resp)
+		return CertificateClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateGetOptions) (*policy.Request, error) {
+func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/certificates/{certificateId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,7 +213,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,46 +225,37 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificateClient) getHandleResponse(resp *http.Response) (CertificateGetResponse, error) {
-	result := CertificateGetResponse{RawResponse: resp}
+func (client *CertificateClient) getHandleResponse(resp *http.Response) (CertificateClientGetResponse, error) {
+	result := CertificateClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateContract); err != nil {
-		return CertificateGetResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CertificateClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the certificate specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateGetEntityTagOptions) (CertificateGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
+// options - CertificateClientGetEntityTagOptions contains the optional parameters for the CertificateClient.GetEntityTag
+// method.
+func (client *CertificateClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateClientGetEntityTagOptions) (CertificateClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, certificateID, options)
 	if err != nil {
-		return CertificateGetEntityTagResponse{}, err
+		return CertificateClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateGetEntityTagResponse{}, err
+		return CertificateClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateGetEntityTagOptions) (*policy.Request, error) {
+func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/certificates/{certificateId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +273,7 @@ func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +285,8 @@ func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, 
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response) (CertificateGetEntityTagResponse, error) {
-	result := CertificateGetEntityTagResponse{RawResponse: resp}
+func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response) (CertificateClientGetEntityTagResponse, error) {
+	result := CertificateClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -308,21 +297,25 @@ func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response)
 }
 
 // ListByService - Lists a collection of all certificates in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) ListByService(resourceGroupName string, serviceName string, options *CertificateListByServiceOptions) *CertificateListByServicePager {
-	return &CertificateListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - CertificateClientListByServiceOptions contains the optional parameters for the CertificateClient.ListByService
+// method.
+func (client *CertificateClient) ListByService(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *CertificateClientListByServicePager {
+	return &CertificateClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp CertificateListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp CertificateClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CertificateListByServiceOptions) (*policy.Request, error) {
+func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/certificates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -336,7 +329,7 @@ func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,46 +353,38 @@ func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context,
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *CertificateClient) listByServiceHandleResponse(resp *http.Response) (CertificateListByServiceResponse, error) {
-	result := CertificateListByServiceResponse{RawResponse: resp}
+func (client *CertificateClient) listByServiceHandleResponse(resp *http.Response) (CertificateClientListByServiceResponse, error) {
+	result := CertificateClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
-		return CertificateListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *CertificateClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RefreshSecret - From KeyVault, Refresh the certificate being used for authentication with the backend.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CertificateClient) RefreshSecret(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateRefreshSecretOptions) (CertificateRefreshSecretResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
+// options - CertificateClientRefreshSecretOptions contains the optional parameters for the CertificateClient.RefreshSecret
+// method.
+func (client *CertificateClient) RefreshSecret(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateClientRefreshSecretOptions) (CertificateClientRefreshSecretResponse, error) {
 	req, err := client.refreshSecretCreateRequest(ctx, resourceGroupName, serviceName, certificateID, options)
 	if err != nil {
-		return CertificateRefreshSecretResponse{}, err
+		return CertificateClientRefreshSecretResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificateRefreshSecretResponse{}, err
+		return CertificateClientRefreshSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificateRefreshSecretResponse{}, client.refreshSecretHandleError(resp)
+		return CertificateClientRefreshSecretResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.refreshSecretHandleResponse(resp)
 }
 
 // refreshSecretCreateRequest creates the RefreshSecret request.
-func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateRefreshSecretOptions) (*policy.Request, error) {
+func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, options *CertificateClientRefreshSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/certificates/{certificateId}/refreshSecret"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -417,7 +402,7 @@ func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,26 +414,13 @@ func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context,
 }
 
 // refreshSecretHandleResponse handles the RefreshSecret response.
-func (client *CertificateClient) refreshSecretHandleResponse(resp *http.Response) (CertificateRefreshSecretResponse, error) {
-	result := CertificateRefreshSecretResponse{RawResponse: resp}
+func (client *CertificateClient) refreshSecretHandleResponse(resp *http.Response) (CertificateClientRefreshSecretResponse, error) {
+	result := CertificateClientRefreshSecretResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateContract); err != nil {
-		return CertificateRefreshSecretResponse{}, runtime.NewResponseError(err, resp)
+		return CertificateClientRefreshSecretResponse{}, err
 	}
 	return result, nil
-}
-
-// refreshSecretHandleError handles the RefreshSecret error response.
-func (client *CertificateClient) refreshSecretHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

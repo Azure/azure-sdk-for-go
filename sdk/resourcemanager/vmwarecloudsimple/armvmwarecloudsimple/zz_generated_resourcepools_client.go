@@ -11,7 +11,6 @@ package armvmwarecloudsimple
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ResourcePoolsClient contains the methods for the ResourcePools group.
 // Don't use this type directly, use NewResourcePoolsClient() instead.
 type ResourcePoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourcePoolsClient creates a new instance of ResourcePoolsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourcePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourcePoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ResourcePoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourcePoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns resource pool templates by its name
-// If the operation fails it returns the *CSRPError error type.
-func (client *ResourcePoolsClient) Get(ctx context.Context, regionID string, pcName string, resourcePoolName string, options *ResourcePoolsGetOptions) (ResourcePoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// pcName - The private cloud name
+// resourcePoolName - resource pool id (vsphereId)
+// options - ResourcePoolsClientGetOptions contains the optional parameters for the ResourcePoolsClient.Get method.
+func (client *ResourcePoolsClient) Get(ctx context.Context, regionID string, pcName string, resourcePoolName string, options *ResourcePoolsClientGetOptions) (ResourcePoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, regionID, pcName, resourcePoolName, options)
 	if err != nil {
-		return ResourcePoolsGetResponse{}, err
+		return ResourcePoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ResourcePoolsGetResponse{}, err
+		return ResourcePoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ResourcePoolsGetResponse{}, client.getHandleError(resp)
+		return ResourcePoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, regionID string, pcName string, resourcePoolName string, options *ResourcePoolsGetOptions) (*policy.Request, error) {
+func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, regionID string, pcName string, resourcePoolName string, options *ResourcePoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/resourcePools/{resourcePoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, regionI
 		return nil, errors.New("parameter resourcePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourcePoolName}", url.PathEscape(resourcePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, regionI
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (ResourcePoolsGetResponse, error) {
-	result := ResourcePoolsGetResponse{RawResponse: resp}
+func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (ResourcePoolsClientGetResponse, error) {
+	result := ResourcePoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcePool); err != nil {
-		return ResourcePoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ResourcePoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ResourcePoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns list of resource pools in region for private cloud
-// If the operation fails it returns the *CSRPError error type.
-func (client *ResourcePoolsClient) List(regionID string, pcName string, options *ResourcePoolsListOptions) *ResourcePoolsListPager {
-	return &ResourcePoolsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// pcName - The private cloud name
+// options - ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
+func (client *ResourcePoolsClient) List(regionID string, pcName string, options *ResourcePoolsClientListOptions) *ResourcePoolsClientListPager {
+	return &ResourcePoolsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, regionID, pcName, options)
 		},
-		advancer: func(ctx context.Context, resp ResourcePoolsListResponseEnvelope) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ResourcePoolsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourcePoolsListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, regionID string, pcName string, options *ResourcePoolsListOptions) (*policy.Request, error) {
+func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, regionID string, pcName string, options *ResourcePoolsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/resourcePools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, region
 		return nil, errors.New("parameter pcName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pcName}", url.PathEscape(pcName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,23 +153,10 @@ func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, region
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourcePoolsClient) listHandleResponse(resp *http.Response) (ResourcePoolsListResponseEnvelope, error) {
-	result := ResourcePoolsListResponseEnvelope{RawResponse: resp}
+func (client *ResourcePoolsClient) listHandleResponse(resp *http.Response) (ResourcePoolsClientListResponse, error) {
+	result := ResourcePoolsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcePoolsListResponse); err != nil {
-		return ResourcePoolsListResponseEnvelope{}, runtime.NewResponseError(err, resp)
+		return ResourcePoolsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ResourcePoolsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

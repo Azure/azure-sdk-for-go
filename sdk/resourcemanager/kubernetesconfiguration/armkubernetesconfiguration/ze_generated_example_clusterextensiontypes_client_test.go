@@ -25,13 +25,20 @@ func ExampleClusterExtensionTypesClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewClusterExtensionTypesClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftContainerService,
-		armkubernetesconfiguration.Enum1ManagedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.ContainerService"),
+		armkubernetesconfiguration.Enum1("managedClusters"),
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

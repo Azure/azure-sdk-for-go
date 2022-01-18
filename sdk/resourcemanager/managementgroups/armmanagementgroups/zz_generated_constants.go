@@ -9,8 +9,8 @@
 package armmanagementgroups
 
 const (
-	module  = "armmanagementgroups"
-	version = "v0.2.1"
+	moduleName    = "armmanagementgroups"
+	moduleVersion = "v0.3.0"
 )
 
 type Enum0 string
@@ -131,8 +131,8 @@ func (c Permissions) ToPtr() *Permissions {
 	return &c
 }
 
-// Reason - Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's naming requirements (incorrect
-// length, unsupported characters, etc.) AlreadyExists
+// Reason - Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's
+// naming requirements (incorrect length, unsupported characters, etc.) AlreadyExists
 // indicates that the name is already in use and is therefore unavailable.
 type Reason string
 

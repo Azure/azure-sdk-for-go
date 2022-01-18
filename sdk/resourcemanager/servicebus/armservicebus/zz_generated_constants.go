@@ -9,8 +9,8 @@
 package armservicebus
 
 const (
-	module  = "armservicebus"
-	version = "v0.2.1"
+	moduleName    = "armservicebus"
+	moduleVersion = "v0.3.0"
 )
 
 type AccessRights string
@@ -274,7 +274,8 @@ func (c PrivateLinkConnectionStatus) ToPtr() *PrivateLinkConnectionStatus {
 	return &c
 }
 
-// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'
+// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or
+// 'Succeeded' or 'Failed'
 type ProvisioningStateDR string
 
 const (

@@ -30,12 +30,16 @@ func ExampleRulesEnginesClient_ListByFrontDoor() {
 	pager := client.ListByFrontDoor("<resource-group-name>",
 		"<front-door-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RulesEngine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleRulesEnginesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RulesEngine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RulesEnginesClientGetResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorRulesEngineCreate.json
@@ -73,88 +77,81 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 		"<rules-engine-name>",
 		armfrontdoor.RulesEngine{
 			Properties: &armfrontdoor.RulesEngineProperties{
-				RulesEngineUpdateParameters: armfrontdoor.RulesEngineUpdateParameters{
-					Rules: []*armfrontdoor.RulesEngineRule{
-						{
-							Name: to.StringPtr("<name>"),
-							Action: &armfrontdoor.RulesEngineAction{
-								RouteConfigurationOverride: &armfrontdoor.RedirectConfiguration{
-									RouteConfiguration: armfrontdoor.RouteConfiguration{
-										ODataType: to.StringPtr("<odata-type>"),
-									},
-									CustomFragment:    to.StringPtr("<custom-fragment>"),
-									CustomHost:        to.StringPtr("<custom-host>"),
-									CustomPath:        to.StringPtr("<custom-path>"),
-									CustomQueryString: to.StringPtr("<custom-query-string>"),
-									RedirectProtocol:  armfrontdoor.FrontDoorRedirectProtocolHTTPSOnly.ToPtr(),
-									RedirectType:      armfrontdoor.FrontDoorRedirectTypeMoved.ToPtr(),
-								},
+				Rules: []*armfrontdoor.RulesEngineRule{
+					{
+						Name: to.StringPtr("<name>"),
+						Action: &armfrontdoor.RulesEngineAction{
+							RouteConfigurationOverride: &armfrontdoor.RedirectConfiguration{
+								ODataType:         to.StringPtr("<odata-type>"),
+								CustomFragment:    to.StringPtr("<custom-fragment>"),
+								CustomHost:        to.StringPtr("<custom-host>"),
+								CustomPath:        to.StringPtr("<custom-path>"),
+								CustomQueryString: to.StringPtr("<custom-query-string>"),
+								RedirectProtocol:  armfrontdoor.FrontDoorRedirectProtocol("HttpsOnly").ToPtr(),
+								RedirectType:      armfrontdoor.FrontDoorRedirectType("Moved").ToPtr(),
 							},
-							MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
-								{
-									RulesEngineMatchValue: []*string{
-										to.StringPtr("CH")},
-									RulesEngineMatchVariable: armfrontdoor.RulesEngineMatchVariableRemoteAddr.ToPtr(),
-									RulesEngineOperator:      armfrontdoor.RulesEngineOperatorGeoMatch.ToPtr(),
-								}},
-							MatchProcessingBehavior: armfrontdoor.MatchProcessingBehaviorStop.ToPtr(),
-							Priority:                to.Int32Ptr(1),
 						},
-						{
-							Name: to.StringPtr("<name>"),
-							Action: &armfrontdoor.RulesEngineAction{
-								ResponseHeaderActions: []*armfrontdoor.HeaderAction{
-									{
-										HeaderActionType: armfrontdoor.HeaderActionTypeOverwrite.ToPtr(),
-										HeaderName:       to.StringPtr("<header-name>"),
-										Value:            to.StringPtr("<value>"),
-									}},
-							},
-							MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
+						MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
+							{
+								RulesEngineMatchValue: []*string{
+									to.StringPtr("CH")},
+								RulesEngineMatchVariable: armfrontdoor.RulesEngineMatchVariable("RemoteAddr").ToPtr(),
+								RulesEngineOperator:      armfrontdoor.RulesEngineOperator("GeoMatch").ToPtr(),
+							}},
+						MatchProcessingBehavior: armfrontdoor.MatchProcessingBehavior("Stop").ToPtr(),
+						Priority:                to.Int32Ptr(1),
+					},
+					{
+						Name: to.StringPtr("<name>"),
+						Action: &armfrontdoor.RulesEngineAction{
+							ResponseHeaderActions: []*armfrontdoor.HeaderAction{
 								{
-									RulesEngineMatchValue: []*string{
-										to.StringPtr("jpg")},
-									RulesEngineMatchVariable: armfrontdoor.RulesEngineMatchVariableRequestFilenameExtension.ToPtr(),
-									RulesEngineOperator:      armfrontdoor.RulesEngineOperatorEqual.ToPtr(),
-									Transforms: []*armfrontdoor.Transform{
-										armfrontdoor.TransformLowercase.ToPtr()},
+									HeaderActionType: armfrontdoor.HeaderActionType("Overwrite").ToPtr(),
+									HeaderName:       to.StringPtr("<header-name>"),
+									Value:            to.StringPtr("<value>"),
 								}},
-							Priority: to.Int32Ptr(2),
 						},
-						{
-							Name: to.StringPtr("<name>"),
-							Action: &armfrontdoor.RulesEngineAction{
-								RouteConfigurationOverride: &armfrontdoor.ForwardingConfiguration{
-									RouteConfiguration: armfrontdoor.RouteConfiguration{
-										ODataType: to.StringPtr("<odata-type>"),
-									},
-									BackendPool: &armfrontdoor.SubResource{
-										ID: to.StringPtr("<id>"),
-									},
-									CacheConfiguration: &armfrontdoor.CacheConfiguration{
-										CacheDuration:                to.StringPtr("<cache-duration>"),
-										DynamicCompression:           armfrontdoor.DynamicCompressionEnabledDisabled.ToPtr(),
-										QueryParameterStripDirective: armfrontdoor.FrontDoorQueryStripOnly.ToPtr(),
-										QueryParameters:              to.StringPtr("<query-parameters>"),
-									},
-									CustomForwardingPath: to.StringPtr("<custom-forwarding-path>"),
-									ForwardingProtocol:   armfrontdoor.FrontDoorForwardingProtocolHTTPSOnly.ToPtr(),
+						MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
+							{
+								RulesEngineMatchValue: []*string{
+									to.StringPtr("jpg")},
+								RulesEngineMatchVariable: armfrontdoor.RulesEngineMatchVariable("RequestFilenameExtension").ToPtr(),
+								RulesEngineOperator:      armfrontdoor.RulesEngineOperator("Equal").ToPtr(),
+								Transforms: []*armfrontdoor.Transform{
+									armfrontdoor.Transform("Lowercase").ToPtr()},
+							}},
+						Priority: to.Int32Ptr(2),
+					},
+					{
+						Name: to.StringPtr("<name>"),
+						Action: &armfrontdoor.RulesEngineAction{
+							RouteConfigurationOverride: &armfrontdoor.ForwardingConfiguration{
+								ODataType: to.StringPtr("<odata-type>"),
+								BackendPool: &armfrontdoor.SubResource{
+									ID: to.StringPtr("<id>"),
 								},
+								CacheConfiguration: &armfrontdoor.CacheConfiguration{
+									CacheDuration:                to.StringPtr("<cache-duration>"),
+									DynamicCompression:           armfrontdoor.DynamicCompressionEnabled("Disabled").ToPtr(),
+									QueryParameterStripDirective: armfrontdoor.FrontDoorQuery("StripOnly").ToPtr(),
+									QueryParameters:              to.StringPtr("<query-parameters>"),
+								},
+								ForwardingProtocol: armfrontdoor.FrontDoorForwardingProtocol("HttpsOnly").ToPtr(),
 							},
-							MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
-								{
-									NegateCondition: to.BoolPtr(false),
-									RulesEngineMatchValue: []*string{
-										to.StringPtr("allowoverride")},
-									RulesEngineMatchVariable: armfrontdoor.RulesEngineMatchVariableRequestHeader.ToPtr(),
-									RulesEngineOperator:      armfrontdoor.RulesEngineOperatorEqual.ToPtr(),
-									Selector:                 to.StringPtr("<selector>"),
-									Transforms: []*armfrontdoor.Transform{
-										armfrontdoor.TransformLowercase.ToPtr()},
-								}},
-							Priority: to.Int32Ptr(3),
-						}},
-				},
+						},
+						MatchConditions: []*armfrontdoor.RulesEngineMatchCondition{
+							{
+								NegateCondition: to.BoolPtr(false),
+								RulesEngineMatchValue: []*string{
+									to.StringPtr("allowoverride")},
+								RulesEngineMatchVariable: armfrontdoor.RulesEngineMatchVariable("RequestHeader").ToPtr(),
+								RulesEngineOperator:      armfrontdoor.RulesEngineOperator("Equal").ToPtr(),
+								Selector:                 to.StringPtr("<selector>"),
+								Transforms: []*armfrontdoor.Transform{
+									armfrontdoor.Transform("Lowercase").ToPtr()},
+							}},
+						Priority: to.Int32Ptr(3),
+					}},
 			},
 		},
 		nil)
@@ -165,7 +162,7 @@ func ExampleRulesEnginesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RulesEngine.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RulesEnginesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorRulesEngineDelete.json

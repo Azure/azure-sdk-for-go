@@ -24,13 +24,14 @@ func ExampleServersClient_ListByServerGroup() {
 	}
 	ctx := context.Background()
 	client := armpostgresqlhsc.NewServersClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServerGroup(ctx,
+	res, err := client.ListByServerGroup(ctx,
 		"<resource-group-name>",
 		"<server-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServersClientListByServerGroupResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/ServerGet.json
@@ -49,5 +50,5 @@ func ExampleServersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerGroupServer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServersClientGetResult)
 }

@@ -15,23 +15,23 @@ import (
 	"time"
 )
 
-// AvailableServiceTiersListByWorkspaceResponse contains the response from method AvailableServiceTiers.ListByWorkspace.
-type AvailableServiceTiersListByWorkspaceResponse struct {
-	AvailableServiceTiersListByWorkspaceResult
+// AvailableServiceTiersClientListByWorkspaceResponse contains the response from method AvailableServiceTiersClient.ListByWorkspace.
+type AvailableServiceTiersClientListByWorkspaceResponse struct {
+	AvailableServiceTiersClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailableServiceTiersListByWorkspaceResult contains the result from method AvailableServiceTiers.ListByWorkspace.
-type AvailableServiceTiersListByWorkspaceResult struct {
+// AvailableServiceTiersClientListByWorkspaceResult contains the result from method AvailableServiceTiersClient.ListByWorkspace.
+type AvailableServiceTiersClientListByWorkspaceResult struct {
 	// Array of AvailableServiceTier
 	AvailableServiceTierArray []*AvailableServiceTier
 }
 
-// ClustersCreateOrUpdatePollerResponse contains the response from method Clusters.CreateOrUpdate.
-type ClustersCreateOrUpdatePollerResponse struct {
+// ClustersClientCreateOrUpdatePollerResponse contains the response from method ClustersClient.CreateOrUpdate.
+type ClustersClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ClustersCreateOrUpdatePoller
+	Poller *ClustersClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -40,8 +40,8 @@ type ClustersCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersCreateOrUpdateResponse, error) {
-	respType := ClustersCreateOrUpdateResponse{}
+func (l ClustersClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersClientCreateOrUpdateResponse, error) {
+	respType := ClustersClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
 	if err != nil {
 		return respType, err
@@ -50,13 +50,13 @@ func (l ClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a ClustersCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ClustersClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ClustersClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ClustersCreateOrUpdatePoller{
+	poller := &ClustersClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -68,22 +68,22 @@ func (l *ClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// ClustersCreateOrUpdateResponse contains the response from method Clusters.CreateOrUpdate.
-type ClustersCreateOrUpdateResponse struct {
-	ClustersCreateOrUpdateResult
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.CreateOrUpdate.
+type ClustersClientCreateOrUpdateResponse struct {
+	ClustersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersCreateOrUpdateResult contains the result from method Clusters.CreateOrUpdate.
-type ClustersCreateOrUpdateResult struct {
+// ClustersClientCreateOrUpdateResult contains the result from method ClustersClient.CreateOrUpdate.
+type ClustersClientCreateOrUpdateResult struct {
 	Cluster
 }
 
-// ClustersDeletePollerResponse contains the response from method Clusters.Delete.
-type ClustersDeletePollerResponse struct {
+// ClustersClientDeletePollerResponse contains the response from method ClustersClient.Delete.
+type ClustersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ClustersDeletePoller
+	Poller *ClustersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -92,8 +92,8 @@ type ClustersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersDeleteResponse, error) {
-	respType := ClustersDeleteResponse{}
+func (l ClustersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersClientDeleteResponse, error) {
+	respType := ClustersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -102,13 +102,13 @@ func (l ClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a ClustersDeletePollerResponse from the provided client and resume token.
-func (l *ClustersDeletePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ClustersClientDeletePollerResponse from the provided client and resume token.
+func (l *ClustersClientDeletePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ClustersDeletePoller{
+	poller := &ClustersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -120,203 +120,243 @@ func (l *ClustersDeletePollerResponse) Resume(ctx context.Context, client *Clust
 	return nil
 }
 
-// ClustersDeleteResponse contains the response from method Clusters.Delete.
-type ClustersDeleteResponse struct {
+// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+type ClustersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersGetResponse contains the response from method Clusters.Get.
-type ClustersGetResponse struct {
-	ClustersGetResult
+// ClustersClientGetResponse contains the response from method ClustersClient.Get.
+type ClustersClientGetResponse struct {
+	ClustersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersGetResult contains the result from method Clusters.Get.
-type ClustersGetResult struct {
+// ClustersClientGetResult contains the result from method ClustersClient.Get.
+type ClustersClientGetResult struct {
 	Cluster
 }
 
-// ClustersListByResourceGroupResponse contains the response from method Clusters.ListByResourceGroup.
-type ClustersListByResourceGroupResponse struct {
-	ClustersListByResourceGroupResult
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+type ClustersClientListByResourceGroupResponse struct {
+	ClustersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListByResourceGroupResult contains the result from method Clusters.ListByResourceGroup.
-type ClustersListByResourceGroupResult struct {
+// ClustersClientListByResourceGroupResult contains the result from method ClustersClient.ListByResourceGroup.
+type ClustersClientListByResourceGroupResult struct {
 	ClusterListResult
 }
 
-// ClustersListResponse contains the response from method Clusters.List.
-type ClustersListResponse struct {
-	ClustersListResult
+// ClustersClientListResponse contains the response from method ClustersClient.List.
+type ClustersClientListResponse struct {
+	ClustersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListResult contains the result from method Clusters.List.
-type ClustersListResult struct {
+// ClustersClientListResult contains the result from method ClustersClient.List.
+type ClustersClientListResult struct {
 	ClusterListResult
 }
 
-// ClustersUpdateResponse contains the response from method Clusters.Update.
-type ClustersUpdateResponse struct {
-	ClustersUpdateResult
+// ClustersClientUpdatePollerResponse contains the response from method ClustersClient.Update.
+type ClustersClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ClustersClientUpdatePoller
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersUpdateResult contains the result from method Clusters.Update.
-type ClustersUpdateResult struct {
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ClustersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersClientUpdateResponse, error) {
+	respType := ClustersClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClustersClientUpdatePollerResponse from the provided client and resume token.
+func (l *ClustersClientUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ClustersClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+type ClustersClientUpdateResponse struct {
+	ClustersClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClustersClientUpdateResult contains the result from method ClustersClient.Update.
+type ClustersClientUpdateResult struct {
 	Cluster
 }
 
-// DataExportsCreateOrUpdateResponse contains the response from method DataExports.CreateOrUpdate.
-type DataExportsCreateOrUpdateResponse struct {
-	DataExportsCreateOrUpdateResult
+// DataExportsClientCreateOrUpdateResponse contains the response from method DataExportsClient.CreateOrUpdate.
+type DataExportsClientCreateOrUpdateResponse struct {
+	DataExportsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataExportsCreateOrUpdateResult contains the result from method DataExports.CreateOrUpdate.
-type DataExportsCreateOrUpdateResult struct {
+// DataExportsClientCreateOrUpdateResult contains the result from method DataExportsClient.CreateOrUpdate.
+type DataExportsClientCreateOrUpdateResult struct {
 	DataExport
 }
 
-// DataExportsDeleteResponse contains the response from method DataExports.Delete.
-type DataExportsDeleteResponse struct {
+// DataExportsClientDeleteResponse contains the response from method DataExportsClient.Delete.
+type DataExportsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataExportsGetResponse contains the response from method DataExports.Get.
-type DataExportsGetResponse struct {
-	DataExportsGetResult
+// DataExportsClientGetResponse contains the response from method DataExportsClient.Get.
+type DataExportsClientGetResponse struct {
+	DataExportsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataExportsGetResult contains the result from method DataExports.Get.
-type DataExportsGetResult struct {
+// DataExportsClientGetResult contains the result from method DataExportsClient.Get.
+type DataExportsClientGetResult struct {
 	DataExport
 }
 
-// DataExportsListByWorkspaceResponse contains the response from method DataExports.ListByWorkspace.
-type DataExportsListByWorkspaceResponse struct {
-	DataExportsListByWorkspaceResult
+// DataExportsClientListByWorkspaceResponse contains the response from method DataExportsClient.ListByWorkspace.
+type DataExportsClientListByWorkspaceResponse struct {
+	DataExportsClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataExportsListByWorkspaceResult contains the result from method DataExports.ListByWorkspace.
-type DataExportsListByWorkspaceResult struct {
+// DataExportsClientListByWorkspaceResult contains the result from method DataExportsClient.ListByWorkspace.
+type DataExportsClientListByWorkspaceResult struct {
 	DataExportListResult
 }
 
-// DataSourcesCreateOrUpdateResponse contains the response from method DataSources.CreateOrUpdate.
-type DataSourcesCreateOrUpdateResponse struct {
-	DataSourcesCreateOrUpdateResult
+// DataSourcesClientCreateOrUpdateResponse contains the response from method DataSourcesClient.CreateOrUpdate.
+type DataSourcesClientCreateOrUpdateResponse struct {
+	DataSourcesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSourcesCreateOrUpdateResult contains the result from method DataSources.CreateOrUpdate.
-type DataSourcesCreateOrUpdateResult struct {
+// DataSourcesClientCreateOrUpdateResult contains the result from method DataSourcesClient.CreateOrUpdate.
+type DataSourcesClientCreateOrUpdateResult struct {
 	DataSource
 }
 
-// DataSourcesDeleteResponse contains the response from method DataSources.Delete.
-type DataSourcesDeleteResponse struct {
+// DataSourcesClientDeleteResponse contains the response from method DataSourcesClient.Delete.
+type DataSourcesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSourcesGetResponse contains the response from method DataSources.Get.
-type DataSourcesGetResponse struct {
-	DataSourcesGetResult
+// DataSourcesClientGetResponse contains the response from method DataSourcesClient.Get.
+type DataSourcesClientGetResponse struct {
+	DataSourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSourcesGetResult contains the result from method DataSources.Get.
-type DataSourcesGetResult struct {
+// DataSourcesClientGetResult contains the result from method DataSourcesClient.Get.
+type DataSourcesClientGetResult struct {
 	DataSource
 }
 
-// DataSourcesListByWorkspaceResponse contains the response from method DataSources.ListByWorkspace.
-type DataSourcesListByWorkspaceResponse struct {
-	DataSourcesListByWorkspaceResult
+// DataSourcesClientListByWorkspaceResponse contains the response from method DataSourcesClient.ListByWorkspace.
+type DataSourcesClientListByWorkspaceResponse struct {
+	DataSourcesClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataSourcesListByWorkspaceResult contains the result from method DataSources.ListByWorkspace.
-type DataSourcesListByWorkspaceResult struct {
+// DataSourcesClientListByWorkspaceResult contains the result from method DataSourcesClient.ListByWorkspace.
+type DataSourcesClientListByWorkspaceResult struct {
 	DataSourceListResult
 }
 
-// DeletedWorkspacesListByResourceGroupResponse contains the response from method DeletedWorkspaces.ListByResourceGroup.
-type DeletedWorkspacesListByResourceGroupResponse struct {
-	DeletedWorkspacesListByResourceGroupResult
+// DeletedWorkspacesClientListByResourceGroupResponse contains the response from method DeletedWorkspacesClient.ListByResourceGroup.
+type DeletedWorkspacesClientListByResourceGroupResponse struct {
+	DeletedWorkspacesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeletedWorkspacesListByResourceGroupResult contains the result from method DeletedWorkspaces.ListByResourceGroup.
-type DeletedWorkspacesListByResourceGroupResult struct {
+// DeletedWorkspacesClientListByResourceGroupResult contains the result from method DeletedWorkspacesClient.ListByResourceGroup.
+type DeletedWorkspacesClientListByResourceGroupResult struct {
 	WorkspaceListResult
 }
 
-// DeletedWorkspacesListResponse contains the response from method DeletedWorkspaces.List.
-type DeletedWorkspacesListResponse struct {
-	DeletedWorkspacesListResult
+// DeletedWorkspacesClientListResponse contains the response from method DeletedWorkspacesClient.List.
+type DeletedWorkspacesClientListResponse struct {
+	DeletedWorkspacesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DeletedWorkspacesListResult contains the result from method DeletedWorkspaces.List.
-type DeletedWorkspacesListResult struct {
+// DeletedWorkspacesClientListResult contains the result from method DeletedWorkspacesClient.List.
+type DeletedWorkspacesClientListResult struct {
 	WorkspaceListResult
 }
 
-// GatewaysDeleteResponse contains the response from method Gateways.Delete.
-type GatewaysDeleteResponse struct {
+// GatewaysClientDeleteResponse contains the response from method GatewaysClient.Delete.
+type GatewaysClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IntelligencePacksDisableResponse contains the response from method IntelligencePacks.Disable.
-type IntelligencePacksDisableResponse struct {
+// IntelligencePacksClientDisableResponse contains the response from method IntelligencePacksClient.Disable.
+type IntelligencePacksClientDisableResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IntelligencePacksEnableResponse contains the response from method IntelligencePacks.Enable.
-type IntelligencePacksEnableResponse struct {
+// IntelligencePacksClientEnableResponse contains the response from method IntelligencePacksClient.Enable.
+type IntelligencePacksClientEnableResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IntelligencePacksListResponse contains the response from method IntelligencePacks.List.
-type IntelligencePacksListResponse struct {
-	IntelligencePacksListResult
+// IntelligencePacksClientListResponse contains the response from method IntelligencePacksClient.List.
+type IntelligencePacksClientListResponse struct {
+	IntelligencePacksClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// IntelligencePacksListResult contains the result from method IntelligencePacks.List.
-type IntelligencePacksListResult struct {
+// IntelligencePacksClientListResult contains the result from method IntelligencePacksClient.List.
+type IntelligencePacksClientListResult struct {
 	// Array of IntelligencePack
 	IntelligencePackArray []*IntelligencePack
 }
 
-// LinkedServicesCreateOrUpdatePollerResponse contains the response from method LinkedServices.CreateOrUpdate.
-type LinkedServicesCreateOrUpdatePollerResponse struct {
+// LinkedServicesClientCreateOrUpdatePollerResponse contains the response from method LinkedServicesClient.CreateOrUpdate.
+type LinkedServicesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LinkedServicesCreateOrUpdatePoller
+	Poller *LinkedServicesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -325,8 +365,8 @@ type LinkedServicesCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LinkedServicesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServicesCreateOrUpdateResponse, error) {
-	respType := LinkedServicesCreateOrUpdateResponse{}
+func (l LinkedServicesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServicesClientCreateOrUpdateResponse, error) {
+	respType := LinkedServicesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LinkedService)
 	if err != nil {
 		return respType, err
@@ -335,13 +375,13 @@ func (l LinkedServicesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a LinkedServicesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *LinkedServicesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *LinkedServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LinkedServicesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a LinkedServicesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *LinkedServicesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *LinkedServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LinkedServicesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LinkedServicesCreateOrUpdatePoller{
+	poller := &LinkedServicesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -353,22 +393,22 @@ func (l *LinkedServicesCreateOrUpdatePollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// LinkedServicesCreateOrUpdateResponse contains the response from method LinkedServices.CreateOrUpdate.
-type LinkedServicesCreateOrUpdateResponse struct {
-	LinkedServicesCreateOrUpdateResult
+// LinkedServicesClientCreateOrUpdateResponse contains the response from method LinkedServicesClient.CreateOrUpdate.
+type LinkedServicesClientCreateOrUpdateResponse struct {
+	LinkedServicesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedServicesCreateOrUpdateResult contains the result from method LinkedServices.CreateOrUpdate.
-type LinkedServicesCreateOrUpdateResult struct {
+// LinkedServicesClientCreateOrUpdateResult contains the result from method LinkedServicesClient.CreateOrUpdate.
+type LinkedServicesClientCreateOrUpdateResult struct {
 	LinkedService
 }
 
-// LinkedServicesDeletePollerResponse contains the response from method LinkedServices.Delete.
-type LinkedServicesDeletePollerResponse struct {
+// LinkedServicesClientDeletePollerResponse contains the response from method LinkedServicesClient.Delete.
+type LinkedServicesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LinkedServicesDeletePoller
+	Poller *LinkedServicesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -377,8 +417,8 @@ type LinkedServicesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LinkedServicesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServicesDeleteResponse, error) {
-	respType := LinkedServicesDeleteResponse{}
+func (l LinkedServicesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServicesClientDeleteResponse, error) {
+	respType := LinkedServicesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LinkedService)
 	if err != nil {
 		return respType, err
@@ -387,13 +427,13 @@ func (l LinkedServicesDeletePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a LinkedServicesDeletePollerResponse from the provided client and resume token.
-func (l *LinkedServicesDeletePollerResponse) Resume(ctx context.Context, client *LinkedServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LinkedServicesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a LinkedServicesClientDeletePollerResponse from the provided client and resume token.
+func (l *LinkedServicesClientDeletePollerResponse) Resume(ctx context.Context, client *LinkedServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LinkedServicesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LinkedServicesDeletePoller{
+	poller := &LinkedServicesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -405,282 +445,456 @@ func (l *LinkedServicesDeletePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// LinkedServicesDeleteResponse contains the response from method LinkedServices.Delete.
-type LinkedServicesDeleteResponse struct {
-	LinkedServicesDeleteResult
+// LinkedServicesClientDeleteResponse contains the response from method LinkedServicesClient.Delete.
+type LinkedServicesClientDeleteResponse struct {
+	LinkedServicesClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedServicesDeleteResult contains the result from method LinkedServices.Delete.
-type LinkedServicesDeleteResult struct {
+// LinkedServicesClientDeleteResult contains the result from method LinkedServicesClient.Delete.
+type LinkedServicesClientDeleteResult struct {
 	LinkedService
 }
 
-// LinkedServicesGetResponse contains the response from method LinkedServices.Get.
-type LinkedServicesGetResponse struct {
-	LinkedServicesGetResult
+// LinkedServicesClientGetResponse contains the response from method LinkedServicesClient.Get.
+type LinkedServicesClientGetResponse struct {
+	LinkedServicesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedServicesGetResult contains the result from method LinkedServices.Get.
-type LinkedServicesGetResult struct {
+// LinkedServicesClientGetResult contains the result from method LinkedServicesClient.Get.
+type LinkedServicesClientGetResult struct {
 	LinkedService
 }
 
-// LinkedServicesListByWorkspaceResponse contains the response from method LinkedServices.ListByWorkspace.
-type LinkedServicesListByWorkspaceResponse struct {
-	LinkedServicesListByWorkspaceResult
+// LinkedServicesClientListByWorkspaceResponse contains the response from method LinkedServicesClient.ListByWorkspace.
+type LinkedServicesClientListByWorkspaceResponse struct {
+	LinkedServicesClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedServicesListByWorkspaceResult contains the result from method LinkedServices.ListByWorkspace.
-type LinkedServicesListByWorkspaceResult struct {
+// LinkedServicesClientListByWorkspaceResult contains the result from method LinkedServicesClient.ListByWorkspace.
+type LinkedServicesClientListByWorkspaceResult struct {
 	LinkedServiceListResult
 }
 
-// LinkedStorageAccountsCreateOrUpdateResponse contains the response from method LinkedStorageAccounts.CreateOrUpdate.
-type LinkedStorageAccountsCreateOrUpdateResponse struct {
-	LinkedStorageAccountsCreateOrUpdateResult
+// LinkedStorageAccountsClientCreateOrUpdateResponse contains the response from method LinkedStorageAccountsClient.CreateOrUpdate.
+type LinkedStorageAccountsClientCreateOrUpdateResponse struct {
+	LinkedStorageAccountsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedStorageAccountsCreateOrUpdateResult contains the result from method LinkedStorageAccounts.CreateOrUpdate.
-type LinkedStorageAccountsCreateOrUpdateResult struct {
+// LinkedStorageAccountsClientCreateOrUpdateResult contains the result from method LinkedStorageAccountsClient.CreateOrUpdate.
+type LinkedStorageAccountsClientCreateOrUpdateResult struct {
 	LinkedStorageAccountsResource
 }
 
-// LinkedStorageAccountsDeleteResponse contains the response from method LinkedStorageAccounts.Delete.
-type LinkedStorageAccountsDeleteResponse struct {
+// LinkedStorageAccountsClientDeleteResponse contains the response from method LinkedStorageAccountsClient.Delete.
+type LinkedStorageAccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedStorageAccountsGetResponse contains the response from method LinkedStorageAccounts.Get.
-type LinkedStorageAccountsGetResponse struct {
-	LinkedStorageAccountsGetResult
+// LinkedStorageAccountsClientGetResponse contains the response from method LinkedStorageAccountsClient.Get.
+type LinkedStorageAccountsClientGetResponse struct {
+	LinkedStorageAccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedStorageAccountsGetResult contains the result from method LinkedStorageAccounts.Get.
-type LinkedStorageAccountsGetResult struct {
+// LinkedStorageAccountsClientGetResult contains the result from method LinkedStorageAccountsClient.Get.
+type LinkedStorageAccountsClientGetResult struct {
 	LinkedStorageAccountsResource
 }
 
-// LinkedStorageAccountsListByWorkspaceResponse contains the response from method LinkedStorageAccounts.ListByWorkspace.
-type LinkedStorageAccountsListByWorkspaceResponse struct {
-	LinkedStorageAccountsListByWorkspaceResult
+// LinkedStorageAccountsClientListByWorkspaceResponse contains the response from method LinkedStorageAccountsClient.ListByWorkspace.
+type LinkedStorageAccountsClientListByWorkspaceResponse struct {
+	LinkedStorageAccountsClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedStorageAccountsListByWorkspaceResult contains the result from method LinkedStorageAccounts.ListByWorkspace.
-type LinkedStorageAccountsListByWorkspaceResult struct {
+// LinkedStorageAccountsClientListByWorkspaceResult contains the result from method LinkedStorageAccountsClient.ListByWorkspace.
+type LinkedStorageAccountsClientListByWorkspaceResult struct {
 	LinkedStorageAccountsListResult
 }
 
-// ManagementGroupsListResponse contains the response from method ManagementGroups.List.
-type ManagementGroupsListResponse struct {
-	ManagementGroupsListResult
+// ManagementGroupsClientListResponse contains the response from method ManagementGroupsClient.List.
+type ManagementGroupsClientListResponse struct {
+	ManagementGroupsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ManagementGroupsListResult contains the result from method ManagementGroups.List.
-type ManagementGroupsListResult struct {
+// ManagementGroupsClientListResult contains the result from method ManagementGroupsClient.List.
+type ManagementGroupsClientListResult struct {
 	WorkspaceListManagementGroupsResult
 }
 
-// OperationStatusesGetResponse contains the response from method OperationStatuses.Get.
-type OperationStatusesGetResponse struct {
-	OperationStatusesGetResult
+// OperationStatusesClientGetResponse contains the response from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResponse struct {
+	OperationStatusesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationStatusesGetResult contains the result from method OperationStatuses.Get.
-type OperationStatusesGetResult struct {
+// OperationStatusesClientGetResult contains the result from method OperationStatusesClient.Get.
+type OperationStatusesClientGetResult struct {
 	OperationStatus
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SavedSearchesCreateOrUpdateResponse contains the response from method SavedSearches.CreateOrUpdate.
-type SavedSearchesCreateOrUpdateResponse struct {
-	SavedSearchesCreateOrUpdateResult
+// SavedSearchesClientCreateOrUpdateResponse contains the response from method SavedSearchesClient.CreateOrUpdate.
+type SavedSearchesClientCreateOrUpdateResponse struct {
+	SavedSearchesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SavedSearchesCreateOrUpdateResult contains the result from method SavedSearches.CreateOrUpdate.
-type SavedSearchesCreateOrUpdateResult struct {
+// SavedSearchesClientCreateOrUpdateResult contains the result from method SavedSearchesClient.CreateOrUpdate.
+type SavedSearchesClientCreateOrUpdateResult struct {
 	SavedSearch
 }
 
-// SavedSearchesDeleteResponse contains the response from method SavedSearches.Delete.
-type SavedSearchesDeleteResponse struct {
+// SavedSearchesClientDeleteResponse contains the response from method SavedSearchesClient.Delete.
+type SavedSearchesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SavedSearchesGetResponse contains the response from method SavedSearches.Get.
-type SavedSearchesGetResponse struct {
-	SavedSearchesGetResult
+// SavedSearchesClientGetResponse contains the response from method SavedSearchesClient.Get.
+type SavedSearchesClientGetResponse struct {
+	SavedSearchesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SavedSearchesGetResult contains the result from method SavedSearches.Get.
-type SavedSearchesGetResult struct {
+// SavedSearchesClientGetResult contains the result from method SavedSearchesClient.Get.
+type SavedSearchesClientGetResult struct {
 	SavedSearch
 }
 
-// SavedSearchesListByWorkspaceResponse contains the response from method SavedSearches.ListByWorkspace.
-type SavedSearchesListByWorkspaceResponse struct {
-	SavedSearchesListByWorkspaceResult
+// SavedSearchesClientListByWorkspaceResponse contains the response from method SavedSearchesClient.ListByWorkspace.
+type SavedSearchesClientListByWorkspaceResponse struct {
+	SavedSearchesClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SavedSearchesListByWorkspaceResult contains the result from method SavedSearches.ListByWorkspace.
-type SavedSearchesListByWorkspaceResult struct {
+// SavedSearchesClientListByWorkspaceResult contains the result from method SavedSearchesClient.ListByWorkspace.
+type SavedSearchesClientListByWorkspaceResult struct {
 	SavedSearchesListResult
 }
 
-// SchemaGetResponse contains the response from method Schema.Get.
-type SchemaGetResponse struct {
-	SchemaGetResult
+// SchemaClientGetResponse contains the response from method SchemaClient.Get.
+type SchemaClientGetResponse struct {
+	SchemaClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SchemaGetResult contains the result from method Schema.Get.
-type SchemaGetResult struct {
+// SchemaClientGetResult contains the result from method SchemaClient.Get.
+type SchemaClientGetResult struct {
 	SearchGetSchemaResponse
 }
 
-// SharedKeysGetSharedKeysResponse contains the response from method SharedKeys.GetSharedKeys.
-type SharedKeysGetSharedKeysResponse struct {
-	SharedKeysGetSharedKeysResult
+// SharedKeysClientGetSharedKeysResponse contains the response from method SharedKeysClient.GetSharedKeys.
+type SharedKeysClientGetSharedKeysResponse struct {
+	SharedKeysClientGetSharedKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharedKeysGetSharedKeysResult contains the result from method SharedKeys.GetSharedKeys.
-type SharedKeysGetSharedKeysResult struct {
+// SharedKeysClientGetSharedKeysResult contains the result from method SharedKeysClient.GetSharedKeys.
+type SharedKeysClientGetSharedKeysResult struct {
 	SharedKeys
 }
 
-// SharedKeysRegenerateResponse contains the response from method SharedKeys.Regenerate.
-type SharedKeysRegenerateResponse struct {
-	SharedKeysRegenerateResult
+// SharedKeysClientRegenerateResponse contains the response from method SharedKeysClient.Regenerate.
+type SharedKeysClientRegenerateResponse struct {
+	SharedKeysClientRegenerateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SharedKeysRegenerateResult contains the result from method SharedKeys.Regenerate.
-type SharedKeysRegenerateResult struct {
+// SharedKeysClientRegenerateResult contains the result from method SharedKeysClient.Regenerate.
+type SharedKeysClientRegenerateResult struct {
 	SharedKeys
 }
 
-// StorageInsightConfigsCreateOrUpdateResponse contains the response from method StorageInsightConfigs.CreateOrUpdate.
-type StorageInsightConfigsCreateOrUpdateResponse struct {
-	StorageInsightConfigsCreateOrUpdateResult
+// StorageInsightConfigsClientCreateOrUpdateResponse contains the response from method StorageInsightConfigsClient.CreateOrUpdate.
+type StorageInsightConfigsClientCreateOrUpdateResponse struct {
+	StorageInsightConfigsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageInsightConfigsCreateOrUpdateResult contains the result from method StorageInsightConfigs.CreateOrUpdate.
-type StorageInsightConfigsCreateOrUpdateResult struct {
+// StorageInsightConfigsClientCreateOrUpdateResult contains the result from method StorageInsightConfigsClient.CreateOrUpdate.
+type StorageInsightConfigsClientCreateOrUpdateResult struct {
 	StorageInsight
 }
 
-// StorageInsightConfigsDeleteResponse contains the response from method StorageInsightConfigs.Delete.
-type StorageInsightConfigsDeleteResponse struct {
+// StorageInsightConfigsClientDeleteResponse contains the response from method StorageInsightConfigsClient.Delete.
+type StorageInsightConfigsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageInsightConfigsGetResponse contains the response from method StorageInsightConfigs.Get.
-type StorageInsightConfigsGetResponse struct {
-	StorageInsightConfigsGetResult
+// StorageInsightConfigsClientGetResponse contains the response from method StorageInsightConfigsClient.Get.
+type StorageInsightConfigsClientGetResponse struct {
+	StorageInsightConfigsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageInsightConfigsGetResult contains the result from method StorageInsightConfigs.Get.
-type StorageInsightConfigsGetResult struct {
+// StorageInsightConfigsClientGetResult contains the result from method StorageInsightConfigsClient.Get.
+type StorageInsightConfigsClientGetResult struct {
 	StorageInsight
 }
 
-// StorageInsightConfigsListByWorkspaceResponse contains the response from method StorageInsightConfigs.ListByWorkspace.
-type StorageInsightConfigsListByWorkspaceResponse struct {
-	StorageInsightConfigsListByWorkspaceResult
+// StorageInsightConfigsClientListByWorkspaceResponse contains the response from method StorageInsightConfigsClient.ListByWorkspace.
+type StorageInsightConfigsClientListByWorkspaceResponse struct {
+	StorageInsightConfigsClientListByWorkspaceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StorageInsightConfigsListByWorkspaceResult contains the result from method StorageInsightConfigs.ListByWorkspace.
-type StorageInsightConfigsListByWorkspaceResult struct {
+// StorageInsightConfigsClientListByWorkspaceResult contains the result from method StorageInsightConfigsClient.ListByWorkspace.
+type StorageInsightConfigsClientListByWorkspaceResult struct {
 	StorageInsightListResult
 }
 
-// UsagesListResponse contains the response from method Usages.List.
-type UsagesListResponse struct {
-	UsagesListResult
+// TablesClientCreateOrUpdatePollerResponse contains the response from method TablesClient.CreateOrUpdate.
+type TablesClientCreateOrUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TablesClientCreateOrUpdatePoller
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UsagesListResult contains the result from method Usages.List.
-type UsagesListResult struct {
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TablesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TablesClientCreateOrUpdateResponse, error) {
+	respType := TablesClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Table)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TablesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *TablesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *TablesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TablesClient.CreateOrUpdate", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TablesClientCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TablesClientCreateOrUpdateResponse contains the response from method TablesClient.CreateOrUpdate.
+type TablesClientCreateOrUpdateResponse struct {
+	TablesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TablesClientCreateOrUpdateResult contains the result from method TablesClient.CreateOrUpdate.
+type TablesClientCreateOrUpdateResult struct {
+	Table
+}
+
+// TablesClientDeletePollerResponse contains the response from method TablesClient.Delete.
+type TablesClientDeletePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TablesClientDeletePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TablesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TablesClientDeleteResponse, error) {
+	respType := TablesClientDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TablesClientDeletePollerResponse from the provided client and resume token.
+func (l *TablesClientDeletePollerResponse) Resume(ctx context.Context, client *TablesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TablesClient.Delete", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TablesClientDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TablesClientDeleteResponse contains the response from method TablesClient.Delete.
+type TablesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TablesClientGetResponse contains the response from method TablesClient.Get.
+type TablesClientGetResponse struct {
+	TablesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TablesClientGetResult contains the result from method TablesClient.Get.
+type TablesClientGetResult struct {
+	Table
+}
+
+// TablesClientListByWorkspaceResponse contains the response from method TablesClient.ListByWorkspace.
+type TablesClientListByWorkspaceResponse struct {
+	TablesClientListByWorkspaceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TablesClientListByWorkspaceResult contains the result from method TablesClient.ListByWorkspace.
+type TablesClientListByWorkspaceResult struct {
+	TablesListResult
+}
+
+// TablesClientUpdatePollerResponse contains the response from method TablesClient.Update.
+type TablesClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *TablesClientUpdatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l TablesClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (TablesClientUpdateResponse, error) {
+	respType := TablesClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Table)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a TablesClientUpdatePollerResponse from the provided client and resume token.
+func (l *TablesClientUpdatePollerResponse) Resume(ctx context.Context, client *TablesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("TablesClient.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &TablesClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// TablesClientUpdateResponse contains the response from method TablesClient.Update.
+type TablesClientUpdateResponse struct {
+	TablesClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TablesClientUpdateResult contains the result from method TablesClient.Update.
+type TablesClientUpdateResult struct {
+	Table
+}
+
+// UsagesClientListResponse contains the response from method UsagesClient.List.
+type UsagesClientListResponse struct {
+	UsagesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// UsagesClientListResult contains the result from method UsagesClient.List.
+type UsagesClientListResult struct {
 	WorkspaceListUsagesResult
 }
 
-// WorkspacePurgeGetPurgeStatusResponse contains the response from method WorkspacePurge.GetPurgeStatus.
-type WorkspacePurgeGetPurgeStatusResponse struct {
-	WorkspacePurgeGetPurgeStatusResult
+// WorkspacePurgeClientGetPurgeStatusResponse contains the response from method WorkspacePurgeClient.GetPurgeStatus.
+type WorkspacePurgeClientGetPurgeStatusResponse struct {
+	WorkspacePurgeClientGetPurgeStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacePurgeGetPurgeStatusResult contains the result from method WorkspacePurge.GetPurgeStatus.
-type WorkspacePurgeGetPurgeStatusResult struct {
+// WorkspacePurgeClientGetPurgeStatusResult contains the result from method WorkspacePurgeClient.GetPurgeStatus.
+type WorkspacePurgeClientGetPurgeStatusResult struct {
 	WorkspacePurgeStatusResponse
 }
 
-// WorkspacePurgePurgeResponse contains the response from method WorkspacePurge.Purge.
-type WorkspacePurgePurgeResponse struct {
-	WorkspacePurgePurgeResult
+// WorkspacePurgeClientPurgeResponse contains the response from method WorkspacePurgeClient.Purge.
+type WorkspacePurgeClientPurgeResponse struct {
+	WorkspacePurgeClientPurgeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacePurgePurgeResult contains the result from method WorkspacePurge.Purge.
-type WorkspacePurgePurgeResult struct {
+// WorkspacePurgeClientPurgeResult contains the result from method WorkspacePurgeClient.Purge.
+type WorkspacePurgeClientPurgeResult struct {
 	WorkspacePurgeResponse
 	// XMSStatusLocation contains the information returned from the x-ms-status-location header response.
 	XMSStatusLocation *string
 }
 
-// WorkspacesCreateOrUpdatePollerResponse contains the response from method Workspaces.CreateOrUpdate.
-type WorkspacesCreateOrUpdatePollerResponse struct {
+// WorkspacesClientCreateOrUpdatePollerResponse contains the response from method WorkspacesClient.CreateOrUpdate.
+type WorkspacesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WorkspacesCreateOrUpdatePoller
+	Poller *WorkspacesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -689,8 +903,8 @@ type WorkspacesCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WorkspacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspacesCreateOrUpdateResponse, error) {
-	respType := WorkspacesCreateOrUpdateResponse{}
+func (l WorkspacesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspacesClientCreateOrUpdateResponse, error) {
+	respType := WorkspacesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Workspace)
 	if err != nil {
 		return respType, err
@@ -699,13 +913,13 @@ func (l WorkspacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a WorkspacesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *WorkspacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *WorkspacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WorkspacesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a WorkspacesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *WorkspacesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *WorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WorkspacesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WorkspacesCreateOrUpdatePoller{
+	poller := &WorkspacesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -717,22 +931,22 @@ func (l *WorkspacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// WorkspacesCreateOrUpdateResponse contains the response from method Workspaces.CreateOrUpdate.
-type WorkspacesCreateOrUpdateResponse struct {
-	WorkspacesCreateOrUpdateResult
+// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.CreateOrUpdate.
+type WorkspacesClientCreateOrUpdateResponse struct {
+	WorkspacesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesCreateOrUpdateResult contains the result from method Workspaces.CreateOrUpdate.
-type WorkspacesCreateOrUpdateResult struct {
+// WorkspacesClientCreateOrUpdateResult contains the result from method WorkspacesClient.CreateOrUpdate.
+type WorkspacesClientCreateOrUpdateResult struct {
 	Workspace
 }
 
-// WorkspacesDeletePollerResponse contains the response from method Workspaces.Delete.
-type WorkspacesDeletePollerResponse struct {
+// WorkspacesClientDeletePollerResponse contains the response from method WorkspacesClient.Delete.
+type WorkspacesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *WorkspacesDeletePoller
+	Poller *WorkspacesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -741,8 +955,8 @@ type WorkspacesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WorkspacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspacesDeleteResponse, error) {
-	respType := WorkspacesDeleteResponse{}
+func (l WorkspacesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspacesClientDeleteResponse, error) {
+	respType := WorkspacesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -751,13 +965,13 @@ func (l WorkspacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a WorkspacesDeletePollerResponse from the provided client and resume token.
-func (l *WorkspacesDeletePollerResponse) Resume(ctx context.Context, client *WorkspacesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WorkspacesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a WorkspacesClientDeletePollerResponse from the provided client and resume token.
+func (l *WorkspacesClientDeletePollerResponse) Resume(ctx context.Context, client *WorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WorkspacesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &WorkspacesDeletePoller{
+	poller := &WorkspacesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -769,56 +983,56 @@ func (l *WorkspacesDeletePollerResponse) Resume(ctx context.Context, client *Wor
 	return nil
 }
 
-// WorkspacesDeleteResponse contains the response from method Workspaces.Delete.
-type WorkspacesDeleteResponse struct {
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.Delete.
+type WorkspacesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesGetResponse contains the response from method Workspaces.Get.
-type WorkspacesGetResponse struct {
-	WorkspacesGetResult
+// WorkspacesClientGetResponse contains the response from method WorkspacesClient.Get.
+type WorkspacesClientGetResponse struct {
+	WorkspacesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesGetResult contains the result from method Workspaces.Get.
-type WorkspacesGetResult struct {
+// WorkspacesClientGetResult contains the result from method WorkspacesClient.Get.
+type WorkspacesClientGetResult struct {
 	Workspace
 }
 
-// WorkspacesListByResourceGroupResponse contains the response from method Workspaces.ListByResourceGroup.
-type WorkspacesListByResourceGroupResponse struct {
-	WorkspacesListByResourceGroupResult
+// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.ListByResourceGroup.
+type WorkspacesClientListByResourceGroupResponse struct {
+	WorkspacesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesListByResourceGroupResult contains the result from method Workspaces.ListByResourceGroup.
-type WorkspacesListByResourceGroupResult struct {
+// WorkspacesClientListByResourceGroupResult contains the result from method WorkspacesClient.ListByResourceGroup.
+type WorkspacesClientListByResourceGroupResult struct {
 	WorkspaceListResult
 }
 
-// WorkspacesListResponse contains the response from method Workspaces.List.
-type WorkspacesListResponse struct {
-	WorkspacesListResult
+// WorkspacesClientListResponse contains the response from method WorkspacesClient.List.
+type WorkspacesClientListResponse struct {
+	WorkspacesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesListResult contains the result from method Workspaces.List.
-type WorkspacesListResult struct {
+// WorkspacesClientListResult contains the result from method WorkspacesClient.List.
+type WorkspacesClientListResult struct {
 	WorkspaceListResult
 }
 
-// WorkspacesUpdateResponse contains the response from method Workspaces.Update.
-type WorkspacesUpdateResponse struct {
-	WorkspacesUpdateResult
+// WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.Update.
+type WorkspacesClientUpdateResponse struct {
+	WorkspacesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkspacesUpdateResult contains the result from method Workspaces.Update.
-type WorkspacesUpdateResult struct {
+// WorkspacesClientUpdateResult contains the result from method WorkspacesClient.Update.
+type WorkspacesClientUpdateResult struct {
 	Workspace
 }

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionIntents_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionIntents_List.json
 func ExampleReplicationProtectionIntentsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,20 +27,24 @@ func ExampleReplicationProtectionIntentsClient_List() {
 	client := armrecoveryservicessiterecovery.NewReplicationProtectionIntentsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectionIntentsListOptions{SkipToken: nil,
+	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectionIntentsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReplicationProtectionIntent.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionIntents_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionIntents_Get.json
 func ExampleReplicationProtectionIntentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,10 +60,10 @@ func ExampleReplicationProtectionIntentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectionIntent.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectionIntentsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectionIntents_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectionIntents_Create.json
 func ExampleReplicationProtectionIntentsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,12 +78,10 @@ func ExampleReplicationProtectionIntentsClient_Create() {
 		armrecoveryservicessiterecovery.CreateProtectionIntentInput{
 			Properties: &armrecoveryservicessiterecovery.CreateProtectionIntentProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2ACreateProtectionIntentInput{
-					CreateProtectionIntentProviderSpecificDetails: armrecoveryservicessiterecovery.CreateProtectionIntentProviderSpecificDetails{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType:             to.StringPtr("<instance-type>"),
 					FabricObjectID:           to.StringPtr("<fabric-object-id>"),
 					PrimaryLocation:          to.StringPtr("<primary-location>"),
-					RecoveryAvailabilityType: armrecoveryservicessiterecovery.A2ARecoveryAvailabilityTypeSingle.ToPtr(),
+					RecoveryAvailabilityType: armrecoveryservicessiterecovery.A2ARecoveryAvailabilityType("Single").ToPtr(),
 					RecoveryLocation:         to.StringPtr("<recovery-location>"),
 					RecoveryResourceGroupID:  to.StringPtr("<recovery-resource-group-id>"),
 					RecoverySubscriptionID:   to.StringPtr("<recovery-subscription-id>"),
@@ -90,5 +92,5 @@ func ExampleReplicationProtectionIntentsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectionIntent.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectionIntentsClientCreateResult)
 }

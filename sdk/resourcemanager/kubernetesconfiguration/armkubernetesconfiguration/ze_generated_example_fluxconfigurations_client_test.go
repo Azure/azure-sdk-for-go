@@ -29,15 +29,15 @@ func ExampleFluxConfigurationsClient_Get() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FluxConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FluxConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateFluxConfiguration.json
@@ -50,8 +50,8 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		armkubernetesconfiguration.FluxConfiguration{
@@ -85,8 +85,8 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 					},
 				},
 				Namespace:  to.StringPtr("<namespace>"),
-				Scope:      armkubernetesconfiguration.ScopeTypeCluster.ToPtr(),
-				SourceKind: armkubernetesconfiguration.SourceKindTypeGitRepository.ToPtr(),
+				Scope:      armkubernetesconfiguration.ScopeType("cluster").ToPtr(),
+				SourceKind: armkubernetesconfiguration.SourceKindType("GitRepository").ToPtr(),
 				Suspend:    to.BoolPtr(false),
 			},
 		},
@@ -98,7 +98,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FluxConfiguration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FluxConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/PatchFluxConfiguration.json
@@ -111,8 +111,8 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
 		armkubernetesconfiguration.FluxConfigurationPatch{
@@ -121,10 +121,9 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 					URL: to.StringPtr("<url>"),
 				},
 				Kustomizations: map[string]*armkubernetesconfiguration.KustomizationPatchDefinition{
-					"srs-kustomization1": {},
+					"srs-kustomization1": nil,
 					"srs-kustomization2": {
 						Path:                  to.StringPtr("<path>"),
-						DependsOn:             []*armkubernetesconfiguration.DependsOnDefinition{},
 						SyncIntervalInSeconds: to.Int64Ptr(300),
 					},
 					"srs-kustomization3": {
@@ -139,11 +138,10 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FluxConfiguration.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteFluxConfiguration.json
@@ -156,11 +154,11 @@ func ExampleFluxConfigurationsClient_BeginDelete() {
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		"<flux-configuration-name>",
-		&armkubernetesconfiguration.FluxConfigurationsBeginDeleteOptions{ForceDelete: nil})
+		&armkubernetesconfiguration.FluxConfigurationsClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -179,16 +177,20 @@ func ExampleFluxConfigurationsClient_List() {
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.Kubernetes"),
+		armkubernetesconfiguration.Enum1("connectedClusters"),
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("FluxConfiguration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

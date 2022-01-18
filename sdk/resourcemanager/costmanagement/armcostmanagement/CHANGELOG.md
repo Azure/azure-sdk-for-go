@@ -1,5 +1,328 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*AlertsClient.List` parameter(s) have been changed from `(context.Context, string, *AlertsListOptions)` to `(context.Context, string, *AlertsClientListOptions)`
+- Function `*AlertsClient.List` return value(s) have been changed from `(AlertsListResponse, error)` to `(AlertsClientListResponse, error)`
+- Function `*DimensionsClient.List` parameter(s) have been changed from `(context.Context, string, *DimensionsListOptions)` to `(context.Context, string, *DimensionsClientListOptions)`
+- Function `*DimensionsClient.List` return value(s) have been changed from `(DimensionsListResponse, error)` to `(DimensionsClientListResponse, error)`
+- Function `*AlertsClient.ListExternal` parameter(s) have been changed from `(context.Context, ExternalCloudProviderType, string, *AlertsListExternalOptions)` to `(context.Context, ExternalCloudProviderType, string, *AlertsClientListExternalOptions)`
+- Function `*AlertsClient.ListExternal` return value(s) have been changed from `(AlertsListExternalResponse, error)` to `(AlertsClientListExternalResponse, error)`
+- Function `*ViewsClient.Get` parameter(s) have been changed from `(context.Context, string, *ViewsGetOptions)` to `(context.Context, string, *ViewsClientGetOptions)`
+- Function `*ViewsClient.Get` return value(s) have been changed from `(ViewsGetResponse, error)` to `(ViewsClientGetResponse, error)`
+- Function `*ViewsClient.GetByScope` parameter(s) have been changed from `(context.Context, string, string, *ViewsGetByScopeOptions)` to `(context.Context, string, string, *ViewsClientGetByScopeOptions)`
+- Function `*ViewsClient.GetByScope` return value(s) have been changed from `(ViewsGetByScopeResponse, error)` to `(ViewsClientGetByScopeResponse, error)`
+- Function `*ForecastClient.Usage` parameter(s) have been changed from `(context.Context, string, ForecastDefinition, *ForecastUsageOptions)` to `(context.Context, string, ForecastDefinition, *ForecastClientUsageOptions)`
+- Function `*ForecastClient.Usage` return value(s) have been changed from `(ForecastUsageResponse, error)` to `(ForecastClientUsageResponse, error)`
+- Function `*ExportsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ExportsGetOptions)` to `(context.Context, string, string, *ExportsClientGetOptions)`
+- Function `*ExportsClient.Get` return value(s) have been changed from `(ExportsGetResponse, error)` to `(ExportsClientGetResponse, error)`
+- Function `*GenerateDetailedCostReportClient.BeginCreateOperation` parameter(s) have been changed from `(context.Context, string, GenerateDetailedCostReportDefinition, *GenerateDetailedCostReportBeginCreateOperationOptions)` to `(context.Context, string, GenerateDetailedCostReportDefinition, *GenerateDetailedCostReportClientBeginCreateOperationOptions)`
+- Function `*GenerateDetailedCostReportClient.BeginCreateOperation` return value(s) have been changed from `(GenerateDetailedCostReportCreateOperationPollerResponse, error)` to `(GenerateDetailedCostReportClientCreateOperationPollerResponse, error)`
+- Function `*ExportsClient.List` parameter(s) have been changed from `(context.Context, string, *ExportsListOptions)` to `(context.Context, string, *ExportsClientListOptions)`
+- Function `*ExportsClient.List` return value(s) have been changed from `(ExportsListResponse, error)` to `(ExportsClientListResponse, error)`
+- Function `*ViewsClient.DeleteByScope` parameter(s) have been changed from `(context.Context, string, string, *ViewsDeleteByScopeOptions)` to `(context.Context, string, string, *ViewsClientDeleteByScopeOptions)`
+- Function `*ViewsClient.DeleteByScope` return value(s) have been changed from `(ViewsDeleteByScopeResponse, error)` to `(ViewsClientDeleteByScopeResponse, error)`
+- Function `*ExportsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Export, *ExportsCreateOrUpdateOptions)` to `(context.Context, string, string, Export, *ExportsClientCreateOrUpdateOptions)`
+- Function `*ExportsClient.CreateOrUpdate` return value(s) have been changed from `(ExportsCreateOrUpdateResponse, error)` to `(ExportsClientCreateOrUpdateResponse, error)`
+- Function `*ExportsClient.GetExecutionHistory` parameter(s) have been changed from `(context.Context, string, string, *ExportsGetExecutionHistoryOptions)` to `(context.Context, string, string, *ExportsClientGetExecutionHistoryOptions)`
+- Function `*ExportsClient.GetExecutionHistory` return value(s) have been changed from `(ExportsGetExecutionHistoryResponse, error)` to `(ExportsClientGetExecutionHistoryResponse, error)`
+- Function `*QueryClient.UsageByExternalCloudProviderType` parameter(s) have been changed from `(context.Context, ExternalCloudProviderType, string, QueryDefinition, *QueryUsageByExternalCloudProviderTypeOptions)` to `(context.Context, ExternalCloudProviderType, string, QueryDefinition, *QueryClientUsageByExternalCloudProviderTypeOptions)`
+- Function `*QueryClient.UsageByExternalCloudProviderType` return value(s) have been changed from `(QueryUsageByExternalCloudProviderTypeResponse, error)` to `(QueryClientUsageByExternalCloudProviderTypeResponse, error)`
+- Function `*QueryClient.Usage` parameter(s) have been changed from `(context.Context, string, QueryDefinition, *QueryUsageOptions)` to `(context.Context, string, QueryDefinition, *QueryClientUsageOptions)`
+- Function `*QueryClient.Usage` return value(s) have been changed from `(QueryUsageResponse, error)` to `(QueryClientUsageResponse, error)`
+- Function `*ExportsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ExportsDeleteOptions)` to `(context.Context, string, string, *ExportsClientDeleteOptions)`
+- Function `*ExportsClient.Delete` return value(s) have been changed from `(ExportsDeleteResponse, error)` to `(ExportsClientDeleteResponse, error)`
+- Function `*GenerateDetailedCostReportOperationResultsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *GenerateDetailedCostReportOperationResultsGetOptions)` to `(context.Context, string, string, *GenerateDetailedCostReportOperationResultsClientGetOptions)`
+- Function `*GenerateDetailedCostReportOperationResultsClient.Get` return value(s) have been changed from `(GenerateDetailedCostReportOperationResultsGetResponse, error)` to `(GenerateDetailedCostReportOperationResultsClientGetResponse, error)`
+- Function `*ViewsClient.Delete` parameter(s) have been changed from `(context.Context, string, *ViewsDeleteOptions)` to `(context.Context, string, *ViewsClientDeleteOptions)`
+- Function `*ViewsClient.Delete` return value(s) have been changed from `(ViewsDeleteResponse, error)` to `(ViewsClientDeleteResponse, error)`
+- Function `*AlertsClient.Dismiss` parameter(s) have been changed from `(context.Context, string, string, DismissAlertPayload, *AlertsDismissOptions)` to `(context.Context, string, string, DismissAlertPayload, *AlertsClientDismissOptions)`
+- Function `*AlertsClient.Dismiss` return value(s) have been changed from `(AlertsDismissResponse, error)` to `(AlertsClientDismissResponse, error)`
+- Function `*GenerateDetailedCostReportOperationStatusClient.Get` parameter(s) have been changed from `(context.Context, string, string, *GenerateDetailedCostReportOperationStatusGetOptions)` to `(context.Context, string, string, *GenerateDetailedCostReportOperationStatusClientGetOptions)`
+- Function `*GenerateDetailedCostReportOperationStatusClient.Get` return value(s) have been changed from `(GenerateDetailedCostReportOperationStatusGetResponse, error)` to `(GenerateDetailedCostReportOperationStatusClientGetResponse, error)`
+- Function `*ViewsClient.CreateOrUpdateByScope` parameter(s) have been changed from `(context.Context, string, string, View, *ViewsCreateOrUpdateByScopeOptions)` to `(context.Context, string, string, View, *ViewsClientCreateOrUpdateByScopeOptions)`
+- Function `*ViewsClient.CreateOrUpdateByScope` return value(s) have been changed from `(ViewsCreateOrUpdateByScopeResponse, error)` to `(ViewsClientCreateOrUpdateByScopeResponse, error)`
+- Function `*ViewsClient.List` parameter(s) have been changed from `(*ViewsListOptions)` to `(*ViewsClientListOptions)`
+- Function `*ViewsClient.List` return value(s) have been changed from `(*ViewsListPager)` to `(*ViewsClientListPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ExportsClient.Execute` parameter(s) have been changed from `(context.Context, string, string, *ExportsExecuteOptions)` to `(context.Context, string, string, *ExportsClientExecuteOptions)`
+- Function `*ExportsClient.Execute` return value(s) have been changed from `(ExportsExecuteResponse, error)` to `(ExportsClientExecuteResponse, error)`
+- Function `*DimensionsClient.ByExternalCloudProviderType` parameter(s) have been changed from `(context.Context, ExternalCloudProviderType, string, *DimensionsByExternalCloudProviderTypeOptions)` to `(context.Context, ExternalCloudProviderType, string, *DimensionsClientByExternalCloudProviderTypeOptions)`
+- Function `*DimensionsClient.ByExternalCloudProviderType` return value(s) have been changed from `(DimensionsByExternalCloudProviderTypeResponse, error)` to `(DimensionsClientByExternalCloudProviderTypeResponse, error)`
+- Function `*ViewsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, View, *ViewsCreateOrUpdateOptions)` to `(context.Context, string, View, *ViewsClientCreateOrUpdateOptions)`
+- Function `*ViewsClient.CreateOrUpdate` return value(s) have been changed from `(ViewsCreateOrUpdateResponse, error)` to `(ViewsClientCreateOrUpdateResponse, error)`
+- Function `*ViewsClient.ListByScope` parameter(s) have been changed from `(string, *ViewsListByScopeOptions)` to `(string, *ViewsClientListByScopeOptions)`
+- Function `*ViewsClient.ListByScope` return value(s) have been changed from `(*ViewsListByScopePager)` to `(*ViewsClientListByScopePager)`
+- Function `*AlertsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AlertsGetOptions)` to `(context.Context, string, string, *AlertsClientGetOptions)`
+- Function `*AlertsClient.Get` return value(s) have been changed from `(AlertsGetResponse, error)` to `(AlertsClientGetResponse, error)`
+- Function `*ForecastClient.ExternalCloudProviderUsage` parameter(s) have been changed from `(context.Context, ExternalCloudProviderType, string, ForecastDefinition, *ForecastExternalCloudProviderUsageOptions)` to `(context.Context, ExternalCloudProviderType, string, ForecastDefinition, *ForecastClientExternalCloudProviderUsageOptions)`
+- Function `*ForecastClient.ExternalCloudProviderUsage` return value(s) have been changed from `(ForecastExternalCloudProviderUsageResponse, error)` to `(ForecastClientExternalCloudProviderUsageResponse, error)`
+- Function `*GenerateDetailedCostReportCreateOperationPoller.FinalResponse` has been removed
+- Function `*GenerateDetailedCostReportCreateOperationPoller.Done` has been removed
+- Function `*ViewsListPager.PageResponse` has been removed
+- Function `*GenerateDetailedCostReportCreateOperationPollerResponse.Resume` has been removed
+- Function `GenerateDetailedCostReportErrorResponse.Error` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*GenerateDetailedCostReportCreateOperationPoller.Poll` has been removed
+- Function `*ViewsListPager.Err` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ViewsListByScopePager.NextPage` has been removed
+- Function `*ViewsListByScopePager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*ViewsListByScopePager.PageResponse` has been removed
+- Function `*GenerateDetailedCostReportCreateOperationPoller.ResumeToken` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ViewsListPager.NextPage` has been removed
+- Function `GenerateDetailedCostReportCreateOperationPollerResponse.PollUntilDone` has been removed
+- Struct `AlertsDismissOptions` has been removed
+- Struct `AlertsDismissResponse` has been removed
+- Struct `AlertsDismissResult` has been removed
+- Struct `AlertsGetOptions` has been removed
+- Struct `AlertsGetResponse` has been removed
+- Struct `AlertsGetResult` has been removed
+- Struct `AlertsListExternalOptions` has been removed
+- Struct `AlertsListExternalResponse` has been removed
+- Struct `AlertsListExternalResult` has been removed
+- Struct `AlertsListOptions` has been removed
+- Struct `AlertsListResponse` has been removed
+- Struct `AlertsListResult` has been removed
+- Struct `DimensionsByExternalCloudProviderTypeOptions` has been removed
+- Struct `DimensionsByExternalCloudProviderTypeResponse` has been removed
+- Struct `DimensionsByExternalCloudProviderTypeResult` has been removed
+- Struct `DimensionsListOptions` has been removed
+- Struct `DimensionsListResponse` has been removed
+- Struct `DimensionsListResultEnvelope` has been removed
+- Struct `ExportsCreateOrUpdateOptions` has been removed
+- Struct `ExportsCreateOrUpdateResponse` has been removed
+- Struct `ExportsCreateOrUpdateResult` has been removed
+- Struct `ExportsDeleteOptions` has been removed
+- Struct `ExportsDeleteResponse` has been removed
+- Struct `ExportsExecuteOptions` has been removed
+- Struct `ExportsExecuteResponse` has been removed
+- Struct `ExportsGetExecutionHistoryOptions` has been removed
+- Struct `ExportsGetExecutionHistoryResponse` has been removed
+- Struct `ExportsGetExecutionHistoryResult` has been removed
+- Struct `ExportsGetOptions` has been removed
+- Struct `ExportsGetResponse` has been removed
+- Struct `ExportsGetResult` has been removed
+- Struct `ExportsListOptions` has been removed
+- Struct `ExportsListResponse` has been removed
+- Struct `ExportsListResult` has been removed
+- Struct `ForecastExternalCloudProviderUsageOptions` has been removed
+- Struct `ForecastExternalCloudProviderUsageResponse` has been removed
+- Struct `ForecastExternalCloudProviderUsageResult` has been removed
+- Struct `ForecastUsageOptions` has been removed
+- Struct `ForecastUsageResponse` has been removed
+- Struct `ForecastUsageResult` has been removed
+- Struct `GenerateDetailedCostReportBeginCreateOperationOptions` has been removed
+- Struct `GenerateDetailedCostReportCreateOperationPoller` has been removed
+- Struct `GenerateDetailedCostReportCreateOperationPollerResponse` has been removed
+- Struct `GenerateDetailedCostReportCreateOperationResponse` has been removed
+- Struct `GenerateDetailedCostReportCreateOperationResult` has been removed
+- Struct `GenerateDetailedCostReportOperationResultsGetOptions` has been removed
+- Struct `GenerateDetailedCostReportOperationResultsGetResponse` has been removed
+- Struct `GenerateDetailedCostReportOperationResultsGetResult` has been removed
+- Struct `GenerateDetailedCostReportOperationStatusGetOptions` has been removed
+- Struct `GenerateDetailedCostReportOperationStatusGetResponse` has been removed
+- Struct `GenerateDetailedCostReportOperationStatusGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `QueryUsageByExternalCloudProviderTypeOptions` has been removed
+- Struct `QueryUsageByExternalCloudProviderTypeResponse` has been removed
+- Struct `QueryUsageByExternalCloudProviderTypeResult` has been removed
+- Struct `QueryUsageOptions` has been removed
+- Struct `QueryUsageResponse` has been removed
+- Struct `QueryUsageResult` has been removed
+- Struct `ViewsCreateOrUpdateByScopeOptions` has been removed
+- Struct `ViewsCreateOrUpdateByScopeResponse` has been removed
+- Struct `ViewsCreateOrUpdateByScopeResult` has been removed
+- Struct `ViewsCreateOrUpdateOptions` has been removed
+- Struct `ViewsCreateOrUpdateResponse` has been removed
+- Struct `ViewsCreateOrUpdateResult` has been removed
+- Struct `ViewsDeleteByScopeOptions` has been removed
+- Struct `ViewsDeleteByScopeResponse` has been removed
+- Struct `ViewsDeleteOptions` has been removed
+- Struct `ViewsDeleteResponse` has been removed
+- Struct `ViewsGetByScopeOptions` has been removed
+- Struct `ViewsGetByScopeResponse` has been removed
+- Struct `ViewsGetByScopeResult` has been removed
+- Struct `ViewsGetOptions` has been removed
+- Struct `ViewsGetResponse` has been removed
+- Struct `ViewsGetResult` has been removed
+- Struct `ViewsListByScopeOptions` has been removed
+- Struct `ViewsListByScopePager` has been removed
+- Struct `ViewsListByScopeResponse` has been removed
+- Struct `ViewsListByScopeResult` has been removed
+- Struct `ViewsListOptions` has been removed
+- Struct `ViewsListPager` has been removed
+- Struct `ViewsListResponse` has been removed
+- Struct `ViewsListResult` has been removed
+- Field `Resource` of struct `QueryResult` has been removed
+- Field `ProxyResource` of struct `View` has been removed
+- Field `ProxyResource` of struct `Alert` has been removed
+- Field `InnerError` of struct `GenerateDetailedCostReportErrorResponse` has been removed
+- Field `Resource` of struct `Dimension` has been removed
+- Field `CommonExportProperties` of struct `ExportProperties` has been removed
+- Field `ProxyResource` of struct `ExportExecution` has been removed
+- Field `Dimension` of struct `ReportConfigFilter` has been removed
+- Field `Tag` of struct `ReportConfigFilter` has been removed
+- Field `ProxyResource` of struct `Export` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New function `*ViewsClientListPager.Err() error`
+- New function `*ViewsClientListByScopePager.Err() error`
+- New function `*GenerateDetailedCostReportClientCreateOperationPollerResponse.Resume(context.Context, *GenerateDetailedCostReportClient, string) error`
+- New function `*GenerateDetailedCostReportClientCreateOperationPoller.FinalResponse(context.Context) (GenerateDetailedCostReportClientCreateOperationResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `GenerateDetailedCostReportClientCreateOperationPollerResponse.PollUntilDone(context.Context, time.Duration) (GenerateDetailedCostReportClientCreateOperationResponse, error)`
+- New function `*ViewsClientListByScopePager.NextPage(context.Context) bool`
+- New function `*GenerateDetailedCostReportClientCreateOperationPoller.Done() bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ViewsClientListByScopePager.PageResponse() ViewsClientListByScopeResponse`
+- New function `*ViewsClientListPager.PageResponse() ViewsClientListResponse`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*ViewsClientListPager.NextPage(context.Context) bool`
+- New function `*GenerateDetailedCostReportClientCreateOperationPoller.ResumeToken() (string, error)`
+- New function `*GenerateDetailedCostReportClientCreateOperationPoller.Poll(context.Context) (*http.Response, error)`
+- New struct `AlertsClientDismissOptions`
+- New struct `AlertsClientDismissResponse`
+- New struct `AlertsClientDismissResult`
+- New struct `AlertsClientGetOptions`
+- New struct `AlertsClientGetResponse`
+- New struct `AlertsClientGetResult`
+- New struct `AlertsClientListExternalOptions`
+- New struct `AlertsClientListExternalResponse`
+- New struct `AlertsClientListExternalResult`
+- New struct `AlertsClientListOptions`
+- New struct `AlertsClientListResponse`
+- New struct `AlertsClientListResult`
+- New struct `DimensionsClientByExternalCloudProviderTypeOptions`
+- New struct `DimensionsClientByExternalCloudProviderTypeResponse`
+- New struct `DimensionsClientByExternalCloudProviderTypeResult`
+- New struct `DimensionsClientListOptions`
+- New struct `DimensionsClientListResponse`
+- New struct `DimensionsClientListResult`
+- New struct `ExportsClientCreateOrUpdateOptions`
+- New struct `ExportsClientCreateOrUpdateResponse`
+- New struct `ExportsClientCreateOrUpdateResult`
+- New struct `ExportsClientDeleteOptions`
+- New struct `ExportsClientDeleteResponse`
+- New struct `ExportsClientExecuteOptions`
+- New struct `ExportsClientExecuteResponse`
+- New struct `ExportsClientGetExecutionHistoryOptions`
+- New struct `ExportsClientGetExecutionHistoryResponse`
+- New struct `ExportsClientGetExecutionHistoryResult`
+- New struct `ExportsClientGetOptions`
+- New struct `ExportsClientGetResponse`
+- New struct `ExportsClientGetResult`
+- New struct `ExportsClientListOptions`
+- New struct `ExportsClientListResponse`
+- New struct `ExportsClientListResult`
+- New struct `ForecastClientExternalCloudProviderUsageOptions`
+- New struct `ForecastClientExternalCloudProviderUsageResponse`
+- New struct `ForecastClientExternalCloudProviderUsageResult`
+- New struct `ForecastClientUsageOptions`
+- New struct `ForecastClientUsageResponse`
+- New struct `ForecastClientUsageResult`
+- New struct `GenerateDetailedCostReportClientBeginCreateOperationOptions`
+- New struct `GenerateDetailedCostReportClientCreateOperationPoller`
+- New struct `GenerateDetailedCostReportClientCreateOperationPollerResponse`
+- New struct `GenerateDetailedCostReportClientCreateOperationResponse`
+- New struct `GenerateDetailedCostReportClientCreateOperationResult`
+- New struct `GenerateDetailedCostReportOperationResultsClientGetOptions`
+- New struct `GenerateDetailedCostReportOperationResultsClientGetResponse`
+- New struct `GenerateDetailedCostReportOperationResultsClientGetResult`
+- New struct `GenerateDetailedCostReportOperationStatusClientGetOptions`
+- New struct `GenerateDetailedCostReportOperationStatusClientGetResponse`
+- New struct `GenerateDetailedCostReportOperationStatusClientGetResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `QueryClientUsageByExternalCloudProviderTypeOptions`
+- New struct `QueryClientUsageByExternalCloudProviderTypeResponse`
+- New struct `QueryClientUsageByExternalCloudProviderTypeResult`
+- New struct `QueryClientUsageOptions`
+- New struct `QueryClientUsageResponse`
+- New struct `QueryClientUsageResult`
+- New struct `ViewsClientCreateOrUpdateByScopeOptions`
+- New struct `ViewsClientCreateOrUpdateByScopeResponse`
+- New struct `ViewsClientCreateOrUpdateByScopeResult`
+- New struct `ViewsClientCreateOrUpdateOptions`
+- New struct `ViewsClientCreateOrUpdateResponse`
+- New struct `ViewsClientCreateOrUpdateResult`
+- New struct `ViewsClientDeleteByScopeOptions`
+- New struct `ViewsClientDeleteByScopeResponse`
+- New struct `ViewsClientDeleteOptions`
+- New struct `ViewsClientDeleteResponse`
+- New struct `ViewsClientGetByScopeOptions`
+- New struct `ViewsClientGetByScopeResponse`
+- New struct `ViewsClientGetByScopeResult`
+- New struct `ViewsClientGetOptions`
+- New struct `ViewsClientGetResponse`
+- New struct `ViewsClientGetResult`
+- New struct `ViewsClientListByScopeOptions`
+- New struct `ViewsClientListByScopePager`
+- New struct `ViewsClientListByScopeResponse`
+- New struct `ViewsClientListByScopeResult`
+- New struct `ViewsClientListOptions`
+- New struct `ViewsClientListPager`
+- New struct `ViewsClientListResponse`
+- New struct `ViewsClientListResult`
+- New field `Error` in struct `GenerateDetailedCostReportErrorResponse`
+- New field `Error` in struct `ErrorResponse`
+- New field `Name` in struct `Export`
+- New field `Type` in struct `Export`
+- New field `ETag` in struct `Export`
+- New field `ID` in struct `Export`
+- New field `NextRunTimeEstimate` in struct `ExportProperties`
+- New field `Definition` in struct `ExportProperties`
+- New field `DeliveryInfo` in struct `ExportProperties`
+- New field `Format` in struct `ExportProperties`
+- New field `PartitionData` in struct `ExportProperties`
+- New field `RunHistory` in struct `ExportProperties`
+- New field `InvoicingThreshold` in struct `AlertPropertiesDetails`
+- New field `DepartmentName` in struct `AlertPropertiesDetails`
+- New field `EnrollmentEndDate` in struct `AlertPropertiesDetails`
+- New field `CompanyName` in struct `AlertPropertiesDetails`
+- New field `EnrollmentStartDate` in struct `AlertPropertiesDetails`
+- New field `EnrollmentNumber` in struct `AlertPropertiesDetails`
+- New field `Tags` in struct `Dimension`
+- New field `Type` in struct `Dimension`
+- New field `ETag` in struct `Dimension`
+- New field `ID` in struct `Dimension`
+- New field `Location` in struct `Dimension`
+- New field `Name` in struct `Dimension`
+- New field `SKU` in struct `Dimension`
+- New field `Name` in struct `Alert`
+- New field `Type` in struct `Alert`
+- New field `ETag` in struct `Alert`
+- New field `ID` in struct `Alert`
+- New field `Tags` in struct `ReportConfigFilter`
+- New field `Dimensions` in struct `ReportConfigFilter`
+- New field `Type` in struct `View`
+- New field `ETag` in struct `View`
+- New field `ID` in struct `View`
+- New field `Name` in struct `View`
+- New field `ETag` in struct `ExportExecution`
+- New field `ID` in struct `ExportExecution`
+- New field `Name` in struct `ExportExecution`
+- New field `Type` in struct `ExportExecution`
+- New field `Name` in struct `QueryResult`
+- New field `SKU` in struct `QueryResult`
+- New field `Tags` in struct `QueryResult`
+- New field `Type` in struct `QueryResult`
+- New field `ETag` in struct `QueryResult`
+- New field `ID` in struct `QueryResult`
+- New field `Location` in struct `QueryResult`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

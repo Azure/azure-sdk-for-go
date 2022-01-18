@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/RecoveryPoints_ListByReplicationProtectedItems.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/RecoveryPoints_ListByReplicationProtectedItems.json
 func ExampleRecoveryPointsClient_ListByReplicationProtectedItems() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,17 +30,21 @@ func ExampleRecoveryPointsClient_ListByReplicationProtectedItems() {
 		"<protection-container-name>",
 		"<replicated-protected-item-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecoveryPoint.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/RecoveryPoints_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/RecoveryPoints_Get.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,5 +63,5 @@ func ExampleRecoveryPointsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryPoint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RecoveryPointsClientGetResult)
 }

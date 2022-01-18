@@ -11,7 +11,6 @@ package armpowerbiprivatelinks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,62 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
-	ep                  string
-	pl                  runtime.Pipeline
+	host                string
 	subscriptionID      string
 	resourceGroupName   string
 	azureResourceName   string
 	privateEndpointName string
+	pl                  runtime.Pipeline
 }
 
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// resourceGroupName - The name of the resource group.
+// azureResourceName - The name of the Azure resource.
+// privateEndpointName - The name of the private endpoint.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionsClient(subscriptionID string, resourceGroupName string, azureResourceName string, privateEndpointName string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateEndpointConnectionsClient{subscriptionID: subscriptionID, resourceGroupName: resourceGroupName, azureResourceName: azureResourceName, privateEndpointName: privateEndpointName, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateEndpointConnectionsClient{
+		subscriptionID:      subscriptionID,
+		resourceGroupName:   resourceGroupName,
+		azureResourceName:   azureResourceName,
+		privateEndpointName: privateEndpointName,
+		host:                string(cp.Endpoint),
+		pl:                  armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Updates the status of Private Endpoint Connection object. Used to approve or reject a connection.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsClient) Create(ctx context.Context, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsCreateOptions) (PrivateEndpointConnectionsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateEndpointConnection - Private endpoint connection object to update.
+// options - PrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Create
+// method.
+func (client *PrivateEndpointConnectionsClient) Create(ctx context.Context, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientCreateOptions) (PrivateEndpointConnectionsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, privateEndpointConnection, options)
 	if err != nil {
-		return PrivateEndpointConnectionsCreateResponse{}, err
+		return PrivateEndpointConnectionsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsCreateResponse{}, err
+		return PrivateEndpointConnectionsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PrivateEndpointConnectionsCreateResponse{}, client.createHandleError(resp)
+		return PrivateEndpointConnectionsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsCreateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}/privateEndpointConnections/{privateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,7 +97,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, errors.New("parameter client.privateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointName}", url.PathEscape(client.privateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,50 +109,39 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 }
 
 // createHandleResponse handles the Create response.
-func (client *PrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response) (PrivateEndpointConnectionsCreateResponse, error) {
-	result := PrivateEndpointConnectionsCreateResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientCreateResponse, error) {
+	result := PrivateEndpointConnectionsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return PrivateEndpointConnectionsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *PrivateEndpointConnectionsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a private endpoint connection for Power BI by private endpoint name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, options *PrivateEndpointConnectionsBeginDeleteOptions) (PrivateEndpointConnectionsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (PrivateEndpointConnectionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, options)
 	if err != nil {
-		return PrivateEndpointConnectionsDeletePollerResponse{}, err
+		return PrivateEndpointConnectionsClientDeletePollerResponse{}, err
 	}
-	result := PrivateEndpointConnectionsDeletePollerResponse{
+	result := PrivateEndpointConnectionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("PrivateEndpointConnectionsClient.Delete", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return PrivateEndpointConnectionsDeletePollerResponse{}, err
+		return PrivateEndpointConnectionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &PrivateEndpointConnectionsDeletePoller{
+	result.Poller = &PrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a private endpoint connection for Power BI by private endpoint name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, options *PrivateEndpointConnectionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
@@ -146,13 +151,13 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, options *PrivateEndpointConnectionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}/privateEndpointConnections/{privateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +175,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter client.privateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointName}", url.PathEscape(client.privateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +186,27 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateEndpointConnectionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a specific private endpoint connection for Power BI by private endpoint name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, options *PrivateEndpointConnectionsGetOptions) (PrivateEndpointConnectionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return PrivateEndpointConnectionsGetResponse{}, err
+		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsGetResponse{}, err
+		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsGetResponse{}, client.getHandleError(resp)
+		return PrivateEndpointConnectionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, options *PrivateEndpointConnectionsGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, options *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}/privateEndpointConnections/{privateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -230,7 +224,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.privateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointName}", url.PathEscape(client.privateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,43 +236,34 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsGetResponse, error) {
-	result := PrivateEndpointConnectionsGetResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetResponse, error) {
+	result := PrivateEndpointConnectionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
-		return PrivateEndpointConnectionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateEndpointConnectionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResource - Gets private endpoint connection for Power BI.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsListByResourceOptions) *PrivateEndpointConnectionsListByResourcePager {
-	return &PrivateEndpointConnectionsListByResourcePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription.
+// azureResourceName - The name of the powerbi resource.
+// options - PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
+// method.
+func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *PrivateEndpointConnectionsClientListByResourcePager {
+	return &PrivateEndpointConnectionsClientListByResourcePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceCreateRequest(ctx, resourceGroupName, azureResourceName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsListByResourceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsClientListByResourceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsListByResourceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsClientListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/privateLinkServicesForPowerBI/{azureResourceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -292,7 +277,7 @@ func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx 
 		return nil, errors.New("parameter azureResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{azureResourceName}", url.PathEscape(azureResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -304,23 +289,10 @@ func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx 
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *PrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsListByResourceResponse, error) {
-	result := PrivateEndpointConnectionsListByResourceResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByResourceResponse, error) {
+	result := PrivateEndpointConnectionsClientListByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
-		return PrivateEndpointConnectionsListByResourceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientListByResourceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByResourceHandleError handles the ListByResource error response.
-func (client *PrivateEndpointConnectionsClient) listByResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

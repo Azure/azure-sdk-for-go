@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationStorageClassificationMappings_ListByReplicationStorageClassifications.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationStorageClassificationMappings_ListByReplicationStorageClassifications.json
 func ExampleReplicationStorageClassificationMappingsClient_ListByReplicationStorageClassifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,17 +32,21 @@ func ExampleReplicationStorageClassificationMappingsClient_ListByReplicationStor
 	pager := client.ListByReplicationStorageClassifications("<fabric-name>",
 		"<storage-classification-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StorageClassificationMapping.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationStorageClassificationMappings_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationStorageClassificationMappings_Get.json
 func ExampleReplicationStorageClassificationMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,10 +64,10 @@ func ExampleReplicationStorageClassificationMappingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageClassificationMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationStorageClassificationMappingsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationStorageClassificationMappings_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationStorageClassificationMappings_Create.json
 func ExampleReplicationStorageClassificationMappingsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,10 +94,10 @@ func ExampleReplicationStorageClassificationMappingsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("StorageClassificationMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationStorageClassificationMappingsClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationStorageClassificationMappings_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationStorageClassificationMappings_Delete.json
 func ExampleReplicationStorageClassificationMappingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +121,7 @@ func ExampleReplicationStorageClassificationMappingsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationStorageClassificationMappings_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationStorageClassificationMappings_List.json
 func ExampleReplicationStorageClassificationMappingsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,12 +132,16 @@ func ExampleReplicationStorageClassificationMappingsClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("StorageClassificationMapping.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -1,5 +1,454 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionProxiesClient.ListByAccount` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionProxiesListByAccountOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionProxiesClientListByAccountOptions)`
+- Function `*PrivateEndpointConnectionProxiesClient.ListByAccount` return value(s) have been changed from `(PrivateEndpointConnectionProxiesListByAccountResponse, error)` to `(PrivateEndpointConnectionProxiesClientListByAccountResponse, error)`
+- Function `*AccountsClient.Head` parameter(s) have been changed from `(context.Context, string, string, *AccountsHeadOptions)` to `(context.Context, string, string, *AccountsClientHeadOptions)`
+- Function `*AccountsClient.Head` return value(s) have been changed from `(AccountsHeadResponse, error)` to `(AccountsClientHeadResponse, error)`
+- Function `*InstancesClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, Instance, *InstancesBeginCreateOptions)` to `(context.Context, string, string, string, Instance, *InstancesClientBeginCreateOptions)`
+- Function `*InstancesClient.BeginCreate` return value(s) have been changed from `(InstancesCreatePollerResponse, error)` to `(InstancesClientCreatePollerResponse, error)`
+- Function `*AccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AccountsListByResourceGroupOptions)` to `(string, *AccountsClientListByResourceGroupOptions)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsListByResourceGroupPager)` to `(*AccountsClientListByResourceGroupPager)`
+- Function `*InstancesClient.ListByAccount` parameter(s) have been changed from `(string, string, *InstancesListByAccountOptions)` to `(string, string, *InstancesClientListByAccountOptions)`
+- Function `*InstancesClient.ListByAccount` return value(s) have been changed from `(*InstancesListByAccountPager)` to `(*InstancesClientListByAccountPager)`
+- Function `*AccountsClient.ListBySubscription` parameter(s) have been changed from `(*AccountsListBySubscriptionOptions)` to `(*AccountsClientListBySubscriptionOptions)`
+- Function `*AccountsClient.ListBySubscription` return value(s) have been changed from `(*AccountsListBySubscriptionPager)` to `(*AccountsClientListBySubscriptionPager)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*InstancesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *InstancesBeginDeleteOptions)` to `(context.Context, string, string, string, *InstancesClientBeginDeleteOptions)`
+- Function `*InstancesClient.BeginDelete` return value(s) have been changed from `(InstancesDeletePollerResponse, error)` to `(InstancesClientDeletePollerResponse, error)`
+- Function `*AccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AccountsGetOptions)` to `(context.Context, string, string, *AccountsClientGetOptions)`
+- Function `*AccountsClient.Get` return value(s) have been changed from `(AccountsGetResponse, error)` to `(AccountsClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionProxiesClient.Validate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnectionProxy, *PrivateEndpointConnectionProxiesValidateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnectionProxy, *PrivateEndpointConnectionProxiesClientValidateOptions)`
+- Function `*PrivateEndpointConnectionProxiesClient.Validate` return value(s) have been changed from `(PrivateEndpointConnectionProxiesValidateResponse, error)` to `(PrivateEndpointConnectionProxiesClientValidateResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.ListByAccount` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListByAccountOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListByAccountOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByAccount` return value(s) have been changed from `(PrivateEndpointConnectionsListByAccountResponse, error)` to `(PrivateEndpointConnectionsClientListByAccountResponse, error)`
+- Function `*InstancesClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, TagUpdate, *InstancesUpdateOptions)` to `(context.Context, string, string, string, TagUpdate, *InstancesClientUpdateOptions)`
+- Function `*InstancesClient.Update` return value(s) have been changed from `(InstancesUpdateResponse, error)` to `(InstancesClientUpdateResponse, error)`
+- Function `*InstancesClient.Head` parameter(s) have been changed from `(context.Context, string, string, string, *InstancesHeadOptions)` to `(context.Context, string, string, string, *InstancesClientHeadOptions)`
+- Function `*InstancesClient.Head` return value(s) have been changed from `(InstancesHeadResponse, error)` to `(InstancesClientHeadResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByAccount` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListByAccountOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListByAccountOptions)`
+- Function `*PrivateLinkResourcesClient.ListByAccount` return value(s) have been changed from `(PrivateLinkResourcesListByAccountResponse, error)` to `(PrivateLinkResourcesClientListByAccountResponse, error)`
+- Function `*PrivateEndpointConnectionProxiesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionProxiesBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionProxiesClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionProxiesClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionProxiesDeletePollerResponse, error)` to `(PrivateEndpointConnectionProxiesClientDeletePollerResponse, error)`
+- Function `*AccountsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *AccountsBeginDeleteOptions)` to `(context.Context, string, string, *AccountsClientBeginDeleteOptions)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsDeletePollerResponse, error)` to `(AccountsClientDeletePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*AccountsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, AccountUpdate, *AccountsBeginUpdateOptions)` to `(context.Context, string, string, AccountUpdate, *AccountsClientBeginUpdateOptions)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsUpdatePollerResponse, error)` to `(AccountsClientUpdatePollerResponse, error)`
+- Function `*InstancesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *InstancesGetOptions)` to `(context.Context, string, string, string, *InstancesClientGetOptions)`
+- Function `*InstancesClient.Get` return value(s) have been changed from `(InstancesGetResponse, error)` to `(InstancesClientGetResponse, error)`
+- Function `*PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnectionProxy, *PrivateEndpointConnectionProxiesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnectionProxy, *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionProxiesCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*AccountsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, Account, *AccountsBeginCreateOptions)` to `(context.Context, string, string, Account, *AccountsClientBeginCreateOptions)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsCreatePollerResponse, error)` to `(AccountsClientCreatePollerResponse, error)`
+- Function `*PrivateEndpointConnectionProxiesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionProxiesGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionProxiesClientGetOptions)`
+- Function `*PrivateEndpointConnectionProxiesClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionProxiesGetResponse, error)` to `(PrivateEndpointConnectionProxiesClientGetResponse, error)`
+- Function `*InstancesDeletePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionProxiesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsDeletePoller.FinalResponse` has been removed
+- Function `*InstancesDeletePoller.Poll` has been removed
+- Function `*InstancesCreatePoller.FinalResponse` has been removed
+- Function `AccountsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DeviceUpdateClient.CheckNameAvailability` has been removed
+- Function `NewDeviceUpdateClient` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*InstancesCreatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*InstancesDeletePoller.Done` has been removed
+- Function `*AccountsDeletePoller.ResumeToken` has been removed
+- Function `*AccountsCreatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*InstancesListByAccountPager.PageResponse` has been removed
+- Function `*InstancesCreatePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*AccountsCreatePoller.ResumeToken` has been removed
+- Function `*AccountsListBySubscriptionPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionProxiesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsUpdatePoller.Done` has been removed
+- Function `InstancesDeletePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `AccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*InstancesCreatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionProxiesDeletePoller.Done` has been removed
+- Function `GroupInformation.MarshalJSON` has been removed
+- Function `*AccountsDeletePoller.Done` has been removed
+- Function `*AccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*AccountsListBySubscriptionPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionProxiesCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*PrivateEndpointConnectionProxiesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionProxiesDeletePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionProxiesDeletePoller.FinalResponse` has been removed
+- Function `*InstancesListByAccountPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*AccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `AccountsCreatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionProxiesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsUpdatePoller.ResumeToken` has been removed
+- Function `*AccountsDeletePollerResponse.Resume` has been removed
+- Function `*AccountsUpdatePoller.Poll` has been removed
+- Function `*AccountsListBySubscriptionPager.Err` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `InstancesCreatePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*AccountsCreatePoller.Poll` has been removed
+- Function `*AccountsCreatePoller.Done` has been removed
+- Function `*InstancesDeletePoller.ResumeToken` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*AccountsListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionProxiesDeletePoller.Poll` has been removed
+- Function `*AccountsCreatePollerResponse.Resume` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*InstancesCreatePoller.Done` has been removed
+- Function `*AccountsDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionProxiesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionProxyProperties.MarshalJSON` has been removed
+- Function `*InstancesDeletePollerResponse.Resume` has been removed
+- Function `*InstancesListByAccountPager.Err` has been removed
+- Function `*PrivateEndpointConnectionProxiesDeletePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionProxiesCreateOrUpdatePoller.Done` has been removed
+- Struct `AccountsBeginCreateOptions` has been removed
+- Struct `AccountsBeginDeleteOptions` has been removed
+- Struct `AccountsBeginUpdateOptions` has been removed
+- Struct `AccountsCreatePoller` has been removed
+- Struct `AccountsCreatePollerResponse` has been removed
+- Struct `AccountsCreateResponse` has been removed
+- Struct `AccountsCreateResult` has been removed
+- Struct `AccountsDeletePoller` has been removed
+- Struct `AccountsDeletePollerResponse` has been removed
+- Struct `AccountsDeleteResponse` has been removed
+- Struct `AccountsGetOptions` has been removed
+- Struct `AccountsGetResponse` has been removed
+- Struct `AccountsGetResult` has been removed
+- Struct `AccountsHeadOptions` has been removed
+- Struct `AccountsHeadResponse` has been removed
+- Struct `AccountsHeadResult` has been removed
+- Struct `AccountsListByResourceGroupOptions` has been removed
+- Struct `AccountsListByResourceGroupPager` has been removed
+- Struct `AccountsListByResourceGroupResponse` has been removed
+- Struct `AccountsListByResourceGroupResult` has been removed
+- Struct `AccountsListBySubscriptionOptions` has been removed
+- Struct `AccountsListBySubscriptionPager` has been removed
+- Struct `AccountsListBySubscriptionResponse` has been removed
+- Struct `AccountsListBySubscriptionResult` has been removed
+- Struct `AccountsUpdatePoller` has been removed
+- Struct `AccountsUpdatePollerResponse` has been removed
+- Struct `AccountsUpdateResponse` has been removed
+- Struct `AccountsUpdateResult` has been removed
+- Struct `DeviceUpdateCheckNameAvailabilityOptions` has been removed
+- Struct `DeviceUpdateCheckNameAvailabilityResponse` has been removed
+- Struct `DeviceUpdateCheckNameAvailabilityResult` has been removed
+- Struct `DeviceUpdateClient` has been removed
+- Struct `InstancesBeginCreateOptions` has been removed
+- Struct `InstancesBeginDeleteOptions` has been removed
+- Struct `InstancesCreatePoller` has been removed
+- Struct `InstancesCreatePollerResponse` has been removed
+- Struct `InstancesCreateResponse` has been removed
+- Struct `InstancesCreateResult` has been removed
+- Struct `InstancesDeletePoller` has been removed
+- Struct `InstancesDeletePollerResponse` has been removed
+- Struct `InstancesDeleteResponse` has been removed
+- Struct `InstancesGetOptions` has been removed
+- Struct `InstancesGetResponse` has been removed
+- Struct `InstancesGetResult` has been removed
+- Struct `InstancesHeadOptions` has been removed
+- Struct `InstancesHeadResponse` has been removed
+- Struct `InstancesHeadResult` has been removed
+- Struct `InstancesListByAccountOptions` has been removed
+- Struct `InstancesListByAccountPager` has been removed
+- Struct `InstancesListByAccountResponse` has been removed
+- Struct `InstancesListByAccountResult` has been removed
+- Struct `InstancesUpdateOptions` has been removed
+- Struct `InstancesUpdateResponse` has been removed
+- Struct `InstancesUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionProxiesBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionProxiesBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionProxiesCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionProxiesCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionProxiesCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionProxiesCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionProxiesDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionProxiesDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionProxiesDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionProxiesGetOptions` has been removed
+- Struct `PrivateEndpointConnectionProxiesGetResponse` has been removed
+- Struct `PrivateEndpointConnectionProxiesGetResult` has been removed
+- Struct `PrivateEndpointConnectionProxiesListByAccountOptions` has been removed
+- Struct `PrivateEndpointConnectionProxiesListByAccountResponse` has been removed
+- Struct `PrivateEndpointConnectionProxiesListByAccountResult` has been removed
+- Struct `PrivateEndpointConnectionProxiesValidateOptions` has been removed
+- Struct `PrivateEndpointConnectionProxiesValidateResponse` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByAccountOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByAccountResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByAccountResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListByAccountOptions` has been removed
+- Struct `PrivateLinkResourcesListByAccountResponse` has been removed
+- Struct `PrivateLinkResourcesListByAccountResult` has been removed
+- Field `TrackedResource` of struct `Instance` has been removed
+- Field `TagUpdate` of struct `AccountUpdate` has been removed
+- Field `ProxyResource` of struct `GroupInformation` has been removed
+- Field `PrivateEndpointConnectionProxyProperties` of struct `PrivateEndpointConnectionProxy` has been removed
+- Field `ProxyResource` of struct `PrivateEndpointConnectionProxy` has been removed
+- Field `PrivateLinkResourceProperties` of struct `GroupInformationProperties` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `TrackedResource` of struct `Account` has been removed
+- Field `RemotePrivateEndpointConnection` of struct `PrivateLinkServiceProxyRemotePrivateEndpointConnection` has been removed
+
+### Features Added
+
+- New function `PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse, error)`
+- New function `*AccountsClientCreatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*InstancesClientDeletePoller.FinalResponse(context.Context) (InstancesClientDeleteResponse, error)`
+- New function `*AccountsClientListByResourceGroupPager.PageResponse() AccountsClientListByResourceGroupResponse`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionProxiesClientCreateOrUpdatePoller.Done() bool`
+- New function `*AccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `InstancesClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (InstancesClientCreateResponse, error)`
+- New function `*AccountsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionProxiesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionProxiesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionProxiesClient, string) error`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*InstancesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionProxiesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionProxiesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `AccountProperties.MarshalJSON() ([]byte, error)`
+- New function `*InstancesClientCreatePoller.FinalResponse(context.Context) (InstancesClientCreateResponse, error)`
+- New function `*AccountsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*InstancesClientListByAccountPager.NextPage(context.Context) bool`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*AccountsClientDeletePoller.ResumeToken() (string, error)`
+- New function `AccountsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientCreateResponse, error)`
+- New function `*InstancesClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InstancesClientDeletePoller.Done() bool`
+- New function `*AccountsClientDeletePoller.Done() bool`
+- New function `InstancesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (InstancesClientDeleteResponse, error)`
+- New function `*InstancesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*AccountsClientDeletePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*InstancesClientDeletePollerResponse.Resume(context.Context, *InstancesClient, string) error`
+- New function `*AccountsClientDeletePoller.FinalResponse(context.Context) (AccountsClientDeleteResponse, error)`
+- New function `*AccountsClientCreatePoller.Done() bool`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PrivateEndpointConnectionProxiesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionProxiesClientDeleteResponse, error)`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
+- New function `*PrivateEndpointConnectionProxiesClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*InstancesClientListByAccountPager.PageResponse() InstancesClientListByAccountResponse`
+- New function `*AccountsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionProxiesClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionProxiesClientDeleteResponse, error)`
+- New function `*AccountsClientListByResourceGroupPager.Err() error`
+- New function `*InstancesClientCreatePollerResponse.Resume(context.Context, *InstancesClient, string) error`
+- New function `*PrivateEndpointConnectionProxiesClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionProxiesClient, string) error`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `*Client.CheckNameAvailability(context.Context, CheckNameAvailabilityRequest, *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `AccountsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientDeleteResponse, error)`
+- New function `*InstancesClientListByAccountPager.Err() error`
+- New function `*AccountsClientListBySubscriptionPager.Err() error`
+- New function `*AccountsClientCreatePoller.FinalResponse(context.Context) (AccountsClientCreateResponse, error)`
+- New function `*PrivateEndpointConnectionProxiesClientDeletePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*InstancesClientCreatePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientListBySubscriptionPager.PageResponse() AccountsClientListBySubscriptionResponse`
+- New function `*AccountsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*InstancesClientCreatePoller.Done() bool`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New struct `AccountsClientBeginCreateOptions`
+- New struct `AccountsClientBeginDeleteOptions`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientCreatePoller`
+- New struct `AccountsClientCreatePollerResponse`
+- New struct `AccountsClientCreateResponse`
+- New struct `AccountsClientCreateResult`
+- New struct `AccountsClientDeletePoller`
+- New struct `AccountsClientDeletePollerResponse`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientHeadOptions`
+- New struct `AccountsClientHeadResponse`
+- New struct `AccountsClientHeadResult`
+- New struct `AccountsClientListByResourceGroupOptions`
+- New struct `AccountsClientListByResourceGroupPager`
+- New struct `AccountsClientListByResourceGroupResponse`
+- New struct `AccountsClientListByResourceGroupResult`
+- New struct `AccountsClientListBySubscriptionOptions`
+- New struct `AccountsClientListBySubscriptionPager`
+- New struct `AccountsClientListBySubscriptionResponse`
+- New struct `AccountsClientListBySubscriptionResult`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `Client`
+- New struct `ClientCheckNameAvailabilityOptions`
+- New struct `ClientCheckNameAvailabilityResponse`
+- New struct `ClientCheckNameAvailabilityResult`
+- New struct `InstancesClientBeginCreateOptions`
+- New struct `InstancesClientBeginDeleteOptions`
+- New struct `InstancesClientCreatePoller`
+- New struct `InstancesClientCreatePollerResponse`
+- New struct `InstancesClientCreateResponse`
+- New struct `InstancesClientCreateResult`
+- New struct `InstancesClientDeletePoller`
+- New struct `InstancesClientDeletePollerResponse`
+- New struct `InstancesClientDeleteResponse`
+- New struct `InstancesClientGetOptions`
+- New struct `InstancesClientGetResponse`
+- New struct `InstancesClientGetResult`
+- New struct `InstancesClientHeadOptions`
+- New struct `InstancesClientHeadResponse`
+- New struct `InstancesClientHeadResult`
+- New struct `InstancesClientListByAccountOptions`
+- New struct `InstancesClientListByAccountPager`
+- New struct `InstancesClientListByAccountResponse`
+- New struct `InstancesClientListByAccountResult`
+- New struct `InstancesClientUpdateOptions`
+- New struct `InstancesClientUpdateResponse`
+- New struct `InstancesClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionProxiesClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionProxiesClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionProxiesClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionProxiesClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionProxiesClientDeletePoller`
+- New struct `PrivateEndpointConnectionProxiesClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionProxiesClientDeleteResponse`
+- New struct `PrivateEndpointConnectionProxiesClientGetOptions`
+- New struct `PrivateEndpointConnectionProxiesClientGetResponse`
+- New struct `PrivateEndpointConnectionProxiesClientGetResult`
+- New struct `PrivateEndpointConnectionProxiesClientListByAccountOptions`
+- New struct `PrivateEndpointConnectionProxiesClientListByAccountResponse`
+- New struct `PrivateEndpointConnectionProxiesClientListByAccountResult`
+- New struct `PrivateEndpointConnectionProxiesClientValidateOptions`
+- New struct `PrivateEndpointConnectionProxiesClientValidateResponse`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByAccountOptions`
+- New struct `PrivateEndpointConnectionsClientListByAccountResponse`
+- New struct `PrivateEndpointConnectionsClientListByAccountResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListByAccountOptions`
+- New struct `PrivateLinkResourcesClientListByAccountResponse`
+- New struct `PrivateLinkResourcesClientListByAccountResult`
+- New field `Tags` in struct `Account`
+- New field `ID` in struct `Account`
+- New field `Name` in struct `Account`
+- New field `SystemData` in struct `Account`
+- New field `Type` in struct `Account`
+- New field `Location` in struct `Account`
+- New field `Type` in struct `PrivateEndpointConnectionProxy`
+- New field `RemotePrivateEndpoint` in struct `PrivateEndpointConnectionProxy`
+- New field `Status` in struct `PrivateEndpointConnectionProxy`
+- New field `ETag` in struct `PrivateEndpointConnectionProxy`
+- New field `ID` in struct `PrivateEndpointConnectionProxy`
+- New field `Name` in struct `PrivateEndpointConnectionProxy`
+- New field `ProvisioningState` in struct `PrivateEndpointConnectionProxy`
+- New field `SystemData` in struct `PrivateEndpointConnectionProxy`
+- New field `RequiredZoneNames` in struct `GroupInformationProperties`
+- New field `GroupID` in struct `GroupInformationProperties`
+- New field `RequiredMembers` in struct `GroupInformationProperties`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Tags` in struct `AccountUpdate`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `SystemData` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+- New field `ID` in struct `PrivateLinkServiceProxyRemotePrivateEndpointConnection`
+- New field `ID` in struct `GroupInformation`
+- New field `Name` in struct `GroupInformation`
+- New field `SystemData` in struct `GroupInformation`
+- New field `Type` in struct `GroupInformation`
+- New field `ID` in struct `Instance`
+- New field `Name` in struct `Instance`
+- New field `SystemData` in struct `Instance`
+- New field `Type` in struct `Instance`
+- New field `Location` in struct `Instance`
+- New field `Tags` in struct `Instance`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `SystemData` in struct `TrackedResource`
+- New field `PrivateEndpointConnections` in struct `AccountProperties`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

@@ -9,8 +9,8 @@
 package armrecoveryservices
 
 const (
-	module  = "armrecoveryservices"
-	version = "v0.2.1"
+	moduleName    = "armrecoveryservices"
+	moduleVersion = "v0.3.0"
 )
 
 // AuthType - Specifies the authentication type.
@@ -37,6 +37,29 @@ func PossibleAuthTypeValues() []AuthType {
 
 // ToPtr returns a *AuthType pointing to the current value.
 func (c AuthType) ToPtr() *AuthType {
+	return &c
+}
+
+// BackupStorageVersion - Backup storage version
+type BackupStorageVersion string
+
+const (
+	BackupStorageVersionUnassigned BackupStorageVersion = "Unassigned"
+	BackupStorageVersionV1         BackupStorageVersion = "V1"
+	BackupStorageVersionV2         BackupStorageVersion = "V2"
+)
+
+// PossibleBackupStorageVersionValues returns the possible values for the BackupStorageVersion const type.
+func PossibleBackupStorageVersionValues() []BackupStorageVersion {
+	return []BackupStorageVersion{
+		BackupStorageVersionUnassigned,
+		BackupStorageVersionV1,
+		BackupStorageVersionV2,
+	}
+}
+
+// ToPtr returns a *BackupStorageVersion pointing to the current value.
+func (c BackupStorageVersion) ToPtr() *BackupStorageVersion {
 	return &c
 }
 
@@ -136,8 +159,8 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// ResourceIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a
-// set of user-assigned identities. The type 'None' will remove any
+// ResourceIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+// created identity and a set of user-assigned identities. The type 'None' will remove any
 // identities.
 type ResourceIdentityType string
 

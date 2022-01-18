@@ -29,12 +29,16 @@ func ExamplePrivateLinkHubsClient_ListByResourceGroup() {
 	client := armsynapse.NewPrivateLinkHubsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateLinkHub.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExamplePrivateLinkHubsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkHub.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkHubsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdatePrivateLinkHub.json
@@ -77,7 +81,7 @@ func ExamplePrivateLinkHubsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkHub.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkHubsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdatePrivateLinkHub.json
@@ -92,11 +96,9 @@ func ExamplePrivateLinkHubsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<private-link-hub-name>",
 		armsynapse.PrivateLinkHub{
-			TrackedResource: armsynapse.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key": to.StringPtr("value"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key": to.StringPtr("value"),
 			},
 			Properties: &armsynapse.PrivateLinkHubProperties{},
 		},
@@ -104,7 +106,7 @@ func ExamplePrivateLinkHubsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkHub.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkHubsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeletePrivateLinkHub.json
@@ -137,12 +139,16 @@ func ExamplePrivateLinkHubsClient_List() {
 	ctx := context.Background()
 	client := armsynapse.NewPrivateLinkHubsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateLinkHub.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

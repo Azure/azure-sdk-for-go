@@ -9,8 +9,8 @@
 package armdatafactory
 
 const (
-	module  = "armdatafactory"
-	version = "v0.1.0"
+	moduleName    = "armdatafactory"
+	moduleVersion = "v0.2.0"
 )
 
 type AmazonRdsForOraclePartitionOption string
@@ -133,9 +133,10 @@ func (c BlobEventTypes) ToPtr() *BlobEventTypes {
 	return &c
 }
 
-// CassandraSourceReadConsistencyLevels - The consistency level specifies how many Cassandra servers must respond to a read request before returning data
-// to the client application. Cassandra checks the specified number of Cassandra servers
-// for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive.
+// CassandraSourceReadConsistencyLevels - The consistency level specifies how many Cassandra servers must respond to a read
+// request before returning data to the client application. Cassandra checks the specified number of Cassandra servers
+// for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'.
+// It is case-insensitive.
 type CassandraSourceReadConsistencyLevels string
 
 const (
@@ -232,7 +233,8 @@ func (c CopyBehaviorType) ToPtr() *CopyBehaviorType {
 	return &c
 }
 
-// CosmosDbConnectionMode - The connection mode used to access CosmosDB account. Type: string (or Expression with resultType string).
+// CosmosDbConnectionMode - The connection mode used to access CosmosDB account. Type: string (or Expression with resultType
+// string).
 type CosmosDbConnectionMode string
 
 const (
@@ -253,8 +255,8 @@ func (c CosmosDbConnectionMode) ToPtr() *CosmosDbConnectionMode {
 	return &c
 }
 
-// CosmosDbServicePrincipalCredentialType - The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
-// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+// CosmosDbServicePrincipalCredentialType - The service principal credential type to use in Server-To-Server authentication.
+// 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with
 // resultType string).
 type CosmosDbServicePrincipalCredentialType string
 
@@ -686,8 +688,8 @@ func (c GlobalParameterType) ToPtr() *GlobalParameterType {
 	return &c
 }
 
-// GoogleAdWordsAuthenticationType - The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted
-// IR.
+// GoogleAdWordsAuthenticationType - The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication
+// can only be used on self-hosted IR.
 type GoogleAdWordsAuthenticationType string
 
 const (
@@ -708,8 +710,8 @@ func (c GoogleAdWordsAuthenticationType) ToPtr() *GoogleAdWordsAuthenticationTyp
 	return &c
 }
 
-// GoogleBigQueryAuthenticationType - The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted
-// IR.
+// GoogleBigQueryAuthenticationType - The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication
+// can only be used on self-hosted IR.
 type GoogleBigQueryAuthenticationType string
 
 const (
@@ -1002,8 +1004,8 @@ func (c IntegrationRuntimeEntityReferenceType) ToPtr() *IntegrationRuntimeEntity
 	return &c
 }
 
-// IntegrationRuntimeInternalChannelEncryptionMode - It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted
-// integration runtime nodes exist).
+// IntegrationRuntimeInternalChannelEncryptionMode - It is used to set the encryption mode for node-node communication channel
+// (when more than 2 self-hosted integration runtime nodes exist).
 type IntegrationRuntimeInternalChannelEncryptionMode string
 
 const (
@@ -1066,7 +1068,8 @@ func (c IntegrationRuntimeReferenceType) ToPtr() *IntegrationRuntimeReferenceTyp
 	return &c
 }
 
-// IntegrationRuntimeSsisCatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+// IntegrationRuntimeSsisCatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in
+// https://azure.microsoft.com/en-us/pricing/details/sql-database/
 type IntegrationRuntimeSsisCatalogPricingTier string
 
 const (
@@ -1608,8 +1611,8 @@ func (c RestServiceAuthenticationType) ToPtr() *RestServiceAuthenticationType {
 	return &c
 }
 
-// RunQueryFilterOperand - Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status;
-// to query activity runs are ActivityName, ActivityRunStart,
+// RunQueryFilterOperand - Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName,
+// RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart,
 // ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status.
 type RunQueryFilterOperand string
 
@@ -1697,8 +1700,8 @@ func (c RunQueryOrder) ToPtr() *RunQueryOrder {
 	return &c
 }
 
-// RunQueryOrderByField - Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName, RunStart, RunEnd
-// and Status; for activity runs are ActivityName, ActivityRunStart,
+// RunQueryOrderByField - Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are
+// PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart,
 // ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status.
 type RunQueryOrderByField string
 
@@ -1734,7 +1737,8 @@ func (c RunQueryOrderByField) ToPtr() *RunQueryOrderByField {
 	return &c
 }
 
-// SQLAlwaysEncryptedAkvAuthType - Sql always encrypted AKV authentication type. Type: string (or Expression with resultType string).
+// SQLAlwaysEncryptedAkvAuthType - Sql always encrypted AKV authentication type. Type: string (or Expression with resultType
+// string).
 type SQLAlwaysEncryptedAkvAuthType string
 
 const (

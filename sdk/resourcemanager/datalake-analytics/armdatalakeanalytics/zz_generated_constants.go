@@ -9,8 +9,8 @@
 package armdatalakeanalytics
 
 const (
-	module  = "armdatalakeanalytics"
-	version = "v0.2.1"
+	moduleName    = "armdatalakeanalytics"
+	moduleVersion = "v0.3.0"
 )
 
 // AADObjectType - The type of AAD object the object identifier refers to.
@@ -36,7 +36,8 @@ func (c AADObjectType) ToPtr() *AADObjectType {
 	return &c
 }
 
-// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value is Microsoft.DataLakeAnalytics/accounts
+// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value
+// is Microsoft.DataLakeAnalytics/accounts
 type CheckNameAvailabilityParametersType string
 
 const (
@@ -138,8 +139,8 @@ func (c DebugDataAccessLevel) ToPtr() *DebugDataAccessLevel {
 	return &c
 }
 
-// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
-// this is not enforced.
+// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall.
+// If the firewall is disabled, this is not enforced.
 type FirewallAllowAzureIPsState string
 
 const (

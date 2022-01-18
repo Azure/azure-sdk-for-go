@@ -25,9 +25,10 @@ func ExamplePrivateLinkServicesClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armpowerbiprivatelinks.NewPrivateLinkServicesClient("<subscription-id>",
 		"<resource-group-name>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkServicesClientListByResourceGroupResult)
 }

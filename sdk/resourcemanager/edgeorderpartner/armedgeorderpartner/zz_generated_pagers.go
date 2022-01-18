@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// EdgeOrderPartnerAPISListOperationsPartnerPager provides operations for iterating over paged responses.
-type EdgeOrderPartnerAPISListOperationsPartnerPager struct {
-	client    *EdgeOrderPartnerAPISClient
-	current   EdgeOrderPartnerAPISListOperationsPartnerResponse
+// APISClientListOperationsPartnerPager provides operations for iterating over paged responses.
+type APISClientListOperationsPartnerPager struct {
+	client    *APISClient
+	current   APISClientListOperationsPartnerResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderPartnerAPISListOperationsPartnerResponse) (*policy.Request, error)
+	advancer  func(context.Context, APISClientListOperationsPartnerResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderPartnerAPISListOperationsPartnerPager) Err() error {
+func (p *APISClientListOperationsPartnerPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderPartnerAPISListOperationsPartnerPager) NextPage(ctx context.Context) bool {
+func (p *APISClientListOperationsPartnerPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *EdgeOrderPartnerAPISListOperationsPartnerPager) NextPage(ctx context.Co
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOperationsPartnerHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOperationsPartnerHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *EdgeOrderPartnerAPISListOperationsPartnerPager) NextPage(ctx context.Co
 	return true
 }
 
-// PageResponse returns the current EdgeOrderPartnerAPISListOperationsPartnerResponse page.
-func (p *EdgeOrderPartnerAPISListOperationsPartnerPager) PageResponse() EdgeOrderPartnerAPISListOperationsPartnerResponse {
+// PageResponse returns the current APISClientListOperationsPartnerResponse page.
+func (p *APISClientListOperationsPartnerPager) PageResponse() APISClientListOperationsPartnerResponse {
 	return p.current
 }
 
-// EdgeOrderPartnerAPISSearchInventoriesPager provides operations for iterating over paged responses.
-type EdgeOrderPartnerAPISSearchInventoriesPager struct {
-	client    *EdgeOrderPartnerAPISClient
-	current   EdgeOrderPartnerAPISSearchInventoriesResponse
+// APISClientSearchInventoriesPager provides operations for iterating over paged responses.
+type APISClientSearchInventoriesPager struct {
+	client    *APISClient
+	current   APISClientSearchInventoriesResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderPartnerAPISSearchInventoriesResponse) (*policy.Request, error)
+	advancer  func(context.Context, APISClientSearchInventoriesResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderPartnerAPISSearchInventoriesPager) Err() error {
+func (p *APISClientSearchInventoriesPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderPartnerAPISSearchInventoriesPager) NextPage(ctx context.Context) bool {
+func (p *APISClientSearchInventoriesPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *EdgeOrderPartnerAPISSearchInventoriesPager) NextPage(ctx context.Contex
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.searchInventoriesHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.searchInventoriesHandleResponse(resp)
@@ -119,7 +119,7 @@ func (p *EdgeOrderPartnerAPISSearchInventoriesPager) NextPage(ctx context.Contex
 	return true
 }
 
-// PageResponse returns the current EdgeOrderPartnerAPISSearchInventoriesResponse page.
-func (p *EdgeOrderPartnerAPISSearchInventoriesPager) PageResponse() EdgeOrderPartnerAPISSearchInventoriesResponse {
+// PageResponse returns the current APISClientSearchInventoriesResponse page.
+func (p *APISClientSearchInventoriesPager) PageResponse() APISClientSearchInventoriesResponse {
 	return p.current
 }

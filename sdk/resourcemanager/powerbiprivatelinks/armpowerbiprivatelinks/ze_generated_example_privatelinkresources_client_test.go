@@ -27,12 +27,16 @@ func ExamplePrivateLinkResourcesClient_ListByResource() {
 		"<resource-group-name>",
 		"<azure-resource-name>", cred, nil)
 	pager := client.ListByResource(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateLinkResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientGetResult)
 }

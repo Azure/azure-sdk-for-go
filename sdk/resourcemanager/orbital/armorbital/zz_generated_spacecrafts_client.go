@@ -11,7 +11,6 @@ package armorbital
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // SpacecraftsClient contains the methods for the Spacecrafts group.
 // Don't use this type directly, use NewSpacecraftsClient() instead.
 type SpacecraftsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSpacecraftsClient creates a new instance of SpacecraftsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSpacecraftsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SpacecraftsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SpacecraftsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SpacecraftsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a spacecraft resource
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsBeginCreateOrUpdateOptions) (SpacecraftsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// spacecraftName - Spacecraft ID
+// parameters - The parameters to provide for the created spacecraft.
+// options - SpacecraftsClientBeginCreateOrUpdateOptions contains the optional parameters for the SpacecraftsClient.BeginCreateOrUpdate
+// method.
+func (client *SpacecraftsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsClientBeginCreateOrUpdateOptions) (SpacecraftsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, spacecraftName, parameters, options)
 	if err != nil {
-		return SpacecraftsCreateOrUpdatePollerResponse{}, err
+		return SpacecraftsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := SpacecraftsCreateOrUpdatePollerResponse{
+	result := SpacecraftsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SpacecraftsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("SpacecraftsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return SpacecraftsCreateOrUpdatePollerResponse{}, err
+		return SpacecraftsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &SpacecraftsCreateOrUpdatePoller{
+	result.Poller = &SpacecraftsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a spacecraft resource
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) createOrUpdate(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SpacecraftsClient) createOrUpdate(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, spacecraftName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *SpacecraftsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SpacecraftsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *SpacecraftsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{spacecraftName}", url.PathEscape(spacecraftName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,32 @@ func (client *SpacecraftsClient) createOrUpdateCreateRequest(ctx context.Context
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SpacecraftsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a specified spacecraft resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) BeginDelete(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsBeginDeleteOptions) (SpacecraftsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// spacecraftName - Spacecraft ID
+// options - SpacecraftsClientBeginDeleteOptions contains the optional parameters for the SpacecraftsClient.BeginDelete method.
+func (client *SpacecraftsClient) BeginDelete(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientBeginDeleteOptions) (SpacecraftsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, spacecraftName, options)
 	if err != nil {
-		return SpacecraftsDeletePollerResponse{}, err
+		return SpacecraftsClientDeletePollerResponse{}, err
 	}
-	result := SpacecraftsDeletePollerResponse{
+	result := SpacecraftsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SpacecraftsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("SpacecraftsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return SpacecraftsDeletePollerResponse{}, err
+		return SpacecraftsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &SpacecraftsDeletePoller{
+	result.Poller = &SpacecraftsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a specified spacecraft resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) deleteOperation(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SpacecraftsClient) deleteOperation(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, spacecraftName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +152,13 @@ func (client *SpacecraftsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SpacecraftsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +172,7 @@ func (client *SpacecraftsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{spacecraftName}", url.PathEscape(spacecraftName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +183,28 @@ func (client *SpacecraftsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SpacecraftsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the specified spacecraft in a specified resource group
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) Get(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsGetOptions) (SpacecraftsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// spacecraftName - Spacecraft ID
+// options - SpacecraftsClientGetOptions contains the optional parameters for the SpacecraftsClient.Get method.
+func (client *SpacecraftsClient) Get(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientGetOptions) (SpacecraftsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, spacecraftName, options)
 	if err != nil {
-		return SpacecraftsGetResponse{}, err
+		return SpacecraftsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpacecraftsGetResponse{}, err
+		return SpacecraftsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpacecraftsGetResponse{}, client.getHandleError(resp)
+		return SpacecraftsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SpacecraftsClient) getCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsGetOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) getCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +218,7 @@ func (client *SpacecraftsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{spacecraftName}", url.PathEscape(spacecraftName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,46 +230,35 @@ func (client *SpacecraftsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *SpacecraftsClient) getHandleResponse(resp *http.Response) (SpacecraftsGetResponse, error) {
-	result := SpacecraftsGetResponse{RawResponse: resp}
+func (client *SpacecraftsClient) getHandleResponse(resp *http.Response) (SpacecraftsClientGetResponse, error) {
+	result := SpacecraftsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Spacecraft); err != nil {
-		return SpacecraftsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SpacecraftsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SpacecraftsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Return list of spacecrafts
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) List(ctx context.Context, resourceGroupName string, options *SpacecraftsListOptions) (SpacecraftsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - SpacecraftsClientListOptions contains the optional parameters for the SpacecraftsClient.List method.
+func (client *SpacecraftsClient) List(ctx context.Context, resourceGroupName string, options *SpacecraftsClientListOptions) (SpacecraftsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return SpacecraftsListResponse{}, err
+		return SpacecraftsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpacecraftsListResponse{}, err
+		return SpacecraftsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpacecraftsListResponse{}, client.listHandleError(resp)
+		return SpacecraftsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SpacecraftsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *SpacecraftsListOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *SpacecraftsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -287,7 +268,7 @@ func (client *SpacecraftsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -299,50 +280,42 @@ func (client *SpacecraftsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *SpacecraftsClient) listHandleResponse(resp *http.Response) (SpacecraftsListResponse, error) {
-	result := SpacecraftsListResponse{RawResponse: resp}
+func (client *SpacecraftsClient) listHandleResponse(resp *http.Response) (SpacecraftsClientListResponse, error) {
+	result := SpacecraftsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpacecraftListResult); err != nil {
-		return SpacecraftsListResponse{}, runtime.NewResponseError(err, resp)
+		return SpacecraftsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SpacecraftsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginListAvailableContacts - Return list of available contacts
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) BeginListAvailableContacts(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsBeginListAvailableContactsOptions) (SpacecraftsListAvailableContactsPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// spacecraftName - Spacecraft ID
+// parameters - The parameters to provide for the contacts.
+// options - SpacecraftsClientBeginListAvailableContactsOptions contains the optional parameters for the SpacecraftsClient.BeginListAvailableContacts
+// method.
+func (client *SpacecraftsClient) BeginListAvailableContacts(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsClientBeginListAvailableContactsOptions) (SpacecraftsClientListAvailableContactsPollerResponse, error) {
 	resp, err := client.listAvailableContacts(ctx, resourceGroupName, spacecraftName, parameters, options)
 	if err != nil {
-		return SpacecraftsListAvailableContactsPollerResponse{}, err
+		return SpacecraftsClientListAvailableContactsPollerResponse{}, err
 	}
-	result := SpacecraftsListAvailableContactsPollerResponse{
+	result := SpacecraftsClientListAvailableContactsPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SpacecraftsClient.ListAvailableContacts", "azure-async-operation", resp, client.pl, client.listAvailableContactsHandleError)
+	pt, err := armruntime.NewPoller("SpacecraftsClient.ListAvailableContacts", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return SpacecraftsListAvailableContactsPollerResponse{}, err
+		return SpacecraftsClientListAvailableContactsPollerResponse{}, err
 	}
-	result.Poller = &SpacecraftsListAvailableContactsPoller{
+	result.Poller = &SpacecraftsClientListAvailableContactsPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ListAvailableContacts - Return list of available contacts
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) listAvailableContacts(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsBeginListAvailableContactsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SpacecraftsClient) listAvailableContacts(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsClientBeginListAvailableContactsOptions) (*http.Response, error) {
 	req, err := client.listAvailableContactsCreateRequest(ctx, resourceGroupName, spacecraftName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -352,13 +325,13 @@ func (client *SpacecraftsClient) listAvailableContacts(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.listAvailableContactsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // listAvailableContactsCreateRequest creates the ListAvailableContacts request.
-func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsBeginListAvailableContactsOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsClientBeginListAvailableContactsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/listAvailableContacts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -372,7 +345,7 @@ func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{spacecraftName}", url.PathEscape(spacecraftName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -383,44 +356,33 @@ func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// listAvailableContactsHandleError handles the ListAvailableContacts error response.
-func (client *SpacecraftsClient) listAvailableContactsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Return list of spacecrafts
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) ListBySubscription(ctx context.Context, options *SpacecraftsListBySubscriptionOptions) (SpacecraftsListBySubscriptionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - SpacecraftsClientListBySubscriptionOptions contains the optional parameters for the SpacecraftsClient.ListBySubscription
+// method.
+func (client *SpacecraftsClient) ListBySubscription(ctx context.Context, options *SpacecraftsClientListBySubscriptionOptions) (SpacecraftsClientListBySubscriptionResponse, error) {
 	req, err := client.listBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
-		return SpacecraftsListBySubscriptionResponse{}, err
+		return SpacecraftsClientListBySubscriptionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpacecraftsListBySubscriptionResponse{}, err
+		return SpacecraftsClientListBySubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpacecraftsListBySubscriptionResponse{}, client.listBySubscriptionHandleError(resp)
+		return SpacecraftsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBySubscriptionHandleResponse(resp)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SpacecraftsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SpacecraftsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SpacecraftsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/spacecrafts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,46 +394,37 @@ func (client *SpacecraftsClient) listBySubscriptionCreateRequest(ctx context.Con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SpacecraftsClient) listBySubscriptionHandleResponse(resp *http.Response) (SpacecraftsListBySubscriptionResponse, error) {
-	result := SpacecraftsListBySubscriptionResponse{RawResponse: resp}
+func (client *SpacecraftsClient) listBySubscriptionHandleResponse(resp *http.Response) (SpacecraftsClientListBySubscriptionResponse, error) {
+	result := SpacecraftsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpacecraftListResult); err != nil {
-		return SpacecraftsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SpacecraftsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SpacecraftsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateTags - Updates the specified spacecraft tags.
-// If the operation fails it returns the *CloudError error type.
-func (client *SpacecraftsClient) UpdateTags(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsUpdateTagsOptions) (SpacecraftsUpdateTagsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// spacecraftName - Spacecraft ID
+// parameters - Parameters supplied to update spacecraft tags.
+// options - SpacecraftsClientUpdateTagsOptions contains the optional parameters for the SpacecraftsClient.UpdateTags method.
+func (client *SpacecraftsClient) UpdateTags(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientUpdateTagsOptions) (SpacecraftsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, spacecraftName, parameters, options)
 	if err != nil {
-		return SpacecraftsUpdateTagsResponse{}, err
+		return SpacecraftsClientUpdateTagsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpacecraftsUpdateTagsResponse{}, err
+		return SpacecraftsClientUpdateTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpacecraftsUpdateTagsResponse{}, client.updateTagsHandleError(resp)
+		return SpacecraftsClientUpdateTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsUpdateTagsOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -485,7 +438,7 @@ func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{spacecraftName}", url.PathEscape(spacecraftName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -497,23 +450,10 @@ func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, re
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *SpacecraftsClient) updateTagsHandleResponse(resp *http.Response) (SpacecraftsUpdateTagsResponse, error) {
-	result := SpacecraftsUpdateTagsResponse{RawResponse: resp}
+func (client *SpacecraftsClient) updateTagsHandleResponse(resp *http.Response) (SpacecraftsClientUpdateTagsResponse, error) {
+	result := SpacecraftsClientUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Spacecraft); err != nil {
-		return SpacecraftsUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
+		return SpacecraftsClientUpdateTagsResponse{}, err
 	}
 	return result, nil
-}
-
-// updateTagsHandleError handles the UpdateTags error response.
-func (client *SpacecraftsClient) updateTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -10,6 +10,54 @@ package armsubscriptions
 
 import "net/http"
 
+// ClientCheckZonePeersResponse contains the response from method Client.CheckZonePeers.
+type ClientCheckZonePeersResponse struct {
+	ClientCheckZonePeersResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientCheckZonePeersResult contains the result from method Client.CheckZonePeers.
+type ClientCheckZonePeersResult struct {
+	CheckZonePeersResult
+}
+
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	ClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientGetResult contains the result from method Client.Get.
+type ClientGetResult struct {
+	Subscription
+}
+
+// ClientListLocationsResponse contains the response from method Client.ListLocations.
+type ClientListLocationsResponse struct {
+	ClientListLocationsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientListLocationsResult contains the result from method Client.ListLocations.
+type ClientListLocationsResult struct {
+	LocationListResult
+}
+
+// ClientListResponse contains the response from method Client.List.
+type ClientListResponse struct {
+	ClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientListResult contains the result from method Client.List.
+type ClientListResult struct {
+	SubscriptionListResult
+}
+
 // SubscriptionClientCheckResourceNameResponse contains the response from method SubscriptionClient.CheckResourceName.
 type SubscriptionClientCheckResourceNameResponse struct {
 	SubscriptionClientCheckResourceNameResult
@@ -22,50 +70,14 @@ type SubscriptionClientCheckResourceNameResult struct {
 	CheckResourceNameResult
 }
 
-// SubscriptionsGetResponse contains the response from method Subscriptions.Get.
-type SubscriptionsGetResponse struct {
-	SubscriptionsGetResult
+// TenantsClientListResponse contains the response from method TenantsClient.List.
+type TenantsClientListResponse struct {
+	TenantsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubscriptionsGetResult contains the result from method Subscriptions.Get.
-type SubscriptionsGetResult struct {
-	Subscription
-}
-
-// SubscriptionsListLocationsResponse contains the response from method Subscriptions.ListLocations.
-type SubscriptionsListLocationsResponse struct {
-	SubscriptionsListLocationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionsListLocationsResult contains the result from method Subscriptions.ListLocations.
-type SubscriptionsListLocationsResult struct {
-	LocationListResult
-}
-
-// SubscriptionsListResponse contains the response from method Subscriptions.List.
-type SubscriptionsListResponse struct {
-	SubscriptionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionsListResult contains the result from method Subscriptions.List.
-type SubscriptionsListResult struct {
-	SubscriptionListResult
-}
-
-// TenantsListResponse contains the response from method Tenants.List.
-type TenantsListResponse struct {
-	TenantsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantsListResult contains the result from method Tenants.List.
-type TenantsListResult struct {
+// TenantsClientListResult contains the result from method TenantsClient.List.
+type TenantsClientListResult struct {
 	TenantListResult
 }

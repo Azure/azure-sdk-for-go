@@ -11,7 +11,6 @@ package armstorage
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // BlobInventoryPoliciesClient contains the methods for the BlobInventoryPolicies group.
 // Don't use this type directly, use NewBlobInventoryPoliciesClient() instead.
 type BlobInventoryPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBlobInventoryPoliciesClient creates a new instance of BlobInventoryPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBlobInventoryPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BlobInventoryPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BlobInventoryPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BlobInventoryPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Sets the blob inventory policy to the specified storage account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BlobInventoryPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, properties BlobInventoryPolicy, options *BlobInventoryPoliciesCreateOrUpdateOptions) (BlobInventoryPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// blobInventoryPolicyName - The name of the storage account blob inventory policy. It should always be 'default'
+// properties - The blob inventory policy set to a storage account.
+// options - BlobInventoryPoliciesClientCreateOrUpdateOptions contains the optional parameters for the BlobInventoryPoliciesClient.CreateOrUpdate
+// method.
+func (client *BlobInventoryPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, properties BlobInventoryPolicy, options *BlobInventoryPoliciesClientCreateOrUpdateOptions) (BlobInventoryPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, blobInventoryPolicyName, properties, options)
 	if err != nil {
-		return BlobInventoryPoliciesCreateOrUpdateResponse{}, err
+		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesCreateOrUpdateResponse{}, err
+		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobInventoryPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, properties BlobInventoryPolicy, options *BlobInventoryPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, properties BlobInventoryPolicy, options *BlobInventoryPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,58 +92,51 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter blobInventoryPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobInventoryPolicyName}", url.PathEscape(string(blobInventoryPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BlobInventoryPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (BlobInventoryPoliciesCreateOrUpdateResponse, error) {
-	result := BlobInventoryPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *BlobInventoryPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientCreateOrUpdateResponse, error) {
+	result := BlobInventoryPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *BlobInventoryPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the blob inventory policy associated with the specified storage account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BlobInventoryPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesDeleteOptions) (BlobInventoryPoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// blobInventoryPolicyName - The name of the storage account blob inventory policy. It should always be 'default'
+// options - BlobInventoryPoliciesClientDeleteOptions contains the optional parameters for the BlobInventoryPoliciesClient.Delete
+// method.
+func (client *BlobInventoryPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesClientDeleteOptions) (BlobInventoryPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, blobInventoryPolicyName, options)
 	if err != nil {
-		return BlobInventoryPoliciesDeleteResponse{}, err
+		return BlobInventoryPoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesDeleteResponse{}, err
+		return BlobInventoryPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return BlobInventoryPoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return BlobInventoryPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BlobInventoryPoliciesDeleteResponse{RawResponse: resp}, nil
+	return BlobInventoryPoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesDeleteOptions) (*policy.Request, error) {
+func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,49 +154,42 @@ func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter blobInventoryPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobInventoryPolicyName}", url.PathEscape(string(blobInventoryPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BlobInventoryPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the blob inventory policy associated with the specified storage account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BlobInventoryPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesGetOptions) (BlobInventoryPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// blobInventoryPolicyName - The name of the storage account blob inventory policy. It should always be 'default'
+// options - BlobInventoryPoliciesClientGetOptions contains the optional parameters for the BlobInventoryPoliciesClient.Get
+// method.
+func (client *BlobInventoryPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesClientGetOptions) (BlobInventoryPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, blobInventoryPolicyName, options)
 	if err != nil {
-		return BlobInventoryPoliciesGetResponse{}, err
+		return BlobInventoryPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesGetResponse{}, err
+		return BlobInventoryPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobInventoryPoliciesGetResponse{}, client.getHandleError(resp)
+		return BlobInventoryPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesGetOptions) (*policy.Request, error) {
+func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobInventoryPolicyName BlobInventoryPolicyName, options *BlobInventoryPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,58 +207,50 @@ func (client *BlobInventoryPoliciesClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter blobInventoryPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blobInventoryPolicyName}", url.PathEscape(string(blobInventoryPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response) (BlobInventoryPoliciesGetResponse, error) {
-	result := BlobInventoryPoliciesGetResponse{RawResponse: resp}
+func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientGetResponse, error) {
+	result := BlobInventoryPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return BlobInventoryPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BlobInventoryPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets the blob inventory policy associated with the specified storage account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BlobInventoryPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobInventoryPoliciesListOptions) (BlobInventoryPoliciesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// accountName - The name of the storage account within the specified resource group. Storage account names must be between
+// 3 and 24 characters in length and use numbers and lower-case letters only.
+// options - BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.List
+// method.
+func (client *BlobInventoryPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) (BlobInventoryPoliciesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return BlobInventoryPoliciesListResponse{}, err
+		return BlobInventoryPoliciesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BlobInventoryPoliciesListResponse{}, err
+		return BlobInventoryPoliciesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BlobInventoryPoliciesListResponse{}, client.listHandleError(resp)
+		return BlobInventoryPoliciesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobInventoryPoliciesListOptions) (*policy.Request, error) {
+func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobInventoryPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -272,35 +264,22 @@ func (client *BlobInventoryPoliciesClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *http.Response) (BlobInventoryPoliciesListResponse, error) {
-	result := BlobInventoryPoliciesListResponse{RawResponse: resp}
+func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *http.Response) (BlobInventoryPoliciesClientListResponse, error) {
+	result := BlobInventoryPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListBlobInventoryPolicy); err != nil {
-		return BlobInventoryPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return BlobInventoryPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BlobInventoryPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -36,7 +36,7 @@ func ExampleIotConnectorFhirDestinationClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IotFhirDestination.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotConnectorFhirDestinationClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/iotconnectors/iotconnector_fhirdestination_Create.json
@@ -53,9 +53,7 @@ func ExampleIotConnectorFhirDestinationClient_BeginCreateOrUpdate() {
 		"<iot-connector-name>",
 		"<fhir-destination-name>",
 		armhealthcareapis.IotFhirDestination{
-			LocationBasedResource: armhealthcareapis.LocationBasedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armhealthcareapis.IotFhirDestinationProperties{
 				FhirMapping: &armhealthcareapis.IotMappingProperties{
 					Content: map[string]interface{}{
@@ -69,10 +67,10 @@ func ExampleIotConnectorFhirDestinationClient_BeginCreateOrUpdate() {
 											"system":  "http://loinc.org",
 										},
 									},
-									"periodInterval": 60,
+									"periodInterval": float64(60),
 									"typeName":       "heartrate",
 									"value": map[string]interface{}{
-										"defaultPeriod": 5000,
+										"defaultPeriod": float64(5000),
 										"unit":          "count/min",
 										"valueName":     "hr",
 										"valueType":     "SampledData",
@@ -85,7 +83,7 @@ func ExampleIotConnectorFhirDestinationClient_BeginCreateOrUpdate() {
 					},
 				},
 				FhirServiceResourceID:          to.StringPtr("<fhir-service-resource-id>"),
-				ResourceIdentityResolutionType: armhealthcareapis.IotIdentityResolutionTypeCreate.ToPtr(),
+				ResourceIdentityResolutionType: armhealthcareapis.IotIdentityResolutionType("Create").ToPtr(),
 			},
 		},
 		nil)
@@ -96,7 +94,7 @@ func ExampleIotConnectorFhirDestinationClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IotFhirDestination.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotConnectorFhirDestinationClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/iotconnectors/iotconnector_fhirdestination_Delete.json

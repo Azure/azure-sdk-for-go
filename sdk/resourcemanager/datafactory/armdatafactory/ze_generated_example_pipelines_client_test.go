@@ -28,12 +28,16 @@ func ExamplePipelinesClient_ListByFactory() {
 	pager := client.ListByFactory("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PipelineResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,24 +58,16 @@ func ExamplePipelinesClient_CreateOrUpdate() {
 			Properties: &armdatafactory.Pipeline{
 				Activities: []armdatafactory.ActivityClassification{
 					&armdatafactory.ForEachActivity{
-						ControlActivity: armdatafactory.ControlActivity{
-							Activity: armdatafactory.Activity{
-								Name: to.StringPtr("<name>"),
-								Type: to.StringPtr("<type>"),
-							},
-						},
+						Name: to.StringPtr("<name>"),
+						Type: to.StringPtr("<type>"),
 						TypeProperties: &armdatafactory.ForEachActivityTypeProperties{
 							Activities: []armdatafactory.ActivityClassification{
 								&armdatafactory.CopyActivity{
-									ExecutionActivity: armdatafactory.ExecutionActivity{
-										Activity: armdatafactory.Activity{
-											Name: to.StringPtr("<name>"),
-											Type: to.StringPtr("<type>"),
-										},
-									},
+									Name: to.StringPtr("<name>"),
+									Type: to.StringPtr("<type>"),
 									Inputs: []*armdatafactory.DatasetReference{
 										{
-											Type: armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
+											Type: armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
 											Parameters: map[string]map[string]interface{}{
 												"MyFileName": {
 													"0":  "e",
@@ -118,7 +114,7 @@ func ExamplePipelinesClient_CreateOrUpdate() {
 										}},
 									Outputs: []*armdatafactory.DatasetReference{
 										{
-											Type: armdatafactory.DatasetReferenceTypeDatasetReference.ToPtr(),
+											Type: armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
 											Parameters: map[string]map[string]interface{}{
 												"MyFileName": {
 													"type":  "Expression",
@@ -148,30 +144,26 @@ func ExamplePipelinesClient_CreateOrUpdate() {
 									TypeProperties: &armdatafactory.CopyActivityTypeProperties{
 										DataIntegrationUnits: map[string]interface{}{},
 										Sink: &armdatafactory.BlobSink{
-											CopySink: armdatafactory.CopySink{
-												Type: to.StringPtr("<type>"),
-											},
+											Type: to.StringPtr("<type>"),
 										},
 										Source: &armdatafactory.BlobSource{
-											CopySource: armdatafactory.CopySource{
-												Type: to.StringPtr("<type>"),
-											},
+											Type: to.StringPtr("<type>"),
 										},
 									},
 								}},
 							IsSequential: to.BoolPtr(true),
 							Items: &armdatafactory.Expression{
-								Type:  armdatafactory.ExpressionTypeExpression.ToPtr(),
+								Type:  armdatafactory.ExpressionType("Expression").ToPtr(),
 								Value: to.StringPtr("<value>"),
 							},
 						},
 					}},
 				Parameters: map[string]*armdatafactory.ParameterSpecification{
 					"JobId": {
-						Type: armdatafactory.ParameterTypeString.ToPtr(),
+						Type: armdatafactory.ParameterType("String").ToPtr(),
 					},
 					"OutputBlobNameList": {
-						Type: armdatafactory.ParameterTypeArray.ToPtr(),
+						Type: armdatafactory.ParameterType("Array").ToPtr(),
 					},
 				},
 				Policy: &armdatafactory.PipelinePolicy{
@@ -198,16 +190,16 @@ func ExamplePipelinesClient_CreateOrUpdate() {
 				},
 				Variables: map[string]*armdatafactory.VariableSpecification{
 					"TestVariableArray": {
-						Type: armdatafactory.VariableTypeArray.ToPtr(),
+						Type: armdatafactory.VariableType("Array").ToPtr(),
 					},
 				},
 			},
 		},
-		&armdatafactory.PipelinesCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.PipelinesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelinesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Get.json
@@ -222,11 +214,11 @@ func ExamplePipelinesClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<pipeline-name>",
-		&armdatafactory.PipelinesGetOptions{IfNoneMatch: nil})
+		&armdatafactory.PipelinesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PipelineResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelinesClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Delete.json
@@ -255,11 +247,11 @@ func ExamplePipelinesClient_CreateRun() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewPipelinesClient("<subscription-id>", cred, nil)
-	_, err = client.CreateRun(ctx,
+	res, err := client.CreateRun(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<pipeline-name>",
-		&armdatafactory.PipelinesCreateRunOptions{ReferencePipelineRunID: to.StringPtr("<reference-pipeline-run-id>"),
+		&armdatafactory.PipelinesClientCreateRunOptions{ReferencePipelineRunID: to.StringPtr("<reference-pipeline-run-id>"),
 			IsRecovery:        nil,
 			StartActivityName: nil,
 			StartFromFailure:  nil,
@@ -272,4 +264,5 @@ func ExamplePipelinesClient_CreateRun() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PipelinesClientCreateRunResult)
 }

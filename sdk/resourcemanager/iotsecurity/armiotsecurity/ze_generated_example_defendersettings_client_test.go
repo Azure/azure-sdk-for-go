@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotsecurity/armiotsecurity"
 )
@@ -24,11 +25,12 @@ func ExampleDefenderSettingsClient_List() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DefenderSettingsClientListResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/DefenderSettings/Get.json
@@ -44,7 +46,7 @@ func ExampleDefenderSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DefenderSettingsModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DefenderSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/DefenderSettings/Put.json
@@ -56,12 +58,22 @@ func ExampleDefenderSettingsClient_CreateOrUpdate() {
 	ctx := context.Background()
 	client := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
 	res, err := client.CreateOrUpdate(ctx,
-		armiotsecurity.DefenderSettingsModel{},
+		armiotsecurity.DefenderSettingsModel{
+			Properties: &armiotsecurity.DefenderSettingsProperties{
+				DeviceQuota: to.Int32Ptr(2000),
+				MdeIntegration: &armiotsecurity.DefenderSettingsPropertiesMdeIntegration{
+					Status: armiotsecurity.MdeIntegration("Enabled").ToPtr(),
+				},
+				OnboardingKind: armiotsecurity.OnboardingKind("Default").ToPtr(),
+				SentinelWorkspaceResourceIDs: []*string{
+					to.StringPtr("/subscriptions/c4930e90-cd72-4aa5-93e9-2d081d129569/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace1")},
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DefenderSettingsModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DefenderSettingsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/DefenderSettings/Delete.json
@@ -87,11 +99,12 @@ func ExampleDefenderSettingsClient_PackageDownloads() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewDefenderSettingsClient("<subscription-id>", cred, nil)
-	_, err = client.PackageDownloads(ctx,
+	res, err := client.PackageDownloads(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DefenderSettingsClientPackageDownloadsResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-02-01-preview/examples/DefenderSettings/DownloadManagerActivation.json

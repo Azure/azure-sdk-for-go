@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // ScriptCmdletsClient contains the methods for the ScriptCmdlets group.
 // Don't use this type directly, use NewScriptCmdletsClient() instead.
 type ScriptCmdletsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewScriptCmdletsClient creates a new instance of ScriptCmdletsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScriptCmdletsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ScriptCmdletsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ScriptCmdletsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Return information about a script cmdlet resource in a specific package on a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptCmdletsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, options *ScriptCmdletsGetOptions) (ScriptCmdletsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// scriptPackageName - Name of the script package in the private cloud
+// scriptCmdletName - Name of the script cmdlet resource in the script package in the private cloud
+// options - ScriptCmdletsClientGetOptions contains the optional parameters for the ScriptCmdletsClient.Get method.
+func (client *ScriptCmdletsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, options *ScriptCmdletsClientGetOptions) (ScriptCmdletsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName, options)
 	if err != nil {
-		return ScriptCmdletsGetResponse{}, err
+		return ScriptCmdletsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScriptCmdletsGetResponse{}, err
+		return ScriptCmdletsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ScriptCmdletsGetResponse{}, client.getHandleError(resp)
+		return ScriptCmdletsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, options *ScriptCmdletsGetOptions) (*policy.Request, error) {
+func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, options *ScriptCmdletsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets/{scriptCmdletName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +94,7 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter scriptCmdletName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptCmdletName}", url.PathEscape(scriptCmdletName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,43 +106,34 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (ScriptCmdletsGetResponse, error) {
-	result := ScriptCmdletsGetResponse{RawResponse: resp}
+func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (ScriptCmdletsClientGetResponse, error) {
+	result := ScriptCmdletsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdlet); err != nil {
-		return ScriptCmdletsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptCmdletsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ScriptCmdletsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List script cmdlet resources available for a private cloud to create a script execution resource on a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *ScriptCmdletsClient) List(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsListOptions) *ScriptCmdletsListPager {
-	return &ScriptCmdletsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// scriptPackageName - Name of the script package in the private cloud
+// options - ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.List method.
+func (client *ScriptCmdletsClient) List(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *ScriptCmdletsClientListPager {
+	return &ScriptCmdletsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, options)
 		},
-		advancer: func(ctx context.Context, resp ScriptCmdletsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ScriptCmdletsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScriptCmdletsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsListOptions) (*policy.Request, error) {
+func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +151,7 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter scriptPackageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptPackageName}", url.PathEscape(scriptPackageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,23 +163,10 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *ScriptCmdletsClient) listHandleResponse(resp *http.Response) (ScriptCmdletsListResponse, error) {
-	result := ScriptCmdletsListResponse{RawResponse: resp}
+func (client *ScriptCmdletsClient) listHandleResponse(resp *http.Response) (ScriptCmdletsClientListResponse, error) {
+	result := ScriptCmdletsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdletsList); err != nil {
-		return ScriptCmdletsListResponse{}, runtime.NewResponseError(err, resp)
+		return ScriptCmdletsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ScriptCmdletsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

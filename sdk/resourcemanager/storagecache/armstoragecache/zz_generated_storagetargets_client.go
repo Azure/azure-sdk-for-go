@@ -11,7 +11,6 @@ package armstoragecache
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,50 +24,64 @@ import (
 // StorageTargetsClient contains the methods for the StorageTargets group.
 // Don't use this type directly, use NewStorageTargetsClient() instead.
 type StorageTargetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStorageTargetsClient creates a new instance of StorageTargetsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageTargetsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &StorageTargetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &StorageTargetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down or unhealthy, the actual creation/modification
-// of the Storage Target may be delayed until the Cache
+// BeginCreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down
+// or unhealthy, the actual creation/modification of the Storage Target may be delayed until the Cache
 // is healthy again.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginCreateOrUpdateOptions) (StorageTargetsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageTargetsClient.BeginCreateOrUpdate
+// method.
+func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (StorageTargetsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetsCreateOrUpdatePollerResponse{}, err
+		return StorageTargetsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := StorageTargetsCreateOrUpdatePollerResponse{
+	result := StorageTargetsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageTargetsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("StorageTargetsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return StorageTargetsCreateOrUpdatePollerResponse{}, err
+		return StorageTargetsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &StorageTargetsCreateOrUpdatePoller{
+	result.Poller = &StorageTargetsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down or unhealthy, the actual creation/modification
-// of the Storage Target may be delayed until the Cache
+// CreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the Cache is down or
+// unhealthy, the actual creation/modification of the Storage Target may be delayed until the Cache
 // is healthy again.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
 		return nil, err
@@ -78,13 +91,13 @@ func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -102,7 +115,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,42 +129,34 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *StorageTargetsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDNSRefresh - Tells a storage target to refresh its DNS information.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginDNSRefreshOptions) (StorageTargetsDNSRefreshPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetsClientBeginDNSRefreshOptions contains the optional parameters for the StorageTargetsClient.BeginDNSRefresh
+// method.
+func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (StorageTargetsClientDNSRefreshPollerResponse, error) {
 	resp, err := client.dNSRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetsDNSRefreshPollerResponse{}, err
+		return StorageTargetsClientDNSRefreshPollerResponse{}, err
 	}
-	result := StorageTargetsDNSRefreshPollerResponse{
+	result := StorageTargetsClientDNSRefreshPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageTargetsClient.DNSRefresh", "azure-async-operation", resp, client.pl, client.dnsRefreshHandleError)
+	pt, err := armruntime.NewPoller("StorageTargetsClient.DNSRefresh", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return StorageTargetsDNSRefreshPollerResponse{}, err
+		return StorageTargetsClientDNSRefreshPollerResponse{}, err
 	}
-	result.Poller = &StorageTargetsDNSRefreshPoller{
+	result.Poller = &StorageTargetsClientDNSRefreshPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DNSRefresh - Tells a storage target to refresh its DNS information.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginDNSRefreshOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
 	req, err := client.dnsRefreshCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
 		return nil, err
@@ -161,13 +166,13 @@ func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.dnsRefreshHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // dnsRefreshCreateRequest creates the DNSRefresh request.
-func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginDNSRefreshOptions) (*policy.Request, error) {
+func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/dnsRefresh"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -185,7 +190,7 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,46 +201,40 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// dnsRefreshHandleError handles the DNSRefresh error response.
-func (client *StorageTargetsClient) dnsRefreshHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or unhealthy, the actual removal
-// of the Storage Target may be delayed until the Cache is healthy
-// again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be deleted.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginDeleteOptions) (StorageTargetsDeletePollerResponse, error) {
+// BeginDelete - Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
+// unhealthy, the actual removal of the Storage Target may be delayed until the Cache is healthy
+// again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target
+// will be deleted.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetsClientBeginDeleteOptions contains the optional parameters for the StorageTargetsClient.BeginDelete
+// method.
+func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (StorageTargetsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetsDeletePollerResponse{}, err
+		return StorageTargetsClientDeletePollerResponse{}, err
 	}
-	result := StorageTargetsDeletePollerResponse{
+	result := StorageTargetsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("StorageTargetsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("StorageTargetsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return StorageTargetsDeletePollerResponse{}, err
+		return StorageTargetsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &StorageTargetsDeletePoller{
+	result.Poller = &StorageTargetsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or unhealthy, the actual removal of the
-// Storage Target may be delayed until the Cache is healthy
-// again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be deleted.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginDeleteOptions) (*http.Response, error) {
+// Delete - Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or unhealthy,
+// the actual removal of the Storage Target may be delayed until the Cache is healthy
+// again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target
+// will be deleted.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
 		return nil, err
@@ -245,13 +244,13 @@ func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsBeginDeleteOptions) (*policy.Request, error) {
+func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,7 +268,7 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -283,38 +282,29 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *StorageTargetsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a Storage Target from a Cache.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) Get(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsGetOptions) (StorageTargetsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// storageTargetName - Name of Storage Target.
+// options - StorageTargetsClientGetOptions contains the optional parameters for the StorageTargetsClient.Get method.
+func (client *StorageTargetsClient) Get(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientGetOptions) (StorageTargetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
-		return StorageTargetsGetResponse{}, err
+		return StorageTargetsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return StorageTargetsGetResponse{}, err
+		return StorageTargetsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return StorageTargetsGetResponse{}, client.getHandleError(resp)
+		return StorageTargetsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsGetOptions) (*policy.Request, error) {
+func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -332,7 +322,7 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -344,43 +334,34 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (StorageTargetsGetResponse, error) {
-	result := StorageTargetsGetResponse{RawResponse: resp}
+func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (StorageTargetsClientGetResponse, error) {
+	result := StorageTargetsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageTarget); err != nil {
-		return StorageTargetsGetResponse{}, runtime.NewResponseError(err, resp)
+		return StorageTargetsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *StorageTargetsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByCache - Returns a list of Storage Targets for the specified Cache.
-// If the operation fails it returns the *CloudError error type.
-func (client *StorageTargetsClient) ListByCache(resourceGroupName string, cacheName string, options *StorageTargetsListByCacheOptions) *StorageTargetsListByCachePager {
-	return &StorageTargetsListByCachePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Target resource group.
+// cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+// options - StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.ListByCache
+// method.
+func (client *StorageTargetsClient) ListByCache(resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) *StorageTargetsClientListByCachePager {
+	return &StorageTargetsClientListByCachePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByCacheCreateRequest(ctx, resourceGroupName, cacheName, options)
 		},
-		advancer: func(ctx context.Context, resp StorageTargetsListByCacheResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp StorageTargetsClientListByCacheResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageTargetsResult.NextLink)
 		},
 	}
 }
 
 // listByCacheCreateRequest creates the ListByCache request.
-func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *StorageTargetsListByCacheOptions) (*policy.Request, error) {
+func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -394,7 +375,7 @@ func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context
 		return nil, errors.New("parameter cacheName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -406,23 +387,10 @@ func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context
 }
 
 // listByCacheHandleResponse handles the ListByCache response.
-func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Response) (StorageTargetsListByCacheResponse, error) {
-	result := StorageTargetsListByCacheResponse{RawResponse: resp}
+func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Response) (StorageTargetsClientListByCacheResponse, error) {
+	result := StorageTargetsClientListByCacheResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageTargetsResult); err != nil {
-		return StorageTargetsListByCacheResponse{}, runtime.NewResponseError(err, resp)
+		return StorageTargetsClientListByCacheResponse{}, err
 	}
 	return result, nil
-}
-
-// listByCacheHandleError handles the ListByCache error response.
-func (client *StorageTargetsClient) listByCacheHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

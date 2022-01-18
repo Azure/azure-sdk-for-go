@@ -17,13 +17,13 @@ import (
 )
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountRoleDefinition.json
-func ExampleBillingRoleDefinitionsClient_GetByBillingAccount() {
+func ExampleRoleDefinitionsClient_GetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingRoleDefinitionsClient(cred, nil)
+	client := armbilling.NewRoleDefinitionsClient(cred, nil)
 	res, err := client.GetByBillingAccount(ctx,
 		"<billing-account-name>",
 		"<billing-role-definition-name>",
@@ -31,17 +31,17 @@ func ExampleBillingRoleDefinitionsClient_GetByBillingAccount() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingRoleDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RoleDefinitionsClientGetByBillingAccountResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleDefinition.json
-func ExampleBillingRoleDefinitionsClient_GetByInvoiceSection() {
+func ExampleRoleDefinitionsClient_GetByInvoiceSection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingRoleDefinitionsClient(cred, nil)
+	client := armbilling.NewRoleDefinitionsClient(cred, nil)
 	res, err := client.GetByInvoiceSection(ctx,
 		"<billing-account-name>",
 		"<billing-profile-name>",
@@ -51,17 +51,17 @@ func ExampleBillingRoleDefinitionsClient_GetByInvoiceSection() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingRoleDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RoleDefinitionsClientGetByInvoiceSectionResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleDefinition.json
-func ExampleBillingRoleDefinitionsClient_GetByBillingProfile() {
+func ExampleRoleDefinitionsClient_GetByBillingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingRoleDefinitionsClient(cred, nil)
+	client := armbilling.NewRoleDefinitionsClient(cred, nil)
 	res, err := client.GetByBillingProfile(ctx,
 		"<billing-account-name>",
 		"<billing-profile-name>",
@@ -70,68 +70,80 @@ func ExampleBillingRoleDefinitionsClient_GetByBillingProfile() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BillingRoleDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RoleDefinitionsClientGetByBillingProfileResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountRoleDefinitionsList.json
-func ExampleBillingRoleDefinitionsClient_ListByBillingAccount() {
+func ExampleRoleDefinitionsClient_ListByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingRoleDefinitionsClient(cred, nil)
+	client := armbilling.NewRoleDefinitionsClient(cred, nil)
 	pager := client.ListByBillingAccount("<billing-account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingRoleDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleDefinitionsList.json
-func ExampleBillingRoleDefinitionsClient_ListByInvoiceSection() {
+func ExampleRoleDefinitionsClient_ListByInvoiceSection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingRoleDefinitionsClient(cred, nil)
+	client := armbilling.NewRoleDefinitionsClient(cred, nil)
 	pager := client.ListByInvoiceSection("<billing-account-name>",
 		"<billing-profile-name>",
 		"<invoice-section-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingRoleDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleDefinitionsList.json
-func ExampleBillingRoleDefinitionsClient_ListByBillingProfile() {
+func ExampleRoleDefinitionsClient_ListByBillingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingRoleDefinitionsClient(cred, nil)
+	client := armbilling.NewRoleDefinitionsClient(cred, nil)
 	pager := client.ListByBillingProfile("<billing-account-name>",
 		"<billing-profile-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingRoleDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

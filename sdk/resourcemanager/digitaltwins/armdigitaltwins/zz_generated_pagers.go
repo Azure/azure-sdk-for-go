@@ -16,27 +16,27 @@ import (
 	"reflect"
 )
 
-// DigitalTwinsEndpointListPager provides operations for iterating over paged responses.
-type DigitalTwinsEndpointListPager struct {
-	client    *DigitalTwinsEndpointClient
-	current   DigitalTwinsEndpointListResponse
+// ClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ClientListByResourceGroupPager struct {
+	client    *Client
+	current   ClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DigitalTwinsEndpointListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DigitalTwinsEndpointListPager) Err() error {
+func (p *ClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DigitalTwinsEndpointListPager) NextPage(ctx context.Context) bool {
+func (p *ClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DigitalTwinsEndpointResourceListResult.NextLink == nil || len(*p.current.DigitalTwinsEndpointResourceListResult.NextLink) == 0 {
+		if p.current.DescriptionListResult.NextLink == nil || len(*p.current.DescriptionListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -53,61 +53,7 @@ func (p *DigitalTwinsEndpointListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
-		return false
-	}
-	result, err := p.client.listHandleResponse(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-// PageResponse returns the current DigitalTwinsEndpointListResponse page.
-func (p *DigitalTwinsEndpointListPager) PageResponse() DigitalTwinsEndpointListResponse {
-	return p.current
-}
-
-// DigitalTwinsListByResourceGroupPager provides operations for iterating over paged responses.
-type DigitalTwinsListByResourceGroupPager struct {
-	client    *DigitalTwinsClient
-	current   DigitalTwinsListByResourceGroupResponse
-	err       error
-	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DigitalTwinsListByResourceGroupResponse) (*policy.Request, error)
-}
-
-// Err returns the last error encountered while paging.
-func (p *DigitalTwinsListByResourceGroupPager) Err() error {
-	return p.err
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *DigitalTwinsListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *policy.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DigitalTwinsDescriptionListResult.NextLink == nil || len(*p.current.DigitalTwinsDescriptionListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.client.pl.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -119,32 +65,32 @@ func (p *DigitalTwinsListByResourceGroupPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-// PageResponse returns the current DigitalTwinsListByResourceGroupResponse page.
-func (p *DigitalTwinsListByResourceGroupPager) PageResponse() DigitalTwinsListByResourceGroupResponse {
+// PageResponse returns the current ClientListByResourceGroupResponse page.
+func (p *ClientListByResourceGroupPager) PageResponse() ClientListByResourceGroupResponse {
 	return p.current
 }
 
-// DigitalTwinsListPager provides operations for iterating over paged responses.
-type DigitalTwinsListPager struct {
-	client    *DigitalTwinsClient
-	current   DigitalTwinsListResponse
+// ClientListPager provides operations for iterating over paged responses.
+type ClientListPager struct {
+	client    *Client
+	current   ClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DigitalTwinsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DigitalTwinsListPager) Err() error {
+func (p *ClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DigitalTwinsListPager) NextPage(ctx context.Context) bool {
+func (p *ClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DigitalTwinsDescriptionListResult.NextLink == nil || len(*p.current.DigitalTwinsDescriptionListResult.NextLink) == 0 {
+		if p.current.DescriptionListResult.NextLink == nil || len(*p.current.DescriptionListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -161,7 +107,7 @@ func (p *DigitalTwinsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,28 +119,82 @@ func (p *DigitalTwinsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current DigitalTwinsListResponse page.
-func (p *DigitalTwinsListPager) PageResponse() DigitalTwinsListResponse {
+// PageResponse returns the current ClientListResponse page.
+func (p *ClientListPager) PageResponse() ClientListResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
-	client    *OperationsClient
-	current   OperationsListResponse
+// EndpointClientListPager provides operations for iterating over paged responses.
+type EndpointClientListPager struct {
+	client    *EndpointClient
+	current   EndpointClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, EndpointClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *EndpointClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *EndpointClientListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.EndpointResourceListResult.NextLink == nil || len(*p.current.EndpointResourceListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = runtime.NewResponseError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current EndpointClientListResponse page.
+func (p *EndpointClientListPager) PageResponse() EndpointClientListResponse {
+	return p.current
+}
+
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
+	client    *OperationsClient
+	current   OperationsClientListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *OperationsClientListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,7 +227,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }

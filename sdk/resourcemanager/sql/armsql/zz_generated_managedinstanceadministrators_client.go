@@ -24,46 +24,60 @@ import (
 // ManagedInstanceAdministratorsClient contains the methods for the ManagedInstanceAdministrators group.
 // Don't use this type directly, use NewManagedInstanceAdministratorsClient() instead.
 type ManagedInstanceAdministratorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedInstanceAdministratorsClient creates a new instance of ManagedInstanceAdministratorsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedInstanceAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceAdministratorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedInstanceAdministratorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedInstanceAdministratorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a managed instance administrator.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, parameters ManagedInstanceAdministrator, options *ManagedInstanceAdministratorsBeginCreateOrUpdateOptions) (ManagedInstanceAdministratorsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// parameters - The requested administrator parameters.
+// options - ManagedInstanceAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedInstanceAdministratorsClient.BeginCreateOrUpdate
+// method.
+func (client *ManagedInstanceAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, parameters ManagedInstanceAdministrator, options *ManagedInstanceAdministratorsClientBeginCreateOrUpdateOptions) (ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, administratorName, parameters, options)
 	if err != nil {
-		return ManagedInstanceAdministratorsCreateOrUpdatePollerResponse{}, err
+		return ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ManagedInstanceAdministratorsCreateOrUpdatePollerResponse{
+	result := ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedInstanceAdministratorsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ManagedInstanceAdministratorsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ManagedInstanceAdministratorsCreateOrUpdatePollerResponse{}, err
+		return ManagedInstanceAdministratorsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ManagedInstanceAdministratorsCreateOrUpdatePoller{
+	result.Poller = &ManagedInstanceAdministratorsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a managed instance administrator.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, parameters ManagedInstanceAdministrator, options *ManagedInstanceAdministratorsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstanceAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, parameters ManagedInstanceAdministrator, options *ManagedInstanceAdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, administratorName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +87,13 @@ func (client *ManagedInstanceAdministratorsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedInstanceAdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, parameters ManagedInstanceAdministrator, options *ManagedInstanceAdministratorsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagedInstanceAdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, parameters ManagedInstanceAdministrator, options *ManagedInstanceAdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +111,7 @@ func (client *ManagedInstanceAdministratorsClient) createOrUpdateCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +122,34 @@ func (client *ManagedInstanceAdministratorsClient) createOrUpdateCreateRequest(c
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedInstanceAdministratorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a managed instance administrator.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsBeginDeleteOptions) (ManagedInstanceAdministratorsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstanceAdministratorsClientBeginDeleteOptions contains the optional parameters for the ManagedInstanceAdministratorsClient.BeginDelete
+// method.
+func (client *ManagedInstanceAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsClientBeginDeleteOptions) (ManagedInstanceAdministratorsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, administratorName, options)
 	if err != nil {
-		return ManagedInstanceAdministratorsDeletePollerResponse{}, err
+		return ManagedInstanceAdministratorsClientDeletePollerResponse{}, err
 	}
-	result := ManagedInstanceAdministratorsDeletePollerResponse{
+	result := ManagedInstanceAdministratorsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ManagedInstanceAdministratorsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ManagedInstanceAdministratorsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ManagedInstanceAdministratorsDeletePollerResponse{}, err
+		return ManagedInstanceAdministratorsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ManagedInstanceAdministratorsDeletePoller{
+	result.Poller = &ManagedInstanceAdministratorsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a managed instance administrator.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedInstanceAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, administratorName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +159,13 @@ func (client *ManagedInstanceAdministratorsClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagedInstanceAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ManagedInstanceAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +183,7 @@ func (client *ManagedInstanceAdministratorsClient) deleteCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +193,30 @@ func (client *ManagedInstanceAdministratorsClient) deleteCreateRequest(ctx conte
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ManagedInstanceAdministratorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a managed instance administrator.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceAdministratorsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsGetOptions) (ManagedInstanceAdministratorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstanceAdministratorsClientGetOptions contains the optional parameters for the ManagedInstanceAdministratorsClient.Get
+// method.
+func (client *ManagedInstanceAdministratorsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsClientGetOptions) (ManagedInstanceAdministratorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, administratorName, options)
 	if err != nil {
-		return ManagedInstanceAdministratorsGetResponse{}, err
+		return ManagedInstanceAdministratorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedInstanceAdministratorsGetResponse{}, err
+		return ManagedInstanceAdministratorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedInstanceAdministratorsGetResponse{}, client.getHandleError(resp)
+		return ManagedInstanceAdministratorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstanceAdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsGetOptions) (*policy.Request, error) {
+func (client *ManagedInstanceAdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName AdministratorName, options *ManagedInstanceAdministratorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -234,7 +234,7 @@ func (client *ManagedInstanceAdministratorsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,42 +246,35 @@ func (client *ManagedInstanceAdministratorsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstanceAdministratorsClient) getHandleResponse(resp *http.Response) (ManagedInstanceAdministratorsGetResponse, error) {
-	result := ManagedInstanceAdministratorsGetResponse{RawResponse: resp}
+func (client *ManagedInstanceAdministratorsClient) getHandleResponse(resp *http.Response) (ManagedInstanceAdministratorsClientGetResponse, error) {
+	result := ManagedInstanceAdministratorsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAdministrator); err != nil {
-		return ManagedInstanceAdministratorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedInstanceAdministratorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedInstanceAdministratorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByInstance - Gets a list of managed instance administrators.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstanceAdministratorsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsListByInstanceOptions) *ManagedInstanceAdministratorsListByInstancePager {
-	return &ManagedInstanceAdministratorsListByInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstanceAdministratorsClientListByInstanceOptions contains the optional parameters for the ManagedInstanceAdministratorsClient.ListByInstance
+// method.
+func (client *ManagedInstanceAdministratorsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsClientListByInstanceOptions) *ManagedInstanceAdministratorsClientListByInstancePager {
+	return &ManagedInstanceAdministratorsClientListByInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstanceAdministratorsListByInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedInstanceAdministratorsClientListByInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceAdministratorListResult.NextLink)
 		},
 	}
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedInstanceAdministratorsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsListByInstanceOptions) (*policy.Request, error) {
+func (client *ManagedInstanceAdministratorsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsClientListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -295,7 +288,7 @@ func (client *ManagedInstanceAdministratorsClient) listByInstanceCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,22 +300,10 @@ func (client *ManagedInstanceAdministratorsClient) listByInstanceCreateRequest(c
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedInstanceAdministratorsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceAdministratorsListByInstanceResponse, error) {
-	result := ManagedInstanceAdministratorsListByInstanceResponse{RawResponse: resp}
+func (client *ManagedInstanceAdministratorsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceAdministratorsClientListByInstanceResponse, error) {
+	result := ManagedInstanceAdministratorsClientListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAdministratorListResult); err != nil {
-		return ManagedInstanceAdministratorsListByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedInstanceAdministratorsClientListByInstanceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByInstanceHandleError handles the ListByInstance error response.
-func (client *ManagedInstanceAdministratorsClient) listByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

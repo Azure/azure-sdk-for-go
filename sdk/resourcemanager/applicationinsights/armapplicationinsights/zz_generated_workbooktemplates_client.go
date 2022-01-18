@@ -11,7 +11,6 @@ package armapplicationinsights
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // WorkbookTemplatesClient contains the methods for the WorkbookTemplates group.
 // Don't use this type directly, use NewWorkbookTemplatesClient() instead.
 type WorkbookTemplatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkbookTemplatesClient creates a new instance of WorkbookTemplatesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkbookTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkbookTemplatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkbookTemplatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkbookTemplatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a new workbook template.
-// If the operation fails it returns the *WorkbookTemplateError error type.
-func (client *WorkbookTemplatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookTemplateProperties WorkbookTemplate, options *WorkbookTemplatesCreateOrUpdateOptions) (WorkbookTemplatesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workbookTemplateProperties - Properties that need to be specified to create a new workbook.
+// options - WorkbookTemplatesClientCreateOrUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.CreateOrUpdate
+// method.
+func (client *WorkbookTemplatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookTemplateProperties WorkbookTemplate, options *WorkbookTemplatesClientCreateOrUpdateOptions) (WorkbookTemplatesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, workbookTemplateProperties, options)
 	if err != nil {
-		return WorkbookTemplatesCreateOrUpdateResponse{}, err
+		return WorkbookTemplatesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkbookTemplatesCreateOrUpdateResponse{}, err
+		return WorkbookTemplatesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return WorkbookTemplatesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return WorkbookTemplatesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkbookTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workbookTemplateProperties WorkbookTemplate, options *WorkbookTemplatesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkbookTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workbookTemplateProperties WorkbookTemplate, options *WorkbookTemplatesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/workbooktemplates/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +86,7 @@ func (client *WorkbookTemplatesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,46 +98,37 @@ func (client *WorkbookTemplatesClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WorkbookTemplatesClient) createOrUpdateHandleResponse(resp *http.Response) (WorkbookTemplatesCreateOrUpdateResponse, error) {
-	result := WorkbookTemplatesCreateOrUpdateResponse{RawResponse: resp}
+func (client *WorkbookTemplatesClient) createOrUpdateHandleResponse(resp *http.Response) (WorkbookTemplatesClientCreateOrUpdateResponse, error) {
+	result := WorkbookTemplatesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkbookTemplate); err != nil {
-		return WorkbookTemplatesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return WorkbookTemplatesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WorkbookTemplatesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := WorkbookTemplateError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a workbook template.
-// If the operation fails it returns the *WorkbookTemplateError error type.
-func (client *WorkbookTemplatesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesDeleteOptions) (WorkbookTemplatesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - WorkbookTemplatesClientDeleteOptions contains the optional parameters for the WorkbookTemplatesClient.Delete
+// method.
+func (client *WorkbookTemplatesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesClientDeleteOptions) (WorkbookTemplatesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return WorkbookTemplatesDeleteResponse{}, err
+		return WorkbookTemplatesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkbookTemplatesDeleteResponse{}, err
+		return WorkbookTemplatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return WorkbookTemplatesDeleteResponse{}, client.deleteHandleError(resp)
+		return WorkbookTemplatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkbookTemplatesDeleteResponse{RawResponse: resp}, nil
+	return WorkbookTemplatesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkbookTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesDeleteOptions) (*policy.Request, error) {
+func (client *WorkbookTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/workbooktemplates/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,7 +142,7 @@ func (client *WorkbookTemplatesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,38 +153,28 @@ func (client *WorkbookTemplatesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WorkbookTemplatesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := WorkbookTemplateError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a single workbook template by its resourceName.
-// If the operation fails it returns the *WorkbookTemplateError error type.
-func (client *WorkbookTemplatesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesGetOptions) (WorkbookTemplatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - WorkbookTemplatesClientGetOptions contains the optional parameters for the WorkbookTemplatesClient.Get method.
+func (client *WorkbookTemplatesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesClientGetOptions) (WorkbookTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return WorkbookTemplatesGetResponse{}, err
+		return WorkbookTemplatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkbookTemplatesGetResponse{}, err
+		return WorkbookTemplatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkbookTemplatesGetResponse{}, client.getHandleError(resp)
+		return WorkbookTemplatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkbookTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesGetOptions) (*policy.Request, error) {
+func (client *WorkbookTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/workbooktemplates/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,7 +188,7 @@ func (client *WorkbookTemplatesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,46 +200,36 @@ func (client *WorkbookTemplatesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkbookTemplatesClient) getHandleResponse(resp *http.Response) (WorkbookTemplatesGetResponse, error) {
-	result := WorkbookTemplatesGetResponse{RawResponse: resp}
+func (client *WorkbookTemplatesClient) getHandleResponse(resp *http.Response) (WorkbookTemplatesClientGetResponse, error) {
+	result := WorkbookTemplatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkbookTemplate); err != nil {
-		return WorkbookTemplatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkbookTemplatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkbookTemplatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := WorkbookTemplateError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Get all Workbook templates defined within a specified resource group.
-// If the operation fails it returns the *WorkbookTemplateError error type.
-func (client *WorkbookTemplatesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *WorkbookTemplatesListByResourceGroupOptions) (WorkbookTemplatesListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - WorkbookTemplatesClientListByResourceGroupOptions contains the optional parameters for the WorkbookTemplatesClient.ListByResourceGroup
+// method.
+func (client *WorkbookTemplatesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *WorkbookTemplatesClientListByResourceGroupOptions) (WorkbookTemplatesClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return WorkbookTemplatesListByResourceGroupResponse{}, err
+		return WorkbookTemplatesClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkbookTemplatesListByResourceGroupResponse{}, err
+		return WorkbookTemplatesClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkbookTemplatesListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return WorkbookTemplatesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *WorkbookTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WorkbookTemplatesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *WorkbookTemplatesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WorkbookTemplatesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/workbooktemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -256,7 +239,7 @@ func (client *WorkbookTemplatesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -268,46 +251,37 @@ func (client *WorkbookTemplatesClient) listByResourceGroupCreateRequest(ctx cont
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *WorkbookTemplatesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkbookTemplatesListByResourceGroupResponse, error) {
-	result := WorkbookTemplatesListByResourceGroupResponse{RawResponse: resp}
+func (client *WorkbookTemplatesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkbookTemplatesClientListByResourceGroupResponse, error) {
+	result := WorkbookTemplatesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkbookTemplatesListResult); err != nil {
-		return WorkbookTemplatesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return WorkbookTemplatesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *WorkbookTemplatesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := WorkbookTemplateError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates a workbook template that has already been added.
-// If the operation fails it returns the *WorkbookTemplateError error type.
-func (client *WorkbookTemplatesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesUpdateOptions) (WorkbookTemplatesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - WorkbookTemplatesClientUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.Update
+// method.
+func (client *WorkbookTemplatesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesClientUpdateOptions) (WorkbookTemplatesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return WorkbookTemplatesUpdateResponse{}, err
+		return WorkbookTemplatesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkbookTemplatesUpdateResponse{}, err
+		return WorkbookTemplatesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkbookTemplatesUpdateResponse{}, client.updateHandleError(resp)
+		return WorkbookTemplatesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WorkbookTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesUpdateOptions) (*policy.Request, error) {
+func (client *WorkbookTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkbookTemplatesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/workbooktemplates/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -321,7 +295,7 @@ func (client *WorkbookTemplatesClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -336,23 +310,10 @@ func (client *WorkbookTemplatesClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WorkbookTemplatesClient) updateHandleResponse(resp *http.Response) (WorkbookTemplatesUpdateResponse, error) {
-	result := WorkbookTemplatesUpdateResponse{RawResponse: resp}
+func (client *WorkbookTemplatesClient) updateHandleResponse(resp *http.Response) (WorkbookTemplatesClientUpdateResponse, error) {
+	result := WorkbookTemplatesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkbookTemplate); err != nil {
-		return WorkbookTemplatesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return WorkbookTemplatesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *WorkbookTemplatesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := WorkbookTemplateError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

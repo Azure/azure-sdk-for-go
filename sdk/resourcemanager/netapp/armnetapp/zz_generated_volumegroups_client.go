@@ -24,46 +24,61 @@ import (
 // VolumeGroupsClient contains the methods for the VolumeGroups group.
 // Don't use this type directly, use NewVolumeGroupsClient() instead.
 type VolumeGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVolumeGroupsClient creates a new instance of VolumeGroupsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VolumeGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VolumeGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VolumeGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create a volume group along with specified volumes
-// If the operation fails it returns a generic error.
-func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsBeginCreateOptions) (VolumeGroupsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// volumeGroupName - The name of the volumeGroup
+// body - Volume Group object supplied in the body of the operation.
+// options - VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate
+// method.
+func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (VolumeGroupsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
 	if err != nil {
-		return VolumeGroupsCreatePollerResponse{}, err
+		return VolumeGroupsClientCreatePollerResponse{}, err
 	}
-	result := VolumeGroupsCreatePollerResponse{
+	result := VolumeGroupsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VolumeGroupsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("VolumeGroupsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return VolumeGroupsCreatePollerResponse{}, err
+		return VolumeGroupsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &VolumeGroupsCreatePoller{
+	result.Poller = &VolumeGroupsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create a volume group along with specified volumes
-// If the operation fails it returns a generic error.
-func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsBeginCreateOptions) (*policy.Request, error) {
+func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,7 +112,7 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter volumeGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +123,34 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// createHandleError handles the Create error response.
-func (client *VolumeGroupsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Delete the specified volume group only if there are no volumes under volume group.
-// If the operation fails it returns a generic error.
-func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsBeginDeleteOptions) (VolumeGroupsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// volumeGroupName - The name of the volumeGroup
+// options - VolumeGroupsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupsClient.BeginDelete
+// method.
+func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (VolumeGroupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, volumeGroupName, options)
 	if err != nil {
-		return VolumeGroupsDeletePollerResponse{}, err
+		return VolumeGroupsClientDeletePollerResponse{}, err
 	}
-	result := VolumeGroupsDeletePollerResponse{
+	result := VolumeGroupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VolumeGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VolumeGroupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return VolumeGroupsDeletePollerResponse{}, err
+		return VolumeGroupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &VolumeGroupsDeletePoller{
+	result.Poller = &VolumeGroupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete the specified volume group only if there are no volumes under volume group.
-// If the operation fails it returns a generic error.
-func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +160,13 @@ func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -176,7 +184,7 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter volumeGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +194,29 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VolumeGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get details of the specified volume group
-// If the operation fails it returns a generic error.
-func (client *VolumeGroupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsGetOptions) (VolumeGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// volumeGroupName - The name of the volumeGroup
+// options - VolumeGroupsClientGetOptions contains the optional parameters for the VolumeGroupsClient.Get method.
+func (client *VolumeGroupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientGetOptions) (VolumeGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, options)
 	if err != nil {
-		return VolumeGroupsGetResponse{}, err
+		return VolumeGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VolumeGroupsGetResponse{}, err
+		return VolumeGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VolumeGroupsGetResponse{}, client.getHandleError(resp)
+		return VolumeGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsGetOptions) (*policy.Request, error) {
+func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -234,7 +234,7 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter volumeGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,45 +246,37 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (VolumeGroupsGetResponse, error) {
-	result := VolumeGroupsGetResponse{RawResponse: resp}
+func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (VolumeGroupsClientGetResponse, error) {
+	result := VolumeGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupDetails); err != nil {
-		return VolumeGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VolumeGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VolumeGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByNetAppAccount - List all volume groups for given account
-// If the operation fails it returns a generic error.
-func (client *VolumeGroupsClient) ListByNetAppAccount(ctx context.Context, resourceGroupName string, accountName string, options *VolumeGroupsListByNetAppAccountOptions) (VolumeGroupsListByNetAppAccountResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// accountName - The name of the NetApp account
+// options - VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.ListByNetAppAccount
+// method.
+func (client *VolumeGroupsClient) ListByNetAppAccount(ctx context.Context, resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) (VolumeGroupsClientListByNetAppAccountResponse, error) {
 	req, err := client.listByNetAppAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return VolumeGroupsListByNetAppAccountResponse{}, err
+		return VolumeGroupsClientListByNetAppAccountResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VolumeGroupsListByNetAppAccountResponse{}, err
+		return VolumeGroupsClientListByNetAppAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VolumeGroupsListByNetAppAccountResponse{}, client.listByNetAppAccountHandleError(resp)
+		return VolumeGroupsClientListByNetAppAccountResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByNetAppAccountHandleResponse(resp)
 }
 
 // listByNetAppAccountCreateRequest creates the ListByNetAppAccount request.
-func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VolumeGroupsListByNetAppAccountOptions) (*policy.Request, error) {
+func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -298,7 +290,7 @@ func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,22 +302,10 @@ func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.C
 }
 
 // listByNetAppAccountHandleResponse handles the ListByNetAppAccount response.
-func (client *VolumeGroupsClient) listByNetAppAccountHandleResponse(resp *http.Response) (VolumeGroupsListByNetAppAccountResponse, error) {
-	result := VolumeGroupsListByNetAppAccountResponse{RawResponse: resp}
+func (client *VolumeGroupsClient) listByNetAppAccountHandleResponse(resp *http.Response) (VolumeGroupsClientListByNetAppAccountResponse, error) {
+	result := VolumeGroupsClientListByNetAppAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupList); err != nil {
-		return VolumeGroupsListByNetAppAccountResponse{}, runtime.NewResponseError(err, resp)
+		return VolumeGroupsClientListByNetAppAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// listByNetAppAccountHandleError handles the ListByNetAppAccount error response.
-func (client *VolumeGroupsClient) listByNetAppAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -31,12 +31,16 @@ func ExampleInvoicesClient_ListByBillingAccount() {
 		"<period-start-date>",
 		"<period-end-date>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Invoice.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,12 +58,16 @@ func ExampleInvoicesClient_ListByBillingProfile() {
 		"<period-start-date>",
 		"<period-end-date>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Invoice.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -79,24 +87,7 @@ func ExampleInvoicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Invoice.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceById.json
-func ExampleInvoicesClient_GetByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
-	res, err := client.GetByID(ctx,
-		"<invoice-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Invoice.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InvoicesClientGetResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ModernInvoiceDownload.json
@@ -115,10 +106,11 @@ func ExampleInvoicesClient_BeginDownloadInvoice() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.InvoicesClientDownloadInvoiceResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MultipleModernInvoiceDownload.json
@@ -139,10 +131,11 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.InvoicesClientDownloadMultipleBillingProfileInvoicesResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoicesList.json
@@ -156,31 +149,18 @@ func ExampleInvoicesClient_ListByBillingSubscription() {
 	pager := client.ListByBillingSubscription("<period-start-date>",
 		"<period-end-date>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Invoice.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
-}
-
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoice.json
-func ExampleInvoicesClient_GetBySubscriptionAndInvoiceID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
-	res, err := client.GetBySubscriptionAndInvoiceID(ctx,
-		"<invoice-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Invoice.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoiceDownload.json
@@ -198,10 +178,11 @@ func ExampleInvoicesClient_BeginDownloadBillingSubscriptionInvoice() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.InvoicesClientDownloadBillingSubscriptionInvoiceResult)
 }
 
 // x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MultipleBillingSubscriptionInvoiceDownload.json
@@ -221,8 +202,9 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingSubscriptionInvoices() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResult)
 }

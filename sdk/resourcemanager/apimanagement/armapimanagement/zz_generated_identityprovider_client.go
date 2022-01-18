@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // IdentityProviderClient contains the methods for the IdentityProvider group.
 // Don't use this type directly, use NewIdentityProviderClient() instead.
 type IdentityProviderClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIdentityProviderClient creates a new instance of IdentityProviderClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IdentityProviderClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IdentityProviderClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IdentityProviderClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or Updates the IdentityProvider configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, options *IdentityProviderCreateOrUpdateOptions) (IdentityProviderCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// identityProviderName - Identity Provider Type identifier.
+// parameters - Create parameters.
+// options - IdentityProviderClientCreateOrUpdateOptions contains the optional parameters for the IdentityProviderClient.CreateOrUpdate
+// method.
+func (client *IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, options *IdentityProviderClientCreateOrUpdateOptions) (IdentityProviderClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, parameters, options)
 	if err != nil {
-		return IdentityProviderCreateOrUpdateResponse{}, err
+		return IdentityProviderClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IdentityProviderCreateOrUpdateResponse{}, err
+		return IdentityProviderClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IdentityProviderCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IdentityProviderClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, options *IdentityProviderCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderCreateContract, options *IdentityProviderClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders/{identityProviderName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,7 +92,7 @@ func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,49 +107,42 @@ func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IdentityProviderClient) createOrUpdateHandleResponse(resp *http.Response) (IdentityProviderCreateOrUpdateResponse, error) {
-	result := IdentityProviderCreateOrUpdateResponse{RawResponse: resp}
+func (client *IdentityProviderClient) createOrUpdateHandleResponse(resp *http.Response) (IdentityProviderClientCreateOrUpdateResponse, error) {
+	result := IdentityProviderClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderContract); err != nil {
-		return IdentityProviderCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IdentityProviderClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IdentityProviderClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified identity provider configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, options *IdentityProviderDeleteOptions) (IdentityProviderDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// identityProviderName - Identity Provider Type identifier.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - IdentityProviderClientDeleteOptions contains the optional parameters for the IdentityProviderClient.Delete method.
+func (client *IdentityProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, options *IdentityProviderClientDeleteOptions) (IdentityProviderClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, ifMatch, options)
 	if err != nil {
-		return IdentityProviderDeleteResponse{}, err
+		return IdentityProviderClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IdentityProviderDeleteResponse{}, err
+		return IdentityProviderClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IdentityProviderDeleteResponse{}, client.deleteHandleError(resp)
+		return IdentityProviderClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IdentityProviderDeleteResponse{RawResponse: resp}, nil
+	return IdentityProviderClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, options *IdentityProviderDeleteOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, options *IdentityProviderClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders/{identityProviderName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +160,7 @@ func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,38 +172,29 @@ func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IdentityProviderClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the configuration details of the identity Provider configured in specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderGetOptions) (IdentityProviderGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// identityProviderName - Identity Provider Type identifier.
+// options - IdentityProviderClientGetOptions contains the optional parameters for the IdentityProviderClient.Get method.
+func (client *IdentityProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientGetOptions) (IdentityProviderClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, options)
 	if err != nil {
-		return IdentityProviderGetResponse{}, err
+		return IdentityProviderClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IdentityProviderGetResponse{}, err
+		return IdentityProviderClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IdentityProviderGetResponse{}, client.getHandleError(resp)
+		return IdentityProviderClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderGetOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders/{identityProviderName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -214,7 +212,7 @@ func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -226,46 +224,37 @@ func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *IdentityProviderClient) getHandleResponse(resp *http.Response) (IdentityProviderGetResponse, error) {
-	result := IdentityProviderGetResponse{RawResponse: resp}
+func (client *IdentityProviderClient) getHandleResponse(resp *http.Response) (IdentityProviderClientGetResponse, error) {
+	result := IdentityProviderClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderContract); err != nil {
-		return IdentityProviderGetResponse{}, runtime.NewResponseError(err, resp)
+		return IdentityProviderClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IdentityProviderClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the identityProvider specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderGetEntityTagOptions) (IdentityProviderGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// identityProviderName - Identity Provider Type identifier.
+// options - IdentityProviderClientGetEntityTagOptions contains the optional parameters for the IdentityProviderClient.GetEntityTag
+// method.
+func (client *IdentityProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientGetEntityTagOptions) (IdentityProviderClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, options)
 	if err != nil {
-		return IdentityProviderGetEntityTagResponse{}, err
+		return IdentityProviderClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IdentityProviderGetEntityTagResponse{}, err
+		return IdentityProviderClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderGetEntityTagOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders/{identityProviderName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -283,7 +272,7 @@ func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -295,8 +284,8 @@ func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Cont
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Response) (IdentityProviderGetEntityTagResponse, error) {
-	result := IdentityProviderGetEntityTagResponse{RawResponse: resp}
+func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Response) (IdentityProviderClientGetEntityTagResponse, error) {
+	result := IdentityProviderClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -307,21 +296,25 @@ func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Resp
 }
 
 // ListByService - Lists a collection of Identity Provider configured in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) ListByService(resourceGroupName string, serviceName string, options *IdentityProviderListByServiceOptions) *IdentityProviderListByServicePager {
-	return &IdentityProviderListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - IdentityProviderClientListByServiceOptions contains the optional parameters for the IdentityProviderClient.ListByService
+// method.
+func (client *IdentityProviderClient) ListByService(resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) *IdentityProviderClientListByServicePager {
+	return &IdentityProviderClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp IdentityProviderListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IdentityProviderClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IdentityProviderList.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *IdentityProviderListByServiceOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -335,7 +328,7 @@ func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,46 +340,38 @@ func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Con
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *IdentityProviderClient) listByServiceHandleResponse(resp *http.Response) (IdentityProviderListByServiceResponse, error) {
-	result := IdentityProviderListByServiceResponse{RawResponse: resp}
+func (client *IdentityProviderClient) listByServiceHandleResponse(resp *http.Response) (IdentityProviderClientListByServiceResponse, error) {
+	result := IdentityProviderClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderList); err != nil {
-		return IdentityProviderListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return IdentityProviderClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *IdentityProviderClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSecrets - Gets the client secret details of the Identity Provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderListSecretsOptions) (IdentityProviderListSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// identityProviderName - Identity Provider Type identifier.
+// options - IdentityProviderClientListSecretsOptions contains the optional parameters for the IdentityProviderClient.ListSecrets
+// method.
+func (client *IdentityProviderClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientListSecretsOptions) (IdentityProviderClientListSecretsResponse, error) {
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, options)
 	if err != nil {
-		return IdentityProviderListSecretsResponse{}, err
+		return IdentityProviderClientListSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IdentityProviderListSecretsResponse{}, err
+		return IdentityProviderClientListSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IdentityProviderListSecretsResponse{}, client.listSecretsHandleError(resp)
+		return IdentityProviderClientListSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSecretsHandleResponse(resp)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
-func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderListSecretsOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, options *IdentityProviderClientListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders/{identityProviderName}/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -404,7 +389,7 @@ func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -416,49 +401,43 @@ func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Conte
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *IdentityProviderClient) listSecretsHandleResponse(resp *http.Response) (IdentityProviderListSecretsResponse, error) {
-	result := IdentityProviderListSecretsResponse{RawResponse: resp}
+func (client *IdentityProviderClient) listSecretsHandleResponse(resp *http.Response) (IdentityProviderClientListSecretsResponse, error) {
+	result := IdentityProviderClientListSecretsResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientSecretContract); err != nil {
-		return IdentityProviderListSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return IdentityProviderClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSecretsHandleError handles the ListSecrets error response.
-func (client *IdentityProviderClient) listSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing IdentityProvider configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IdentityProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, parameters IdentityProviderUpdateParameters, options *IdentityProviderUpdateOptions) (IdentityProviderUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// identityProviderName - Identity Provider Type identifier.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - IdentityProviderClientUpdateOptions contains the optional parameters for the IdentityProviderClient.Update method.
+func (client *IdentityProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, parameters IdentityProviderUpdateParameters, options *IdentityProviderClientUpdateOptions) (IdentityProviderClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, identityProviderName, ifMatch, parameters, options)
 	if err != nil {
-		return IdentityProviderUpdateResponse{}, err
+		return IdentityProviderClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IdentityProviderUpdateResponse{}, err
+		return IdentityProviderClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IdentityProviderUpdateResponse{}, client.updateHandleError(resp)
+		return IdentityProviderClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, parameters IdentityProviderUpdateParameters, options *IdentityProviderUpdateOptions) (*policy.Request, error) {
+func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string, parameters IdentityProviderUpdateParameters, options *IdentityProviderClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identityProviders/{identityProviderName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -476,7 +455,7 @@ func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -489,26 +468,13 @@ func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, r
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IdentityProviderClient) updateHandleResponse(resp *http.Response) (IdentityProviderUpdateResponse, error) {
-	result := IdentityProviderUpdateResponse{RawResponse: resp}
+func (client *IdentityProviderClient) updateHandleResponse(resp *http.Response) (IdentityProviderClientUpdateResponse, error) {
+	result := IdentityProviderClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityProviderContract); err != nil {
-		return IdentityProviderUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IdentityProviderClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *IdentityProviderClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

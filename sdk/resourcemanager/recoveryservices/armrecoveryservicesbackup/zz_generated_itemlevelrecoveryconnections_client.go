@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,62 @@ import (
 // ItemLevelRecoveryConnectionsClient contains the methods for the ItemLevelRecoveryConnections group.
 // Don't use this type directly, use NewItemLevelRecoveryConnectionsClient() instead.
 type ItemLevelRecoveryConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewItemLevelRecoveryConnectionsClient creates a new instance of ItemLevelRecoveryConnectionsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ItemLevelRecoveryConnectionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ItemLevelRecoveryConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ItemLevelRecoveryConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Provision - Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file explorer displaying all the
-// recoverable files and folders. This is an asynchronous
+// Provision - Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file
+// explorer displaying all the recoverable files and folders. This is an asynchronous
 // operation. To know the status of provisioning, call GetProtectedItemOperationResult API.
-// If the operation fails it returns the *CloudError error type.
-func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, options *ItemLevelRecoveryConnectionsProvisionOptions) (ItemLevelRecoveryConnectionsProvisionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the backed up items.
+// containerName - Container name associated with the backed up items.
+// protectedItemName - Backed up item name whose files/folders are to be restored.
+// recoveryPointID - Recovery point ID which represents backed up data. iSCSI connection will be provisioned for this backed
+// up data.
+// parameters - resource ILR request
+// options - ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
+// method.
+func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, options *ItemLevelRecoveryConnectionsClientProvisionOptions) (ItemLevelRecoveryConnectionsClientProvisionResponse, error) {
 	req, err := client.provisionCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
-		return ItemLevelRecoveryConnectionsProvisionResponse{}, err
+		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ItemLevelRecoveryConnectionsProvisionResponse{}, err
+		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ItemLevelRecoveryConnectionsProvisionResponse{}, client.provisionHandleError(resp)
+		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, runtime.NewResponseError(resp)
 	}
-	return ItemLevelRecoveryConnectionsProvisionResponse{RawResponse: resp}, nil
+	return ItemLevelRecoveryConnectionsClientProvisionResponse{RawResponse: resp}, nil
 }
 
 // provisionCreateRequest creates the Provision request.
-func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, options *ItemLevelRecoveryConnectionsProvisionOptions) (*policy.Request, error) {
+func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, options *ItemLevelRecoveryConnectionsClientProvisionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/provisionInstantItemRecovery"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -92,50 +109,46 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 		return nil, errors.New("parameter recoveryPointID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// provisionHandleError handles the Provision error response.
-func (client *ItemLevelRecoveryConnectionsClient) provisionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Revoke - Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer displaying all recoverable files
-// and folders. This is an asynchronous operation.
-// If the operation fails it returns the *CloudError error type.
-func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *ItemLevelRecoveryConnectionsRevokeOptions) (ItemLevelRecoveryConnectionsRevokeResponse, error) {
+// Revoke - Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
+// displaying all recoverable files and folders. This is an asynchronous operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the backed up items.
+// containerName - Container name associated with the backed up items.
+// protectedItemName - Backed up item name whose files/folders are to be restored.
+// recoveryPointID - Recovery point ID which represents backed up data. iSCSI connection will be revoked for this backed up
+// data.
+// options - ItemLevelRecoveryConnectionsClientRevokeOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Revoke
+// method.
+func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *ItemLevelRecoveryConnectionsClientRevokeOptions) (ItemLevelRecoveryConnectionsClientRevokeResponse, error) {
 	req, err := client.revokeCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, options)
 	if err != nil {
-		return ItemLevelRecoveryConnectionsRevokeResponse{}, err
+		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ItemLevelRecoveryConnectionsRevokeResponse{}, err
+		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ItemLevelRecoveryConnectionsRevokeResponse{}, client.revokeHandleError(resp)
+		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, runtime.NewResponseError(resp)
 	}
-	return ItemLevelRecoveryConnectionsRevokeResponse{RawResponse: resp}, nil
+	return ItemLevelRecoveryConnectionsClientRevokeResponse{RawResponse: resp}, nil
 }
 
 // revokeCreateRequest creates the Revoke request.
-func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *ItemLevelRecoveryConnectionsRevokeOptions) (*policy.Request, error) {
+func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *ItemLevelRecoveryConnectionsClientRevokeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/revokeInstantItemRecovery"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -165,26 +178,13 @@ func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx contex
 		return nil, errors.New("parameter recoveryPointID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// revokeHandleError handles the Revoke error response.
-func (client *ItemLevelRecoveryConnectionsClient) revokeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

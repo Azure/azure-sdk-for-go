@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// ServicesListByResourceGroupPager provides operations for iterating over paged responses.
-type ServicesListByResourceGroupPager struct {
+// ServicesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ServicesClientListByResourceGroupPager struct {
 	client    *ServicesClient
-	current   ServicesListByResourceGroupResponse
+	current   ServicesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ServicesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, ServicesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ServicesListByResourceGroupPager) Err() error {
+func (p *ServicesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ServicesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *ServicesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *ServicesListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *ServicesListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ServicesListByResourceGroupResponse page.
-func (p *ServicesListByResourceGroupPager) PageResponse() ServicesListByResourceGroupResponse {
+// PageResponse returns the current ServicesClientListByResourceGroupResponse page.
+func (p *ServicesClientListByResourceGroupPager) PageResponse() ServicesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// ServicesListPager provides operations for iterating over paged responses.
-type ServicesListPager struct {
+// ServicesClientListPager provides operations for iterating over paged responses.
+type ServicesClientListPager struct {
 	client    *ServicesClient
-	current   ServicesListResponse
+	current   ServicesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ServicesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ServicesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ServicesListPager) Err() error {
+func (p *ServicesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ServicesListPager) NextPage(ctx context.Context) bool {
+func (p *ServicesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *ServicesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,7 +173,7 @@ func (p *ServicesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ServicesListResponse page.
-func (p *ServicesListPager) PageResponse() ServicesListResponse {
+// PageResponse returns the current ServicesClientListResponse page.
+func (p *ServicesClientListPager) PageResponse() ServicesClientListResponse {
 	return p.current
 }

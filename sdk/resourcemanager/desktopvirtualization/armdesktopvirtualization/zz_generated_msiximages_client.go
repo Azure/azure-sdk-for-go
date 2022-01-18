@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // MsixImagesClient contains the methods for the MsixImages group.
 // Don't use this type directly, use NewMsixImagesClient() instead.
 type MsixImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMsixImagesClient creates a new instance of MsixImagesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MsixImagesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MsixImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MsixImagesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Expand - Expands and Lists MSIX packages in an Image, given the Image Path.
-// If the operation fails it returns the *CloudError error type.
-func (client *MsixImagesClient) Expand(resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesExpandOptions) *MsixImagesExpandPager {
-	return &MsixImagesExpandPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// msixImageURI - Object containing URI to MSIX Image
+// options - MsixImagesClientExpandOptions contains the optional parameters for the MsixImagesClient.Expand method.
+func (client *MsixImagesClient) Expand(resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) *MsixImagesClientExpandPager {
+	return &MsixImagesClientExpandPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.expandCreateRequest(ctx, resourceGroupName, hostPoolName, msixImageURI, options)
 		},
-		advancer: func(ctx context.Context, resp MsixImagesExpandResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MsixImagesClientExpandResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExpandMsixImageList.NextLink)
 		},
 	}
 }
 
 // expandCreateRequest creates the Expand request.
-func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesExpandOptions) (*policy.Request, error) {
+func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/expandMsixImage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourc
 }
 
 // expandHandleResponse handles the Expand response.
-func (client *MsixImagesClient) expandHandleResponse(resp *http.Response) (MsixImagesExpandResponse, error) {
-	result := MsixImagesExpandResponse{RawResponse: resp}
+func (client *MsixImagesClient) expandHandleResponse(resp *http.Response) (MsixImagesClientExpandResponse, error) {
+	result := MsixImagesClientExpandResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpandMsixImageList); err != nil {
-		return MsixImagesExpandResponse{}, runtime.NewResponseError(err, resp)
+		return MsixImagesClientExpandResponse{}, err
 	}
 	return result, nil
-}
-
-// expandHandleError handles the Expand error response.
-func (client *MsixImagesClient) expandHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

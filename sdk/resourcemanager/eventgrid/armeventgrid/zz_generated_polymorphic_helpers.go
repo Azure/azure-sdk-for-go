@@ -22,18 +22,26 @@ func unmarshalAdvancedFilterClassification(rawMsg json.RawMessage) (AdvancedFilt
 	switch m["operatorType"] {
 	case string(AdvancedFilterOperatorTypeBoolEquals):
 		b = &BoolEqualsAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeIsNotNull):
+		b = &IsNotNullAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeIsNullOrUndefined):
+		b = &IsNullOrUndefinedAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeNumberGreaterThan):
 		b = &NumberGreaterThanAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeNumberGreaterThanOrEquals):
 		b = &NumberGreaterThanOrEqualsAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeNumberIn):
 		b = &NumberInAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeNumberInRange):
+		b = &NumberInRangeAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeNumberLessThan):
 		b = &NumberLessThanAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeNumberLessThanOrEquals):
 		b = &NumberLessThanOrEqualsAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeNumberNotIn):
 		b = &NumberNotInAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeNumberNotInRange):
+		b = &NumberNotInRangeAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeStringBeginsWith):
 		b = &StringBeginsWithAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeStringContains):
@@ -42,6 +50,12 @@ func unmarshalAdvancedFilterClassification(rawMsg json.RawMessage) (AdvancedFilt
 		b = &StringEndsWithAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeStringIn):
 		b = &StringInAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeStringNotBeginsWith):
+		b = &StringNotBeginsWithAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeStringNotContains):
+		b = &StringNotContainsAdvancedFilter{}
+	case string(AdvancedFilterOperatorTypeStringNotEndsWith):
+		b = &StringNotEndsWithAdvancedFilter{}
 	case string(AdvancedFilterOperatorTypeStringNotIn):
 		b = &StringNotInAdvancedFilter{}
 	default:
@@ -69,25 +83,6 @@ func unmarshalAdvancedFilterClassificationArray(rawMsg json.RawMessage) ([]Advan
 	return fArray, nil
 }
 
-func unmarshalAdvancedFilterClassificationMap(rawMsg json.RawMessage) (map[string]AdvancedFilterClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AdvancedFilterClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAdvancedFilterClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalDeadLetterDestinationClassification(rawMsg json.RawMessage) (DeadLetterDestinationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -104,44 +99,6 @@ func unmarshalDeadLetterDestinationClassification(rawMsg json.RawMessage) (DeadL
 		b = &DeadLetterDestination{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalDeadLetterDestinationClassificationArray(rawMsg json.RawMessage) ([]DeadLetterDestinationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]DeadLetterDestinationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalDeadLetterDestinationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalDeadLetterDestinationClassificationMap(rawMsg json.RawMessage) (map[string]DeadLetterDestinationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DeadLetterDestinationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDeadLetterDestinationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalDeliveryAttributeMappingClassification(rawMsg json.RawMessage) (DeliveryAttributeMappingClassification, error) {
@@ -183,25 +140,6 @@ func unmarshalDeliveryAttributeMappingClassificationArray(rawMsg json.RawMessage
 	return fArray, nil
 }
 
-func unmarshalDeliveryAttributeMappingClassificationMap(rawMsg json.RawMessage) (map[string]DeliveryAttributeMappingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DeliveryAttributeMappingClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDeliveryAttributeMappingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage) (EventSubscriptionDestinationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -232,44 +170,6 @@ func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage)
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalEventSubscriptionDestinationClassificationArray(rawMsg json.RawMessage) ([]EventSubscriptionDestinationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]EventSubscriptionDestinationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalEventSubscriptionDestinationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalEventSubscriptionDestinationClassificationMap(rawMsg json.RawMessage) (map[string]EventSubscriptionDestinationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]EventSubscriptionDestinationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalEventSubscriptionDestinationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSchemaMappingClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -286,42 +186,4 @@ func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSch
 		b = &InputSchemaMapping{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalInputSchemaMappingClassificationArray(rawMsg json.RawMessage) ([]InputSchemaMappingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]InputSchemaMappingClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalInputSchemaMappingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalInputSchemaMappingClassificationMap(rawMsg json.RawMessage) (map[string]InputSchemaMappingClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]InputSchemaMappingClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalInputSchemaMappingClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

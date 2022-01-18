@@ -32,5 +32,5 @@ func ExampleLibraryClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LibraryResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LibraryClientGetResult)
 }

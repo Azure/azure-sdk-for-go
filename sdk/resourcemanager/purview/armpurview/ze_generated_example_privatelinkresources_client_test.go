@@ -27,31 +27,16 @@ func ExamplePrivateLinkResourcesClient_ListByAccount() {
 	pager := client.ListByAccount("<resource-group-name>",
 		"<account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateLinkResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
-}
-
-// x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateLinkResources_GetByGroupId.json
-func ExamplePrivateLinkResourcesClient_GetByGroupID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpurview.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	res, err := client.GetByGroupID(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<group-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
 }

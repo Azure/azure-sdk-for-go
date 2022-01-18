@@ -36,7 +36,7 @@ func ExampleSynchronizationSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SynchronizationSettingClassification.GetSynchronizationSetting().ID: %s\n", *res.GetSynchronizationSetting().ID)
+	log.Printf("Response result: %#v\n", res.SynchronizationSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Create.json
@@ -53,11 +53,9 @@ func ExampleSynchronizationSettingsClient_Create() {
 		"<share-name>",
 		"<synchronization-setting-name>",
 		&armdatashare.ScheduledSynchronizationSetting{
-			SynchronizationSetting: armdatashare.SynchronizationSetting{
-				Kind: armdatashare.SynchronizationSettingKindScheduleBased.ToPtr(),
-			},
+			Kind: armdatashare.SynchronizationSettingKind("ScheduleBased").ToPtr(),
 			Properties: &armdatashare.ScheduledSynchronizationSettingProperties{
-				RecurrenceInterval:  armdatashare.RecurrenceIntervalDay.ToPtr(),
+				RecurrenceInterval:  armdatashare.RecurrenceInterval("Day").ToPtr(),
 				SynchronizationTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t }()),
 			},
 		},
@@ -65,7 +63,7 @@ func ExampleSynchronizationSettingsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SynchronizationSettingClassification.GetSynchronizationSetting().ID: %s\n", *res.GetSynchronizationSetting().ID)
+	log.Printf("Response result: %#v\n", res.SynchronizationSettingsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Delete.json
@@ -85,10 +83,11 @@ func ExampleSynchronizationSettingsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SynchronizationSettingsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_ListByShare.json
@@ -102,13 +101,17 @@ func ExampleSynchronizationSettingsClient_ListByShare() {
 	pager := client.ListByShare("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
-		&armdatashare.SynchronizationSettingsListByShareOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armdatashare.SynchronizationSettingsClientListByShareOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SynchronizationSettingClassification.GetSynchronizationSetting().ID: %s\n", *v.GetSynchronizationSetting().ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

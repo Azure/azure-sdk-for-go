@@ -29,17 +29,11 @@ func ExampleNetworkClient_Create() {
 		"<resource-group-name>",
 		"<network-resource-name>",
 		armservicefabricmesh.NetworkResourceDescription{
-			TrackedResource: armservicefabricmesh.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.LocalNetworkResourceProperties{
-				NetworkResourceProperties: armservicefabricmesh.NetworkResourceProperties{
-					NetworkResourcePropertiesBase: armservicefabricmesh.NetworkResourcePropertiesBase{
-						Kind: armservicefabricmesh.NetworkKindLocal.ToPtr(),
-					},
-					Description: to.StringPtr("<description>"),
-				},
+				Kind:                 armservicefabricmesh.NetworkKind("Local").ToPtr(),
+				Description:          to.StringPtr("<description>"),
 				NetworkAddressPrefix: to.StringPtr("<network-address-prefix>"),
 			},
 		},
@@ -47,7 +41,7 @@ func ExampleNetworkClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkClientCreateResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/networks/get.json
@@ -65,7 +59,7 @@ func ExampleNetworkClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkResourceDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkClientGetResult)
 }
 
 // x-ms-original-file: specification/servicefabricmesh/resource-manager/Microsoft.ServiceFabricMesh/preview/2018-09-01-preview/examples/networks/delete.json
@@ -95,12 +89,16 @@ func ExampleNetworkClient_ListByResourceGroup() {
 	client := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetworkResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -114,12 +112,16 @@ func ExampleNetworkClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armservicefabricmesh.NewNetworkClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetworkResourceDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

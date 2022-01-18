@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
 )
 
-// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2018-10-31-preview/examples/DedicatedHsm_CreateOrUpdate.json
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,15 +31,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<name>",
 		armhardwaresecuritymodules.DedicatedHsm{
-			Resource: armhardwaresecuritymodules.Resource{
-				Location: to.StringPtr("<location>"),
-				SKU: &armhardwaresecuritymodules.SKU{
-					Name: armhardwaresecuritymodules.SKUNameSafeNetLunaNetworkHSMA790.ToPtr(),
-				},
-				Tags: map[string]*string{
-					"Dept":        to.StringPtr("hsm"),
-					"Environment": to.StringPtr("dogfood"),
-				},
+			Location: to.StringPtr("<location>"),
+			SKU: &armhardwaresecuritymodules.SKU{
+				Name: armhardwaresecuritymodules.SKUName("SafeNet Luna Network HSM A790").ToPtr(),
+			},
+			Tags: map[string]*string{
+				"Dept":        to.StringPtr("hsm"),
+				"Environment": to.StringPtr("dogfood"),
 			},
 			Properties: &armhardwaresecuritymodules.DedicatedHsmProperties{
 				NetworkProfile: &armhardwaresecuritymodules.NetworkProfile{
@@ -62,10 +60,10 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedHsm.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DedicatedHsmClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2018-10-31-preview/examples/DedicatedHsm_Update.json
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,10 +89,10 @@ func ExampleDedicatedHsmClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedHsm.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DedicatedHsmClientUpdateResult)
 }
 
-// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2018-10-31-preview/examples/DedicatedHsm_Delete.json
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Delete.json
 func ExampleDedicatedHsmClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +113,7 @@ func ExampleDedicatedHsmClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2018-10-31-preview/examples/DedicatedHsm_Get.json
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Get.json
 func ExampleDedicatedHsmClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,10 +128,10 @@ func ExampleDedicatedHsmClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DedicatedHsm.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DedicatedHsmClientGetResult)
 }
 
-// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2018-10-31-preview/examples/DedicatedHsm_ListByResourceGroup.json
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,18 +140,22 @@ func ExampleDedicatedHsmClient_ListByResourceGroup() {
 	ctx := context.Background()
 	client := armhardwaresecuritymodules.NewDedicatedHsmClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armhardwaresecuritymodules.DedicatedHsmListByResourceGroupOptions{Top: nil})
-	for pager.NextPage(ctx) {
+		&armhardwaresecuritymodules.DedicatedHsmClientListByResourceGroupOptions{Top: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DedicatedHsm.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2018-10-31-preview/examples/DedicatedHsm_ListBySubscription.json
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,13 +163,42 @@ func ExampleDedicatedHsmClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armhardwaresecuritymodules.NewDedicatedHsmClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armhardwaresecuritymodules.DedicatedHsmListBySubscriptionOptions{Top: nil})
-	for pager.NextPage(ctx) {
+	pager := client.ListBySubscription(&armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionOptions{Top: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DedicatedHsm.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
+		}
+	}
+}
+
+// x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/GetOutboundNetworkDependenciesEndpointsList.json
+func ExampleDedicatedHsmClient_ListOutboundNetworkDependenciesEndpoints() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armhardwaresecuritymodules.NewDedicatedHsmClient("<subscription-id>", cred, nil)
+	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
+		"<name>",
+		nil)
+	for {
+		nextResult := pager.NextPage(ctx)
+		if err := pager.Err(); err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

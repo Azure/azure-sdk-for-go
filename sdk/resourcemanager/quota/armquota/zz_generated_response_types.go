@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// QuotaCreateOrUpdatePollerResponse contains the response from method Quota.CreateOrUpdate.
-type QuotaCreateOrUpdatePollerResponse struct {
+// ClientCreateOrUpdatePollerResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *QuotaCreateOrUpdatePoller
+	Poller *ClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type QuotaCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l QuotaCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (QuotaCreateOrUpdateResponse, error) {
-	respType := QuotaCreateOrUpdateResponse{}
+func (l ClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientCreateOrUpdateResponse, error) {
+	respType := ClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CurrentQuotaLimitBase)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l QuotaCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, fr
 	return respType, nil
 }
 
-// Resume rehydrates a QuotaCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *QuotaCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *QuotaClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("QuotaClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &QuotaCreateOrUpdatePoller{
+	poller := &ClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,157 +55,157 @@ func (l *QuotaCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *
 	return nil
 }
 
-// QuotaCreateOrUpdateResponse contains the response from method Quota.CreateOrUpdate.
-type QuotaCreateOrUpdateResponse struct {
-	QuotaCreateOrUpdateResult
+// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResponse struct {
+	ClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaCreateOrUpdateResult contains the result from method Quota.CreateOrUpdate.
-type QuotaCreateOrUpdateResult struct {
+// ClientCreateOrUpdateResult contains the result from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResult struct {
 	CurrentQuotaLimitBase
 }
 
-// QuotaGetResponse contains the response from method Quota.Get.
-type QuotaGetResponse struct {
-	QuotaGetResult
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	ClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaGetResult contains the result from method Quota.Get.
-type QuotaGetResult struct {
+// ClientGetResult contains the result from method Client.Get.
+type ClientGetResult struct {
 	CurrentQuotaLimitBase
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// QuotaListResponse contains the response from method Quota.List.
-type QuotaListResponse struct {
-	QuotaListResult
+// ClientListResponse contains the response from method Client.List.
+type ClientListResponse struct {
+	ClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaListResult contains the result from method Quota.List.
-type QuotaListResult struct {
-	QuotaLimits
+// ClientListResult contains the result from method Client.List.
+type ClientListResult struct {
+	Limits
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// QuotaOperationListResponse contains the response from method QuotaOperation.List.
-type QuotaOperationListResponse struct {
-	QuotaOperationListResult
+// ClientUpdatePollerResponse contains the response from method Client.Update.
+type ClientUpdatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ClientUpdatePoller
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaOperationListResult contains the result from method QuotaOperation.List.
-type QuotaOperationListResult struct {
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientUpdateResponse, error) {
+	respType := ClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CurrentQuotaLimitBase)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClientUpdatePollerResponse from the provided client and resume token.
+func (l *ClientUpdatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("Client.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	ClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ClientUpdateResult contains the result from method Client.Update.
+type ClientUpdateResult struct {
+	CurrentQuotaLimitBase
+}
+
+// OperationClientListResponse contains the response from method OperationClient.List.
+type OperationClientListResponse struct {
+	OperationClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationClientListResult contains the result from method OperationClient.List.
+type OperationClientListResult struct {
 	OperationList
 }
 
-// QuotaRequestStatusGetResponse contains the response from method QuotaRequestStatus.Get.
-type QuotaRequestStatusGetResponse struct {
-	QuotaRequestStatusGetResult
+// RequestStatusClientGetResponse contains the response from method RequestStatusClient.Get.
+type RequestStatusClientGetResponse struct {
+	RequestStatusClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaRequestStatusGetResult contains the result from method QuotaRequestStatus.Get.
-type QuotaRequestStatusGetResult struct {
-	QuotaRequestDetails
+// RequestStatusClientGetResult contains the result from method RequestStatusClient.Get.
+type RequestStatusClientGetResult struct {
+	RequestDetails
 }
 
-// QuotaRequestStatusListResponse contains the response from method QuotaRequestStatus.List.
-type QuotaRequestStatusListResponse struct {
-	QuotaRequestStatusListResult
+// RequestStatusClientListResponse contains the response from method RequestStatusClient.List.
+type RequestStatusClientListResponse struct {
+	RequestStatusClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QuotaRequestStatusListResult contains the result from method QuotaRequestStatus.List.
-type QuotaRequestStatusListResult struct {
-	QuotaRequestDetailsList
+// RequestStatusClientListResult contains the result from method RequestStatusClient.List.
+type RequestStatusClientListResult struct {
+	RequestDetailsList
 }
 
-// QuotaUpdatePollerResponse contains the response from method Quota.Update.
-type QuotaUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *QuotaUpdatePoller
-
+// UsagesClientGetResponse contains the response from method UsagesClient.Get.
+type UsagesClientGetResponse struct {
+	UsagesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l QuotaUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (QuotaUpdateResponse, error) {
-	respType := QuotaUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CurrentQuotaLimitBase)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a QuotaUpdatePollerResponse from the provided client and resume token.
-func (l *QuotaUpdatePollerResponse) Resume(ctx context.Context, client *QuotaClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("QuotaClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &QuotaUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// QuotaUpdateResponse contains the response from method Quota.Update.
-type QuotaUpdateResponse struct {
-	QuotaUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QuotaUpdateResult contains the result from method Quota.Update.
-type QuotaUpdateResult struct {
-	CurrentQuotaLimitBase
-}
-
-// UsagesGetResponse contains the response from method Usages.Get.
-type UsagesGetResponse struct {
-	UsagesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UsagesGetResult contains the result from method Usages.Get.
-type UsagesGetResult struct {
+// UsagesClientGetResult contains the result from method UsagesClient.Get.
+type UsagesClientGetResult struct {
 	CurrentUsagesBase
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// UsagesListResponse contains the response from method Usages.List.
-type UsagesListResponse struct {
-	UsagesListResult
+// UsagesClientListResponse contains the response from method UsagesClient.List.
+type UsagesClientListResponse struct {
+	UsagesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UsagesListResult contains the result from method Usages.List.
-type UsagesListResult struct {
+// UsagesClientListResult contains the result from method UsagesClient.List.
+type UsagesClientListResult struct {
 	UsagesLimits
 	// ETag contains the information returned from the ETag header response.
 	ETag *string

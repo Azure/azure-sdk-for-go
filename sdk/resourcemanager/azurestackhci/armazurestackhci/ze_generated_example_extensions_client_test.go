@@ -31,12 +31,16 @@ func ExampleExtensionsClient_ListByArcSetting() {
 		"<cluster-name>",
 		"<arc-setting-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Extension.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExampleExtensionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientGetResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/PutExtension.json
@@ -97,7 +101,7 @@ func ExampleExtensionsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtensionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/PatchExtension.json
@@ -129,11 +133,10 @@ func ExampleExtensionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2021-09-01/examples/DeleteExtension.json

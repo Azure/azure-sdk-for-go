@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // SQLPoolConnectionPoliciesClient contains the methods for the SQLPoolConnectionPolicies group.
 // Don't use this type directly, use NewSQLPoolConnectionPoliciesClient() instead.
 type SQLPoolConnectionPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolConnectionPoliciesClient creates a new instance of SQLPoolConnectionPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolConnectionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolConnectionPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolConnectionPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolConnectionPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a Sql pool's connection policy, which is used with table auditing.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolConnectionPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, connectionPolicyName ConnectionPolicyName, options *SQLPoolConnectionPoliciesGetOptions) (SQLPoolConnectionPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// connectionPolicyName - The name of the connection policy.
+// options - SQLPoolConnectionPoliciesClientGetOptions contains the optional parameters for the SQLPoolConnectionPoliciesClient.Get
+// method.
+func (client *SQLPoolConnectionPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, connectionPolicyName ConnectionPolicyName, options *SQLPoolConnectionPoliciesClientGetOptions) (SQLPoolConnectionPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, connectionPolicyName, options)
 	if err != nil {
-		return SQLPoolConnectionPoliciesGetResponse{}, err
+		return SQLPoolConnectionPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolConnectionPoliciesGetResponse{}, err
+		return SQLPoolConnectionPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolConnectionPoliciesGetResponse{}, client.getHandleError(resp)
+		return SQLPoolConnectionPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolConnectionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, connectionPolicyName ConnectionPolicyName, options *SQLPoolConnectionPoliciesGetOptions) (*policy.Request, error) {
+func (client *SQLPoolConnectionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, connectionPolicyName ConnectionPolicyName, options *SQLPoolConnectionPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/connectionPolicies/{connectionPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *SQLPoolConnectionPoliciesClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter connectionPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectionPolicyName}", url.PathEscape(string(connectionPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +107,10 @@ func (client *SQLPoolConnectionPoliciesClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolConnectionPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolConnectionPoliciesGetResponse, error) {
-	result := SQLPoolConnectionPoliciesGetResponse{RawResponse: resp}
+func (client *SQLPoolConnectionPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolConnectionPoliciesClientGetResponse, error) {
+	result := SQLPoolConnectionPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLPoolConnectionPolicy); err != nil {
-		return SQLPoolConnectionPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolConnectionPoliciesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SQLPoolConnectionPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

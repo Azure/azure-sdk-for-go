@@ -1,5 +1,289 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateStoreCollectionClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreCollectionGetOptions)` to `(context.Context, string, string, *PrivateStoreCollectionClientGetOptions)`
+- Function `*PrivateStoreCollectionClient.Get` return value(s) have been changed from `(PrivateStoreCollectionGetResponse, error)` to `(PrivateStoreCollectionClientGetResponse, error)`
+- Function `*PrivateStoreClient.Get` parameter(s) have been changed from `(context.Context, string, *PrivateStoreGetOptions)` to `(context.Context, string, *PrivateStoreClientGetOptions)`
+- Function `*PrivateStoreClient.Get` return value(s) have been changed from `(PrivateStoreGetResponse, error)` to `(PrivateStoreClientGetResponse, error)`
+- Function `*PrivateStoreClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, *PrivateStoreCreateOrUpdateOptions)` to `(context.Context, string, *PrivateStoreClientCreateOrUpdateOptions)`
+- Function `*PrivateStoreClient.CreateOrUpdate` return value(s) have been changed from `(PrivateStoreCreateOrUpdateResponse, error)` to `(PrivateStoreClientCreateOrUpdateResponse, error)`
+- Function `*PrivateStoreCollectionOfferClient.Post` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateStoreCollectionOfferPostOptions)` to `(context.Context, string, string, string, *PrivateStoreCollectionOfferClientPostOptions)`
+- Function `*PrivateStoreCollectionOfferClient.Post` return value(s) have been changed from `(PrivateStoreCollectionOfferPostResponse, error)` to `(PrivateStoreCollectionOfferClientPostResponse, error)`
+- Function `*PrivateStoreClient.CollectionsToSubscriptionsMapping` parameter(s) have been changed from `(context.Context, string, *PrivateStoreCollectionsToSubscriptionsMappingOptions)` to `(context.Context, string, *PrivateStoreClientCollectionsToSubscriptionsMappingOptions)`
+- Function `*PrivateStoreClient.CollectionsToSubscriptionsMapping` return value(s) have been changed from `(PrivateStoreCollectionsToSubscriptionsMappingResponse, error)` to `(PrivateStoreClientCollectionsToSubscriptionsMappingResponse, error)`
+- Function `*PrivateStoreClient.WithdrawPlan` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreWithdrawPlanOptions)` to `(context.Context, string, string, *PrivateStoreClientWithdrawPlanOptions)`
+- Function `*PrivateStoreClient.WithdrawPlan` return value(s) have been changed from `(PrivateStoreWithdrawPlanResponse, error)` to `(PrivateStoreClientWithdrawPlanResponse, error)`
+- Function `*PrivateStoreClient.AcknowledgeOfferNotification` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreAcknowledgeOfferNotificationOptions)` to `(context.Context, string, string, *PrivateStoreClientAcknowledgeOfferNotificationOptions)`
+- Function `*PrivateStoreClient.AcknowledgeOfferNotification` return value(s) have been changed from `(PrivateStoreAcknowledgeOfferNotificationResponse, error)` to `(PrivateStoreClientAcknowledgeOfferNotificationResponse, error)`
+- Function `*PrivateStoreCollectionClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreCollectionDeleteOptions)` to `(context.Context, string, string, *PrivateStoreCollectionClientDeleteOptions)`
+- Function `*PrivateStoreCollectionClient.Delete` return value(s) have been changed from `(PrivateStoreCollectionDeleteResponse, error)` to `(PrivateStoreCollectionClientDeleteResponse, error)`
+- Function `*PrivateStoreClient.CreateApprovalRequest` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreCreateApprovalRequestOptions)` to `(context.Context, string, string, *PrivateStoreClientCreateApprovalRequestOptions)`
+- Function `*PrivateStoreClient.CreateApprovalRequest` return value(s) have been changed from `(PrivateStoreCreateApprovalRequestResponse, error)` to `(PrivateStoreClientCreateApprovalRequestResponse, error)`
+- Function `*PrivateStoreCollectionClient.List` parameter(s) have been changed from `(context.Context, string, *PrivateStoreCollectionListOptions)` to `(context.Context, string, *PrivateStoreCollectionClientListOptions)`
+- Function `*PrivateStoreCollectionClient.List` return value(s) have been changed from `(PrivateStoreCollectionListResponse, error)` to `(PrivateStoreCollectionClientListResponse, error)`
+- Function `*PrivateStoreClient.GetRequestApproval` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreGetRequestApprovalOptions)` to `(context.Context, string, string, *PrivateStoreClientGetRequestApprovalOptions)`
+- Function `*PrivateStoreClient.GetRequestApproval` return value(s) have been changed from `(PrivateStoreGetRequestApprovalResponse, error)` to `(PrivateStoreClientGetRequestApprovalResponse, error)`
+- Function `*PrivateStoreClient.QueryOffers` parameter(s) have been changed from `(context.Context, string, *PrivateStoreQueryOffersOptions)` to `(context.Context, string, *PrivateStoreClientQueryOffersOptions)`
+- Function `*PrivateStoreClient.QueryOffers` return value(s) have been changed from `(PrivateStoreQueryOffersResponse, error)` to `(PrivateStoreClientQueryOffersResponse, error)`
+- Function `*PrivateStoreClient.AdminRequestApprovalsList` parameter(s) have been changed from `(context.Context, string, *PrivateStoreAdminRequestApprovalsListOptions)` to `(context.Context, string, *PrivateStoreClientAdminRequestApprovalsListOptions)`
+- Function `*PrivateStoreClient.AdminRequestApprovalsList` return value(s) have been changed from `(PrivateStoreAdminRequestApprovalsListResponse, error)` to `(PrivateStoreClientAdminRequestApprovalsListResponse, error)`
+- Function `*PrivateStoreCollectionClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreCollectionCreateOrUpdateOptions)` to `(context.Context, string, string, *PrivateStoreCollectionClientCreateOrUpdateOptions)`
+- Function `*PrivateStoreCollectionClient.CreateOrUpdate` return value(s) have been changed from `(PrivateStoreCollectionCreateOrUpdateResponse, error)` to `(PrivateStoreCollectionClientCreateOrUpdateResponse, error)`
+- Function `*PrivateStoreClient.GetAdminRequestApproval` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateStoreGetAdminRequestApprovalOptions)` to `(context.Context, string, string, string, *PrivateStoreClientGetAdminRequestApprovalOptions)`
+- Function `*PrivateStoreClient.GetAdminRequestApproval` return value(s) have been changed from `(PrivateStoreGetAdminRequestApprovalResponse, error)` to `(PrivateStoreClientGetAdminRequestApprovalResponse, error)`
+- Function `*PrivateStoreClient.Delete` parameter(s) have been changed from `(context.Context, string, *PrivateStoreDeleteOptions)` to `(context.Context, string, *PrivateStoreClientDeleteOptions)`
+- Function `*PrivateStoreClient.Delete` return value(s) have been changed from `(PrivateStoreDeleteResponse, error)` to `(PrivateStoreClientDeleteResponse, error)`
+- Function `*PrivateStoreClient.QueryNotificationsState` parameter(s) have been changed from `(context.Context, string, *PrivateStoreQueryNotificationsStateOptions)` to `(context.Context, string, *PrivateStoreClientQueryNotificationsStateOptions)`
+- Function `*PrivateStoreClient.QueryNotificationsState` return value(s) have been changed from `(PrivateStoreQueryNotificationsStateResponse, error)` to `(PrivateStoreClientQueryNotificationsStateResponse, error)`
+- Function `*PrivateStoreCollectionClient.Post` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreCollectionPostOptions)` to `(context.Context, string, string, *PrivateStoreCollectionClientPostOptions)`
+- Function `*PrivateStoreCollectionClient.Post` return value(s) have been changed from `(PrivateStoreCollectionPostResponse, error)` to `(PrivateStoreCollectionClientPostResponse, error)`
+- Function `*PrivateStoreCollectionOfferClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateStoreCollectionOfferGetOptions)` to `(context.Context, string, string, string, *PrivateStoreCollectionOfferClientGetOptions)`
+- Function `*PrivateStoreCollectionOfferClient.Get` return value(s) have been changed from `(PrivateStoreCollectionOfferGetResponse, error)` to `(PrivateStoreCollectionOfferClientGetResponse, error)`
+- Function `*PrivateStoreCollectionOfferClient.Delete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateStoreCollectionOfferDeleteOptions)` to `(context.Context, string, string, string, *PrivateStoreCollectionOfferClientDeleteOptions)`
+- Function `*PrivateStoreCollectionOfferClient.Delete` return value(s) have been changed from `(PrivateStoreCollectionOfferDeleteResponse, error)` to `(PrivateStoreCollectionOfferClientDeleteResponse, error)`
+- Function `*PrivateStoreClient.BillingAccounts` parameter(s) have been changed from `(context.Context, string, *PrivateStoreBillingAccountsOptions)` to `(context.Context, string, *PrivateStoreClientBillingAccountsOptions)`
+- Function `*PrivateStoreClient.BillingAccounts` return value(s) have been changed from `(PrivateStoreBillingAccountsResponse, error)` to `(PrivateStoreClientBillingAccountsResponse, error)`
+- Function `*PrivateStoreClient.BulkCollectionsAction` parameter(s) have been changed from `(context.Context, string, *PrivateStoreBulkCollectionsActionOptions)` to `(context.Context, string, *PrivateStoreClientBulkCollectionsActionOptions)`
+- Function `*PrivateStoreClient.BulkCollectionsAction` return value(s) have been changed from `(PrivateStoreBulkCollectionsActionResponse, error)` to `(PrivateStoreClientBulkCollectionsActionResponse, error)`
+- Function `*PrivateStoreClient.GetApprovalRequestsList` parameter(s) have been changed from `(context.Context, string, *PrivateStoreGetApprovalRequestsListOptions)` to `(context.Context, string, *PrivateStoreClientGetApprovalRequestsListOptions)`
+- Function `*PrivateStoreClient.GetApprovalRequestsList` return value(s) have been changed from `(PrivateStoreGetApprovalRequestsListResponse, error)` to `(PrivateStoreClientGetApprovalRequestsListResponse, error)`
+- Function `*PrivateStoreClient.UpdateAdminRequestApproval` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreUpdateAdminRequestApprovalOptions)` to `(context.Context, string, string, *PrivateStoreClientUpdateAdminRequestApprovalOptions)`
+- Function `*PrivateStoreClient.UpdateAdminRequestApproval` return value(s) have been changed from `(PrivateStoreUpdateAdminRequestApprovalResponse, error)` to `(PrivateStoreClientUpdateAdminRequestApprovalResponse, error)`
+- Function `*PrivateStoreCollectionClient.TransferOffers` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreCollectionTransferOffersOptions)` to `(context.Context, string, string, *PrivateStoreCollectionClientTransferOffersOptions)`
+- Function `*PrivateStoreCollectionClient.TransferOffers` return value(s) have been changed from `(PrivateStoreCollectionTransferOffersResponse, error)` to `(PrivateStoreCollectionClientTransferOffersResponse, error)`
+- Function `*PrivateStoreClient.QueryApprovedPlans` parameter(s) have been changed from `(context.Context, string, *PrivateStoreQueryApprovedPlansOptions)` to `(context.Context, string, *PrivateStoreClientQueryApprovedPlansOptions)`
+- Function `*PrivateStoreClient.QueryApprovedPlans` return value(s) have been changed from `(PrivateStoreQueryApprovedPlansResponse, error)` to `(PrivateStoreClientQueryApprovedPlansResponse, error)`
+- Function `*PrivateStoreClient.QueryRequestApproval` parameter(s) have been changed from `(context.Context, string, string, *PrivateStoreQueryRequestApprovalOptions)` to `(context.Context, string, string, *PrivateStoreClientQueryRequestApprovalOptions)`
+- Function `*PrivateStoreClient.QueryRequestApproval` return value(s) have been changed from `(PrivateStoreQueryRequestApprovalResponse, error)` to `(PrivateStoreClientQueryRequestApprovalResponse, error)`
+- Function `*PrivateStoreCollectionOfferClient.List` parameter(s) have been changed from `(string, string, *PrivateStoreCollectionOfferListOptions)` to `(string, string, *PrivateStoreCollectionOfferClientListOptions)`
+- Function `*PrivateStoreCollectionOfferClient.List` return value(s) have been changed from `(*PrivateStoreCollectionOfferListPager)` to `(*PrivateStoreCollectionOfferClientListPager)`
+- Function `*PrivateStoreClient.List` parameter(s) have been changed from `(*PrivateStoreListOptions)` to `(*PrivateStoreClientListOptions)`
+- Function `*PrivateStoreClient.List` return value(s) have been changed from `(*PrivateStoreListPager)` to `(*PrivateStoreClientListPager)`
+- Function `*PrivateStoreCollectionOfferClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateStoreCollectionOfferCreateOrUpdateOptions)` to `(context.Context, string, string, string, *PrivateStoreCollectionOfferClientCreateOrUpdateOptions)`
+- Function `*PrivateStoreCollectionOfferClient.CreateOrUpdate` return value(s) have been changed from `(PrivateStoreCollectionOfferCreateOrUpdateResponse, error)` to `(PrivateStoreCollectionOfferClientCreateOrUpdateResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*PrivateStoreCollectionOfferListPager.Err` has been removed
+- Function `*PrivateStoreListPager.PageResponse` has been removed
+- Function `*PrivateStoreCollectionOfferListPager.NextPage` has been removed
+- Function `*PrivateStoreCollectionOfferListPager.PageResponse` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*PrivateStoreListPager.Err` has been removed
+- Function `*PrivateStoreListPager.NextPage` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateStoreAcknowledgeOfferNotificationOptions` has been removed
+- Struct `PrivateStoreAcknowledgeOfferNotificationResponse` has been removed
+- Struct `PrivateStoreAdminRequestApprovalsListOptions` has been removed
+- Struct `PrivateStoreAdminRequestApprovalsListResponse` has been removed
+- Struct `PrivateStoreAdminRequestApprovalsListResult` has been removed
+- Struct `PrivateStoreBillingAccountsOptions` has been removed
+- Struct `PrivateStoreBillingAccountsResponse` has been removed
+- Struct `PrivateStoreBillingAccountsResult` has been removed
+- Struct `PrivateStoreBulkCollectionsActionOptions` has been removed
+- Struct `PrivateStoreBulkCollectionsActionResponse` has been removed
+- Struct `PrivateStoreBulkCollectionsActionResult` has been removed
+- Struct `PrivateStoreCollectionCreateOrUpdateOptions` has been removed
+- Struct `PrivateStoreCollectionCreateOrUpdateResponse` has been removed
+- Struct `PrivateStoreCollectionCreateOrUpdateResult` has been removed
+- Struct `PrivateStoreCollectionDeleteOptions` has been removed
+- Struct `PrivateStoreCollectionDeleteResponse` has been removed
+- Struct `PrivateStoreCollectionGetOptions` has been removed
+- Struct `PrivateStoreCollectionGetResponse` has been removed
+- Struct `PrivateStoreCollectionGetResult` has been removed
+- Struct `PrivateStoreCollectionListOptions` has been removed
+- Struct `PrivateStoreCollectionListResponse` has been removed
+- Struct `PrivateStoreCollectionListResult` has been removed
+- Struct `PrivateStoreCollectionOfferCreateOrUpdateOptions` has been removed
+- Struct `PrivateStoreCollectionOfferCreateOrUpdateResponse` has been removed
+- Struct `PrivateStoreCollectionOfferCreateOrUpdateResult` has been removed
+- Struct `PrivateStoreCollectionOfferDeleteOptions` has been removed
+- Struct `PrivateStoreCollectionOfferDeleteResponse` has been removed
+- Struct `PrivateStoreCollectionOfferGetOptions` has been removed
+- Struct `PrivateStoreCollectionOfferGetResponse` has been removed
+- Struct `PrivateStoreCollectionOfferGetResult` has been removed
+- Struct `PrivateStoreCollectionOfferListOptions` has been removed
+- Struct `PrivateStoreCollectionOfferListPager` has been removed
+- Struct `PrivateStoreCollectionOfferListResponse` has been removed
+- Struct `PrivateStoreCollectionOfferListResult` has been removed
+- Struct `PrivateStoreCollectionOfferPostOptions` has been removed
+- Struct `PrivateStoreCollectionOfferPostResponse` has been removed
+- Struct `PrivateStoreCollectionPostOptions` has been removed
+- Struct `PrivateStoreCollectionPostResponse` has been removed
+- Struct `PrivateStoreCollectionTransferOffersOptions` has been removed
+- Struct `PrivateStoreCollectionTransferOffersResponse` has been removed
+- Struct `PrivateStoreCollectionTransferOffersResult` has been removed
+- Struct `PrivateStoreCollectionsToSubscriptionsMappingOptions` has been removed
+- Struct `PrivateStoreCollectionsToSubscriptionsMappingResponse` has been removed
+- Struct `PrivateStoreCollectionsToSubscriptionsMappingResult` has been removed
+- Struct `PrivateStoreCreateApprovalRequestOptions` has been removed
+- Struct `PrivateStoreCreateApprovalRequestResponse` has been removed
+- Struct `PrivateStoreCreateApprovalRequestResult` has been removed
+- Struct `PrivateStoreCreateOrUpdateOptions` has been removed
+- Struct `PrivateStoreCreateOrUpdateResponse` has been removed
+- Struct `PrivateStoreDeleteOptions` has been removed
+- Struct `PrivateStoreDeleteResponse` has been removed
+- Struct `PrivateStoreGetAdminRequestApprovalOptions` has been removed
+- Struct `PrivateStoreGetAdminRequestApprovalResponse` has been removed
+- Struct `PrivateStoreGetAdminRequestApprovalResult` has been removed
+- Struct `PrivateStoreGetApprovalRequestsListOptions` has been removed
+- Struct `PrivateStoreGetApprovalRequestsListResponse` has been removed
+- Struct `PrivateStoreGetApprovalRequestsListResult` has been removed
+- Struct `PrivateStoreGetOptions` has been removed
+- Struct `PrivateStoreGetRequestApprovalOptions` has been removed
+- Struct `PrivateStoreGetRequestApprovalResponse` has been removed
+- Struct `PrivateStoreGetRequestApprovalResult` has been removed
+- Struct `PrivateStoreGetResponse` has been removed
+- Struct `PrivateStoreGetResult` has been removed
+- Struct `PrivateStoreListOptions` has been removed
+- Struct `PrivateStoreListPager` has been removed
+- Struct `PrivateStoreListResponse` has been removed
+- Struct `PrivateStoreListResult` has been removed
+- Struct `PrivateStoreQueryApprovedPlansOptions` has been removed
+- Struct `PrivateStoreQueryApprovedPlansResponse` has been removed
+- Struct `PrivateStoreQueryApprovedPlansResult` has been removed
+- Struct `PrivateStoreQueryNotificationsStateOptions` has been removed
+- Struct `PrivateStoreQueryNotificationsStateResponse` has been removed
+- Struct `PrivateStoreQueryNotificationsStateResult` has been removed
+- Struct `PrivateStoreQueryOffersOptions` has been removed
+- Struct `PrivateStoreQueryOffersResponse` has been removed
+- Struct `PrivateStoreQueryOffersResult` has been removed
+- Struct `PrivateStoreQueryRequestApprovalOptions` has been removed
+- Struct `PrivateStoreQueryRequestApprovalResponse` has been removed
+- Struct `PrivateStoreQueryRequestApprovalResult` has been removed
+- Struct `PrivateStoreUpdateAdminRequestApprovalOptions` has been removed
+- Struct `PrivateStoreUpdateAdminRequestApprovalResponse` has been removed
+- Struct `PrivateStoreUpdateAdminRequestApprovalResult` has been removed
+- Struct `PrivateStoreWithdrawPlanOptions` has been removed
+- Struct `PrivateStoreWithdrawPlanResponse` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `PrivateStore` has been removed
+- Field `Resource` of struct `Offer` has been removed
+- Field `Resource` of struct `AdminRequestApprovalsResource` has been removed
+- Field `Resource` of struct `Collection` has been removed
+- Field `Resource` of struct `RequestApprovalResource` has been removed
+
+### Features Added
+
+- New function `*PrivateStoreClientListPager.PageResponse() PrivateStoreClientListResponse`
+- New function `*PrivateStoreCollectionOfferClientListPager.Err() error`
+- New function `*PrivateStoreClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateStoreCollectionOfferClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateStoreClientListPager.Err() error`
+- New function `*PrivateStoreCollectionOfferClientListPager.PageResponse() PrivateStoreCollectionOfferClientListResponse`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateStoreClientAcknowledgeOfferNotificationOptions`
+- New struct `PrivateStoreClientAcknowledgeOfferNotificationResponse`
+- New struct `PrivateStoreClientAdminRequestApprovalsListOptions`
+- New struct `PrivateStoreClientAdminRequestApprovalsListResponse`
+- New struct `PrivateStoreClientAdminRequestApprovalsListResult`
+- New struct `PrivateStoreClientBillingAccountsOptions`
+- New struct `PrivateStoreClientBillingAccountsResponse`
+- New struct `PrivateStoreClientBillingAccountsResult`
+- New struct `PrivateStoreClientBulkCollectionsActionOptions`
+- New struct `PrivateStoreClientBulkCollectionsActionResponse`
+- New struct `PrivateStoreClientBulkCollectionsActionResult`
+- New struct `PrivateStoreClientCollectionsToSubscriptionsMappingOptions`
+- New struct `PrivateStoreClientCollectionsToSubscriptionsMappingResponse`
+- New struct `PrivateStoreClientCollectionsToSubscriptionsMappingResult`
+- New struct `PrivateStoreClientCreateApprovalRequestOptions`
+- New struct `PrivateStoreClientCreateApprovalRequestResponse`
+- New struct `PrivateStoreClientCreateApprovalRequestResult`
+- New struct `PrivateStoreClientCreateOrUpdateOptions`
+- New struct `PrivateStoreClientCreateOrUpdateResponse`
+- New struct `PrivateStoreClientDeleteOptions`
+- New struct `PrivateStoreClientDeleteResponse`
+- New struct `PrivateStoreClientGetAdminRequestApprovalOptions`
+- New struct `PrivateStoreClientGetAdminRequestApprovalResponse`
+- New struct `PrivateStoreClientGetAdminRequestApprovalResult`
+- New struct `PrivateStoreClientGetApprovalRequestsListOptions`
+- New struct `PrivateStoreClientGetApprovalRequestsListResponse`
+- New struct `PrivateStoreClientGetApprovalRequestsListResult`
+- New struct `PrivateStoreClientGetOptions`
+- New struct `PrivateStoreClientGetRequestApprovalOptions`
+- New struct `PrivateStoreClientGetRequestApprovalResponse`
+- New struct `PrivateStoreClientGetRequestApprovalResult`
+- New struct `PrivateStoreClientGetResponse`
+- New struct `PrivateStoreClientGetResult`
+- New struct `PrivateStoreClientListOptions`
+- New struct `PrivateStoreClientListPager`
+- New struct `PrivateStoreClientListResponse`
+- New struct `PrivateStoreClientListResult`
+- New struct `PrivateStoreClientQueryApprovedPlansOptions`
+- New struct `PrivateStoreClientQueryApprovedPlansResponse`
+- New struct `PrivateStoreClientQueryApprovedPlansResult`
+- New struct `PrivateStoreClientQueryNotificationsStateOptions`
+- New struct `PrivateStoreClientQueryNotificationsStateResponse`
+- New struct `PrivateStoreClientQueryNotificationsStateResult`
+- New struct `PrivateStoreClientQueryOffersOptions`
+- New struct `PrivateStoreClientQueryOffersResponse`
+- New struct `PrivateStoreClientQueryOffersResult`
+- New struct `PrivateStoreClientQueryRequestApprovalOptions`
+- New struct `PrivateStoreClientQueryRequestApprovalResponse`
+- New struct `PrivateStoreClientQueryRequestApprovalResult`
+- New struct `PrivateStoreClientUpdateAdminRequestApprovalOptions`
+- New struct `PrivateStoreClientUpdateAdminRequestApprovalResponse`
+- New struct `PrivateStoreClientUpdateAdminRequestApprovalResult`
+- New struct `PrivateStoreClientWithdrawPlanOptions`
+- New struct `PrivateStoreClientWithdrawPlanResponse`
+- New struct `PrivateStoreCollectionClientCreateOrUpdateOptions`
+- New struct `PrivateStoreCollectionClientCreateOrUpdateResponse`
+- New struct `PrivateStoreCollectionClientCreateOrUpdateResult`
+- New struct `PrivateStoreCollectionClientDeleteOptions`
+- New struct `PrivateStoreCollectionClientDeleteResponse`
+- New struct `PrivateStoreCollectionClientGetOptions`
+- New struct `PrivateStoreCollectionClientGetResponse`
+- New struct `PrivateStoreCollectionClientGetResult`
+- New struct `PrivateStoreCollectionClientListOptions`
+- New struct `PrivateStoreCollectionClientListResponse`
+- New struct `PrivateStoreCollectionClientListResult`
+- New struct `PrivateStoreCollectionClientPostOptions`
+- New struct `PrivateStoreCollectionClientPostResponse`
+- New struct `PrivateStoreCollectionClientTransferOffersOptions`
+- New struct `PrivateStoreCollectionClientTransferOffersResponse`
+- New struct `PrivateStoreCollectionClientTransferOffersResult`
+- New struct `PrivateStoreCollectionOfferClientCreateOrUpdateOptions`
+- New struct `PrivateStoreCollectionOfferClientCreateOrUpdateResponse`
+- New struct `PrivateStoreCollectionOfferClientCreateOrUpdateResult`
+- New struct `PrivateStoreCollectionOfferClientDeleteOptions`
+- New struct `PrivateStoreCollectionOfferClientDeleteResponse`
+- New struct `PrivateStoreCollectionOfferClientGetOptions`
+- New struct `PrivateStoreCollectionOfferClientGetResponse`
+- New struct `PrivateStoreCollectionOfferClientGetResult`
+- New struct `PrivateStoreCollectionOfferClientListOptions`
+- New struct `PrivateStoreCollectionOfferClientListPager`
+- New struct `PrivateStoreCollectionOfferClientListResponse`
+- New struct `PrivateStoreCollectionOfferClientListResult`
+- New struct `PrivateStoreCollectionOfferClientPostOptions`
+- New struct `PrivateStoreCollectionOfferClientPostResponse`
+- New field `ID` in struct `AdminRequestApprovalsResource`
+- New field `Name` in struct `AdminRequestApprovalsResource`
+- New field `SystemData` in struct `AdminRequestApprovalsResource`
+- New field `Type` in struct `AdminRequestApprovalsResource`
+- New field `SystemData` in struct `Collection`
+- New field `Type` in struct `Collection`
+- New field `ID` in struct `Collection`
+- New field `Name` in struct `Collection`
+- New field `Type` in struct `RequestApprovalResource`
+- New field `ID` in struct `RequestApprovalResource`
+- New field `Name` in struct `RequestApprovalResource`
+- New field `SystemData` in struct `RequestApprovalResource`
+- New field `ID` in struct `Offer`
+- New field `Name` in struct `Offer`
+- New field `SystemData` in struct `Offer`
+- New field `Type` in struct `Offer`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `PrivateStore`
+- New field `Name` in struct `PrivateStore`
+- New field `SystemData` in struct `PrivateStore`
+- New field `Type` in struct `PrivateStore`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

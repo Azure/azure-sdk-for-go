@@ -27,7 +27,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolPrincipalAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
@@ -39,6 +39,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolPrincipalAssignmentsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsList.json
@@ -49,7 +50,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_List() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolPrincipalAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
@@ -57,6 +58,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolPrincipalAssignmentsClientListResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsGet.json
@@ -76,7 +78,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ClusterPrincipalAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolPrincipalAssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsCreateOrUpdate.json
@@ -95,8 +97,8 @@ func ExampleKustoPoolPrincipalAssignmentsClient_BeginCreateOrUpdate() {
 		armsynapse.ClusterPrincipalAssignment{
 			Properties: &armsynapse.ClusterPrincipalProperties{
 				PrincipalID:   to.StringPtr("<principal-id>"),
-				PrincipalType: armsynapse.PrincipalTypeApp.ToPtr(),
-				Role:          armsynapse.ClusterPrincipalRoleAllDatabasesAdmin.ToPtr(),
+				PrincipalType: armsynapse.PrincipalType("App").ToPtr(),
+				Role:          armsynapse.ClusterPrincipalRole("AllDatabasesAdmin").ToPtr(),
 				TenantID:      to.StringPtr("<tenant-id>"),
 			},
 		},
@@ -108,7 +110,7 @@ func ExampleKustoPoolPrincipalAssignmentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ClusterPrincipalAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolPrincipalAssignmentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsDelete.json

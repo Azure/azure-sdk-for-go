@@ -10,7 +10,6 @@ package armconsumption
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -24,41 +23,64 @@ import (
 // UsageDetailsClient contains the methods for the UsageDetails group.
 // Don't use this type directly, use NewUsageDetailsClient() instead.
 type UsageDetailsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewUsageDetailsClient creates a new instance of UsageDetailsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *UsageDetailsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UsageDetailsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UsageDetailsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// List - Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or later.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UsageDetailsClient) List(scope string, options *UsageDetailsListOptions) *UsageDetailsListPager {
-	return &UsageDetailsListPager{
+// List - Lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
+// later.
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
+// Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
+// for EnrollmentAccount
+// scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For subscription,
+// billing account, department, enrollment account and management group, you
+// can also add billing period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g.
+// to specify billing period at department scope use
+// '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'.
+// Also, Modern Commerce Account scopes are
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for billingAccount scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for
+// billingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// options - UsageDetailsClientListOptions contains the optional parameters for the UsageDetailsClient.List method.
+func (client *UsageDetailsClient) List(scope string, options *UsageDetailsClientListOptions) *UsageDetailsClientListPager {
+	return &UsageDetailsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp UsageDetailsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UsageDetailsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsageDetailsListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope string, options *UsageDetailsListOptions) (*policy.Request, error) {
+func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope string, options *UsageDetailsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/usageDetails"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,23 +107,10 @@ func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope s
 }
 
 // listHandleResponse handles the List response.
-func (client *UsageDetailsClient) listHandleResponse(resp *http.Response) (UsageDetailsListResponse, error) {
-	result := UsageDetailsListResponse{RawResponse: resp}
+func (client *UsageDetailsClient) listHandleResponse(resp *http.Response) (UsageDetailsClientListResponse, error) {
+	result := UsageDetailsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageDetailsListResult); err != nil {
-		return UsageDetailsListResponse{}, runtime.NewResponseError(err, resp)
+		return UsageDetailsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *UsageDetailsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

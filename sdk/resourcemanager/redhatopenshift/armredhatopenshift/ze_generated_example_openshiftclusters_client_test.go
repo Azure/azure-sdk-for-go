@@ -28,12 +28,16 @@ func ExampleOpenShiftClustersClient_List() {
 	ctx := context.Background()
 	client := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OpenShiftCluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleOpenShiftClustersClient_ListByResourceGroup() {
 	client := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OpenShiftCluster.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleOpenShiftClustersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OpenShiftCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OpenShiftClustersClientGetResult)
 }
 
 // x-ms-original-file: specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_CreateOrUpdate.json
@@ -88,15 +96,13 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<resource-name>",
 		armredhatopenshift.OpenShiftCluster{
-			TrackedResource: armredhatopenshift.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key": to.StringPtr("value"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key": to.StringPtr("value"),
 			},
 			Properties: &armredhatopenshift.OpenShiftClusterProperties{
 				ApiserverProfile: &armredhatopenshift.APIServerProfile{
-					Visibility: armredhatopenshift.VisibilityPublic.ToPtr(),
+					Visibility: armredhatopenshift.Visibility("Public").ToPtr(),
 				},
 				ClusterProfile: &armredhatopenshift.ClusterProfile{
 					Domain:          to.StringPtr("<domain>"),
@@ -107,11 +113,11 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 				IngressProfiles: []*armredhatopenshift.IngressProfile{
 					{
 						Name:       to.StringPtr("<name>"),
-						Visibility: armredhatopenshift.VisibilityPublic.ToPtr(),
+						Visibility: armredhatopenshift.Visibility("Public").ToPtr(),
 					}},
 				MasterProfile: &armredhatopenshift.MasterProfile{
 					SubnetID: to.StringPtr("<subnet-id>"),
-					VMSize:   armredhatopenshift.VMSizeStandardD8SV3.ToPtr(),
+					VMSize:   armredhatopenshift.VMSize("Standard_D8s_v3").ToPtr(),
 				},
 				NetworkProfile: &armredhatopenshift.NetworkProfile{
 					PodCidr:     to.StringPtr("<pod-cidr>"),
@@ -127,7 +133,7 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 						Count:      to.Int32Ptr(3),
 						DiskSizeGB: to.Int32Ptr(128),
 						SubnetID:   to.StringPtr("<subnet-id>"),
-						VMSize:     armredhatopenshift.VMSizeStandardD2SV3.ToPtr(),
+						VMSize:     armredhatopenshift.VMSize("Standard_D2s_v3").ToPtr(),
 					}},
 			},
 		},
@@ -139,7 +145,7 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OpenShiftCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OpenShiftClustersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_Delete.json
@@ -177,7 +183,7 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 		armredhatopenshift.OpenShiftClusterUpdate{
 			Properties: &armredhatopenshift.OpenShiftClusterProperties{
 				ApiserverProfile: &armredhatopenshift.APIServerProfile{
-					Visibility: armredhatopenshift.VisibilityPublic.ToPtr(),
+					Visibility: armredhatopenshift.Visibility("Public").ToPtr(),
 				},
 				ClusterProfile: &armredhatopenshift.ClusterProfile{
 					Domain:          to.StringPtr("<domain>"),
@@ -188,11 +194,11 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 				IngressProfiles: []*armredhatopenshift.IngressProfile{
 					{
 						Name:       to.StringPtr("<name>"),
-						Visibility: armredhatopenshift.VisibilityPublic.ToPtr(),
+						Visibility: armredhatopenshift.Visibility("Public").ToPtr(),
 					}},
 				MasterProfile: &armredhatopenshift.MasterProfile{
 					SubnetID: to.StringPtr("<subnet-id>"),
-					VMSize:   armredhatopenshift.VMSizeStandardD8SV3.ToPtr(),
+					VMSize:   armredhatopenshift.VMSize("Standard_D8s_v3").ToPtr(),
 				},
 				NetworkProfile: &armredhatopenshift.NetworkProfile{
 					PodCidr:     to.StringPtr("<pod-cidr>"),
@@ -208,7 +214,7 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 						Count:      to.Int32Ptr(3),
 						DiskSizeGB: to.Int32Ptr(128),
 						SubnetID:   to.StringPtr("<subnet-id>"),
-						VMSize:     armredhatopenshift.VMSizeStandardD2SV3.ToPtr(),
+						VMSize:     armredhatopenshift.VMSize("Standard_D2s_v3").ToPtr(),
 					}},
 			},
 			Tags: map[string]*string{
@@ -223,7 +229,7 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OpenShiftCluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OpenShiftClustersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2020-04-30/examples/OpenShiftClusters_ListCredentials.json
@@ -234,11 +240,12 @@ func ExampleOpenShiftClustersClient_ListCredentials() {
 	}
 	ctx := context.Background()
 	client := armredhatopenshift.NewOpenShiftClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListCredentials(ctx,
+	res, err := client.ListCredentials(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OpenShiftClustersClientListCredentialsResult)
 }

@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // JobClient contains the methods for the Job group.
 // Don't use this type directly, use NewJobClient() instead.
 type JobClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobClient creates a new instance of JobClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a job of the runbook.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, parameters JobCreateParameters, options *JobCreateOptions) (JobCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// parameters - The parameters supplied to the create job operation.
+// options - JobClientCreateOptions contains the optional parameters for the JobClient.Create method.
+func (client *JobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, parameters JobCreateParameters, options *JobClientCreateOptions) (JobClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, parameters, options)
 	if err != nil {
-		return JobCreateResponse{}, err
+		return JobClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobCreateResponse{}, err
+		return JobClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return JobCreateResponse{}, client.createHandleError(resp)
+		return JobClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *JobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, parameters JobCreateParameters, options *JobCreateOptions) (*policy.Request, error) {
+func (client *JobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, parameters JobCreateParameters, options *JobClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *JobClient) createCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,46 +106,37 @@ func (client *JobClient) createCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // createHandleResponse handles the Create response.
-func (client *JobClient) createHandleResponse(resp *http.Response) (JobCreateResponse, error) {
-	result := JobCreateResponse{RawResponse: resp}
+func (client *JobClient) createHandleResponse(resp *http.Response) (JobClientCreateResponse, error) {
+	result := JobClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
-		return JobCreateResponse{}, runtime.NewResponseError(err, resp)
+		return JobClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *JobClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the job identified by job name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobGetOptions) (JobGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// options - JobClientGetOptions contains the optional parameters for the JobClient.Get method.
+func (client *JobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientGetOptions) (JobClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 	if err != nil {
-		return JobGetResponse{}, err
+		return JobClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobGetResponse{}, err
+		return JobClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobGetResponse{}, client.getHandleError(resp)
+		return JobClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobGetOptions) (*policy.Request, error) {
+func (client *JobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +154,7 @@ func (client *JobClient) getCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,46 +169,37 @@ func (client *JobClient) getCreateRequest(ctx context.Context, resourceGroupName
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobClient) getHandleResponse(resp *http.Response) (JobGetResponse, error) {
-	result := JobGetResponse{RawResponse: resp}
+func (client *JobClient) getHandleResponse(resp *http.Response) (JobClientGetResponse, error) {
+	result := JobClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
-		return JobGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetOutput - Retrieve the job output identified by job name.
-// If the operation fails it returns a generic error.
-func (client *JobClient) GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobGetOutputOptions) (JobGetOutputResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The name of the job to be created.
+// options - JobClientGetOutputOptions contains the optional parameters for the JobClient.GetOutput method.
+func (client *JobClient) GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientGetOutputOptions) (JobClientGetOutputResponse, error) {
 	req, err := client.getOutputCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 	if err != nil {
-		return JobGetOutputResponse{}, err
+		return JobClientGetOutputResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobGetOutputResponse{}, err
+		return JobClientGetOutputResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobGetOutputResponse{}, client.getOutputHandleError(resp)
+		return JobClientGetOutputResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getOutputHandleResponse(resp)
 }
 
 // getOutputCreateRequest creates the GetOutput request.
-func (client *JobClient) getOutputCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobGetOutputOptions) (*policy.Request, error) {
+func (client *JobClient) getOutputCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientGetOutputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/output"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -222,7 +217,7 @@ func (client *JobClient) getOutputCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -237,42 +232,40 @@ func (client *JobClient) getOutputCreateRequest(ctx context.Context, resourceGro
 }
 
 // getOutputHandleResponse handles the GetOutput response.
-func (client *JobClient) getOutputHandleResponse(resp *http.Response) (JobGetOutputResponse, error) {
-	result := JobGetOutputResponse{RawResponse: resp}
+func (client *JobClient) getOutputHandleResponse(resp *http.Response) (JobClientGetOutputResponse, error) {
+	result := JobClientGetOutputResponse{RawResponse: resp}
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return JobClientGetOutputResponse{}, err
+	}
+	txt := string(body)
+	result.Value = &txt
 	return result, nil
 }
 
-// getOutputHandleError handles the GetOutput error response.
-func (client *JobClient) getOutputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetRunbookContent - Retrieve the runbook content of the job identified by job name.
-// If the operation fails it returns a generic error.
-func (client *JobClient) GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobGetRunbookContentOptions) (JobGetRunbookContentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// options - JobClientGetRunbookContentOptions contains the optional parameters for the JobClient.GetRunbookContent method.
+func (client *JobClient) GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientGetRunbookContentOptions) (JobClientGetRunbookContentResponse, error) {
 	req, err := client.getRunbookContentCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 	if err != nil {
-		return JobGetRunbookContentResponse{}, err
+		return JobClientGetRunbookContentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobGetRunbookContentResponse{}, err
+		return JobClientGetRunbookContentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobGetRunbookContentResponse{}, client.getRunbookContentHandleError(resp)
+		return JobClientGetRunbookContentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getRunbookContentHandleResponse(resp)
 }
 
 // getRunbookContentCreateRequest creates the GetRunbookContent request.
-func (client *JobClient) getRunbookContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobGetRunbookContentOptions) (*policy.Request, error) {
+func (client *JobClient) getRunbookContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientGetRunbookContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/runbookContent"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -290,7 +283,7 @@ func (client *JobClient) getRunbookContentCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -305,39 +298,37 @@ func (client *JobClient) getRunbookContentCreateRequest(ctx context.Context, res
 }
 
 // getRunbookContentHandleResponse handles the GetRunbookContent response.
-func (client *JobClient) getRunbookContentHandleResponse(resp *http.Response) (JobGetRunbookContentResponse, error) {
-	result := JobGetRunbookContentResponse{RawResponse: resp}
+func (client *JobClient) getRunbookContentHandleResponse(resp *http.Response) (JobClientGetRunbookContentResponse, error) {
+	result := JobClientGetRunbookContentResponse{RawResponse: resp}
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return JobClientGetRunbookContentResponse{}, err
+	}
+	txt := string(body)
+	result.Value = &txt
 	return result, nil
 }
 
-// getRunbookContentHandleError handles the GetRunbookContent error response.
-func (client *JobClient) getRunbookContentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of jobs.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *JobListByAutomationAccountOptions) *JobListByAutomationAccountPager {
-	return &JobListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.ListByAutomationAccount
+// method.
+func (client *JobClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *JobClientListByAutomationAccountOptions) *JobClientListByAutomationAccountPager {
+	return &JobClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp JobListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobListResultV2.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *JobClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *JobListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *JobClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *JobClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -351,7 +342,7 @@ func (client *JobClient) listByAutomationAccountCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -369,46 +360,37 @@ func (client *JobClient) listByAutomationAccountCreateRequest(ctx context.Contex
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *JobClient) listByAutomationAccountHandleResponse(resp *http.Response) (JobListByAutomationAccountResponse, error) {
-	result := JobListByAutomationAccountResponse{RawResponse: resp}
+func (client *JobClient) listByAutomationAccountHandleResponse(resp *http.Response) (JobClientListByAutomationAccountResponse, error) {
+	result := JobClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobListResultV2); err != nil {
-		return JobListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return JobClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *JobClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Resume - Resume the job identified by jobName.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobResumeOptions) (JobResumeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// options - JobClientResumeOptions contains the optional parameters for the JobClient.Resume method.
+func (client *JobClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientResumeOptions) (JobClientResumeResponse, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 	if err != nil {
-		return JobResumeResponse{}, err
+		return JobClientResumeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobResumeResponse{}, err
+		return JobClientResumeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobResumeResponse{}, client.resumeHandleError(resp)
+		return JobClientResumeResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobResumeResponse{RawResponse: resp}, nil
+	return JobClientResumeResponse{RawResponse: resp}, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *JobClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobResumeOptions) (*policy.Request, error) {
+func (client *JobClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/resume"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -426,7 +408,7 @@ func (client *JobClient) resumeCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -440,38 +422,29 @@ func (client *JobClient) resumeCreateRequest(ctx context.Context, resourceGroupN
 	return req, nil
 }
 
-// resumeHandleError handles the Resume error response.
-func (client *JobClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Stop - Stop the job identified by jobName.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobStopOptions) (JobStopResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// options - JobClientStopOptions contains the optional parameters for the JobClient.Stop method.
+func (client *JobClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientStopOptions) (JobClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 	if err != nil {
-		return JobStopResponse{}, err
+		return JobClientStopResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobStopResponse{}, err
+		return JobClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobStopResponse{}, client.stopHandleError(resp)
+		return JobClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobStopResponse{RawResponse: resp}, nil
+	return JobClientStopResponse{RawResponse: resp}, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *JobClient) stopCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobStopOptions) (*policy.Request, error) {
+func (client *JobClient) stopCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/stop"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -489,7 +462,7 @@ func (client *JobClient) stopCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -503,38 +476,29 @@ func (client *JobClient) stopCreateRequest(ctx context.Context, resourceGroupNam
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *JobClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Suspend - Suspend the job identified by job name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *JobClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobSuspendOptions) (JobSuspendResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// jobName - The job name.
+// options - JobClientSuspendOptions contains the optional parameters for the JobClient.Suspend method.
+func (client *JobClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientSuspendOptions) (JobClientSuspendResponse, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
 	if err != nil {
-		return JobSuspendResponse{}, err
+		return JobClientSuspendResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobSuspendResponse{}, err
+		return JobClientSuspendResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobSuspendResponse{}, client.suspendHandleError(resp)
+		return JobClientSuspendResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobSuspendResponse{RawResponse: resp}, nil
+	return JobClientSuspendResponse{RawResponse: resp}, nil
 }
 
 // suspendCreateRequest creates the Suspend request.
-func (client *JobClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobSuspendOptions) (*policy.Request, error) {
+func (client *JobClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobClientSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/suspend"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -552,7 +516,7 @@ func (client *JobClient) suspendCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -564,17 +528,4 @@ func (client *JobClient) suspendCreateRequest(ctx context.Context, resourceGroup
 	}
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// suspendHandleError handles the Suspend error response.
-func (client *JobClient) suspendHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

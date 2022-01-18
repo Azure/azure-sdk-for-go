@@ -11,7 +11,6 @@ package armdataprotection
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,57 @@ import (
 // ExportJobsClient contains the methods for the ExportJobs group.
 // Don't use this type directly, use NewExportJobsClient() instead.
 type ExportJobsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExportJobsClient creates a new instance of ExportJobsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExportJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExportJobsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExportJobsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExportJobsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginTrigger - Triggers export of jobs and returns an OperationID to track.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsBeginTriggerOptions) (ExportJobsTriggerPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// options - ExportJobsClientBeginTriggerOptions contains the optional parameters for the ExportJobsClient.BeginTrigger method.
+func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (ExportJobsClientTriggerPollerResponse, error) {
 	resp, err := client.trigger(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return ExportJobsTriggerPollerResponse{}, err
+		return ExportJobsClientTriggerPollerResponse{}, err
 	}
-	result := ExportJobsTriggerPollerResponse{
+	result := ExportJobsClientTriggerPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ExportJobsClient.Trigger", "location", resp, client.pl, client.triggerHandleError)
+	pt, err := armruntime.NewPoller("ExportJobsClient.Trigger", "location", resp, client.pl)
 	if err != nil {
-		return ExportJobsTriggerPollerResponse{}, err
+		return ExportJobsClientTriggerPollerResponse{}, err
 	}
-	result.Poller = &ExportJobsTriggerPoller{
+	result.Poller = &ExportJobsClientTriggerPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Trigger - Triggers export of jobs and returns an OperationID to track.
-// If the operation fails it returns the *CloudError error type.
-func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsBeginTriggerOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*http.Response, error) {
 	req, err := client.triggerCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +84,13 @@ func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.triggerHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // triggerCreateRequest creates the Trigger request.
-func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsBeginTriggerOptions) (*policy.Request, error) {
+func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/exportBackupJobs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +104,7 @@ func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,17 +113,4 @@ func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// triggerHandleError handles the Trigger error response.
-func (client *ExportJobsClient) triggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

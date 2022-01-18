@@ -11,7 +11,6 @@ package armmysql
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // ServerKeysClient contains the methods for the ServerKeys group.
 // Don't use this type directly, use NewServerKeysClient() instead.
 type ServerKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerKeysClient creates a new instance of ServerKeysClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerKeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerKeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a MySQL Server key.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysBeginCreateOrUpdateOptions) (ServerKeysCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// serverName - The name of the server.
+// keyName - The name of the MySQL Server key to be operated on (updated or created).
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// parameters - The requested MySQL Server key resource state.
+// options - ServerKeysClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerKeysClient.BeginCreateOrUpdate
+// method.
+func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (ServerKeysClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, serverName, keyName, resourceGroupName, parameters, options)
 	if err != nil {
-		return ServerKeysCreateOrUpdatePollerResponse{}, err
+		return ServerKeysClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ServerKeysCreateOrUpdatePollerResponse{
+	result := ServerKeysClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerKeysClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ServerKeysCreateOrUpdatePollerResponse{}, err
+		return ServerKeysClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ServerKeysCreateOrUpdatePoller{
+	result.Poller = &ServerKeysClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a MySQL Server key.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerKeysClient) createOrUpdate(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerKeysClient) createOrUpdate(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, serverName, keyName, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *ServerKeysClient) createOrUpdate(ctx context.Context, serverName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context, serverName string, keyName string, resourceGroupName string, parameters ServerKey, options *ServerKeysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/keys/{keyName}"
 	if serverName == "" {
 		return nil, errors.New("parameter serverName cannot be empty")
@@ -98,7 +111,7 @@ func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,33 @@ func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServerKeysClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the MySQL Server key with the given name.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerKeysClient) BeginDelete(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysBeginDeleteOptions) (ServerKeysDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// serverName - The name of the server.
+// keyName - The name of the MySQL Server key to be deleted.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ServerKeysClientBeginDeleteOptions contains the optional parameters for the ServerKeysClient.BeginDelete method.
+func (client *ServerKeysClient) BeginDelete(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysClientBeginDeleteOptions) (ServerKeysClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, serverName, keyName, resourceGroupName, options)
 	if err != nil {
-		return ServerKeysDeletePollerResponse{}, err
+		return ServerKeysClientDeletePollerResponse{}, err
 	}
-	result := ServerKeysDeletePollerResponse{
+	result := ServerKeysClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerKeysClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ServerKeysDeletePollerResponse{}, err
+		return ServerKeysClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ServerKeysDeletePoller{
+	result.Poller = &ServerKeysClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the MySQL Server key with the given name.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerKeysClient) deleteOperation(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServerKeysClient) deleteOperation(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, serverName, keyName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +158,13 @@ func (client *ServerKeysClient) deleteOperation(ctx context.Context, serverName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServerKeysClient) deleteCreateRequest(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysBeginDeleteOptions) (*policy.Request, error) {
+func (client *ServerKeysClient) deleteCreateRequest(ctx context.Context, serverName string, keyName string, resourceGroupName string, options *ServerKeysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/keys/{keyName}"
 	if serverName == "" {
 		return nil, errors.New("parameter serverName cannot be empty")
@@ -178,7 +182,7 @@ func (client *ServerKeysClient) deleteCreateRequest(ctx context.Context, serverN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +193,29 @@ func (client *ServerKeysClient) deleteCreateRequest(ctx context.Context, serverN
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ServerKeysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a MySQL Server key.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerKeysClient) Get(ctx context.Context, resourceGroupName string, serverName string, keyName string, options *ServerKeysGetOptions) (ServerKeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// keyName - The name of the MySQL Server key to be retrieved.
+// options - ServerKeysClientGetOptions contains the optional parameters for the ServerKeysClient.Get method.
+func (client *ServerKeysClient) Get(ctx context.Context, resourceGroupName string, serverName string, keyName string, options *ServerKeysClientGetOptions) (ServerKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, keyName, options)
 	if err != nil {
-		return ServerKeysGetResponse{}, err
+		return ServerKeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerKeysGetResponse{}, err
+		return ServerKeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerKeysGetResponse{}, client.getHandleError(resp)
+		return ServerKeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, keyName string, options *ServerKeysGetOptions) (*policy.Request, error) {
+func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, keyName string, options *ServerKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/keys/{keyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,7 +233,7 @@ func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +245,33 @@ func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKeysGetResponse, error) {
-	result := ServerKeysGetResponse{RawResponse: resp}
+func (client *ServerKeysClient) getHandleResponse(resp *http.Response) (ServerKeysClientGetResponse, error) {
+	result := ServerKeysClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKey); err != nil {
-		return ServerKeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerKeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerKeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of Server keys.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerKeysClient) List(resourceGroupName string, serverName string, options *ServerKeysListOptions) *ServerKeysListPager {
-	return &ServerKeysListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// options - ServerKeysClientListOptions contains the optional parameters for the ServerKeysClient.List method.
+func (client *ServerKeysClient) List(resourceGroupName string, serverName string, options *ServerKeysClientListOptions) *ServerKeysClientListPager {
+	return &ServerKeysClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ServerKeysListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ServerKeysClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerKeyListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ServerKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerKeysListOptions) (*policy.Request, error) {
+func (client *ServerKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerKeysClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/keys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +285,7 @@ func (client *ServerKeysClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,23 +297,10 @@ func (client *ServerKeysClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *ServerKeysClient) listHandleResponse(resp *http.Response) (ServerKeysListResponse, error) {
-	result := ServerKeysListResponse{RawResponse: resp}
+func (client *ServerKeysClient) listHandleResponse(resp *http.Response) (ServerKeysClientListResponse, error) {
+	result := ServerKeysClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerKeyListResult); err != nil {
-		return ServerKeysListResponse{}, runtime.NewResponseError(err, resp)
+		return ServerKeysClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ServerKeysClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

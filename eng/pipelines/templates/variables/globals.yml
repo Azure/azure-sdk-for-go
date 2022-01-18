@@ -1,2 +1,3 @@
 variables:
   GoLintCLIVersion: 'v1.23.6'
+  Package.EnableSBOMSigning: true

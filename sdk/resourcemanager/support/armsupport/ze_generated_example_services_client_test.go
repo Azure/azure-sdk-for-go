@@ -24,11 +24,12 @@ func ExampleServicesClient_List() {
 	}
 	ctx := context.Background()
 	client := armsupport.NewServicesClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServicesClientListResult)
 }
 
 // x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetService.json
@@ -45,5 +46,5 @@ func ExampleServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Service.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServicesClientGetResult)
 }

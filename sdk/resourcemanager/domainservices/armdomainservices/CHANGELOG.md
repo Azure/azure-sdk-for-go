@@ -1,5 +1,272 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*OuContainerClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *OuContainerGetOptions)` to `(context.Context, string, string, string, *OuContainerClientGetOptions)`
+- Function `*OuContainerClient.Get` return value(s) have been changed from `(OuContainerGetResponse, error)` to `(OuContainerClientGetResponse, error)`
+- Function `*OuContainerClient.List` parameter(s) have been changed from `(string, string, *OuContainerListOptions)` to `(string, string, *OuContainerClientListOptions)`
+- Function `*OuContainerClient.List` return value(s) have been changed from `(*OuContainerListPager)` to `(*OuContainerClientListPager)`
+- Function `*OuContainerClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, ContainerAccount, *OuContainerBeginCreateOptions)` to `(context.Context, string, string, string, ContainerAccount, *OuContainerClientBeginCreateOptions)`
+- Function `*OuContainerClient.BeginCreate` return value(s) have been changed from `(OuContainerCreatePollerResponse, error)` to `(OuContainerClientCreatePollerResponse, error)`
+- Function `*DomainServiceOperationsClient.List` parameter(s) have been changed from `(*DomainServiceOperationsListOptions)` to `(*DomainServiceOperationsClientListOptions)`
+- Function `*DomainServiceOperationsClient.List` return value(s) have been changed from `(*DomainServiceOperationsListPager)` to `(*DomainServiceOperationsClientListPager)`
+- Function `*OuContainerOperationsClient.List` parameter(s) have been changed from `(*OuContainerOperationsListOptions)` to `(*OuContainerOperationsClientListOptions)`
+- Function `*OuContainerOperationsClient.List` return value(s) have been changed from `(*OuContainerOperationsListPager)` to `(*OuContainerOperationsClientListPager)`
+- Function `*OuContainerClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *OuContainerBeginDeleteOptions)` to `(context.Context, string, string, string, *OuContainerClientBeginDeleteOptions)`
+- Function `*OuContainerClient.BeginDelete` return value(s) have been changed from `(OuContainerDeletePollerResponse, error)` to `(OuContainerClientDeletePollerResponse, error)`
+- Function `*OuContainerClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ContainerAccount, *OuContainerBeginUpdateOptions)` to `(context.Context, string, string, string, ContainerAccount, *OuContainerClientBeginUpdateOptions)`
+- Function `*OuContainerClient.BeginUpdate` return value(s) have been changed from `(OuContainerUpdatePollerResponse, error)` to `(OuContainerClientUpdatePollerResponse, error)`
+- Function `OuContainerCreatePollerResponse.PollUntilDone` has been removed
+- Function `*OuContainerOperationsListPager.PageResponse` has been removed
+- Function `*OuContainerDeletePoller.Poll` has been removed
+- Function `*DomainServiceOperationsListPager.NextPage` has been removed
+- Function `*DomainServicesUpdatePoller.Poll` has been removed
+- Function `*DomainServicesCreateOrUpdatePoller.Poll` has been removed
+- Function `NewDomainServicesClient` has been removed
+- Function `*DomainServicesClient.BeginDelete` has been removed
+- Function `*DomainServiceOperationsListPager.Err` has been removed
+- Function `*OuContainerCreatePoller.Done` has been removed
+- Function `*DomainServicesClient.BeginCreateOrUpdate` has been removed
+- Function `*DomainServicesListByResourceGroupPager.NextPage` has been removed
+- Function `*DomainServicesUpdatePollerResponse.Resume` has been removed
+- Function `*DomainServicesDeletePoller.ResumeToken` has been removed
+- Function `*DomainServicesDeletePoller.Poll` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*OuContainerDeletePollerResponse.Resume` has been removed
+- Function `*DomainServicesListByResourceGroupPager.Err` has been removed
+- Function `*DomainServicesDeletePoller.FinalResponse` has been removed
+- Function `*DomainServicesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DomainServicesListPager.NextPage` has been removed
+- Function `*DomainServicesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*OuContainerDeletePoller.ResumeToken` has been removed
+- Function `*OuContainerUpdatePoller.ResumeToken` has been removed
+- Function `*OuContainerCreatePoller.Poll` has been removed
+- Function `*DomainServicesCreateOrUpdatePoller.Done` has been removed
+- Function `*DomainServicesClient.Get` has been removed
+- Function `*OuContainerDeletePoller.Done` has been removed
+- Function `DomainServicesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `OuContainerDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OuContainerUpdatePoller.FinalResponse` has been removed
+- Function `*OuContainerUpdatePoller.Done` has been removed
+- Function `*DomainServicesClient.List` has been removed
+- Function `*DomainServicesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*OuContainerCreatePoller.ResumeToken` has been removed
+- Function `*OuContainerListPager.PageResponse` has been removed
+- Function `*OuContainerDeletePoller.FinalResponse` has been removed
+- Function `OuContainerUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OuContainerUpdatePoller.Poll` has been removed
+- Function `*DomainServicesUpdatePoller.ResumeToken` has been removed
+- Function `*DomainServicesDeletePoller.Done` has been removed
+- Function `*OuContainerListPager.NextPage` has been removed
+- Function `*DomainServicesDeletePollerResponse.Resume` has been removed
+- Function `*DomainServicesUpdatePoller.Done` has been removed
+- Function `*DomainServicesListPager.PageResponse` has been removed
+- Function `*OuContainerUpdatePollerResponse.Resume` has been removed
+- Function `*DomainServicesListByResourceGroupPager.PageResponse` has been removed
+- Function `*OuContainerListPager.Err` has been removed
+- Function `*OuContainerCreatePoller.FinalResponse` has been removed
+- Function `*OuContainerOperationsListPager.Err` has been removed
+- Function `*OuContainerCreatePollerResponse.Resume` has been removed
+- Function `*DomainServicesUpdatePoller.FinalResponse` has been removed
+- Function `*DomainServiceOperationsListPager.PageResponse` has been removed
+- Function `*DomainServicesClient.BeginUpdate` has been removed
+- Function `*OuContainerOperationsListPager.NextPage` has been removed
+- Function `DomainServicesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DomainServicesClient.ListByResourceGroup` has been removed
+- Function `*DomainServicesListPager.Err` has been removed
+- Function `DomainServicesDeletePollerResponse.PollUntilDone` has been removed
+- Struct `DomainServiceOperationsListOptions` has been removed
+- Struct `DomainServiceOperationsListPager` has been removed
+- Struct `DomainServiceOperationsListResponse` has been removed
+- Struct `DomainServiceOperationsListResult` has been removed
+- Struct `DomainServicesBeginCreateOrUpdateOptions` has been removed
+- Struct `DomainServicesBeginDeleteOptions` has been removed
+- Struct `DomainServicesBeginUpdateOptions` has been removed
+- Struct `DomainServicesClient` has been removed
+- Struct `DomainServicesCreateOrUpdatePoller` has been removed
+- Struct `DomainServicesCreateOrUpdatePollerResponse` has been removed
+- Struct `DomainServicesCreateOrUpdateResponse` has been removed
+- Struct `DomainServicesCreateOrUpdateResult` has been removed
+- Struct `DomainServicesDeletePoller` has been removed
+- Struct `DomainServicesDeletePollerResponse` has been removed
+- Struct `DomainServicesDeleteResponse` has been removed
+- Struct `DomainServicesGetOptions` has been removed
+- Struct `DomainServicesGetResponse` has been removed
+- Struct `DomainServicesGetResult` has been removed
+- Struct `DomainServicesListByResourceGroupOptions` has been removed
+- Struct `DomainServicesListByResourceGroupPager` has been removed
+- Struct `DomainServicesListByResourceGroupResponse` has been removed
+- Struct `DomainServicesListByResourceGroupResult` has been removed
+- Struct `DomainServicesListOptions` has been removed
+- Struct `DomainServicesListPager` has been removed
+- Struct `DomainServicesListResponse` has been removed
+- Struct `DomainServicesListResult` has been removed
+- Struct `DomainServicesUpdatePoller` has been removed
+- Struct `DomainServicesUpdatePollerResponse` has been removed
+- Struct `DomainServicesUpdateResponse` has been removed
+- Struct `DomainServicesUpdateResult` has been removed
+- Struct `OuContainerBeginCreateOptions` has been removed
+- Struct `OuContainerBeginDeleteOptions` has been removed
+- Struct `OuContainerBeginUpdateOptions` has been removed
+- Struct `OuContainerCreatePoller` has been removed
+- Struct `OuContainerCreatePollerResponse` has been removed
+- Struct `OuContainerCreateResponse` has been removed
+- Struct `OuContainerCreateResult` has been removed
+- Struct `OuContainerDeletePoller` has been removed
+- Struct `OuContainerDeletePollerResponse` has been removed
+- Struct `OuContainerDeleteResponse` has been removed
+- Struct `OuContainerGetOptions` has been removed
+- Struct `OuContainerGetResponse` has been removed
+- Struct `OuContainerGetResult` has been removed
+- Struct `OuContainerListOptions` has been removed
+- Struct `OuContainerListPager` has been removed
+- Struct `OuContainerListResponse` has been removed
+- Struct `OuContainerListResultEnvelope` has been removed
+- Struct `OuContainerOperationsListOptions` has been removed
+- Struct `OuContainerOperationsListPager` has been removed
+- Struct `OuContainerOperationsListResponse` has been removed
+- Struct `OuContainerOperationsListResult` has been removed
+- Struct `OuContainerUpdatePoller` has been removed
+- Struct `OuContainerUpdatePollerResponse` has been removed
+- Struct `OuContainerUpdateResponse` has been removed
+- Struct `OuContainerUpdateResult` has been removed
+- Field `Resource` of struct `OuContainer` has been removed
+- Field `Resource` of struct `DomainService` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+
+### Features Added
+
+- New function `*OuContainerClientDeletePoller.Done() bool`
+- New function `*Client.List(*ClientListOptions) *ClientListPager`
+- New function `*OuContainerClientDeletePollerResponse.Resume(context.Context, *OuContainerClient, string) error`
+- New function `*ClientDeletePoller.Done() bool`
+- New function `ClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientUpdateResponse, error)`
+- New function `*OuContainerClientCreatePollerResponse.Resume(context.Context, *OuContainerClient, string) error`
+- New function `*ClientDeletePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*ClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientListPager.NextPage(context.Context) bool`
+- New function `*DomainServiceOperationsClientListPager.NextPage(context.Context) bool`
+- New function `ClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientCreateOrUpdateResponse, error)`
+- New function `*ClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*Client.BeginUpdate(context.Context, string, string, DomainService, *ClientBeginUpdateOptions) (ClientUpdatePollerResponse, error)`
+- New function `*OuContainerClientCreatePoller.FinalResponse(context.Context) (OuContainerClientCreateResponse, error)`
+- New function `*ClientUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*DomainServiceOperationsClientListPager.Err() error`
+- New function `*ClientListByResourceGroupPager.Err() error`
+- New function `*ClientCreateOrUpdatePoller.Done() bool`
+- New function `*OuContainerClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientCreateOrUpdatePoller.FinalResponse(context.Context) (ClientCreateOrUpdateResponse, error)`
+- New function `*OuContainerOperationsClientListPager.Err() error`
+- New function `*ClientCreateOrUpdatePollerResponse.Resume(context.Context, *Client, string) error`
+- New function `*OuContainerOperationsClientListPager.PageResponse() OuContainerOperationsClientListResponse`
+- New function `*ClientDeletePoller.FinalResponse(context.Context) (ClientDeleteResponse, error)`
+- New function `*ClientListPager.PageResponse() ClientListResponse`
+- New function `*ClientUpdatePoller.Done() bool`
+- New function `*OuContainerClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OuContainerClientUpdatePollerResponse.Resume(context.Context, *OuContainerClient, string) error`
+- New function `*ClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*OuContainerClientListPager.Err() error`
+- New function `*OuContainerClientUpdatePoller.FinalResponse(context.Context) (OuContainerClientUpdateResponse, error)`
+- New function `*Client.BeginCreateOrUpdate(context.Context, string, string, DomainService, *ClientBeginCreateOrUpdateOptions) (ClientCreateOrUpdatePollerResponse, error)`
+- New function `OuContainerClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (OuContainerClientUpdateResponse, error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) *Client`
+- New function `OuContainerClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (OuContainerClientDeleteResponse, error)`
+- New function `*OuContainerClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OuContainerClientCreatePoller.Done() bool`
+- New function `*DomainServiceOperationsClientListPager.PageResponse() DomainServiceOperationsClientListResponse`
+- New function `*OuContainerClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ClientListByResourceGroupPager.PageResponse() ClientListByResourceGroupResponse`
+- New function `*Client.BeginDelete(context.Context, string, string, *ClientBeginDeleteOptions) (ClientDeletePollerResponse, error)`
+- New function `*ClientListPager.Err() error`
+- New function `OuContainerClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (OuContainerClientCreateResponse, error)`
+- New function `*Client.ListByResourceGroup(string, *ClientListByResourceGroupOptions) *ClientListByResourceGroupPager`
+- New function `*ClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*OuContainerClientListPager.NextPage(context.Context) bool`
+- New function `*OuContainerClientUpdatePoller.Done() bool`
+- New function `*Client.Get(context.Context, string, string, *ClientGetOptions) (ClientGetResponse, error)`
+- New function `*OuContainerClientListPager.PageResponse() OuContainerClientListResponse`
+- New function `*OuContainerClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ClientDeletePoller.ResumeToken() (string, error)`
+- New function `*OuContainerClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ClientUpdatePoller.FinalResponse(context.Context) (ClientUpdateResponse, error)`
+- New function `ClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ClientDeleteResponse, error)`
+- New function `*OuContainerOperationsClientListPager.NextPage(context.Context) bool`
+- New function `*OuContainerClientDeletePoller.FinalResponse(context.Context) (OuContainerClientDeleteResponse, error)`
+- New struct `Client`
+- New struct `ClientBeginCreateOrUpdateOptions`
+- New struct `ClientBeginDeleteOptions`
+- New struct `ClientBeginUpdateOptions`
+- New struct `ClientCreateOrUpdatePoller`
+- New struct `ClientCreateOrUpdatePollerResponse`
+- New struct `ClientCreateOrUpdateResponse`
+- New struct `ClientCreateOrUpdateResult`
+- New struct `ClientDeletePoller`
+- New struct `ClientDeletePollerResponse`
+- New struct `ClientDeleteResponse`
+- New struct `ClientGetOptions`
+- New struct `ClientGetResponse`
+- New struct `ClientGetResult`
+- New struct `ClientListByResourceGroupOptions`
+- New struct `ClientListByResourceGroupPager`
+- New struct `ClientListByResourceGroupResponse`
+- New struct `ClientListByResourceGroupResult`
+- New struct `ClientListOptions`
+- New struct `ClientListPager`
+- New struct `ClientListResponse`
+- New struct `ClientListResult`
+- New struct `ClientUpdatePoller`
+- New struct `ClientUpdatePollerResponse`
+- New struct `ClientUpdateResponse`
+- New struct `ClientUpdateResult`
+- New struct `DomainServiceOperationsClientListOptions`
+- New struct `DomainServiceOperationsClientListPager`
+- New struct `DomainServiceOperationsClientListResponse`
+- New struct `DomainServiceOperationsClientListResult`
+- New struct `OuContainerClientBeginCreateOptions`
+- New struct `OuContainerClientBeginDeleteOptions`
+- New struct `OuContainerClientBeginUpdateOptions`
+- New struct `OuContainerClientCreatePoller`
+- New struct `OuContainerClientCreatePollerResponse`
+- New struct `OuContainerClientCreateResponse`
+- New struct `OuContainerClientCreateResult`
+- New struct `OuContainerClientDeletePoller`
+- New struct `OuContainerClientDeletePollerResponse`
+- New struct `OuContainerClientDeleteResponse`
+- New struct `OuContainerClientGetOptions`
+- New struct `OuContainerClientGetResponse`
+- New struct `OuContainerClientGetResult`
+- New struct `OuContainerClientListOptions`
+- New struct `OuContainerClientListPager`
+- New struct `OuContainerClientListResponse`
+- New struct `OuContainerClientListResult`
+- New struct `OuContainerClientUpdatePoller`
+- New struct `OuContainerClientUpdatePollerResponse`
+- New struct `OuContainerClientUpdateResponse`
+- New struct `OuContainerClientUpdateResult`
+- New struct `OuContainerOperationsClientListOptions`
+- New struct `OuContainerOperationsClientListPager`
+- New struct `OuContainerOperationsClientListResponse`
+- New struct `OuContainerOperationsClientListResult`
+- New field `SystemData` in struct `OuContainer`
+- New field `Type` in struct `OuContainer`
+- New field `Etag` in struct `OuContainer`
+- New field `Location` in struct `OuContainer`
+- New field `Tags` in struct `OuContainer`
+- New field `ID` in struct `OuContainer`
+- New field `Name` in struct `OuContainer`
+- New field `Error` in struct `CloudError`
+- New field `Name` in struct `DomainService`
+- New field `SystemData` in struct `DomainService`
+- New field `Type` in struct `DomainService`
+- New field `Etag` in struct `DomainService`
+- New field `Location` in struct `DomainService`
+- New field `Tags` in struct `DomainService`
+- New field `ID` in struct `DomainService`
+
+
 ## 0.1.0 (2021-11-30)
 
 - Initial preview release.

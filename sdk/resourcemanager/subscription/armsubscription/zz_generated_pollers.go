@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// AliasCreatePoller provides polling facilities until the operation reaches a terminal state.
-type AliasCreatePoller struct {
+// AliasClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type AliasClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *AliasCreatePoller) Done() bool {
+func (p *AliasClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *AliasCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *AliasCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *AliasClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final AliasCreateResponse will be returned.
-func (p *AliasCreatePoller) FinalResponse(ctx context.Context) (AliasCreateResponse, error) {
-	respType := AliasCreateResponse{}
-	resp, err := p.pt.FinalResponse(ctx, &respType.SubscriptionAliasResponse)
+// If the final GET succeeded then the final AliasClientCreateResponse will be returned.
+func (p *AliasClientCreatePoller) FinalResponse(ctx context.Context) (AliasClientCreateResponse, error) {
+	respType := AliasClientCreateResponse{}
+	resp, err := p.pt.FinalResponse(ctx, &respType.AliasResponse)
 	if err != nil {
-		return AliasCreateResponse{}, err
+		return AliasClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *AliasCreatePoller) FinalResponse(ctx context.Context) (AliasCreateRespo
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *AliasCreatePoller) ResumeToken() (string, error) {
+func (p *AliasClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// SubscriptionAcceptOwnershipPoller provides polling facilities until the operation reaches a terminal state.
-type SubscriptionAcceptOwnershipPoller struct {
+// ClientAcceptOwnershipPoller provides polling facilities until the operation reaches a terminal state.
+type ClientAcceptOwnershipPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *SubscriptionAcceptOwnershipPoller) Done() bool {
+func (p *ClientAcceptOwnershipPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *SubscriptionAcceptOwnershipPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *SubscriptionAcceptOwnershipPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *ClientAcceptOwnershipPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final SubscriptionAcceptOwnershipResponse will be returned.
-func (p *SubscriptionAcceptOwnershipPoller) FinalResponse(ctx context.Context) (SubscriptionAcceptOwnershipResponse, error) {
-	respType := SubscriptionAcceptOwnershipResponse{}
+// If the final GET succeeded then the final ClientAcceptOwnershipResponse will be returned.
+func (p *ClientAcceptOwnershipPoller) FinalResponse(ctx context.Context) (ClientAcceptOwnershipResponse, error) {
+	respType := ClientAcceptOwnershipResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return SubscriptionAcceptOwnershipResponse{}, err
+		return ClientAcceptOwnershipResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *SubscriptionAcceptOwnershipPoller) FinalResponse(ctx context.Context) (
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *SubscriptionAcceptOwnershipPoller) ResumeToken() (string, error) {
+func (p *ClientAcceptOwnershipPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

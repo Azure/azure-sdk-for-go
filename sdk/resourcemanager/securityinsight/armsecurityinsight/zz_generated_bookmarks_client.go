@@ -11,7 +11,6 @@ package armsecurityinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // BookmarksClient contains the methods for the Bookmarks group.
 // Don't use this type directly, use NewBookmarksClient() instead.
 type BookmarksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBookmarksClient creates a new instance of BookmarksClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBookmarksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BookmarksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BookmarksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BookmarksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates the bookmark.
-// If the operation fails it returns the *CloudError error type.
-func (client *BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, bookmark Bookmark, options *BookmarksCreateOrUpdateOptions) (BookmarksCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bookmarkID - Bookmark ID
+// bookmark - The bookmark
+// options - BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate
+// method.
+func (client *BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, bookmark Bookmark, options *BookmarksClientCreateOrUpdateOptions) (BookmarksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, bookmark, options)
 	if err != nil {
-		return BookmarksCreateOrUpdateResponse{}, err
+		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BookmarksCreateOrUpdateResponse{}, err
+		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return BookmarksCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return BookmarksClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BookmarksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, bookmark Bookmark, options *BookmarksCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BookmarksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, bookmark Bookmark, options *BookmarksClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,58 +91,49 @@ func (client *BookmarksClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bookmark)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BookmarksClient) createOrUpdateHandleResponse(resp *http.Response) (BookmarksCreateOrUpdateResponse, error) {
-	result := BookmarksCreateOrUpdateResponse{RawResponse: resp}
+func (client *BookmarksClient) createOrUpdateHandleResponse(resp *http.Response) (BookmarksClientCreateOrUpdateResponse, error) {
+	result := BookmarksClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bookmark); err != nil {
-		return BookmarksCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *BookmarksClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the bookmark.
-// If the operation fails it returns the *CloudError error type.
-func (client *BookmarksClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksDeleteOptions) (BookmarksDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bookmarkID - Bookmark ID
+// options - BookmarksClientDeleteOptions contains the optional parameters for the BookmarksClient.Delete method.
+func (client *BookmarksClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientDeleteOptions) (BookmarksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, options)
 	if err != nil {
-		return BookmarksDeleteResponse{}, err
+		return BookmarksClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BookmarksDeleteResponse{}, err
+		return BookmarksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return BookmarksDeleteResponse{}, client.deleteHandleError(resp)
+		return BookmarksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BookmarksDeleteResponse{RawResponse: resp}, nil
+	return BookmarksClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksDeleteOptions) (*policy.Request, error) {
+func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,49 +151,40 @@ func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BookmarksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a bookmark.
-// If the operation fails it returns the *CloudError error type.
-func (client *BookmarksClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksGetOptions) (BookmarksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// bookmarkID - Bookmark ID
+// options - BookmarksClientGetOptions contains the optional parameters for the BookmarksClient.Get method.
+func (client *BookmarksClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientGetOptions) (BookmarksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, options)
 	if err != nil {
-		return BookmarksGetResponse{}, err
+		return BookmarksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BookmarksGetResponse{}, err
+		return BookmarksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BookmarksGetResponse{}, client.getHandleError(resp)
+		return BookmarksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BookmarksClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksGetOptions) (*policy.Request, error) {
+func (client *BookmarksClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,55 +202,45 @@ func (client *BookmarksClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BookmarksClient) getHandleResponse(resp *http.Response) (BookmarksGetResponse, error) {
-	result := BookmarksGetResponse{RawResponse: resp}
+func (client *BookmarksClient) getHandleResponse(resp *http.Response) (BookmarksClientGetResponse, error) {
+	result := BookmarksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bookmark); err != nil {
-		return BookmarksGetResponse{}, runtime.NewResponseError(err, resp)
+		return BookmarksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BookmarksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all bookmarks.
-// If the operation fails it returns the *CloudError error type.
-func (client *BookmarksClient) List(resourceGroupName string, workspaceName string, options *BookmarksListOptions) *BookmarksListPager {
-	return &BookmarksListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - BookmarksClientListOptions contains the optional parameters for the BookmarksClient.List method.
+func (client *BookmarksClient) List(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *BookmarksClientListPager {
+	return &BookmarksClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp BookmarksListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BookmarksClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.BookmarkList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BookmarksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *BookmarksListOptions) (*policy.Request, error) {
+func (client *BookmarksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,35 +254,22 @@ func (client *BookmarksClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BookmarksClient) listHandleResponse(resp *http.Response) (BookmarksListResponse, error) {
-	result := BookmarksListResponse{RawResponse: resp}
+func (client *BookmarksClient) listHandleResponse(resp *http.Response) (BookmarksClientListResponse, error) {
+	result := BookmarksClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BookmarkList); err != nil {
-		return BookmarksListResponse{}, runtime.NewResponseError(err, resp)
+		return BookmarksClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BookmarksClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

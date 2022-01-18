@@ -15,34 +15,34 @@ import (
 	"time"
 )
 
-// OperationResultsGetResponse contains the response from method OperationResults.Get.
-type OperationResultsGetResponse struct {
-	OperationResultsGetResult
+// OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
+type OperationResultsClientGetResponse struct {
+	OperationResultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationResultsGetResult contains the result from method OperationResults.Get.
-type OperationResultsGetResult struct {
+// OperationResultsClientGetResult contains the result from method OperationResultsClient.Get.
+type OperationResultsClientGetResult struct {
 	OperationResultsDescription
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsAdtAPI.CreateOrUpdate.
-type PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate.
+type PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsAdtAPICreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,8 +51,8 @@ type PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsAdtAPICreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsAdtAPICreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -61,13 +61,14 @@ func (l PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsAdtAPIClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsAdtAPIClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsAdtAPICreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsAdtAPIClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +80,22 @@ func (l *PrivateEndpointConnectionsAdtAPICreateOrUpdatePollerResponse) Resume(ct
 	return nil
 }
 
-// PrivateEndpointConnectionsAdtAPICreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsAdtAPI.CreateOrUpdate.
-type PrivateEndpointConnectionsAdtAPICreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsAdtAPICreateOrUpdateResult
+// PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate.
+type PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsAdtAPICreateOrUpdateResult contains the result from method PrivateEndpointConnectionsAdtAPI.CreateOrUpdate.
-type PrivateEndpointConnectionsAdtAPICreateOrUpdateResult struct {
+// PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsAdtAPIClient.CreateOrUpdate.
+type PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsAdtAPIDeletePollerResponse contains the response from method PrivateEndpointConnectionsAdtAPI.Delete.
-type PrivateEndpointConnectionsAdtAPIDeletePollerResponse struct {
+// PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsAdtAPIClient.Delete.
+type PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsAdtAPIDeletePoller
+	Poller *PrivateEndpointConnectionsAdtAPIClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +104,8 @@ type PrivateEndpointConnectionsAdtAPIDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsAdtAPIDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsAdtAPIDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsAdtAPIDeleteResponse{}
+func (l PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsAdtAPIClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsAdtAPIClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +114,13 @@ func (l PrivateEndpointConnectionsAdtAPIDeletePollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsAdtAPIDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsAdtAPIDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsAdtAPIClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsAdtAPIClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsAdtAPIClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsAdtAPIClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsAdtAPIClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsAdtAPIDeletePoller{
+	poller := &PrivateEndpointConnectionsAdtAPIClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,40 +132,40 @@ func (l *PrivateEndpointConnectionsAdtAPIDeletePollerResponse) Resume(ctx contex
 	return nil
 }
 
-// PrivateEndpointConnectionsAdtAPIDeleteResponse contains the response from method PrivateEndpointConnectionsAdtAPI.Delete.
-type PrivateEndpointConnectionsAdtAPIDeleteResponse struct {
+// PrivateEndpointConnectionsAdtAPIClientDeleteResponse contains the response from method PrivateEndpointConnectionsAdtAPIClient.Delete.
+type PrivateEndpointConnectionsAdtAPIClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsAdtAPIGetResponse contains the response from method PrivateEndpointConnectionsAdtAPI.Get.
-type PrivateEndpointConnectionsAdtAPIGetResponse struct {
-	PrivateEndpointConnectionsAdtAPIGetResult
+// PrivateEndpointConnectionsAdtAPIClientGetResponse contains the response from method PrivateEndpointConnectionsAdtAPIClient.Get.
+type PrivateEndpointConnectionsAdtAPIClientGetResponse struct {
+	PrivateEndpointConnectionsAdtAPIClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsAdtAPIGetResult contains the result from method PrivateEndpointConnectionsAdtAPI.Get.
-type PrivateEndpointConnectionsAdtAPIGetResult struct {
+// PrivateEndpointConnectionsAdtAPIClientGetResult contains the result from method PrivateEndpointConnectionsAdtAPIClient.Get.
+type PrivateEndpointConnectionsAdtAPIClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsAdtAPIListByServiceResponse contains the response from method PrivateEndpointConnectionsAdtAPI.ListByService.
-type PrivateEndpointConnectionsAdtAPIListByServiceResponse struct {
-	PrivateEndpointConnectionsAdtAPIListByServiceResult
+// PrivateEndpointConnectionsAdtAPIClientListByServiceResponse contains the response from method PrivateEndpointConnectionsAdtAPIClient.ListByService.
+type PrivateEndpointConnectionsAdtAPIClientListByServiceResponse struct {
+	PrivateEndpointConnectionsAdtAPIClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsAdtAPIListByServiceResult contains the result from method PrivateEndpointConnectionsAdtAPI.ListByService.
-type PrivateEndpointConnectionsAdtAPIListByServiceResult struct {
+// PrivateEndpointConnectionsAdtAPIClientListByServiceResult contains the result from method PrivateEndpointConnectionsAdtAPIClient.ListByService.
+type PrivateEndpointConnectionsAdtAPIClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsComp.CreateOrUpdate.
-type PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsCompClient.CreateOrUpdate.
+type PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCompCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsCompClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -173,8 +174,8 @@ type PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCompCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsCompCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCompClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsCompClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -183,13 +184,14 @@ func (l PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsCompClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsCompClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateEndpointConnectionsCompClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsCompClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsCompClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsCompCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsCompClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -201,22 +203,22 @@ func (l *PrivateEndpointConnectionsCompCreateOrUpdatePollerResponse) Resume(ctx 
 	return nil
 }
 
-// PrivateEndpointConnectionsCompCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsComp.CreateOrUpdate.
-type PrivateEndpointConnectionsCompCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCompCreateOrUpdateResult
+// PrivateEndpointConnectionsCompClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsCompClient.CreateOrUpdate.
+type PrivateEndpointConnectionsCompClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsCompClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCompCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsComp.CreateOrUpdate.
-type PrivateEndpointConnectionsCompCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsCompClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsCompClient.CreateOrUpdate.
+type PrivateEndpointConnectionsCompClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsCompDeletePollerResponse contains the response from method PrivateEndpointConnectionsComp.Delete.
-type PrivateEndpointConnectionsCompDeletePollerResponse struct {
+// PrivateEndpointConnectionsCompClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsCompClient.Delete.
+type PrivateEndpointConnectionsCompClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCompDeletePoller
+	Poller *PrivateEndpointConnectionsCompClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -225,8 +227,8 @@ type PrivateEndpointConnectionsCompDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCompDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCompDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsCompDeleteResponse{}
+func (l PrivateEndpointConnectionsCompClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCompClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsCompClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -235,13 +237,13 @@ func (l PrivateEndpointConnectionsCompDeletePollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsCompDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCompDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsCompClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsCompClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsCompClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsCompClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsCompClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsCompClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsCompDeletePoller{
+	poller := &PrivateEndpointConnectionsCompClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -253,40 +255,40 @@ func (l *PrivateEndpointConnectionsCompDeletePollerResponse) Resume(ctx context.
 	return nil
 }
 
-// PrivateEndpointConnectionsCompDeleteResponse contains the response from method PrivateEndpointConnectionsComp.Delete.
-type PrivateEndpointConnectionsCompDeleteResponse struct {
+// PrivateEndpointConnectionsCompClientDeleteResponse contains the response from method PrivateEndpointConnectionsCompClient.Delete.
+type PrivateEndpointConnectionsCompClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCompGetResponse contains the response from method PrivateEndpointConnectionsComp.Get.
-type PrivateEndpointConnectionsCompGetResponse struct {
-	PrivateEndpointConnectionsCompGetResult
+// PrivateEndpointConnectionsCompClientGetResponse contains the response from method PrivateEndpointConnectionsCompClient.Get.
+type PrivateEndpointConnectionsCompClientGetResponse struct {
+	PrivateEndpointConnectionsCompClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCompGetResult contains the result from method PrivateEndpointConnectionsComp.Get.
-type PrivateEndpointConnectionsCompGetResult struct {
+// PrivateEndpointConnectionsCompClientGetResult contains the result from method PrivateEndpointConnectionsCompClient.Get.
+type PrivateEndpointConnectionsCompClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsCompListByServiceResponse contains the response from method PrivateEndpointConnectionsComp.ListByService.
-type PrivateEndpointConnectionsCompListByServiceResponse struct {
-	PrivateEndpointConnectionsCompListByServiceResult
+// PrivateEndpointConnectionsCompClientListByServiceResponse contains the response from method PrivateEndpointConnectionsCompClient.ListByService.
+type PrivateEndpointConnectionsCompClientListByServiceResponse struct {
+	PrivateEndpointConnectionsCompClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCompListByServiceResult contains the result from method PrivateEndpointConnectionsComp.ListByService.
-type PrivateEndpointConnectionsCompListByServiceResult struct {
+// PrivateEndpointConnectionsCompClientListByServiceResult contains the result from method PrivateEndpointConnectionsCompClient.ListByService.
+type PrivateEndpointConnectionsCompClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsForEDM.CreateOrUpdate.
-type PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsForEDMClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsForEDMCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -295,8 +297,8 @@ type PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForEDMCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsForEDMCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -305,13 +307,14 @@ func (l PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForEDMClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForEDMClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateEndpointConnectionsForEDMClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForEDMClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForEDMClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsForEDMCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsForEDMClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -323,22 +326,22 @@ func (l *PrivateEndpointConnectionsForEDMCreateOrUpdatePollerResponse) Resume(ct
 	return nil
 }
 
-// PrivateEndpointConnectionsForEDMCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsForEDM.CreateOrUpdate.
-type PrivateEndpointConnectionsForEDMCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsForEDMCreateOrUpdateResult
+// PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsForEDMClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsForEDMClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForEDMCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsForEDM.CreateOrUpdate.
-type PrivateEndpointConnectionsForEDMCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsForEDMClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsForEDMClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForEDMClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsForEDMDeletePollerResponse contains the response from method PrivateEndpointConnectionsForEDM.Delete.
-type PrivateEndpointConnectionsForEDMDeletePollerResponse struct {
+// PrivateEndpointConnectionsForEDMClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsForEDMClient.Delete.
+type PrivateEndpointConnectionsForEDMClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsForEDMDeletePoller
+	Poller *PrivateEndpointConnectionsForEDMClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -347,8 +350,8 @@ type PrivateEndpointConnectionsForEDMDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsForEDMDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForEDMDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsForEDMDeleteResponse{}
+func (l PrivateEndpointConnectionsForEDMClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForEDMClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsForEDMClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -357,13 +360,13 @@ func (l PrivateEndpointConnectionsForEDMDeletePollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsForEDMDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsForEDMDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForEDMClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForEDMClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsForEDMClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsForEDMClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForEDMClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForEDMClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsForEDMDeletePoller{
+	poller := &PrivateEndpointConnectionsForEDMClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -375,40 +378,40 @@ func (l *PrivateEndpointConnectionsForEDMDeletePollerResponse) Resume(ctx contex
 	return nil
 }
 
-// PrivateEndpointConnectionsForEDMDeleteResponse contains the response from method PrivateEndpointConnectionsForEDM.Delete.
-type PrivateEndpointConnectionsForEDMDeleteResponse struct {
+// PrivateEndpointConnectionsForEDMClientDeleteResponse contains the response from method PrivateEndpointConnectionsForEDMClient.Delete.
+type PrivateEndpointConnectionsForEDMClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForEDMGetResponse contains the response from method PrivateEndpointConnectionsForEDM.Get.
-type PrivateEndpointConnectionsForEDMGetResponse struct {
-	PrivateEndpointConnectionsForEDMGetResult
+// PrivateEndpointConnectionsForEDMClientGetResponse contains the response from method PrivateEndpointConnectionsForEDMClient.Get.
+type PrivateEndpointConnectionsForEDMClientGetResponse struct {
+	PrivateEndpointConnectionsForEDMClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForEDMGetResult contains the result from method PrivateEndpointConnectionsForEDM.Get.
-type PrivateEndpointConnectionsForEDMGetResult struct {
+// PrivateEndpointConnectionsForEDMClientGetResult contains the result from method PrivateEndpointConnectionsForEDMClient.Get.
+type PrivateEndpointConnectionsForEDMClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsForEDMListByServiceResponse contains the response from method PrivateEndpointConnectionsForEDM.ListByService.
-type PrivateEndpointConnectionsForEDMListByServiceResponse struct {
-	PrivateEndpointConnectionsForEDMListByServiceResult
+// PrivateEndpointConnectionsForEDMClientListByServiceResponse contains the response from method PrivateEndpointConnectionsForEDMClient.ListByService.
+type PrivateEndpointConnectionsForEDMClientListByServiceResponse struct {
+	PrivateEndpointConnectionsForEDMClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForEDMListByServiceResult contains the result from method PrivateEndpointConnectionsForEDM.ListByService.
-type PrivateEndpointConnectionsForEDMListByServiceResult struct {
+// PrivateEndpointConnectionsForEDMClientListByServiceResult contains the result from method PrivateEndpointConnectionsForEDMClient.ListByService.
+type PrivateEndpointConnectionsForEDMClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySync.CreateOrUpdate.
-type PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySyncClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -417,8 +420,8 @@ type PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse stru
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -427,13 +430,14 @@ func (l PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForMIPPolicySyncClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForMIPPolicySyncClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse from the provided client
+// and resume token.
+func (l *PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForMIPPolicySyncClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForMIPPolicySyncClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -445,22 +449,22 @@ func (l *PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdatePollerResponse)
 	return nil
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySync.CreateOrUpdate.
-type PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResult
+// PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySyncClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsForMIPPolicySync.CreateOrUpdate.
-type PrivateEndpointConnectionsForMIPPolicySyncCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsForMIPPolicySyncClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySync.Delete.
-type PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySyncClient.Delete.
+type PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsForMIPPolicySyncDeletePoller
+	Poller *PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -469,8 +473,8 @@ type PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForMIPPolicySyncDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsForMIPPolicySyncDeleteResponse{}
+func (l PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -479,13 +483,14 @@ func (l PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse) PollUnti
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForMIPPolicySyncClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForMIPPolicySyncClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *PrivateEndpointConnectionsForMIPPolicySyncClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForMIPPolicySyncClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForMIPPolicySyncClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsForMIPPolicySyncDeletePoller{
+	poller := &PrivateEndpointConnectionsForMIPPolicySyncClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -497,40 +502,40 @@ func (l *PrivateEndpointConnectionsForMIPPolicySyncDeletePollerResponse) Resume(
 	return nil
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncDeleteResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySync.Delete.
-type PrivateEndpointConnectionsForMIPPolicySyncDeleteResponse struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySyncClient.Delete.
+type PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncGetResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySync.Get.
-type PrivateEndpointConnectionsForMIPPolicySyncGetResponse struct {
-	PrivateEndpointConnectionsForMIPPolicySyncGetResult
+// PrivateEndpointConnectionsForMIPPolicySyncClientGetResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySyncClient.Get.
+type PrivateEndpointConnectionsForMIPPolicySyncClientGetResponse struct {
+	PrivateEndpointConnectionsForMIPPolicySyncClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncGetResult contains the result from method PrivateEndpointConnectionsForMIPPolicySync.Get.
-type PrivateEndpointConnectionsForMIPPolicySyncGetResult struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientGetResult contains the result from method PrivateEndpointConnectionsForMIPPolicySyncClient.Get.
+type PrivateEndpointConnectionsForMIPPolicySyncClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncListByServiceResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySync.ListByService.
-type PrivateEndpointConnectionsForMIPPolicySyncListByServiceResponse struct {
-	PrivateEndpointConnectionsForMIPPolicySyncListByServiceResult
+// PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse contains the response from method PrivateEndpointConnectionsForMIPPolicySyncClient.ListByService.
+type PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse struct {
+	PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncListByServiceResult contains the result from method PrivateEndpointConnectionsForMIPPolicySync.ListByService.
-type PrivateEndpointConnectionsForMIPPolicySyncListByServiceResult struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResult contains the result from method PrivateEndpointConnectionsForMIPPolicySyncClient.ListByService.
+type PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsForSCCPowershell.CreateOrUpdate.
-type PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsForSCCPowershellClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -539,8 +544,8 @@ type PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse stru
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -549,13 +554,14 @@ func (l PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForSCCPowershellClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForSCCPowershellClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse from the provided client
+// and resume token.
+func (l *PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForSCCPowershellClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForSCCPowershellClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -567,22 +573,22 @@ func (l *PrivateEndpointConnectionsForSCCPowershellCreateOrUpdatePollerResponse)
 	return nil
 }
 
-// PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsForSCCPowershell.CreateOrUpdate.
-type PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResult
+// PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsForSCCPowershellClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsForSCCPowershell.CreateOrUpdate.
-type PrivateEndpointConnectionsForSCCPowershellCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsForSCCPowershellClient.CreateOrUpdate.
+type PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse contains the response from method PrivateEndpointConnectionsForSCCPowershell.Delete.
-type PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse struct {
+// PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsForSCCPowershellClient.Delete.
+type PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsForSCCPowershellDeletePoller
+	Poller *PrivateEndpointConnectionsForSCCPowershellClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -591,8 +597,8 @@ type PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForSCCPowershellDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsForSCCPowershellDeleteResponse{}
+func (l PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -601,13 +607,14 @@ func (l PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse) PollUnti
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForSCCPowershellClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForSCCPowershellClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *PrivateEndpointConnectionsForSCCPowershellClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsForSCCPowershellClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsForSCCPowershellClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsForSCCPowershellDeletePoller{
+	poller := &PrivateEndpointConnectionsForSCCPowershellClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -619,40 +626,40 @@ func (l *PrivateEndpointConnectionsForSCCPowershellDeletePollerResponse) Resume(
 	return nil
 }
 
-// PrivateEndpointConnectionsForSCCPowershellDeleteResponse contains the response from method PrivateEndpointConnectionsForSCCPowershell.Delete.
-type PrivateEndpointConnectionsForSCCPowershellDeleteResponse struct {
+// PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse contains the response from method PrivateEndpointConnectionsForSCCPowershellClient.Delete.
+type PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForSCCPowershellGetResponse contains the response from method PrivateEndpointConnectionsForSCCPowershell.Get.
-type PrivateEndpointConnectionsForSCCPowershellGetResponse struct {
-	PrivateEndpointConnectionsForSCCPowershellGetResult
+// PrivateEndpointConnectionsForSCCPowershellClientGetResponse contains the response from method PrivateEndpointConnectionsForSCCPowershellClient.Get.
+type PrivateEndpointConnectionsForSCCPowershellClientGetResponse struct {
+	PrivateEndpointConnectionsForSCCPowershellClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForSCCPowershellGetResult contains the result from method PrivateEndpointConnectionsForSCCPowershell.Get.
-type PrivateEndpointConnectionsForSCCPowershellGetResult struct {
+// PrivateEndpointConnectionsForSCCPowershellClientGetResult contains the result from method PrivateEndpointConnectionsForSCCPowershellClient.Get.
+type PrivateEndpointConnectionsForSCCPowershellClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsForSCCPowershellListByServiceResponse contains the response from method PrivateEndpointConnectionsForSCCPowershell.ListByService.
-type PrivateEndpointConnectionsForSCCPowershellListByServiceResponse struct {
-	PrivateEndpointConnectionsForSCCPowershellListByServiceResult
+// PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse contains the response from method PrivateEndpointConnectionsForSCCPowershellClient.ListByService.
+type PrivateEndpointConnectionsForSCCPowershellClientListByServiceResponse struct {
+	PrivateEndpointConnectionsForSCCPowershellClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsForSCCPowershellListByServiceResult contains the result from method PrivateEndpointConnectionsForSCCPowershell.ListByService.
-type PrivateEndpointConnectionsForSCCPowershellListByServiceResult struct {
+// PrivateEndpointConnectionsForSCCPowershellClientListByServiceResult contains the result from method PrivateEndpointConnectionsForSCCPowershellClient.ListByService.
+type PrivateEndpointConnectionsForSCCPowershellClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsSec.CreateOrUpdate.
-type PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsSecClient.CreateOrUpdate.
+type PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsSecCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsSecClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -661,8 +668,8 @@ type PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsSecCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsSecCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsSecClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsSecClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -671,13 +678,14 @@ func (l PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsSecClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsSecClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateEndpointConnectionsSecClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsSecClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsSecClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsSecCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsSecClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -689,22 +697,22 @@ func (l *PrivateEndpointConnectionsSecCreateOrUpdatePollerResponse) Resume(ctx c
 	return nil
 }
 
-// PrivateEndpointConnectionsSecCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsSec.CreateOrUpdate.
-type PrivateEndpointConnectionsSecCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsSecCreateOrUpdateResult
+// PrivateEndpointConnectionsSecClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsSecClient.CreateOrUpdate.
+type PrivateEndpointConnectionsSecClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsSecClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsSecCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsSec.CreateOrUpdate.
-type PrivateEndpointConnectionsSecCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsSecClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsSecClient.CreateOrUpdate.
+type PrivateEndpointConnectionsSecClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsSecDeletePollerResponse contains the response from method PrivateEndpointConnectionsSec.Delete.
-type PrivateEndpointConnectionsSecDeletePollerResponse struct {
+// PrivateEndpointConnectionsSecClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsSecClient.Delete.
+type PrivateEndpointConnectionsSecClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsSecDeletePoller
+	Poller *PrivateEndpointConnectionsSecClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -713,8 +721,8 @@ type PrivateEndpointConnectionsSecDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsSecDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsSecDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsSecDeleteResponse{}
+func (l PrivateEndpointConnectionsSecClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsSecClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsSecClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -723,13 +731,13 @@ func (l PrivateEndpointConnectionsSecDeletePollerResponse) PollUntilDone(ctx con
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsSecDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsSecDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsSecClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsSecClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsSecClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsSecClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsSecClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsSecClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsSecDeletePoller{
+	poller := &PrivateEndpointConnectionsSecClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -741,184 +749,184 @@ func (l *PrivateEndpointConnectionsSecDeletePollerResponse) Resume(ctx context.C
 	return nil
 }
 
-// PrivateEndpointConnectionsSecDeleteResponse contains the response from method PrivateEndpointConnectionsSec.Delete.
-type PrivateEndpointConnectionsSecDeleteResponse struct {
+// PrivateEndpointConnectionsSecClientDeleteResponse contains the response from method PrivateEndpointConnectionsSecClient.Delete.
+type PrivateEndpointConnectionsSecClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsSecGetResponse contains the response from method PrivateEndpointConnectionsSec.Get.
-type PrivateEndpointConnectionsSecGetResponse struct {
-	PrivateEndpointConnectionsSecGetResult
+// PrivateEndpointConnectionsSecClientGetResponse contains the response from method PrivateEndpointConnectionsSecClient.Get.
+type PrivateEndpointConnectionsSecClientGetResponse struct {
+	PrivateEndpointConnectionsSecClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsSecGetResult contains the result from method PrivateEndpointConnectionsSec.Get.
-type PrivateEndpointConnectionsSecGetResult struct {
+// PrivateEndpointConnectionsSecClientGetResult contains the result from method PrivateEndpointConnectionsSecClient.Get.
+type PrivateEndpointConnectionsSecClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsSecListByServiceResponse contains the response from method PrivateEndpointConnectionsSec.ListByService.
-type PrivateEndpointConnectionsSecListByServiceResponse struct {
-	PrivateEndpointConnectionsSecListByServiceResult
+// PrivateEndpointConnectionsSecClientListByServiceResponse contains the response from method PrivateEndpointConnectionsSecClient.ListByService.
+type PrivateEndpointConnectionsSecClientListByServiceResponse struct {
+	PrivateEndpointConnectionsSecClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsSecListByServiceResult contains the result from method PrivateEndpointConnectionsSec.ListByService.
-type PrivateEndpointConnectionsSecListByServiceResult struct {
+// PrivateEndpointConnectionsSecClientListByServiceResult contains the result from method PrivateEndpointConnectionsSecClient.ListByService.
+type PrivateEndpointConnectionsSecClientListByServiceResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesAdtAPIGetResponse contains the response from method PrivateLinkResourcesAdtAPI.Get.
-type PrivateLinkResourcesAdtAPIGetResponse struct {
-	PrivateLinkResourcesAdtAPIGetResult
+// PrivateLinkResourcesAdtAPIClientGetResponse contains the response from method PrivateLinkResourcesAdtAPIClient.Get.
+type PrivateLinkResourcesAdtAPIClientGetResponse struct {
+	PrivateLinkResourcesAdtAPIClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesAdtAPIGetResult contains the result from method PrivateLinkResourcesAdtAPI.Get.
-type PrivateLinkResourcesAdtAPIGetResult struct {
+// PrivateLinkResourcesAdtAPIClientGetResult contains the result from method PrivateLinkResourcesAdtAPIClient.Get.
+type PrivateLinkResourcesAdtAPIClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesAdtAPIListByServiceResponse contains the response from method PrivateLinkResourcesAdtAPI.ListByService.
-type PrivateLinkResourcesAdtAPIListByServiceResponse struct {
-	PrivateLinkResourcesAdtAPIListByServiceResult
+// PrivateLinkResourcesAdtAPIClientListByServiceResponse contains the response from method PrivateLinkResourcesAdtAPIClient.ListByService.
+type PrivateLinkResourcesAdtAPIClientListByServiceResponse struct {
+	PrivateLinkResourcesAdtAPIClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesAdtAPIListByServiceResult contains the result from method PrivateLinkResourcesAdtAPI.ListByService.
-type PrivateLinkResourcesAdtAPIListByServiceResult struct {
+// PrivateLinkResourcesAdtAPIClientListByServiceResult contains the result from method PrivateLinkResourcesAdtAPIClient.ListByService.
+type PrivateLinkResourcesAdtAPIClientListByServiceResult struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkResourcesCompGetResponse contains the response from method PrivateLinkResourcesComp.Get.
-type PrivateLinkResourcesCompGetResponse struct {
-	PrivateLinkResourcesCompGetResult
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResourcesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesCompGetResult contains the result from method PrivateLinkResourcesComp.Get.
-type PrivateLinkResourcesCompGetResult struct {
+// PrivateLinkResourcesClientGetResult contains the result from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesCompListByServiceResponse contains the response from method PrivateLinkResourcesComp.ListByService.
-type PrivateLinkResourcesCompListByServiceResponse struct {
-	PrivateLinkResourcesCompListByServiceResult
+// PrivateLinkResourcesClientListByServiceResponse contains the response from method PrivateLinkResourcesClient.ListByService.
+type PrivateLinkResourcesClientListByServiceResponse struct {
+	PrivateLinkResourcesClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesCompListByServiceResult contains the result from method PrivateLinkResourcesComp.ListByService.
-type PrivateLinkResourcesCompListByServiceResult struct {
+// PrivateLinkResourcesClientListByServiceResult contains the result from method PrivateLinkResourcesClient.ListByService.
+type PrivateLinkResourcesClientListByServiceResult struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkResourcesForMIPPolicySyncGetResponse contains the response from method PrivateLinkResourcesForMIPPolicySync.Get.
-type PrivateLinkResourcesForMIPPolicySyncGetResponse struct {
-	PrivateLinkResourcesForMIPPolicySyncGetResult
+// PrivateLinkResourcesCompClientGetResponse contains the response from method PrivateLinkResourcesCompClient.Get.
+type PrivateLinkResourcesCompClientGetResponse struct {
+	PrivateLinkResourcesCompClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesForMIPPolicySyncGetResult contains the result from method PrivateLinkResourcesForMIPPolicySync.Get.
-type PrivateLinkResourcesForMIPPolicySyncGetResult struct {
+// PrivateLinkResourcesCompClientGetResult contains the result from method PrivateLinkResourcesCompClient.Get.
+type PrivateLinkResourcesCompClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesForMIPPolicySyncListByServiceResponse contains the response from method PrivateLinkResourcesForMIPPolicySync.ListByService.
-type PrivateLinkResourcesForMIPPolicySyncListByServiceResponse struct {
-	PrivateLinkResourcesForMIPPolicySyncListByServiceResult
+// PrivateLinkResourcesCompClientListByServiceResponse contains the response from method PrivateLinkResourcesCompClient.ListByService.
+type PrivateLinkResourcesCompClientListByServiceResponse struct {
+	PrivateLinkResourcesCompClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesForMIPPolicySyncListByServiceResult contains the result from method PrivateLinkResourcesForMIPPolicySync.ListByService.
-type PrivateLinkResourcesForMIPPolicySyncListByServiceResult struct {
+// PrivateLinkResourcesCompClientListByServiceResult contains the result from method PrivateLinkResourcesCompClient.ListByService.
+type PrivateLinkResourcesCompClientListByServiceResult struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkResourcesForSCCPowershellGetResponse contains the response from method PrivateLinkResourcesForSCCPowershell.Get.
-type PrivateLinkResourcesForSCCPowershellGetResponse struct {
-	PrivateLinkResourcesForSCCPowershellGetResult
+// PrivateLinkResourcesForMIPPolicySyncClientGetResponse contains the response from method PrivateLinkResourcesForMIPPolicySyncClient.Get.
+type PrivateLinkResourcesForMIPPolicySyncClientGetResponse struct {
+	PrivateLinkResourcesForMIPPolicySyncClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesForSCCPowershellGetResult contains the result from method PrivateLinkResourcesForSCCPowershell.Get.
-type PrivateLinkResourcesForSCCPowershellGetResult struct {
+// PrivateLinkResourcesForMIPPolicySyncClientGetResult contains the result from method PrivateLinkResourcesForMIPPolicySyncClient.Get.
+type PrivateLinkResourcesForMIPPolicySyncClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesForSCCPowershellListByServiceResponse contains the response from method PrivateLinkResourcesForSCCPowershell.ListByService.
-type PrivateLinkResourcesForSCCPowershellListByServiceResponse struct {
-	PrivateLinkResourcesForSCCPowershellListByServiceResult
+// PrivateLinkResourcesForMIPPolicySyncClientListByServiceResponse contains the response from method PrivateLinkResourcesForMIPPolicySyncClient.ListByService.
+type PrivateLinkResourcesForMIPPolicySyncClientListByServiceResponse struct {
+	PrivateLinkResourcesForMIPPolicySyncClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesForSCCPowershellListByServiceResult contains the result from method PrivateLinkResourcesForSCCPowershell.ListByService.
-type PrivateLinkResourcesForSCCPowershellListByServiceResult struct {
+// PrivateLinkResourcesForMIPPolicySyncClientListByServiceResult contains the result from method PrivateLinkResourcesForMIPPolicySyncClient.ListByService.
+type PrivateLinkResourcesForMIPPolicySyncClientListByServiceResult struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
+// PrivateLinkResourcesForSCCPowershellClientGetResponse contains the response from method PrivateLinkResourcesForSCCPowershellClient.Get.
+type PrivateLinkResourcesForSCCPowershellClientGetResponse struct {
+	PrivateLinkResourcesForSCCPowershellClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateLinkResourcesForSCCPowershellClientGetResult contains the result from method PrivateLinkResourcesForSCCPowershellClient.Get.
+type PrivateLinkResourcesForSCCPowershellClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesListByServiceResponse contains the response from method PrivateLinkResources.ListByService.
-type PrivateLinkResourcesListByServiceResponse struct {
-	PrivateLinkResourcesListByServiceResult
+// PrivateLinkResourcesForSCCPowershellClientListByServiceResponse contains the response from method PrivateLinkResourcesForSCCPowershellClient.ListByService.
+type PrivateLinkResourcesForSCCPowershellClientListByServiceResponse struct {
+	PrivateLinkResourcesForSCCPowershellClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesListByServiceResult contains the result from method PrivateLinkResources.ListByService.
-type PrivateLinkResourcesListByServiceResult struct {
+// PrivateLinkResourcesForSCCPowershellClientListByServiceResult contains the result from method PrivateLinkResourcesForSCCPowershellClient.ListByService.
+type PrivateLinkResourcesForSCCPowershellClientListByServiceResult struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkResourcesSecGetResponse contains the response from method PrivateLinkResourcesSec.Get.
-type PrivateLinkResourcesSecGetResponse struct {
-	PrivateLinkResourcesSecGetResult
+// PrivateLinkResourcesSecClientGetResponse contains the response from method PrivateLinkResourcesSecClient.Get.
+type PrivateLinkResourcesSecClientGetResponse struct {
+	PrivateLinkResourcesSecClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesSecGetResult contains the result from method PrivateLinkResourcesSec.Get.
-type PrivateLinkResourcesSecGetResult struct {
+// PrivateLinkResourcesSecClientGetResult contains the result from method PrivateLinkResourcesSecClient.Get.
+type PrivateLinkResourcesSecClientGetResult struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesSecListByServiceResponse contains the response from method PrivateLinkResourcesSec.ListByService.
-type PrivateLinkResourcesSecListByServiceResponse struct {
-	PrivateLinkResourcesSecListByServiceResult
+// PrivateLinkResourcesSecClientListByServiceResponse contains the response from method PrivateLinkResourcesSecClient.ListByService.
+type PrivateLinkResourcesSecClientListByServiceResponse struct {
+	PrivateLinkResourcesSecClientListByServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesSecListByServiceResult contains the result from method PrivateLinkResourcesSec.ListByService.
-type PrivateLinkResourcesSecListByServiceResult struct {
+// PrivateLinkResourcesSecClientListByServiceResult contains the result from method PrivateLinkResourcesSecClient.ListByService.
+type PrivateLinkResourcesSecClientListByServiceResult struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForEDMUpload.CreateOrUpdate.
-type PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse struct {
+// PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForEDMUploadClient.CreateOrUpdate.
+type PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForEDMUploadCreateOrUpdatePoller
+	Poller *PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -927,8 +935,8 @@ type PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForEDMUploadCreateOrUpdateResponse, error) {
-	respType := PrivateLinkServicesForEDMUploadCreateOrUpdateResponse{}
+func (l PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse, error) {
+	respType := PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForEDMUploadDescription)
 	if err != nil {
 		return respType, err
@@ -937,13 +945,14 @@ func (l PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse) PollUntilDo
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForEDMUploadClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForEDMUploadClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateLinkServicesForEDMUploadClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForEDMUploadClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForEDMUploadClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForEDMUploadCreateOrUpdatePoller{
+	poller := &PrivateLinkServicesForEDMUploadClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -955,58 +964,58 @@ func (l *PrivateLinkServicesForEDMUploadCreateOrUpdatePollerResponse) Resume(ctx
 	return nil
 }
 
-// PrivateLinkServicesForEDMUploadCreateOrUpdateResponse contains the response from method PrivateLinkServicesForEDMUpload.CreateOrUpdate.
-type PrivateLinkServicesForEDMUploadCreateOrUpdateResponse struct {
-	PrivateLinkServicesForEDMUploadCreateOrUpdateResult
+// PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse contains the response from method PrivateLinkServicesForEDMUploadClient.CreateOrUpdate.
+type PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse struct {
+	PrivateLinkServicesForEDMUploadClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForEDMUploadCreateOrUpdateResult contains the result from method PrivateLinkServicesForEDMUpload.CreateOrUpdate.
-type PrivateLinkServicesForEDMUploadCreateOrUpdateResult struct {
+// PrivateLinkServicesForEDMUploadClientCreateOrUpdateResult contains the result from method PrivateLinkServicesForEDMUploadClient.CreateOrUpdate.
+type PrivateLinkServicesForEDMUploadClientCreateOrUpdateResult struct {
 	PrivateLinkServicesForEDMUploadDescription
 }
 
-// PrivateLinkServicesForEDMUploadGetResponse contains the response from method PrivateLinkServicesForEDMUpload.Get.
-type PrivateLinkServicesForEDMUploadGetResponse struct {
-	PrivateLinkServicesForEDMUploadGetResult
+// PrivateLinkServicesForEDMUploadClientGetResponse contains the response from method PrivateLinkServicesForEDMUploadClient.Get.
+type PrivateLinkServicesForEDMUploadClientGetResponse struct {
+	PrivateLinkServicesForEDMUploadClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForEDMUploadGetResult contains the result from method PrivateLinkServicesForEDMUpload.Get.
-type PrivateLinkServicesForEDMUploadGetResult struct {
+// PrivateLinkServicesForEDMUploadClientGetResult contains the result from method PrivateLinkServicesForEDMUploadClient.Get.
+type PrivateLinkServicesForEDMUploadClientGetResult struct {
 	PrivateLinkServicesForEDMUploadDescription
 }
 
-// PrivateLinkServicesForEDMUploadListByResourceGroupResponse contains the response from method PrivateLinkServicesForEDMUpload.ListByResourceGroup.
-type PrivateLinkServicesForEDMUploadListByResourceGroupResponse struct {
-	PrivateLinkServicesForEDMUploadListByResourceGroupResult
+// PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse contains the response from method PrivateLinkServicesForEDMUploadClient.ListByResourceGroup.
+type PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse struct {
+	PrivateLinkServicesForEDMUploadClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForEDMUploadListByResourceGroupResult contains the result from method PrivateLinkServicesForEDMUpload.ListByResourceGroup.
-type PrivateLinkServicesForEDMUploadListByResourceGroupResult struct {
+// PrivateLinkServicesForEDMUploadClientListByResourceGroupResult contains the result from method PrivateLinkServicesForEDMUploadClient.ListByResourceGroup.
+type PrivateLinkServicesForEDMUploadClientListByResourceGroupResult struct {
 	PrivateLinkServicesForEDMUploadDescriptionListResult
 }
 
-// PrivateLinkServicesForEDMUploadListResponse contains the response from method PrivateLinkServicesForEDMUpload.List.
-type PrivateLinkServicesForEDMUploadListResponse struct {
-	PrivateLinkServicesForEDMUploadListResult
+// PrivateLinkServicesForEDMUploadClientListResponse contains the response from method PrivateLinkServicesForEDMUploadClient.List.
+type PrivateLinkServicesForEDMUploadClientListResponse struct {
+	PrivateLinkServicesForEDMUploadClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForEDMUploadListResult contains the result from method PrivateLinkServicesForEDMUpload.List.
-type PrivateLinkServicesForEDMUploadListResult struct {
+// PrivateLinkServicesForEDMUploadClientListResult contains the result from method PrivateLinkServicesForEDMUploadClient.List.
+type PrivateLinkServicesForEDMUploadClientListResult struct {
 	PrivateLinkServicesForEDMUploadDescriptionListResult
 }
 
-// PrivateLinkServicesForEDMUploadUpdatePollerResponse contains the response from method PrivateLinkServicesForEDMUpload.Update.
-type PrivateLinkServicesForEDMUploadUpdatePollerResponse struct {
+// PrivateLinkServicesForEDMUploadClientUpdatePollerResponse contains the response from method PrivateLinkServicesForEDMUploadClient.Update.
+type PrivateLinkServicesForEDMUploadClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForEDMUploadUpdatePoller
+	Poller *PrivateLinkServicesForEDMUploadClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1015,8 +1024,8 @@ type PrivateLinkServicesForEDMUploadUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForEDMUploadUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForEDMUploadUpdateResponse, error) {
-	respType := PrivateLinkServicesForEDMUploadUpdateResponse{}
+func (l PrivateLinkServicesForEDMUploadClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForEDMUploadClientUpdateResponse, error) {
+	respType := PrivateLinkServicesForEDMUploadClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForEDMUploadDescription)
 	if err != nil {
 		return respType, err
@@ -1025,13 +1034,13 @@ func (l PrivateLinkServicesForEDMUploadUpdatePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForEDMUploadUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForEDMUploadUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForEDMUploadClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForEDMUploadClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateLinkServicesForEDMUploadClientUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateLinkServicesForEDMUploadClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForEDMUploadClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForEDMUploadClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForEDMUploadUpdatePoller{
+	poller := &PrivateLinkServicesForEDMUploadClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1043,22 +1052,22 @@ func (l *PrivateLinkServicesForEDMUploadUpdatePollerResponse) Resume(ctx context
 	return nil
 }
 
-// PrivateLinkServicesForEDMUploadUpdateResponse contains the response from method PrivateLinkServicesForEDMUpload.Update.
-type PrivateLinkServicesForEDMUploadUpdateResponse struct {
-	PrivateLinkServicesForEDMUploadUpdateResult
+// PrivateLinkServicesForEDMUploadClientUpdateResponse contains the response from method PrivateLinkServicesForEDMUploadClient.Update.
+type PrivateLinkServicesForEDMUploadClientUpdateResponse struct {
+	PrivateLinkServicesForEDMUploadClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForEDMUploadUpdateResult contains the result from method PrivateLinkServicesForEDMUpload.Update.
-type PrivateLinkServicesForEDMUploadUpdateResult struct {
+// PrivateLinkServicesForEDMUploadClientUpdateResult contains the result from method PrivateLinkServicesForEDMUploadClient.Update.
+type PrivateLinkServicesForEDMUploadClientUpdateResult struct {
 	PrivateLinkServicesForEDMUploadDescription
 }
 
-// PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.CreateOrUpdate.
-type PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse struct {
+// PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.CreateOrUpdate.
+type PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePoller
+	Poller *PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1067,8 +1076,8 @@ type PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse stru
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResponse, error) {
-	respType := PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResponse{}
+func (l PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse, error) {
+	respType := PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForM365ComplianceCenterDescription)
 	if err != nil {
 		return respType, err
@@ -1077,13 +1086,14 @@ func (l PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse) 
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365ComplianceCenterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365ComplianceCenterClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse from the provided client
+// and resume token.
+func (l *PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365ComplianceCenterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365ComplianceCenterClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePoller{
+	poller := &PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1095,22 +1105,22 @@ func (l *PrivateLinkServicesForM365ComplianceCenterCreateOrUpdatePollerResponse)
 	return nil
 }
 
-// PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.CreateOrUpdate.
-type PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResponse struct {
-	PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResult
+// PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.CreateOrUpdate.
+type PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse struct {
+	PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResult contains the result from method PrivateLinkServicesForM365ComplianceCenter.CreateOrUpdate.
-type PrivateLinkServicesForM365ComplianceCenterCreateOrUpdateResult struct {
+// PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResult contains the result from method PrivateLinkServicesForM365ComplianceCenterClient.CreateOrUpdate.
+type PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResult struct {
 	PrivateLinkServicesForM365ComplianceCenterDescription
 }
 
-// PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.Delete.
-type PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse struct {
+// PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.Delete.
+type PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForM365ComplianceCenterDeletePoller
+	Poller *PrivateLinkServicesForM365ComplianceCenterClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1119,8 +1129,8 @@ type PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365ComplianceCenterDeleteResponse, error) {
-	respType := PrivateLinkServicesForM365ComplianceCenterDeleteResponse{}
+func (l PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse, error) {
+	respType := PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1129,13 +1139,14 @@ func (l PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse) PollUnti
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365ComplianceCenterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365ComplianceCenterClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *PrivateLinkServicesForM365ComplianceCenterClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365ComplianceCenterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365ComplianceCenterClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForM365ComplianceCenterDeletePoller{
+	poller := &PrivateLinkServicesForM365ComplianceCenterClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1147,52 +1158,52 @@ func (l *PrivateLinkServicesForM365ComplianceCenterDeletePollerResponse) Resume(
 	return nil
 }
 
-// PrivateLinkServicesForM365ComplianceCenterDeleteResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.Delete.
-type PrivateLinkServicesForM365ComplianceCenterDeleteResponse struct {
+// PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.Delete.
+type PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365ComplianceCenterGetResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.Get.
-type PrivateLinkServicesForM365ComplianceCenterGetResponse struct {
-	PrivateLinkServicesForM365ComplianceCenterGetResult
+// PrivateLinkServicesForM365ComplianceCenterClientGetResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.Get.
+type PrivateLinkServicesForM365ComplianceCenterClientGetResponse struct {
+	PrivateLinkServicesForM365ComplianceCenterClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365ComplianceCenterGetResult contains the result from method PrivateLinkServicesForM365ComplianceCenter.Get.
-type PrivateLinkServicesForM365ComplianceCenterGetResult struct {
+// PrivateLinkServicesForM365ComplianceCenterClientGetResult contains the result from method PrivateLinkServicesForM365ComplianceCenterClient.Get.
+type PrivateLinkServicesForM365ComplianceCenterClientGetResult struct {
 	PrivateLinkServicesForM365ComplianceCenterDescription
 }
 
-// PrivateLinkServicesForM365ComplianceCenterListByResourceGroupResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.ListByResourceGroup.
-type PrivateLinkServicesForM365ComplianceCenterListByResourceGroupResponse struct {
-	PrivateLinkServicesForM365ComplianceCenterListByResourceGroupResult
+// PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup.
+type PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResponse struct {
+	PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365ComplianceCenterListByResourceGroupResult contains the result from method PrivateLinkServicesForM365ComplianceCenter.ListByResourceGroup.
-type PrivateLinkServicesForM365ComplianceCenterListByResourceGroupResult struct {
+// PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResult contains the result from method PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup.
+type PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupResult struct {
 	PrivateLinkServicesForM365ComplianceCenterDescriptionListResult
 }
 
-// PrivateLinkServicesForM365ComplianceCenterListResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.List.
-type PrivateLinkServicesForM365ComplianceCenterListResponse struct {
-	PrivateLinkServicesForM365ComplianceCenterListResult
+// PrivateLinkServicesForM365ComplianceCenterClientListResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.List.
+type PrivateLinkServicesForM365ComplianceCenterClientListResponse struct {
+	PrivateLinkServicesForM365ComplianceCenterClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365ComplianceCenterListResult contains the result from method PrivateLinkServicesForM365ComplianceCenter.List.
-type PrivateLinkServicesForM365ComplianceCenterListResult struct {
+// PrivateLinkServicesForM365ComplianceCenterClientListResult contains the result from method PrivateLinkServicesForM365ComplianceCenterClient.List.
+type PrivateLinkServicesForM365ComplianceCenterClientListResult struct {
 	PrivateLinkServicesForM365ComplianceCenterDescriptionListResult
 }
 
-// PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.Update.
-type PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse struct {
+// PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.Update.
+type PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForM365ComplianceCenterUpdatePoller
+	Poller *PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1201,8 +1212,8 @@ type PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365ComplianceCenterUpdateResponse, error) {
-	respType := PrivateLinkServicesForM365ComplianceCenterUpdateResponse{}
+func (l PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse, error) {
+	respType := PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForM365ComplianceCenterDescription)
 	if err != nil {
 		return respType, err
@@ -1211,13 +1222,14 @@ func (l PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse) PollUnti
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365ComplianceCenterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365ComplianceCenterClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateLinkServicesForM365ComplianceCenterClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365ComplianceCenterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365ComplianceCenterClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForM365ComplianceCenterUpdatePoller{
+	poller := &PrivateLinkServicesForM365ComplianceCenterClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1229,22 +1241,22 @@ func (l *PrivateLinkServicesForM365ComplianceCenterUpdatePollerResponse) Resume(
 	return nil
 }
 
-// PrivateLinkServicesForM365ComplianceCenterUpdateResponse contains the response from method PrivateLinkServicesForM365ComplianceCenter.Update.
-type PrivateLinkServicesForM365ComplianceCenterUpdateResponse struct {
-	PrivateLinkServicesForM365ComplianceCenterUpdateResult
+// PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse contains the response from method PrivateLinkServicesForM365ComplianceCenterClient.Update.
+type PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse struct {
+	PrivateLinkServicesForM365ComplianceCenterClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365ComplianceCenterUpdateResult contains the result from method PrivateLinkServicesForM365ComplianceCenter.Update.
-type PrivateLinkServicesForM365ComplianceCenterUpdateResult struct {
+// PrivateLinkServicesForM365ComplianceCenterClientUpdateResult contains the result from method PrivateLinkServicesForM365ComplianceCenterClient.Update.
+type PrivateLinkServicesForM365ComplianceCenterClientUpdateResult struct {
 	PrivateLinkServicesForM365ComplianceCenterDescription
 }
 
-// PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.CreateOrUpdate.
-type PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse struct {
+// PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.CreateOrUpdate.
+type PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePoller
+	Poller *PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1253,8 +1265,8 @@ type PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse struct
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResponse, error) {
-	respType := PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResponse{}
+func (l PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse, error) {
+	respType := PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForM365SecurityCenterDescription)
 	if err != nil {
 		return respType, err
@@ -1263,13 +1275,14 @@ func (l PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse) Po
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365SecurityCenterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365SecurityCenterClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse from the provided client
+// and resume token.
+func (l *PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365SecurityCenterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365SecurityCenterClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePoller{
+	poller := &PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1281,22 +1294,22 @@ func (l *PrivateLinkServicesForM365SecurityCenterCreateOrUpdatePollerResponse) R
 	return nil
 }
 
-// PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.CreateOrUpdate.
-type PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResponse struct {
-	PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResult
+// PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.CreateOrUpdate.
+type PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse struct {
+	PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResult contains the result from method PrivateLinkServicesForM365SecurityCenter.CreateOrUpdate.
-type PrivateLinkServicesForM365SecurityCenterCreateOrUpdateResult struct {
+// PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResult contains the result from method PrivateLinkServicesForM365SecurityCenterClient.CreateOrUpdate.
+type PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResult struct {
 	PrivateLinkServicesForM365SecurityCenterDescription
 }
 
-// PrivateLinkServicesForM365SecurityCenterDeletePollerResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.Delete.
-type PrivateLinkServicesForM365SecurityCenterDeletePollerResponse struct {
+// PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.Delete.
+type PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForM365SecurityCenterDeletePoller
+	Poller *PrivateLinkServicesForM365SecurityCenterClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1305,8 +1318,8 @@ type PrivateLinkServicesForM365SecurityCenterDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForM365SecurityCenterDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365SecurityCenterDeleteResponse, error) {
-	respType := PrivateLinkServicesForM365SecurityCenterDeleteResponse{}
+func (l PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365SecurityCenterClientDeleteResponse, error) {
+	respType := PrivateLinkServicesForM365SecurityCenterClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1315,13 +1328,14 @@ func (l PrivateLinkServicesForM365SecurityCenterDeletePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForM365SecurityCenterDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForM365SecurityCenterDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365SecurityCenterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365SecurityCenterClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *PrivateLinkServicesForM365SecurityCenterClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365SecurityCenterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365SecurityCenterClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForM365SecurityCenterDeletePoller{
+	poller := &PrivateLinkServicesForM365SecurityCenterClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1333,52 +1347,52 @@ func (l *PrivateLinkServicesForM365SecurityCenterDeletePollerResponse) Resume(ct
 	return nil
 }
 
-// PrivateLinkServicesForM365SecurityCenterDeleteResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.Delete.
-type PrivateLinkServicesForM365SecurityCenterDeleteResponse struct {
+// PrivateLinkServicesForM365SecurityCenterClientDeleteResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.Delete.
+type PrivateLinkServicesForM365SecurityCenterClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365SecurityCenterGetResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.Get.
-type PrivateLinkServicesForM365SecurityCenterGetResponse struct {
-	PrivateLinkServicesForM365SecurityCenterGetResult
+// PrivateLinkServicesForM365SecurityCenterClientGetResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.Get.
+type PrivateLinkServicesForM365SecurityCenterClientGetResponse struct {
+	PrivateLinkServicesForM365SecurityCenterClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365SecurityCenterGetResult contains the result from method PrivateLinkServicesForM365SecurityCenter.Get.
-type PrivateLinkServicesForM365SecurityCenterGetResult struct {
+// PrivateLinkServicesForM365SecurityCenterClientGetResult contains the result from method PrivateLinkServicesForM365SecurityCenterClient.Get.
+type PrivateLinkServicesForM365SecurityCenterClientGetResult struct {
 	PrivateLinkServicesForM365SecurityCenterDescription
 }
 
-// PrivateLinkServicesForM365SecurityCenterListByResourceGroupResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.ListByResourceGroup.
-type PrivateLinkServicesForM365SecurityCenterListByResourceGroupResponse struct {
-	PrivateLinkServicesForM365SecurityCenterListByResourceGroupResult
+// PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup.
+type PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResponse struct {
+	PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365SecurityCenterListByResourceGroupResult contains the result from method PrivateLinkServicesForM365SecurityCenter.ListByResourceGroup.
-type PrivateLinkServicesForM365SecurityCenterListByResourceGroupResult struct {
+// PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResult contains the result from method PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup.
+type PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupResult struct {
 	PrivateLinkServicesForM365SecurityCenterDescriptionListResult
 }
 
-// PrivateLinkServicesForM365SecurityCenterListResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.List.
-type PrivateLinkServicesForM365SecurityCenterListResponse struct {
-	PrivateLinkServicesForM365SecurityCenterListResult
+// PrivateLinkServicesForM365SecurityCenterClientListResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.List.
+type PrivateLinkServicesForM365SecurityCenterClientListResponse struct {
+	PrivateLinkServicesForM365SecurityCenterClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365SecurityCenterListResult contains the result from method PrivateLinkServicesForM365SecurityCenter.List.
-type PrivateLinkServicesForM365SecurityCenterListResult struct {
+// PrivateLinkServicesForM365SecurityCenterClientListResult contains the result from method PrivateLinkServicesForM365SecurityCenterClient.List.
+type PrivateLinkServicesForM365SecurityCenterClientListResult struct {
 	PrivateLinkServicesForM365SecurityCenterDescriptionListResult
 }
 
-// PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.Update.
-type PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse struct {
+// PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.Update.
+type PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForM365SecurityCenterUpdatePoller
+	Poller *PrivateLinkServicesForM365SecurityCenterClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1387,8 +1401,8 @@ type PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365SecurityCenterUpdateResponse, error) {
-	respType := PrivateLinkServicesForM365SecurityCenterUpdateResponse{}
+func (l PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForM365SecurityCenterClientUpdateResponse, error) {
+	respType := PrivateLinkServicesForM365SecurityCenterClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForM365SecurityCenterDescription)
 	if err != nil {
 		return respType, err
@@ -1397,13 +1411,14 @@ func (l PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365SecurityCenterClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365SecurityCenterClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse from the provided client and resume
+// token.
+func (l *PrivateLinkServicesForM365SecurityCenterClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForM365SecurityCenterClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForM365SecurityCenterClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForM365SecurityCenterUpdatePoller{
+	poller := &PrivateLinkServicesForM365SecurityCenterClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1415,22 +1430,22 @@ func (l *PrivateLinkServicesForM365SecurityCenterUpdatePollerResponse) Resume(ct
 	return nil
 }
 
-// PrivateLinkServicesForM365SecurityCenterUpdateResponse contains the response from method PrivateLinkServicesForM365SecurityCenter.Update.
-type PrivateLinkServicesForM365SecurityCenterUpdateResponse struct {
-	PrivateLinkServicesForM365SecurityCenterUpdateResult
+// PrivateLinkServicesForM365SecurityCenterClientUpdateResponse contains the response from method PrivateLinkServicesForM365SecurityCenterClient.Update.
+type PrivateLinkServicesForM365SecurityCenterClientUpdateResponse struct {
+	PrivateLinkServicesForM365SecurityCenterClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForM365SecurityCenterUpdateResult contains the result from method PrivateLinkServicesForM365SecurityCenter.Update.
-type PrivateLinkServicesForM365SecurityCenterUpdateResult struct {
+// PrivateLinkServicesForM365SecurityCenterClientUpdateResult contains the result from method PrivateLinkServicesForM365SecurityCenterClient.Update.
+type PrivateLinkServicesForM365SecurityCenterClientUpdateResult struct {
 	PrivateLinkServicesForM365SecurityCenterDescription
 }
 
-// PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForMIPPolicySync.CreateOrUpdate.
-type PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse struct {
+// PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate.
+type PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePoller
+	Poller *PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1439,8 +1454,8 @@ type PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResponse, error) {
-	respType := PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResponse{}
+func (l PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse, error) {
+	respType := PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForMIPPolicySyncDescription)
 	if err != nil {
 		return respType, err
@@ -1449,13 +1464,14 @@ func (l PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse) PollUnt
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForMIPPolicySyncClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse from the provided client and
+// resume token.
+func (l *PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForMIPPolicySyncClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePoller{
+	poller := &PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1467,22 +1483,22 @@ func (l *PrivateLinkServicesForMIPPolicySyncCreateOrUpdatePollerResponse) Resume
 	return nil
 }
 
-// PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResponse contains the response from method PrivateLinkServicesForMIPPolicySync.CreateOrUpdate.
-type PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResponse struct {
-	PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResult
+// PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate.
+type PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse struct {
+	PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResult contains the result from method PrivateLinkServicesForMIPPolicySync.CreateOrUpdate.
-type PrivateLinkServicesForMIPPolicySyncCreateOrUpdateResult struct {
+// PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResult contains the result from method PrivateLinkServicesForMIPPolicySyncClient.CreateOrUpdate.
+type PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResult struct {
 	PrivateLinkServicesForMIPPolicySyncDescription
 }
 
-// PrivateLinkServicesForMIPPolicySyncDeletePollerResponse contains the response from method PrivateLinkServicesForMIPPolicySync.Delete.
-type PrivateLinkServicesForMIPPolicySyncDeletePollerResponse struct {
+// PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.Delete.
+type PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForMIPPolicySyncDeletePoller
+	Poller *PrivateLinkServicesForMIPPolicySyncClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1491,8 +1507,8 @@ type PrivateLinkServicesForMIPPolicySyncDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForMIPPolicySyncDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForMIPPolicySyncDeleteResponse, error) {
-	respType := PrivateLinkServicesForMIPPolicySyncDeleteResponse{}
+func (l PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForMIPPolicySyncClientDeleteResponse, error) {
+	respType := PrivateLinkServicesForMIPPolicySyncClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1501,13 +1517,13 @@ func (l PrivateLinkServicesForMIPPolicySyncDeletePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForMIPPolicySyncDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForMIPPolicySyncDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForMIPPolicySyncClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForMIPPolicySyncClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateLinkServicesForMIPPolicySyncClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForMIPPolicySyncClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForMIPPolicySyncClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForMIPPolicySyncDeletePoller{
+	poller := &PrivateLinkServicesForMIPPolicySyncClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1519,52 +1535,52 @@ func (l *PrivateLinkServicesForMIPPolicySyncDeletePollerResponse) Resume(ctx con
 	return nil
 }
 
-// PrivateLinkServicesForMIPPolicySyncDeleteResponse contains the response from method PrivateLinkServicesForMIPPolicySync.Delete.
-type PrivateLinkServicesForMIPPolicySyncDeleteResponse struct {
+// PrivateLinkServicesForMIPPolicySyncClientDeleteResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.Delete.
+type PrivateLinkServicesForMIPPolicySyncClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForMIPPolicySyncGetResponse contains the response from method PrivateLinkServicesForMIPPolicySync.Get.
-type PrivateLinkServicesForMIPPolicySyncGetResponse struct {
-	PrivateLinkServicesForMIPPolicySyncGetResult
+// PrivateLinkServicesForMIPPolicySyncClientGetResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.Get.
+type PrivateLinkServicesForMIPPolicySyncClientGetResponse struct {
+	PrivateLinkServicesForMIPPolicySyncClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForMIPPolicySyncGetResult contains the result from method PrivateLinkServicesForMIPPolicySync.Get.
-type PrivateLinkServicesForMIPPolicySyncGetResult struct {
+// PrivateLinkServicesForMIPPolicySyncClientGetResult contains the result from method PrivateLinkServicesForMIPPolicySyncClient.Get.
+type PrivateLinkServicesForMIPPolicySyncClientGetResult struct {
 	PrivateLinkServicesForMIPPolicySyncDescription
 }
 
-// PrivateLinkServicesForMIPPolicySyncListByResourceGroupResponse contains the response from method PrivateLinkServicesForMIPPolicySync.ListByResourceGroup.
-type PrivateLinkServicesForMIPPolicySyncListByResourceGroupResponse struct {
-	PrivateLinkServicesForMIPPolicySyncListByResourceGroupResult
+// PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup.
+type PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResponse struct {
+	PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForMIPPolicySyncListByResourceGroupResult contains the result from method PrivateLinkServicesForMIPPolicySync.ListByResourceGroup.
-type PrivateLinkServicesForMIPPolicySyncListByResourceGroupResult struct {
+// PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResult contains the result from method PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup.
+type PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupResult struct {
 	PrivateLinkServicesForMIPPolicySyncDescriptionListResult
 }
 
-// PrivateLinkServicesForMIPPolicySyncListResponse contains the response from method PrivateLinkServicesForMIPPolicySync.List.
-type PrivateLinkServicesForMIPPolicySyncListResponse struct {
-	PrivateLinkServicesForMIPPolicySyncListResult
+// PrivateLinkServicesForMIPPolicySyncClientListResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.List.
+type PrivateLinkServicesForMIPPolicySyncClientListResponse struct {
+	PrivateLinkServicesForMIPPolicySyncClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForMIPPolicySyncListResult contains the result from method PrivateLinkServicesForMIPPolicySync.List.
-type PrivateLinkServicesForMIPPolicySyncListResult struct {
+// PrivateLinkServicesForMIPPolicySyncClientListResult contains the result from method PrivateLinkServicesForMIPPolicySyncClient.List.
+type PrivateLinkServicesForMIPPolicySyncClientListResult struct {
 	PrivateLinkServicesForMIPPolicySyncDescriptionListResult
 }
 
-// PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse contains the response from method PrivateLinkServicesForMIPPolicySync.Update.
-type PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse struct {
+// PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.Update.
+type PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForMIPPolicySyncUpdatePoller
+	Poller *PrivateLinkServicesForMIPPolicySyncClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1573,8 +1589,8 @@ type PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForMIPPolicySyncUpdateResponse, error) {
-	respType := PrivateLinkServicesForMIPPolicySyncUpdateResponse{}
+func (l PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForMIPPolicySyncClientUpdateResponse, error) {
+	respType := PrivateLinkServicesForMIPPolicySyncClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForMIPPolicySyncDescription)
 	if err != nil {
 		return respType, err
@@ -1583,13 +1599,13 @@ func (l PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForMIPPolicySyncClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForMIPPolicySyncClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateLinkServicesForMIPPolicySyncClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForMIPPolicySyncClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForMIPPolicySyncClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForMIPPolicySyncUpdatePoller{
+	poller := &PrivateLinkServicesForMIPPolicySyncClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1601,22 +1617,22 @@ func (l *PrivateLinkServicesForMIPPolicySyncUpdatePollerResponse) Resume(ctx con
 	return nil
 }
 
-// PrivateLinkServicesForMIPPolicySyncUpdateResponse contains the response from method PrivateLinkServicesForMIPPolicySync.Update.
-type PrivateLinkServicesForMIPPolicySyncUpdateResponse struct {
-	PrivateLinkServicesForMIPPolicySyncUpdateResult
+// PrivateLinkServicesForMIPPolicySyncClientUpdateResponse contains the response from method PrivateLinkServicesForMIPPolicySyncClient.Update.
+type PrivateLinkServicesForMIPPolicySyncClientUpdateResponse struct {
+	PrivateLinkServicesForMIPPolicySyncClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForMIPPolicySyncUpdateResult contains the result from method PrivateLinkServicesForMIPPolicySync.Update.
-type PrivateLinkServicesForMIPPolicySyncUpdateResult struct {
+// PrivateLinkServicesForMIPPolicySyncClientUpdateResult contains the result from method PrivateLinkServicesForMIPPolicySyncClient.Update.
+type PrivateLinkServicesForMIPPolicySyncClientUpdateResult struct {
 	PrivateLinkServicesForMIPPolicySyncDescription
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.CreateOrUpdate.
-type PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResponse struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.CreateOrUpdate.
+type PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePoller
+	Poller *PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1625,8 +1641,8 @@ type PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResponse
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResponse, error) {
-	respType := PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResponse{}
+func (l PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse, error) {
+	respType := PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForO365ManagementActivityAPIDescription)
 	if err != nil {
 		return respType, err
@@ -1635,13 +1651,14 @@ func (l PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerRespo
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForO365ManagementActivityAPIClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForO365ManagementActivityAPIClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse from the provided
+// client and resume token.
+func (l *PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForO365ManagementActivityAPIClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForO365ManagementActivityAPIClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePoller{
+	poller := &PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1653,22 +1670,22 @@ func (l *PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdatePollerResp
 	return nil
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.CreateOrUpdate.
-type PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResponse struct {
-	PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResult
+// PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.CreateOrUpdate.
+type PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse struct {
+	PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPI.CreateOrUpdate.
-type PrivateLinkServicesForO365ManagementActivityAPICreateOrUpdateResult struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPIClient.CreateOrUpdate.
+type PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResult struct {
 	PrivateLinkServicesForO365ManagementActivityAPIDescription
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.Delete.
-type PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.Delete.
+type PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForO365ManagementActivityAPIDeletePoller
+	Poller *PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1677,8 +1694,8 @@ type PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse struct 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForO365ManagementActivityAPIDeleteResponse, error) {
-	respType := PrivateLinkServicesForO365ManagementActivityAPIDeleteResponse{}
+func (l PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse, error) {
+	respType := PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1687,13 +1704,14 @@ func (l PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse) Pol
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForO365ManagementActivityAPIClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForO365ManagementActivityAPIClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse from the provided client
+// and resume token.
+func (l *PrivateLinkServicesForO365ManagementActivityAPIClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForO365ManagementActivityAPIClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForO365ManagementActivityAPIClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForO365ManagementActivityAPIDeletePoller{
+	poller := &PrivateLinkServicesForO365ManagementActivityAPIClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1705,52 +1723,52 @@ func (l *PrivateLinkServicesForO365ManagementActivityAPIDeletePollerResponse) Re
 	return nil
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIDeleteResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.Delete.
-type PrivateLinkServicesForO365ManagementActivityAPIDeleteResponse struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.Delete.
+type PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIGetResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.Get.
-type PrivateLinkServicesForO365ManagementActivityAPIGetResponse struct {
-	PrivateLinkServicesForO365ManagementActivityAPIGetResult
+// PrivateLinkServicesForO365ManagementActivityAPIClientGetResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.Get.
+type PrivateLinkServicesForO365ManagementActivityAPIClientGetResponse struct {
+	PrivateLinkServicesForO365ManagementActivityAPIClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIGetResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPI.Get.
-type PrivateLinkServicesForO365ManagementActivityAPIGetResult struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientGetResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPIClient.Get.
+type PrivateLinkServicesForO365ManagementActivityAPIClientGetResult struct {
 	PrivateLinkServicesForO365ManagementActivityAPIDescription
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.ListByResourceGroup.
-type PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupResponse struct {
-	PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupResult
+// PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.ListByResourceGroup.
+type PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResponse struct {
+	PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPI.ListByResourceGroup.
-type PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupResult struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPIClient.ListByResourceGroup.
+type PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupResult struct {
 	PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIListResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.List.
-type PrivateLinkServicesForO365ManagementActivityAPIListResponse struct {
-	PrivateLinkServicesForO365ManagementActivityAPIListResult
+// PrivateLinkServicesForO365ManagementActivityAPIClientListResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.List.
+type PrivateLinkServicesForO365ManagementActivityAPIClientListResponse struct {
+	PrivateLinkServicesForO365ManagementActivityAPIClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIListResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPI.List.
-type PrivateLinkServicesForO365ManagementActivityAPIListResult struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientListResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPIClient.List.
+type PrivateLinkServicesForO365ManagementActivityAPIClientListResult struct {
 	PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.Update.
-type PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.Update.
+type PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForO365ManagementActivityAPIUpdatePoller
+	Poller *PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1759,8 +1777,8 @@ type PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse struct 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForO365ManagementActivityAPIUpdateResponse, error) {
-	respType := PrivateLinkServicesForO365ManagementActivityAPIUpdateResponse{}
+func (l PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse, error) {
+	respType := PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForO365ManagementActivityAPIDescription)
 	if err != nil {
 		return respType, err
@@ -1769,13 +1787,14 @@ func (l PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse) Pol
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForO365ManagementActivityAPIClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForO365ManagementActivityAPIClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse from the provided client
+// and resume token.
+func (l *PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForO365ManagementActivityAPIClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForO365ManagementActivityAPIClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForO365ManagementActivityAPIUpdatePoller{
+	poller := &PrivateLinkServicesForO365ManagementActivityAPIClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1787,22 +1806,22 @@ func (l *PrivateLinkServicesForO365ManagementActivityAPIUpdatePollerResponse) Re
 	return nil
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIUpdateResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPI.Update.
-type PrivateLinkServicesForO365ManagementActivityAPIUpdateResponse struct {
-	PrivateLinkServicesForO365ManagementActivityAPIUpdateResult
+// PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse contains the response from method PrivateLinkServicesForO365ManagementActivityAPIClient.Update.
+type PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse struct {
+	PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIUpdateResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPI.Update.
-type PrivateLinkServicesForO365ManagementActivityAPIUpdateResult struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResult contains the result from method PrivateLinkServicesForO365ManagementActivityAPIClient.Update.
+type PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResult struct {
 	PrivateLinkServicesForO365ManagementActivityAPIDescription
 }
 
-// PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForSCCPowershell.CreateOrUpdate.
-type PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse struct {
+// PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.CreateOrUpdate.
+type PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForSCCPowershellCreateOrUpdatePoller
+	Poller *PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1811,8 +1830,8 @@ type PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForSCCPowershellCreateOrUpdateResponse, error) {
-	respType := PrivateLinkServicesForSCCPowershellCreateOrUpdateResponse{}
+func (l PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse, error) {
+	respType := PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForSCCPowershellDescription)
 	if err != nil {
 		return respType, err
@@ -1821,13 +1840,14 @@ func (l PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse) PollUnt
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForSCCPowershellClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForSCCPowershellClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse from the provided client and
+// resume token.
+func (l *PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForSCCPowershellClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForSCCPowershellClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForSCCPowershellCreateOrUpdatePoller{
+	poller := &PrivateLinkServicesForSCCPowershellClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1839,22 +1859,22 @@ func (l *PrivateLinkServicesForSCCPowershellCreateOrUpdatePollerResponse) Resume
 	return nil
 }
 
-// PrivateLinkServicesForSCCPowershellCreateOrUpdateResponse contains the response from method PrivateLinkServicesForSCCPowershell.CreateOrUpdate.
-type PrivateLinkServicesForSCCPowershellCreateOrUpdateResponse struct {
-	PrivateLinkServicesForSCCPowershellCreateOrUpdateResult
+// PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.CreateOrUpdate.
+type PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse struct {
+	PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForSCCPowershellCreateOrUpdateResult contains the result from method PrivateLinkServicesForSCCPowershell.CreateOrUpdate.
-type PrivateLinkServicesForSCCPowershellCreateOrUpdateResult struct {
+// PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResult contains the result from method PrivateLinkServicesForSCCPowershellClient.CreateOrUpdate.
+type PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResult struct {
 	PrivateLinkServicesForSCCPowershellDescription
 }
 
-// PrivateLinkServicesForSCCPowershellDeletePollerResponse contains the response from method PrivateLinkServicesForSCCPowershell.Delete.
-type PrivateLinkServicesForSCCPowershellDeletePollerResponse struct {
+// PrivateLinkServicesForSCCPowershellClientDeletePollerResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.Delete.
+type PrivateLinkServicesForSCCPowershellClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForSCCPowershellDeletePoller
+	Poller *PrivateLinkServicesForSCCPowershellClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1863,8 +1883,8 @@ type PrivateLinkServicesForSCCPowershellDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForSCCPowershellDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForSCCPowershellDeleteResponse, error) {
-	respType := PrivateLinkServicesForSCCPowershellDeleteResponse{}
+func (l PrivateLinkServicesForSCCPowershellClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForSCCPowershellClientDeleteResponse, error) {
+	respType := PrivateLinkServicesForSCCPowershellClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1873,13 +1893,13 @@ func (l PrivateLinkServicesForSCCPowershellDeletePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForSCCPowershellDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForSCCPowershellDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForSCCPowershellClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForSCCPowershellClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateLinkServicesForSCCPowershellClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateLinkServicesForSCCPowershellClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForSCCPowershellClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForSCCPowershellClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForSCCPowershellDeletePoller{
+	poller := &PrivateLinkServicesForSCCPowershellClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1891,52 +1911,52 @@ func (l *PrivateLinkServicesForSCCPowershellDeletePollerResponse) Resume(ctx con
 	return nil
 }
 
-// PrivateLinkServicesForSCCPowershellDeleteResponse contains the response from method PrivateLinkServicesForSCCPowershell.Delete.
-type PrivateLinkServicesForSCCPowershellDeleteResponse struct {
+// PrivateLinkServicesForSCCPowershellClientDeleteResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.Delete.
+type PrivateLinkServicesForSCCPowershellClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForSCCPowershellGetResponse contains the response from method PrivateLinkServicesForSCCPowershell.Get.
-type PrivateLinkServicesForSCCPowershellGetResponse struct {
-	PrivateLinkServicesForSCCPowershellGetResult
+// PrivateLinkServicesForSCCPowershellClientGetResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.Get.
+type PrivateLinkServicesForSCCPowershellClientGetResponse struct {
+	PrivateLinkServicesForSCCPowershellClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForSCCPowershellGetResult contains the result from method PrivateLinkServicesForSCCPowershell.Get.
-type PrivateLinkServicesForSCCPowershellGetResult struct {
+// PrivateLinkServicesForSCCPowershellClientGetResult contains the result from method PrivateLinkServicesForSCCPowershellClient.Get.
+type PrivateLinkServicesForSCCPowershellClientGetResult struct {
 	PrivateLinkServicesForSCCPowershellDescription
 }
 
-// PrivateLinkServicesForSCCPowershellListByResourceGroupResponse contains the response from method PrivateLinkServicesForSCCPowershell.ListByResourceGroup.
-type PrivateLinkServicesForSCCPowershellListByResourceGroupResponse struct {
-	PrivateLinkServicesForSCCPowershellListByResourceGroupResult
+// PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup.
+type PrivateLinkServicesForSCCPowershellClientListByResourceGroupResponse struct {
+	PrivateLinkServicesForSCCPowershellClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForSCCPowershellListByResourceGroupResult contains the result from method PrivateLinkServicesForSCCPowershell.ListByResourceGroup.
-type PrivateLinkServicesForSCCPowershellListByResourceGroupResult struct {
+// PrivateLinkServicesForSCCPowershellClientListByResourceGroupResult contains the result from method PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup.
+type PrivateLinkServicesForSCCPowershellClientListByResourceGroupResult struct {
 	PrivateLinkServicesForSCCPowershellDescriptionListResult
 }
 
-// PrivateLinkServicesForSCCPowershellListResponse contains the response from method PrivateLinkServicesForSCCPowershell.List.
-type PrivateLinkServicesForSCCPowershellListResponse struct {
-	PrivateLinkServicesForSCCPowershellListResult
+// PrivateLinkServicesForSCCPowershellClientListResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.List.
+type PrivateLinkServicesForSCCPowershellClientListResponse struct {
+	PrivateLinkServicesForSCCPowershellClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForSCCPowershellListResult contains the result from method PrivateLinkServicesForSCCPowershell.List.
-type PrivateLinkServicesForSCCPowershellListResult struct {
+// PrivateLinkServicesForSCCPowershellClientListResult contains the result from method PrivateLinkServicesForSCCPowershellClient.List.
+type PrivateLinkServicesForSCCPowershellClientListResult struct {
 	PrivateLinkServicesForSCCPowershellDescriptionListResult
 }
 
-// PrivateLinkServicesForSCCPowershellUpdatePollerResponse contains the response from method PrivateLinkServicesForSCCPowershell.Update.
-type PrivateLinkServicesForSCCPowershellUpdatePollerResponse struct {
+// PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.Update.
+type PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateLinkServicesForSCCPowershellUpdatePoller
+	Poller *PrivateLinkServicesForSCCPowershellClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1945,8 +1965,8 @@ type PrivateLinkServicesForSCCPowershellUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkServicesForSCCPowershellUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForSCCPowershellUpdateResponse, error) {
-	respType := PrivateLinkServicesForSCCPowershellUpdateResponse{}
+func (l PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServicesForSCCPowershellClientUpdateResponse, error) {
+	respType := PrivateLinkServicesForSCCPowershellClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateLinkServicesForSCCPowershellDescription)
 	if err != nil {
 		return respType, err
@@ -1955,13 +1975,13 @@ func (l PrivateLinkServicesForSCCPowershellUpdatePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateLinkServicesForSCCPowershellUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkServicesForSCCPowershellUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForSCCPowershellClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForSCCPowershellClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateLinkServicesForSCCPowershellClientUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkServicesForSCCPowershellClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkServicesForSCCPowershellClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateLinkServicesForSCCPowershellUpdatePoller{
+	poller := &PrivateLinkServicesForSCCPowershellClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1973,22 +1993,22 @@ func (l *PrivateLinkServicesForSCCPowershellUpdatePollerResponse) Resume(ctx con
 	return nil
 }
 
-// PrivateLinkServicesForSCCPowershellUpdateResponse contains the response from method PrivateLinkServicesForSCCPowershell.Update.
-type PrivateLinkServicesForSCCPowershellUpdateResponse struct {
-	PrivateLinkServicesForSCCPowershellUpdateResult
+// PrivateLinkServicesForSCCPowershellClientUpdateResponse contains the response from method PrivateLinkServicesForSCCPowershellClient.Update.
+type PrivateLinkServicesForSCCPowershellClientUpdateResponse struct {
+	PrivateLinkServicesForSCCPowershellClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkServicesForSCCPowershellUpdateResult contains the result from method PrivateLinkServicesForSCCPowershell.Update.
-type PrivateLinkServicesForSCCPowershellUpdateResult struct {
+// PrivateLinkServicesForSCCPowershellClientUpdateResult contains the result from method PrivateLinkServicesForSCCPowershellClient.Update.
+type PrivateLinkServicesForSCCPowershellClientUpdateResult struct {
 	PrivateLinkServicesForSCCPowershellDescription
 }
 
-// ServicesDeletePollerResponse contains the response from method Services.Delete.
-type ServicesDeletePollerResponse struct {
+// ServicesClientDeletePollerResponse contains the response from method ServicesClient.Delete.
+type ServicesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ServicesDeletePoller
+	Poller *ServicesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1997,8 +2017,8 @@ type ServicesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServicesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesDeleteResponse, error) {
-	respType := ServicesDeleteResponse{}
+func (l ServicesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServicesClientDeleteResponse, error) {
+	respType := ServicesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2007,13 +2027,13 @@ func (l ServicesDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a ServicesDeletePollerResponse from the provided client and resume token.
-func (l *ServicesDeletePollerResponse) Resume(ctx context.Context, client *ServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServicesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ServicesClientDeletePollerResponse from the provided client and resume token.
+func (l *ServicesClientDeletePollerResponse) Resume(ctx context.Context, client *ServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServicesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ServicesDeletePoller{
+	poller := &ServicesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2025,8 +2045,8 @@ func (l *ServicesDeletePollerResponse) Resume(ctx context.Context, client *Servi
 	return nil
 }
 
-// ServicesDeleteResponse contains the response from method Services.Delete.
-type ServicesDeleteResponse struct {
+// ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
+type ServicesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

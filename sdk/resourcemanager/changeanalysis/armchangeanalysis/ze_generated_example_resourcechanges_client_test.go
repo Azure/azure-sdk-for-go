@@ -29,13 +29,17 @@ func ExampleResourceChangesClient_List() {
 	pager := client.List("<resource-id>",
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-25T12:09:03.141Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-26T12:09:03.141Z"); return t }(),
-		&armchangeanalysis.ResourceChangesListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armchangeanalysis.ResourceChangesClientListOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Change.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

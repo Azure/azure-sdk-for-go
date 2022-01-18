@@ -10,7 +10,6 @@ package armportal
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,48 @@ import (
 // ListTenantConfigurationViolationsClient contains the methods for the ListTenantConfigurationViolations group.
 // Don't use this type directly, use NewListTenantConfigurationViolationsClient() instead.
 type ListTenantConfigurationViolationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewListTenantConfigurationViolationsClient creates a new instance of ListTenantConfigurationViolationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewListTenantConfigurationViolationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ListTenantConfigurationViolationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ListTenantConfigurationViolationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ListTenantConfigurationViolationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets list of items that violate tenant's configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ListTenantConfigurationViolationsClient) List(options *ListTenantConfigurationViolationsListOptions) *ListTenantConfigurationViolationsListPager {
-	return &ListTenantConfigurationViolationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ListTenantConfigurationViolationsClientListOptions contains the optional parameters for the ListTenantConfigurationViolationsClient.List
+// method.
+func (client *ListTenantConfigurationViolationsClient) List(options *ListTenantConfigurationViolationsClientListOptions) *ListTenantConfigurationViolationsClientListPager {
+	return &ListTenantConfigurationViolationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ListTenantConfigurationViolationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ListTenantConfigurationViolationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ViolationsList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ListTenantConfigurationViolationsClient) listCreateRequest(ctx context.Context, options *ListTenantConfigurationViolationsListOptions) (*policy.Request, error) {
+func (client *ListTenantConfigurationViolationsClient) listCreateRequest(ctx context.Context, options *ListTenantConfigurationViolationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Portal/listTenantConfigurationViolations"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +74,10 @@ func (client *ListTenantConfigurationViolationsClient) listCreateRequest(ctx con
 }
 
 // listHandleResponse handles the List response.
-func (client *ListTenantConfigurationViolationsClient) listHandleResponse(resp *http.Response) (ListTenantConfigurationViolationsListResponse, error) {
-	result := ListTenantConfigurationViolationsListResponse{RawResponse: resp}
+func (client *ListTenantConfigurationViolationsClient) listHandleResponse(resp *http.Response) (ListTenantConfigurationViolationsClientListResponse, error) {
+	result := ListTenantConfigurationViolationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ViolationsList); err != nil {
-		return ListTenantConfigurationViolationsListResponse{}, runtime.NewResponseError(err, resp)
+		return ListTenantConfigurationViolationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ListTenantConfigurationViolationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armhybridnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // NetworkFunctionsClient contains the methods for the NetworkFunctions group.
 // Don't use this type directly, use NewNetworkFunctionsClient() instead.
 type NetworkFunctionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNetworkFunctionsClient creates a new instance of NetworkFunctionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNetworkFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NetworkFunctionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NetworkFunctionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NetworkFunctionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsBeginCreateOrUpdateOptions) (NetworkFunctionsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a network function resource. This operation can take up to 6 hours to complete.
+// This is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// networkFunctionName - Resource name for the network function resource.
+// parameters - Parameters supplied in the body to the create or update network function operation.
+// options - NetworkFunctionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkFunctionsClient.BeginCreateOrUpdate
+// method.
+func (client *NetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsClientBeginCreateOrUpdateOptions) (NetworkFunctionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, networkFunctionName, parameters, options)
 	if err != nil {
-		return NetworkFunctionsCreateOrUpdatePollerResponse{}, err
+		return NetworkFunctionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := NetworkFunctionsCreateOrUpdatePollerResponse{
+	result := NetworkFunctionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("NetworkFunctionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("NetworkFunctionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return NetworkFunctionsCreateOrUpdatePollerResponse{}, err
+		return NetworkFunctionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &NetworkFunctionsCreateOrUpdatePoller{
+	result.Poller = &NetworkFunctionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Creates or updates a network function resource. This operation can take up to 6 hours to complete. This
+// is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFunctionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkFunctionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *NetworkFunctionsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters NetworkFunction, options *NetworkFunctionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/networkFunctions/{networkFunctionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +108,7 @@ func (client *NetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +119,35 @@ func (client *NetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *NetworkFunctionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsBeginDeleteOptions) (NetworkFunctionsDeletePollerResponse, error) {
+// BeginDelete - Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is
+// expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// networkFunctionName - The name of the network function.
+// options - NetworkFunctionsClientBeginDeleteOptions contains the optional parameters for the NetworkFunctionsClient.BeginDelete
+// method.
+func (client *NetworkFunctionsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsClientBeginDeleteOptions) (NetworkFunctionsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, networkFunctionName, options)
 	if err != nil {
-		return NetworkFunctionsDeletePollerResponse{}, err
+		return NetworkFunctionsClientDeletePollerResponse{}, err
 	}
-	result := NetworkFunctionsDeletePollerResponse{
+	result := NetworkFunctionsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("NetworkFunctionsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("NetworkFunctionsClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return NetworkFunctionsDeletePollerResponse{}, err
+		return NetworkFunctionsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &NetworkFunctionsDeletePoller{
+	result.Poller = &NetworkFunctionsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsBeginDeleteOptions) (*http.Response, error) {
+// Delete - Deletes the specified network function resource. This operation can take up to 1 hour to complete. This is expected
+// service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkFunctionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkFunctionName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +157,13 @@ func (client *NetworkFunctionsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NetworkFunctionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *NetworkFunctionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/networkFunctions/{networkFunctionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,7 +177,7 @@ func (client *NetworkFunctionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +188,28 @@ func (client *NetworkFunctionsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *NetworkFunctionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified network function resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) Get(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsGetOptions) (NetworkFunctionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// networkFunctionName - The name of the network function resource.
+// options - NetworkFunctionsClientGetOptions contains the optional parameters for the NetworkFunctionsClient.Get method.
+func (client *NetworkFunctionsClient) Get(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsClientGetOptions) (NetworkFunctionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkFunctionName, options)
 	if err != nil {
-		return NetworkFunctionsGetResponse{}, err
+		return NetworkFunctionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NetworkFunctionsGetResponse{}, err
+		return NetworkFunctionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NetworkFunctionsGetResponse{}, client.getHandleError(resp)
+		return NetworkFunctionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NetworkFunctionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsGetOptions) (*policy.Request, error) {
+func (client *NetworkFunctionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, options *NetworkFunctionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/networkFunctions/{networkFunctionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,7 +223,7 @@ func (client *NetworkFunctionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,43 +235,33 @@ func (client *NetworkFunctionsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkFunctionsClient) getHandleResponse(resp *http.Response) (NetworkFunctionsGetResponse, error) {
-	result := NetworkFunctionsGetResponse{RawResponse: resp}
+func (client *NetworkFunctionsClient) getHandleResponse(resp *http.Response) (NetworkFunctionsClientGetResponse, error) {
+	result := NetworkFunctionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFunction); err != nil {
-		return NetworkFunctionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkFunctionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *NetworkFunctionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all the network function resources in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) ListByResourceGroup(resourceGroupName string, options *NetworkFunctionsListByResourceGroupOptions) *NetworkFunctionsListByResourceGroupPager {
-	return &NetworkFunctionsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - NetworkFunctionsClientListByResourceGroupOptions contains the optional parameters for the NetworkFunctionsClient.ListByResourceGroup
+// method.
+func (client *NetworkFunctionsClient) ListByResourceGroup(resourceGroupName string, options *NetworkFunctionsClientListByResourceGroupOptions) *NetworkFunctionsClientListByResourceGroupPager {
+	return &NetworkFunctionsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp NetworkFunctionsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkFunctionsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkFunctionListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkFunctionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkFunctionsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *NetworkFunctionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkFunctionsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/networkFunctions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +271,7 @@ func (client *NetworkFunctionsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,49 +283,38 @@ func (client *NetworkFunctionsClient) listByResourceGroupCreateRequest(ctx conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkFunctionsClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkFunctionsListByResourceGroupResponse, error) {
-	result := NetworkFunctionsListByResourceGroupResponse{RawResponse: resp}
+func (client *NetworkFunctionsClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkFunctionsClientListByResourceGroupResponse, error) {
+	result := NetworkFunctionsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFunctionListResult); err != nil {
-		return NetworkFunctionsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkFunctionsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *NetworkFunctionsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Lists all the network functions in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) ListBySubscription(options *NetworkFunctionsListBySubscriptionOptions) *NetworkFunctionsListBySubscriptionPager {
-	return &NetworkFunctionsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - NetworkFunctionsClientListBySubscriptionOptions contains the optional parameters for the NetworkFunctionsClient.ListBySubscription
+// method.
+func (client *NetworkFunctionsClient) ListBySubscription(options *NetworkFunctionsClientListBySubscriptionOptions) *NetworkFunctionsClientListBySubscriptionPager {
+	return &NetworkFunctionsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp NetworkFunctionsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NetworkFunctionsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkFunctionListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *NetworkFunctionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkFunctionsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *NetworkFunctionsClient) listBySubscriptionCreateRequest(ctx context.Context, options *NetworkFunctionsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/networkFunctions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,46 +326,38 @@ func (client *NetworkFunctionsClient) listBySubscriptionCreateRequest(ctx contex
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *NetworkFunctionsClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkFunctionsListBySubscriptionResponse, error) {
-	result := NetworkFunctionsListBySubscriptionResponse{RawResponse: resp}
+func (client *NetworkFunctionsClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkFunctionsClientListBySubscriptionResponse, error) {
+	result := NetworkFunctionsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFunctionListResult); err != nil {
-		return NetworkFunctionsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkFunctionsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *NetworkFunctionsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateTags - Updates the tags for the network function resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NetworkFunctionsClient) UpdateTags(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters TagsObject, options *NetworkFunctionsUpdateTagsOptions) (NetworkFunctionsUpdateTagsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// networkFunctionName - Resource name for the network function resource.
+// parameters - Parameters supplied to the update network function tags operation.
+// options - NetworkFunctionsClientUpdateTagsOptions contains the optional parameters for the NetworkFunctionsClient.UpdateTags
+// method.
+func (client *NetworkFunctionsClient) UpdateTags(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters TagsObject, options *NetworkFunctionsClientUpdateTagsOptions) (NetworkFunctionsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, networkFunctionName, parameters, options)
 	if err != nil {
-		return NetworkFunctionsUpdateTagsResponse{}, err
+		return NetworkFunctionsClientUpdateTagsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NetworkFunctionsUpdateTagsResponse{}, err
+		return NetworkFunctionsClientUpdateTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NetworkFunctionsUpdateTagsResponse{}, client.updateTagsHandleError(resp)
+		return NetworkFunctionsClientUpdateTagsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *NetworkFunctionsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters TagsObject, options *NetworkFunctionsUpdateTagsOptions) (*policy.Request, error) {
+func (client *NetworkFunctionsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkFunctionName string, parameters TagsObject, options *NetworkFunctionsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork/networkFunctions/{networkFunctionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -403,7 +371,7 @@ func (client *NetworkFunctionsClient) updateTagsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -415,23 +383,10 @@ func (client *NetworkFunctionsClient) updateTagsCreateRequest(ctx context.Contex
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *NetworkFunctionsClient) updateTagsHandleResponse(resp *http.Response) (NetworkFunctionsUpdateTagsResponse, error) {
-	result := NetworkFunctionsUpdateTagsResponse{RawResponse: resp}
+func (client *NetworkFunctionsClient) updateTagsHandleResponse(resp *http.Response) (NetworkFunctionsClientUpdateTagsResponse, error) {
+	result := NetworkFunctionsClientUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFunction); err != nil {
-		return NetworkFunctionsUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
+		return NetworkFunctionsClientUpdateTagsResponse{}, err
 	}
 	return result, nil
-}
-
-// updateTagsHandleError handles the UpdateTags error response.
-func (client *NetworkFunctionsClient) updateTagsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

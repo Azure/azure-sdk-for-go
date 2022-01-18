@@ -26,13 +26,17 @@ func ExampleUsageClient_List() {
 	client := armtestbase.NewUsageClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<test-base-account-name>",
-		&armtestbase.UsageListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armtestbase.UsageClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TestBaseAccountUsageData.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

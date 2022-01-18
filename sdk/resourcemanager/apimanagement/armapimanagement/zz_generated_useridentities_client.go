@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,52 @@ import (
 // UserIdentitiesClient contains the methods for the UserIdentities group.
 // Don't use this type directly, use NewUserIdentitiesClient() instead.
 type UserIdentitiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUserIdentitiesClient creates a new instance of UserIdentitiesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUserIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserIdentitiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UserIdentitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UserIdentitiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List of all user identities.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *UserIdentitiesClient) List(resourceGroupName string, serviceName string, userID string, options *UserIdentitiesListOptions) *UserIdentitiesListPager {
-	return &UserIdentitiesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// userID - User identifier. Must be unique in the current API Management service instance.
+// options - UserIdentitiesClientListOptions contains the optional parameters for the UserIdentitiesClient.List method.
+func (client *UserIdentitiesClient) List(resourceGroupName string, serviceName string, userID string, options *UserIdentitiesClientListOptions) *UserIdentitiesClientListPager {
+	return &UserIdentitiesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, userID, options)
 		},
-		advancer: func(ctx context.Context, resp UserIdentitiesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UserIdentitiesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserIdentityCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UserIdentitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserIdentitiesListOptions) (*policy.Request, error) {
+func (client *UserIdentitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserIdentitiesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/identities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -75,7 +87,7 @@ func (client *UserIdentitiesClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,23 +99,10 @@ func (client *UserIdentitiesClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *UserIdentitiesClient) listHandleResponse(resp *http.Response) (UserIdentitiesListResponse, error) {
-	result := UserIdentitiesListResponse{RawResponse: resp}
+func (client *UserIdentitiesClient) listHandleResponse(resp *http.Response) (UserIdentitiesClientListResponse, error) {
+	result := UserIdentitiesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserIdentityCollection); err != nil {
-		return UserIdentitiesListResponse{}, runtime.NewResponseError(err, resp)
+		return UserIdentitiesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *UserIdentitiesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

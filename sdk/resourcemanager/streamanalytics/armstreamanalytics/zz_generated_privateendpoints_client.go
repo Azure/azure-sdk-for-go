@@ -11,7 +11,6 @@ package armstreamanalytics
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // PrivateEndpointsClient contains the methods for the PrivateEndpoints group.
 // Don't use this type directly, use NewPrivateEndpointsClient() instead.
 type PrivateEndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointsClient creates a new instance of PrivateEndpointsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateEndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a Stream Analytics Private Endpoint or replaces an already existing Private Endpoint.
-// If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, privateEndpoint PrivateEndpoint, options *PrivateEndpointsCreateOrUpdateOptions) (PrivateEndpointsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterName - The name of the cluster.
+// privateEndpointName - The name of the private endpoint.
+// privateEndpoint - The definition of the private endpoint that will be used to create a new cluster or replace the existing
+// one.
+// options - PrivateEndpointsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointsClient.CreateOrUpdate
+// method.
+func (client *PrivateEndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, privateEndpoint PrivateEndpoint, options *PrivateEndpointsClientCreateOrUpdateOptions) (PrivateEndpointsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointName, privateEndpoint, options)
 	if err != nil {
-		return PrivateEndpointsCreateOrUpdateResponse{}, err
+		return PrivateEndpointsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointsCreateOrUpdateResponse{}, err
+		return PrivateEndpointsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PrivateEndpointsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PrivateEndpointsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, privateEndpoint PrivateEndpoint, options *PrivateEndpointsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, privateEndpoint PrivateEndpoint, options *PrivateEndpointsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/clusters/{clusterName}/privateEndpoints/{privateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,12 +92,12 @@ func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter privateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointName}", url.PathEscape(privateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -96,50 +110,42 @@ func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PrivateEndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateEndpointsCreateOrUpdateResponse, error) {
-	result := PrivateEndpointsCreateOrUpdateResponse{RawResponse: resp}
+func (client *PrivateEndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateEndpointsClientCreateOrUpdateResponse, error) {
+	result := PrivateEndpointsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpoint); err != nil {
-		return PrivateEndpointsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateEndpointsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete the specified private endpoint.
-// If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsBeginDeleteOptions) (PrivateEndpointsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterName - The name of the cluster.
+// privateEndpointName - The name of the private endpoint.
+// options - PrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointsClient.BeginDelete
+// method.
+func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (PrivateEndpointsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, privateEndpointName, options)
 	if err != nil {
-		return PrivateEndpointsDeletePollerResponse{}, err
+		return PrivateEndpointsClientDeletePollerResponse{}, err
 	}
-	result := PrivateEndpointsDeletePollerResponse{
+	result := PrivateEndpointsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateEndpointsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("PrivateEndpointsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return PrivateEndpointsDeletePollerResponse{}, err
+		return PrivateEndpointsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &PrivateEndpointsDeletePoller{
+	result.Poller = &PrivateEndpointsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete the specified private endpoint.
-// If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointName, options)
 	if err != nil {
 		return nil, err
@@ -149,13 +155,13 @@ func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/clusters/{clusterName}/privateEndpoints/{privateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -173,49 +179,40 @@ func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter privateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointName}", url.PathEscape(privateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateEndpointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified Private Endpoint.
-// If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsGetOptions) (PrivateEndpointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterName - The name of the cluster.
+// privateEndpointName - The name of the private endpoint.
+// options - PrivateEndpointsClientGetOptions contains the optional parameters for the PrivateEndpointsClient.Get method.
+func (client *PrivateEndpointsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientGetOptions) (PrivateEndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointName, options)
 	if err != nil {
-		return PrivateEndpointsGetResponse{}, err
+		return PrivateEndpointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointsGetResponse{}, err
+		return PrivateEndpointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointsGetResponse{}, client.getHandleError(resp)
+		return PrivateEndpointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/clusters/{clusterName}/privateEndpoints/{privateEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -233,55 +230,46 @@ func (client *PrivateEndpointsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter privateEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointName}", url.PathEscape(privateEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (PrivateEndpointsGetResponse, error) {
-	result := PrivateEndpointsGetResponse{RawResponse: resp}
+func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (PrivateEndpointsClientGetResponse, error) {
+	result := PrivateEndpointsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpoint); err != nil {
-		return PrivateEndpointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateEndpointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByCluster - Lists the private endpoints in the cluster.
-// If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) ListByCluster(resourceGroupName string, clusterName string, options *PrivateEndpointsListByClusterOptions) *PrivateEndpointsListByClusterPager {
-	return &PrivateEndpointsListByClusterPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterName - The name of the cluster.
+// options - PrivateEndpointsClientListByClusterOptions contains the optional parameters for the PrivateEndpointsClient.ListByCluster
+// method.
+func (client *PrivateEndpointsClient) ListByCluster(resourceGroupName string, clusterName string, options *PrivateEndpointsClientListByClusterOptions) *PrivateEndpointsClientListByClusterPager {
+	return &PrivateEndpointsClientListByClusterPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointsListByClusterResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateEndpointsClientListByClusterResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointListResult.NextLink)
 		},
 	}
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *PrivateEndpointsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *PrivateEndpointsListByClusterOptions) (*policy.Request, error) {
+func (client *PrivateEndpointsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *PrivateEndpointsClientListByClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/clusters/{clusterName}/privateEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -295,35 +283,22 @@ func (client *PrivateEndpointsClient) listByClusterCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *PrivateEndpointsClient) listByClusterHandleResponse(resp *http.Response) (PrivateEndpointsListByClusterResponse, error) {
-	result := PrivateEndpointsListByClusterResponse{RawResponse: resp}
+func (client *PrivateEndpointsClient) listByClusterHandleResponse(resp *http.Response) (PrivateEndpointsClientListByClusterResponse, error) {
+	result := PrivateEndpointsClientListByClusterResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointListResult); err != nil {
-		return PrivateEndpointsListByClusterResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// listByClusterHandleError handles the ListByCluster error response.
-func (client *PrivateEndpointsClient) listByClusterHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

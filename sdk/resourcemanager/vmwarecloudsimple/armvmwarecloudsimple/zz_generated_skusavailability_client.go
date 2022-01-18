@@ -11,7 +11,6 @@ package armvmwarecloudsimple
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,49 @@ import (
 // SKUsAvailabilityClient contains the methods for the SKUsAvailability group.
 // Don't use this type directly, use NewSKUsAvailabilityClient() instead.
 type SKUsAvailabilityClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSKUsAvailabilityClient creates a new instance of SKUsAvailabilityClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSKUsAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SKUsAvailabilityClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SKUsAvailabilityClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SKUsAvailabilityClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Returns list of available resources in region
-// If the operation fails it returns the *CSRPError error type.
-func (client *SKUsAvailabilityClient) List(regionID string, options *SKUsAvailabilityListOptions) *SKUsAvailabilityListPager {
-	return &SKUsAvailabilityListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// regionID - The region Id (westus, eastus)
+// options - SKUsAvailabilityClientListOptions contains the optional parameters for the SKUsAvailabilityClient.List method.
+func (client *SKUsAvailabilityClient) List(regionID string, options *SKUsAvailabilityClientListOptions) *SKUsAvailabilityClientListPager {
+	return &SKUsAvailabilityClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, regionID, options)
 		},
-		advancer: func(ctx context.Context, resp SKUsAvailabilityListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SKUsAvailabilityClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SKUAvailabilityListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SKUsAvailabilityClient) listCreateRequest(ctx context.Context, regionID string, options *SKUsAvailabilityListOptions) (*policy.Request, error) {
+func (client *SKUsAvailabilityClient) listCreateRequest(ctx context.Context, regionID string, options *SKUsAvailabilityClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/availabilities"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,7 +76,7 @@ func (client *SKUsAvailabilityClient) listCreateRequest(ctx context.Context, reg
 		return nil, errors.New("parameter regionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{regionId}", url.PathEscape(regionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,23 +91,10 @@ func (client *SKUsAvailabilityClient) listCreateRequest(ctx context.Context, reg
 }
 
 // listHandleResponse handles the List response.
-func (client *SKUsAvailabilityClient) listHandleResponse(resp *http.Response) (SKUsAvailabilityListResponse, error) {
-	result := SKUsAvailabilityListResponse{RawResponse: resp}
+func (client *SKUsAvailabilityClient) listHandleResponse(resp *http.Response) (SKUsAvailabilityClientListResponse, error) {
+	result := SKUsAvailabilityClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUAvailabilityListResponse); err != nil {
-		return SKUsAvailabilityListResponse{}, runtime.NewResponseError(err, resp)
+		return SKUsAvailabilityClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SKUsAvailabilityClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CSRPError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

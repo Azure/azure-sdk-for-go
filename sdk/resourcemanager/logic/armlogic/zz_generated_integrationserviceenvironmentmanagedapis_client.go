@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // IntegrationServiceEnvironmentManagedApisClient contains the methods for the IntegrationServiceEnvironmentManagedApis group.
 // Don't use this type directly, use NewIntegrationServiceEnvironmentManagedApisClient() instead.
 type IntegrationServiceEnvironmentManagedApisClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationServiceEnvironmentManagedApisClient creates a new instance of IntegrationServiceEnvironmentManagedApisClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationServiceEnvironmentManagedApisClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentManagedApisClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationServiceEnvironmentManagedApisClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationServiceEnvironmentManagedApisClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginDelete - Deletes the integration service environment managed Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentManagedApisClient) BeginDelete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisBeginDeleteOptions) (IntegrationServiceEnvironmentManagedApisDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// apiName - The api name.
+// options - IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginDelete
+// method.
+func (client *IntegrationServiceEnvironmentManagedApisClient) BeginDelete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions) (IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentManagedApisDeletePollerResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse{}, err
 	}
-	result := IntegrationServiceEnvironmentManagedApisDeletePollerResponse{
+	result := IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentManagedApisClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentManagedApisClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return IntegrationServiceEnvironmentManagedApisDeletePollerResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisClientDeletePollerResponse{}, err
 	}
-	result.Poller = &IntegrationServiceEnvironmentManagedApisDeletePoller{
+	result.Poller = &IntegrationServiceEnvironmentManagedApisClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the integration service environment managed Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentManagedApisClient) deleteOperation(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationServiceEnvironmentManagedApisClient) deleteOperation(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) deleteOperation(ct
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationServiceEnvironmentManagedApisClient) deleteCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisBeginDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentManagedApisClient) deleteCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/managedApis/{apiName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +110,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) deleteCreateReques
 		return nil, errors.New("parameter apiName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{apiName}", url.PathEscape(apiName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,38 +121,30 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) deleteCreateReques
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationServiceEnvironmentManagedApisClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the integration service environment managed Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentManagedApisClient) Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisGetOptions) (IntegrationServiceEnvironmentManagedApisGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The resource group name.
+// integrationServiceEnvironmentName - The integration service environment name.
+// apiName - The api name.
+// options - IntegrationServiceEnvironmentManagedApisClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.Get
+// method.
+func (client *IntegrationServiceEnvironmentManagedApisClient) Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientGetOptions) (IntegrationServiceEnvironmentManagedApisClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentManagedApisGetResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationServiceEnvironmentManagedApisGetResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationServiceEnvironmentManagedApisGetResponse{}, client.getHandleError(resp)
+		return IntegrationServiceEnvironmentManagedApisClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationServiceEnvironmentManagedApisClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisGetOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentManagedApisClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedApisClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/managedApis/{apiName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,7 +162,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) getCreateRequest(c
 		return nil, errors.New("parameter apiName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{apiName}", url.PathEscape(apiName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,43 +174,34 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) getCreateRequest(c
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationServiceEnvironmentManagedApisClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedApisGetResponse, error) {
-	result := IntegrationServiceEnvironmentManagedApisGetResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentManagedApisClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedApisClientGetResponse, error) {
+	result := IntegrationServiceEnvironmentManagedApisClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentManagedAPI); err != nil {
-		return IntegrationServiceEnvironmentManagedApisGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentManagedApisClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationServiceEnvironmentManagedApisClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets the integration service environment managed Apis.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentManagedApisClient) List(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisListOptions) *IntegrationServiceEnvironmentManagedApisListPager {
-	return &IntegrationServiceEnvironmentManagedApisListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// options - IntegrationServiceEnvironmentManagedApisClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.List
+// method.
+func (client *IntegrationServiceEnvironmentManagedApisClient) List(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisClientListOptions) *IntegrationServiceEnvironmentManagedApisClientListPager {
+	return &IntegrationServiceEnvironmentManagedApisClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentManagedApisListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentManagedApisClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationServiceEnvironmentManagedAPIListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationServiceEnvironmentManagedApisClient) listCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisListOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentManagedApisClient) listCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentManagedApisClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/managedApis"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -220,7 +215,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) listCreateRequest(
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,50 +227,43 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) listCreateRequest(
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationServiceEnvironmentManagedApisClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedApisListResponse, error) {
-	result := IntegrationServiceEnvironmentManagedApisListResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentManagedApisClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentManagedApisClientListResponse, error) {
+	result := IntegrationServiceEnvironmentManagedApisClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentManagedAPIListResult); err != nil {
-		return IntegrationServiceEnvironmentManagedApisListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentManagedApisClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationServiceEnvironmentManagedApisClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginPut - Puts the integration service environment managed Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentManagedApisClient) BeginPut(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisBeginPutOptions) (IntegrationServiceEnvironmentManagedApisPutPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The resource group name.
+// integrationServiceEnvironmentName - The integration service environment name.
+// apiName - The api name.
+// integrationServiceEnvironmentManagedAPI - The integration service environment managed api.
+// options - IntegrationServiceEnvironmentManagedApisClientBeginPutOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginPut
+// method.
+func (client *IntegrationServiceEnvironmentManagedApisClient) BeginPut(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisClientBeginPutOptions) (IntegrationServiceEnvironmentManagedApisClientPutPollerResponse, error) {
 	resp, err := client.put(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedAPI, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentManagedApisPutPollerResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisClientPutPollerResponse{}, err
 	}
-	result := IntegrationServiceEnvironmentManagedApisPutPollerResponse{
+	result := IntegrationServiceEnvironmentManagedApisClientPutPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentManagedApisClient.Put", "", resp, client.pl, client.putHandleError)
+	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentManagedApisClient.Put", "", resp, client.pl)
 	if err != nil {
-		return IntegrationServiceEnvironmentManagedApisPutPollerResponse{}, err
+		return IntegrationServiceEnvironmentManagedApisClientPutPollerResponse{}, err
 	}
-	result.Poller = &IntegrationServiceEnvironmentManagedApisPutPoller{
+	result.Poller = &IntegrationServiceEnvironmentManagedApisClientPutPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Put - Puts the integration service environment managed Api.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentManagedApisClient) put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisBeginPutOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationServiceEnvironmentManagedApisClient) put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisClientBeginPutOptions) (*http.Response, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedAPI, options)
 	if err != nil {
 		return nil, err
@@ -285,13 +273,13 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) put(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.putHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // putCreateRequest creates the Put request.
-func (client *IntegrationServiceEnvironmentManagedApisClient) putCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisBeginPutOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentManagedApisClient) putCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, apiName string, integrationServiceEnvironmentManagedAPI IntegrationServiceEnvironmentManagedAPI, options *IntegrationServiceEnvironmentManagedApisClientBeginPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/managedApis/{apiName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -309,7 +297,7 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) putCreateRequest(c
 		return nil, errors.New("parameter apiName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{apiName}", url.PathEscape(apiName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -318,17 +306,4 @@ func (client *IntegrationServiceEnvironmentManagedApisClient) putCreateRequest(c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, integrationServiceEnvironmentManagedAPI)
-}
-
-// putHandleError handles the Put error response.
-func (client *IntegrationServiceEnvironmentManagedApisClient) putHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

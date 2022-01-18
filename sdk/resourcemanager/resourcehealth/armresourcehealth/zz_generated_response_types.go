@@ -10,122 +10,122 @@ package armresourcehealth
 
 import "net/http"
 
-// AvailabilityStatusesGetByResourceResponse contains the response from method AvailabilityStatuses.GetByResource.
-type AvailabilityStatusesGetByResourceResponse struct {
-	AvailabilityStatusesGetByResourceResult
+// AvailabilityStatusesClientGetByResourceResponse contains the response from method AvailabilityStatusesClient.GetByResource.
+type AvailabilityStatusesClientGetByResourceResponse struct {
+	AvailabilityStatusesClientGetByResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailabilityStatusesGetByResourceResult contains the result from method AvailabilityStatuses.GetByResource.
-type AvailabilityStatusesGetByResourceResult struct {
+// AvailabilityStatusesClientGetByResourceResult contains the result from method AvailabilityStatusesClient.GetByResource.
+type AvailabilityStatusesClientGetByResourceResult struct {
 	AvailabilityStatus
 }
 
-// AvailabilityStatusesListByResourceGroupResponse contains the response from method AvailabilityStatuses.ListByResourceGroup.
-type AvailabilityStatusesListByResourceGroupResponse struct {
-	AvailabilityStatusesListByResourceGroupResult
+// AvailabilityStatusesClientListByResourceGroupResponse contains the response from method AvailabilityStatusesClient.ListByResourceGroup.
+type AvailabilityStatusesClientListByResourceGroupResponse struct {
+	AvailabilityStatusesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailabilityStatusesListByResourceGroupResult contains the result from method AvailabilityStatuses.ListByResourceGroup.
-type AvailabilityStatusesListByResourceGroupResult struct {
+// AvailabilityStatusesClientListByResourceGroupResult contains the result from method AvailabilityStatusesClient.ListByResourceGroup.
+type AvailabilityStatusesClientListByResourceGroupResult struct {
 	AvailabilityStatusListResult
 }
 
-// AvailabilityStatusesListBySubscriptionIDResponse contains the response from method AvailabilityStatuses.ListBySubscriptionID.
-type AvailabilityStatusesListBySubscriptionIDResponse struct {
-	AvailabilityStatusesListBySubscriptionIDResult
+// AvailabilityStatusesClientListBySubscriptionIDResponse contains the response from method AvailabilityStatusesClient.ListBySubscriptionID.
+type AvailabilityStatusesClientListBySubscriptionIDResponse struct {
+	AvailabilityStatusesClientListBySubscriptionIDResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailabilityStatusesListBySubscriptionIDResult contains the result from method AvailabilityStatuses.ListBySubscriptionID.
-type AvailabilityStatusesListBySubscriptionIDResult struct {
+// AvailabilityStatusesClientListBySubscriptionIDResult contains the result from method AvailabilityStatusesClient.ListBySubscriptionID.
+type AvailabilityStatusesClientListBySubscriptionIDResult struct {
 	AvailabilityStatusListResult
 }
 
-// AvailabilityStatusesListResponse contains the response from method AvailabilityStatuses.List.
-type AvailabilityStatusesListResponse struct {
-	AvailabilityStatusesListResult
+// AvailabilityStatusesClientListResponse contains the response from method AvailabilityStatusesClient.List.
+type AvailabilityStatusesClientListResponse struct {
+	AvailabilityStatusesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AvailabilityStatusesListResult contains the result from method AvailabilityStatuses.List.
-type AvailabilityStatusesListResult struct {
+// AvailabilityStatusesClientListResult contains the result from method AvailabilityStatusesClient.List.
+type AvailabilityStatusesClientListResult struct {
 	AvailabilityStatusListResult
 }
 
-// ChildAvailabilityStatusesGetByResourceResponse contains the response from method ChildAvailabilityStatuses.GetByResource.
-type ChildAvailabilityStatusesGetByResourceResponse struct {
-	ChildAvailabilityStatusesGetByResourceResult
+// ChildAvailabilityStatusesClientGetByResourceResponse contains the response from method ChildAvailabilityStatusesClient.GetByResource.
+type ChildAvailabilityStatusesClientGetByResourceResponse struct {
+	ChildAvailabilityStatusesClientGetByResourceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChildAvailabilityStatusesGetByResourceResult contains the result from method ChildAvailabilityStatuses.GetByResource.
-type ChildAvailabilityStatusesGetByResourceResult struct {
+// ChildAvailabilityStatusesClientGetByResourceResult contains the result from method ChildAvailabilityStatusesClient.GetByResource.
+type ChildAvailabilityStatusesClientGetByResourceResult struct {
 	AvailabilityStatus
 }
 
-// ChildAvailabilityStatusesListResponse contains the response from method ChildAvailabilityStatuses.List.
-type ChildAvailabilityStatusesListResponse struct {
-	ChildAvailabilityStatusesListResult
+// ChildAvailabilityStatusesClientListResponse contains the response from method ChildAvailabilityStatusesClient.List.
+type ChildAvailabilityStatusesClientListResponse struct {
+	ChildAvailabilityStatusesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChildAvailabilityStatusesListResult contains the result from method ChildAvailabilityStatuses.List.
-type ChildAvailabilityStatusesListResult struct {
+// ChildAvailabilityStatusesClientListResult contains the result from method ChildAvailabilityStatusesClient.List.
+type ChildAvailabilityStatusesClientListResult struct {
 	AvailabilityStatusListResult
 }
 
-// ChildResourcesListResponse contains the response from method ChildResources.List.
-type ChildResourcesListResponse struct {
-	ChildResourcesListResult
+// ChildResourcesClientListResponse contains the response from method ChildResourcesClient.List.
+type ChildResourcesClientListResponse struct {
+	ChildResourcesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ChildResourcesListResult contains the result from method ChildResources.List.
-type ChildResourcesListResult struct {
+// ChildResourcesClientListResult contains the result from method ChildResourcesClient.List.
+type ChildResourcesClientListResult struct {
 	AvailabilityStatusListResult
 }
 
-// EmergingIssuesGetResponse contains the response from method EmergingIssues.Get.
-type EmergingIssuesGetResponse struct {
-	EmergingIssuesGetResultEnvelope
+// EmergingIssuesClientGetResponse contains the response from method EmergingIssuesClient.Get.
+type EmergingIssuesClientGetResponse struct {
+	EmergingIssuesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmergingIssuesGetResultEnvelope contains the result from method EmergingIssues.Get.
-type EmergingIssuesGetResultEnvelope struct {
+// EmergingIssuesClientGetResult contains the result from method EmergingIssuesClient.Get.
+type EmergingIssuesClientGetResult struct {
 	EmergingIssuesGetResult
 }
 
-// EmergingIssuesListResponse contains the response from method EmergingIssues.List.
-type EmergingIssuesListResponse struct {
-	EmergingIssuesListResult
+// EmergingIssuesClientListResponse contains the response from method EmergingIssuesClient.List.
+type EmergingIssuesClientListResponse struct {
+	EmergingIssuesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// EmergingIssuesListResult contains the result from method EmergingIssues.List.
-type EmergingIssuesListResult struct {
+// EmergingIssuesClientListResult contains the result from method EmergingIssuesClient.List.
+type EmergingIssuesClientListResult struct {
 	EmergingIssueListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

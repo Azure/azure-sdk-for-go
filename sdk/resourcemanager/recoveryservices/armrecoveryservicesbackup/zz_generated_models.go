@@ -17,51 +17,359 @@ import (
 
 // AzureBackupGoalFeatureSupportRequest - Azure backup goal feature specific request.
 type AzureBackupGoalFeatureSupportRequest struct {
-	FeatureSupportRequest
+	// REQUIRED; backup support feature type.
+	FeatureType *string `json:"featureType,omitempty"`
+}
+
+// GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type AzureBackupGoalFeatureSupportRequest.
+func (a *AzureBackupGoalFeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest {
+	return &FeatureSupportRequest{
+		FeatureType: a.FeatureType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureBackupGoalFeatureSupportRequest.
 func (a AzureBackupGoalFeatureSupportRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.FeatureSupportRequest.marshalInternal(objectMap, "AzureBackupGoals")
+	objectMap["featureType"] = "AzureBackupGoals"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureBackupGoalFeatureSupportRequest.
+func (a *AzureBackupGoalFeatureSupportRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "featureType":
+			err = unpopulate(val, &a.FeatureType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureBackupServerContainer - AzureBackupServer (DPMVenus) workload-specific protection container.
 type AzureBackupServerContainer struct {
-	DpmContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Specifies whether the container is re-registrable.
+	CanReRegister *bool `json:"canReRegister,omitempty"`
+
+	// ID of container.
+	ContainerID *string `json:"containerId,omitempty"`
+
+	// Backup engine Agent version
+	DpmAgentVersion *string `json:"dpmAgentVersion,omitempty"`
+
+	// List of BackupEngines protecting the container
+	DpmServers []*string `json:"dpmServers,omitempty"`
+
+	// Extended Info of the container.
+	ExtendedInfo *DPMContainerExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Number of protected items in the BackupEngine
+	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+
+	// Protection status of the container.
+	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+
+	// To check if upgrade available
+	UpgradeAvailable *bool `json:"upgradeAvailable,omitempty"`
+}
+
+// GetDpmContainer implements the DpmContainerClassification interface for type AzureBackupServerContainer.
+func (a *AzureBackupServerContainer) GetDpmContainer() *DpmContainer {
+	return &DpmContainer{
+		CanReRegister:         a.CanReRegister,
+		ContainerID:           a.ContainerID,
+		ProtectedItemCount:    a.ProtectedItemCount,
+		DpmAgentVersion:       a.DpmAgentVersion,
+		DpmServers:            a.DpmServers,
+		UpgradeAvailable:      a.UpgradeAvailable,
+		ProtectionStatus:      a.ProtectionStatus,
+		ExtendedInfo:          a.ExtendedInfo,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureBackupServerContainer.
+func (a *AzureBackupServerContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureBackupServerContainer.
 func (a AzureBackupServerContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.DpmContainer.marshalInternal(objectMap, ContainerTypeAzureBackupServerContainer)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "canReRegister", a.CanReRegister)
+	populate(objectMap, "containerId", a.ContainerID)
+	objectMap["containerType"] = ContainerTypeAzureBackupServerContainer
+	populate(objectMap, "dpmAgentVersion", a.DpmAgentVersion)
+	populate(objectMap, "dpmServers", a.DpmServers)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "protectedItemCount", a.ProtectedItemCount)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
+	populate(objectMap, "upgradeAvailable", a.UpgradeAvailable)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureBackupServerContainer.
+func (a *AzureBackupServerContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "canReRegister":
+			err = unpopulate(val, &a.CanReRegister)
+			delete(rawMsg, key)
+		case "containerId":
+			err = unpopulate(val, &a.ContainerID)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "dpmAgentVersion":
+			err = unpopulate(val, &a.DpmAgentVersion)
+			delete(rawMsg, key)
+		case "dpmServers":
+			err = unpopulate(val, &a.DpmServers)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "protectedItemCount":
+			err = unpopulate(val, &a.ProtectedItemCount)
+			delete(rawMsg, key)
+		case "protectionStatus":
+			err = unpopulate(val, &a.ProtectionStatus)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		case "upgradeAvailable":
+			err = unpopulate(val, &a.UpgradeAvailable)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureBackupServerEngine - Backup engine type when Azure Backup Server is used to manage the backups.
 type AzureBackupServerEngine struct {
-	BackupEngineBase
+	// REQUIRED; Type of the backup engine.
+	BackupEngineType *BackupEngineType `json:"backupEngineType,omitempty"`
+
+	// Backup agent version
+	AzureBackupAgentVersion *string `json:"azureBackupAgentVersion,omitempty"`
+
+	// ID of the backup engine.
+	BackupEngineID *string `json:"backupEngineId,omitempty"`
+
+	// Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
+	BackupEngineState *string `json:"backupEngineState,omitempty"`
+
+	// Type of backup management for the backup engine.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Flag indicating if the backup engine be registered, once already registered.
+	CanReRegister *bool `json:"canReRegister,omitempty"`
+
+	// Backup engine version
+	DpmVersion *string `json:"dpmVersion,omitempty"`
+
+	// Extended info of the backupengine
+	ExtendedInfo *BackupEngineExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the backup engine.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Backup status of the backup engine.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// To check if backup agent upgrade available
+	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
+
+	// To check if backup engine upgrade available
+	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
+
+	// Registration status of the backup engine with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetBackupEngineBase implements the BackupEngineBaseClassification interface for type AzureBackupServerEngine.
+func (a *AzureBackupServerEngine) GetBackupEngineBase() *BackupEngineBase {
+	return &BackupEngineBase{
+		FriendlyName:                       a.FriendlyName,
+		BackupManagementType:               a.BackupManagementType,
+		RegistrationStatus:                 a.RegistrationStatus,
+		BackupEngineState:                  a.BackupEngineState,
+		HealthStatus:                       a.HealthStatus,
+		BackupEngineType:                   a.BackupEngineType,
+		CanReRegister:                      a.CanReRegister,
+		BackupEngineID:                     a.BackupEngineID,
+		DpmVersion:                         a.DpmVersion,
+		AzureBackupAgentVersion:            a.AzureBackupAgentVersion,
+		IsAzureBackupAgentUpgradeAvailable: a.IsAzureBackupAgentUpgradeAvailable,
+		IsDpmUpgradeAvailable:              a.IsDpmUpgradeAvailable,
+		ExtendedInfo:                       a.ExtendedInfo,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureBackupServerEngine.
 func (a AzureBackupServerEngine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.BackupEngineBase.marshalInternal(objectMap, BackupEngineTypeAzureBackupServerEngine)
+	populate(objectMap, "azureBackupAgentVersion", a.AzureBackupAgentVersion)
+	populate(objectMap, "backupEngineId", a.BackupEngineID)
+	populate(objectMap, "backupEngineState", a.BackupEngineState)
+	objectMap["backupEngineType"] = BackupEngineTypeAzureBackupServerEngine
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "canReRegister", a.CanReRegister)
+	populate(objectMap, "dpmVersion", a.DpmVersion)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "isAzureBackupAgentUpgradeAvailable", a.IsAzureBackupAgentUpgradeAvailable)
+	populate(objectMap, "isDpmUpgradeAvailable", a.IsDpmUpgradeAvailable)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureBackupServerEngine.
+func (a *AzureBackupServerEngine) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "azureBackupAgentVersion":
+			err = unpopulate(val, &a.AzureBackupAgentVersion)
+			delete(rawMsg, key)
+		case "backupEngineId":
+			err = unpopulate(val, &a.BackupEngineID)
+			delete(rawMsg, key)
+		case "backupEngineState":
+			err = unpopulate(val, &a.BackupEngineState)
+			delete(rawMsg, key)
+		case "backupEngineType":
+			err = unpopulate(val, &a.BackupEngineType)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "canReRegister":
+			err = unpopulate(val, &a.CanReRegister)
+			delete(rawMsg, key)
+		case "dpmVersion":
+			err = unpopulate(val, &a.DpmVersion)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "isAzureBackupAgentUpgradeAvailable":
+			err = unpopulate(val, &a.IsAzureBackupAgentUpgradeAvailable)
+			delete(rawMsg, key)
+		case "isDpmUpgradeAvailable":
+			err = unpopulate(val, &a.IsDpmUpgradeAvailable)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureFileShareBackupRequest - AzureFileShare workload-specific backup request.
 type AzureFileShareBackupRequest struct {
-	BackupRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Backup copy will expire after the time specified (UTC).
 	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+}
+
+// GetBackupRequest implements the BackupRequestClassification interface for type AzureFileShareBackupRequest.
+func (a *AzureFileShareBackupRequest) GetBackupRequest() *BackupRequest {
+	return &BackupRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFileShareBackupRequest.
 func (a AzureFileShareBackupRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.BackupRequest.marshalInternal(objectMap, "AzureFileShareBackupRequest")
+	objectMap["objectType"] = "AzureFileShareBackupRequest"
 	populateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", a.RecoveryPointExpiryTimeInUTC)
 	return json.Marshal(objectMap)
 }
@@ -75,6 +383,9 @@ func (a *AzureFileShareBackupRequest) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointExpiryTimeInUTC":
 			err = unpopulateTimeRFC3339(val, &a.RecoveryPointExpiryTimeInUTC)
 			delete(rawMsg, key)
@@ -83,32 +394,58 @@ func (a *AzureFileShareBackupRequest) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.BackupRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureFileShareProtectableItem - Protectable item for Azure Fileshare workloads.
 type AzureFileShareProtectableItem struct {
-	WorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
 	// File Share type XSync or XSMB.
 	AzureFileShareType *AzureFileShareType `json:"azureFileShareType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// Full Fabric ID of container to which this protectable item belongs. For example, ARM ID.
 	ParentContainerFabricID *string `json:"parentContainerFabricId,omitempty"`
 
 	// Friendly name of container to which this protectable item belongs.
 	ParentContainerFriendlyName *string `json:"parentContainerFriendlyName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureFileShareProtectableItem.
+func (a *AzureFileShareProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFileShareProtectableItem.
 func (a AzureFileShareProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.WorkloadProtectableItem.marshalInternal(objectMap, "AzureFileShare")
 	populate(objectMap, "azureFileShareType", a.AzureFileShareType)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "parentContainerFabricId", a.ParentContainerFabricID)
 	populate(objectMap, "parentContainerFriendlyName", a.ParentContainerFriendlyName)
+	objectMap["protectableItemType"] = "AzureFileShare"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -124,26 +461,46 @@ func (a *AzureFileShareProtectableItem) UnmarshalJSON(data []byte) error {
 		case "azureFileShareType":
 			err = unpopulate(val, &a.AzureFileShareType)
 			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
 		case "parentContainerFabricId":
 			err = unpopulate(val, &a.ParentContainerFabricID)
 			delete(rawMsg, key)
 		case "parentContainerFriendlyName":
 			err = unpopulate(val, &a.ParentContainerFriendlyName)
 			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.WorkloadProtectableItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // AzureFileShareProtectionPolicy - AzureStorage backup policy.
 type AzureFileShareProtectionPolicy struct {
-	ProtectionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Number of items associated with this policy.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+
+	// ResourceGuard Operation Requests
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
 	// Retention policy with the details on backup copy retention ranges.
 	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
 
@@ -157,10 +514,21 @@ type AzureFileShareProtectionPolicy struct {
 	WorkLoadType *WorkloadType `json:"workLoadType,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureFileShareProtectionPolicy.
+func (a *AzureFileShareProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureFileShareProtectionPolicy.
 func (a AzureFileShareProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionPolicy.marshalInternal(objectMap, "AzureStorage")
+	objectMap["backupManagementType"] = "AzureStorage"
+	populate(objectMap, "protectedItemsCount", a.ProtectedItemsCount)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "retentionPolicy", a.RetentionPolicy)
 	populate(objectMap, "schedulePolicy", a.SchedulePolicy)
 	populate(objectMap, "timeZone", a.TimeZone)
@@ -177,6 +545,15 @@ func (a *AzureFileShareProtectionPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, &a.ProtectedItemsCount)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
 		case "retentionPolicy":
 			a.RetentionPolicy, err = unmarshalRetentionPolicyClassification(val)
 			delete(rawMsg, key)
@@ -194,15 +571,14 @@ func (a *AzureFileShareProtectionPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.ProtectionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureFileShareProvisionILRRequest - Update snapshot Uri with the correct friendly Name of the source Azure file share.
 type AzureFileShareProvisionILRRequest struct {
-	ILRRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Recovery point ID.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 
@@ -210,10 +586,17 @@ type AzureFileShareProvisionILRRequest struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
+// GetILRRequest implements the ILRRequestClassification interface for type AzureFileShareProvisionILRRequest.
+func (a *AzureFileShareProvisionILRRequest) GetILRRequest() *ILRRequest {
+	return &ILRRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureFileShareProvisionILRRequest.
 func (a AzureFileShareProvisionILRRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ILRRequest.marshalInternal(objectMap, "AzureFileShareProvisionILRRequest")
+	objectMap["objectType"] = "AzureFileShareProvisionILRRequest"
 	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	return json.Marshal(objectMap)
@@ -228,6 +611,9 @@ func (a *AzureFileShareProvisionILRRequest) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointId":
 			err = unpopulate(val, &a.RecoveryPointID)
 			delete(rawMsg, key)
@@ -239,15 +625,14 @@ func (a *AzureFileShareProvisionILRRequest) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.ILRRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureFileShareRecoveryPoint - Azure File Share workload specific backup copy.
 type AzureFileShareRecoveryPoint struct {
-	RecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Contains Url to the snapshot of fileshare, if applicable
 	FileShareSnapshotURI *string `json:"fileShareSnapshotUri,omitempty"`
 
@@ -261,11 +646,18 @@ type AzureFileShareRecoveryPoint struct {
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
 }
 
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureFileShareRecoveryPoint.
+func (a *AzureFileShareRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureFileShareRecoveryPoint.
 func (a AzureFileShareRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.RecoveryPoint.marshalInternal(objectMap, "AzureFileShareRecoveryPoint")
 	populate(objectMap, "fileShareSnapshotUri", a.FileShareSnapshotURI)
+	objectMap["objectType"] = "AzureFileShareRecoveryPoint"
 	populate(objectMap, "recoveryPointSizeInGB", a.RecoveryPointSizeInGB)
 	populateTimeRFC3339(objectMap, "recoveryPointTime", a.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", a.RecoveryPointType)
@@ -284,6 +676,9 @@ func (a *AzureFileShareRecoveryPoint) UnmarshalJSON(data []byte) error {
 		case "fileShareSnapshotUri":
 			err = unpopulate(val, &a.FileShareSnapshotURI)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointSizeInGB":
 			err = unpopulate(val, &a.RecoveryPointSizeInGB)
 			delete(rawMsg, key)
@@ -298,15 +693,14 @@ func (a *AzureFileShareRecoveryPoint) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.RecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureFileShareRestoreRequest - AzureFileShare Restore Request
 type AzureFileShareRestoreRequest struct {
-	RestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Options to resolve copy conflicts.
 	CopyOptions *CopyOptions `json:"copyOptions,omitempty"`
 
@@ -326,11 +720,18 @@ type AzureFileShareRestoreRequest struct {
 	TargetDetails *TargetAFSRestoreInfo `json:"targetDetails,omitempty"`
 }
 
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureFileShareRestoreRequest.
+func (a *AzureFileShareRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureFileShareRestoreRequest.
 func (a AzureFileShareRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.RestoreRequest.marshalInternal(objectMap, "AzureFileShareRestoreRequest")
 	populate(objectMap, "copyOptions", a.CopyOptions)
+	objectMap["objectType"] = "AzureFileShareRestoreRequest"
 	populate(objectMap, "recoveryType", a.RecoveryType)
 	populate(objectMap, "restoreFileSpecs", a.RestoreFileSpecs)
 	populate(objectMap, "restoreRequestType", a.RestoreRequestType)
@@ -350,6 +751,9 @@ func (a *AzureFileShareRestoreRequest) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "copyOptions":
 			err = unpopulate(val, &a.CopyOptions)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
 			delete(rawMsg, key)
 		case "recoveryType":
 			err = unpopulate(val, &a.RecoveryType)
@@ -371,20 +775,49 @@ func (a *AzureFileShareRestoreRequest) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.RestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureFileshareProtectedItem - Azure File Share workload-specific backup item.
 type AzureFileshareProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
 	// Additional information with this backup item.
 	ExtendedInfo *AzureFileshareProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 
 	// Friendly name of the fileshare represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 
 	// Health details of different KPIs
 	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
@@ -395,24 +828,81 @@ type AzureFileshareProtectedItem struct {
 	// Timestamp of the last backup operation on this backup item.
 	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
 
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
 	// Backup state of this backup item.
 	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
 
 	// Backup status of this backup item.
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureFileshareProtectedItem.
+func (a *AzureFileshareProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFileshareProtectedItem.
 func (a AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectedItem.marshalInternal(objectMap, "AzureFileShareProtectedItem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
 	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	objectMap["protectedItemType"] = "AzureFileShareProtectedItem"
 	populate(objectMap, "protectionState", a.ProtectionState)
 	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -425,11 +915,41 @@ func (a *AzureFileshareProtectedItem) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
 			delete(rawMsg, key)
 		case "kpisHealths":
 			err = unpopulate(val, &a.KpisHealths)
@@ -440,19 +960,37 @@ func (a *AzureFileshareProtectedItem) UnmarshalJSON(data []byte) error {
 		case "lastBackupTime":
 			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
 			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &a.ProtectionState)
 			delete(rawMsg, key)
 		case "protectionStatus":
 			err = unpopulate(val, &a.ProtectionStatus)
 			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -468,7 +1006,8 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 	// Number of available backup copies associated with this backup item.
 	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
 
-	// READ-ONLY; Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted, Deleted}
+	// READ-ONLY; Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted,
+	// Deleted}
 	ResourceState *string `json:"resourceState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource state sync time for this backup item.
@@ -520,74 +1059,1028 @@ func (a *AzureFileshareProtectedItemExtendedInfo) UnmarshalJSON(data []byte) err
 
 // AzureIaaSClassicComputeVMContainer - IaaS VM workload-specific backup item representing a classic virtual machine.
 type AzureIaaSClassicComputeVMContainer struct {
-	IaaSVMContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+
+	// Resource group name of Recovery Services Vault.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
+	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+}
+
+// GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
+func (a *AzureIaaSClassicComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
+	return &IaaSVMContainer{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
+func (a *AzureIaaSClassicComputeVMContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSClassicComputeVMContainer.
 func (a AzureIaaSClassicComputeVMContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.IaaSVMContainer.marshalInternal(objectMap, "Microsoft.ClassicCompute/virtualMachines")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = "Microsoft.ClassicCompute/virtualMachines"
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
+	populate(objectMap, "resourceGroup", a.ResourceGroup)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSClassicComputeVMContainer.
+func (a *AzureIaaSClassicComputeVMContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &a.ResourceGroup)
+			delete(rawMsg, key)
+		case "virtualMachineId":
+			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "virtualMachineVersion":
+			err = unpopulate(val, &a.VirtualMachineVersion)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureIaaSClassicComputeVMProtectableItem - IaaS VM workload-specific backup item representing the Classic Compute VM.
 type AzureIaaSClassicComputeVMProtectableItem struct {
-	IaaSVMProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Resource group name of Recovery Services Vault.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// Fully qualified ARM ID of the virtual machine.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
+	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSClassicComputeVMProtectableItem.
+func (a *AzureIaaSClassicComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem {
+	return &IaaSVMProtectableItem{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		BackupManagementType:  a.BackupManagementType,
+		WorkloadType:          a.WorkloadType,
+		ProtectableItemType:   a.ProtectableItemType,
+		FriendlyName:          a.FriendlyName,
+		ProtectionState:       a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureIaaSClassicComputeVMProtectableItem.
+func (a *AzureIaaSClassicComputeVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSClassicComputeVMProtectableItem.
 func (a AzureIaaSClassicComputeVMProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.IaaSVMProtectableItem.marshalInternal(objectMap, "Microsoft.ClassicCompute/virtualMachines")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	objectMap["protectableItemType"] = "Microsoft.ClassicCompute/virtualMachines"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "resourceGroup", a.ResourceGroup)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSClassicComputeVMProtectableItem.
+func (a *AzureIaaSClassicComputeVMProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &a.ResourceGroup)
+			delete(rawMsg, key)
+		case "virtualMachineId":
+			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "virtualMachineVersion":
+			err = unpopulate(val, &a.VirtualMachineVersion)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureIaaSClassicComputeVMProtectedItem - IaaS VM workload-specific backup item representing the Classic Compute VM.
 type AzureIaaSClassicComputeVMProtectedItem struct {
-	AzureIaaSVMProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
+	// Additional information for this backup item.
+	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Extended Properties for Azure IaasVM Backup.
+	ExtendedProperties *ExtendedProperties `json:"extendedProperties,omitempty"`
+
+	// Friendly name of the VM represented by this backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Health details on this backup item.
+	HealthDetails []*AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+
+	// Health status of protected item.
+	HealthStatus *HealthStatus `json:"healthStatus,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+
+	// Last backup operation status.
+	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+
+	// Timestamp of the last backup operation on this backup item.
+	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
+	// Data ID of the protected item.
+	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+
+	// Backup status of this backup item.
+	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Fully qualified ARM ID of the virtual machine represented by this item.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
+func (a *AzureIaaSClassicComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem {
+	return &AzureIaaSVMProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		VirtualMachineID:                 a.VirtualMachineID,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		HealthStatus:                     a.HealthStatus,
+		HealthDetails:                    a.HealthDetails,
+		KpisHealths:                      a.KpisHealths,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		ProtectedItemDataID:              a.ProtectedItemDataID,
+		ExtendedInfo:                     a.ExtendedInfo,
+		ExtendedProperties:               a.ExtendedProperties,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSClassicComputeVMProtectedItem.
+func (a *AzureIaaSClassicComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSClassicComputeVMProtectedItem.
 func (a AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureIaaSVMProtectedItem.marshalInternal(objectMap, "Microsoft.ClassicCompute/virtualMachines")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "extendedProperties", a.ExtendedProperties)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthDetails", a.HealthDetails)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
+	objectMap["protectedItemType"] = "Microsoft.ClassicCompute/virtualMachines"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSClassicComputeVMProtectedItem.
+func (a *AzureIaaSClassicComputeVMProtectedItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "extendedProperties":
+			err = unpopulate(val, &a.ExtendedProperties)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthDetails":
+			err = unpopulate(val, &a.HealthDetails)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "kpisHealths":
+			err = unpopulate(val, &a.KpisHealths)
+			delete(rawMsg, key)
+		case "lastBackupStatus":
+			err = unpopulate(val, &a.LastBackupStatus)
+			delete(rawMsg, key)
+		case "lastBackupTime":
+			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemDataId":
+			err = unpopulate(val, &a.ProtectedItemDataID)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "protectionStatus":
+			err = unpopulate(val, &a.ProtectionStatus)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "virtualMachineId":
+			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureIaaSComputeVMContainer - IaaS VM workload-specific backup item representing an Azure Resource Manager virtual machine.
 type AzureIaaSComputeVMContainer struct {
-	IaaSVMContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+
+	// Resource group name of Recovery Services Vault.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
+	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+}
+
+// GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSComputeVMContainer.
+func (a *AzureIaaSComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
+	return &IaaSVMContainer{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureIaaSComputeVMContainer.
+func (a *AzureIaaSComputeVMContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSComputeVMContainer.
 func (a AzureIaaSComputeVMContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.IaaSVMContainer.marshalInternal(objectMap, "Microsoft.Compute/virtualMachines")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = "Microsoft.Compute/virtualMachines"
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
+	populate(objectMap, "resourceGroup", a.ResourceGroup)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSComputeVMContainer.
+func (a *AzureIaaSComputeVMContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &a.ResourceGroup)
+			delete(rawMsg, key)
+		case "virtualMachineId":
+			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "virtualMachineVersion":
+			err = unpopulate(val, &a.VirtualMachineVersion)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureIaaSComputeVMProtectableItem - IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
 type AzureIaaSComputeVMProtectableItem struct {
-	IaaSVMProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Resource group name of Recovery Services Vault.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
+	// Fully qualified ARM ID of the virtual machine.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
+	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type AzureIaaSComputeVMProtectableItem.
+func (a *AzureIaaSComputeVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem {
+	return &IaaSVMProtectableItem{
+		VirtualMachineID:      a.VirtualMachineID,
+		VirtualMachineVersion: a.VirtualMachineVersion,
+		ResourceGroup:         a.ResourceGroup,
+		BackupManagementType:  a.BackupManagementType,
+		WorkloadType:          a.WorkloadType,
+		ProtectableItemType:   a.ProtectableItemType,
+		FriendlyName:          a.FriendlyName,
+		ProtectionState:       a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureIaaSComputeVMProtectableItem.
+func (a *AzureIaaSComputeVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSComputeVMProtectableItem.
 func (a AzureIaaSComputeVMProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.IaaSVMProtectableItem.marshalInternal(objectMap, "Microsoft.Compute/virtualMachines")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	objectMap["protectableItemType"] = "Microsoft.Compute/virtualMachines"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "resourceGroup", a.ResourceGroup)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSComputeVMProtectableItem.
+func (a *AzureIaaSComputeVMProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &a.ResourceGroup)
+			delete(rawMsg, key)
+		case "virtualMachineId":
+			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "virtualMachineVersion":
+			err = unpopulate(val, &a.VirtualMachineVersion)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureIaaSComputeVMProtectedItem - IaaS VM workload-specific backup item representing the Azure Resource Manager VM.
 type AzureIaaSComputeVMProtectedItem struct {
-	AzureIaaSVMProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
+	// Additional information for this backup item.
+	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Extended Properties for Azure IaasVM Backup.
+	ExtendedProperties *ExtendedProperties `json:"extendedProperties,omitempty"`
+
+	// Friendly name of the VM represented by this backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Health details on this backup item.
+	HealthDetails []*AzureIaaSVMHealthDetails `json:"healthDetails,omitempty"`
+
+	// Health status of protected item.
+	HealthStatus *HealthStatus `json:"healthStatus,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+
+	// Last backup operation status.
+	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+
+	// Timestamp of the last backup operation on this backup item.
+	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
+	// Data ID of the protected item.
+	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+
+	// Backup status of this backup item.
+	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Fully qualified ARM ID of the virtual machine represented by this item.
+	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
+func (a *AzureIaaSComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem {
+	return &AzureIaaSVMProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		VirtualMachineID:                 a.VirtualMachineID,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		HealthStatus:                     a.HealthStatus,
+		HealthDetails:                    a.HealthDetails,
+		KpisHealths:                      a.KpisHealths,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		ProtectedItemDataID:              a.ProtectedItemDataID,
+		ExtendedInfo:                     a.ExtendedInfo,
+		ExtendedProperties:               a.ExtendedProperties,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSComputeVMProtectedItem.
+func (a *AzureIaaSComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSComputeVMProtectedItem.
 func (a AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureIaaSVMProtectedItem.marshalInternal(objectMap, "Microsoft.Compute/virtualMachines")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "extendedProperties", a.ExtendedProperties)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthDetails", a.HealthDetails)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
+	objectMap["protectedItemType"] = "Microsoft.Compute/virtualMachines"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSComputeVMProtectedItem.
+func (a *AzureIaaSComputeVMProtectedItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "extendedProperties":
+			err = unpopulate(val, &a.ExtendedProperties)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthDetails":
+			err = unpopulate(val, &a.HealthDetails)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "kpisHealths":
+			err = unpopulate(val, &a.KpisHealths)
+			delete(rawMsg, key)
+		case "lastBackupStatus":
+			err = unpopulate(val, &a.LastBackupStatus)
+			delete(rawMsg, key)
+		case "lastBackupTime":
+			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemDataId":
+			err = unpopulate(val, &a.ProtectedItemDataID)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "protectionStatus":
+			err = unpopulate(val, &a.ProtectionStatus)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "virtualMachineId":
+			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureIaaSVMErrorInfo - Azure IaaS VM workload-specific error information.
@@ -617,17 +2110,54 @@ func (a AzureIaaSVMErrorInfo) MarshalJSON() ([]byte, error) {
 
 // AzureIaaSVMHealthDetails - Azure IaaS VM workload-specific Health Details.
 type AzureIaaSVMHealthDetails struct {
-	ResourceHealthDetails
+	// READ-ONLY; Health Code
+	Code *int32 `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Health Message
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; Health Recommended Actions
+	Recommendations []*string `json:"recommendations,omitempty" azure:"ro"`
+
+	// READ-ONLY; Health Title
+	Title *string `json:"title,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureIaaSVMHealthDetails.
+func (a AzureIaaSVMHealthDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "code", a.Code)
+	populate(objectMap, "message", a.Message)
+	populate(objectMap, "recommendations", a.Recommendations)
+	populate(objectMap, "title", a.Title)
+	return json.Marshal(objectMap)
 }
 
 // AzureIaaSVMJob - Azure IaaS VM workload-specific job object.
 type AzureIaaSVMJob struct {
-	Job
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
 	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
 
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Container name of the entity on which the current job is executing.
+	ContainerName *string `json:"containerName,omitempty"`
+
 	// Time elapsed during the execution of this job.
 	Duration *string `json:"duration,omitempty"`
+
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
 
 	// Error details on execution of this job.
 	ErrorDetails []*AzureIaaSVMErrorInfo `json:"errorDetails,omitempty"`
@@ -635,18 +2165,53 @@ type AzureIaaSVMJob struct {
 	// Additional information for this job.
 	ExtendedInfo *AzureIaaSVMJobExtendedInfo `json:"extendedInfo,omitempty"`
 
+	// Indicated that whether the job is adhoc(true) or scheduled(false)
+	IsUserTriggered *bool `json:"isUserTriggered,omitempty"`
+
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
+
 	// Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
 	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type AzureIaaSVMJob.
+func (a *AzureIaaSVMJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSVMJob.
 func (a AzureIaaSVMJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Job.marshalInternal(objectMap, "AzureIaaSVMJob")
 	populate(objectMap, "actionsInfo", a.ActionsInfo)
+	populate(objectMap, "activityId", a.ActivityID)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "duration", a.Duration)
+	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "isUserTriggered", a.IsUserTriggered)
+	objectMap["jobType"] = "AzureIaaSVMJob"
+	populate(objectMap, "operation", a.Operation)
+	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populate(objectMap, "status", a.Status)
 	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
 	return json.Marshal(objectMap)
 }
@@ -663,14 +2228,44 @@ func (a *AzureIaaSVMJob) UnmarshalJSON(data []byte) error {
 		case "actionsInfo":
 			err = unpopulate(val, &a.ActionsInfo)
 			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &a.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
 		case "duration":
 			err = unpopulate(val, &a.Duration)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &a.EntityFriendlyName)
 			delete(rawMsg, key)
 		case "errorDetails":
 			err = unpopulate(val, &a.ErrorDetails)
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "isUserTriggered":
+			err = unpopulate(val, &a.IsUserTriggered)
+			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &a.JobType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &a.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
 			delete(rawMsg, key)
 		case "virtualMachineVersion":
 			err = unpopulate(val, &a.VirtualMachineVersion)
@@ -679,9 +2274,6 @@ func (a *AzureIaaSVMJob) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Job.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -801,6 +2393,144 @@ func (a *AzureIaaSVMJobTaskDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// AzureIaaSVMJobV2 - Azure IaaS VM workload-specific job object.
+type AzureIaaSVMJobV2 struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
+	// Gets or sets the state/actions applicable on this job like cancel/retry.
+	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Container name of the entity on which the current job is executing.
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Time elapsed during the execution of this job.
+	Duration *string `json:"duration,omitempty"`
+
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+
+	// Error details on execution of this job.
+	ErrorDetails []*AzureIaaSVMErrorInfo `json:"errorDetails,omitempty"`
+
+	// Additional information for this job.
+	ExtendedInfo *AzureIaaSVMJobExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
+
+	// Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
+	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type AzureIaaSVMJobV2.
+func (a *AzureIaaSVMJobV2) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureIaaSVMJobV2.
+func (a AzureIaaSVMJobV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actionsInfo", a.ActionsInfo)
+	populate(objectMap, "activityId", a.ActivityID)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "duration", a.Duration)
+	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
+	populate(objectMap, "errorDetails", a.ErrorDetails)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	objectMap["jobType"] = "AzureIaaSVMJobV2"
+	populate(objectMap, "operation", a.Operation)
+	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populate(objectMap, "status", a.Status)
+	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureIaaSVMJobV2.
+func (a *AzureIaaSVMJobV2) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actionsInfo":
+			err = unpopulate(val, &a.ActionsInfo)
+			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &a.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "duration":
+			err = unpopulate(val, &a.Duration)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &a.EntityFriendlyName)
+			delete(rawMsg, key)
+		case "errorDetails":
+			err = unpopulate(val, &a.ErrorDetails)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &a.JobType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &a.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
+			delete(rawMsg, key)
+		case "virtualMachineVersion":
+			err = unpopulate(val, &a.VirtualMachineVersion)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // AzureIaaSVMProtectedItemClassification provides polymorphic access to related types.
 // Call the interface's GetAzureIaaSVMProtectedItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -813,7 +2543,27 @@ type AzureIaaSVMProtectedItemClassification interface {
 
 // AzureIaaSVMProtectedItem - IaaS VM workload-specific backup item.
 type AzureIaaSVMProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
 	// Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 
@@ -829,6 +2579,18 @@ type AzureIaaSVMProtectedItem struct {
 	// Health status of protected item.
 	HealthStatus *HealthStatus `json:"healthStatus,omitempty"`
 
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
 	// Health details of different KPIs
 	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
 
@@ -837,6 +2599,15 @@ type AzureIaaSVMProtectedItem struct {
 
 	// Timestamp of the last backup operation on this backup item.
 	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
 
 	// Data ID of the protected item.
 	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
@@ -847,17 +2618,77 @@ type AzureIaaSVMProtectedItem struct {
 	// Backup status of this backup item.
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
 	// Fully qualified ARM ID of the virtual machine represented by this item.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
 // GetAzureIaaSVMProtectedItem implements the AzureIaaSVMProtectedItemClassification interface for type AzureIaaSVMProtectedItem.
 func (a *AzureIaaSVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIaaSVMProtectedItem { return a }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureIaaSVMProtectedItem.
+func (a *AzureIaaSVMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSVMProtectedItem.
 func (a AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureIaaSVMProtectedItem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "extendedProperties", a.ExtendedProperties)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthDetails", a.HealthDetails)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
+	objectMap["protectedItemType"] = "AzureIaaSVMProtectedItem"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -867,29 +2698,27 @@ func (a *AzureIaaSVMProtectedItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureIaaSVMProtectedItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.ProtectedItem.marshalInternal(objectMap, discValue)
-	populate(objectMap, "extendedInfo", a.ExtendedInfo)
-	populate(objectMap, "extendedProperties", a.ExtendedProperties)
-	populate(objectMap, "friendlyName", a.FriendlyName)
-	populate(objectMap, "healthDetails", a.HealthDetails)
-	populate(objectMap, "healthStatus", a.HealthStatus)
-	populate(objectMap, "kpisHealths", a.KpisHealths)
-	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
-	populate(objectMap, "protectionState", a.ProtectionState)
-	populate(objectMap, "protectionStatus", a.ProtectionStatus)
-	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
-}
-
-func (a *AzureIaaSVMProtectedItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
 			delete(rawMsg, key)
@@ -905,6 +2734,18 @@ func (a *AzureIaaSVMProtectedItem) unmarshalInternal(rawMsg map[string]json.RawM
 		case "healthStatus":
 			err = unpopulate(val, &a.HealthStatus)
 			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
 		case "kpisHealths":
 			err = unpopulate(val, &a.KpisHealths)
 			delete(rawMsg, key)
@@ -914,8 +2755,20 @@ func (a *AzureIaaSVMProtectedItem) unmarshalInternal(rawMsg map[string]json.RawM
 		case "lastBackupTime":
 			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
 			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
 		case "protectedItemDataId":
 			err = unpopulate(val, &a.ProtectedItemDataID)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
 			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &a.ProtectionState)
@@ -923,16 +2776,22 @@ func (a *AzureIaaSVMProtectedItem) unmarshalInternal(rawMsg map[string]json.RawM
 		case "protectionStatus":
 			err = unpopulate(val, &a.ProtectionStatus)
 			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, &a.VirtualMachineID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -986,11 +2845,18 @@ func (a *AzureIaaSVMProtectedItemExtendedInfo) UnmarshalJSON(data []byte) error 
 
 // AzureIaaSVMProtectionPolicy - IaaS VM workload-specific backup policy.
 type AzureIaaSVMProtectionPolicy struct {
-	ProtectionPolicy
-	InstantRPDetails *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	BackupManagementType *string                     `json:"backupManagementType,omitempty"`
+	InstantRPDetails     *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
 
 	// Instant RP retention policy range in days
 	InstantRpRetentionRangeInDays *int32 `json:"instantRpRetentionRangeInDays,omitempty"`
+
+	// Number of items associated with this policy.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+
+	// ResourceGuard Operation Requests
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
 
 	// Retention policy with the details on backup copy retention ranges.
 	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
@@ -1002,12 +2868,23 @@ type AzureIaaSVMProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureIaaSVMProtectionPolicy.
+func (a *AzureIaaSVMProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSVMProtectionPolicy.
 func (a AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionPolicy.marshalInternal(objectMap, "AzureIaasVM")
+	objectMap["backupManagementType"] = "AzureIaasVM"
 	populate(objectMap, "instantRPDetails", a.InstantRPDetails)
 	populate(objectMap, "instantRpRetentionRangeInDays", a.InstantRpRetentionRangeInDays)
+	populate(objectMap, "protectedItemsCount", a.ProtectedItemsCount)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "retentionPolicy", a.RetentionPolicy)
 	populate(objectMap, "schedulePolicy", a.SchedulePolicy)
 	populate(objectMap, "timeZone", a.TimeZone)
@@ -1023,11 +2900,20 @@ func (a *AzureIaaSVMProtectionPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
 		case "instantRPDetails":
 			err = unpopulate(val, &a.InstantRPDetails)
 			delete(rawMsg, key)
 		case "instantRpRetentionRangeInDays":
 			err = unpopulate(val, &a.InstantRpRetentionRangeInDays)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, &a.ProtectedItemsCount)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "retentionPolicy":
 			a.RetentionPolicy, err = unmarshalRetentionPolicyClassification(val)
@@ -1042,9 +2928,6 @@ func (a *AzureIaaSVMProtectionPolicy) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProtectionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1061,37 +2944,136 @@ type AzureRecoveryServiceVaultProtectionIntentClassification interface {
 
 // AzureRecoveryServiceVaultProtectionIntent - Azure Recovery Services Vault specific protection intent item.
 type AzureRecoveryServiceVaultProtectionIntent struct {
-	ProtectionIntent
+	// REQUIRED; backup protectionIntent type.
+	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
+	ItemID *string `json:"itemId,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
-// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface for type AzureRecoveryServiceVaultProtectionIntent.
+// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
+// for type AzureRecoveryServiceVaultProtectionIntent.
 func (a *AzureRecoveryServiceVaultProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
 	return a
 }
 
-func (a AzureRecoveryServiceVaultProtectionIntent) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.ProtectionIntent.marshalInternal(objectMap, discValue)
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureRecoveryServiceVaultProtectionIntent.
+func (a *AzureRecoveryServiceVaultProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
-func (a *AzureRecoveryServiceVaultProtectionIntent) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := a.ProtectionIntent.unmarshalInternal(rawMsg); err != nil {
+// MarshalJSON implements the json.Marshaller interface for type AzureRecoveryServiceVaultProtectionIntent.
+func (a AzureRecoveryServiceVaultProtectionIntent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "itemId", a.ItemID)
+	populate(objectMap, "policyId", a.PolicyID)
+	objectMap["protectionIntentItemType"] = ProtectionIntentItemTypeRecoveryServiceVaultItem
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureRecoveryServiceVaultProtectionIntent.
+func (a *AzureRecoveryServiceVaultProtectionIntent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "itemId":
+			err = unpopulate(val, &a.ItemID)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "protectionIntentItemType":
+			err = unpopulate(val, &a.ProtectionIntentItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
 // AzureResourceProtectionIntent - IaaS VM specific backup protection intent item.
 type AzureResourceProtectionIntent struct {
-	ProtectionIntent
+	// REQUIRED; backup protectionIntent type.
+	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
+	ItemID *string `json:"itemId,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureResourceProtectionIntent.
+func (a *AzureResourceProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureResourceProtectionIntent.
 func (a AzureResourceProtectionIntent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionIntent.marshalInternal(objectMap, "AzureResourceItem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "itemId", a.ItemID)
+	populate(objectMap, "policyId", a.PolicyID)
+	objectMap["protectionIntentItemType"] = ProtectionIntentItemTypeAzureResourceItem
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -1104,64 +3086,362 @@ func (a *AzureResourceProtectionIntent) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "itemId":
+			err = unpopulate(val, &a.ItemID)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "protectionIntentItemType":
+			err = unpopulate(val, &a.ProtectionIntentItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.ProtectionIntent.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureSQLAGWorkloadContainerProtectionContainer - Container for SQL workloads under SQL Availability Group.
 type AzureSQLAGWorkloadContainerProtectionContainer struct {
-	AzureWorkloadContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Additional details of a workload container.
+	ExtendedInfo *AzureWorkloadContainerExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Time stamp when this container was updated.
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
+
+	// Re-Do Operation
+	OperationType *OperationType `json:"operationType,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+
+	// ARM ID of the virtual machine represented by this Azure Workload Container
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Workload type for which registration was sent.
+	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+}
+
+// GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
+func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer {
+	return &AzureWorkloadContainer{
+		SourceResourceID:      a.SourceResourceID,
+		LastUpdatedTime:       a.LastUpdatedTime,
+		ExtendedInfo:          a.ExtendedInfo,
+		WorkloadType:          a.WorkloadType,
+		OperationType:         a.OperationType,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
+func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLAGWorkloadContainerProtectionContainer.
 func (a AzureSQLAGWorkloadContainerProtectionContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadContainer.marshalInternal(objectMap, ContainerTypeSQLAGWorkLoadContainer)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = ContainerTypeSQLAGWorkLoadContainer
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
+	populate(objectMap, "operationType", a.OperationType)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureSQLAGWorkloadContainerProtectionContainer.
+func (a *AzureSQLAGWorkloadContainerProtectionContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "lastUpdatedTime":
+			err = unpopulateTimeRFC3339(val, &a.LastUpdatedTime)
+			delete(rawMsg, key)
+		case "operationType":
+			err = unpopulate(val, &a.OperationType)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureSQLContainer - Azure Sql workload-specific container.
 type AzureSQLContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLContainer.
+func (a *AzureSQLContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLContainer.
 func (a AzureSQLContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionContainer.marshalInternal(objectMap, ContainerTypeAzureSQLContainer)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = ContainerTypeAzureSQLContainer
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureSQLContainer.
+func (a *AzureSQLContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureSQLProtectedItem - Azure SQL workload-specific backup item.
 type AzureSQLProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
 	// Additional information for this backup item.
 	ExtendedInfo *AzureSQLProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
 
 	// Internal ID of a backup item. Used by Azure SQL Backup engine to contact Recovery Services.
 	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
 
 	// Backup state of the backed up item.
 	ProtectionState *ProtectedItemState `json:"protectionState,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureSQLProtectedItem.
+func (a *AzureSQLProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLProtectedItem.
 func (a AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectedItem.marshalInternal(objectMap, "Microsoft.Sql/servers/databases")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
 	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
+	objectMap["protectedItemType"] = "Microsoft.Sql/servers/databases"
 	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -1174,22 +3454,70 @@ func (a *AzureSQLProtectedItem) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
 			delete(rawMsg, key)
 		case "protectedItemDataId":
 			err = unpopulate(val, &a.ProtectedItemDataID)
 			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1243,15 +3571,34 @@ func (a *AzureSQLProtectedItemExtendedInfo) UnmarshalJSON(data []byte) error {
 
 // AzureSQLProtectionPolicy - Azure SQL workload-specific backup policy.
 type AzureSQLProtectionPolicy struct {
-	ProtectionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Number of items associated with this policy.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+
+	// ResourceGuard Operation Requests
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
 	// Retention policy details.
 	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
+}
+
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureSQLProtectionPolicy.
+func (a *AzureSQLProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLProtectionPolicy.
 func (a AzureSQLProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionPolicy.marshalInternal(objectMap, "AzureSql")
+	objectMap["backupManagementType"] = "AzureSql"
+	populate(objectMap, "protectedItemsCount", a.ProtectedItemsCount)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "retentionPolicy", a.RetentionPolicy)
 	return json.Marshal(objectMap)
 }
@@ -1265,6 +3612,15 @@ func (a *AzureSQLProtectionPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, &a.ProtectedItemsCount)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
 		case "retentionPolicy":
 			a.RetentionPolicy, err = unmarshalRetentionPolicyClassification(val)
 			delete(rawMsg, key)
@@ -1273,17 +3629,37 @@ func (a *AzureSQLProtectionPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.ProtectionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureStorageContainer - Azure Storage Account workload-specific container.
 type AzureStorageContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Whether storage account lock is to be acquired for this container or not.
+	AcquireStorageAccountLock *AcquireStorageAccountLock `json:"acquireStorageAccountLock,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
 	// Number of items backed up in this container.
 	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 
 	// Resource group name of Recovery Services Vault.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
@@ -1295,11 +3671,29 @@ type AzureStorageContainer struct {
 	StorageAccountVersion *string `json:"storageAccountVersion,omitempty"`
 }
 
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureStorageContainer.
+func (a *AzureStorageContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageContainer.
 func (a AzureStorageContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionContainer.marshalInternal(objectMap, ContainerTypeStorageContainer)
+	populate(objectMap, "acquireStorageAccountLock", a.AcquireStorageAccountLock)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = ContainerTypeStorageContainer
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
 	populate(objectMap, "protectedItemCount", a.ProtectedItemCount)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
 	populate(objectMap, "resourceGroup", a.ResourceGroup)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "storageAccountVersion", a.StorageAccountVersion)
@@ -1315,8 +3709,29 @@ func (a *AzureStorageContainer) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "acquireStorageAccountLock":
+			err = unpopulate(val, &a.AcquireStorageAccountLock)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
 		case "protectedItemCount":
 			err = unpopulate(val, &a.ProtectedItemCount)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
 			delete(rawMsg, key)
 		case "resourceGroup":
 			err = unpopulate(val, &a.ResourceGroup)
@@ -1331,9 +3746,6 @@ func (a *AzureStorageContainer) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProtectionContainer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1361,18 +3773,44 @@ func (a AzureStorageErrorInfo) MarshalJSON() ([]byte, error) {
 
 // AzureStorageJob - Azure storage specific job.
 type AzureStorageJob struct {
-	Job
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
 	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
 
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Time elapsed during the execution of this job.
 	Duration *string `json:"duration,omitempty"`
+
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
 
 	// Error details on execution of this job.
 	ErrorDetails []*AzureStorageErrorInfo `json:"errorDetails,omitempty"`
 
 	// Additional information about the job.
 	ExtendedInfo *AzureStorageJobExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Indicated that whether the job is adhoc(true) or scheduled(false)
+	IsUserTriggered *bool `json:"isUserTriggered,omitempty"`
+
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
 
 	// Specifies friendly name of the storage account.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
@@ -1381,14 +3819,36 @@ type AzureStorageJob struct {
 	StorageAccountVersion *string `json:"storageAccountVersion,omitempty"`
 }
 
+// GetJob implements the JobClassification interface for type AzureStorageJob.
+func (a *AzureStorageJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageJob.
 func (a AzureStorageJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Job.marshalInternal(objectMap, "AzureStorageJob")
 	populate(objectMap, "actionsInfo", a.ActionsInfo)
+	populate(objectMap, "activityId", a.ActivityID)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "duration", a.Duration)
+	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "isUserTriggered", a.IsUserTriggered)
+	objectMap["jobType"] = "AzureStorageJob"
+	populate(objectMap, "operation", a.Operation)
+	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populate(objectMap, "status", a.Status)
 	populate(objectMap, "storageAccountName", a.StorageAccountName)
 	populate(objectMap, "storageAccountVersion", a.StorageAccountVersion)
 	return json.Marshal(objectMap)
@@ -1406,14 +3866,41 @@ func (a *AzureStorageJob) UnmarshalJSON(data []byte) error {
 		case "actionsInfo":
 			err = unpopulate(val, &a.ActionsInfo)
 			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &a.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
 		case "duration":
 			err = unpopulate(val, &a.Duration)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &a.EntityFriendlyName)
 			delete(rawMsg, key)
 		case "errorDetails":
 			err = unpopulate(val, &a.ErrorDetails)
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "isUserTriggered":
+			err = unpopulate(val, &a.IsUserTriggered)
+			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &a.JobType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &a.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
 			delete(rawMsg, key)
 		case "storageAccountName":
 			err = unpopulate(val, &a.StorageAccountName)
@@ -1425,9 +3912,6 @@ func (a *AzureStorageJob) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Job.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1464,43 +3948,292 @@ type AzureStorageJobTaskDetails struct {
 
 // AzureStorageProtectableContainer - Azure Storage-specific protectable containers
 type AzureStorageProtectableContainer struct {
-	ProtectableContainer
+	// REQUIRED; Type of the container. The value of this property for
+	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+	ProtectableContainerType *ContainerType `json:"protectableContainerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Fabric Id of the container such as ARM Id.
+	ContainerID *string `json:"containerId,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+}
+
+// GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureStorageProtectableContainer.
+func (a *AzureStorageProtectableContainer) GetProtectableContainer() *ProtectableContainer {
+	return &ProtectableContainer{
+		FriendlyName:             a.FriendlyName,
+		BackupManagementType:     a.BackupManagementType,
+		ProtectableContainerType: a.ProtectableContainerType,
+		HealthStatus:             a.HealthStatus,
+		ContainerID:              a.ContainerID,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureStorageProtectableContainer.
 func (a AzureStorageProtectableContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectableContainer.marshalInternal(objectMap, ContainerTypeStorageContainer)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "containerId", a.ContainerID)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	objectMap["protectableContainerType"] = ContainerTypeStorageContainer
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureStorageProtectableContainer.
+func (a *AzureStorageProtectableContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerId":
+			err = unpopulate(val, &a.ContainerID)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableContainerType":
+			err = unpopulate(val, &a.ProtectableContainerType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMAppContainerProtectableContainer - Azure workload-specific container
 type AzureVMAppContainerProtectableContainer struct {
-	ProtectableContainer
+	// REQUIRED; Type of the container. The value of this property for
+	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+	ProtectableContainerType *ContainerType `json:"protectableContainerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Fabric Id of the container such as ARM Id.
+	ContainerID *string `json:"containerId,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+}
+
+// GetProtectableContainer implements the ProtectableContainerClassification interface for type AzureVMAppContainerProtectableContainer.
+func (a *AzureVMAppContainerProtectableContainer) GetProtectableContainer() *ProtectableContainer {
+	return &ProtectableContainer{
+		FriendlyName:             a.FriendlyName,
+		BackupManagementType:     a.BackupManagementType,
+		ProtectableContainerType: a.ProtectableContainerType,
+		HealthStatus:             a.HealthStatus,
+		ContainerID:              a.ContainerID,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMAppContainerProtectableContainer.
 func (a AzureVMAppContainerProtectableContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectableContainer.marshalInternal(objectMap, ContainerTypeVMAppContainer)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "containerId", a.ContainerID)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	objectMap["protectableContainerType"] = ContainerTypeVMAppContainer
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMAppContainerProtectableContainer.
+func (a *AzureVMAppContainerProtectableContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerId":
+			err = unpopulate(val, &a.ContainerID)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableContainerType":
+			err = unpopulate(val, &a.ProtectableContainerType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMAppContainerProtectionContainer - Container for SQL workloads under Azure Virtual Machines.
 type AzureVMAppContainerProtectionContainer struct {
-	AzureWorkloadContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Additional details of a workload container.
+	ExtendedInfo *AzureWorkloadContainerExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Time stamp when this container was updated.
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
+
+	// Re-Do Operation
+	OperationType *OperationType `json:"operationType,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+
+	// ARM ID of the virtual machine represented by this Azure Workload Container
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Workload type for which registration was sent.
+	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+}
+
+// GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureVMAppContainerProtectionContainer.
+func (a *AzureVMAppContainerProtectionContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer {
+	return &AzureWorkloadContainer{
+		SourceResourceID:      a.SourceResourceID,
+		LastUpdatedTime:       a.LastUpdatedTime,
+		ExtendedInfo:          a.ExtendedInfo,
+		WorkloadType:          a.WorkloadType,
+		OperationType:         a.OperationType,
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureVMAppContainerProtectionContainer.
+func (a *AzureVMAppContainerProtectionContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMAppContainerProtectionContainer.
 func (a AzureVMAppContainerProtectionContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadContainer.marshalInternal(objectMap, ContainerTypeVMAppContainer)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = ContainerTypeVMAppContainer
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
+	populate(objectMap, "operationType", a.OperationType)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMAppContainerProtectionContainer.
+func (a *AzureVMAppContainerProtectionContainer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
+			delete(rawMsg, key)
+		case "lastUpdatedTime":
+			err = unpopulateTimeRFC3339(val, &a.LastUpdatedTime)
+			delete(rawMsg, key)
+		case "operationType":
+			err = unpopulate(val, &a.OperationType)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMResourceFeatureSupportRequest - AzureResource(IaaS VM) Specific feature support request
 type AzureVMResourceFeatureSupportRequest struct {
-	FeatureSupportRequest
+	// REQUIRED; backup support feature type.
+	FeatureType *string `json:"featureType,omitempty"`
+
 	// SKUs (Premium/Managed etc) in case of IaasVM
 	VMSKU *string `json:"vmSku,omitempty"`
 
@@ -1508,10 +4241,17 @@ type AzureVMResourceFeatureSupportRequest struct {
 	VMSize *string `json:"vmSize,omitempty"`
 }
 
+// GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type AzureVMResourceFeatureSupportRequest.
+func (a *AzureVMResourceFeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest {
+	return &FeatureSupportRequest{
+		FeatureType: a.FeatureType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureVMResourceFeatureSupportRequest.
 func (a AzureVMResourceFeatureSupportRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.FeatureSupportRequest.marshalInternal(objectMap, "AzureVMResourceBackup")
+	objectMap["featureType"] = "AzureVMResourceBackup"
 	populate(objectMap, "vmSku", a.VMSKU)
 	populate(objectMap, "vmSize", a.VMSize)
 	return json.Marshal(objectMap)
@@ -1526,6 +4266,9 @@ func (a *AzureVMResourceFeatureSupportRequest) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "featureType":
+			err = unpopulate(val, &a.FeatureType)
+			delete(rawMsg, key)
 		case "vmSku":
 			err = unpopulate(val, &a.VMSKU)
 			delete(rawMsg, key)
@@ -1536,9 +4279,6 @@ func (a *AzureVMResourceFeatureSupportRequest) UnmarshalJSON(data []byte) error 
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.FeatureSupportRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1552,8 +4292,8 @@ type AzureVMResourceFeatureSupportResponse struct {
 // AzureVMWorkloadItemClassification provides polymorphic access to related types.
 // Call the interface's GetAzureVMWorkloadItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureVMWorkloadItem, *AzureVmWorkloadSAPAseDatabaseWorkloadItem, *AzureVmWorkloadSAPAseSystemWorkloadItem, *AzureVmWorkloadSAPHanaDatabaseWorkloadItem,
-// - *AzureVmWorkloadSAPHanaSystemWorkloadItem, *AzureVmWorkloadSQLDatabaseWorkloadItem, *AzureVmWorkloadSQLInstanceWorkloadItem
+// - *AzureVMWorkloadItem, *AzureVMWorkloadSAPAseDatabaseWorkloadItem, *AzureVMWorkloadSAPAseSystemWorkloadItem, *AzureVMWorkloadSAPHanaDatabaseWorkloadItem,
+// - *AzureVMWorkloadSAPHanaSystemWorkloadItem, *AzureVMWorkloadSQLDatabaseWorkloadItem, *AzureVMWorkloadSQLInstanceWorkloadItem
 type AzureVMWorkloadItemClassification interface {
 	WorkloadItemClassification
 	// GetAzureVMWorkloadItem returns the AzureVMWorkloadItem content of the underlying type.
@@ -1562,12 +4302,23 @@ type AzureVMWorkloadItemClassification interface {
 
 // AzureVMWorkloadItem - Azure VM workload-specific workload item.
 type AzureVMWorkloadItem struct {
-	WorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
 	// Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 
 	// Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
 
 	// Host/Cluster Name for instance or AG
 	ServerName *string `json:"serverName,omitempty"`
@@ -1577,15 +4328,38 @@ type AzureVMWorkloadItem struct {
 
 	// For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
 // GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadItem.
 func (a *AzureVMWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem { return a }
 
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadItem.
+func (a *AzureVMWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadItem.
 func (a AzureVMWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureVmWorkloadItem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "AzureVmWorkloadItem"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -1595,27 +4369,23 @@ func (a *AzureVMWorkloadItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureVMWorkloadItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.WorkloadItem.marshalInternal(objectMap, discValue)
-	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
-	populate(objectMap, "parentName", a.ParentName)
-	populate(objectMap, "serverName", a.ServerName)
-	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
-	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
-}
-
-func (a *AzureVMWorkloadItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
 		case "isAutoProtectable":
 			err = unpopulate(val, &a.IsAutoProtectable)
 			delete(rawMsg, key)
 		case "parentName":
 			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
 			delete(rawMsg, key)
 		case "serverName":
 			err = unpopulate(val, &a.ServerName)
@@ -1626,13 +4396,16 @@ func (a *AzureVMWorkloadItem) unmarshalInternal(rawMsg map[string]json.RawMessag
 		case "subinquireditemcount":
 			err = unpopulate(val, &a.Subinquireditemcount)
 			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.WorkloadItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1640,9 +4413,9 @@ func (a *AzureVMWorkloadItem) unmarshalInternal(rawMsg map[string]json.RawMessag
 // AzureVMWorkloadProtectableItemClassification provides polymorphic access to related types.
 // Call the interface's GetAzureVMWorkloadProtectableItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureVMWorkloadProtectableItem, *AzureVmWorkloadSAPAseSystemProtectableItem, *AzureVmWorkloadSAPHanaDatabaseProtectableItem,
-// - *AzureVmWorkloadSAPHanaSystemProtectableItem, *AzureVmWorkloadSQLAvailabilityGroupProtectableItem, *AzureVmWorkloadSQLDatabaseProtectableItem,
-// - *AzureVmWorkloadSQLInstanceProtectableItem
+// - *AzureVMWorkloadProtectableItem, *AzureVMWorkloadSAPAseSystemProtectableItem, *AzureVMWorkloadSAPHanaDatabaseProtectableItem,
+// - *AzureVMWorkloadSAPHanaSystemProtectableItem, *AzureVMWorkloadSQLAvailabilityGroupProtectableItem, *AzureVMWorkloadSQLDatabaseProtectableItem,
+// - *AzureVMWorkloadSQLInstanceProtectableItem
 type AzureVMWorkloadProtectableItemClassification interface {
 	WorkloadProtectableItemClassification
 	// GetAzureVMWorkloadProtectableItem returns the AzureVMWorkloadProtectableItem content of the underlying type.
@@ -1651,7 +4424,15 @@ type AzureVMWorkloadProtectableItemClassification interface {
 
 // AzureVMWorkloadProtectableItem - Azure VM workload-specific protectable item.
 type AzureVMWorkloadProtectableItem struct {
-	WorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
 	// Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 
@@ -1661,12 +4442,15 @@ type AzureVMWorkloadProtectableItem struct {
 	// Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
 
-	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where the parent would be either Instance
-	// or a SQL AG.
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
 	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
 
 	// Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
 
 	// Host/Cluster Name for instance or AG
 	ServerName *string `json:"serverName,omitempty"`
@@ -1676,6 +4460,9 @@ type AzureVMWorkloadProtectableItem struct {
 
 	// For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
 // GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
@@ -1683,10 +4470,33 @@ func (a *AzureVMWorkloadProtectableItem) GetAzureVMWorkloadProtectableItem() *Az
 	return a
 }
 
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadProtectableItem.
+func (a *AzureVMWorkloadProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadProtectableItem.
 func (a AzureVMWorkloadProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureVmWorkloadProtectableItem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "AzureVmWorkloadProtectableItem"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -1696,25 +4506,15 @@ func (a *AzureVMWorkloadProtectableItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureVMWorkloadProtectableItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.WorkloadProtectableItem.marshalInternal(objectMap, discValue)
-	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
-	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
-	populate(objectMap, "parentName", a.ParentName)
-	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
-	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
-	populate(objectMap, "serverName", a.ServerName)
-	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
-	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
-}
-
-func (a *AzureVMWorkloadProtectableItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
 		case "isAutoProtectable":
 			err = unpopulate(val, &a.IsAutoProtectable)
 			delete(rawMsg, key)
@@ -1730,6 +4530,12 @@ func (a *AzureVMWorkloadProtectableItem) unmarshalInternal(rawMsg map[string]jso
 		case "prebackupvalidation":
 			err = unpopulate(val, &a.Prebackupvalidation)
 			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
 		case "serverName":
 			err = unpopulate(val, &a.ServerName)
 			delete(rawMsg, key)
@@ -1739,13 +4545,13 @@ func (a *AzureVMWorkloadProtectableItem) unmarshalInternal(rawMsg map[string]jso
 		case "subprotectableitemcount":
 			err = unpopulate(val, &a.Subprotectableitemcount)
 			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.WorkloadProtectableItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1753,8 +4559,8 @@ func (a *AzureVMWorkloadProtectableItem) unmarshalInternal(rawMsg map[string]jso
 // AzureVMWorkloadProtectedItemClassification provides polymorphic access to related types.
 // Call the interface's GetAzureVMWorkloadProtectedItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureVMWorkloadProtectedItem, *AzureVmWorkloadSAPAseDatabaseProtectedItem, *AzureVmWorkloadSAPHanaDatabaseProtectedItem,
-// - *AzureVmWorkloadSQLDatabaseProtectedItem
+// - *AzureVMWorkloadProtectedItem, *AzureVMWorkloadSAPAseDatabaseProtectedItem, *AzureVMWorkloadSAPHanaDatabaseProtectedItem,
+// - *AzureVMWorkloadSQLDatabaseProtectedItem
 type AzureVMWorkloadProtectedItemClassification interface {
 	ProtectedItemClassification
 	// GetAzureVMWorkloadProtectedItem returns the AzureVMWorkloadProtectedItem content of the underlying type.
@@ -1763,12 +4569,44 @@ type AzureVMWorkloadProtectedItemClassification interface {
 
 // AzureVMWorkloadProtectedItem - Azure VM workload-specific protected item.
 type AzureVMWorkloadProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
 	// Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 
 	// Friendly name of the DB represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 
 	// Health details of different KPIs
 	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
@@ -1782,11 +4620,20 @@ type AzureVMWorkloadProtectedItem struct {
 	// Timestamp of the last backup operation on this backup item.
 	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
 
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
 	// Parent name of the DB such as Instance or Availability Group.
 	ParentName *string `json:"parentName,omitempty"`
 
 	// Parent type of protected item, example: for a DB, standalone server or distributed
 	ParentType *string `json:"parentType,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
 
 	// Data ID of the protected item.
 	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
@@ -1800,8 +4647,17 @@ type AzureVMWorkloadProtectedItem struct {
 	// Backup status of this backup item.
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
 	// Host/Cluster Name for instance or AG
 	ServerName *string `json:"serverName,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
 }
 
 // GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
@@ -1809,10 +4665,62 @@ func (a *AzureVMWorkloadProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureV
 	return a
 }
 
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadProtectedItem.
+func (a *AzureVMWorkloadProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadProtectedItem.
 func (a AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureVmWorkloadProtectedItem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentType", a.ParentType)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataSourceId", a.ProtectedItemDataSourceID)
+	populate(objectMap, "protectedItemHealthStatus", a.ProtectedItemHealthStatus)
+	objectMap["protectedItemType"] = "AzureVmWorkloadProtectedItem"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -1822,35 +4730,44 @@ func (a *AzureVMWorkloadProtectedItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureVMWorkloadProtectedItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.ProtectedItem.marshalInternal(objectMap, discValue)
-	populate(objectMap, "extendedInfo", a.ExtendedInfo)
-	populate(objectMap, "friendlyName", a.FriendlyName)
-	populate(objectMap, "kpisHealths", a.KpisHealths)
-	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
-	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populate(objectMap, "parentName", a.ParentName)
-	populate(objectMap, "parentType", a.ParentType)
-	populate(objectMap, "protectedItemDataSourceId", a.ProtectedItemDataSourceID)
-	populate(objectMap, "protectedItemHealthStatus", a.ProtectedItemHealthStatus)
-	populate(objectMap, "protectionState", a.ProtectionState)
-	populate(objectMap, "protectionStatus", a.ProtectionStatus)
-	populate(objectMap, "serverName", a.ServerName)
-}
-
-func (a *AzureVMWorkloadProtectedItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
 			delete(rawMsg, key)
 		case "kpisHealths":
 			err = unpopulate(val, &a.KpisHealths)
@@ -1864,11 +4781,20 @@ func (a *AzureVMWorkloadProtectedItem) unmarshalInternal(rawMsg map[string]json.
 		case "lastBackupTime":
 			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
 			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
 		case "parentName":
 			err = unpopulate(val, &a.ParentName)
 			delete(rawMsg, key)
 		case "parentType":
 			err = unpopulate(val, &a.ParentType)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
 			delete(rawMsg, key)
 		case "protectedItemDataSourceId":
 			err = unpopulate(val, &a.ProtectedItemDataSourceID)
@@ -1876,22 +4802,31 @@ func (a *AzureVMWorkloadProtectedItem) unmarshalInternal(rawMsg map[string]json.
 		case "protectedItemHealthStatus":
 			err = unpopulate(val, &a.ProtectedItemHealthStatus)
 			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &a.ProtectionState)
 			delete(rawMsg, key)
 		case "protectionStatus":
 			err = unpopulate(val, &a.ProtectionStatus)
 			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
 		case "serverName":
 			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -1904,6 +4839,9 @@ type AzureVMWorkloadProtectedItemExtendedInfo struct {
 	// Indicates consistency of policy object and policy applied to this backup item.
 	PolicyState *string `json:"policyState,omitempty"`
 
+	// Indicates consistency of policy object and policy applied to this backup item.
+	RecoveryModel *string `json:"recoveryModel,omitempty"`
+
 	// Number of backup copies available for this backup item.
 	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
 }
@@ -1913,6 +4851,7 @@ func (a AzureVMWorkloadProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
 	populate(objectMap, "policyState", a.PolicyState)
+	populate(objectMap, "recoveryModel", a.RecoveryModel)
 	populate(objectMap, "recoveryPointCount", a.RecoveryPointCount)
 	return json.Marshal(objectMap)
 }
@@ -1932,6 +4871,9 @@ func (a *AzureVMWorkloadProtectedItemExtendedInfo) UnmarshalJSON(data []byte) er
 		case "policyState":
 			err = unpopulate(val, &a.PolicyState)
 			delete(rawMsg, key)
+		case "recoveryModel":
+			err = unpopulate(val, &a.RecoveryModel)
+			delete(rawMsg, key)
 		case "recoveryPointCount":
 			err = unpopulate(val, &a.RecoveryPointCount)
 			delete(rawMsg, key)
@@ -1945,9 +4887,17 @@ func (a *AzureVMWorkloadProtectedItemExtendedInfo) UnmarshalJSON(data []byte) er
 
 // AzureVMWorkloadProtectionPolicy - Azure VM (Mercury) workload-specific backup policy.
 type AzureVMWorkloadProtectionPolicy struct {
-	ProtectionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
 	// Fix the policy inconsistency
 	MakePolicyConsistent *bool `json:"makePolicyConsistent,omitempty"`
+
+	// Number of items associated with this policy.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+
+	// ResourceGuard Operation Requests
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
 
 	// Common settings for the backup management
 	Settings *Settings `json:"settings,omitempty"`
@@ -1959,11 +4909,22 @@ type AzureVMWorkloadProtectionPolicy struct {
 	WorkLoadType *WorkloadType `json:"workLoadType,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type AzureVMWorkloadProtectionPolicy.
+func (a *AzureVMWorkloadProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            a.ProtectedItemsCount,
+		BackupManagementType:           a.BackupManagementType,
+		ResourceGuardOperationRequests: a.ResourceGuardOperationRequests,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadProtectionPolicy.
 func (a AzureVMWorkloadProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.ProtectionPolicy.marshalInternal(objectMap, "AzureWorkload")
+	objectMap["backupManagementType"] = "AzureWorkload"
 	populate(objectMap, "makePolicyConsistent", a.MakePolicyConsistent)
+	populate(objectMap, "protectedItemsCount", a.ProtectedItemsCount)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "settings", a.Settings)
 	populate(objectMap, "subProtectionPolicy", a.SubProtectionPolicy)
 	populate(objectMap, "workLoadType", a.WorkLoadType)
@@ -1979,8 +4940,17 @@ func (a *AzureVMWorkloadProtectionPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
 		case "makePolicyConsistent":
 			err = unpopulate(val, &a.MakePolicyConsistent)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, &a.ProtectedItemsCount)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "settings":
 			err = unpopulate(val, &a.Settings)
@@ -1996,192 +4966,2475 @@ func (a *AzureVMWorkloadProtectionPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := a.ProtectionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureVMWorkloadSAPAseDatabaseProtectedItem - Azure VM workload-specific protected item representing SAP ASE Database.
 type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
-	AzureVMWorkloadProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
+	// Additional information for this backup item.
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the DB represented by this backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+
+	// Error details in last backup
+	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+
+	// Last backup operation status. Possible values: Healthy, Unhealthy.
+	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+
+	// Timestamp of the last backup operation on this backup item.
+	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// Parent name of the DB such as Instance or Availability Group.
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent type of protected item, example: for a DB, standalone server or distributed
+	ParentType *string `json:"parentType,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
+	// Data ID of the protected item.
+	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+
+	// Health status of the backup item, evaluated based on last heartbeat received
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+
+	// Backup status of this backup item.
+	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		ServerName:                       a.ServerName,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ExtendedInfo:                     a.ExtendedInfo,
+		KpisHealths:                      a.KpisHealths,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
 func (a AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectedItem.marshalInternal(objectMap, "AzureVmWorkloadSAPAseDatabase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentType", a.ParentType)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataSourceId", a.ProtectedItemDataSourceID)
+	populate(objectMap, "protectedItemHealthStatus", a.ProtectedItemHealthStatus)
+	objectMap["protectedItemType"] = "AzureVmWorkloadSAPAseDatabase"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPAseDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "kpisHealths":
+			err = unpopulate(val, &a.KpisHealths)
+			delete(rawMsg, key)
+		case "lastBackupErrorDetail":
+			err = unpopulate(val, &a.LastBackupErrorDetail)
+			delete(rawMsg, key)
+		case "lastBackupStatus":
+			err = unpopulate(val, &a.LastBackupStatus)
+			delete(rawMsg, key)
+		case "lastBackupTime":
+			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentType":
+			err = unpopulate(val, &a.ParentType)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemDataSourceId":
+			err = unpopulate(val, &a.ProtectedItemDataSourceID)
+			delete(rawMsg, key)
+		case "protectedItemHealthStatus":
+			err = unpopulate(val, &a.ProtectedItemHealthStatus)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "protectionStatus":
+			err = unpopulate(val, &a.ProtectionStatus)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPAseDatabaseWorkloadItem - Azure VM workload-specific workload item representing SAP ASE Database.
 type AzureVMWorkloadSAPAseDatabaseWorkloadItem struct {
-	AzureVMWorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if workload item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
 func (a AzureVMWorkloadSAPAseDatabaseWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadItem.marshalInternal(objectMap, "SAPAseDatabase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "SAPAseDatabase"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPAseDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPAseDatabaseWorkloadItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subWorkloadItemCount":
+			err = unpopulate(val, &a.SubWorkloadItemCount)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPAseSystemProtectableItem - Azure VM workload-specific protectable item representing SAP ASE System.
 type AzureVMWorkloadSAPAseSystemProtectableItem struct {
-	AzureVMWorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if protectable item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
+	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+
+	// Pre-backup validation for protectable objects
+	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
+func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
+func (a *AzureVMWorkloadSAPAseSystemProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
 func (a AzureVMWorkloadSAPAseSystemProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectableItem.marshalInternal(objectMap, "SAPAseSystem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "SAPAseSystem"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPAseSystemProtectableItem.
+func (a *AzureVMWorkloadSAPAseSystemProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "isAutoProtected":
+			err = unpopulate(val, &a.IsAutoProtected)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentUniqueName":
+			err = unpopulate(val, &a.ParentUniqueName)
+			delete(rawMsg, key)
+		case "prebackupvalidation":
+			err = unpopulate(val, &a.Prebackupvalidation)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "subprotectableitemcount":
+			err = unpopulate(val, &a.Subprotectableitemcount)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPAseSystemWorkloadItem - Azure VM workload-specific workload item representing SAP ASE System.
 type AzureVMWorkloadSAPAseSystemWorkloadItem struct {
-	AzureVMWorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if workload item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
 func (a AzureVMWorkloadSAPAseSystemWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadItem.marshalInternal(objectMap, "SAPAseSystem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "SAPAseSystem"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPAseSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPAseSystemWorkloadItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subWorkloadItemCount":
+			err = unpopulate(val, &a.SubWorkloadItemCount)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPHanaDatabaseProtectableItem - Azure VM workload-specific protectable item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
-	AzureVMWorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if protectable item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
+	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+
+	// Pre-backup validation for protectable objects
+	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
 func (a AzureVMWorkloadSAPHanaDatabaseProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectableItem.marshalInternal(objectMap, "SAPHanaDatabase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "SAPHanaDatabase"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPHanaDatabaseProtectableItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "isAutoProtected":
+			err = unpopulate(val, &a.IsAutoProtected)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentUniqueName":
+			err = unpopulate(val, &a.ParentUniqueName)
+			delete(rawMsg, key)
+		case "prebackupvalidation":
+			err = unpopulate(val, &a.Prebackupvalidation)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "subprotectableitemcount":
+			err = unpopulate(val, &a.Subprotectableitemcount)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPHanaDatabaseProtectedItem - Azure VM workload-specific protected item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
-	AzureVMWorkloadProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
+	// Additional information for this backup item.
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the DB represented by this backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+
+	// Error details in last backup
+	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+
+	// Last backup operation status. Possible values: Healthy, Unhealthy.
+	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+
+	// Timestamp of the last backup operation on this backup item.
+	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// Parent name of the DB such as Instance or Availability Group.
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent type of protected item, example: for a DB, standalone server or distributed
+	ParentType *string `json:"parentType,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
+	// Data ID of the protected item.
+	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+
+	// Health status of the backup item, evaluated based on last heartbeat received
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+
+	// Backup status of this backup item.
+	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		ServerName:                       a.ServerName,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ExtendedInfo:                     a.ExtendedInfo,
+		KpisHealths:                      a.KpisHealths,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
 func (a AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectedItem.marshalInternal(objectMap, "AzureVmWorkloadSAPHanaDatabase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentType", a.ParentType)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataSourceId", a.ProtectedItemDataSourceID)
+	populate(objectMap, "protectedItemHealthStatus", a.ProtectedItemHealthStatus)
+	objectMap["protectedItemType"] = "AzureVmWorkloadSAPHanaDatabase"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPHanaDatabaseProtectedItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "kpisHealths":
+			err = unpopulate(val, &a.KpisHealths)
+			delete(rawMsg, key)
+		case "lastBackupErrorDetail":
+			err = unpopulate(val, &a.LastBackupErrorDetail)
+			delete(rawMsg, key)
+		case "lastBackupStatus":
+			err = unpopulate(val, &a.LastBackupStatus)
+			delete(rawMsg, key)
+		case "lastBackupTime":
+			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentType":
+			err = unpopulate(val, &a.ParentType)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemDataSourceId":
+			err = unpopulate(val, &a.ProtectedItemDataSourceID)
+			delete(rawMsg, key)
+		case "protectedItemHealthStatus":
+			err = unpopulate(val, &a.ProtectedItemHealthStatus)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "protectionStatus":
+			err = unpopulate(val, &a.ProtectionStatus)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPHanaDatabaseWorkloadItem - Azure VM workload-specific workload item representing SAP HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
-	AzureVMWorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if workload item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
 func (a AzureVMWorkloadSAPHanaDatabaseWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadItem.marshalInternal(objectMap, "SAPHanaDatabase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "SAPHanaDatabase"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPHanaDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaDatabaseWorkloadItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subWorkloadItemCount":
+			err = unpopulate(val, &a.SubWorkloadItemCount)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPHanaSystemProtectableItem - Azure VM workload-specific protectable item representing SAP HANA System.
 type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
-	AzureVMWorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if protectable item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
+	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+
+	// Pre-backup validation for protectable objects
+	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
+func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
+func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
 func (a AzureVMWorkloadSAPHanaSystemProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectableItem.marshalInternal(objectMap, "SAPHanaSystem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "SAPHanaSystem"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPHanaSystemProtectableItem.
+func (a *AzureVMWorkloadSAPHanaSystemProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "isAutoProtected":
+			err = unpopulate(val, &a.IsAutoProtected)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentUniqueName":
+			err = unpopulate(val, &a.ParentUniqueName)
+			delete(rawMsg, key)
+		case "prebackupvalidation":
+			err = unpopulate(val, &a.Prebackupvalidation)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "subprotectableitemcount":
+			err = unpopulate(val, &a.Subprotectableitemcount)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSAPHanaSystemWorkloadItem - Azure VM workload-specific workload item representing SAP HANA System.
 type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
-	AzureVMWorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if workload item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
 func (a AzureVMWorkloadSAPHanaSystemWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadItem.marshalInternal(objectMap, "SAPHanaSystem")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "SAPHanaSystem"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
-// AzureVMWorkloadSQLAvailabilityGroupProtectableItem - Azure VM workload-specific protectable item representing SQL Availability Group.
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSAPHanaSystemWorkloadItem.
+func (a *AzureVMWorkloadSAPHanaSystemWorkloadItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subWorkloadItemCount":
+			err = unpopulate(val, &a.SubWorkloadItemCount)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AzureVMWorkloadSQLAvailabilityGroupProtectableItem - Azure VM workload-specific protectable item representing SQL Availability
+// Group.
 type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
-	AzureVMWorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if protectable item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
+	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+
+	// Pre-backup validation for protectable objects
+	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
+func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
+func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
 func (a AzureVMWorkloadSQLAvailabilityGroupProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectableItem.marshalInternal(objectMap, "SQLAvailabilityGroupContainer")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "SQLAvailabilityGroupContainer"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
+func (a *AzureVMWorkloadSQLAvailabilityGroupProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "isAutoProtected":
+			err = unpopulate(val, &a.IsAutoProtected)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentUniqueName":
+			err = unpopulate(val, &a.ParentUniqueName)
+			delete(rawMsg, key)
+		case "prebackupvalidation":
+			err = unpopulate(val, &a.Prebackupvalidation)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "subprotectableitemcount":
+			err = unpopulate(val, &a.Subprotectableitemcount)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSQLDatabaseProtectableItem - Azure VM workload-specific protectable item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseProtectableItem struct {
-	AzureVMWorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if protectable item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
+	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+
+	// Pre-backup validation for protectable objects
+	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
 func (a AzureVMWorkloadSQLDatabaseProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectableItem.marshalInternal(objectMap, "SQLDataBase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "SQLDataBase"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSQLDatabaseProtectableItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "isAutoProtected":
+			err = unpopulate(val, &a.IsAutoProtected)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentUniqueName":
+			err = unpopulate(val, &a.ParentUniqueName)
+			delete(rawMsg, key)
+		case "prebackupvalidation":
+			err = unpopulate(val, &a.Prebackupvalidation)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "subprotectableitemcount":
+			err = unpopulate(val, &a.Subprotectableitemcount)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSQLDatabaseProtectedItem - Azure VM workload-specific protected item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseProtectedItem struct {
-	AzureVMWorkloadProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
+	// Additional information for this backup item.
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the DB represented by this backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails `json:"kpisHealths,omitempty"`
+
+	// Error details in last backup
+	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
+
+	// Last backup operation status. Possible values: Healthy, Unhealthy.
+	LastBackupStatus *LastBackupStatus `json:"lastBackupStatus,omitempty"`
+
+	// Timestamp of the last backup operation on this backup item.
+	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// Parent name of the DB such as Instance or Availability Group.
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent type of protected item, example: for a DB, standalone server or distributed
+	ParentType *string `json:"parentType,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
+	// Data ID of the protected item.
+	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
+
+	// Health status of the backup item, evaluated based on last heartbeat received
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
+
+	// Backup status of this backup item.
+	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		FriendlyName:                     a.FriendlyName,
+		ServerName:                       a.ServerName,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ProtectionState:                  a.ProtectionState,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ExtendedInfo:                     a.ExtendedInfo,
+		KpisHealths:                      a.KpisHealths,
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                a.ProtectedItemType,
+		BackupManagementType:             a.BackupManagementType,
+		WorkloadType:                     a.WorkloadType,
+		ContainerName:                    a.ContainerName,
+		SourceResourceID:                 a.SourceResourceID,
+		PolicyID:                         a.PolicyID,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		BackupSetName:                    a.BackupSetName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		PolicyName:                       a.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
 func (a AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectedItem.marshalInternal(objectMap, "AzureVmWorkloadSQLDatabase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "backupSetName", a.BackupSetName)
+	populate(objectMap, "containerName", a.ContainerName)
+	populate(objectMap, "createMode", a.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", a.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
+	populate(objectMap, "kpisHealths", a.KpisHealths)
+	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
+	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
+	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentType", a.ParentType)
+	populate(objectMap, "policyId", a.PolicyID)
+	populate(objectMap, "policyName", a.PolicyName)
+	populate(objectMap, "protectedItemDataSourceId", a.ProtectedItemDataSourceID)
+	populate(objectMap, "protectedItemHealthStatus", a.ProtectedItemHealthStatus)
+	objectMap["protectedItemType"] = "AzureVmWorkloadSQLDatabase"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "protectionStatus", a.ProtectionStatus)
+	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSQLDatabaseProtectedItem.
+func (a *AzureVMWorkloadSQLDatabaseProtectedItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &a.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &a.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &a.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &a.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &a.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &a.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &a.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &a.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "kpisHealths":
+			err = unpopulate(val, &a.KpisHealths)
+			delete(rawMsg, key)
+		case "lastBackupErrorDetail":
+			err = unpopulate(val, &a.LastBackupErrorDetail)
+			delete(rawMsg, key)
+		case "lastBackupStatus":
+			err = unpopulate(val, &a.LastBackupStatus)
+			delete(rawMsg, key)
+		case "lastBackupTime":
+			err = unpopulateTimeRFC3339(val, &a.LastBackupTime)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &a.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentType":
+			err = unpopulate(val, &a.ParentType)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &a.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemDataSourceId":
+			err = unpopulate(val, &a.ProtectedItemDataSourceID)
+			delete(rawMsg, key)
+		case "protectedItemHealthStatus":
+			err = unpopulate(val, &a.ProtectedItemHealthStatus)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &a.ProtectedItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "protectionStatus":
+			err = unpopulate(val, &a.ProtectionStatus)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &a.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSQLDatabaseWorkloadItem - Azure VM workload-specific workload item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
-	AzureVMWorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if workload item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
 func (a AzureVMWorkloadSQLDatabaseWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadItem.marshalInternal(objectMap, "SQLDataBase")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "SQLDataBase"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSQLDatabaseWorkloadItem.
+func (a *AzureVMWorkloadSQLDatabaseWorkloadItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subWorkloadItemCount":
+			err = unpopulate(val, &a.SubWorkloadItemCount)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSQLInstanceProtectableItem - Azure VM workload-specific protectable item representing SQL Instance.
 type AzureVMWorkloadSQLInstanceProtectableItem struct {
-	AzureVMWorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if protectable item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// Parent Unique Name is added to provide the service formatted URI Name of the Parent Only Applicable for data bases where
+	// the parent would be either Instance or a SQL AG.
+	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
+
+	// Pre-backup validation for protectable objects
+	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLInstanceProtectableItem.
+func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
+	return &AzureVMWorkloadProtectableItem{
+		ParentName:              a.ParentName,
+		ParentUniqueName:        a.ParentUniqueName,
+		ServerName:              a.ServerName,
+		IsAutoProtectable:       a.IsAutoProtectable,
+		IsAutoProtected:         a.IsAutoProtected,
+		Subinquireditemcount:    a.Subinquireditemcount,
+		Subprotectableitemcount: a.Subprotectableitemcount,
+		Prebackupvalidation:     a.Prebackupvalidation,
+		BackupManagementType:    a.BackupManagementType,
+		WorkloadType:            a.WorkloadType,
+		ProtectableItemType:     a.ProtectableItemType,
+		FriendlyName:            a.FriendlyName,
+		ProtectionState:         a.ProtectionState,
+	}
+}
+
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSQLInstanceProtectableItem.
+func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		ProtectableItemType:  a.ProtectableItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSQLInstanceProtectableItem.
 func (a AzureVMWorkloadSQLInstanceProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadProtectableItem.marshalInternal(objectMap, "SQLInstance")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "isAutoProtected", a.IsAutoProtected)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "parentUniqueName", a.ParentUniqueName)
+	populate(objectMap, "prebackupvalidation", a.Prebackupvalidation)
+	objectMap["protectableItemType"] = "SQLInstance"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	populate(objectMap, "subprotectableitemcount", a.Subprotectableitemcount)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureVMWorkloadSQLInstanceProtectableItem.
+func (a *AzureVMWorkloadSQLInstanceProtectableItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "isAutoProtected":
+			err = unpopulate(val, &a.IsAutoProtected)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "parentUniqueName":
+			err = unpopulate(val, &a.ParentUniqueName)
+			delete(rawMsg, key)
+		case "prebackupvalidation":
+			err = unpopulate(val, &a.Prebackupvalidation)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &a.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "subprotectableitemcount":
+			err = unpopulate(val, &a.Subprotectableitemcount)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureVMWorkloadSQLInstanceWorkloadItem - Azure VM workload-specific workload item representing SQL Instance.
 type AzureVMWorkloadSQLInstanceWorkloadItem struct {
-	AzureVMWorkloadItem
+	// REQUIRED; Type of the backup item.
+	WorkloadItemType *string `json:"workloadItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
 	// Data Directory Paths for default directories
 	DataDirectoryPaths []*SQLDataDirectory `json:"dataDirectoryPaths,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Indicates if workload item is auto-protectable
+	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+
+	// Name for instance or AG
+	ParentName *string `json:"parentName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string `json:"serverName,omitempty"`
+
+	// For instance or AG, indicates number of DB's to be protected
+	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
+
+	// For instance or AG, indicates number of DB's present
+	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetAzureVMWorkloadItem implements the AzureVMWorkloadItemClassification interface for type AzureVMWorkloadSQLInstanceWorkloadItem.
+func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetAzureVMWorkloadItem() *AzureVMWorkloadItem {
+	return &AzureVMWorkloadItem{
+		ParentName:           a.ParentName,
+		ServerName:           a.ServerName,
+		IsAutoProtectable:    a.IsAutoProtectable,
+		Subinquireditemcount: a.Subinquireditemcount,
+		SubWorkloadItemCount: a.SubWorkloadItemCount,
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
+}
+
+// GetWorkloadItem implements the WorkloadItemClassification interface for type AzureVMWorkloadSQLInstanceWorkloadItem.
+func (a *AzureVMWorkloadSQLInstanceWorkloadItem) GetWorkloadItem() *WorkloadItem {
+	return &WorkloadItem{
+		BackupManagementType: a.BackupManagementType,
+		WorkloadType:         a.WorkloadType,
+		WorkloadItemType:     a.WorkloadItemType,
+		FriendlyName:         a.FriendlyName,
+		ProtectionState:      a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadSQLInstanceWorkloadItem.
 func (a AzureVMWorkloadSQLInstanceWorkloadItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureVMWorkloadItem.marshalInternal(objectMap, "SQLInstance")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "dataDirectoryPaths", a.DataDirectoryPaths)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "isAutoProtectable", a.IsAutoProtectable)
+	populate(objectMap, "parentName", a.ParentName)
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "serverName", a.ServerName)
+	populate(objectMap, "subWorkloadItemCount", a.SubWorkloadItemCount)
+	populate(objectMap, "subinquireditemcount", a.Subinquireditemcount)
+	objectMap["workloadItemType"] = "SQLInstance"
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -2194,16 +7447,43 @@ func (a *AzureVMWorkloadSQLInstanceWorkloadItem) UnmarshalJSON(data []byte) erro
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
 		case "dataDirectoryPaths":
 			err = unpopulate(val, &a.DataDirectoryPaths)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "isAutoProtectable":
+			err = unpopulate(val, &a.IsAutoProtectable)
+			delete(rawMsg, key)
+		case "parentName":
+			err = unpopulate(val, &a.ParentName)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "serverName":
+			err = unpopulate(val, &a.ServerName)
+			delete(rawMsg, key)
+		case "subWorkloadItemCount":
+			err = unpopulate(val, &a.SubWorkloadItemCount)
+			delete(rawMsg, key)
+		case "subinquireditemcount":
+			err = unpopulate(val, &a.Subinquireditemcount)
+			delete(rawMsg, key)
+		case "workloadItemType":
+			err = unpopulate(val, &a.WorkloadItemType)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &a.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.AzureVMWorkloadItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2220,35 +7500,108 @@ type AzureWorkloadAutoProtectionIntentClassification interface {
 
 // AzureWorkloadAutoProtectionIntent - Azure Recovery Services Vault specific protection intent item.
 type AzureWorkloadAutoProtectionIntent struct {
-	AzureRecoveryServiceVaultProtectionIntent
+	// REQUIRED; backup protectionIntent type.
+	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
+	ItemID *string `json:"itemId,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
-// GetAzureWorkloadAutoProtectionIntent implements the AzureWorkloadAutoProtectionIntentClassification interface for type AzureWorkloadAutoProtectionIntent.
+// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
+// for type AzureWorkloadAutoProtectionIntent.
+func (a *AzureWorkloadAutoProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
+	return &AzureRecoveryServiceVaultProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// GetAzureWorkloadAutoProtectionIntent implements the AzureWorkloadAutoProtectionIntentClassification interface for type
+// AzureWorkloadAutoProtectionIntent.
 func (a *AzureWorkloadAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent {
 	return a
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadAutoProtectionIntent.
+func (a *AzureWorkloadAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadAutoProtectionIntent.
 func (a AzureWorkloadAutoProtectionIntent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureWorkloadAutoProtectionIntent")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "itemId", a.ItemID)
+	populate(objectMap, "policyId", a.PolicyID)
+	objectMap["protectionIntentItemType"] = "AzureWorkloadAutoProtectionIntent"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	return json.Marshal(objectMap)
 }
 
-func (a AzureWorkloadAutoProtectionIntent) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureRecoveryServiceVaultProtectionIntent.marshalInternal(objectMap, discValue)
-}
-
-func (a *AzureWorkloadAutoProtectionIntent) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := a.AzureRecoveryServiceVaultProtectionIntent.unmarshalInternal(rawMsg); err != nil {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadAutoProtectionIntent.
+func (a *AzureWorkloadAutoProtectionIntent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "itemId":
+			err = unpopulate(val, &a.ItemID)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "protectionIntentItemType":
+			err = unpopulate(val, &a.ProtectionIntentItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
 // AzureWorkloadBackupRequest - AzureWorkload workload-specific backup request.
 type AzureWorkloadBackupRequest struct {
-	BackupRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Type of backup, viz. Full, Differential, Log or CopyOnlyFull
 	BackupType *BackupType `json:"backupType,omitempty"`
 
@@ -2259,12 +7612,19 @@ type AzureWorkloadBackupRequest struct {
 	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
 }
 
+// GetBackupRequest implements the BackupRequestClassification interface for type AzureWorkloadBackupRequest.
+func (a *AzureWorkloadBackupRequest) GetBackupRequest() *BackupRequest {
+	return &BackupRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadBackupRequest.
 func (a AzureWorkloadBackupRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.BackupRequest.marshalInternal(objectMap, "AzureWorkloadBackupRequest")
 	populate(objectMap, "backupType", a.BackupType)
 	populate(objectMap, "enableCompression", a.EnableCompression)
+	objectMap["objectType"] = "AzureWorkloadBackupRequest"
 	populateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", a.RecoveryPointExpiryTimeInUTC)
 	return json.Marshal(objectMap)
 }
@@ -2284,6 +7644,9 @@ func (a *AzureWorkloadBackupRequest) UnmarshalJSON(data []byte) error {
 		case "enableCompression":
 			err = unpopulate(val, &a.EnableCompression)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointExpiryTimeInUTC":
 			err = unpopulateTimeRFC3339(val, &a.RecoveryPointExpiryTimeInUTC)
 			delete(rawMsg, key)
@@ -2291,9 +7654,6 @@ func (a *AzureWorkloadBackupRequest) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.BackupRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2310,15 +7670,35 @@ type AzureWorkloadContainerClassification interface {
 
 // AzureWorkloadContainer - Container for the workloads running inside Azure Compute or Classic Compute.
 type AzureWorkloadContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Additional details of a workload container.
 	ExtendedInfo *AzureWorkloadContainerExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
 
 	// Time stamp when this container was updated.
 	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
 
 	// Re-Do Operation
 	OperationType *OperationType `json:"operationType,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 
 	// ARM ID of the virtual machine represented by this Azure Workload Container
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
@@ -2330,10 +7710,32 @@ type AzureWorkloadContainer struct {
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureWorkloadContainer.
 func (a *AzureWorkloadContainer) GetAzureWorkloadContainer() *AzureWorkloadContainer { return a }
 
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureWorkloadContainer.
+func (a *AzureWorkloadContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          a.FriendlyName,
+		BackupManagementType:  a.BackupManagementType,
+		RegistrationStatus:    a.RegistrationStatus,
+		HealthStatus:          a.HealthStatus,
+		ContainerType:         a.ContainerType,
+		ProtectableObjectType: a.ProtectableObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadContainer.
 func (a AzureWorkloadContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureWorkloadContainer")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	objectMap["containerType"] = "AzureWorkloadContainer"
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "healthStatus", a.HealthStatus)
+	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
+	populate(objectMap, "operationType", a.OperationType)
+	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", a.RegistrationStatus)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -2343,30 +7745,35 @@ func (a *AzureWorkloadContainer) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadContainer) marshalInternal(objectMap map[string]interface{}, discValue ContainerType) {
-	a.ProtectionContainer.marshalInternal(objectMap, discValue)
-	populate(objectMap, "extendedInfo", a.ExtendedInfo)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
-	populate(objectMap, "operationType", a.OperationType)
-	populate(objectMap, "sourceResourceId", a.SourceResourceID)
-	populate(objectMap, "workloadType", a.WorkloadType)
-}
-
-func (a *AzureWorkloadContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &a.ContainerType)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &a.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &a.HealthStatus)
 			delete(rawMsg, key)
 		case "lastUpdatedTime":
 			err = unpopulateTimeRFC3339(val, &a.LastUpdatedTime)
 			delete(rawMsg, key)
 		case "operationType":
 			err = unpopulate(val, &a.OperationType)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &a.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &a.RegistrationStatus)
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, &a.SourceResourceID)
@@ -2379,8 +7786,85 @@ func (a *AzureWorkloadContainer) unmarshalInternal(rawMsg map[string]json.RawMes
 			return err
 		}
 	}
-	if err := a.ProtectionContainer.unmarshalInternal(rawMsg); err != nil {
+	return nil
+}
+
+// AzureWorkloadContainerAutoProtectionIntent - Azure workload specific protection intent item.
+type AzureWorkloadContainerAutoProtectionIntent struct {
+	// REQUIRED; backup protectionIntent type.
+	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
+	ItemID *string `json:"itemId,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadContainerAutoProtectionIntent.
+func (a *AzureWorkloadContainerAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureWorkloadContainerAutoProtectionIntent.
+func (a AzureWorkloadContainerAutoProtectionIntent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "itemId", a.ItemID)
+	populate(objectMap, "policyId", a.PolicyID)
+	objectMap["protectionIntentItemType"] = ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadContainerAutoProtectionIntent.
+func (a *AzureWorkloadContainerAutoProtectionIntent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "itemId":
+			err = unpopulate(val, &a.ItemID)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "protectionIntentItemType":
+			err = unpopulate(val, &a.ProtectionIntentItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -2437,12 +7921,26 @@ func (a AzureWorkloadErrorInfo) MarshalJSON() ([]byte, error) {
 
 // AzureWorkloadJob - Azure storage specific job.
 type AzureWorkloadJob struct {
-	Job
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
 	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
 
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Time elapsed during the execution of this job.
 	Duration *string `json:"duration,omitempty"`
+
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
 
 	// Error details on execution of this job.
 	ErrorDetails []*AzureWorkloadErrorInfo `json:"errorDetails,omitempty"`
@@ -2450,18 +7948,48 @@ type AzureWorkloadJob struct {
 	// Additional information about the job.
 	ExtendedInfo *AzureWorkloadJobExtendedInfo `json:"extendedInfo,omitempty"`
 
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
+
 	// Workload type of the job
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type AzureWorkloadJob.
+func (a *AzureWorkloadJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   a.EntityFriendlyName,
+		BackupManagementType: a.BackupManagementType,
+		Operation:            a.Operation,
+		Status:               a.Status,
+		StartTime:            a.StartTime,
+		EndTime:              a.EndTime,
+		ActivityID:           a.ActivityID,
+		JobType:              a.JobType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadJob.
 func (a AzureWorkloadJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.Job.marshalInternal(objectMap, "AzureWorkloadJob")
 	populate(objectMap, "actionsInfo", a.ActionsInfo)
+	populate(objectMap, "activityId", a.ActivityID)
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "duration", a.Duration)
+	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	objectMap["jobType"] = "AzureWorkloadJob"
+	populate(objectMap, "operation", a.Operation)
+	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populate(objectMap, "status", a.Status)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -2478,14 +8006,38 @@ func (a *AzureWorkloadJob) UnmarshalJSON(data []byte) error {
 		case "actionsInfo":
 			err = unpopulate(val, &a.ActionsInfo)
 			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &a.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
 		case "duration":
 			err = unpopulate(val, &a.Duration)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &a.EntityFriendlyName)
 			delete(rawMsg, key)
 		case "errorDetails":
 			err = unpopulate(val, &a.ErrorDetails)
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &a.JobType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &a.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, &a.WorkloadType)
@@ -2494,9 +8046,6 @@ func (a *AzureWorkloadJob) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.Job.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2543,20 +8092,58 @@ type AzureWorkloadPointInTimeRecoveryPointClassification interface {
 
 // AzureWorkloadPointInTimeRecoveryPoint - Recovery point specific to PointInTime
 type AzureWorkloadPointInTimeRecoveryPoint struct {
-	AzureWorkloadRecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Eligibility of RP to be moved to another tier
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+
+	// Recovery point tier information.
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+
+	// UTC time at which recovery point was created
+	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+
 	// List of log ranges
 	TimeRanges []*PointInTimeRange `json:"timeRanges,omitempty"`
+
+	// Type of restore point
+	Type *RestorePointType `json:"type,omitempty"`
 }
 
-// GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for type AzureWorkloadPointInTimeRecoveryPoint.
+// GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
+// type AzureWorkloadPointInTimeRecoveryPoint.
 func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint {
 	return a
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadPointInTimeRecoveryPoint.
+func (a *AzureWorkloadPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadPointInTimeRecoveryPoint.
+func (a *AzureWorkloadPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadPointInTimeRecoveryPoint.
 func (a AzureWorkloadPointInTimeRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureWorkloadPointInTimeRecoveryPoint")
+	objectMap["objectType"] = "AzureWorkloadPointInTimeRecoveryPoint"
+	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
+	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
+	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populate(objectMap, "timeRanges", a.TimeRanges)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -2566,44 +8153,93 @@ func (a *AzureWorkloadPointInTimeRecoveryPoint) UnmarshalJSON(data []byte) error
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadPointInTimeRecoveryPoint) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureWorkloadRecoveryPoint.marshalInternal(objectMap, discValue)
-	populate(objectMap, "timeRanges", a.TimeRanges)
-}
-
-func (a *AzureWorkloadPointInTimeRecoveryPoint) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "recoveryPointMoveReadinessInfo":
+			err = unpopulate(val, &a.RecoveryPointMoveReadinessInfo)
+			delete(rawMsg, key)
+		case "recoveryPointTierDetails":
+			err = unpopulate(val, &a.RecoveryPointTierDetails)
+			delete(rawMsg, key)
+		case "recoveryPointTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.RecoveryPointTimeInUTC)
+			delete(rawMsg, key)
 		case "timeRanges":
 			err = unpopulate(val, &a.TimeRanges)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.AzureWorkloadRecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureWorkloadPointInTimeRestoreRequest - AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore
 type AzureWorkloadPointInTimeRestoreRequest struct {
-	AzureWorkloadRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// PointInTime value
 	PointInTime *time.Time `json:"pointInTime,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
+func (a *AzureWorkloadPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
+func (a *AzureWorkloadPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadPointInTimeRestoreRequest.
 func (a AzureWorkloadPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadRestoreRequest.marshalInternal(objectMap, "AzureWorkloadPointInTimeRestoreRequest")
+	objectMap["objectType"] = "AzureWorkloadPointInTimeRestoreRequest"
 	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -2616,16 +8252,34 @@ func (a *AzureWorkloadPointInTimeRestoreRequest) UnmarshalJSON(data []byte) erro
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "pointInTime":
 			err = unpopulateTimeRFC3339(val, &a.PointInTime)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.AzureWorkloadRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2643,12 +8297,14 @@ type AzureWorkloadRecoveryPointClassification interface {
 
 // AzureWorkloadRecoveryPoint - Workload specific recovery point, specifically encapsulates full/diff recovery point
 type AzureWorkloadRecoveryPoint struct {
-	RecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Eligibility of RP to be moved to another tier
 	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
 
 	// UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
@@ -2662,27 +8318,36 @@ func (a *AzureWorkloadRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkl
 	return a
 }
 
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadRecoveryPoint.
+func (a *AzureWorkloadRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureWorkloadRecoveryPoint.
+func (a AzureWorkloadRecoveryPoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["objectType"] = "AzureWorkloadRecoveryPoint"
+	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
+	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
+	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadRecoveryPoint.
 func (a *AzureWorkloadRecoveryPoint) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadRecoveryPoint) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.RecoveryPoint.marshalInternal(objectMap, discValue)
-	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
-	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
-	populate(objectMap, "type", a.Type)
-}
-
-func (a *AzureWorkloadRecoveryPoint) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointMoveReadinessInfo":
 			err = unpopulate(val, &a.RecoveryPointMoveReadinessInfo)
 			delete(rawMsg, key)
@@ -2699,9 +8364,6 @@ func (a *AzureWorkloadRecoveryPoint) unmarshalInternal(rawMsg map[string]json.Ra
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.RecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -2721,7 +8383,9 @@ type AzureWorkloadRestoreRequestClassification interface {
 
 // AzureWorkloadRestoreRequest - AzureWorkload-specific restore.
 type AzureWorkloadRestoreRequest struct {
-	RestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Workload specific property bag.
 	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
 
@@ -2746,29 +8410,38 @@ func (a *AzureWorkloadRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWor
 	return a
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadRestoreRequest.
-func (a *AzureWorkloadRestoreRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
+func (a *AzureWorkloadRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
 	}
-	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AzureWorkloadRestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.RestoreRequest.marshalInternal(objectMap, discValue)
+// MarshalJSON implements the json.Marshaller interface for type AzureWorkloadRestoreRequest.
+func (a AzureWorkloadRestoreRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["objectType"] = "AzureWorkloadRestoreRequest"
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	return json.Marshal(objectMap)
 }
 
-func (a *AzureWorkloadRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadRestoreRequest.
+func (a *AzureWorkloadRestoreRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "propertyBag":
 			err = unpopulate(val, &a.PropertyBag)
 			delete(rawMsg, key)
@@ -2792,22 +8465,106 @@ func (a *AzureWorkloadRestoreRequest) unmarshalInternal(rawMsg map[string]json.R
 			return err
 		}
 	}
-	if err := a.RestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureWorkloadSAPHanaPointInTimeRecoveryPoint - Recovery point specific to PointInTime in SAPHana
 type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
-	AzureWorkloadPointInTimeRecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Eligibility of RP to be moved to another tier
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+
+	// Recovery point tier information.
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+
+	// UTC time at which recovery point was created
+	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+
+	// List of log ranges
+	TimeRanges []*PointInTimeRange `json:"timeRanges,omitempty"`
+
+	// Type of restore point
+	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadPointInTimeRecoveryPoint implements the AzureWorkloadPointInTimeRecoveryPointClassification interface for
+// type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetAzureWorkloadPointInTimeRecoveryPoint() *AzureWorkloadPointInTimeRecoveryPoint {
+	return &AzureWorkloadPointInTimeRecoveryPoint{
+		TimeRanges:                     a.TimeRanges,
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
 func (a AzureWorkloadSAPHanaPointInTimeRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadPointInTimeRecoveryPoint.marshalInternal(objectMap, "AzureWorkloadSAPHanaPointInTimeRecoveryPoint")
+	objectMap["objectType"] = "AzureWorkloadSAPHanaPointInTimeRecoveryPoint"
+	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
+	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
+	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populate(objectMap, "timeRanges", a.TimeRanges)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "recoveryPointMoveReadinessInfo":
+			err = unpopulate(val, &a.RecoveryPointMoveReadinessInfo)
+			delete(rawMsg, key)
+		case "recoveryPointTierDetails":
+			err = unpopulate(val, &a.RecoveryPointTierDetails)
+			delete(rawMsg, key)
+		case "recoveryPointTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.RecoveryPointTimeInUTC)
+			delete(rawMsg, key)
+		case "timeRanges":
+			err = unpopulate(val, &a.TimeRanges)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification provides polymorphic access to related types.
@@ -2820,22 +8577,85 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification interface {
 	GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest
 }
 
-// AzureWorkloadSAPHanaPointInTimeRestoreRequest - AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore
+// AzureWorkloadSAPHanaPointInTimeRestoreRequest - AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log
+// restore
 type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
-	AzureWorkloadSAPHanaRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// PointInTime value
 	PointInTime *time.Time `json:"pointInTime,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
-// GetAzureWorkloadSAPHanaPointInTimeRestoreRequest implements the AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaPointInTimeRestoreRequest implements the AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification
+// interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
 	return a
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return &AzureWorkloadSAPHanaRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a AzureWorkloadSAPHanaPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureWorkloadSAPHanaPointInTimeRestoreRequest")
+	objectMap["objectType"] = "AzureWorkloadSAPHanaPointInTimeRestoreRequest"
+	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -2845,44 +8665,133 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) UnmarshalJSON(data []byt
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadSAPHanaPointInTimeRestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureWorkloadSAPHanaRestoreRequest.marshalInternal(objectMap, discValue)
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
-}
-
-func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "pointInTime":
 			err = unpopulateTimeRFC3339(val, &a.PointInTime)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.AzureWorkloadSAPHanaRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest - AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point.
+// AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest - AzureWorkload SAP Hana-specific restore with integrated rehydration
+// of recovery point.
 type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
-	AzureWorkloadSAPHanaPointInTimeRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// PointInTime value
+	PointInTime *time.Time `json:"pointInTime,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
 	// RP Rehydration Info
 	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaPointInTimeRestoreRequest implements the AzureWorkloadSAPHanaPointInTimeRestoreRequestClassification
+// interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
+	return &AzureWorkloadSAPHanaPointInTimeRestoreRequest{
+		PointInTime:            a.PointInTime,
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return &AzureWorkloadSAPHanaRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadSAPHanaPointInTimeRestoreRequest.marshalInternal(objectMap, "AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest")
+	objectMap["objectType"] = "AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest"
+	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -2895,30 +8804,118 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) UnmarshalJS
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "pointInTime":
+			err = unpopulateTimeRFC3339(val, &a.PointInTime)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
 		case "recoveryPointRehydrationInfo":
 			err = unpopulate(val, &a.RecoveryPointRehydrationInfo)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.AzureWorkloadSAPHanaPointInTimeRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureWorkloadSAPHanaRecoveryPoint - SAPHana specific recoverypoint, specifically encapsulates full/diff recoverypoints
 type AzureWorkloadSAPHanaRecoveryPoint struct {
-	AzureWorkloadRecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Eligibility of RP to be moved to another tier
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+
+	// Recovery point tier information.
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+
+	// UTC time at which recovery point was created
+	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+
+	// Type of restore point
+	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSAPHanaRecoveryPoint.
+func (a *AzureWorkloadSAPHanaRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSAPHanaRecoveryPoint.
+func (a *AzureWorkloadSAPHanaRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSAPHanaRecoveryPoint.
 func (a AzureWorkloadSAPHanaRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadRecoveryPoint.marshalInternal(objectMap, "AzureWorkloadSAPHanaRecoveryPoint")
+	objectMap["objectType"] = "AzureWorkloadSAPHanaRecoveryPoint"
+	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
+	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
+	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadSAPHanaRecoveryPoint.
+func (a *AzureWorkloadSAPHanaRecoveryPoint) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "recoveryPointMoveReadinessInfo":
+			err = unpopulate(val, &a.RecoveryPointMoveReadinessInfo)
+			delete(rawMsg, key)
+		case "recoveryPointTierDetails":
+			err = unpopulate(val, &a.RecoveryPointTierDetails)
+			delete(rawMsg, key)
+		case "recoveryPointTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.RecoveryPointTimeInUTC)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // AzureWorkloadSAPHanaRestoreRequestClassification provides polymorphic access to related types.
@@ -2934,37 +8931,178 @@ type AzureWorkloadSAPHanaRestoreRequestClassification interface {
 
 // AzureWorkloadSAPHanaRestoreRequest - AzureWorkload SAP Hana-specific restore.
 type AzureWorkloadSAPHanaRestoreRequest struct {
-	AzureWorkloadRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
-// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
+func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaRestoreRequest.
 func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return a
 }
 
-func (a AzureWorkloadSAPHanaRestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureWorkloadRestoreRequest.marshalInternal(objectMap, discValue)
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
+func (a *AzureWorkloadSAPHanaRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
-func (a *AzureWorkloadSAPHanaRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	if err := a.AzureWorkloadRestoreRequest.unmarshalInternal(rawMsg); err != nil {
+// MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSAPHanaRestoreRequest.
+func (a AzureWorkloadSAPHanaRestoreRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["objectType"] = "AzureWorkloadSAPHanaRestoreRequest"
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadSAPHanaRestoreRequest.
+func (a *AzureWorkloadSAPHanaRestoreRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
-// AzureWorkloadSAPHanaRestoreWithRehydrateRequest - AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point.
+// AzureWorkloadSAPHanaRestoreWithRehydrateRequest - AzureWorkload SAP Hana-specific restore with integrated rehydration of
+// recovery point.
 type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
-	AzureWorkloadSAPHanaRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
 	// RP Rehydration Info
 	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSAPHanaRestoreRequest implements the AzureWorkloadSAPHanaRestoreRequestClassification interface for type
+// AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
+	return &AzureWorkloadSAPHanaRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
 func (a AzureWorkloadSAPHanaRestoreWithRehydrateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadSAPHanaRestoreRequest.marshalInternal(objectMap, "AzureWorkloadSAPHanaRestoreWithRehydrateRequest")
+	objectMap["objectType"] = "AzureWorkloadSAPHanaRestoreWithRehydrateRequest"
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -2977,31 +9115,109 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) UnmarshalJSON(data []b
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
 		case "recoveryPointRehydrationInfo":
 			err = unpopulate(val, &a.RecoveryPointRehydrationInfo)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.AzureWorkloadSAPHanaRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureWorkloadSQLAutoProtectionIntent - Azure Workload SQL Auto Protection intent item.
 type AzureWorkloadSQLAutoProtectionIntent struct {
-	AzureWorkloadAutoProtectionIntent
+	// REQUIRED; backup protectionIntent type.
+	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
+	ItemID *string `json:"itemId,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
 	// Workload item type of the item for which intent is to be set
 	WorkloadItemType *WorkloadItemType `json:"workloadItemType,omitempty"`
+}
+
+// GetAzureRecoveryServiceVaultProtectionIntent implements the AzureRecoveryServiceVaultProtectionIntentClassification interface
+// for type AzureWorkloadSQLAutoProtectionIntent.
+func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureRecoveryServiceVaultProtectionIntent() *AzureRecoveryServiceVaultProtectionIntent {
+	return &AzureRecoveryServiceVaultProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// GetAzureWorkloadAutoProtectionIntent implements the AzureWorkloadAutoProtectionIntentClassification interface for type
+// AzureWorkloadSQLAutoProtectionIntent.
+func (a *AzureWorkloadSQLAutoProtectionIntent) GetAzureWorkloadAutoProtectionIntent() *AzureWorkloadAutoProtectionIntent {
+	return &AzureWorkloadAutoProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
+}
+
+// GetProtectionIntent implements the ProtectionIntentClassification interface for type AzureWorkloadSQLAutoProtectionIntent.
+func (a *AzureWorkloadSQLAutoProtectionIntent) GetProtectionIntent() *ProtectionIntent {
+	return &ProtectionIntent{
+		ProtectionIntentItemType: a.ProtectionIntentItemType,
+		BackupManagementType:     a.BackupManagementType,
+		SourceResourceID:         a.SourceResourceID,
+		ItemID:                   a.ItemID,
+		PolicyID:                 a.PolicyID,
+		ProtectionState:          a.ProtectionState,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLAutoProtectionIntent.
 func (a AzureWorkloadSQLAutoProtectionIntent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadAutoProtectionIntent.marshalInternal(objectMap, "AzureWorkloadSQLAutoProtectionIntent")
+	populate(objectMap, "backupManagementType", a.BackupManagementType)
+	populate(objectMap, "itemId", a.ItemID)
+	populate(objectMap, "policyId", a.PolicyID)
+	objectMap["protectionIntentItemType"] = "AzureWorkloadSQLAutoProtectionIntent"
+	populate(objectMap, "protectionState", a.ProtectionState)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "workloadItemType", a.WorkloadItemType)
 	return json.Marshal(objectMap)
 }
@@ -3015,6 +9231,24 @@ func (a *AzureWorkloadSQLAutoProtectionIntent) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &a.BackupManagementType)
+			delete(rawMsg, key)
+		case "itemId":
+			err = unpopulate(val, &a.ItemID)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &a.PolicyID)
+			delete(rawMsg, key)
+		case "protectionIntentItemType":
+			err = unpopulate(val, &a.ProtectionIntentItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &a.ProtectionState)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
 		case "workloadItemType":
 			err = unpopulate(val, &a.WorkloadItemType)
 			delete(rawMsg, key)
@@ -3023,24 +9257,75 @@ func (a *AzureWorkloadSQLAutoProtectionIntent) UnmarshalJSON(data []byte) error 
 			return err
 		}
 	}
-	if err := a.AzureWorkloadAutoProtectionIntent.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // AzureWorkloadSQLPointInTimeRecoveryPoint - Recovery point specific to PointInTime
 type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
-	AzureWorkloadSQLRecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed
+	// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
+	// only with ExtendedInfo query filter
+	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Eligibility of RP to be moved to another tier
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+
+	// Recovery point tier information.
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+
+	// UTC time at which recovery point was created
+	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+
 	// List of log ranges
 	TimeRanges []*PointInTimeRange `json:"timeRanges,omitempty"`
+
+	// Type of restore point
+	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRecoveryPoint implements the AzureWorkloadSQLRecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint {
+	return &AzureWorkloadSQLRecoveryPoint{
+		ExtendedInfo:                   a.ExtendedInfo,
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
+}
+
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
+func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLPointInTimeRecoveryPoint.
 func (a AzureWorkloadSQLPointInTimeRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadSQLRecoveryPoint.marshalInternal(objectMap, "AzureWorkloadSQLPointInTimeRecoveryPoint")
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	objectMap["objectType"] = "AzureWorkloadSQLPointInTimeRecoveryPoint"
+	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
+	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
+	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "timeRanges", a.TimeRanges)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -3053,16 +9338,31 @@ func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) UnmarshalJSON(data []byte) er
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "extendedInfo":
+			err = unpopulate(val, &a.ExtendedInfo)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "recoveryPointMoveReadinessInfo":
+			err = unpopulate(val, &a.RecoveryPointMoveReadinessInfo)
+			delete(rawMsg, key)
+		case "recoveryPointTierDetails":
+			err = unpopulate(val, &a.RecoveryPointTierDetails)
+			delete(rawMsg, key)
+		case "recoveryPointTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.RecoveryPointTimeInUTC)
+			delete(rawMsg, key)
 		case "timeRanges":
 			err = unpopulate(val, &a.TimeRanges)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.AzureWorkloadSQLRecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3079,20 +9379,96 @@ type AzureWorkloadSQLPointInTimeRestoreRequestClassification interface {
 
 // AzureWorkloadSQLPointInTimeRestoreRequest - AzureWorkload SQL -specific restore. Specifically for PointInTime/Log restore
 type AzureWorkloadSQLPointInTimeRestoreRequest struct {
-	AzureWorkloadSQLRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Data directory details
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+
+	// SQL specific property where user can chose to set no-recovery when restore operation is tried
+	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+
 	// PointInTime value
 	PointInTime *time.Time `json:"pointInTime,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Default option set to true. If this is set to false, alternate data directory must be provided
+	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 }
 
-// GetAzureWorkloadSQLPointInTimeRestoreRequest implements the AzureWorkloadSQLPointInTimeRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLPointInTimeRestoreRequest implements the AzureWorkloadSQLPointInTimeRestoreRequestClassification interface
+// for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
 	return a
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return &AzureWorkloadSQLRestoreRequest{
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a AzureWorkloadSQLPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureWorkloadSQLPointInTimeRestoreRequest")
+	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
+	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
+	objectMap["objectType"] = "AzureWorkloadSQLPointInTimeRestoreRequest"
+	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -3102,44 +9478,159 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) UnmarshalJSON(data []byte) e
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadSQLPointInTimeRestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureWorkloadSQLRestoreRequest.marshalInternal(objectMap, discValue)
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
-}
-
-func (a *AzureWorkloadSQLPointInTimeRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "alternateDirectoryPaths":
+			err = unpopulate(val, &a.AlternateDirectoryPaths)
+			delete(rawMsg, key)
+		case "isNonRecoverable":
+			err = unpopulate(val, &a.IsNonRecoverable)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
 		case "pointInTime":
 			err = unpopulateTimeRFC3339(val, &a.PointInTime)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "shouldUseAlternateTargetLocation":
+			err = unpopulate(val, &a.ShouldUseAlternateTargetLocation)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.AzureWorkloadSQLRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest - AzureWorkload SQL-specific restore with integrated rehydration of recovery point.
+// AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest - AzureWorkload SQL-specific restore with integrated rehydration
+// of recovery point.
 type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
-	AzureWorkloadSQLPointInTimeRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Data directory details
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+
+	// SQL specific property where user can chose to set no-recovery when restore operation is tried
+	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+
+	// PointInTime value
+	PointInTime *time.Time `json:"pointInTime,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
 	// RP Rehydration Info
 	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Default option set to true. If this is set to false, alternate data directory must be provided
+	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLPointInTimeRestoreRequest implements the AzureWorkloadSQLPointInTimeRestoreRequestClassification interface
+// for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
+	return &AzureWorkloadSQLPointInTimeRestoreRequest{
+		PointInTime:                      a.PointInTime,
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return &AzureWorkloadSQLRestoreRequest{
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadSQLPointInTimeRestoreRequest.marshalInternal(objectMap, "AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest")
+	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
+	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
+	objectMap["objectType"] = "AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest"
+	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -3152,16 +9643,46 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) UnmarshalJSON(d
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "alternateDirectoryPaths":
+			err = unpopulate(val, &a.AlternateDirectoryPaths)
+			delete(rawMsg, key)
+		case "isNonRecoverable":
+			err = unpopulate(val, &a.IsNonRecoverable)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "pointInTime":
+			err = unpopulateTimeRFC3339(val, &a.PointInTime)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
 		case "recoveryPointRehydrationInfo":
 			err = unpopulate(val, &a.RecoveryPointRehydrationInfo)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "shouldUseAlternateTargetLocation":
+			err = unpopulate(val, &a.ShouldUseAlternateTargetLocation)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.AzureWorkloadSQLPointInTimeRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3176,13 +9697,39 @@ type AzureWorkloadSQLRecoveryPointClassification interface {
 	GetAzureWorkloadSQLRecoveryPoint() *AzureWorkloadSQLRecoveryPoint
 }
 
-// AzureWorkloadSQLRecoveryPoint - SQL specific recoverypoint, specifically encapsulates full/diff recoverypoint along with extended info
+// AzureWorkloadSQLRecoveryPoint - SQL specific recoverypoint, specifically encapsulates full/diff recoverypoint along with
+// extended info
 type AzureWorkloadSQLRecoveryPoint struct {
-	AzureWorkloadRecoveryPoint
-	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed using GetRecoveryPoint
-	// Or when ListRecoveryPoints is called for Log RP
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Extended Info that provides data directory details. Will be populated in two cases: When a specific recovery point is accessed
+	// using GetRecoveryPoint Or when ListRecoveryPoints is called for Log RP
 	// only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Eligibility of RP to be moved to another tier
+	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
+
+	// Recovery point tier information.
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
+
+	// UTC time at which recovery point was created
+	RecoveryPointTimeInUTC *time.Time `json:"recoveryPointTimeInUTC,omitempty"`
+
+	// Type of restore point
+	Type *RestorePointType `json:"type,omitempty"`
+}
+
+// GetAzureWorkloadRecoveryPoint implements the AzureWorkloadRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
+func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadRecoveryPoint() *AzureWorkloadRecoveryPoint {
+	return &AzureWorkloadRecoveryPoint{
+		RecoveryPointTimeInUTC:         a.RecoveryPointTimeInUTC,
+		Type:                           a.Type,
+		RecoveryPointTierDetails:       a.RecoveryPointTierDetails,
+		RecoveryPointMoveReadinessInfo: a.RecoveryPointMoveReadinessInfo,
+		ObjectType:                     a.ObjectType,
+	}
 }
 
 // GetAzureWorkloadSQLRecoveryPoint implements the AzureWorkloadSQLRecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
@@ -3190,10 +9737,22 @@ func (a *AzureWorkloadSQLRecoveryPoint) GetAzureWorkloadSQLRecoveryPoint() *Azur
 	return a
 }
 
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type AzureWorkloadSQLRecoveryPoint.
+func (a *AzureWorkloadSQLRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: a.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLRecoveryPoint.
 func (a AzureWorkloadSQLRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap, "AzureWorkloadSQLRecoveryPoint")
+	populate(objectMap, "extendedInfo", a.ExtendedInfo)
+	objectMap["objectType"] = "AzureWorkloadSQLRecoveryPoint"
+	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
+	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
+	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -3203,28 +9762,31 @@ func (a *AzureWorkloadSQLRecoveryPoint) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadSQLRecoveryPoint) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureWorkloadRecoveryPoint.marshalInternal(objectMap, discValue)
-	populate(objectMap, "extendedInfo", a.ExtendedInfo)
-}
-
-func (a *AzureWorkloadSQLRecoveryPoint) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "extendedInfo":
 			err = unpopulate(val, &a.ExtendedInfo)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "recoveryPointMoveReadinessInfo":
+			err = unpopulate(val, &a.RecoveryPointMoveReadinessInfo)
+			delete(rawMsg, key)
+		case "recoveryPointTierDetails":
+			err = unpopulate(val, &a.RecoveryPointTierDetails)
+			delete(rawMsg, key)
+		case "recoveryPointTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &a.RecoveryPointTimeInUTC)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.AzureWorkloadRecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3282,20 +9844,76 @@ type AzureWorkloadSQLRestoreRequestClassification interface {
 
 // AzureWorkloadSQLRestoreRequest - AzureWorkload SQL -specific restore. Specifically for full/diff restore
 type AzureWorkloadSQLRestoreRequest struct {
-	AzureWorkloadRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Data directory details
 	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
 
 	// SQL specific property where user can chose to set no-recovery when restore operation is tried
 	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
 
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
+func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
 }
 
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
 func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return a
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
+func (a *AzureWorkloadSQLRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLRestoreRequest.
+func (a AzureWorkloadSQLRestoreRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
+	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
+	objectMap["objectType"] = "AzureWorkloadSQLRestoreRequest"
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AzureWorkloadSQLRestoreRequest.
@@ -3304,17 +9922,6 @@ func (a *AzureWorkloadSQLRestoreRequest) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AzureWorkloadSQLRestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	a.AzureWorkloadRestoreRequest.marshalInternal(objectMap, discValue)
-	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
-	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
-	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
-}
-
-func (a *AzureWorkloadSQLRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -3324,32 +9931,125 @@ func (a *AzureWorkloadSQLRestoreRequest) unmarshalInternal(rawMsg map[string]jso
 		case "isNonRecoverable":
 			err = unpopulate(val, &a.IsNonRecoverable)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, &a.ShouldUseAlternateTargetLocation)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := a.AzureWorkloadRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// AzureWorkloadSQLRestoreWithRehydrateRequest - AzureWorkload SQL-specific restore with integrated rehydration of recovery point
+// AzureWorkloadSQLRestoreWithRehydrateRequest - AzureWorkload SQL-specific restore with integrated rehydration of recovery
+// point
 type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
-	AzureWorkloadSQLRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Data directory details
+	AlternateDirectoryPaths []*SQLDataDirectoryMapping `json:"alternateDirectoryPaths,omitempty"`
+
+	// SQL specific property where user can chose to set no-recovery when restore operation is tried
+	IsNonRecoverable *bool `json:"isNonRecoverable,omitempty"`
+
+	// Workload specific property bag.
+	PropertyBag map[string]*string `json:"propertyBag,omitempty"`
+
+	// Defines whether the current recovery mode is file restore or database restore
+	RecoveryMode *RecoveryMode `json:"recoveryMode,omitempty"`
+
 	// RP Rehydration Info
 	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Default option set to true. If this is set to false, alternate data directory must be provided
+	ShouldUseAlternateTargetLocation *bool `json:"shouldUseAlternateTargetLocation,omitempty"`
+
+	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Details of target database
+	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
+
+	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+}
+
+// GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
+	return &AzureWorkloadRestoreRequest{
+		RecoveryType:           a.RecoveryType,
+		SourceResourceID:       a.SourceResourceID,
+		PropertyBag:            a.PropertyBag,
+		TargetInfo:             a.TargetInfo,
+		RecoveryMode:           a.RecoveryMode,
+		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:             a.ObjectType,
+	}
+}
+
+// GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
+	return &AzureWorkloadSQLRestoreRequest{
+		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
+		IsNonRecoverable:                 a.IsNonRecoverable,
+		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
+		RecoveryType:                     a.RecoveryType,
+		SourceResourceID:                 a.SourceResourceID,
+		PropertyBag:                      a.PropertyBag,
+		TargetInfo:                       a.TargetInfo,
+		RecoveryMode:                     a.RecoveryMode,
+		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		ObjectType:                       a.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
+func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: a.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
 func (a AzureWorkloadSQLRestoreWithRehydrateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.AzureWorkloadSQLRestoreRequest.marshalInternal(objectMap, "AzureWorkloadSQLRestoreWithRehydrateRequest")
+	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
+	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
+	objectMap["objectType"] = "AzureWorkloadSQLRestoreWithRehydrateRequest"
+	populate(objectMap, "propertyBag", a.PropertyBag)
+	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
+	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
 	return json.Marshal(objectMap)
 }
 
@@ -3362,16 +10062,43 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) UnmarshalJSON(data []byte)
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "alternateDirectoryPaths":
+			err = unpopulate(val, &a.AlternateDirectoryPaths)
+			delete(rawMsg, key)
+		case "isNonRecoverable":
+			err = unpopulate(val, &a.IsNonRecoverable)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &a.ObjectType)
+			delete(rawMsg, key)
+		case "propertyBag":
+			err = unpopulate(val, &a.PropertyBag)
+			delete(rawMsg, key)
+		case "recoveryMode":
+			err = unpopulate(val, &a.RecoveryMode)
+			delete(rawMsg, key)
 		case "recoveryPointRehydrationInfo":
 			err = unpopulate(val, &a.RecoveryPointRehydrationInfo)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &a.RecoveryType)
+			delete(rawMsg, key)
+		case "shouldUseAlternateTargetLocation":
+			err = unpopulate(val, &a.ShouldUseAlternateTargetLocation)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "targetInfo":
+			err = unpopulate(val, &a.TargetInfo)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &a.TargetVirtualMachineID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := a.AzureWorkloadSQLRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -3460,8 +10187,9 @@ type BMSPOQueryObject struct {
 	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
 }
 
-// BMSPrepareDataMoveOperationResultGetOptions contains the optional parameters for the BMSPrepareDataMoveOperationResult.Get method.
-type BMSPrepareDataMoveOperationResultGetOptions struct {
+// BMSPrepareDataMoveOperationResultClientGetOptions contains the optional parameters for the BMSPrepareDataMoveOperationResultClient.Get
+// method.
+type BMSPrepareDataMoveOperationResultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3601,95 +10329,40 @@ type BackupEngineBase struct {
 // GetBackupEngineBase implements the BackupEngineBaseClassification interface for type BackupEngineBase.
 func (b *BackupEngineBase) GetBackupEngineBase() *BackupEngineBase { return b }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupEngineBase.
-func (b *BackupEngineBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return b.unmarshalInternal(rawMsg)
-}
-
-func (b BackupEngineBase) marshalInternal(objectMap map[string]interface{}, discValue BackupEngineType) {
-	populate(objectMap, "azureBackupAgentVersion", b.AzureBackupAgentVersion)
-	populate(objectMap, "backupEngineId", b.BackupEngineID)
-	populate(objectMap, "backupEngineState", b.BackupEngineState)
-	b.BackupEngineType = &discValue
-	objectMap["backupEngineType"] = b.BackupEngineType
-	populate(objectMap, "backupManagementType", b.BackupManagementType)
-	populate(objectMap, "canReRegister", b.CanReRegister)
-	populate(objectMap, "dpmVersion", b.DpmVersion)
-	populate(objectMap, "extendedInfo", b.ExtendedInfo)
-	populate(objectMap, "friendlyName", b.FriendlyName)
-	populate(objectMap, "healthStatus", b.HealthStatus)
-	populate(objectMap, "isAzureBackupAgentUpgradeAvailable", b.IsAzureBackupAgentUpgradeAvailable)
-	populate(objectMap, "isDpmUpgradeAvailable", b.IsDpmUpgradeAvailable)
-	populate(objectMap, "registrationStatus", b.RegistrationStatus)
-}
-
-func (b *BackupEngineBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureBackupAgentVersion":
-			err = unpopulate(val, &b.AzureBackupAgentVersion)
-			delete(rawMsg, key)
-		case "backupEngineId":
-			err = unpopulate(val, &b.BackupEngineID)
-			delete(rawMsg, key)
-		case "backupEngineState":
-			err = unpopulate(val, &b.BackupEngineState)
-			delete(rawMsg, key)
-		case "backupEngineType":
-			err = unpopulate(val, &b.BackupEngineType)
-			delete(rawMsg, key)
-		case "backupManagementType":
-			err = unpopulate(val, &b.BackupManagementType)
-			delete(rawMsg, key)
-		case "canReRegister":
-			err = unpopulate(val, &b.CanReRegister)
-			delete(rawMsg, key)
-		case "dpmVersion":
-			err = unpopulate(val, &b.DpmVersion)
-			delete(rawMsg, key)
-		case "extendedInfo":
-			err = unpopulate(val, &b.ExtendedInfo)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &b.FriendlyName)
-			delete(rawMsg, key)
-		case "healthStatus":
-			err = unpopulate(val, &b.HealthStatus)
-			delete(rawMsg, key)
-		case "isAzureBackupAgentUpgradeAvailable":
-			err = unpopulate(val, &b.IsAzureBackupAgentUpgradeAvailable)
-			delete(rawMsg, key)
-		case "isDpmUpgradeAvailable":
-			err = unpopulate(val, &b.IsDpmUpgradeAvailable)
-			delete(rawMsg, key)
-		case "registrationStatus":
-			err = unpopulate(val, &b.RegistrationStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BackupEngineBaseResource - The base backup engine class. All workload specific backup engines derive from this class.
 type BackupEngineBaseResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// BackupEngineBaseResource properties
 	Properties BackupEngineBaseClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BackupEngineBaseResource.
 func (b BackupEngineBaseResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", b.ETag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -3702,23 +10375,40 @@ func (b *BackupEngineBaseResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &b.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &b.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &b.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &b.Name)
+			delete(rawMsg, key)
 		case "properties":
 			b.Properties, err = unmarshalBackupEngineBaseClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &b.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &b.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // BackupEngineBaseResourceList - List of BackupEngineBase resources
 type BackupEngineBaseResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*BackupEngineBaseResource `json:"value,omitempty"`
 }
@@ -3726,7 +10416,7 @@ type BackupEngineBaseResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type BackupEngineBaseResourceList.
 func (b BackupEngineBaseResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", b.NextLink)
 	populate(objectMap, "value", b.Value)
 	return json.Marshal(objectMap)
 }
@@ -3813,24 +10503,24 @@ func (b *BackupEngineExtendedInfo) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// BackupEnginesGetOptions contains the optional parameters for the BackupEngines.Get method.
-type BackupEnginesGetOptions struct {
+// BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
+type BackupEnginesClientGetOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
 	SkipToken *string
 }
 
-// BackupEnginesListOptions contains the optional parameters for the BackupEngines.List method.
-type BackupEnginesListOptions struct {
+// BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.List method.
+type BackupEnginesClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
 	SkipToken *string
 }
 
-// BackupJobsListOptions contains the optional parameters for the BackupJobs.List method.
-type BackupJobsListOptions struct {
+// BackupJobsClientListOptions contains the optional parameters for the BackupJobsClient.List method.
+type BackupJobsClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
@@ -3918,46 +10608,47 @@ func (b BackupManagementUsageList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BackupOperationResultsGetOptions contains the optional parameters for the BackupOperationResults.Get method.
-type BackupOperationResultsGetOptions struct {
+// BackupOperationResultsClientGetOptions contains the optional parameters for the BackupOperationResultsClient.Get method.
+type BackupOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupOperationStatusesGetOptions contains the optional parameters for the BackupOperationStatuses.Get method.
-type BackupOperationStatusesGetOptions struct {
+// BackupOperationStatusesClientGetOptions contains the optional parameters for the BackupOperationStatusesClient.Get method.
+type BackupOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupPoliciesListOptions contains the optional parameters for the BackupPolicies.List method.
-type BackupPoliciesListOptions struct {
+// BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
+type BackupPoliciesClientListOptions struct {
 	// OData filter options.
 	Filter *string
 }
 
-// BackupProtectableItemsListOptions contains the optional parameters for the BackupProtectableItems.List method.
-type BackupProtectableItemsListOptions struct {
+// BackupProtectableItemsClientListOptions contains the optional parameters for the BackupProtectableItemsClient.List method.
+type BackupProtectableItemsClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
 	SkipToken *string
 }
 
-// BackupProtectedItemsListOptions contains the optional parameters for the BackupProtectedItems.List method.
-type BackupProtectedItemsListOptions struct {
+// BackupProtectedItemsClientListOptions contains the optional parameters for the BackupProtectedItemsClient.List method.
+type BackupProtectedItemsClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
 	SkipToken *string
 }
 
-// BackupProtectionContainersListOptions contains the optional parameters for the BackupProtectionContainers.List method.
-type BackupProtectionContainersListOptions struct {
+// BackupProtectionContainersClientListOptions contains the optional parameters for the BackupProtectionContainersClient.List
+// method.
+type BackupProtectionContainersClientListOptions struct {
 	// OData filter options.
 	Filter *string
 }
 
-// BackupProtectionIntentListOptions contains the optional parameters for the BackupProtectionIntent.List method.
-type BackupProtectionIntentListOptions struct {
+// BackupProtectionIntentClientListOptions contains the optional parameters for the BackupProtectionIntentClient.List method.
+type BackupProtectionIntentClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
@@ -3982,47 +10673,40 @@ type BackupRequest struct {
 // GetBackupRequest implements the BackupRequestClassification interface for type BackupRequest.
 func (b *BackupRequest) GetBackupRequest() *BackupRequest { return b }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupRequest.
-func (b *BackupRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return b.unmarshalInternal(rawMsg)
-}
-
-func (b BackupRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	b.ObjectType = &discValue
-	objectMap["objectType"] = b.ObjectType
-}
-
-func (b *BackupRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &b.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BackupRequestResource - Base class for backup request. Workload-specific backup requests are derived from this class.
 type BackupRequestResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// BackupRequestResource properties
 	Properties BackupRequestClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BackupRequestResource.
 func (b BackupRequestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", b.ETag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -4035,16 +10719,31 @@ func (b *BackupRequestResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &b.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &b.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &b.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &b.Name)
+			delete(rawMsg, key)
 		case "properties":
 			b.Properties, err = unmarshalBackupRequestClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &b.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &b.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -4054,6 +10753,9 @@ type BackupResourceConfig struct {
 	// Opt in details of Cross Region Restore feature.
 	CrossRegionRestoreFlag *bool `json:"crossRegionRestoreFlag,omitempty"`
 
+	// Vault Dedup state
+	DedupState *DedupState `json:"dedupState,omitempty"`
+
 	// Storage type
 	StorageModelType *StorageType `json:"storageModelType,omitempty"`
 
@@ -4062,44 +10764,46 @@ type BackupResourceConfig struct {
 
 	// Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
 	StorageTypeState *StorageTypeState `json:"storageTypeState,omitempty"`
+
+	// Vault x-cool state
+	XcoolState *XcoolState `json:"xcoolState,omitempty"`
 }
 
 // BackupResourceConfigResource - The resource storage details.
 type BackupResourceConfigResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// BackupResourceConfigResource properties
 	Properties *BackupResourceConfig `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BackupResourceConfigResource.
 func (b BackupResourceConfigResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", b.ETag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupResourceConfigResource.
-func (b *BackupResourceConfigResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 type BackupResourceEncryptionConfig struct {
@@ -4116,7 +10820,17 @@ type BackupResourceEncryptionConfig struct {
 }
 
 type BackupResourceEncryptionConfigExtended struct {
-	BackupResourceEncryptionConfig
+	// Encryption At Rest Type
+	EncryptionAtRestType          *EncryptionAtRestType          `json:"encryptionAtRestType,omitempty"`
+	InfrastructureEncryptionState *InfrastructureEncryptionState `json:"infrastructureEncryptionState,omitempty"`
+
+	// Key Vault Key URI
+	KeyURI           *string           `json:"keyUri,omitempty"`
+	LastUpdateStatus *LastUpdateStatus `json:"lastUpdateStatus,omitempty"`
+
+	// Key Vault Subscription Id
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+
 	// bool to indicate whether to use system Assigned Identity or not
 	UseSystemAssignedIdentity *bool `json:"useSystemAssignedIdentity,omitempty"`
 
@@ -4125,101 +10839,104 @@ type BackupResourceEncryptionConfigExtended struct {
 }
 
 type BackupResourceEncryptionConfigExtendedResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// BackupResourceEncryptionConfigExtendedResource properties
 	Properties *BackupResourceEncryptionConfigExtended `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BackupResourceEncryptionConfigExtendedResource.
 func (b BackupResourceEncryptionConfigExtendedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", b.ETag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupResourceEncryptionConfigExtendedResource.
-func (b *BackupResourceEncryptionConfigExtendedResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 type BackupResourceEncryptionConfigResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// BackupResourceEncryptionConfigResource properties
 	Properties *BackupResourceEncryptionConfig `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BackupResourceEncryptionConfigResource.
 func (b BackupResourceEncryptionConfigResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", b.ETag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupResourceEncryptionConfigResource.
-func (b *BackupResourceEncryptionConfigResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// BackupResourceEncryptionConfigsGetOptions contains the optional parameters for the BackupResourceEncryptionConfigs.Get method.
-type BackupResourceEncryptionConfigsGetOptions struct {
+// BackupResourceEncryptionConfigsClientGetOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Get
+// method.
+type BackupResourceEncryptionConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupResourceEncryptionConfigsUpdateOptions contains the optional parameters for the BackupResourceEncryptionConfigs.Update method.
-type BackupResourceEncryptionConfigsUpdateOptions struct {
+// BackupResourceEncryptionConfigsClientUpdateOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Update
+// method.
+type BackupResourceEncryptionConfigsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupResourceStorageConfigsNonCRRGetOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRR.Get method.
-type BackupResourceStorageConfigsNonCRRGetOptions struct {
+// BackupResourceStorageConfigsNonCRRClientGetOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRRClient.Get
+// method.
+type BackupResourceStorageConfigsNonCRRClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupResourceStorageConfigsNonCRRPatchOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRR.Patch method.
-type BackupResourceStorageConfigsNonCRRPatchOptions struct {
+// BackupResourceStorageConfigsNonCRRClientPatchOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRRClient.Patch
+// method.
+type BackupResourceStorageConfigsNonCRRClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupResourceStorageConfigsNonCRRUpdateOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRR.Update method.
-type BackupResourceStorageConfigsNonCRRUpdateOptions struct {
+// BackupResourceStorageConfigsNonCRRClientUpdateOptions contains the optional parameters for the BackupResourceStorageConfigsNonCRRClient.Update
+// method.
+type BackupResourceStorageConfigsNonCRRClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4227,6 +10944,9 @@ type BackupResourceStorageConfigsNonCRRUpdateOptions struct {
 type BackupResourceVaultConfig struct {
 	// Enabled or Disabled.
 	EnhancedSecurityState *EnhancedSecurityState `json:"enhancedSecurityState,omitempty"`
+
+	// Is soft delete feature state editable
+	IsSoftDeleteFeatureStateEditable *bool `json:"isSoftDeleteFeatureStateEditable,omitempty"`
 
 	// ResourceGuard Operation Requests
 	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
@@ -4248,6 +10968,7 @@ type BackupResourceVaultConfig struct {
 func (b BackupResourceVaultConfig) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "enhancedSecurityState", b.EnhancedSecurityState)
+	populate(objectMap, "isSoftDeleteFeatureStateEditable", b.IsSoftDeleteFeatureStateEditable)
 	populate(objectMap, "resourceGuardOperationRequests", b.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteFeatureState", b.SoftDeleteFeatureState)
 	populate(objectMap, "storageModelType", b.StorageModelType)
@@ -4258,59 +10979,61 @@ func (b BackupResourceVaultConfig) MarshalJSON() ([]byte, error) {
 
 // BackupResourceVaultConfigResource - Backup resource vault config details.
 type BackupResourceVaultConfigResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// BackupResourceVaultConfigResource properties
 	Properties *BackupResourceVaultConfig `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BackupResourceVaultConfigResource.
 func (b BackupResourceVaultConfigResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", b.ETag)
+	populate(objectMap, "id", b.ID)
+	populate(objectMap, "location", b.Location)
+	populate(objectMap, "name", b.Name)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "tags", b.Tags)
+	populate(objectMap, "type", b.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupResourceVaultConfigResource.
-func (b *BackupResourceVaultConfigResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// BackupResourceVaultConfigsGetOptions contains the optional parameters for the BackupResourceVaultConfigs.Get method.
-type BackupResourceVaultConfigsGetOptions struct {
+// BackupResourceVaultConfigsClientGetOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Get
+// method.
+type BackupResourceVaultConfigsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupResourceVaultConfigsPutOptions contains the optional parameters for the BackupResourceVaultConfigs.Put method.
-type BackupResourceVaultConfigsPutOptions struct {
+// BackupResourceVaultConfigsClientPutOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Put
+// method.
+type BackupResourceVaultConfigsClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupResourceVaultConfigsUpdateOptions contains the optional parameters for the BackupResourceVaultConfigs.Update method.
-type BackupResourceVaultConfigsUpdateOptions struct {
+// BackupResourceVaultConfigsClientUpdateOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Update
+// method.
+type BackupResourceVaultConfigsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupStatusGetOptions contains the optional parameters for the BackupStatus.Get method.
-type BackupStatusGetOptions struct {
+// BackupStatusClientGetOptions contains the optional parameters for the BackupStatusClient.Get method.
+type BackupStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4356,24 +11079,39 @@ type BackupStatusResponse struct {
 	VaultID *string `json:"vaultId,omitempty"`
 }
 
-// BackupUsageSummariesListOptions contains the optional parameters for the BackupUsageSummaries.List method.
-type BackupUsageSummariesListOptions struct {
+// BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.List method.
+type BackupUsageSummariesClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
 	SkipToken *string
 }
 
-// BackupWorkloadItemsListOptions contains the optional parameters for the BackupWorkloadItems.List method.
-type BackupWorkloadItemsListOptions struct {
+// BackupWorkloadItemsClientListOptions contains the optional parameters for the BackupWorkloadItemsClient.List method.
+type BackupWorkloadItemsClientListOptions struct {
 	// OData filter options.
 	Filter *string
 	// skipToken Filter.
 	SkipToken *string
 }
 
-// BackupsTriggerOptions contains the optional parameters for the Backups.Trigger method.
-type BackupsTriggerOptions struct {
+// BackupsClientTriggerOptions contains the optional parameters for the BackupsClient.Trigger method.
+type BackupsClientTriggerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the Client.BeginBMSPrepareDataMove method.
+type ClientBeginBMSPrepareDataMoveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the Client.BeginBMSTriggerDataMove method.
+type ClientBeginBMSTriggerDataMoveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginMoveRecoveryPointOptions contains the optional parameters for the Client.BeginMoveRecoveryPoint method.
+type ClientBeginMoveRecoveryPointOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4455,6 +11193,11 @@ type ClientDiscoveryValueForSingleAPI struct {
 	Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
 }
 
+// ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
+type ClientGetOperationStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientScriptForConnect - Client script details for file / folder restore.
 type ClientScriptForConnect struct {
 	// OS type - Windows, Linux etc. for which this file / folder restore client script works.
@@ -4466,7 +11209,8 @@ type ClientScriptForConnect struct {
 	// File extension of the client script for file / folder restore - .ps1 , .sh , etc.
 	ScriptExtension *string `json:"scriptExtension,omitempty"`
 
-	// Mandatory suffix that should be added to the name of script that is given for download to user. If its null or empty then , ignore it.
+	// Mandatory suffix that should be added to the name of script that is given for download to user. If its null or empty then
+	// , ignore it.
 	ScriptNameSuffix *string `json:"scriptNameSuffix,omitempty"`
 
 	// URL of Executable from where to source the content. If this is not null then ScriptContent should not be used
@@ -4474,17 +11218,9 @@ type ClientScriptForConnect struct {
 }
 
 // CloudError - An error response from the Container Instance service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// The error object.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Container Instance service.
@@ -4566,9 +11302,29 @@ func (d *DPMContainerExtendedInfo) UnmarshalJSON(data []byte) error {
 
 // DPMProtectedItem - Additional information on Backup engine specific backup item.
 type DPMProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
 	// Backup Management server protecting this backup item
 	BackupEngineName *string `json:"backupEngineName,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 
 	// Extended info of the backup item.
 	ExtendedInfo *DPMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
@@ -4576,18 +11332,87 @@ type DPMProtectedItem struct {
 	// Friendly name of the managed item
 	FriendlyName *string `json:"friendlyName,omitempty"`
 
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
 	// Protection state of the backup engine
 	ProtectionState *ProtectedItemState `json:"protectionState,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type DPMProtectedItem.
+func (d *DPMProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                d.ProtectedItemType,
+		BackupManagementType:             d.BackupManagementType,
+		WorkloadType:                     d.WorkloadType,
+		ContainerName:                    d.ContainerName,
+		SourceResourceID:                 d.SourceResourceID,
+		PolicyID:                         d.PolicyID,
+		LastRecoveryPoint:                d.LastRecoveryPoint,
+		BackupSetName:                    d.BackupSetName,
+		CreateMode:                       d.CreateMode,
+		DeferredDeleteTimeInUTC:          d.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     d.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      d.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: d.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      d.IsRehydrate,
+		ResourceGuardOperationRequests:   d.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 d.IsArchiveEnabled,
+		PolicyName:                       d.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DPMProtectedItem.
 func (d DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.ProtectedItem.marshalInternal(objectMap, "DPMProtectedItem")
 	populate(objectMap, "backupEngineName", d.BackupEngineName)
+	populate(objectMap, "backupManagementType", d.BackupManagementType)
+	populate(objectMap, "backupSetName", d.BackupSetName)
+	populate(objectMap, "containerName", d.ContainerName)
+	populate(objectMap, "createMode", d.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", d.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", d.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", d.ExtendedInfo)
 	populate(objectMap, "friendlyName", d.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", d.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", d.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", d.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", d.IsScheduledForDeferredDelete)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", d.LastRecoveryPoint)
+	populate(objectMap, "policyId", d.PolicyID)
+	populate(objectMap, "policyName", d.PolicyName)
+	objectMap["protectedItemType"] = "DPMProtectedItem"
 	populate(objectMap, "protectionState", d.ProtectionState)
+	populate(objectMap, "resourceGuardOperationRequests", d.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", d.SourceResourceID)
+	populate(objectMap, "workloadType", d.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -4603,22 +11428,70 @@ func (d *DPMProtectedItem) UnmarshalJSON(data []byte) error {
 		case "backupEngineName":
 			err = unpopulate(val, &d.BackupEngineName)
 			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &d.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &d.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &d.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &d.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &d.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &d.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &d.ExtendedInfo)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, &d.FriendlyName)
 			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &d.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &d.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &d.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &d.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &d.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &d.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &d.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &d.ProtectedItemType)
+			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &d.ProtectionState)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &d.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &d.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &d.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -4826,14 +11699,138 @@ type DistributedNodesInfo struct {
 
 // DpmBackupEngine - Data Protection Manager (DPM) specific backup engine.
 type DpmBackupEngine struct {
-	BackupEngineBase
+	// REQUIRED; Type of the backup engine.
+	BackupEngineType *BackupEngineType `json:"backupEngineType,omitempty"`
+
+	// Backup agent version
+	AzureBackupAgentVersion *string `json:"azureBackupAgentVersion,omitempty"`
+
+	// ID of the backup engine.
+	BackupEngineID *string `json:"backupEngineId,omitempty"`
+
+	// Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
+	BackupEngineState *string `json:"backupEngineState,omitempty"`
+
+	// Type of backup management for the backup engine.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Flag indicating if the backup engine be registered, once already registered.
+	CanReRegister *bool `json:"canReRegister,omitempty"`
+
+	// Backup engine version
+	DpmVersion *string `json:"dpmVersion,omitempty"`
+
+	// Extended info of the backupengine
+	ExtendedInfo *BackupEngineExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// Friendly name of the backup engine.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Backup status of the backup engine.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// To check if backup agent upgrade available
+	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
+
+	// To check if backup engine upgrade available
+	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
+
+	// Registration status of the backup engine with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetBackupEngineBase implements the BackupEngineBaseClassification interface for type DpmBackupEngine.
+func (d *DpmBackupEngine) GetBackupEngineBase() *BackupEngineBase {
+	return &BackupEngineBase{
+		FriendlyName:                       d.FriendlyName,
+		BackupManagementType:               d.BackupManagementType,
+		RegistrationStatus:                 d.RegistrationStatus,
+		BackupEngineState:                  d.BackupEngineState,
+		HealthStatus:                       d.HealthStatus,
+		BackupEngineType:                   d.BackupEngineType,
+		CanReRegister:                      d.CanReRegister,
+		BackupEngineID:                     d.BackupEngineID,
+		DpmVersion:                         d.DpmVersion,
+		AzureBackupAgentVersion:            d.AzureBackupAgentVersion,
+		IsAzureBackupAgentUpgradeAvailable: d.IsAzureBackupAgentUpgradeAvailable,
+		IsDpmUpgradeAvailable:              d.IsDpmUpgradeAvailable,
+		ExtendedInfo:                       d.ExtendedInfo,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DpmBackupEngine.
 func (d DpmBackupEngine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.BackupEngineBase.marshalInternal(objectMap, BackupEngineTypeDpmBackupEngine)
+	populate(objectMap, "azureBackupAgentVersion", d.AzureBackupAgentVersion)
+	populate(objectMap, "backupEngineId", d.BackupEngineID)
+	populate(objectMap, "backupEngineState", d.BackupEngineState)
+	objectMap["backupEngineType"] = BackupEngineTypeDpmBackupEngine
+	populate(objectMap, "backupManagementType", d.BackupManagementType)
+	populate(objectMap, "canReRegister", d.CanReRegister)
+	populate(objectMap, "dpmVersion", d.DpmVersion)
+	populate(objectMap, "extendedInfo", d.ExtendedInfo)
+	populate(objectMap, "friendlyName", d.FriendlyName)
+	populate(objectMap, "healthStatus", d.HealthStatus)
+	populate(objectMap, "isAzureBackupAgentUpgradeAvailable", d.IsAzureBackupAgentUpgradeAvailable)
+	populate(objectMap, "isDpmUpgradeAvailable", d.IsDpmUpgradeAvailable)
+	populate(objectMap, "registrationStatus", d.RegistrationStatus)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DpmBackupEngine.
+func (d *DpmBackupEngine) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "azureBackupAgentVersion":
+			err = unpopulate(val, &d.AzureBackupAgentVersion)
+			delete(rawMsg, key)
+		case "backupEngineId":
+			err = unpopulate(val, &d.BackupEngineID)
+			delete(rawMsg, key)
+		case "backupEngineState":
+			err = unpopulate(val, &d.BackupEngineState)
+			delete(rawMsg, key)
+		case "backupEngineType":
+			err = unpopulate(val, &d.BackupEngineType)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &d.BackupManagementType)
+			delete(rawMsg, key)
+		case "canReRegister":
+			err = unpopulate(val, &d.CanReRegister)
+			delete(rawMsg, key)
+		case "dpmVersion":
+			err = unpopulate(val, &d.DpmVersion)
+			delete(rawMsg, key)
+		case "extendedInfo":
+			err = unpopulate(val, &d.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &d.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &d.HealthStatus)
+			delete(rawMsg, key)
+		case "isAzureBackupAgentUpgradeAvailable":
+			err = unpopulate(val, &d.IsAzureBackupAgentUpgradeAvailable)
+			delete(rawMsg, key)
+		case "isDpmUpgradeAvailable":
+			err = unpopulate(val, &d.IsDpmUpgradeAvailable)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &d.RegistrationStatus)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // DpmContainerClassification provides polymorphic access to related types.
@@ -4848,7 +11845,15 @@ type DpmContainerClassification interface {
 
 // DpmContainer - DPM workload-specific protection container.
 type DpmContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Specifies whether the container is re-registrable.
 	CanReRegister *bool `json:"canReRegister,omitempty"`
 
@@ -4864,11 +11869,23 @@ type DpmContainer struct {
 	// Extended Info of the container.
 	ExtendedInfo *DPMContainerExtendedInfo `json:"extendedInfo,omitempty"`
 
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
 	// Number of protected items in the BackupEngine
 	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
 
 	// Protection status of the container.
 	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 
 	// To check if upgrade available
 	UpgradeAvailable *bool `json:"upgradeAvailable,omitempty"`
@@ -4877,10 +11894,35 @@ type DpmContainer struct {
 // GetDpmContainer implements the DpmContainerClassification interface for type DpmContainer.
 func (d *DpmContainer) GetDpmContainer() *DpmContainer { return d }
 
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type DpmContainer.
+func (d *DpmContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          d.FriendlyName,
+		BackupManagementType:  d.BackupManagementType,
+		RegistrationStatus:    d.RegistrationStatus,
+		HealthStatus:          d.HealthStatus,
+		ContainerType:         d.ContainerType,
+		ProtectableObjectType: d.ProtectableObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DpmContainer.
 func (d DpmContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.marshalInternal(objectMap, ContainerTypeDPMContainer)
+	populate(objectMap, "backupManagementType", d.BackupManagementType)
+	populate(objectMap, "canReRegister", d.CanReRegister)
+	populate(objectMap, "containerId", d.ContainerID)
+	objectMap["containerType"] = ContainerTypeDPMContainer
+	populate(objectMap, "dpmAgentVersion", d.DpmAgentVersion)
+	populate(objectMap, "dpmServers", d.DpmServers)
+	populate(objectMap, "extendedInfo", d.ExtendedInfo)
+	populate(objectMap, "friendlyName", d.FriendlyName)
+	populate(objectMap, "healthStatus", d.HealthStatus)
+	populate(objectMap, "protectableObjectType", d.ProtectableObjectType)
+	populate(objectMap, "protectedItemCount", d.ProtectedItemCount)
+	populate(objectMap, "protectionStatus", d.ProtectionStatus)
+	populate(objectMap, "registrationStatus", d.RegistrationStatus)
+	populate(objectMap, "upgradeAvailable", d.UpgradeAvailable)
 	return json.Marshal(objectMap)
 }
 
@@ -4890,30 +11932,20 @@ func (d *DpmContainer) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DpmContainer) marshalInternal(objectMap map[string]interface{}, discValue ContainerType) {
-	d.ProtectionContainer.marshalInternal(objectMap, discValue)
-	populate(objectMap, "canReRegister", d.CanReRegister)
-	populate(objectMap, "containerId", d.ContainerID)
-	populate(objectMap, "dpmAgentVersion", d.DpmAgentVersion)
-	populate(objectMap, "dpmServers", d.DpmServers)
-	populate(objectMap, "extendedInfo", d.ExtendedInfo)
-	populate(objectMap, "protectedItemCount", d.ProtectedItemCount)
-	populate(objectMap, "protectionStatus", d.ProtectionStatus)
-	populate(objectMap, "upgradeAvailable", d.UpgradeAvailable)
-}
-
-func (d *DpmContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &d.BackupManagementType)
+			delete(rawMsg, key)
 		case "canReRegister":
 			err = unpopulate(val, &d.CanReRegister)
 			delete(rawMsg, key)
 		case "containerId":
 			err = unpopulate(val, &d.ContainerID)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &d.ContainerType)
 			delete(rawMsg, key)
 		case "dpmAgentVersion":
 			err = unpopulate(val, &d.DpmAgentVersion)
@@ -4924,11 +11956,23 @@ func (d *DpmContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) erro
 		case "extendedInfo":
 			err = unpopulate(val, &d.ExtendedInfo)
 			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &d.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &d.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &d.ProtectableObjectType)
+			delete(rawMsg, key)
 		case "protectedItemCount":
 			err = unpopulate(val, &d.ProtectedItemCount)
 			delete(rawMsg, key)
 		case "protectionStatus":
 			err = unpopulate(val, &d.ProtectionStatus)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &d.RegistrationStatus)
 			delete(rawMsg, key)
 		case "upgradeAvailable":
 			err = unpopulate(val, &d.UpgradeAvailable)
@@ -4937,9 +11981,6 @@ func (d *DpmContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) erro
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.ProtectionContainer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -4963,9 +12004,17 @@ func (d DpmErrorInfo) MarshalJSON() ([]byte, error) {
 
 // DpmJob - DPM workload-specific job object.
 type DpmJob struct {
-	Job
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
 	// The state/actions applicable on this job like cancel/retry.
 	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
+
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
 
 	// Name of cluster/server protecting current backup item, if any.
 	ContainerName *string `json:"containerName,omitempty"`
@@ -4979,27 +12028,63 @@ type DpmJob struct {
 	// Time elapsed for job.
 	Duration *string `json:"duration,omitempty"`
 
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
+
 	// The errors.
 	ErrorDetails []*DpmErrorInfo `json:"errorDetails,omitempty"`
 
 	// Additional information for this job.
 	ExtendedInfo *DpmJobExtendedInfo `json:"extendedInfo,omitempty"`
 
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
+
 	// Type of backup item.
 	WorkloadType *string `json:"workloadType,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type DpmJob.
+func (d *DpmJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   d.EntityFriendlyName,
+		BackupManagementType: d.BackupManagementType,
+		Operation:            d.Operation,
+		Status:               d.Status,
+		StartTime:            d.StartTime,
+		EndTime:              d.EndTime,
+		ActivityID:           d.ActivityID,
+		JobType:              d.JobType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DpmJob.
 func (d DpmJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Job.marshalInternal(objectMap, "DpmJob")
 	populate(objectMap, "actionsInfo", d.ActionsInfo)
+	populate(objectMap, "activityId", d.ActivityID)
+	populate(objectMap, "backupManagementType", d.BackupManagementType)
 	populate(objectMap, "containerName", d.ContainerName)
 	populate(objectMap, "containerType", d.ContainerType)
 	populate(objectMap, "dpmServerName", d.DpmServerName)
 	populate(objectMap, "duration", d.Duration)
+	populateTimeRFC3339(objectMap, "endTime", d.EndTime)
+	populate(objectMap, "entityFriendlyName", d.EntityFriendlyName)
 	populate(objectMap, "errorDetails", d.ErrorDetails)
 	populate(objectMap, "extendedInfo", d.ExtendedInfo)
+	objectMap["jobType"] = "DpmJob"
+	populate(objectMap, "operation", d.Operation)
+	populateTimeRFC3339(objectMap, "startTime", d.StartTime)
+	populate(objectMap, "status", d.Status)
 	populate(objectMap, "workloadType", d.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -5016,6 +12101,12 @@ func (d *DpmJob) UnmarshalJSON(data []byte) error {
 		case "actionsInfo":
 			err = unpopulate(val, &d.ActionsInfo)
 			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &d.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &d.BackupManagementType)
+			delete(rawMsg, key)
 		case "containerName":
 			err = unpopulate(val, &d.ContainerName)
 			delete(rawMsg, key)
@@ -5028,11 +12119,29 @@ func (d *DpmJob) UnmarshalJSON(data []byte) error {
 		case "duration":
 			err = unpopulate(val, &d.Duration)
 			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &d.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &d.EntityFriendlyName)
+			delete(rawMsg, key)
 		case "errorDetails":
 			err = unpopulate(val, &d.ErrorDetails)
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &d.ExtendedInfo)
+			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &d.JobType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &d.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &d.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &d.Status)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, &d.WorkloadType)
@@ -5041,9 +12150,6 @@ func (d *DpmJob) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := d.Job.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -5180,7 +12286,9 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 
 // ExportJobsOperationResultInfo - This class is used to send blob details after exporting jobs.
 type ExportJobsOperationResultInfo struct {
-	OperationResultInfoBase
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// SAS key to access the blob. It expires in 15 mins.
 	BlobSasKey *string `json:"blobSasKey,omitempty"`
 
@@ -5194,14 +12302,21 @@ type ExportJobsOperationResultInfo struct {
 	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty"`
 }
 
+// GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type ExportJobsOperationResultInfo.
+func (e *ExportJobsOperationResultInfo) GetOperationResultInfoBase() *OperationResultInfoBase {
+	return &OperationResultInfoBase{
+		ObjectType: e.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ExportJobsOperationResultInfo.
 func (e ExportJobsOperationResultInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.OperationResultInfoBase.marshalInternal(objectMap, "ExportJobsOperationResultInfo")
 	populate(objectMap, "blobSasKey", e.BlobSasKey)
 	populate(objectMap, "blobUrl", e.BlobURL)
 	populate(objectMap, "excelFileBlobSasKey", e.ExcelFileBlobSasKey)
 	populate(objectMap, "excelFileBlobUrl", e.ExcelFileBlobURL)
+	objectMap["objectType"] = "ExportJobsOperationResultInfo"
 	return json.Marshal(objectMap)
 }
 
@@ -5226,19 +12341,20 @@ func (e *ExportJobsOperationResultInfo) UnmarshalJSON(data []byte) error {
 		case "excelFileBlobUrl":
 			err = unpopulate(val, &e.ExcelFileBlobURL)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &e.ObjectType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := e.OperationResultInfoBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// ExportJobsOperationResultsGetOptions contains the optional parameters for the ExportJobsOperationResults.Get method.
-type ExportJobsOperationResultsGetOptions struct {
+// ExportJobsOperationResultsClientGetOptions contains the optional parameters for the ExportJobsOperationResultsClient.Get
+// method.
+type ExportJobsOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5246,6 +12362,14 @@ type ExportJobsOperationResultsGetOptions struct {
 type ExtendedProperties struct {
 	// Extended Properties for Disk Exclusion.
 	DiskExclusionProperties *DiskExclusionProperties `json:"diskExclusionProperties,omitempty"`
+
+	// Linux VM name
+	LinuxVMApplicationName *string `json:"linuxVmApplicationName,omitempty"`
+}
+
+// FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
+type FeatureSupportClientValidateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // FeatureSupportRequestClassification provides polymorphic access to related types.
@@ -5266,56 +12390,59 @@ type FeatureSupportRequest struct {
 // GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type FeatureSupportRequest.
 func (f *FeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest { return f }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FeatureSupportRequest.
-func (f *FeatureSupportRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return f.unmarshalInternal(rawMsg)
-}
-
-func (f FeatureSupportRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	f.FeatureType = &discValue
-	objectMap["featureType"] = f.FeatureType
-}
-
-func (f *FeatureSupportRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "featureType":
-			err = unpopulate(val, &f.FeatureType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// FeatureSupportValidateOptions contains the optional parameters for the FeatureSupport.Validate method.
-type FeatureSupportValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GenericContainer - Base class for generic container of backup items
 type GenericContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Extended information (not returned in List container API calls)
 	ExtendedInformation *GenericContainerExtendedInfo `json:"extendedInformation,omitempty"`
 
 	// Name of the container's fabric
 	FabricName *string `json:"fabricName,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type GenericContainer.
+func (g *GenericContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          g.FriendlyName,
+		BackupManagementType:  g.BackupManagementType,
+		RegistrationStatus:    g.RegistrationStatus,
+		HealthStatus:          g.HealthStatus,
+		ContainerType:         g.ContainerType,
+		ProtectableObjectType: g.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type GenericContainer.
 func (g GenericContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.ProtectionContainer.marshalInternal(objectMap, ContainerTypeGenericContainer)
+	populate(objectMap, "backupManagementType", g.BackupManagementType)
+	objectMap["containerType"] = ContainerTypeGenericContainer
 	populate(objectMap, "extendedInformation", g.ExtendedInformation)
 	populate(objectMap, "fabricName", g.FabricName)
+	populate(objectMap, "friendlyName", g.FriendlyName)
+	populate(objectMap, "healthStatus", g.HealthStatus)
+	populate(objectMap, "protectableObjectType", g.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", g.RegistrationStatus)
 	return json.Marshal(objectMap)
 }
 
@@ -5328,19 +12455,34 @@ func (g *GenericContainer) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &g.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &g.ContainerType)
+			delete(rawMsg, key)
 		case "extendedInformation":
 			err = unpopulate(val, &g.ExtendedInformation)
 			delete(rawMsg, key)
 		case "fabricName":
 			err = unpopulate(val, &g.FabricName)
 			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &g.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &g.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &g.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &g.RegistrationStatus)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := g.ProtectionContainer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -5368,12 +12510,53 @@ func (g GenericContainerExtendedInfo) MarshalJSON() ([]byte, error) {
 
 // GenericProtectedItem - Base class for backup items.
 type GenericProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+
 	// Name of this backup item's fabric.
 	FabricName *string `json:"fabricName,omitempty"`
 
 	// Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
 
 	// Indicates consistency of policy object and policy applied to this backup item.
 	PolicyState *string `json:"policyState,omitempty"`
@@ -5384,20 +12567,68 @@ type GenericProtectedItem struct {
 	// Backup state of this backup item.
 	ProtectionState *ProtectionState `json:"protectionState,omitempty"`
 
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
 	// Loosely coupled (type, value) associations (example - parent of a protected item)
 	SourceAssociations map[string]*string `json:"sourceAssociations,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type GenericProtectedItem.
+func (g *GenericProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                g.ProtectedItemType,
+		BackupManagementType:             g.BackupManagementType,
+		WorkloadType:                     g.WorkloadType,
+		ContainerName:                    g.ContainerName,
+		SourceResourceID:                 g.SourceResourceID,
+		PolicyID:                         g.PolicyID,
+		LastRecoveryPoint:                g.LastRecoveryPoint,
+		BackupSetName:                    g.BackupSetName,
+		CreateMode:                       g.CreateMode,
+		DeferredDeleteTimeInUTC:          g.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     g.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      g.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: g.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      g.IsRehydrate,
+		ResourceGuardOperationRequests:   g.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 g.IsArchiveEnabled,
+		PolicyName:                       g.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type GenericProtectedItem.
 func (g GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.ProtectedItem.marshalInternal(objectMap, "GenericProtectedItem")
+	populate(objectMap, "backupManagementType", g.BackupManagementType)
+	populate(objectMap, "backupSetName", g.BackupSetName)
+	populate(objectMap, "containerName", g.ContainerName)
+	populate(objectMap, "createMode", g.CreateMode)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", g.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", g.DeferredDeleteTimeRemaining)
 	populate(objectMap, "fabricName", g.FabricName)
 	populate(objectMap, "friendlyName", g.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", g.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", g.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", g.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", g.IsScheduledForDeferredDelete)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", g.LastRecoveryPoint)
+	populate(objectMap, "policyId", g.PolicyID)
+	populate(objectMap, "policyName", g.PolicyName)
 	populate(objectMap, "policyState", g.PolicyState)
 	populate(objectMap, "protectedItemId", g.ProtectedItemID)
+	objectMap["protectedItemType"] = "GenericProtectedItem"
 	populate(objectMap, "protectionState", g.ProtectionState)
+	populate(objectMap, "resourceGuardOperationRequests", g.ResourceGuardOperationRequests)
 	populate(objectMap, "sourceAssociations", g.SourceAssociations)
+	populate(objectMap, "sourceResourceId", g.SourceResourceID)
+	populate(objectMap, "workloadType", g.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -5410,11 +12641,50 @@ func (g *GenericProtectedItem) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &g.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &g.BackupSetName)
+			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &g.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &g.CreateMode)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &g.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &g.DeferredDeleteTimeRemaining)
+			delete(rawMsg, key)
 		case "fabricName":
 			err = unpopulate(val, &g.FabricName)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, &g.FriendlyName)
+			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &g.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &g.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &g.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &g.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &g.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &g.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &g.PolicyName)
 			delete(rawMsg, key)
 		case "policyState":
 			err = unpopulate(val, &g.PolicyState)
@@ -5422,28 +12692,45 @@ func (g *GenericProtectedItem) UnmarshalJSON(data []byte) error {
 		case "protectedItemId":
 			err = unpopulate(val, &g.ProtectedItemID)
 			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &g.ProtectedItemType)
+			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &g.ProtectionState)
 			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &g.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
 		case "sourceAssociations":
 			err = unpopulate(val, &g.SourceAssociations)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &g.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &g.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := g.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // GenericProtectionPolicy - Azure VM (Mercury) workload-specific backup policy.
 type GenericProtectionPolicy struct {
-	ProtectionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
 	// Name of this policy's fabric.
 	FabricName *string `json:"fabricName,omitempty"`
+
+	// Number of items associated with this policy.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+
+	// ResourceGuard Operation Requests
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
 
 	// List of sub-protection policies which includes schedule and retention
 	SubProtectionPolicy []*SubProtectionPolicy `json:"subProtectionPolicy,omitempty"`
@@ -5452,11 +12739,22 @@ type GenericProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type GenericProtectionPolicy.
+func (g *GenericProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            g.ProtectedItemsCount,
+		BackupManagementType:           g.BackupManagementType,
+		ResourceGuardOperationRequests: g.ResourceGuardOperationRequests,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GenericProtectionPolicy.
 func (g GenericProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.ProtectionPolicy.marshalInternal(objectMap, "GenericProtectionPolicy")
+	objectMap["backupManagementType"] = "GenericProtectionPolicy"
 	populate(objectMap, "fabricName", g.FabricName)
+	populate(objectMap, "protectedItemsCount", g.ProtectedItemsCount)
+	populate(objectMap, "resourceGuardOperationRequests", g.ResourceGuardOperationRequests)
 	populate(objectMap, "subProtectionPolicy", g.SubProtectionPolicy)
 	populate(objectMap, "timeZone", g.TimeZone)
 	return json.Marshal(objectMap)
@@ -5471,8 +12769,17 @@ func (g *GenericProtectionPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &g.BackupManagementType)
+			delete(rawMsg, key)
 		case "fabricName":
 			err = unpopulate(val, &g.FabricName)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, &g.ProtectedItemsCount)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &g.ResourceGuardOperationRequests)
 			delete(rawMsg, key)
 		case "subProtectionPolicy":
 			err = unpopulate(val, &g.SubProtectionPolicy)
@@ -5485,15 +12792,14 @@ func (g *GenericProtectionPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := g.ProtectionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // GenericRecoveryPoint - Generic backup copy.
 type GenericRecoveryPoint struct {
-	RecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Friendly name of the backup copy.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 
@@ -5507,11 +12813,18 @@ type GenericRecoveryPoint struct {
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
 }
 
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type GenericRecoveryPoint.
+func (g *GenericRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: g.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GenericRecoveryPoint.
 func (g GenericRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.RecoveryPoint.marshalInternal(objectMap, "GenericRecoveryPoint")
 	populate(objectMap, "friendlyName", g.FriendlyName)
+	objectMap["objectType"] = "GenericRecoveryPoint"
 	populate(objectMap, "recoveryPointAdditionalInfo", g.RecoveryPointAdditionalInfo)
 	populateTimeRFC3339(objectMap, "recoveryPointTime", g.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", g.RecoveryPointType)
@@ -5530,6 +12843,9 @@ func (g *GenericRecoveryPoint) UnmarshalJSON(data []byte) error {
 		case "friendlyName":
 			err = unpopulate(val, &g.FriendlyName)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &g.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointAdditionalInfo":
 			err = unpopulate(val, &g.RecoveryPointAdditionalInfo)
 			delete(rawMsg, key)
@@ -5544,9 +12860,6 @@ func (g *GenericRecoveryPoint) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := g.RecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -5554,6 +12867,52 @@ func (g *GenericRecoveryPoint) UnmarshalJSON(data []byte) error {
 type GetProtectedItemQueryObject struct {
 	// Specifies if the additional information should be provided for this item.
 	Expand *string `json:"expand,omitempty"`
+}
+
+type HourlySchedule struct {
+	// Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12
+	Interval *int32 `json:"interval,omitempty"`
+
+	// To specify duration of the backup window
+	ScheduleWindowDuration *int32 `json:"scheduleWindowDuration,omitempty"`
+
+	// To specify start time of the backup window
+	ScheduleWindowStartTime *time.Time `json:"scheduleWindowStartTime,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type HourlySchedule.
+func (h HourlySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "interval", h.Interval)
+	populate(objectMap, "scheduleWindowDuration", h.ScheduleWindowDuration)
+	populateTimeRFC3339(objectMap, "scheduleWindowStartTime", h.ScheduleWindowStartTime)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type HourlySchedule.
+func (h *HourlySchedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "interval":
+			err = unpopulate(val, &h.Interval)
+			delete(rawMsg, key)
+		case "scheduleWindowDuration":
+			err = unpopulate(val, &h.ScheduleWindowDuration)
+			delete(rawMsg, key)
+		case "scheduleWindowStartTime":
+			err = unpopulateTimeRFC3339(val, &h.ScheduleWindowStartTime)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ILRRequestClassification provides polymorphic access to related types.
@@ -5574,47 +12933,40 @@ type ILRRequest struct {
 // GetILRRequest implements the ILRRequestClassification interface for type ILRRequest.
 func (i *ILRRequest) GetILRRequest() *ILRRequest { return i }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ILRRequest.
-func (i *ILRRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i ILRRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	i.ObjectType = &discValue
-	objectMap["objectType"] = i.ObjectType
-}
-
-func (i *ILRRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &i.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ILRRequestResource - Parameters to Provision ILR API.
 type ILRRequestResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ILRRequestResource properties
 	Properties ILRRequestClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ILRRequestResource.
 func (i ILRRequestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", i.ETag)
+	populate(objectMap, "id", i.ID)
+	populate(objectMap, "location", i.Location)
+	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "tags", i.Tags)
+	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -5627,16 +12979,31 @@ func (i *ILRRequestResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &i.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &i.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &i.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &i.Name)
+			delete(rawMsg, key)
 		case "properties":
 			i.Properties, err = unmarshalILRRequestClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &i.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &i.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -5653,7 +13020,27 @@ type IaaSVMContainerClassification interface {
 
 // IaaSVMContainer - IaaS VM workload-specific container.
 type IaaSVMContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+
 	// Resource group name of Recovery Services Vault.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
@@ -5667,10 +13054,30 @@ type IaaSVMContainer struct {
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type IaaSVMContainer.
 func (i *IaaSVMContainer) GetIaaSVMContainer() *IaaSVMContainer { return i }
 
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type IaaSVMContainer.
+func (i *IaaSVMContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          i.FriendlyName,
+		BackupManagementType:  i.BackupManagementType,
+		RegistrationStatus:    i.RegistrationStatus,
+		HealthStatus:          i.HealthStatus,
+		ContainerType:         i.ContainerType,
+		ProtectableObjectType: i.ProtectableObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type IaaSVMContainer.
 func (i IaaSVMContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap, "IaaSVMContainer")
+	populate(objectMap, "backupManagementType", i.BackupManagementType)
+	objectMap["containerType"] = "IaaSVMContainer"
+	populate(objectMap, "friendlyName", i.FriendlyName)
+	populate(objectMap, "healthStatus", i.HealthStatus)
+	populate(objectMap, "protectableObjectType", i.ProtectableObjectType)
+	populate(objectMap, "registrationStatus", i.RegistrationStatus)
+	populate(objectMap, "resourceGroup", i.ResourceGroup)
+	populate(objectMap, "virtualMachineId", i.VirtualMachineID)
+	populate(objectMap, "virtualMachineVersion", i.VirtualMachineVersion)
 	return json.Marshal(objectMap)
 }
 
@@ -5680,20 +13087,27 @@ func (i *IaaSVMContainer) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i IaaSVMContainer) marshalInternal(objectMap map[string]interface{}, discValue ContainerType) {
-	i.ProtectionContainer.marshalInternal(objectMap, discValue)
-	populate(objectMap, "resourceGroup", i.ResourceGroup)
-	populate(objectMap, "virtualMachineId", i.VirtualMachineID)
-	populate(objectMap, "virtualMachineVersion", i.VirtualMachineVersion)
-}
-
-func (i *IaaSVMContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &i.BackupManagementType)
+			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &i.ContainerType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &i.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &i.HealthStatus)
+			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &i.ProtectableObjectType)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &i.RegistrationStatus)
+			delete(rawMsg, key)
 		case "resourceGroup":
 			err = unpopulate(val, &i.ResourceGroup)
 			delete(rawMsg, key)
@@ -5707,9 +13121,6 @@ func (i *IaaSVMContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) e
 		if err != nil {
 			return err
 		}
-	}
-	if err := i.ProtectionContainer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -5726,18 +13137,56 @@ type IaaSVMProtectableItemClassification interface {
 
 // IaaSVMProtectableItem - IaaS VM workload-specific backup item.
 type IaaSVMProtectableItem struct {
-	WorkloadProtectableItem
+	// REQUIRED; Type of the backup item.
+	ProtectableItemType *string `json:"protectableItemType,omitempty"`
+
+	// Type of backup management to backup an item.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Friendly name of the backup item.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// State of the back up item.
+	ProtectionState *ProtectionStatus `json:"protectionState,omitempty"`
+
+	// Resource group name of Recovery Services Vault.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+
 	// Fully qualified ARM ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+
+	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
+	VirtualMachineVersion *string `json:"virtualMachineVersion,omitempty"`
+
+	// Type of workload for the backup management
+	WorkloadType *string `json:"workloadType,omitempty"`
 }
 
 // GetIaaSVMProtectableItem implements the IaaSVMProtectableItemClassification interface for type IaaSVMProtectableItem.
 func (i *IaaSVMProtectableItem) GetIaaSVMProtectableItem() *IaaSVMProtectableItem { return i }
 
+// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type IaaSVMProtectableItem.
+func (i *IaaSVMProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
+	return &WorkloadProtectableItem{
+		BackupManagementType: i.BackupManagementType,
+		WorkloadType:         i.WorkloadType,
+		ProtectableItemType:  i.ProtectableItemType,
+		FriendlyName:         i.FriendlyName,
+		ProtectionState:      i.ProtectionState,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type IaaSVMProtectableItem.
 func (i IaaSVMProtectableItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap, "IaaSVMProtectableItem")
+	populate(objectMap, "backupManagementType", i.BackupManagementType)
+	populate(objectMap, "friendlyName", i.FriendlyName)
+	objectMap["protectableItemType"] = "IaaSVMProtectableItem"
+	populate(objectMap, "protectionState", i.ProtectionState)
+	populate(objectMap, "resourceGroup", i.ResourceGroup)
+	populate(objectMap, "virtualMachineId", i.VirtualMachineID)
+	populate(objectMap, "virtualMachineVersion", i.VirtualMachineVersion)
+	populate(objectMap, "workloadType", i.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -5747,43 +13196,61 @@ func (i *IaaSVMProtectableItem) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i IaaSVMProtectableItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	i.WorkloadProtectableItem.marshalInternal(objectMap, discValue)
-	populate(objectMap, "virtualMachineId", i.VirtualMachineID)
-}
-
-func (i *IaaSVMProtectableItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &i.BackupManagementType)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &i.FriendlyName)
+			delete(rawMsg, key)
+		case "protectableItemType":
+			err = unpopulate(val, &i.ProtectableItemType)
+			delete(rawMsg, key)
+		case "protectionState":
+			err = unpopulate(val, &i.ProtectionState)
+			delete(rawMsg, key)
+		case "resourceGroup":
+			err = unpopulate(val, &i.ResourceGroup)
+			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, &i.VirtualMachineID)
+			delete(rawMsg, key)
+		case "virtualMachineVersion":
+			err = unpopulate(val, &i.VirtualMachineVersion)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &i.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := i.WorkloadProtectableItem.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // IaasVMBackupRequest - IaaS VM workload-specific backup request.
 type IaasVMBackupRequest struct {
-	BackupRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Backup copy will expire after the time specified (UTC).
 	RecoveryPointExpiryTimeInUTC *time.Time `json:"recoveryPointExpiryTimeInUTC,omitempty"`
+}
+
+// GetBackupRequest implements the BackupRequestClassification interface for type IaasVMBackupRequest.
+func (i *IaasVMBackupRequest) GetBackupRequest() *BackupRequest {
+	return &BackupRequest{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IaasVMBackupRequest.
 func (i IaasVMBackupRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.BackupRequest.marshalInternal(objectMap, "IaasVMBackupRequest")
+	objectMap["objectType"] = "IaasVMBackupRequest"
 	populateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", i.RecoveryPointExpiryTimeInUTC)
 	return json.Marshal(objectMap)
 }
@@ -5797,6 +13264,9 @@ func (i *IaasVMBackupRequest) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &i.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointExpiryTimeInUTC":
 			err = unpopulateTimeRFC3339(val, &i.RecoveryPointExpiryTimeInUTC)
 			delete(rawMsg, key)
@@ -5805,15 +13275,14 @@ func (i *IaasVMBackupRequest) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := i.BackupRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // IaasVMILRRegistrationRequest - Restore files/folders from a backup copy of IaaS VM.
 type IaasVMILRRegistrationRequest struct {
-	ILRRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// iSCSI initiator name.
 	InitiatorName *string `json:"initiatorName,omitempty"`
 
@@ -5827,11 +13296,18 @@ type IaasVMILRRegistrationRequest struct {
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
 }
 
+// GetILRRequest implements the ILRRequestClassification interface for type IaasVMILRRegistrationRequest.
+func (i *IaasVMILRRegistrationRequest) GetILRRequest() *ILRRequest {
+	return &ILRRequest{
+		ObjectType: i.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type IaasVMILRRegistrationRequest.
 func (i IaasVMILRRegistrationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.ILRRequest.marshalInternal(objectMap, "IaasVMILRRegistrationRequest")
 	populate(objectMap, "initiatorName", i.InitiatorName)
+	objectMap["objectType"] = "IaasVMILRRegistrationRequest"
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	populate(objectMap, "renewExistingRegistration", i.RenewExistingRegistration)
 	populate(objectMap, "virtualMachineId", i.VirtualMachineID)
@@ -5850,6 +13326,9 @@ func (i *IaasVMILRRegistrationRequest) UnmarshalJSON(data []byte) error {
 		case "initiatorName":
 			err = unpopulate(val, &i.InitiatorName)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &i.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryPointId":
 			err = unpopulate(val, &i.RecoveryPointID)
 			delete(rawMsg, key)
@@ -5864,15 +13343,14 @@ func (i *IaasVMILRRegistrationRequest) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := i.ILRRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // IaasVMRecoveryPoint - IaaS VM workload specific backup copy.
 type IaasVMRecoveryPoint struct {
-	RecoveryPoint
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Is the session to recover items from this backup copy still active.
 	IsInstantIlrSessionActive *bool `json:"isInstantIlrSessionActive,omitempty"`
 
@@ -5901,7 +13379,7 @@ type IaasVMRecoveryPoint struct {
 	RecoveryPointMoveReadinessInfo map[string]*RecoveryPointMoveReadinessInfo `json:"recoveryPointMoveReadinessInfo,omitempty"`
 
 	// Recovery point tier information.
-	RecoveryPointTierDetails []*RecoveryPointTierInformation `json:"recoveryPointTierDetails,omitempty"`
+	RecoveryPointTierDetails []*RecoveryPointTierInformationV2 `json:"recoveryPointTierDetails,omitempty"`
 
 	// Time at which this backup copy was created.
 	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
@@ -5919,15 +13397,22 @@ type IaasVMRecoveryPoint struct {
 	Zones []*string `json:"zones,omitempty"`
 }
 
+// GetRecoveryPoint implements the RecoveryPointClassification interface for type IaasVMRecoveryPoint.
+func (i *IaasVMRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
+	return &RecoveryPoint{
+		ObjectType: i.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type IaasVMRecoveryPoint.
 func (i IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.RecoveryPoint.marshalInternal(objectMap, "IaasVMRecoveryPoint")
 	populate(objectMap, "isInstantIlrSessionActive", i.IsInstantIlrSessionActive)
 	populate(objectMap, "isManagedVirtualMachine", i.IsManagedVirtualMachine)
 	populate(objectMap, "isSourceVMEncrypted", i.IsSourceVMEncrypted)
 	populate(objectMap, "keyAndSecret", i.KeyAndSecret)
 	populate(objectMap, "osType", i.OSType)
+	objectMap["objectType"] = "IaasVMRecoveryPoint"
 	populate(objectMap, "originalStorageAccountOption", i.OriginalStorageAccountOption)
 	populate(objectMap, "recoveryPointAdditionalInfo", i.RecoveryPointAdditionalInfo)
 	populate(objectMap, "recoveryPointDiskConfiguration", i.RecoveryPointDiskConfiguration)
@@ -5965,6 +13450,9 @@ func (i *IaasVMRecoveryPoint) UnmarshalJSON(data []byte) error {
 		case "osType":
 			err = unpopulate(val, &i.OSType)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &i.ObjectType)
+			delete(rawMsg, key)
 		case "originalStorageAccountOption":
 			err = unpopulate(val, &i.OriginalStorageAccountOption)
 			delete(rawMsg, key)
@@ -6000,9 +13488,6 @@ func (i *IaasVMRecoveryPoint) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := i.RecoveryPoint.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -6018,12 +13503,14 @@ type IaasVMRestoreRequestClassification interface {
 
 // IaasVMRestoreRequest - IaaS VM workload-specific restore.
 type IaasVMRestoreRequest struct {
-	RestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
 	AffinityGroup *string `json:"affinityGroup,omitempty"`
 
-	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service as it was at the time of
-	// backup.
+	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service
+	// as it was at the time of backup.
 	CreateNewCloudService *bool `json:"createNewCloudService,omitempty"`
 
 	// DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
@@ -6031,6 +13518,9 @@ type IaasVMRestoreRequest struct {
 
 	// Details needed if the VM was encrypted at the time of backup.
 	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
+
+	// IaaS VM workload specific restore details for restores using managed identity.
+	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails `json:"identityBasedRestoreDetails,omitempty"`
 
 	// Managed Identity information required to access customer storage account.
 	IdentityInfo *IdentityInfo `json:"identityInfo,omitempty"`
@@ -6059,22 +13549,24 @@ type IaasVMRestoreRequest struct {
 	// Fully qualified ARM ID of the storage account to which the VM has to be restored.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 
-	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName} and, for the Azure Resource
-	// Manager VMs it would be ARM resource ID used to
+	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName}
+	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
 	// represent the subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
 
-	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual Machines.
+	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
+	// Machines.
 	TargetDomainNameID *string `json:"targetDomainNameId,omitempty"`
 
-	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g. /subscriptions/{subId}/resourcegroups/{rg}
+	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g.
+	// /subscriptions/{subId}/resourcegroups/{rg}
 	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
 
 	// This is the complete ARM Id of the VM that will be created. For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
 
-	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join action permissions in the linked
-	// access.
+	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join
+	// action permissions in the linked access.
 	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
 
 	// Target zone where the VM and its disks should be restored.
@@ -6084,29 +13576,23 @@ type IaasVMRestoreRequest struct {
 // GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreRequest.
 func (i *IaasVMRestoreRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest { return i }
 
+// GetRestoreRequest implements the RestoreRequestClassification interface for type IaasVMRestoreRequest.
+func (i *IaasVMRestoreRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: i.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type IaasVMRestoreRequest.
 func (i IaasVMRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.marshalInternal(objectMap, "IaasVMRestoreRequest")
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IaasVMRestoreRequest.
-func (i *IaasVMRestoreRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return i.unmarshalInternal(rawMsg)
-}
-
-func (i IaasVMRestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	i.RestoreRequest.marshalInternal(objectMap, discValue)
 	populate(objectMap, "affinityGroup", i.AffinityGroup)
 	populate(objectMap, "createNewCloudService", i.CreateNewCloudService)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "encryptionDetails", i.EncryptionDetails)
+	populate(objectMap, "identityBasedRestoreDetails", i.IdentityBasedRestoreDetails)
 	populate(objectMap, "identityInfo", i.IdentityInfo)
+	objectMap["objectType"] = "IaasVMRestoreRequest"
 	populate(objectMap, "originalStorageAccountOption", i.OriginalStorageAccountOption)
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	populate(objectMap, "recoveryType", i.RecoveryType)
@@ -6121,9 +13607,15 @@ func (i IaasVMRestoreRequest) marshalInternal(objectMap map[string]interface{}, 
 	populate(objectMap, "targetVirtualMachineId", i.TargetVirtualMachineID)
 	populate(objectMap, "virtualNetworkId", i.VirtualNetworkID)
 	populate(objectMap, "zones", i.Zones)
+	return json.Marshal(objectMap)
 }
 
-func (i *IaasVMRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IaasVMRestoreRequest.
+func (i *IaasVMRestoreRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -6139,8 +13631,14 @@ func (i *IaasVMRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessa
 		case "encryptionDetails":
 			err = unpopulate(val, &i.EncryptionDetails)
 			delete(rawMsg, key)
+		case "identityBasedRestoreDetails":
+			err = unpopulate(val, &i.IdentityBasedRestoreDetails)
+			delete(rawMsg, key)
 		case "identityInfo":
 			err = unpopulate(val, &i.IdentityInfo)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &i.ObjectType)
 			delete(rawMsg, key)
 		case "originalStorageAccountOption":
 			err = unpopulate(val, &i.OriginalStorageAccountOption)
@@ -6189,24 +13687,143 @@ func (i *IaasVMRestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessa
 			return err
 		}
 	}
-	if err := i.RestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // IaasVMRestoreWithRehydrationRequest - IaaS VM workload-specific restore with integrated rehydration of recovery point.
 type IaasVMRestoreWithRehydrationRequest struct {
-	IaasVMRestoreRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
+	AffinityGroup *string `json:"affinityGroup,omitempty"`
+
+	// Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service
+	// as it was at the time of backup.
+	CreateNewCloudService *bool `json:"createNewCloudService,omitempty"`
+
+	// DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+
+	// Details needed if the VM was encrypted at the time of backup.
+	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
+
+	// IaaS VM workload specific restore details for restores using managed identity.
+	IdentityBasedRestoreDetails *IdentityBasedRestoreDetails `json:"identityBasedRestoreDetails,omitempty"`
+
+	// Managed Identity information required to access customer storage account.
+	IdentityInfo *IdentityInfo `json:"identityInfo,omitempty"`
+
+	// Original Storage Account Option
+	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
+
+	// ID of the backup copy to be recovered.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+
 	// RP Rehydration Info
 	RecoveryPointRehydrationInfo *RecoveryPointRehydrationInfo `json:"recoveryPointRehydrationInfo,omitempty"`
+
+	// Type of this recovery.
+	RecoveryType *RecoveryType `json:"recoveryType,omitempty"`
+
+	// Region in which the virtual machine is restored.
+	Region *string `json:"region,omitempty"`
+
+	// List of Disk LUNs for partial restore
+	RestoreDiskLunList []*int32 `json:"restoreDiskLunList,omitempty"`
+
+	// Flag to denote of an Unmanaged disk VM should be restored with Managed disks.
+	RestoreWithManagedDisks *bool `json:"restoreWithManagedDisks,omitempty"`
+
+	// Fully qualified ARM ID of the VM which is being recovered.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Fully qualified ARM ID of the storage account to which the VM has to be restored.
+	StorageAccountID *string `json:"storageAccountId,omitempty"`
+
+	// Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName}
+	// and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+	// represent the subnet.
+	SubnetID *string `json:"subnetId,omitempty"`
+
+	// Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual
+	// Machines.
+	TargetDomainNameID *string `json:"targetDomainNameId,omitempty"`
+
+	// This is the ARM Id of the resource group that you want to create for this Virtual machine and other artifacts. For e.g.
+	// /subscriptions/{subId}/resourcegroups/{rg}
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+
+	// This is the complete ARM Id of the VM that will be created. For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+	TargetVirtualMachineID *string `json:"targetVirtualMachineId,omitempty"`
+
+	// This is the virtual network Id of the vnet that will be attached to the virtual machine. User will be validated for join
+	// action permissions in the linked access.
+	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
+
+	// Target zone where the VM and its disks should be restored.
+	Zones []*string `json:"zones,omitempty"`
+}
+
+// GetIaasVMRestoreRequest implements the IaasVMRestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
+func (i *IaasVMRestoreWithRehydrationRequest) GetIaasVMRestoreRequest() *IaasVMRestoreRequest {
+	return &IaasVMRestoreRequest{
+		RecoveryPointID:              i.RecoveryPointID,
+		RecoveryType:                 i.RecoveryType,
+		SourceResourceID:             i.SourceResourceID,
+		TargetVirtualMachineID:       i.TargetVirtualMachineID,
+		TargetResourceGroupID:        i.TargetResourceGroupID,
+		StorageAccountID:             i.StorageAccountID,
+		VirtualNetworkID:             i.VirtualNetworkID,
+		SubnetID:                     i.SubnetID,
+		TargetDomainNameID:           i.TargetDomainNameID,
+		Region:                       i.Region,
+		AffinityGroup:                i.AffinityGroup,
+		CreateNewCloudService:        i.CreateNewCloudService,
+		OriginalStorageAccountOption: i.OriginalStorageAccountOption,
+		EncryptionDetails:            i.EncryptionDetails,
+		RestoreDiskLunList:           i.RestoreDiskLunList,
+		RestoreWithManagedDisks:      i.RestoreWithManagedDisks,
+		DiskEncryptionSetID:          i.DiskEncryptionSetID,
+		Zones:                        i.Zones,
+		IdentityInfo:                 i.IdentityInfo,
+		IdentityBasedRestoreDetails:  i.IdentityBasedRestoreDetails,
+		ObjectType:                   i.ObjectType,
+	}
+}
+
+// GetRestoreRequest implements the RestoreRequestClassification interface for type IaasVMRestoreWithRehydrationRequest.
+func (i *IaasVMRestoreWithRehydrationRequest) GetRestoreRequest() *RestoreRequest {
+	return &RestoreRequest{
+		ObjectType: i.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IaasVMRestoreWithRehydrationRequest.
 func (i IaasVMRestoreWithRehydrationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	i.IaasVMRestoreRequest.marshalInternal(objectMap, "IaasVMRestoreWithRehydrationRequest")
+	populate(objectMap, "affinityGroup", i.AffinityGroup)
+	populate(objectMap, "createNewCloudService", i.CreateNewCloudService)
+	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
+	populate(objectMap, "encryptionDetails", i.EncryptionDetails)
+	populate(objectMap, "identityBasedRestoreDetails", i.IdentityBasedRestoreDetails)
+	populate(objectMap, "identityInfo", i.IdentityInfo)
+	objectMap["objectType"] = "IaasVMRestoreWithRehydrationRequest"
+	populate(objectMap, "originalStorageAccountOption", i.OriginalStorageAccountOption)
+	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	populate(objectMap, "recoveryPointRehydrationInfo", i.RecoveryPointRehydrationInfo)
+	populate(objectMap, "recoveryType", i.RecoveryType)
+	populate(objectMap, "region", i.Region)
+	populate(objectMap, "restoreDiskLunList", i.RestoreDiskLunList)
+	populate(objectMap, "restoreWithManagedDisks", i.RestoreWithManagedDisks)
+	populate(objectMap, "sourceResourceId", i.SourceResourceID)
+	populate(objectMap, "storageAccountId", i.StorageAccountID)
+	populate(objectMap, "subnetId", i.SubnetID)
+	populate(objectMap, "targetDomainNameId", i.TargetDomainNameID)
+	populate(objectMap, "targetResourceGroupId", i.TargetResourceGroupID)
+	populate(objectMap, "targetVirtualMachineId", i.TargetVirtualMachineID)
+	populate(objectMap, "virtualNetworkId", i.VirtualNetworkID)
+	populate(objectMap, "zones", i.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -6219,18 +13836,87 @@ func (i *IaasVMRestoreWithRehydrationRequest) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "affinityGroup":
+			err = unpopulate(val, &i.AffinityGroup)
+			delete(rawMsg, key)
+		case "createNewCloudService":
+			err = unpopulate(val, &i.CreateNewCloudService)
+			delete(rawMsg, key)
+		case "diskEncryptionSetId":
+			err = unpopulate(val, &i.DiskEncryptionSetID)
+			delete(rawMsg, key)
+		case "encryptionDetails":
+			err = unpopulate(val, &i.EncryptionDetails)
+			delete(rawMsg, key)
+		case "identityBasedRestoreDetails":
+			err = unpopulate(val, &i.IdentityBasedRestoreDetails)
+			delete(rawMsg, key)
+		case "identityInfo":
+			err = unpopulate(val, &i.IdentityInfo)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &i.ObjectType)
+			delete(rawMsg, key)
+		case "originalStorageAccountOption":
+			err = unpopulate(val, &i.OriginalStorageAccountOption)
+			delete(rawMsg, key)
+		case "recoveryPointId":
+			err = unpopulate(val, &i.RecoveryPointID)
+			delete(rawMsg, key)
 		case "recoveryPointRehydrationInfo":
 			err = unpopulate(val, &i.RecoveryPointRehydrationInfo)
+			delete(rawMsg, key)
+		case "recoveryType":
+			err = unpopulate(val, &i.RecoveryType)
+			delete(rawMsg, key)
+		case "region":
+			err = unpopulate(val, &i.Region)
+			delete(rawMsg, key)
+		case "restoreDiskLunList":
+			err = unpopulate(val, &i.RestoreDiskLunList)
+			delete(rawMsg, key)
+		case "restoreWithManagedDisks":
+			err = unpopulate(val, &i.RestoreWithManagedDisks)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &i.SourceResourceID)
+			delete(rawMsg, key)
+		case "storageAccountId":
+			err = unpopulate(val, &i.StorageAccountID)
+			delete(rawMsg, key)
+		case "subnetId":
+			err = unpopulate(val, &i.SubnetID)
+			delete(rawMsg, key)
+		case "targetDomainNameId":
+			err = unpopulate(val, &i.TargetDomainNameID)
+			delete(rawMsg, key)
+		case "targetResourceGroupId":
+			err = unpopulate(val, &i.TargetResourceGroupID)
+			delete(rawMsg, key)
+		case "targetVirtualMachineId":
+			err = unpopulate(val, &i.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "virtualNetworkId":
+			err = unpopulate(val, &i.VirtualNetworkID)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, &i.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := i.IaasVMRestoreRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
+}
+
+// IdentityBasedRestoreDetails - IaaS VM workload specific restore details for restores using managed identity
+type IdentityBasedRestoreDetails struct {
+	// Gets the class type.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Fully qualified ARM ID of the target storage account.
+	TargetStorageAccountID *string `json:"targetStorageAccountId,omitempty"`
 }
 
 // IdentityInfo - Encapsulates Managed Identity related information
@@ -6293,20 +13979,22 @@ type InstantRPAdditionalDetails struct {
 	AzureBackupRGNameSuffix *string `json:"azureBackupRGNameSuffix,omitempty"`
 }
 
-// ItemLevelRecoveryConnectionsProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnections.Provision method.
-type ItemLevelRecoveryConnectionsProvisionOptions struct {
+// ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
+// method.
+type ItemLevelRecoveryConnectionsClientProvisionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ItemLevelRecoveryConnectionsRevokeOptions contains the optional parameters for the ItemLevelRecoveryConnections.Revoke method.
-type ItemLevelRecoveryConnectionsRevokeOptions struct {
+// ItemLevelRecoveryConnectionsClientRevokeOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Revoke
+// method.
+type ItemLevelRecoveryConnectionsClientRevokeOptions struct {
 	// placeholder for future optional parameters
 }
 
 // JobClassification provides polymorphic access to related types.
 // Call the interface's GetJob() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureIaaSVMJob, *AzureStorageJob, *AzureWorkloadJob, *DpmJob, *Job, *MabJob, *VaultJob
+// - *AzureIaaSVMJob, *AzureIaaSVMJobV2, *AzureStorageJob, *AzureWorkloadJob, *DpmJob, *Job, *MabJob, *VaultJob
 type JobClassification interface {
 	// GetJob returns the Job content of the underlying type.
 	GetJob() *Job
@@ -6342,28 +14030,26 @@ type Job struct {
 // GetJob implements the JobClassification interface for type Job.
 func (j *Job) GetJob() *Job { return j }
 
+// MarshalJSON implements the json.Marshaller interface for type Job.
+func (j Job) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "activityId", j.ActivityID)
+	populate(objectMap, "backupManagementType", j.BackupManagementType)
+	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
+	populate(objectMap, "entityFriendlyName", j.EntityFriendlyName)
+	objectMap["jobType"] = j.JobType
+	populate(objectMap, "operation", j.Operation)
+	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
+	populate(objectMap, "status", j.Status)
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type Job.
 func (j *Job) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return j.unmarshalInternal(rawMsg)
-}
-
-func (j Job) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "activityId", j.ActivityID)
-	populate(objectMap, "backupManagementType", j.BackupManagementType)
-	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
-	populate(objectMap, "entityFriendlyName", j.EntityFriendlyName)
-	j.JobType = &discValue
-	objectMap["jobType"] = j.JobType
-	populate(objectMap, "operation", j.Operation)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
-	populate(objectMap, "status", j.Status)
-}
-
-func (j *Job) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -6399,18 +14085,18 @@ func (j *Job) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	return nil
 }
 
-// JobCancellationsTriggerOptions contains the optional parameters for the JobCancellations.Trigger method.
-type JobCancellationsTriggerOptions struct {
+// JobCancellationsClientTriggerOptions contains the optional parameters for the JobCancellationsClient.Trigger method.
+type JobCancellationsClientTriggerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobDetailsGetOptions contains the optional parameters for the JobDetails.Get method.
-type JobDetailsGetOptions struct {
+// JobDetailsClientGetOptions contains the optional parameters for the JobDetailsClient.Get method.
+type JobDetailsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobOperationResultsGetOptions contains the optional parameters for the JobOperationResults.Get method.
-type JobOperationResultsGetOptions struct {
+// JobOperationResultsClientGetOptions contains the optional parameters for the JobOperationResultsClient.Get method.
+type JobOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6484,16 +14170,38 @@ func (j *JobQueryObject) UnmarshalJSON(data []byte) error {
 
 // JobResource - Defines workload agnostic properties for a job.
 type JobResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// JobResource properties
 	Properties JobClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobResource.
 func (j JobResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", j.ETag)
+	populate(objectMap, "id", j.ID)
+	populate(objectMap, "location", j.Location)
+	populate(objectMap, "name", j.Name)
 	populate(objectMap, "properties", j.Properties)
+	populate(objectMap, "tags", j.Tags)
+	populate(objectMap, "type", j.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -6506,23 +14214,40 @@ func (j *JobResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &j.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &j.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &j.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &j.Name)
+			delete(rawMsg, key)
 		case "properties":
 			j.Properties, err = unmarshalJobClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &j.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &j.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := j.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // JobResourceList - List of Job resources
 type JobResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*JobResource `json:"value,omitempty"`
 }
@@ -6530,13 +14255,13 @@ type JobResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type JobResourceList.
 func (j JobResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	j.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", j.NextLink)
 	populate(objectMap, "value", j.Value)
 	return json.Marshal(objectMap)
 }
 
-// JobsExportOptions contains the optional parameters for the Jobs.Export method.
-type JobsExportOptions struct {
+// JobsClientExportOptions contains the optional parameters for the JobsClient.Export method.
+type JobsClientExportOptions struct {
 	// OData filter options.
 	Filter *string
 }
@@ -6570,7 +14295,8 @@ func (k KPIResourceHealthDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// KeyAndSecretDetails - BEK is bitlocker key. KEK is encryption key for BEK If the VM was encrypted then we will store following details :
+// KeyAndSecretDetails - BEK is bitlocker key. KEK is encryption key for BEK If the VM was encrypted then we will store following
+// details :
 // 1. Secret(BEK) - Url + Backup Data + vaultId.
 // 2. Key(KEK) - Url + Backup Data + vaultId.
 // 3. EncryptionMechanism BEK and KEK can potentially have different vault ids.
@@ -6604,16 +14330,25 @@ func (l ListRecoveryPointsRecommendedForMoveRequest) MarshalJSON() ([]byte, erro
 
 // LogSchedulePolicy - Log policy schedule.
 type LogSchedulePolicy struct {
-	SchedulePolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+
 	// Frequency of the log schedule operation of this policy in minutes.
 	ScheduleFrequencyInMins *int32 `json:"scheduleFrequencyInMins,omitempty"`
+}
+
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type LogSchedulePolicy.
+func (l *LogSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: l.SchedulePolicyType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LogSchedulePolicy.
 func (l LogSchedulePolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.SchedulePolicy.marshalInternal(objectMap, "LogSchedulePolicy")
 	populate(objectMap, "scheduleFrequencyInMins", l.ScheduleFrequencyInMins)
+	objectMap["schedulePolicyType"] = "LogSchedulePolicy"
 	return json.Marshal(objectMap)
 }
 
@@ -6629,20 +14364,22 @@ func (l *LogSchedulePolicy) UnmarshalJSON(data []byte) error {
 		case "scheduleFrequencyInMins":
 			err = unpopulate(val, &l.ScheduleFrequencyInMins)
 			delete(rawMsg, key)
+		case "schedulePolicyType":
+			err = unpopulate(val, &l.SchedulePolicyType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := l.SchedulePolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // LongTermRetentionPolicy - Long term retention policy.
 type LongTermRetentionPolicy struct {
-	RetentionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	RetentionPolicyType *string `json:"retentionPolicyType,omitempty"`
+
 	// Daily retention schedule of the protection policy.
 	DailySchedule *DailyRetentionSchedule `json:"dailySchedule,omitempty"`
 
@@ -6656,12 +14393,19 @@ type LongTermRetentionPolicy struct {
 	YearlySchedule *YearlyRetentionSchedule `json:"yearlySchedule,omitempty"`
 }
 
+// GetRetentionPolicy implements the RetentionPolicyClassification interface for type LongTermRetentionPolicy.
+func (l *LongTermRetentionPolicy) GetRetentionPolicy() *RetentionPolicy {
+	return &RetentionPolicy{
+		RetentionPolicyType: l.RetentionPolicyType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type LongTermRetentionPolicy.
 func (l LongTermRetentionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.RetentionPolicy.marshalInternal(objectMap, "LongTermRetentionPolicy")
 	populate(objectMap, "dailySchedule", l.DailySchedule)
 	populate(objectMap, "monthlySchedule", l.MonthlySchedule)
+	objectMap["retentionPolicyType"] = "LongTermRetentionPolicy"
 	populate(objectMap, "weeklySchedule", l.WeeklySchedule)
 	populate(objectMap, "yearlySchedule", l.YearlySchedule)
 	return json.Marshal(objectMap)
@@ -6682,6 +14426,9 @@ func (l *LongTermRetentionPolicy) UnmarshalJSON(data []byte) error {
 		case "monthlySchedule":
 			err = unpopulate(val, &l.MonthlySchedule)
 			delete(rawMsg, key)
+		case "retentionPolicyType":
+			err = unpopulate(val, &l.RetentionPolicyType)
+			delete(rawMsg, key)
 		case "weeklySchedule":
 			err = unpopulate(val, &l.WeeklySchedule)
 			delete(rawMsg, key)
@@ -6693,22 +14440,47 @@ func (l *LongTermRetentionPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := l.RetentionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // LongTermSchedulePolicy - Long term policy schedule.
 type LongTermSchedulePolicy struct {
-	SchedulePolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+}
+
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type LongTermSchedulePolicy.
+func (l *LongTermSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: l.SchedulePolicyType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LongTermSchedulePolicy.
 func (l LongTermSchedulePolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	l.SchedulePolicy.marshalInternal(objectMap, "LongTermSchedulePolicy")
+	objectMap["schedulePolicyType"] = "LongTermSchedulePolicy"
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type LongTermSchedulePolicy.
+func (l *LongTermSchedulePolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "schedulePolicyType":
+			err = unpopulate(val, &l.SchedulePolicyType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MABContainerHealthDetails - MAB workload-specific Health Details.
@@ -6738,9 +14510,17 @@ func (m MABContainerHealthDetails) MarshalJSON() ([]byte, error) {
 
 // MabContainer - Container with items backed up using MAB backup engine.
 type MabContainer struct {
-	ProtectionContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
 	// Agent version of this container.
 	AgentVersion *string `json:"agentVersion,omitempty"`
+
+	// Type of backup management for the container.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
 
 	// Can the container be registered one more time.
 	CanReRegister *bool `json:"canReRegister,omitempty"`
@@ -6754,24 +14534,53 @@ type MabContainer struct {
 	// Additional information for this container
 	ExtendedInfo *MabContainerExtendedInfo `json:"extendedInfo,omitempty"`
 
+	// Friendly name of the container.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Status of health of the container.
+	HealthStatus *string `json:"healthStatus,omitempty"`
+
 	// Health details on this mab container.
 	MabContainerHealthDetails []*MABContainerHealthDetails `json:"mabContainerHealthDetails,omitempty"`
 
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
 	// Number of items backed up in this container.
 	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
+
+	// Status of registration of the container with the Recovery Services Vault.
+	RegistrationStatus *string `json:"registrationStatus,omitempty"`
+}
+
+// GetProtectionContainer implements the ProtectionContainerClassification interface for type MabContainer.
+func (m *MabContainer) GetProtectionContainer() *ProtectionContainer {
+	return &ProtectionContainer{
+		FriendlyName:          m.FriendlyName,
+		BackupManagementType:  m.BackupManagementType,
+		RegistrationStatus:    m.RegistrationStatus,
+		HealthStatus:          m.HealthStatus,
+		ContainerType:         m.ContainerType,
+		ProtectableObjectType: m.ProtectableObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MabContainer.
 func (m MabContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.ProtectionContainer.marshalInternal(objectMap, ContainerTypeWindows)
 	populate(objectMap, "agentVersion", m.AgentVersion)
+	populate(objectMap, "backupManagementType", m.BackupManagementType)
 	populate(objectMap, "canReRegister", m.CanReRegister)
 	populate(objectMap, "containerHealthState", m.ContainerHealthState)
 	populate(objectMap, "containerId", m.ContainerID)
+	objectMap["containerType"] = ContainerTypeWindows
 	populate(objectMap, "extendedInfo", m.ExtendedInfo)
+	populate(objectMap, "friendlyName", m.FriendlyName)
+	populate(objectMap, "healthStatus", m.HealthStatus)
 	populate(objectMap, "mabContainerHealthDetails", m.MabContainerHealthDetails)
+	populate(objectMap, "protectableObjectType", m.ProtectableObjectType)
 	populate(objectMap, "protectedItemCount", m.ProtectedItemCount)
+	populate(objectMap, "registrationStatus", m.RegistrationStatus)
 	return json.Marshal(objectMap)
 }
 
@@ -6787,6 +14596,9 @@ func (m *MabContainer) UnmarshalJSON(data []byte) error {
 		case "agentVersion":
 			err = unpopulate(val, &m.AgentVersion)
 			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &m.BackupManagementType)
+			delete(rawMsg, key)
 		case "canReRegister":
 			err = unpopulate(val, &m.CanReRegister)
 			delete(rawMsg, key)
@@ -6796,22 +14608,34 @@ func (m *MabContainer) UnmarshalJSON(data []byte) error {
 		case "containerId":
 			err = unpopulate(val, &m.ContainerID)
 			delete(rawMsg, key)
+		case "containerType":
+			err = unpopulate(val, &m.ContainerType)
+			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &m.ExtendedInfo)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, &m.FriendlyName)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, &m.HealthStatus)
 			delete(rawMsg, key)
 		case "mabContainerHealthDetails":
 			err = unpopulate(val, &m.MabContainerHealthDetails)
 			delete(rawMsg, key)
+		case "protectableObjectType":
+			err = unpopulate(val, &m.ProtectableObjectType)
+			delete(rawMsg, key)
 		case "protectedItemCount":
 			err = unpopulate(val, &m.ProtectedItemCount)
+			delete(rawMsg, key)
+		case "registrationStatus":
+			err = unpopulate(val, &m.RegistrationStatus)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.ProtectionContainer.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -6896,12 +14720,32 @@ func (m MabErrorInfo) MarshalJSON() ([]byte, error) {
 
 // MabFileFolderProtectedItem - MAB workload-specific backup item.
 type MabFileFolderProtectedItem struct {
-	ProtectedItem
+	// REQUIRED; backup item type.
+	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+
+	// Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string `json:"backupSetName,omitempty"`
+
 	// Name of the computer associated with this backup item.
 	ComputerName *string `json:"computerName,omitempty"`
 
+	// Unique name of container
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// Sync time for deferred deletion in UTC
 	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 
 	// Additional information with this backup item.
 	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
@@ -6909,27 +14753,96 @@ type MabFileFolderProtectedItem struct {
 	// Friendly name of this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+
 	// Status of last backup operation.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 
 	// Timestamp of the last backup operation on this backup item.
 	LastBackupTime *time.Time `json:"lastBackupTime,omitempty"`
 
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time `json:"lastRecoveryPoint,omitempty"`
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string `json:"policyId,omitempty"`
+
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
 	// Protected, ProtectionStopped, IRPending or ProtectionError
 	ProtectionState *string `json:"protectionState,omitempty"`
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+
+	// Type of workload this item represents.
+	WorkloadType *DataSourceType `json:"workloadType,omitempty"`
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type MabFileFolderProtectedItem.
+func (m *MabFileFolderProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		ProtectedItemType:                m.ProtectedItemType,
+		BackupManagementType:             m.BackupManagementType,
+		WorkloadType:                     m.WorkloadType,
+		ContainerName:                    m.ContainerName,
+		SourceResourceID:                 m.SourceResourceID,
+		PolicyID:                         m.PolicyID,
+		LastRecoveryPoint:                m.LastRecoveryPoint,
+		BackupSetName:                    m.BackupSetName,
+		CreateMode:                       m.CreateMode,
+		DeferredDeleteTimeInUTC:          m.DeferredDeleteTimeInUTC,
+		IsScheduledForDeferredDelete:     m.IsScheduledForDeferredDelete,
+		DeferredDeleteTimeRemaining:      m.DeferredDeleteTimeRemaining,
+		IsDeferredDeleteScheduleUpcoming: m.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      m.IsRehydrate,
+		ResourceGuardOperationRequests:   m.ResourceGuardOperationRequests,
+		IsArchiveEnabled:                 m.IsArchiveEnabled,
+		PolicyName:                       m.PolicyName,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MabFileFolderProtectedItem.
 func (m MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.ProtectedItem.marshalInternal(objectMap, "MabFileFolderProtectedItem")
+	populate(objectMap, "backupManagementType", m.BackupManagementType)
+	populate(objectMap, "backupSetName", m.BackupSetName)
 	populate(objectMap, "computerName", m.ComputerName)
+	populate(objectMap, "containerName", m.ContainerName)
+	populate(objectMap, "createMode", m.CreateMode)
 	populate(objectMap, "deferredDeleteSyncTimeInUTC", m.DeferredDeleteSyncTimeInUTC)
+	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", m.DeferredDeleteTimeInUTC)
+	populate(objectMap, "deferredDeleteTimeRemaining", m.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", m.ExtendedInfo)
 	populate(objectMap, "friendlyName", m.FriendlyName)
+	populate(objectMap, "isArchiveEnabled", m.IsArchiveEnabled)
+	populate(objectMap, "isDeferredDeleteScheduleUpcoming", m.IsDeferredDeleteScheduleUpcoming)
+	populate(objectMap, "isRehydrate", m.IsRehydrate)
+	populate(objectMap, "isScheduledForDeferredDelete", m.IsScheduledForDeferredDelete)
 	populate(objectMap, "lastBackupStatus", m.LastBackupStatus)
 	populateTimeRFC3339(objectMap, "lastBackupTime", m.LastBackupTime)
+	populateTimeRFC3339(objectMap, "lastRecoveryPoint", m.LastRecoveryPoint)
+	populate(objectMap, "policyId", m.PolicyID)
+	populate(objectMap, "policyName", m.PolicyName)
+	objectMap["protectedItemType"] = "MabFileFolderProtectedItem"
 	populate(objectMap, "protectionState", m.ProtectionState)
+	populate(objectMap, "resourceGuardOperationRequests", m.ResourceGuardOperationRequests)
+	populate(objectMap, "sourceResourceId", m.SourceResourceID)
+	populate(objectMap, "workloadType", m.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -6942,11 +14855,29 @@ func (m *MabFileFolderProtectedItem) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &m.BackupManagementType)
+			delete(rawMsg, key)
+		case "backupSetName":
+			err = unpopulate(val, &m.BackupSetName)
+			delete(rawMsg, key)
 		case "computerName":
 			err = unpopulate(val, &m.ComputerName)
 			delete(rawMsg, key)
+		case "containerName":
+			err = unpopulate(val, &m.ContainerName)
+			delete(rawMsg, key)
+		case "createMode":
+			err = unpopulate(val, &m.CreateMode)
+			delete(rawMsg, key)
 		case "deferredDeleteSyncTimeInUTC":
 			err = unpopulate(val, &m.DeferredDeleteSyncTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeInUTC":
+			err = unpopulateTimeRFC3339(val, &m.DeferredDeleteTimeInUTC)
+			delete(rawMsg, key)
+		case "deferredDeleteTimeRemaining":
+			err = unpopulate(val, &m.DeferredDeleteTimeRemaining)
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, &m.ExtendedInfo)
@@ -6954,22 +14885,52 @@ func (m *MabFileFolderProtectedItem) UnmarshalJSON(data []byte) error {
 		case "friendlyName":
 			err = unpopulate(val, &m.FriendlyName)
 			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &m.IsArchiveEnabled)
+			delete(rawMsg, key)
+		case "isDeferredDeleteScheduleUpcoming":
+			err = unpopulate(val, &m.IsDeferredDeleteScheduleUpcoming)
+			delete(rawMsg, key)
+		case "isRehydrate":
+			err = unpopulate(val, &m.IsRehydrate)
+			delete(rawMsg, key)
+		case "isScheduledForDeferredDelete":
+			err = unpopulate(val, &m.IsScheduledForDeferredDelete)
+			delete(rawMsg, key)
 		case "lastBackupStatus":
 			err = unpopulate(val, &m.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
 			err = unpopulateTimeRFC3339(val, &m.LastBackupTime)
 			delete(rawMsg, key)
+		case "lastRecoveryPoint":
+			err = unpopulateTimeRFC3339(val, &m.LastRecoveryPoint)
+			delete(rawMsg, key)
+		case "policyId":
+			err = unpopulate(val, &m.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &m.PolicyName)
+			delete(rawMsg, key)
+		case "protectedItemType":
+			err = unpopulate(val, &m.ProtectedItemType)
+			delete(rawMsg, key)
 		case "protectionState":
 			err = unpopulate(val, &m.ProtectionState)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &m.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
+		case "sourceResourceId":
+			err = unpopulate(val, &m.SourceResourceID)
+			delete(rawMsg, key)
+		case "workloadType":
+			err = unpopulate(val, &m.WorkloadType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.ProtectedItem.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -7023,12 +14984,26 @@ func (m *MabFileFolderProtectedItemExtendedInfo) UnmarshalJSON(data []byte) erro
 
 // MabJob - MAB workload-specific job.
 type MabJob struct {
-	Job
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
 	// The state/actions applicable on jobs like cancel/retry.
 	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
 
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Time taken by job to run.
 	Duration *string `json:"duration,omitempty"`
+
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
 
 	// The errors.
 	ErrorDetails []*MabErrorInfo `json:"errorDetails,omitempty"`
@@ -7042,20 +15017,50 @@ type MabJob struct {
 	// Server type of MAB container.
 	MabServerType *MabServerType `json:"mabServerType,omitempty"`
 
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
+
 	// Workload type of backup item.
 	WorkloadType *WorkloadType `json:"workloadType,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type MabJob.
+func (m *MabJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   m.EntityFriendlyName,
+		BackupManagementType: m.BackupManagementType,
+		Operation:            m.Operation,
+		Status:               m.Status,
+		StartTime:            m.StartTime,
+		EndTime:              m.EndTime,
+		ActivityID:           m.ActivityID,
+		JobType:              m.JobType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MabJob.
 func (m MabJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.Job.marshalInternal(objectMap, "MabJob")
 	populate(objectMap, "actionsInfo", m.ActionsInfo)
+	populate(objectMap, "activityId", m.ActivityID)
+	populate(objectMap, "backupManagementType", m.BackupManagementType)
 	populate(objectMap, "duration", m.Duration)
+	populateTimeRFC3339(objectMap, "endTime", m.EndTime)
+	populate(objectMap, "entityFriendlyName", m.EntityFriendlyName)
 	populate(objectMap, "errorDetails", m.ErrorDetails)
 	populate(objectMap, "extendedInfo", m.ExtendedInfo)
+	objectMap["jobType"] = "MabJob"
 	populate(objectMap, "mabServerName", m.MabServerName)
 	populate(objectMap, "mabServerType", m.MabServerType)
+	populate(objectMap, "operation", m.Operation)
+	populateTimeRFC3339(objectMap, "startTime", m.StartTime)
+	populate(objectMap, "status", m.Status)
 	populate(objectMap, "workloadType", m.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -7072,8 +15077,20 @@ func (m *MabJob) UnmarshalJSON(data []byte) error {
 		case "actionsInfo":
 			err = unpopulate(val, &m.ActionsInfo)
 			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &m.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &m.BackupManagementType)
+			delete(rawMsg, key)
 		case "duration":
 			err = unpopulate(val, &m.Duration)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &m.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &m.EntityFriendlyName)
 			delete(rawMsg, key)
 		case "errorDetails":
 			err = unpopulate(val, &m.ErrorDetails)
@@ -7081,11 +15098,23 @@ func (m *MabJob) UnmarshalJSON(data []byte) error {
 		case "extendedInfo":
 			err = unpopulate(val, &m.ExtendedInfo)
 			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &m.JobType)
+			delete(rawMsg, key)
 		case "mabServerName":
 			err = unpopulate(val, &m.MabServerName)
 			delete(rawMsg, key)
 		case "mabServerType":
 			err = unpopulate(val, &m.MabServerType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &m.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &m.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &m.Status)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, &m.WorkloadType)
@@ -7094,9 +15123,6 @@ func (m *MabJob) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.Job.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -7185,7 +15211,15 @@ func (m *MabJobTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MabProtectionPolicy - Mab container-specific backup policy.
 type MabProtectionPolicy struct {
-	ProtectionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	BackupManagementType *string `json:"backupManagementType,omitempty"`
+
+	// Number of items associated with this policy.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
+
+	// ResourceGuard Operation Requests
+	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
+
 	// Retention policy details.
 	RetentionPolicy RetentionPolicyClassification `json:"retentionPolicy,omitempty"`
 
@@ -7193,10 +15227,21 @@ type MabProtectionPolicy struct {
 	SchedulePolicy SchedulePolicyClassification `json:"schedulePolicy,omitempty"`
 }
 
+// GetProtectionPolicy implements the ProtectionPolicyClassification interface for type MabProtectionPolicy.
+func (m *MabProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy {
+	return &ProtectionPolicy{
+		ProtectedItemsCount:            m.ProtectedItemsCount,
+		BackupManagementType:           m.BackupManagementType,
+		ResourceGuardOperationRequests: m.ResourceGuardOperationRequests,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type MabProtectionPolicy.
 func (m MabProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.ProtectionPolicy.marshalInternal(objectMap, "MAB")
+	objectMap["backupManagementType"] = "MAB"
+	populate(objectMap, "protectedItemsCount", m.ProtectedItemsCount)
+	populate(objectMap, "resourceGuardOperationRequests", m.ResourceGuardOperationRequests)
 	populate(objectMap, "retentionPolicy", m.RetentionPolicy)
 	populate(objectMap, "schedulePolicy", m.SchedulePolicy)
 	return json.Marshal(objectMap)
@@ -7211,6 +15256,15 @@ func (m *MabProtectionPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "backupManagementType":
+			err = unpopulate(val, &m.BackupManagementType)
+			delete(rawMsg, key)
+		case "protectedItemsCount":
+			err = unpopulate(val, &m.ProtectedItemsCount)
+			delete(rawMsg, key)
+		case "resourceGuardOperationRequests":
+			err = unpopulate(val, &m.ResourceGuardOperationRequests)
+			delete(rawMsg, key)
 		case "retentionPolicy":
 			m.RetentionPolicy, err = unmarshalRetentionPolicyClassification(val)
 			delete(rawMsg, key)
@@ -7221,9 +15275,6 @@ func (m *MabProtectionPolicy) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.ProtectionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -7282,17 +15333,9 @@ type NameInfo struct {
 }
 
 // NewErrorResponse - The resource management error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type NewErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *NewErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type NewErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e NewErrorResponse) Error() string {
-	return e.raw
+	Error *NewErrorResponseError `json:"error,omitempty"`
 }
 
 // NewErrorResponseError - The error object.
@@ -7324,18 +15367,32 @@ func (n NewErrorResponseError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// OperationClientValidateOptions contains the optional parameters for the OperationClient.Validate method.
+type OperationClientValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationResultInfo - Operation result info.
 type OperationResultInfo struct {
-	OperationResultInfoBase
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// List of jobs created by this operation.
 	JobList []*string `json:"jobList,omitempty"`
+}
+
+// GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type OperationResultInfo.
+func (o *OperationResultInfo) GetOperationResultInfoBase() *OperationResultInfoBase {
+	return &OperationResultInfoBase{
+		ObjectType: o.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OperationResultInfo.
 func (o OperationResultInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationResultInfoBase.marshalInternal(objectMap, "OperationResultInfo")
 	populate(objectMap, "jobList", o.JobList)
+	objectMap["objectType"] = "OperationResultInfo"
 	return json.Marshal(objectMap)
 }
 
@@ -7351,13 +15408,13 @@ func (o *OperationResultInfo) UnmarshalJSON(data []byte) error {
 		case "jobList":
 			err = unpopulate(val, &o.JobList)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &o.ObjectType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := o.OperationResultInfoBase.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -7380,47 +15437,24 @@ type OperationResultInfoBase struct {
 // GetOperationResultInfoBase implements the OperationResultInfoBaseClassification interface for type OperationResultInfoBase.
 func (o *OperationResultInfoBase) GetOperationResultInfoBase() *OperationResultInfoBase { return o }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResultInfoBase.
-func (o *OperationResultInfoBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o OperationResultInfoBase) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	o.ObjectType = &discValue
-	objectMap["objectType"] = o.ObjectType
-}
-
-func (o *OperationResultInfoBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &o.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OperationResultInfoBaseResource - Base class for operation result info.
 type OperationResultInfoBaseResource struct {
-	OperationWorkerResponse
+	// HTTP headers associated with this operation.
+	Headers map[string][]*string `json:"headers,omitempty"`
+
 	// OperationResultInfoBaseResource operation
 	Operation OperationResultInfoBaseClassification `json:"operation,omitempty"`
+
+	// HTTP Status Code of the operation.
+	StatusCode *HTTPStatusCode `json:"statusCode,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OperationResultInfoBaseResource.
 func (o OperationResultInfoBaseResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationWorkerResponse.marshalInternal(objectMap)
+	populate(objectMap, "headers", o.Headers)
 	populate(objectMap, "operation", o.Operation)
+	populate(objectMap, "statusCode", o.StatusCode)
 	return json.Marshal(objectMap)
 }
 
@@ -7433,16 +15467,19 @@ func (o *OperationResultInfoBaseResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "headers":
+			err = unpopulate(val, &o.Headers)
+			delete(rawMsg, key)
 		case "operation":
 			o.Operation, err = unmarshalOperationResultInfoBaseClassification(val)
+			delete(rawMsg, key)
+		case "statusCode":
+			err = unpopulate(val, &o.StatusCode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := o.OperationWorkerResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -7534,7 +15571,8 @@ type OperationStatusError struct {
 // OperationStatusExtendedInfoClassification provides polymorphic access to related types.
 // Call the interface's GetOperationStatusExtendedInfo() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *OperationStatusExtendedInfo, *OperationStatusJobExtendedInfo, *OperationStatusJobsExtendedInfo, *OperationStatusProvisionILRExtendedInfo
+// - *OperationStatusExtendedInfo, *OperationStatusJobExtendedInfo, *OperationStatusJobsExtendedInfo, *OperationStatusProvisionILRExtendedInfo,
+// - *OperationStatusValidateOperationExtendedInfo
 type OperationStatusExtendedInfoClassification interface {
 	// GetOperationStatusExtendedInfo returns the OperationStatusExtendedInfo content of the underlying type.
 	GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo
@@ -7551,47 +15589,27 @@ func (o *OperationStatusExtendedInfo) GetOperationStatusExtendedInfo() *Operatio
 	return o
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationStatusExtendedInfo.
-func (o *OperationStatusExtendedInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o OperationStatusExtendedInfo) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	o.ObjectType = &discValue
-	objectMap["objectType"] = o.ObjectType
-}
-
-func (o *OperationStatusExtendedInfo) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &o.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OperationStatusJobExtendedInfo - Operation status job extended info.
 type OperationStatusJobExtendedInfo struct {
-	OperationStatusExtendedInfo
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// ID of the job created for this protected item.
 	JobID *string `json:"jobId,omitempty"`
+}
+
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusJobExtendedInfo.
+func (o *OperationStatusJobExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OperationStatusJobExtendedInfo.
 func (o OperationStatusJobExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationStatusExtendedInfo.marshalInternal(objectMap, "OperationStatusJobExtendedInfo")
 	populate(objectMap, "jobId", o.JobID)
+	objectMap["objectType"] = "OperationStatusJobExtendedInfo"
 	return json.Marshal(objectMap)
 }
 
@@ -7607,20 +15625,22 @@ func (o *OperationStatusJobExtendedInfo) UnmarshalJSON(data []byte) error {
 		case "jobId":
 			err = unpopulate(val, &o.JobID)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &o.ObjectType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := o.OperationStatusExtendedInfo.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // OperationStatusJobsExtendedInfo - Operation status extended info for list of jobs.
 type OperationStatusJobsExtendedInfo struct {
-	OperationStatusExtendedInfo
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Stores all the failed jobs along with the corresponding error codes.
 	FailedJobsError map[string]*string `json:"failedJobsError,omitempty"`
 
@@ -7628,12 +15648,19 @@ type OperationStatusJobsExtendedInfo struct {
 	JobIDs []*string `json:"jobIds,omitempty"`
 }
 
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusJobsExtendedInfo.
+func (o *OperationStatusJobsExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type OperationStatusJobsExtendedInfo.
 func (o OperationStatusJobsExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationStatusExtendedInfo.marshalInternal(objectMap, "OperationStatusJobsExtendedInfo")
 	populate(objectMap, "failedJobsError", o.FailedJobsError)
 	populate(objectMap, "jobIds", o.JobIDs)
+	objectMap["objectType"] = "OperationStatusJobsExtendedInfo"
 	return json.Marshal(objectMap)
 }
 
@@ -7652,28 +15679,37 @@ func (o *OperationStatusJobsExtendedInfo) UnmarshalJSON(data []byte) error {
 		case "jobIds":
 			err = unpopulate(val, &o.JobIDs)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &o.ObjectType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := o.OperationStatusExtendedInfo.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // OperationStatusProvisionILRExtendedInfo - Operation status extended info for ILR provision action.
 type OperationStatusProvisionILRExtendedInfo struct {
-	OperationStatusExtendedInfo
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Target details for file / folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
+}
+
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusProvisionILRExtendedInfo.
+func (o *OperationStatusProvisionILRExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OperationStatusProvisionILRExtendedInfo.
 func (o OperationStatusProvisionILRExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.OperationStatusExtendedInfo.marshalInternal(objectMap, "OperationStatusProvisionILRExtendedInfo")
+	objectMap["objectType"] = "OperationStatusProvisionILRExtendedInfo"
 	populate(objectMap, "recoveryTarget", o.RecoveryTarget)
 	return json.Marshal(objectMap)
 }
@@ -7687,6 +15723,9 @@ func (o *OperationStatusProvisionILRExtendedInfo) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &o.ObjectType)
+			delete(rawMsg, key)
 		case "recoveryTarget":
 			err = unpopulate(val, &o.RecoveryTarget)
 			delete(rawMsg, key)
@@ -7695,15 +15734,54 @@ func (o *OperationStatusProvisionILRExtendedInfo) UnmarshalJSON(data []byte) err
 			return err
 		}
 	}
-	if err := o.OperationStatusExtendedInfo.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// OperationValidateOptions contains the optional parameters for the Operation.Validate method.
-type OperationValidateOptions struct {
-	// placeholder for future optional parameters
+// OperationStatusValidateOperationExtendedInfo - Operation status extended info for ValidateOperation action.
+type OperationStatusValidateOperationExtendedInfo struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Gets the validation operation response
+	ValidateOperationResponse *ValidateOperationResponse `json:"validateOperationResponse,omitempty"`
+}
+
+// GetOperationStatusExtendedInfo implements the OperationStatusExtendedInfoClassification interface for type OperationStatusValidateOperationExtendedInfo.
+func (o *OperationStatusValidateOperationExtendedInfo) GetOperationStatusExtendedInfo() *OperationStatusExtendedInfo {
+	return &OperationStatusExtendedInfo{
+		ObjectType: o.ObjectType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OperationStatusValidateOperationExtendedInfo.
+func (o OperationStatusValidateOperationExtendedInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["objectType"] = "OperationStatusValidateOperationExtendedInfo"
+	populate(objectMap, "validateOperationResponse", o.ValidateOperationResponse)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OperationStatusValidateOperationExtendedInfo.
+func (o *OperationStatusValidateOperationExtendedInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, &o.ObjectType)
+			delete(rawMsg, key)
+		case "validateOperationResponse":
+			err = unpopulate(val, &o.ValidateOperationResponse)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // OperationWorkerResponse - This is the base class for operation result responses.
@@ -7718,44 +15796,13 @@ type OperationWorkerResponse struct {
 // MarshalJSON implements the json.Marshaller interface for type OperationWorkerResponse.
 func (o OperationWorkerResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.marshalInternal(objectMap)
+	populate(objectMap, "headers", o.Headers)
+	populate(objectMap, "statusCode", o.StatusCode)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationWorkerResponse.
-func (o *OperationWorkerResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o OperationWorkerResponse) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "headers", o.Headers)
-	populate(objectMap, "statusCode", o.StatusCode)
-}
-
-func (o *OperationWorkerResponse) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "headers":
-			err = unpopulate(val, &o.Headers)
-			delete(rawMsg, key)
-		case "statusCode":
-			err = unpopulate(val, &o.StatusCode)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7811,8 +15858,8 @@ type PreBackupValidation struct {
 	Status *InquiryStatus `json:"status,omitempty"`
 }
 
-// PreValidateEnableBackupRequest - Contract to validate if backup can be enabled on the given resource in a given vault and given configuration. It will
-// validate followings
+// PreValidateEnableBackupRequest - Contract to validate if backup can be enabled on the given resource in a given vault and
+// given configuration. It will validate followings
 // 1. Vault capacity
 // 2. VM is already protected
 // 3. Any VM related configuration passed in properties.
@@ -7832,7 +15879,8 @@ type PreValidateEnableBackupRequest struct {
 
 // PreValidateEnableBackupResponse - Response contract for enable backup validation request
 type PreValidateEnableBackupResponse struct {
-	// Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for portal
+	// Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for
+	// portal
 	ContainerName *string `json:"containerName,omitempty"`
 
 	// Response error code
@@ -7882,7 +15930,9 @@ func (p PrepareDataMoveRequest) MarshalJSON() ([]byte, error) {
 
 // PrepareDataMoveResponse - Prepare DataMove Response
 type PrepareDataMoveResponse struct {
-	VaultStorageConfigOperationResultResponse
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Co-relationId for move operation
 	CorrelationID *string `json:"correlationId,omitempty"`
 
@@ -7890,11 +15940,19 @@ type PrepareDataMoveResponse struct {
 	SourceVaultProperties map[string]*string `json:"sourceVaultProperties,omitempty"`
 }
 
+// GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
+// for type PrepareDataMoveResponse.
+func (p *PrepareDataMoveResponse) GetVaultStorageConfigOperationResultResponse() *VaultStorageConfigOperationResultResponse {
+	return &VaultStorageConfigOperationResultResponse{
+		ObjectType: p.ObjectType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type PrepareDataMoveResponse.
 func (p PrepareDataMoveResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.VaultStorageConfigOperationResultResponse.marshalInternal(objectMap, "PrepareDataMoveResponse")
 	populate(objectMap, "correlationId", p.CorrelationID)
+	objectMap["objectType"] = "PrepareDataMoveResponse"
 	populate(objectMap, "sourceVaultProperties", p.SourceVaultProperties)
 	return json.Marshal(objectMap)
 }
@@ -7911,6 +15969,9 @@ func (p *PrepareDataMoveResponse) UnmarshalJSON(data []byte) error {
 		case "correlationId":
 			err = unpopulate(val, &p.CorrelationID)
 			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &p.ObjectType)
+			delete(rawMsg, key)
 		case "sourceVaultProperties":
 			err = unpopulate(val, &p.SourceVaultProperties)
 			delete(rawMsg, key)
@@ -7919,9 +15980,6 @@ func (p *PrepareDataMoveResponse) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	if err := p.VaultStorageConfigOperationResultResponse.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -7929,6 +15987,12 @@ func (p *PrepareDataMoveResponse) UnmarshalJSON(data []byte) error {
 type PrivateEndpoint struct {
 	// Gets or sets id
 	ID *string `json:"id,omitempty"`
+}
+
+// PrivateEndpointClientGetOperationStatusOptions contains the optional parameters for the PrivateEndpointClient.GetOperationStatus
+// method.
+type PrivateEndpointClientGetOperationStatusOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PrivateEndpointConnection - Private Endpoint Connection Response Properties
@@ -7943,62 +16007,59 @@ type PrivateEndpointConnection struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnection.BeginDelete method.
-type PrivateEndpointConnectionBeginDeleteOptions struct {
+// PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
+// method.
+type PrivateEndpointConnectionClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionBeginPutOptions contains the optional parameters for the PrivateEndpointConnection.BeginPut method.
-type PrivateEndpointConnectionBeginPutOptions struct {
+// PrivateEndpointConnectionClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginPut
+// method.
+type PrivateEndpointConnectionClientBeginPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionGetOptions contains the optional parameters for the PrivateEndpointConnection.Get method.
-type PrivateEndpointConnectionGetOptions struct {
+// PrivateEndpointConnectionClientGetOptions contains the optional parameters for the PrivateEndpointConnectionClient.Get
+// method.
+type PrivateEndpointConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateEndpointConnectionResource - Private Endpoint Connection Response Properties
 type PrivateEndpointConnectionResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// PrivateEndpointConnectionResource properties
 	Properties *PrivateEndpointConnection `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionResource.
 func (p PrivateEndpointConnectionResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateEndpointConnectionResource.
-func (p *PrivateEndpointConnectionResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// PrivateEndpointGetOperationStatusOptions contains the optional parameters for the PrivateEndpoint.GetOperationStatus method.
-type PrivateEndpointGetOperationStatusOptions struct {
-	// placeholder for future optional parameters
 }
 
 // PrivateLinkServiceConnectionState - Private Link Service Connection State
@@ -8045,63 +16106,40 @@ type ProtectableContainer struct {
 // GetProtectableContainer implements the ProtectableContainerClassification interface for type ProtectableContainer.
 func (p *ProtectableContainer) GetProtectableContainer() *ProtectableContainer { return p }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectableContainer.
-func (p *ProtectableContainer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p ProtectableContainer) marshalInternal(objectMap map[string]interface{}, discValue ContainerType) {
-	populate(objectMap, "backupManagementType", p.BackupManagementType)
-	populate(objectMap, "containerId", p.ContainerID)
-	populate(objectMap, "friendlyName", p.FriendlyName)
-	populate(objectMap, "healthStatus", p.HealthStatus)
-	p.ProtectableContainerType = &discValue
-	objectMap["protectableContainerType"] = p.ProtectableContainerType
-}
-
-func (p *ProtectableContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &p.BackupManagementType)
-			delete(rawMsg, key)
-		case "containerId":
-			err = unpopulate(val, &p.ContainerID)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &p.FriendlyName)
-			delete(rawMsg, key)
-		case "healthStatus":
-			err = unpopulate(val, &p.HealthStatus)
-			delete(rawMsg, key)
-		case "protectableContainerType":
-			err = unpopulate(val, &p.ProtectableContainerType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProtectableContainerResource - Protectable Container Class.
 type ProtectableContainerResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ProtectableContainerResource properties
 	Properties ProtectableContainerClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectableContainerResource.
 func (p ProtectableContainerResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -8114,23 +16152,40 @@ func (p *ProtectableContainerResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &p.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &p.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "properties":
 			p.Properties, err = unmarshalProtectableContainerClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &p.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ProtectableContainerResourceList - List of ProtectableContainer resources
 type ProtectableContainerResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*ProtectableContainerResource `json:"value,omitempty"`
 }
@@ -8138,13 +16193,13 @@ type ProtectableContainerResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type ProtectableContainerResourceList.
 func (p ProtectableContainerResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
-// ProtectableContainersListOptions contains the optional parameters for the ProtectableContainers.List method.
-type ProtectableContainersListOptions struct {
+// ProtectableContainersClientListOptions contains the optional parameters for the ProtectableContainersClient.List method.
+type ProtectableContainersClientListOptions struct {
 	// OData filter options.
 	Filter *string
 }
@@ -8153,8 +16208,8 @@ type ProtectableContainersListOptions struct {
 // Call the interface's GetProtectedItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFileshareProtectedItem, *AzureIaaSClassicComputeVMProtectedItem, *AzureIaaSComputeVMProtectedItem, *AzureIaaSVMProtectedItem,
-// - *AzureSqlProtectedItem, *AzureVmWorkloadProtectedItem, *AzureVmWorkloadSAPAseDatabaseProtectedItem, *AzureVmWorkloadSAPHanaDatabaseProtectedItem,
-// - *AzureVmWorkloadSQLDatabaseProtectedItem, *DPMProtectedItem, *GenericProtectedItem, *MabFileFolderProtectedItem, *ProtectedItem
+// - *AzureSQLProtectedItem, *AzureVMWorkloadProtectedItem, *AzureVMWorkloadSAPAseDatabaseProtectedItem, *AzureVMWorkloadSAPHanaDatabaseProtectedItem,
+// - *AzureVMWorkloadSQLDatabaseProtectedItem, *DPMProtectedItem, *GenericProtectedItem, *MabFileFolderProtectedItem, *ProtectedItem
 type ProtectedItemClassification interface {
 	// GetProtectedItem returns the ProtectedItem content of the underlying type.
 	GetProtectedItem() *ProtectedItem
@@ -8183,6 +16238,9 @@ type ProtectedItem struct {
 	// Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+
 	// Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 
@@ -8198,6 +16256,9 @@ type ProtectedItem struct {
 	// ID of the backup policy with which this item is backed up.
 	PolicyID *string `json:"policyId,omitempty"`
 
+	// Name of the policy used for protection
+	PolicyName *string `json:"policyName,omitempty"`
+
 	// ResourceGuardOperationRequests on which LAC check will be performed
 	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
 
@@ -8211,35 +16272,35 @@ type ProtectedItem struct {
 // GetProtectedItem implements the ProtectedItemClassification interface for type ProtectedItem.
 func (p *ProtectedItem) GetProtectedItem() *ProtectedItem { return p }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectedItem.
-func (p *ProtectedItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p ProtectedItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
+// MarshalJSON implements the json.Marshaller interface for type ProtectedItem.
+func (p ProtectedItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	populate(objectMap, "backupManagementType", p.BackupManagementType)
 	populate(objectMap, "backupSetName", p.BackupSetName)
 	populate(objectMap, "containerName", p.ContainerName)
 	populate(objectMap, "createMode", p.CreateMode)
 	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", p.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", p.DeferredDeleteTimeRemaining)
+	populate(objectMap, "isArchiveEnabled", p.IsArchiveEnabled)
 	populate(objectMap, "isDeferredDeleteScheduleUpcoming", p.IsDeferredDeleteScheduleUpcoming)
 	populate(objectMap, "isRehydrate", p.IsRehydrate)
 	populate(objectMap, "isScheduledForDeferredDelete", p.IsScheduledForDeferredDelete)
 	populateTimeRFC3339(objectMap, "lastRecoveryPoint", p.LastRecoveryPoint)
 	populate(objectMap, "policyId", p.PolicyID)
-	p.ProtectedItemType = &discValue
+	populate(objectMap, "policyName", p.PolicyName)
 	objectMap["protectedItemType"] = p.ProtectedItemType
 	populate(objectMap, "resourceGuardOperationRequests", p.ResourceGuardOperationRequests)
 	populate(objectMap, "sourceResourceId", p.SourceResourceID)
 	populate(objectMap, "workloadType", p.WorkloadType)
+	return json.Marshal(objectMap)
 }
 
-func (p *ProtectedItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectedItem.
+func (p *ProtectedItem) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -8261,6 +16322,9 @@ func (p *ProtectedItem) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, &p.DeferredDeleteTimeRemaining)
 			delete(rawMsg, key)
+		case "isArchiveEnabled":
+			err = unpopulate(val, &p.IsArchiveEnabled)
+			delete(rawMsg, key)
 		case "isDeferredDeleteScheduleUpcoming":
 			err = unpopulate(val, &p.IsDeferredDeleteScheduleUpcoming)
 			delete(rawMsg, key)
@@ -8275,6 +16339,9 @@ func (p *ProtectedItem) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, &p.PolicyID)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, &p.PolicyName)
 			delete(rawMsg, key)
 		case "protectedItemType":
 			err = unpopulate(val, &p.ProtectedItemType)
@@ -8296,13 +16363,15 @@ func (p *ProtectedItem) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 	return nil
 }
 
-// ProtectedItemOperationResultsGetOptions contains the optional parameters for the ProtectedItemOperationResults.Get method.
-type ProtectedItemOperationResultsGetOptions struct {
+// ProtectedItemOperationResultsClientGetOptions contains the optional parameters for the ProtectedItemOperationResultsClient.Get
+// method.
+type ProtectedItemOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectedItemOperationStatusesGetOptions contains the optional parameters for the ProtectedItemOperationStatuses.Get method.
-type ProtectedItemOperationStatusesGetOptions struct {
+// ProtectedItemOperationStatusesClientGetOptions contains the optional parameters for the ProtectedItemOperationStatusesClient.Get
+// method.
+type ProtectedItemOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8338,16 +16407,38 @@ type ProtectedItemQueryObject struct {
 
 // ProtectedItemResource - Base class for backup items.
 type ProtectedItemResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ProtectedItemResource properties
 	Properties ProtectedItemClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectedItemResource.
 func (p ProtectedItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -8360,23 +16451,40 @@ func (p *ProtectedItemResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &p.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &p.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "properties":
 			p.Properties, err = unmarshalProtectedItemClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &p.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ProtectedItemResourceList - List of ProtectedItem resources
 type ProtectedItemResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*ProtectedItemResource `json:"value,omitempty"`
 }
@@ -8384,23 +16492,24 @@ type ProtectedItemResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type ProtectedItemResourceList.
 func (p ProtectedItemResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
-// ProtectedItemsCreateOrUpdateOptions contains the optional parameters for the ProtectedItems.CreateOrUpdate method.
-type ProtectedItemsCreateOrUpdateOptions struct {
+// ProtectedItemsClientCreateOrUpdateOptions contains the optional parameters for the ProtectedItemsClient.CreateOrUpdate
+// method.
+type ProtectedItemsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectedItemsDeleteOptions contains the optional parameters for the ProtectedItems.Delete method.
-type ProtectedItemsDeleteOptions struct {
+// ProtectedItemsClientDeleteOptions contains the optional parameters for the ProtectedItemsClient.Delete method.
+type ProtectedItemsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectedItemsGetOptions contains the optional parameters for the ProtectedItems.Get method.
-type ProtectedItemsGetOptions struct {
+// ProtectedItemsClientGetOptions contains the optional parameters for the ProtectedItemsClient.Get method.
+type ProtectedItemsClientGetOptions struct {
 	// OData filter options.
 	Filter *string
 }
@@ -8409,19 +16518,20 @@ type ProtectedItemsGetOptions struct {
 // Call the interface's GetProtectionContainer() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureBackupServerContainer, *AzureIaaSClassicComputeVMContainer, *AzureIaaSComputeVMContainer, *AzureSQLAGWorkloadContainerProtectionContainer,
-// - *AzureSqlContainer, *AzureStorageContainer, *AzureVMAppContainerProtectionContainer, *AzureWorkloadContainer, *DpmContainer,
+// - *AzureSQLContainer, *AzureStorageContainer, *AzureVMAppContainerProtectionContainer, *AzureWorkloadContainer, *DpmContainer,
 // - *GenericContainer, *IaaSVMContainer, *MabContainer, *ProtectionContainer
 type ProtectionContainerClassification interface {
 	// GetProtectionContainer returns the ProtectionContainer content of the underlying type.
 	GetProtectionContainer() *ProtectionContainer
 }
 
-// ProtectionContainer - Base class for container with backup items. Containers with specific workloads are derived from this class.
+// ProtectionContainer - Base class for container with backup items. Containers with specific workloads are derived from this
+// class.
 type ProtectionContainer struct {
-	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines 2. Classic Compute Azure VM
-	// is Microsoft.ClassicCompute/virtualMachines 3. Windows
-	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload Backup
-	// is VMAppContainer
+	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows
+	// machines (like MAB, DPM etc) is Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer.
+	// 6. Azure workload Backup is VMAppContainer
 	ContainerType *ContainerType `json:"containerType,omitempty"`
 
 	// Type of backup management for the container.
@@ -8433,6 +16543,9 @@ type ProtectionContainer struct {
 	// Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
 
+	// Type of the protectable object associated with this container
+	ProtectableObjectType *string `json:"protectableObjectType,omitempty"`
+
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 }
@@ -8440,73 +16553,53 @@ type ProtectionContainer struct {
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type ProtectionContainer.
 func (p *ProtectionContainer) GetProtectionContainer() *ProtectionContainer { return p }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectionContainer.
-func (p *ProtectionContainer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p ProtectionContainer) marshalInternal(objectMap map[string]interface{}, discValue ContainerType) {
-	populate(objectMap, "backupManagementType", p.BackupManagementType)
-	p.ContainerType = &discValue
-	objectMap["containerType"] = p.ContainerType
-	populate(objectMap, "friendlyName", p.FriendlyName)
-	populate(objectMap, "healthStatus", p.HealthStatus)
-	populate(objectMap, "registrationStatus", p.RegistrationStatus)
-}
-
-func (p *ProtectionContainer) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &p.BackupManagementType)
-			delete(rawMsg, key)
-		case "containerType":
-			err = unpopulate(val, &p.ContainerType)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &p.FriendlyName)
-			delete(rawMsg, key)
-		case "healthStatus":
-			err = unpopulate(val, &p.HealthStatus)
-			delete(rawMsg, key)
-		case "registrationStatus":
-			err = unpopulate(val, &p.RegistrationStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ProtectionContainerOperationResultsGetOptions contains the optional parameters for the ProtectionContainerOperationResults.Get method.
-type ProtectionContainerOperationResultsGetOptions struct {
+// ProtectionContainerOperationResultsClientGetOptions contains the optional parameters for the ProtectionContainerOperationResultsClient.Get
+// method.
+type ProtectionContainerOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionContainerRefreshOperationResultsGetOptions contains the optional parameters for the ProtectionContainerRefreshOperationResults.Get method.
-type ProtectionContainerRefreshOperationResultsGetOptions struct {
+// ProtectionContainerRefreshOperationResultsClientGetOptions contains the optional parameters for the ProtectionContainerRefreshOperationResultsClient.Get
+// method.
+type ProtectionContainerRefreshOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionContainerResource - Base class for container with backup items. Containers with specific workloads are derived from this class.
+// ProtectionContainerResource - Base class for container with backup items. Containers with specific workloads are derived
+// from this class.
 type ProtectionContainerResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ProtectionContainerResource properties
 	Properties ProtectionContainerClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerResource.
 func (p ProtectionContainerResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -8519,23 +16612,40 @@ func (p *ProtectionContainerResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &p.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &p.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "properties":
 			p.Properties, err = unmarshalProtectionContainerClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &p.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ProtectionContainerResourceList - List of ProtectionContainer resources
 type ProtectionContainerResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*ProtectionContainerResource `json:"value,omitempty"`
 }
@@ -8543,43 +16653,45 @@ type ProtectionContainerResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerResourceList.
 func (p ProtectionContainerResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
-// ProtectionContainersGetOptions contains the optional parameters for the ProtectionContainers.Get method.
-type ProtectionContainersGetOptions struct {
+// ProtectionContainersClientGetOptions contains the optional parameters for the ProtectionContainersClient.Get method.
+type ProtectionContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionContainersInquireOptions contains the optional parameters for the ProtectionContainers.Inquire method.
-type ProtectionContainersInquireOptions struct {
+// ProtectionContainersClientInquireOptions contains the optional parameters for the ProtectionContainersClient.Inquire method.
+type ProtectionContainersClientInquireOptions struct {
 	// OData filter options.
 	Filter *string
 }
 
-// ProtectionContainersRefreshOptions contains the optional parameters for the ProtectionContainers.Refresh method.
-type ProtectionContainersRefreshOptions struct {
+// ProtectionContainersClientRefreshOptions contains the optional parameters for the ProtectionContainersClient.Refresh method.
+type ProtectionContainersClientRefreshOptions struct {
 	// OData filter options.
 	Filter *string
 }
 
-// ProtectionContainersRegisterOptions contains the optional parameters for the ProtectionContainers.Register method.
-type ProtectionContainersRegisterOptions struct {
+// ProtectionContainersClientRegisterOptions contains the optional parameters for the ProtectionContainersClient.Register
+// method.
+type ProtectionContainersClientRegisterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionContainersUnregisterOptions contains the optional parameters for the ProtectionContainers.Unregister method.
-type ProtectionContainersUnregisterOptions struct {
+// ProtectionContainersClientUnregisterOptions contains the optional parameters for the ProtectionContainersClient.Unregister
+// method.
+type ProtectionContainersClientUnregisterOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ProtectionIntentClassification provides polymorphic access to related types.
 // Call the interface's GetProtectionIntent() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureRecoveryServiceVaultProtectionIntent, *AzureResourceProtectionIntent, *AzureWorkloadAutoProtectionIntent, *AzureWorkloadSQLAutoProtectionIntent,
-// - *ProtectionIntent
+// - *AzureRecoveryServiceVaultProtectionIntent, *AzureResourceProtectionIntent, *AzureWorkloadAutoProtectionIntent, *AzureWorkloadContainerAutoProtectionIntent,
+// - *AzureWorkloadSQLAutoProtectionIntent, *ProtectionIntent
 type ProtectionIntentClassification interface {
 	// GetProtectionIntent returns the ProtectionIntent content of the underlying type.
 	GetProtectionIntent() *ProtectionIntent
@@ -8588,7 +16700,7 @@ type ProtectionIntentClassification interface {
 // ProtectionIntent - Base class for backup ProtectionIntent.
 type ProtectionIntent struct {
 	// REQUIRED; backup protectionIntent type.
-	ProtectionIntentItemType *string `json:"protectionIntentItemType,omitempty"`
+	ProtectionIntentItemType *ProtectionIntentItemType `json:"protectionIntentItemType,omitempty"`
 
 	// Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
@@ -8609,67 +16721,24 @@ type ProtectionIntent struct {
 // GetProtectionIntent implements the ProtectionIntentClassification interface for type ProtectionIntent.
 func (p *ProtectionIntent) GetProtectionIntent() *ProtectionIntent { return p }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectionIntent.
-func (p *ProtectionIntent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p ProtectionIntent) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "backupManagementType", p.BackupManagementType)
-	populate(objectMap, "itemId", p.ItemID)
-	populate(objectMap, "policyId", p.PolicyID)
-	p.ProtectionIntentItemType = &discValue
-	objectMap["protectionIntentItemType"] = p.ProtectionIntentItemType
-	populate(objectMap, "protectionState", p.ProtectionState)
-	populate(objectMap, "sourceResourceId", p.SourceResourceID)
-}
-
-func (p *ProtectionIntent) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &p.BackupManagementType)
-			delete(rawMsg, key)
-		case "itemId":
-			err = unpopulate(val, &p.ItemID)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &p.PolicyID)
-			delete(rawMsg, key)
-		case "protectionIntentItemType":
-			err = unpopulate(val, &p.ProtectionIntentItemType)
-			delete(rawMsg, key)
-		case "protectionState":
-			err = unpopulate(val, &p.ProtectionState)
-			delete(rawMsg, key)
-		case "sourceResourceId":
-			err = unpopulate(val, &p.SourceResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ProtectionIntentCreateOrUpdateOptions contains the optional parameters for the ProtectionIntent.CreateOrUpdate method.
-type ProtectionIntentCreateOrUpdateOptions struct {
+// ProtectionIntentClientCreateOrUpdateOptions contains the optional parameters for the ProtectionIntentClient.CreateOrUpdate
+// method.
+type ProtectionIntentClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionIntentDeleteOptions contains the optional parameters for the ProtectionIntent.Delete method.
-type ProtectionIntentDeleteOptions struct {
+// ProtectionIntentClientDeleteOptions contains the optional parameters for the ProtectionIntentClient.Delete method.
+type ProtectionIntentClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionIntentGetOptions contains the optional parameters for the ProtectionIntent.Get method.
-type ProtectionIntentGetOptions struct {
+// ProtectionIntentClientGetOptions contains the optional parameters for the ProtectionIntentClient.Get method.
+type ProtectionIntentClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProtectionIntentClientValidateOptions contains the optional parameters for the ProtectionIntentClient.Validate method.
+type ProtectionIntentClientValidateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8690,16 +16759,38 @@ type ProtectionIntentQueryObject struct {
 
 // ProtectionIntentResource - Base class for backup ProtectionIntent.
 type ProtectionIntentResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ProtectionIntentResource properties
 	Properties ProtectionIntentClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionIntentResource.
 func (p ProtectionIntentResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -8712,23 +16803,40 @@ func (p *ProtectionIntentResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &p.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &p.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "properties":
 			p.Properties, err = unmarshalProtectionIntentClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &p.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ProtectionIntentResourceList - List of ProtectionIntent resources
 type ProtectionIntentResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*ProtectionIntentResource `json:"value,omitempty"`
 }
@@ -8736,35 +16844,32 @@ type ProtectionIntentResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type ProtectionIntentResourceList.
 func (p ProtectionIntentResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
-// ProtectionIntentValidateOptions contains the optional parameters for the ProtectionIntent.Validate method.
-type ProtectionIntentValidateOptions struct {
+// ProtectionPoliciesClientBeginDeleteOptions contains the optional parameters for the ProtectionPoliciesClient.BeginDelete
+// method.
+type ProtectionPoliciesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionPoliciesBeginDeleteOptions contains the optional parameters for the ProtectionPolicies.BeginDelete method.
-type ProtectionPoliciesBeginDeleteOptions struct {
+// ProtectionPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ProtectionPoliciesClient.CreateOrUpdate
+// method.
+type ProtectionPoliciesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionPoliciesCreateOrUpdateOptions contains the optional parameters for the ProtectionPolicies.CreateOrUpdate method.
-type ProtectionPoliciesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ProtectionPoliciesGetOptions contains the optional parameters for the ProtectionPolicies.Get method.
-type ProtectionPoliciesGetOptions struct {
+// ProtectionPoliciesClientGetOptions contains the optional parameters for the ProtectionPoliciesClient.Get method.
+type ProtectionPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ProtectionPolicyClassification provides polymorphic access to related types.
 // Call the interface's GetProtectionPolicy() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureFileShareProtectionPolicy, *AzureIaaSVMProtectionPolicy, *AzureSqlProtectionPolicy, *AzureVmWorkloadProtectionPolicy,
+// - *AzureFileShareProtectionPolicy, *AzureIaaSVMProtectionPolicy, *AzureSQLProtectionPolicy, *AzureVMWorkloadProtectionPolicy,
 // - *GenericProtectionPolicy, *MabProtectionPolicy, *ProtectionPolicy
 type ProtectionPolicyClassification interface {
 	// GetProtectionPolicy returns the ProtectionPolicy content of the underlying type.
@@ -8786,50 +16891,24 @@ type ProtectionPolicy struct {
 // GetProtectionPolicy implements the ProtectionPolicyClassification interface for type ProtectionPolicy.
 func (p *ProtectionPolicy) GetProtectionPolicy() *ProtectionPolicy { return p }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectionPolicy.
-func (p *ProtectionPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p ProtectionPolicy) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	p.BackupManagementType = &discValue
+// MarshalJSON implements the json.Marshaller interface for type ProtectionPolicy.
+func (p ProtectionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	objectMap["backupManagementType"] = p.BackupManagementType
 	populate(objectMap, "protectedItemsCount", p.ProtectedItemsCount)
 	populate(objectMap, "resourceGuardOperationRequests", p.ResourceGuardOperationRequests)
+	return json.Marshal(objectMap)
 }
 
-func (p *ProtectionPolicy) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &p.BackupManagementType)
-			delete(rawMsg, key)
-		case "protectedItemsCount":
-			err = unpopulate(val, &p.ProtectedItemsCount)
-			delete(rawMsg, key)
-		case "resourceGuardOperationRequests":
-			err = unpopulate(val, &p.ResourceGuardOperationRequests)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ProtectionPolicyOperationResultsGetOptions contains the optional parameters for the ProtectionPolicyOperationResults.Get method.
-type ProtectionPolicyOperationResultsGetOptions struct {
+// ProtectionPolicyOperationResultsClientGetOptions contains the optional parameters for the ProtectionPolicyOperationResultsClient.Get
+// method.
+type ProtectionPolicyOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProtectionPolicyOperationStatusesGetOptions contains the optional parameters for the ProtectionPolicyOperationStatuses.Get method.
-type ProtectionPolicyOperationStatusesGetOptions struct {
+// ProtectionPolicyOperationStatusesClientGetOptions contains the optional parameters for the ProtectionPolicyOperationStatusesClient.Get
+// method.
+type ProtectionPolicyOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -8847,16 +16926,38 @@ type ProtectionPolicyQueryObject struct {
 
 // ProtectionPolicyResource - Base class for backup policy. Workload-specific backup policies are derived from this class.
 type ProtectionPolicyResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ProtectionPolicyResource properties
 	Properties ProtectionPolicyClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionPolicyResource.
 func (p ProtectionPolicyResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -8869,23 +16970,40 @@ func (p *ProtectionPolicyResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &p.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &p.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "properties":
 			p.Properties, err = unmarshalProtectionPolicyClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &p.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // ProtectionPolicyResourceList - List of ProtectionPolicy resources
 type ProtectionPolicyResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*ProtectionPolicyResource `json:"value,omitempty"`
 }
@@ -8893,7 +17011,7 @@ type ProtectionPolicyResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type ProtectionPolicyResourceList.
 func (p ProtectionPolicyResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
@@ -8917,35 +17035,6 @@ type RecoveryPoint struct {
 
 // GetRecoveryPoint implements the RecoveryPointClassification interface for type RecoveryPoint.
 func (r *RecoveryPoint) GetRecoveryPoint() *RecoveryPoint { return r }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPoint.
-func (r *RecoveryPoint) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r RecoveryPoint) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	r.ObjectType = &discValue
-	objectMap["objectType"] = r.ObjectType
-}
-
-func (r *RecoveryPoint) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &r.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // RecoveryPointDiskConfiguration - Disk configuration
 type RecoveryPointDiskConfiguration struct {
@@ -8988,16 +17077,38 @@ type RecoveryPointRehydrationInfo struct {
 
 // RecoveryPointResource - Base class for backup copies. Workload-specific backup copies are derived from this class.
 type RecoveryPointResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// RecoveryPointResource properties
 	Properties RecoveryPointClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPointResource.
 func (r RecoveryPointResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", r.ETag)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -9010,23 +17121,40 @@ func (r *RecoveryPointResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &r.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &r.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &r.Name)
+			delete(rawMsg, key)
 		case "properties":
 			r.Properties, err = unmarshalRecoveryPointClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &r.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // RecoveryPointResourceList - List of RecoveryPoint resources
 type RecoveryPointResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*RecoveryPointResource `json:"value,omitempty"`
 }
@@ -9034,7 +17162,7 @@ type RecoveryPointResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPointResourceList.
 func (r RecoveryPointResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
 }
@@ -9060,42 +17188,41 @@ func (r RecoveryPointTierInformation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RecoveryPointsGetOptions contains the optional parameters for the RecoveryPoints.Get method.
-type RecoveryPointsGetOptions struct {
+// RecoveryPointTierInformationV2 - RecoveryPoint Tier Information V2
+type RecoveryPointTierInformationV2 struct {
+	// Recovery point tier status.
+	ExtendedInfo map[string]*string `json:"extendedInfo,omitempty"`
+
+	// Recovery point tier status.
+	Status *RecoveryPointTierStatus `json:"status,omitempty"`
+
+	// Recovery point tier type.
+	Type *RecoveryPointTierType `json:"type,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RecoveryPointTierInformationV2.
+func (r RecoveryPointTierInformationV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "extendedInfo", r.ExtendedInfo)
+	populate(objectMap, "status", r.Status)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
+}
+
+// RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
+type RecoveryPointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryPointsListOptions contains the optional parameters for the RecoveryPoints.List method.
-type RecoveryPointsListOptions struct {
+// RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
+type RecoveryPointsClientListOptions struct {
 	// OData filter options.
 	Filter *string
 }
 
-// RecoveryPointsRecommendedForMoveListOptions contains the optional parameters for the RecoveryPointsRecommendedForMove.List method.
-type RecoveryPointsRecommendedForMoveListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecoveryServicesBackupClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the RecoveryServicesBackupClient.BeginBMSPrepareDataMove
+// RecoveryPointsRecommendedForMoveClientListOptions contains the optional parameters for the RecoveryPointsRecommendedForMoveClient.List
 // method.
-type RecoveryServicesBackupClientBeginBMSPrepareDataMoveOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecoveryServicesBackupClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the RecoveryServicesBackupClient.BeginBMSTriggerDataMove
-// method.
-type RecoveryServicesBackupClientBeginBMSTriggerDataMoveOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecoveryServicesBackupClientBeginMoveRecoveryPointOptions contains the optional parameters for the RecoveryServicesBackupClient.BeginMoveRecoveryPoint
-// method.
-type RecoveryServicesBackupClientBeginMoveRecoveryPointOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecoveryServicesBackupClientGetOperationStatusOptions contains the optional parameters for the RecoveryServicesBackupClient.GetOperationStatus method.
-type RecoveryServicesBackupClientGetOperationStatusOptions struct {
+type RecoveryPointsRecommendedForMoveClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9123,56 +17250,13 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "eTag", r.ETag)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "eTag":
-			err = unpopulate(val, &r.ETag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &r.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &r.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return json.Marshal(objectMap)
 }
 
 type ResourceGuardOperationDetail struct {
@@ -9180,8 +17264,8 @@ type ResourceGuardOperationDetail struct {
 	VaultCriticalOperation *string `json:"vaultCriticalOperation,omitempty"`
 }
 
-// ResourceGuardProxiesGetOptions contains the optional parameters for the ResourceGuardProxies.Get method.
-type ResourceGuardProxiesGetOptions struct {
+// ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.Get method.
+type ResourceGuardProxiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9203,45 +17287,46 @@ func (r ResourceGuardProxyBase) MarshalJSON() ([]byte, error) {
 }
 
 type ResourceGuardProxyBaseResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// ResourceGuardProxyBaseResource properties
 	Properties *ResourceGuardProxyBase `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceGuardProxyBaseResource.
 func (r ResourceGuardProxyBaseResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", r.ETag)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceGuardProxyBaseResource.
-func (r *ResourceGuardProxyBaseResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ResourceGuardProxyBaseResourceList - List of ResourceGuardProxyBase resources
 type ResourceGuardProxyBaseResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*ResourceGuardProxyBaseResource `json:"value,omitempty"`
 }
@@ -9249,28 +17334,29 @@ type ResourceGuardProxyBaseResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type ResourceGuardProxyBaseResourceList.
 func (r ResourceGuardProxyBaseResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
 }
 
-// ResourceGuardProxyDeleteOptions contains the optional parameters for the ResourceGuardProxy.Delete method.
-type ResourceGuardProxyDeleteOptions struct {
+// ResourceGuardProxyClientDeleteOptions contains the optional parameters for the ResourceGuardProxyClient.Delete method.
+type ResourceGuardProxyClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardProxyGetOptions contains the optional parameters for the ResourceGuardProxy.Get method.
-type ResourceGuardProxyGetOptions struct {
+// ResourceGuardProxyClientGetOptions contains the optional parameters for the ResourceGuardProxyClient.Get method.
+type ResourceGuardProxyClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardProxyPutOptions contains the optional parameters for the ResourceGuardProxy.Put method.
-type ResourceGuardProxyPutOptions struct {
+// ResourceGuardProxyClientPutOptions contains the optional parameters for the ResourceGuardProxyClient.Put method.
+type ResourceGuardProxyClientPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardProxyUnlockDeleteOptions contains the optional parameters for the ResourceGuardProxy.UnlockDelete method.
-type ResourceGuardProxyUnlockDeleteOptions struct {
+// ResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the ResourceGuardProxyClient.UnlockDelete
+// method.
+type ResourceGuardProxyClientUnlockDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9292,32 +17378,17 @@ type ResourceHealthDetails struct {
 // MarshalJSON implements the json.Marshaller interface for type ResourceHealthDetails.
 func (r ResourceHealthDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r ResourceHealthDetails) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "code", r.Code)
 	populate(objectMap, "message", r.Message)
 	populate(objectMap, "recommendations", r.Recommendations)
 	populate(objectMap, "title", r.Title)
+	return json.Marshal(objectMap)
 }
 
 // ResourceList - Base for all lists of resources.
 type ResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceList.
-func (r ResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r ResourceList) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "nextLink", r.NextLink)
 }
 
 // RestoreFileSpecs - Restore file specs like file path, type and target folder path info.
@@ -9353,47 +17424,40 @@ type RestoreRequest struct {
 // GetRestoreRequest implements the RestoreRequestClassification interface for type RestoreRequest.
 func (r *RestoreRequest) GetRestoreRequest() *RestoreRequest { return r }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RestoreRequest.
-func (r *RestoreRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r RestoreRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	r.ObjectType = &discValue
-	objectMap["objectType"] = r.ObjectType
-}
-
-func (r *RestoreRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &r.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RestoreRequestResource - Base class for restore request. Workload-specific restore requests are derived from this class.
 type RestoreRequestResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// RestoreRequestResource properties
 	Properties RestoreRequestClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RestoreRequestResource.
 func (r RestoreRequestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", r.ETag)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -9406,29 +17470,44 @@ func (r *RestoreRequestResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &r.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &r.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &r.Name)
+			delete(rawMsg, key)
 		case "properties":
 			r.Properties, err = unmarshalRestoreRequestClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &r.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
-// RestoresBeginTriggerOptions contains the optional parameters for the Restores.BeginTrigger method.
-type RestoresBeginTriggerOptions struct {
+// RestoresClientBeginTriggerOptions contains the optional parameters for the RestoresClient.BeginTrigger method.
+type RestoresClientBeginTriggerOptions struct {
 	// placeholder for future optional parameters
 }
 
 // RetentionDuration - Retention duration.
 type RetentionDuration struct {
-	// Count of duration types. Retention duration is obtained by the counting the duration type Count times. For example, when Count = 3 and DurationType =
-	// Weeks, retention duration will be three weeks.
+	// Count of duration types. Retention duration is obtained by the counting the duration type Count times. For example, when
+	// Count = 3 and DurationType = Weeks, retention duration will be three weeks.
 	Count *int32 `json:"count,omitempty"`
 
 	// Retention duration type of retention policy.
@@ -9452,35 +17531,6 @@ type RetentionPolicy struct {
 
 // GetRetentionPolicy implements the RetentionPolicyClassification interface for type RetentionPolicy.
 func (r *RetentionPolicy) GetRetentionPolicy() *RetentionPolicy { return r }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RetentionPolicy.
-func (r *RetentionPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r RetentionPolicy) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	r.RetentionPolicyType = &discValue
-	objectMap["retentionPolicyType"] = r.RetentionPolicyType
-}
-
-func (r *RetentionPolicy) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "retentionPolicyType":
-			err = unpopulate(val, &r.RetentionPolicyType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // SQLDataDirectory info
 type SQLDataDirectory struct {
@@ -9527,37 +17577,8 @@ type SchedulePolicy struct {
 // GetSchedulePolicy implements the SchedulePolicyClassification interface for type SchedulePolicy.
 func (s *SchedulePolicy) GetSchedulePolicy() *SchedulePolicy { return s }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SchedulePolicy.
-func (s *SchedulePolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s SchedulePolicy) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	s.SchedulePolicyType = &discValue
-	objectMap["schedulePolicyType"] = s.SchedulePolicyType
-}
-
-func (s *SchedulePolicy) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "schedulePolicyType":
-			err = unpopulate(val, &s.SchedulePolicyType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// SecurityPINsGetOptions contains the optional parameters for the SecurityPINs.Get method.
-type SecurityPINsGetOptions struct {
+// SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
+type SecurityPINsClientGetOptions struct {
 	// security pin request
 	Parameters *SecurityPinBase
 }
@@ -9577,7 +17598,8 @@ func (s SecurityPinBase) MarshalJSON() ([]byte, error) {
 
 // Settings - Common settings field for backup management
 type Settings struct {
-	// Workload compression flag. This has been added so that 'isSqlCompression' will be deprecated once clients upgrade to consider this flag.
+	// Workload compression flag. This has been added so that 'isSqlCompression' will be deprecated once clients upgrade to consider
+	// this flag.
 	IsCompression *bool `json:"isCompression,omitempty"`
 
 	// SQL compression flag
@@ -9589,16 +17611,25 @@ type Settings struct {
 
 // SimpleRetentionPolicy - Simple policy retention.
 type SimpleRetentionPolicy struct {
-	RetentionPolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	RetentionPolicyType *string `json:"retentionPolicyType,omitempty"`
+
 	// Retention duration of the protection policy.
 	RetentionDuration *RetentionDuration `json:"retentionDuration,omitempty"`
+}
+
+// GetRetentionPolicy implements the RetentionPolicyClassification interface for type SimpleRetentionPolicy.
+func (s *SimpleRetentionPolicy) GetRetentionPolicy() *RetentionPolicy {
+	return &RetentionPolicy{
+		RetentionPolicyType: s.RetentionPolicyType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SimpleRetentionPolicy.
 func (s SimpleRetentionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.RetentionPolicy.marshalInternal(objectMap, "SimpleRetentionPolicy")
 	populate(objectMap, "retentionDuration", s.RetentionDuration)
+	objectMap["retentionPolicyType"] = "SimpleRetentionPolicy"
 	return json.Marshal(objectMap)
 }
 
@@ -9614,20 +17645,25 @@ func (s *SimpleRetentionPolicy) UnmarshalJSON(data []byte) error {
 		case "retentionDuration":
 			err = unpopulate(val, &s.RetentionDuration)
 			delete(rawMsg, key)
+		case "retentionPolicyType":
+			err = unpopulate(val, &s.RetentionPolicyType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.RetentionPolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
 
 // SimpleSchedulePolicy - Simple policy schedule.
 type SimpleSchedulePolicy struct {
-	SchedulePolicy
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	SchedulePolicyType *string `json:"schedulePolicyType,omitempty"`
+
+	// Hourly Schedule of this Policy
+	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+
 	// List of days of week this schedule has to be run.
 	ScheduleRunDays []*DayOfWeek `json:"scheduleRunDays,omitempty"`
 
@@ -9641,10 +17677,18 @@ type SimpleSchedulePolicy struct {
 	ScheduleWeeklyFrequency *int32 `json:"scheduleWeeklyFrequency,omitempty"`
 }
 
+// GetSchedulePolicy implements the SchedulePolicyClassification interface for type SimpleSchedulePolicy.
+func (s *SimpleSchedulePolicy) GetSchedulePolicy() *SchedulePolicy {
+	return &SchedulePolicy{
+		SchedulePolicyType: s.SchedulePolicyType,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SimpleSchedulePolicy.
 func (s SimpleSchedulePolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.SchedulePolicy.marshalInternal(objectMap, "SimpleSchedulePolicy")
+	populate(objectMap, "hourlySchedule", s.HourlySchedule)
+	objectMap["schedulePolicyType"] = "SimpleSchedulePolicy"
 	populate(objectMap, "scheduleRunDays", s.ScheduleRunDays)
 	populate(objectMap, "scheduleRunFrequency", s.ScheduleRunFrequency)
 	aux := make([]*timeRFC3339, len(s.ScheduleRunTimes), len(s.ScheduleRunTimes))
@@ -9665,6 +17709,12 @@ func (s *SimpleSchedulePolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "hourlySchedule":
+			err = unpopulate(val, &s.HourlySchedule)
+			delete(rawMsg, key)
+		case "schedulePolicyType":
+			err = unpopulate(val, &s.SchedulePolicyType)
+			delete(rawMsg, key)
 		case "scheduleRunDays":
 			err = unpopulate(val, &s.ScheduleRunDays)
 			delete(rawMsg, key)
@@ -9685,9 +17735,6 @@ func (s *SimpleSchedulePolicy) UnmarshalJSON(data []byte) error {
 		if err != nil {
 			return err
 		}
-	}
-	if err := s.SchedulePolicy.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -9830,14 +17877,63 @@ type UnlockDeleteResponse struct {
 
 // ValidateIaasVMRestoreOperationRequest - AzureRestoreValidation request.
 type ValidateIaasVMRestoreOperationRequest struct {
-	ValidateRestoreOperationRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Sets restore request to be validated
+	RestoreRequest RestoreRequestClassification `json:"restoreRequest,omitempty"`
+}
+
+// GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateIaasVMRestoreOperationRequest.
+func (v *ValidateIaasVMRestoreOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest {
+	return &ValidateOperationRequest{
+		ObjectType: v.ObjectType,
+	}
+}
+
+// GetValidateRestoreOperationRequest implements the ValidateRestoreOperationRequestClassification interface for type ValidateIaasVMRestoreOperationRequest.
+func (v *ValidateIaasVMRestoreOperationRequest) GetValidateRestoreOperationRequest() *ValidateRestoreOperationRequest {
+	return &ValidateRestoreOperationRequest{
+		RestoreRequest: v.RestoreRequest,
+		ObjectType:     v.ObjectType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ValidateIaasVMRestoreOperationRequest.
 func (v ValidateIaasVMRestoreOperationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.ValidateRestoreOperationRequest.marshalInternal(objectMap, "ValidateIaasVMRestoreOperationRequest")
+	objectMap["objectType"] = "ValidateIaasVMRestoreOperationRequest"
+	populate(objectMap, "restoreRequest", v.RestoreRequest)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ValidateIaasVMRestoreOperationRequest.
+func (v *ValidateIaasVMRestoreOperationRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, &v.ObjectType)
+			delete(rawMsg, key)
+		case "restoreRequest":
+			v.RestoreRequest, err = unmarshalRestoreRequestClassification(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ValidateOperationClientBeginTriggerOptions contains the optional parameters for the ValidateOperationClient.BeginTrigger
+// method.
+type ValidateOperationClientBeginTriggerOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ValidateOperationRequestClassification provides polymorphic access to related types.
@@ -9858,35 +17954,6 @@ type ValidateOperationRequest struct {
 // GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateOperationRequest.
 func (v *ValidateOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest { return v }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ValidateOperationRequest.
-func (v *ValidateOperationRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v ValidateOperationRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	v.ObjectType = &discValue
-	objectMap["objectType"] = v.ObjectType
-}
-
-func (v *ValidateOperationRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &v.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ValidateOperationResponse - Base class for validate operation response.
 type ValidateOperationResponse struct {
 	// Gets the validation result
@@ -9898,6 +17965,17 @@ func (v ValidateOperationResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "validationResults", v.ValidationResults)
 	return json.Marshal(objectMap)
+}
+
+// ValidateOperationResultsClientGetOptions contains the optional parameters for the ValidateOperationResultsClient.Get method.
+type ValidateOperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ValidateOperationStatusesClientGetOptions contains the optional parameters for the ValidateOperationStatusesClient.Get
+// method.
+type ValidateOperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 type ValidateOperationsResponse struct {
@@ -9917,9 +17995,18 @@ type ValidateRestoreOperationRequestClassification interface {
 
 // ValidateRestoreOperationRequest - AzureRestoreValidation request.
 type ValidateRestoreOperationRequest struct {
-	ValidateOperationRequest
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string `json:"objectType,omitempty"`
+
 	// Sets restore request to be validated
 	RestoreRequest RestoreRequestClassification `json:"restoreRequest,omitempty"`
+}
+
+// GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateRestoreOperationRequest.
+func (v *ValidateRestoreOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest {
+	return &ValidateOperationRequest{
+		ObjectType: v.ObjectType,
+	}
 }
 
 // GetValidateRestoreOperationRequest implements the ValidateRestoreOperationRequestClassification interface for type ValidateRestoreOperationRequest.
@@ -9930,7 +18017,8 @@ func (v *ValidateRestoreOperationRequest) GetValidateRestoreOperationRequest() *
 // MarshalJSON implements the json.Marshaller interface for type ValidateRestoreOperationRequest.
 func (v ValidateRestoreOperationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.marshalInternal(objectMap, "ValidateRestoreOperationRequest")
+	objectMap["objectType"] = "ValidateRestoreOperationRequest"
+	populate(objectMap, "restoreRequest", v.RestoreRequest)
 	return json.Marshal(objectMap)
 }
 
@@ -9940,18 +18028,12 @@ func (v *ValidateRestoreOperationRequest) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v ValidateRestoreOperationRequest) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	v.ValidateOperationRequest.marshalInternal(objectMap, discValue)
-	populate(objectMap, "restoreRequest", v.RestoreRequest)
-}
-
-func (v *ValidateRestoreOperationRequest) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "objectType":
+			err = unpopulate(val, &v.ObjectType)
+			delete(rawMsg, key)
 		case "restoreRequest":
 			v.RestoreRequest, err = unmarshalRestoreRequestClassification(val)
 			delete(rawMsg, key)
@@ -9960,36 +18042,77 @@ func (v *ValidateRestoreOperationRequest) unmarshalInternal(rawMsg map[string]js
 			return err
 		}
 	}
-	if err := v.ValidateOperationRequest.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // VaultJob - Vault level Job
 type VaultJob struct {
-	Job
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	JobType *string `json:"jobType,omitempty"`
+
 	// Gets or sets the state/actions applicable on this job like cancel/retry.
 	ActionsInfo []*JobSupportedAction `json:"actionsInfo,omitempty"`
 
+	// ActivityId of job.
+	ActivityID *string `json:"activityId,omitempty"`
+
+	// Backup management type to execute the current job.
+	BackupManagementType *BackupManagementType `json:"backupManagementType,omitempty"`
+
 	// Time elapsed during the execution of this job.
 	Duration *string `json:"duration,omitempty"`
+
+	// The end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Friendly name of the entity on which the current job is executing.
+	EntityFriendlyName *string `json:"entityFriendlyName,omitempty"`
 
 	// Error details on execution of this job.
 	ErrorDetails []*VaultJobErrorInfo `json:"errorDetails,omitempty"`
 
 	// Additional information about the job.
 	ExtendedInfo *VaultJobExtendedInfo `json:"extendedInfo,omitempty"`
+
+	// The operation name.
+	Operation *string `json:"operation,omitempty"`
+
+	// The start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Job status.
+	Status *string `json:"status,omitempty"`
+}
+
+// GetJob implements the JobClassification interface for type VaultJob.
+func (v *VaultJob) GetJob() *Job {
+	return &Job{
+		EntityFriendlyName:   v.EntityFriendlyName,
+		BackupManagementType: v.BackupManagementType,
+		Operation:            v.Operation,
+		Status:               v.Status,
+		StartTime:            v.StartTime,
+		EndTime:              v.EndTime,
+		ActivityID:           v.ActivityID,
+		JobType:              v.JobType,
+	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VaultJob.
 func (v VaultJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	v.Job.marshalInternal(objectMap, "VaultJob")
 	populate(objectMap, "actionsInfo", v.ActionsInfo)
+	populate(objectMap, "activityId", v.ActivityID)
+	populate(objectMap, "backupManagementType", v.BackupManagementType)
 	populate(objectMap, "duration", v.Duration)
+	populateTimeRFC3339(objectMap, "endTime", v.EndTime)
+	populate(objectMap, "entityFriendlyName", v.EntityFriendlyName)
 	populate(objectMap, "errorDetails", v.ErrorDetails)
 	populate(objectMap, "extendedInfo", v.ExtendedInfo)
+	objectMap["jobType"] = "VaultJob"
+	populate(objectMap, "operation", v.Operation)
+	populateTimeRFC3339(objectMap, "startTime", v.StartTime)
+	populate(objectMap, "status", v.Status)
 	return json.Marshal(objectMap)
 }
 
@@ -10005,8 +18128,20 @@ func (v *VaultJob) UnmarshalJSON(data []byte) error {
 		case "actionsInfo":
 			err = unpopulate(val, &v.ActionsInfo)
 			delete(rawMsg, key)
+		case "activityId":
+			err = unpopulate(val, &v.ActivityID)
+			delete(rawMsg, key)
+		case "backupManagementType":
+			err = unpopulate(val, &v.BackupManagementType)
+			delete(rawMsg, key)
 		case "duration":
 			err = unpopulate(val, &v.Duration)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &v.EndTime)
+			delete(rawMsg, key)
+		case "entityFriendlyName":
+			err = unpopulate(val, &v.EntityFriendlyName)
 			delete(rawMsg, key)
 		case "errorDetails":
 			err = unpopulate(val, &v.ErrorDetails)
@@ -10014,13 +18149,22 @@ func (v *VaultJob) UnmarshalJSON(data []byte) error {
 		case "extendedInfo":
 			err = unpopulate(val, &v.ExtendedInfo)
 			delete(rawMsg, key)
+		case "jobType":
+			err = unpopulate(val, &v.JobType)
+			delete(rawMsg, key)
+		case "operation":
+			err = unpopulate(val, &v.Operation)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &v.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &v.Status)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := v.Job.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -10074,38 +18218,10 @@ type VaultStorageConfigOperationResultResponse struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
-// GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface for type VaultStorageConfigOperationResultResponse.
+// GetVaultStorageConfigOperationResultResponse implements the VaultStorageConfigOperationResultResponseClassification interface
+// for type VaultStorageConfigOperationResultResponse.
 func (v *VaultStorageConfigOperationResultResponse) GetVaultStorageConfigOperationResultResponse() *VaultStorageConfigOperationResultResponse {
 	return v
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VaultStorageConfigOperationResultResponse.
-func (v *VaultStorageConfigOperationResultResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return v.unmarshalInternal(rawMsg)
-}
-
-func (v VaultStorageConfigOperationResultResponse) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	v.ObjectType = &discValue
-	objectMap["objectType"] = v.ObjectType
-}
-
-func (v *VaultStorageConfigOperationResultResponse) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "objectType":
-			err = unpopulate(val, &v.ObjectType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // WeeklyRetentionFormat - Weekly retention format.
@@ -10165,8 +18281,8 @@ type WorkloadInquiryDetails struct {
 // WorkloadItemClassification provides polymorphic access to related types.
 // Call the interface's GetWorkloadItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureVmWorkloadItem, *AzureVmWorkloadSAPAseDatabaseWorkloadItem, *AzureVmWorkloadSAPAseSystemWorkloadItem, *AzureVmWorkloadSAPHanaDatabaseWorkloadItem,
-// - *AzureVmWorkloadSAPHanaSystemWorkloadItem, *AzureVmWorkloadSQLDatabaseWorkloadItem, *AzureVmWorkloadSQLInstanceWorkloadItem,
+// - *AzureVMWorkloadItem, *AzureVMWorkloadSAPAseDatabaseWorkloadItem, *AzureVMWorkloadSAPAseSystemWorkloadItem, *AzureVMWorkloadSAPHanaDatabaseWorkloadItem,
+// - *AzureVMWorkloadSAPHanaSystemWorkloadItem, *AzureVMWorkloadSQLDatabaseWorkloadItem, *AzureVMWorkloadSQLInstanceWorkloadItem,
 // - *WorkloadItem
 type WorkloadItemClassification interface {
 	// GetWorkloadItem returns the WorkloadItem content of the underlying type.
@@ -10194,63 +18310,40 @@ type WorkloadItem struct {
 // GetWorkloadItem implements the WorkloadItemClassification interface for type WorkloadItem.
 func (w *WorkloadItem) GetWorkloadItem() *WorkloadItem { return w }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkloadItem.
-func (w *WorkloadItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return w.unmarshalInternal(rawMsg)
-}
-
-func (w WorkloadItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "backupManagementType", w.BackupManagementType)
-	populate(objectMap, "friendlyName", w.FriendlyName)
-	populate(objectMap, "protectionState", w.ProtectionState)
-	w.WorkloadItemType = &discValue
-	objectMap["workloadItemType"] = w.WorkloadItemType
-	populate(objectMap, "workloadType", w.WorkloadType)
-}
-
-func (w *WorkloadItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &w.BackupManagementType)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &w.FriendlyName)
-			delete(rawMsg, key)
-		case "protectionState":
-			err = unpopulate(val, &w.ProtectionState)
-			delete(rawMsg, key)
-		case "workloadItemType":
-			err = unpopulate(val, &w.WorkloadItemType)
-			delete(rawMsg, key)
-		case "workloadType":
-			err = unpopulate(val, &w.WorkloadType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkloadItemResource - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadItemResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// WorkloadItemResource properties
 	Properties WorkloadItemClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WorkloadItemResource.
 func (w WorkloadItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", w.ETag)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -10263,23 +18356,40 @@ func (w *WorkloadItemResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &w.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &w.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &w.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &w.Name)
+			delete(rawMsg, key)
 		case "properties":
 			w.Properties, err = unmarshalWorkloadItemClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &w.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &w.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := w.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // WorkloadItemResourceList - List of WorkloadItem resources
 type WorkloadItemResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*WorkloadItemResource `json:"value,omitempty"`
 }
@@ -10287,7 +18397,7 @@ type WorkloadItemResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type WorkloadItemResourceList.
 func (w WorkloadItemResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", w.NextLink)
 	populate(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
 }
@@ -10295,9 +18405,9 @@ func (w WorkloadItemResourceList) MarshalJSON() ([]byte, error) {
 // WorkloadProtectableItemClassification provides polymorphic access to related types.
 // Call the interface's GetWorkloadProtectableItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureFileShareProtectableItem, *AzureIaaSClassicComputeVMProtectableItem, *AzureIaaSComputeVMProtectableItem, *AzureVmWorkloadProtectableItem,
-// - *AzureVmWorkloadSAPAseSystemProtectableItem, *AzureVmWorkloadSAPHanaDatabaseProtectableItem, *AzureVmWorkloadSAPHanaSystemProtectableItem,
-// - *AzureVmWorkloadSQLAvailabilityGroupProtectableItem, *AzureVmWorkloadSQLDatabaseProtectableItem, *AzureVmWorkloadSQLInstanceProtectableItem,
+// - *AzureFileShareProtectableItem, *AzureIaaSClassicComputeVMProtectableItem, *AzureIaaSComputeVMProtectableItem, *AzureVMWorkloadProtectableItem,
+// - *AzureVMWorkloadSAPAseSystemProtectableItem, *AzureVMWorkloadSAPHanaDatabaseProtectableItem, *AzureVMWorkloadSAPHanaSystemProtectableItem,
+// - *AzureVMWorkloadSQLAvailabilityGroupProtectableItem, *AzureVMWorkloadSQLDatabaseProtectableItem, *AzureVMWorkloadSQLInstanceProtectableItem,
 // - *IaaSVMProtectableItem, *WorkloadProtectableItem
 type WorkloadProtectableItemClassification interface {
 	// GetWorkloadProtectableItem returns the WorkloadProtectableItem content of the underlying type.
@@ -10325,63 +18435,40 @@ type WorkloadProtectableItem struct {
 // GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type WorkloadProtectableItem.
 func (w *WorkloadProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem { return w }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkloadProtectableItem.
-func (w *WorkloadProtectableItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return w.unmarshalInternal(rawMsg)
-}
-
-func (w WorkloadProtectableItem) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	populate(objectMap, "backupManagementType", w.BackupManagementType)
-	populate(objectMap, "friendlyName", w.FriendlyName)
-	w.ProtectableItemType = &discValue
-	objectMap["protectableItemType"] = w.ProtectableItemType
-	populate(objectMap, "protectionState", w.ProtectionState)
-	populate(objectMap, "workloadType", w.WorkloadType)
-}
-
-func (w *WorkloadProtectableItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backupManagementType":
-			err = unpopulate(val, &w.BackupManagementType)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &w.FriendlyName)
-			delete(rawMsg, key)
-		case "protectableItemType":
-			err = unpopulate(val, &w.ProtectableItemType)
-			delete(rawMsg, key)
-		case "protectionState":
-			err = unpopulate(val, &w.ProtectionState)
-			delete(rawMsg, key)
-		case "workloadType":
-			err = unpopulate(val, &w.WorkloadType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkloadProtectableItemResource - Base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadProtectableItemResource struct {
-	Resource
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// WorkloadProtectableItemResource properties
 	Properties WorkloadProtectableItemClassification `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WorkloadProtectableItemResource.
 func (w WorkloadProtectableItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
+	populate(objectMap, "eTag", w.ETag)
+	populate(objectMap, "id", w.ID)
+	populate(objectMap, "location", w.Location)
+	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
+	populate(objectMap, "tags", w.Tags)
+	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -10394,23 +18481,40 @@ func (w *WorkloadProtectableItemResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eTag":
+			err = unpopulate(val, &w.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &w.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &w.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &w.Name)
+			delete(rawMsg, key)
 		case "properties":
 			w.Properties, err = unmarshalWorkloadProtectableItemClassification(val)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &w.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &w.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
 	}
-	if err := w.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
 	return nil
 }
 
 // WorkloadProtectableItemResourceList - List of WorkloadProtectableItem resources
 type WorkloadProtectableItemResourceList struct {
-	ResourceList
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// List of resources.
 	Value []*WorkloadProtectableItemResource `json:"value,omitempty"`
 }
@@ -10418,7 +18522,7 @@ type WorkloadProtectableItemResourceList struct {
 // MarshalJSON implements the json.Marshaller interface for type WorkloadProtectableItemResourceList.
 func (w WorkloadProtectableItemResourceList) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	w.ResourceList.marshalInternal(objectMap)
+	populate(objectMap, "nextLink", w.NextLink)
 	populate(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
 }

@@ -48,8 +48,8 @@ type APIOperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// APIOperationListResult - Result of the request to list Resource Provider operations. It contains a list of operations and a URL link to get the next
-// set of results.
+// APIOperationListResult - Result of the request to list Resource Provider operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type APIOperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -122,8 +122,8 @@ func (a AscOperationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AscOperationsGetOptions contains the optional parameters for the AscOperations.Get method.
-type AscOperationsGetOptions struct {
+// AscOperationsClientGetOptions contains the optional parameters for the AscOperationsClient.Get method.
+type AscOperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -183,8 +183,8 @@ func (c Cache) MarshalJSON() ([]byte, error) {
 
 // CacheActiveDirectorySettings - Active Directory settings used to join a cache to a domain.
 type CacheActiveDirectorySettings struct {
-	// REQUIRED; The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must 1-15 characters from the class
-	// [-0-9a-zA-Z].
+	// REQUIRED; The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must
+	// 1-15 characters from the class [-0-9a-zA-Z].
 	CacheNetBiosName *string `json:"cacheNetBiosName,omitempty"`
 
 	// REQUIRED; The fully qualified domain name of the Active Directory domain controller.
@@ -208,7 +208,8 @@ type CacheActiveDirectorySettings struct {
 
 // CacheActiveDirectorySettingsCredentials - Active Directory admin credentials used to join the HPC Cache to a domain.
 type CacheActiveDirectorySettingsCredentials struct {
-	// REQUIRED; Plain text password of the Active Directory domain administrator. This value is stored encrypted and not returned on response.
+	// REQUIRED; Plain text password of the Active Directory domain administrator. This value is stored encrypted and not returned
+	// on response.
 	Password *string `json:"password,omitempty"`
 
 	// REQUIRED; Username of the Active Directory domain administrator. This value is stored encrypted and not returned on response.
@@ -384,8 +385,8 @@ type CacheUpgradeStatus struct {
 	// READ-ONLY; Time at which the pending firmware update will automatically be installed on the Cache.
 	FirmwareUpdateDeadline *time.Time `json:"firmwareUpdateDeadline,omitempty" azure:"ro"`
 
-	// READ-ONLY; True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed after firmwareUpdateDeadline
-	// if not triggered earlier via the upgrade operation.
+	// READ-ONLY; True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed
+	// after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
 	FirmwareUpdateStatus *FirmwareStatusType `json:"firmwareUpdateStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; Time of the last successful firmware update.
@@ -440,10 +441,12 @@ func (c *CacheUpgradeStatus) UnmarshalJSON(data []byte) error {
 
 // CacheUsernameDownloadSettings - Settings for Extended Groups username and group download.
 type CacheUsernameDownloadSettings struct {
-	// Determines if the certificate should be automatically downloaded. This applies to 'caCertificateURI' only if 'requireValidCertificate' is true.
+	// Determines if the certificate should be automatically downloaded. This applies to 'caCertificateURI' only if 'requireValidCertificate'
+	// is true.
 	AutoDownloadCertificate *bool `json:"autoDownloadCertificate,omitempty"`
 
-	// The URI of the CA certificate to validate the LDAP secure connection. This field must be populated when 'requireValidCertificate' is set to true.
+	// The URI of the CA certificate to validate the LDAP secure connection. This field must be populated when 'requireValidCertificate'
+	// is set to true.
 	CaCertificateURI *string `json:"caCertificateURI,omitempty"`
 
 	// When present, these are the credentials for the secure LDAP connection.
@@ -455,7 +458,8 @@ type CacheUsernameDownloadSettings struct {
 	// Whether or not Extended Groups is enabled.
 	ExtendedGroups *bool `json:"extendedGroups,omitempty"`
 
-	// The URI of the file containing group information (in /etc/group file format). This field must be populated when 'usernameSource' is set to 'File'.
+	// The URI of the file containing group information (in /etc/group file format). This field must be populated when 'usernameSource'
+	// is set to 'File'.
 	GroupFileURI *string `json:"groupFileURI,omitempty"`
 
 	// The base distinguished name for the LDAP domain.
@@ -467,7 +471,8 @@ type CacheUsernameDownloadSettings struct {
 	// Determines if the certificates must be validated by a certificate authority. When true, caCertificateURI must be provided.
 	RequireValidCertificate *bool `json:"requireValidCertificate,omitempty"`
 
-	// The URI of the file containing user information (in /etc/passwd file format). This field must be populated when 'usernameSource' is set to 'File'.
+	// The URI of the file containing user information (in /etc/passwd file format). This field must be populated when 'usernameSource'
+	// is set to 'File'.
 	UserFileURI *string `json:"userFileURI,omitempty"`
 
 	// This setting determines how the cache gets username and group names for clients.
@@ -479,66 +484,75 @@ type CacheUsernameDownloadSettings struct {
 
 // CacheUsernameDownloadSettingsCredentials - When present, these are the credentials for the secure LDAP connection.
 type CacheUsernameDownloadSettingsCredentials struct {
-	// The Bind Distinguished Name identity to be used in the secure LDAP connection. This value is stored encrypted and not returned on response.
+	// The Bind Distinguished Name identity to be used in the secure LDAP connection. This value is stored encrypted and not returned
+	// on response.
 	BindDn *string `json:"bindDn,omitempty"`
 
 	// The Bind password to be used in the secure LDAP connection. This value is stored encrypted and not returned on response.
 	BindPassword *string `json:"bindPassword,omitempty"`
 }
 
-// CachesBeginCreateOrUpdateOptions contains the optional parameters for the Caches.BeginCreateOrUpdate method.
-type CachesBeginCreateOrUpdateOptions struct {
-	// Object containing the user-selectable properties of the new Cache. If read-only properties are included, they must match the existing values of those
-	// properties.
+// CachesClientBeginCreateOrUpdateOptions contains the optional parameters for the CachesClient.BeginCreateOrUpdate method.
+type CachesClientBeginCreateOrUpdateOptions struct {
+	// Object containing the user-selectable properties of the new Cache. If read-only properties are included, they must match
+	// the existing values of those properties.
 	Cache *Cache
 }
 
-// CachesBeginDebugInfoOptions contains the optional parameters for the Caches.BeginDebugInfo method.
-type CachesBeginDebugInfoOptions struct {
+// CachesClientBeginDebugInfoOptions contains the optional parameters for the CachesClient.BeginDebugInfo method.
+type CachesClientBeginDebugInfoOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesBeginDeleteOptions contains the optional parameters for the Caches.BeginDelete method.
-type CachesBeginDeleteOptions struct {
+// CachesClientBeginDeleteOptions contains the optional parameters for the CachesClient.BeginDelete method.
+type CachesClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesBeginFlushOptions contains the optional parameters for the Caches.BeginFlush method.
-type CachesBeginFlushOptions struct {
+// CachesClientBeginFlushOptions contains the optional parameters for the CachesClient.BeginFlush method.
+type CachesClientBeginFlushOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesBeginStartOptions contains the optional parameters for the Caches.BeginStart method.
-type CachesBeginStartOptions struct {
+// CachesClientBeginStartOptions contains the optional parameters for the CachesClient.BeginStart method.
+type CachesClientBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesBeginStopOptions contains the optional parameters for the Caches.BeginStop method.
-type CachesBeginStopOptions struct {
+// CachesClientBeginStopOptions contains the optional parameters for the CachesClient.BeginStop method.
+type CachesClientBeginStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesBeginUpgradeFirmwareOptions contains the optional parameters for the Caches.BeginUpgradeFirmware method.
-type CachesBeginUpgradeFirmwareOptions struct {
+// CachesClientBeginUpgradeFirmwareOptions contains the optional parameters for the CachesClient.BeginUpgradeFirmware method.
+type CachesClientBeginUpgradeFirmwareOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesGetOptions contains the optional parameters for the Caches.Get method.
-type CachesGetOptions struct {
+// CachesClientGetOptions contains the optional parameters for the CachesClient.Get method.
+type CachesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesListByResourceGroupOptions contains the optional parameters for the Caches.ListByResourceGroup method.
-type CachesListByResourceGroupOptions struct {
+// CachesClientListByResourceGroupOptions contains the optional parameters for the CachesClient.ListByResourceGroup method.
+type CachesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesListOptions contains the optional parameters for the Caches.List method.
-type CachesListOptions struct {
+// CachesClientListOptions contains the optional parameters for the CachesClient.List method.
+type CachesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesListResult - Result of the request to list Caches. It contains a list of Caches and a URL link to get the next set of results.
+// CachesClientUpdateOptions contains the optional parameters for the CachesClient.Update method.
+type CachesClientUpdateOptions struct {
+	// Object containing the user-selectable properties of the Cache. If read-only properties are included, they must match the
+	// existing values of those properties.
+	Cache *Cache
+}
+
+// CachesListResult - Result of the request to list Caches. It contains a list of Caches and a URL link to get the next set
+// of results.
 type CachesListResult struct {
 	// URL to get the next set of Cache list results, if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -555,12 +569,6 @@ func (c CachesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CachesUpdateOptions contains the optional parameters for the Caches.Update method.
-type CachesUpdateOptions struct {
-	// Object containing the user-selectable properties of the Cache. If read-only properties are included, they must match the existing values of those properties.
-	Cache *Cache
-}
-
 // ClfsTarget - Properties pertaining to the ClfsTarget
 type ClfsTarget struct {
 	// Resource ID of storage container.
@@ -568,17 +576,9 @@ type ClfsTarget struct {
 }
 
 // CloudError - An error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// The body of the error.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response.
@@ -781,25 +781,25 @@ type NfsAccessRule struct {
 	// UID value that replaces 0 when rootSquash is true. 65534 will be used if not provided.
 	AnonymousUID *string `json:"anonymousUID,omitempty"`
 
-	// Filter applied to the scope for this rule. The filter's format depends on its scope. 'default' scope matches all clients and has no filter value. 'network'
-	// scope takes a filter in CIDR format (for
-	// example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does not match any filter rule and there is
-	// no default rule, access is denied.
+	// Filter applied to the scope for this rule. The filter's format depends on its scope. 'default' scope matches all clients
+	// and has no filter value. 'network' scope takes a filter in CIDR format (for
+	// example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does not match
+	// any filter rule and there is no default rule, access is denied.
 	Filter *string `json:"filter,omitempty"`
 
 	// Map root accesses to anonymousUID and anonymousGID.
 	RootSquash *bool `json:"rootSquash,omitempty"`
 
-	// For the default policy, allow access to subdirectories under the root export. If this is set to no, clients can only mount the path '/'. If set to yes,
-	// clients can mount a deeper path, like '/a/b'.
+	// For the default policy, allow access to subdirectories under the root export. If this is set to no, clients can only mount
+	// the path '/'. If set to yes, clients can mount a deeper path, like '/a/b'.
 	SubmountAccess *bool `json:"submountAccess,omitempty"`
 
 	// Allow SUID semantics.
 	Suid *bool `json:"suid,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -817,8 +817,8 @@ type ResourceSKU struct {
 	// The restrictions preventing this SKU from being used. This is empty if there are no restrictions.
 	Restrictions []*Restriction `json:"restrictions,omitempty"`
 
-	// READ-ONLY; The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g., West US, East US, Southeast
-	// Asia, etc.).
+	// READ-ONLY; The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g.,
+	// West US, East US, Southeast Asia, etc.).
 	Locations []*string `json:"locations,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of resource the SKU applies to.
@@ -882,15 +882,16 @@ func (r ResourceSKUsResult) MarshalJSON() ([]byte, error) {
 
 // Restriction - The restrictions preventing this SKU from being used.
 type Restriction struct {
-	// The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId" is set when the SKU has requiredQuotas parameter
-	// as the subscription does not belong to that
+	// The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId" is set when
+	// the SKU has requiredQuotas parameter as the subscription does not belong to that
 	// quota. "NotAvailableForSubscription" is related to capacity at the datacenter.
 	ReasonCode *ReasonCode `json:"reasonCode,omitempty"`
 
 	// READ-ONLY; The type of restrictions. In this version, the only possible value for this is location.
 	Type *string `json:"type,omitempty" azure:"ro"`
 
-	// READ-ONLY; The value of restrictions. If the restriction type is set to location, then this would be the different locations where the SKU is restricted.
+	// READ-ONLY; The value of restrictions. If the restriction type is set to location, then this would be the different locations
+	// where the SKU is restricted.
 	Values []*string `json:"values,omitempty" azure:"ro"`
 }
 
@@ -903,30 +904,44 @@ func (r Restriction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SKUsListOptions contains the optional parameters for the SKUs.List method.
-type SKUsListOptions struct {
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // StorageTarget - Type of the Storage Target.
 type StorageTarget struct {
-	StorageTargetResource
 	// StorageTarget properties
 	Properties *StorageTargetProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource ID of the Storage Target.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Region name string.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the Storage Target.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the Storage Target; Microsoft.StorageCache/Cache/StorageTarget
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// StorageTargetBeginFlushOptions contains the optional parameters for the StorageTarget.BeginFlush method.
-type StorageTargetBeginFlushOptions struct {
+// StorageTargetClientBeginFlushOptions contains the optional parameters for the StorageTargetClient.BeginFlush method.
+type StorageTargetClientBeginFlushOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTargetBeginResumeOptions contains the optional parameters for the StorageTarget.BeginResume method.
-type StorageTargetBeginResumeOptions struct {
+// StorageTargetClientBeginResumeOptions contains the optional parameters for the StorageTargetClient.BeginResume method.
+type StorageTargetClientBeginResumeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTargetBeginSuspendOptions contains the optional parameters for the StorageTarget.BeginSuspend method.
-type StorageTargetBeginSuspendOptions struct {
+// StorageTargetClientBeginSuspendOptions contains the optional parameters for the StorageTargetClient.BeginSuspend method.
+type StorageTargetClientBeginSuspendOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -989,31 +1004,33 @@ type StorageTargetResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// StorageTargetsBeginCreateOrUpdateOptions contains the optional parameters for the StorageTargets.BeginCreateOrUpdate method.
-type StorageTargetsBeginCreateOrUpdateOptions struct {
+// StorageTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageTargetsClient.BeginCreateOrUpdate
+// method.
+type StorageTargetsClientBeginCreateOrUpdateOptions struct {
 	// Object containing the definition of a Storage Target.
 	Storagetarget *StorageTarget
 }
 
-// StorageTargetsBeginDNSRefreshOptions contains the optional parameters for the StorageTargets.BeginDNSRefresh method.
-type StorageTargetsBeginDNSRefreshOptions struct {
+// StorageTargetsClientBeginDNSRefreshOptions contains the optional parameters for the StorageTargetsClient.BeginDNSRefresh
+// method.
+type StorageTargetsClientBeginDNSRefreshOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTargetsBeginDeleteOptions contains the optional parameters for the StorageTargets.BeginDelete method.
-type StorageTargetsBeginDeleteOptions struct {
-	// Boolean value requesting the force delete operation for a storage target. Force delete discards unwritten-data in the cache instead of flushing it to
-	// back-end storage.
+// StorageTargetsClientBeginDeleteOptions contains the optional parameters for the StorageTargetsClient.BeginDelete method.
+type StorageTargetsClientBeginDeleteOptions struct {
+	// Boolean value requesting the force delete operation for a storage target. Force delete discards unwritten-data in the cache
+	// instead of flushing it to back-end storage.
 	Force *string
 }
 
-// StorageTargetsGetOptions contains the optional parameters for the StorageTargets.Get method.
-type StorageTargetsGetOptions struct {
+// StorageTargetsClientGetOptions contains the optional parameters for the StorageTargetsClient.Get method.
+type StorageTargetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTargetsListByCacheOptions contains the optional parameters for the StorageTargets.ListByCache method.
-type StorageTargetsListByCacheOptions struct {
+// StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.ListByCache method.
+type StorageTargetsClientListByCacheOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1133,8 +1150,8 @@ type UsageModelDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// UsageModelsListOptions contains the optional parameters for the UsageModels.List method.
-type UsageModelsListOptions struct {
+// UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.List method.
+type UsageModelsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

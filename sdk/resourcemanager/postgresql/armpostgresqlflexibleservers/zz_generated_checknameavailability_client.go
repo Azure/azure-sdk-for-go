@@ -11,7 +11,6 @@ package armpostgresqlflexibleservers
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,59 @@ import (
 // CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
 // Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
 type CheckNameAvailabilityClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CheckNameAvailabilityClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CheckNameAvailabilityClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CheckNameAvailabilityClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Execute - Check the availability of name for resource
-// If the operation fails it returns the *CloudError error type.
-func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityExecuteOptions) (CheckNameAvailabilityExecuteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// nameAvailabilityRequest - The required parameters for checking if resource name is available.
+// options - CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
+// method.
+func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error) {
 	req, err := client.executeCreateRequest(ctx, nameAvailabilityRequest, options)
 	if err != nil {
-		return CheckNameAvailabilityExecuteResponse{}, err
+		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CheckNameAvailabilityExecuteResponse{}, err
+		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CheckNameAvailabilityExecuteResponse{}, client.executeHandleError(resp)
+		return CheckNameAvailabilityClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityExecuteOptions) (*policy.Request, error) {
+func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,23 +88,10 @@ func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Cont
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityExecuteResponse, error) {
-	result := CheckNameAvailabilityExecuteResponse{RawResponse: resp}
+func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityClientExecuteResponse, error) {
+	result := CheckNameAvailabilityClientExecuteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
-		return CheckNameAvailabilityExecuteResponse{}, runtime.NewResponseError(err, resp)
+		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
 	return result, nil
-}
-
-// executeHandleError handles the Execute error response.
-func (client *CheckNameAvailabilityClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

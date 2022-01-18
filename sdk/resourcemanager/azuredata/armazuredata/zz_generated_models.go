@@ -16,17 +16,9 @@ import (
 )
 
 // CloudError - An error response from the Azure Data service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// null
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Batch service.
@@ -148,8 +140,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -158,8 +150,8 @@ type Plan struct {
 	// REQUIRED; A user defined name of the 3rd Party Artifact that is being procured.
 	Name *string `json:"name,omitempty"`
 
-	// REQUIRED; The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market
-	// onboarding.
+	// REQUIRED; The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact
+	// at the time of Data Market onboarding.
 	Product *string `json:"product,omitempty"`
 
 	// REQUIRED; The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
@@ -172,13 +164,17 @@ type Plan struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location and tags
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type Resource struct {
@@ -192,34 +188,21 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-// ResourceModelWithAllowedPropertySet - The resource model definition containing the full set of allowed properties for a resource. Except properties bag,
-// there cannot be a top level property outside of this set.
+// ResourceModelWithAllowedPropertySet - The resource model definition containing the full set of allowed properties for a
+// resource. Except properties bag, there cannot be a top level property outside of this set.
 type ResourceModelWithAllowedPropertySet struct {
 	Identity *ResourceModelWithAllowedPropertySetIdentity `json:"identity,omitempty"`
 
-	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites
-	// type. If supported, the resource provider must
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are
+	// a kind of Microsoft.Web/sites type. If supported, the resource provider must
 	// validate and persist this value.
 	Kind *string `json:"kind,omitempty"`
 
 	// The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another azure resource. If this
-	// is present, complete mode deployment will not
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// azure resource. If this is present, complete mode deployment will not
 	// delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string                                  `json:"managedBy,omitempty"`
 	Plan      *ResourceModelWithAllowedPropertySetPlan `json:"plan,omitempty"`
@@ -228,10 +211,10 @@ type ResourceModelWithAllowedPropertySet struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; The etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities
-	// from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and
-	// If-Range (section 14.27) header fields.
+	// READ-ONLY; The etag field is not required. If it is provided in the response body, it must also be provided as a header
+	// per the normal etag convention. Entity tags are used for comparing two or more entities
+	// from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
+	// (section 14.26), and If-Range (section 14.27) header fields.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -262,15 +245,51 @@ func (r ResourceModelWithAllowedPropertySet) MarshalJSON() ([]byte, error) {
 }
 
 type ResourceModelWithAllowedPropertySetIdentity struct {
-	Identity
+	// The identity type.
+	Type *string `json:"type,omitempty"`
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 type ResourceModelWithAllowedPropertySetPlan struct {
-	Plan
+	// REQUIRED; A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact
+	// at the time of Data Market onboarding.
+	Product *string `json:"product,omitempty"`
+
+	// REQUIRED; The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string `json:"publisher,omitempty"`
+
+	// A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+
+	// The version of the desired product/artifact.
+	Version *string `json:"version,omitempty"`
 }
 
 type ResourceModelWithAllowedPropertySetSKU struct {
-	SKU
+	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier `json:"tier,omitempty"`
 }
 
 type ResourceSKU struct {
@@ -286,7 +305,8 @@ type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
 
-	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
@@ -295,23 +315,24 @@ type SKU struct {
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 
-	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
 	Tier *SKUTier `json:"tier,omitempty"`
 }
 
 // SQLServer - A SQL server.
 type SQLServer struct {
-	ProxyResource
 	// Resource properties.
 	Properties *SQLServerProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SQLServer.
-func (s SQLServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SQLServerListResult - A list of SQL servers.
@@ -351,16 +372,38 @@ type SQLServerProperties struct {
 
 // SQLServerRegistration - A SQL server registration.
 type SQLServerRegistration struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Resource properties.
 	Properties *SQLServerRegistrationProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Read only system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SQLServerRegistration.
 func (s SQLServerRegistration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -406,54 +449,59 @@ func (s SQLServerRegistrationUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SQLServerRegistrationsCreateOrUpdateOptions contains the optional parameters for the SQLServerRegistrations.CreateOrUpdate method.
-type SQLServerRegistrationsCreateOrUpdateOptions struct {
+// SQLServerRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the SQLServerRegistrationsClient.CreateOrUpdate
+// method.
+type SQLServerRegistrationsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerRegistrationsDeleteOptions contains the optional parameters for the SQLServerRegistrations.Delete method.
-type SQLServerRegistrationsDeleteOptions struct {
+// SQLServerRegistrationsClientDeleteOptions contains the optional parameters for the SQLServerRegistrationsClient.Delete
+// method.
+type SQLServerRegistrationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerRegistrationsGetOptions contains the optional parameters for the SQLServerRegistrations.Get method.
-type SQLServerRegistrationsGetOptions struct {
+// SQLServerRegistrationsClientGetOptions contains the optional parameters for the SQLServerRegistrationsClient.Get method.
+type SQLServerRegistrationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerRegistrationsListByResourceGroupOptions contains the optional parameters for the SQLServerRegistrations.ListByResourceGroup method.
-type SQLServerRegistrationsListByResourceGroupOptions struct {
+// SQLServerRegistrationsClientListByResourceGroupOptions contains the optional parameters for the SQLServerRegistrationsClient.ListByResourceGroup
+// method.
+type SQLServerRegistrationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerRegistrationsListOptions contains the optional parameters for the SQLServerRegistrations.List method.
-type SQLServerRegistrationsListOptions struct {
+// SQLServerRegistrationsClientListOptions contains the optional parameters for the SQLServerRegistrationsClient.List method.
+type SQLServerRegistrationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServerRegistrationsUpdateOptions contains the optional parameters for the SQLServerRegistrations.Update method.
-type SQLServerRegistrationsUpdateOptions struct {
+// SQLServerRegistrationsClientUpdateOptions contains the optional parameters for the SQLServerRegistrationsClient.Update
+// method.
+type SQLServerRegistrationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServersCreateOrUpdateOptions contains the optional parameters for the SQLServers.CreateOrUpdate method.
-type SQLServersCreateOrUpdateOptions struct {
+// SQLServersClientCreateOrUpdateOptions contains the optional parameters for the SQLServersClient.CreateOrUpdate method.
+type SQLServersClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServersDeleteOptions contains the optional parameters for the SQLServers.Delete method.
-type SQLServersDeleteOptions struct {
+// SQLServersClientDeleteOptions contains the optional parameters for the SQLServersClient.Delete method.
+type SQLServersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLServersGetOptions contains the optional parameters for the SQLServers.Get method.
-type SQLServersGetOptions struct {
+// SQLServersClientGetOptions contains the optional parameters for the SQLServersClient.Get method.
+type SQLServersClientGetOptions struct {
 	// The child resources to include in the response.
 	Expand *string
 }
 
-// SQLServersListByResourceGroupOptions contains the optional parameters for the SQLServers.ListByResourceGroup method.
-type SQLServersListByResourceGroupOptions struct {
+// SQLServersClientListByResourceGroupOptions contains the optional parameters for the SQLServersClient.ListByResourceGroup
+// method.
+type SQLServersClientListByResourceGroupOptions struct {
 	// The child resources to include in the response.
 	Expand *string
 }
@@ -528,29 +576,35 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Read only system data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

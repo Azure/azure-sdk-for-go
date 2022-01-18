@@ -20,7 +20,7 @@ func TestAddContentHeaderDefaultOnWriteOperation(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	verifier := headerPoliciesVerify{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{headerPolicy, &verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
@@ -47,7 +47,7 @@ func TestAddContentHeaderDefaultOnReadOperation(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	verifier := headerPoliciesVerify{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{headerPolicy, &verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: false,
@@ -76,7 +76,7 @@ func TestAddContentHeaderOnWriteOperation(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	verifier := headerPoliciesVerify{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{headerPolicy, &verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	req.SetOperationValue(pipelineRequestOptions{
 		isWriteOperation: true,
@@ -105,7 +105,7 @@ func TestAddContentHeaderOnWriteOperationWithOverride(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	verifier := headerPoliciesVerify{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{headerPolicy, &verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	contentOverride := false
 	req.SetOperationValue(pipelineRequestOptions{
@@ -136,7 +136,7 @@ func TestAddContentHeaderDefaultOnWriteOperationWithOverride(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	verifier := headerPoliciesVerify{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{headerPolicy, &verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	contentOverride := true
 	req.SetOperationValue(pipelineRequestOptions{
@@ -167,7 +167,7 @@ func TestAddPartitionKeyHeader(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	verifier := headerPoliciesVerify{}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{headerPolicy, &verifier}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{headerPolicy, &verifier}}, &policy.ClientOptions{Transport: srv})
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 
 	partitionKey := NewPartitionKeyString("some string")

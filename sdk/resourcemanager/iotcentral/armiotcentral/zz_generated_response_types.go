@@ -15,34 +15,34 @@ import (
 	"time"
 )
 
-// AppsCheckNameAvailabilityResponse contains the response from method Apps.CheckNameAvailability.
-type AppsCheckNameAvailabilityResponse struct {
-	AppsCheckNameAvailabilityResult
+// AppsClientCheckNameAvailabilityResponse contains the response from method AppsClient.CheckNameAvailability.
+type AppsClientCheckNameAvailabilityResponse struct {
+	AppsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsCheckNameAvailabilityResult contains the result from method Apps.CheckNameAvailability.
-type AppsCheckNameAvailabilityResult struct {
+// AppsClientCheckNameAvailabilityResult contains the result from method AppsClient.CheckNameAvailability.
+type AppsClientCheckNameAvailabilityResult struct {
 	AppAvailabilityInfo
 }
 
-// AppsCheckSubdomainAvailabilityResponse contains the response from method Apps.CheckSubdomainAvailability.
-type AppsCheckSubdomainAvailabilityResponse struct {
-	AppsCheckSubdomainAvailabilityResult
+// AppsClientCheckSubdomainAvailabilityResponse contains the response from method AppsClient.CheckSubdomainAvailability.
+type AppsClientCheckSubdomainAvailabilityResponse struct {
+	AppsClientCheckSubdomainAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsCheckSubdomainAvailabilityResult contains the result from method Apps.CheckSubdomainAvailability.
-type AppsCheckSubdomainAvailabilityResult struct {
+// AppsClientCheckSubdomainAvailabilityResult contains the result from method AppsClient.CheckSubdomainAvailability.
+type AppsClientCheckSubdomainAvailabilityResult struct {
 	AppAvailabilityInfo
 }
 
-// AppsCreateOrUpdatePollerResponse contains the response from method Apps.CreateOrUpdate.
-type AppsCreateOrUpdatePollerResponse struct {
+// AppsClientCreateOrUpdatePollerResponse contains the response from method AppsClient.CreateOrUpdate.
+type AppsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppsCreateOrUpdatePoller
+	Poller *AppsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,8 +51,8 @@ type AppsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsCreateOrUpdateResponse, error) {
-	respType := AppsCreateOrUpdateResponse{}
+func (l AppsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsClientCreateOrUpdateResponse, error) {
+	respType := AppsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.App)
 	if err != nil {
 		return respType, err
@@ -61,13 +61,13 @@ func (l AppsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a AppsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *AppsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a AppsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *AppsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppsCreateOrUpdatePoller{
+	poller := &AppsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +79,22 @@ func (l *AppsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *A
 	return nil
 }
 
-// AppsCreateOrUpdateResponse contains the response from method Apps.CreateOrUpdate.
-type AppsCreateOrUpdateResponse struct {
-	AppsCreateOrUpdateResult
+// AppsClientCreateOrUpdateResponse contains the response from method AppsClient.CreateOrUpdate.
+type AppsClientCreateOrUpdateResponse struct {
+	AppsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsCreateOrUpdateResult contains the result from method Apps.CreateOrUpdate.
-type AppsCreateOrUpdateResult struct {
+// AppsClientCreateOrUpdateResult contains the result from method AppsClient.CreateOrUpdate.
+type AppsClientCreateOrUpdateResult struct {
 	App
 }
 
-// AppsDeletePollerResponse contains the response from method Apps.Delete.
-type AppsDeletePollerResponse struct {
+// AppsClientDeletePollerResponse contains the response from method AppsClient.Delete.
+type AppsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppsDeletePoller
+	Poller *AppsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +103,8 @@ type AppsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsDeleteResponse, error) {
-	respType := AppsDeleteResponse{}
+func (l AppsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsClientDeleteResponse, error) {
+	respType := AppsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +113,13 @@ func (l AppsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a AppsDeletePollerResponse from the provided client and resume token.
-func (l *AppsDeletePollerResponse) Resume(ctx context.Context, client *AppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a AppsClientDeletePollerResponse from the provided client and resume token.
+func (l *AppsClientDeletePollerResponse) Resume(ctx context.Context, client *AppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppsDeletePoller{
+	poller := &AppsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,64 +131,64 @@ func (l *AppsDeletePollerResponse) Resume(ctx context.Context, client *AppsClien
 	return nil
 }
 
-// AppsDeleteResponse contains the response from method Apps.Delete.
-type AppsDeleteResponse struct {
+// AppsClientDeleteResponse contains the response from method AppsClient.Delete.
+type AppsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsGetResponse contains the response from method Apps.Get.
-type AppsGetResponse struct {
-	AppsGetResult
+// AppsClientGetResponse contains the response from method AppsClient.Get.
+type AppsClientGetResponse struct {
+	AppsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsGetResult contains the result from method Apps.Get.
-type AppsGetResult struct {
+// AppsClientGetResult contains the result from method AppsClient.Get.
+type AppsClientGetResult struct {
 	App
 }
 
-// AppsListByResourceGroupResponse contains the response from method Apps.ListByResourceGroup.
-type AppsListByResourceGroupResponse struct {
-	AppsListByResourceGroupResult
+// AppsClientListByResourceGroupResponse contains the response from method AppsClient.ListByResourceGroup.
+type AppsClientListByResourceGroupResponse struct {
+	AppsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsListByResourceGroupResult contains the result from method Apps.ListByResourceGroup.
-type AppsListByResourceGroupResult struct {
+// AppsClientListByResourceGroupResult contains the result from method AppsClient.ListByResourceGroup.
+type AppsClientListByResourceGroupResult struct {
 	AppListResult
 }
 
-// AppsListBySubscriptionResponse contains the response from method Apps.ListBySubscription.
-type AppsListBySubscriptionResponse struct {
-	AppsListBySubscriptionResult
+// AppsClientListBySubscriptionResponse contains the response from method AppsClient.ListBySubscription.
+type AppsClientListBySubscriptionResponse struct {
+	AppsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsListBySubscriptionResult contains the result from method Apps.ListBySubscription.
-type AppsListBySubscriptionResult struct {
+// AppsClientListBySubscriptionResult contains the result from method AppsClient.ListBySubscription.
+type AppsClientListBySubscriptionResult struct {
 	AppListResult
 }
 
-// AppsListTemplatesResponse contains the response from method Apps.ListTemplates.
-type AppsListTemplatesResponse struct {
-	AppsListTemplatesResult
+// AppsClientListTemplatesResponse contains the response from method AppsClient.ListTemplates.
+type AppsClientListTemplatesResponse struct {
+	AppsClientListTemplatesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsListTemplatesResult contains the result from method Apps.ListTemplates.
-type AppsListTemplatesResult struct {
+// AppsClientListTemplatesResult contains the result from method AppsClient.ListTemplates.
+type AppsClientListTemplatesResult struct {
 	AppTemplatesResult
 }
 
-// AppsUpdatePollerResponse contains the response from method Apps.Update.
-type AppsUpdatePollerResponse struct {
+// AppsClientUpdatePollerResponse contains the response from method AppsClient.Update.
+type AppsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AppsUpdatePoller
+	Poller *AppsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -197,8 +197,8 @@ type AppsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AppsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsUpdateResponse, error) {
-	respType := AppsUpdateResponse{}
+func (l AppsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppsClientUpdateResponse, error) {
+	respType := AppsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.App)
 	if err != nil {
 		return respType, err
@@ -207,13 +207,13 @@ func (l AppsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.D
 	return respType, nil
 }
 
-// Resume rehydrates a AppsUpdatePollerResponse from the provided client and resume token.
-func (l *AppsUpdatePollerResponse) Resume(ctx context.Context, client *AppsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AppsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a AppsClientUpdatePollerResponse from the provided client and resume token.
+func (l *AppsClientUpdatePollerResponse) Resume(ctx context.Context, client *AppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AppsUpdatePoller{
+	poller := &AppsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -225,26 +225,26 @@ func (l *AppsUpdatePollerResponse) Resume(ctx context.Context, client *AppsClien
 	return nil
 }
 
-// AppsUpdateResponse contains the response from method Apps.Update.
-type AppsUpdateResponse struct {
-	AppsUpdateResult
+// AppsClientUpdateResponse contains the response from method AppsClient.Update.
+type AppsClientUpdateResponse struct {
+	AppsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AppsUpdateResult contains the result from method Apps.Update.
-type AppsUpdateResult struct {
+// AppsClientUpdateResult contains the result from method AppsClient.Update.
+type AppsClientUpdateResult struct {
 	App
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

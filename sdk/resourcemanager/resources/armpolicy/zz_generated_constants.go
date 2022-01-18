@@ -9,8 +9,8 @@
 package armpolicy
 
 const (
-	module  = "armpolicy"
-	version = "v0.1.1"
+	moduleName    = "armpolicy"
+	moduleVersion = "v0.2.0"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -178,7 +178,8 @@ func (c EnforcementMode) ToPtr() *EnforcementMode {
 type ExemptionCategory string
 
 const (
-	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the scope.
+	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the
+	// scope.
 	ExemptionCategoryMitigated ExemptionCategory = "Mitigated"
 	// ExemptionCategoryWaiver - This category of exemptions usually means the scope is not applicable for the policy.
 	ExemptionCategoryWaiver ExemptionCategory = "Waiver"
@@ -253,7 +254,8 @@ func (c PolicyType) ToPtr() *PolicyType {
 	return &c
 }
 
-// ResourceIdentityType - The identity type. This is the only required field when adding a system or user assigned identity to a resource.
+// ResourceIdentityType - The identity type. This is the only required field when adding a system or user assigned identity
+// to a resource.
 type ResourceIdentityType string
 
 const (
@@ -261,7 +263,8 @@ const (
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	// ResourceIdentityTypeUserAssigned - Indicates that a system assigned identity is associated with the resource.
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
-	// ResourceIdentityTypeNone - Indicates that no identity is associated with the resource or that the existing identity should be removed.
+	// ResourceIdentityTypeNone - Indicates that no identity is associated with the resource or that the existing identity should
+	// be removed.
 	ResourceIdentityTypeNone ResourceIdentityType = "None"
 )
 

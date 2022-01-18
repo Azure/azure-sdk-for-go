@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// CustomizationPoliciesListPager provides operations for iterating over paged responses.
-type CustomizationPoliciesListPager struct {
+// CustomizationPoliciesClientListPager provides operations for iterating over paged responses.
+type CustomizationPoliciesClientListPager struct {
 	client    *CustomizationPoliciesClient
-	current   CustomizationPoliciesListResponseEnvelope
+	current   CustomizationPoliciesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, CustomizationPoliciesListResponseEnvelope) (*policy.Request, error)
+	advancer  func(context.Context, CustomizationPoliciesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *CustomizationPoliciesListPager) Err() error {
+func (p *CustomizationPoliciesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *CustomizationPoliciesListPager) NextPage(ctx context.Context) bool {
+func (p *CustomizationPoliciesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *CustomizationPoliciesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *CustomizationPoliciesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current CustomizationPoliciesListResponseEnvelope page.
-func (p *CustomizationPoliciesListPager) PageResponse() CustomizationPoliciesListResponseEnvelope {
+// PageResponse returns the current CustomizationPoliciesClientListResponse page.
+func (p *CustomizationPoliciesClientListPager) PageResponse() CustomizationPoliciesClientListResponse {
 	return p.current
 }
 
-// DedicatedCloudNodesListByResourceGroupPager provides operations for iterating over paged responses.
-type DedicatedCloudNodesListByResourceGroupPager struct {
+// DedicatedCloudNodesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type DedicatedCloudNodesClientListByResourceGroupPager struct {
 	client    *DedicatedCloudNodesClient
-	current   DedicatedCloudNodesListByResourceGroupResponse
+	current   DedicatedCloudNodesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DedicatedCloudNodesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedCloudNodesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DedicatedCloudNodesListByResourceGroupPager) Err() error {
+func (p *DedicatedCloudNodesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DedicatedCloudNodesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *DedicatedCloudNodesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *DedicatedCloudNodesListByResourceGroupPager) NextPage(ctx context.Conte
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *DedicatedCloudNodesListByResourceGroupPager) NextPage(ctx context.Conte
 	return true
 }
 
-// PageResponse returns the current DedicatedCloudNodesListByResourceGroupResponse page.
-func (p *DedicatedCloudNodesListByResourceGroupPager) PageResponse() DedicatedCloudNodesListByResourceGroupResponse {
+// PageResponse returns the current DedicatedCloudNodesClientListByResourceGroupResponse page.
+func (p *DedicatedCloudNodesClientListByResourceGroupPager) PageResponse() DedicatedCloudNodesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// DedicatedCloudNodesListBySubscriptionPager provides operations for iterating over paged responses.
-type DedicatedCloudNodesListBySubscriptionPager struct {
+// DedicatedCloudNodesClientListBySubscriptionPager provides operations for iterating over paged responses.
+type DedicatedCloudNodesClientListBySubscriptionPager struct {
 	client    *DedicatedCloudNodesClient
-	current   DedicatedCloudNodesListBySubscriptionResponse
+	current   DedicatedCloudNodesClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DedicatedCloudNodesListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedCloudNodesClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DedicatedCloudNodesListBySubscriptionPager) Err() error {
+func (p *DedicatedCloudNodesClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DedicatedCloudNodesListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *DedicatedCloudNodesClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *DedicatedCloudNodesListBySubscriptionPager) NextPage(ctx context.Contex
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *DedicatedCloudNodesListBySubscriptionPager) NextPage(ctx context.Contex
 	return true
 }
 
-// PageResponse returns the current DedicatedCloudNodesListBySubscriptionResponse page.
-func (p *DedicatedCloudNodesListBySubscriptionPager) PageResponse() DedicatedCloudNodesListBySubscriptionResponse {
+// PageResponse returns the current DedicatedCloudNodesClientListBySubscriptionResponse page.
+func (p *DedicatedCloudNodesClientListBySubscriptionPager) PageResponse() DedicatedCloudNodesClientListBySubscriptionResponse {
 	return p.current
 }
 
-// DedicatedCloudServicesListByResourceGroupPager provides operations for iterating over paged responses.
-type DedicatedCloudServicesListByResourceGroupPager struct {
+// DedicatedCloudServicesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type DedicatedCloudServicesClientListByResourceGroupPager struct {
 	client    *DedicatedCloudServicesClient
-	current   DedicatedCloudServicesListByResourceGroupResponse
+	current   DedicatedCloudServicesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DedicatedCloudServicesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedCloudServicesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DedicatedCloudServicesListByResourceGroupPager) Err() error {
+func (p *DedicatedCloudServicesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DedicatedCloudServicesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *DedicatedCloudServicesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *DedicatedCloudServicesListByResourceGroupPager) NextPage(ctx context.Co
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *DedicatedCloudServicesListByResourceGroupPager) NextPage(ctx context.Co
 	return true
 }
 
-// PageResponse returns the current DedicatedCloudServicesListByResourceGroupResponse page.
-func (p *DedicatedCloudServicesListByResourceGroupPager) PageResponse() DedicatedCloudServicesListByResourceGroupResponse {
+// PageResponse returns the current DedicatedCloudServicesClientListByResourceGroupResponse page.
+func (p *DedicatedCloudServicesClientListByResourceGroupPager) PageResponse() DedicatedCloudServicesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// DedicatedCloudServicesListBySubscriptionPager provides operations for iterating over paged responses.
-type DedicatedCloudServicesListBySubscriptionPager struct {
+// DedicatedCloudServicesClientListBySubscriptionPager provides operations for iterating over paged responses.
+type DedicatedCloudServicesClientListBySubscriptionPager struct {
 	client    *DedicatedCloudServicesClient
-	current   DedicatedCloudServicesListBySubscriptionResponse
+	current   DedicatedCloudServicesClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DedicatedCloudServicesListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, DedicatedCloudServicesClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DedicatedCloudServicesListBySubscriptionPager) Err() error {
+func (p *DedicatedCloudServicesClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DedicatedCloudServicesListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *DedicatedCloudServicesClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *DedicatedCloudServicesListBySubscriptionPager) NextPage(ctx context.Con
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -281,28 +281,28 @@ func (p *DedicatedCloudServicesListBySubscriptionPager) NextPage(ctx context.Con
 	return true
 }
 
-// PageResponse returns the current DedicatedCloudServicesListBySubscriptionResponse page.
-func (p *DedicatedCloudServicesListBySubscriptionPager) PageResponse() DedicatedCloudServicesListBySubscriptionResponse {
+// PageResponse returns the current DedicatedCloudServicesClientListBySubscriptionResponse page.
+func (p *DedicatedCloudServicesClientListBySubscriptionPager) PageResponse() DedicatedCloudServicesClientListBySubscriptionResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -323,7 +323,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -335,28 +335,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// PrivateCloudsListPager provides operations for iterating over paged responses.
-type PrivateCloudsListPager struct {
+// PrivateCloudsClientListPager provides operations for iterating over paged responses.
+type PrivateCloudsClientListPager struct {
 	client    *PrivateCloudsClient
-	current   PrivateCloudsListResponse
+	current   PrivateCloudsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateCloudsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateCloudsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateCloudsListPager) Err() error {
+func (p *PrivateCloudsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateCloudsListPager) NextPage(ctx context.Context) bool {
+func (p *PrivateCloudsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -377,7 +377,7 @@ func (p *PrivateCloudsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -389,28 +389,28 @@ func (p *PrivateCloudsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current PrivateCloudsListResponse page.
-func (p *PrivateCloudsListPager) PageResponse() PrivateCloudsListResponse {
+// PageResponse returns the current PrivateCloudsClientListResponse page.
+func (p *PrivateCloudsClientListPager) PageResponse() PrivateCloudsClientListResponse {
 	return p.current
 }
 
-// ResourcePoolsListPager provides operations for iterating over paged responses.
-type ResourcePoolsListPager struct {
+// ResourcePoolsClientListPager provides operations for iterating over paged responses.
+type ResourcePoolsClientListPager struct {
 	client    *ResourcePoolsClient
-	current   ResourcePoolsListResponseEnvelope
+	current   ResourcePoolsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ResourcePoolsListResponseEnvelope) (*policy.Request, error)
+	advancer  func(context.Context, ResourcePoolsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ResourcePoolsListPager) Err() error {
+func (p *ResourcePoolsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ResourcePoolsListPager) NextPage(ctx context.Context) bool {
+func (p *ResourcePoolsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -431,7 +431,7 @@ func (p *ResourcePoolsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -443,28 +443,28 @@ func (p *ResourcePoolsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ResourcePoolsListResponseEnvelope page.
-func (p *ResourcePoolsListPager) PageResponse() ResourcePoolsListResponseEnvelope {
+// PageResponse returns the current ResourcePoolsClientListResponse page.
+func (p *ResourcePoolsClientListPager) PageResponse() ResourcePoolsClientListResponse {
 	return p.current
 }
 
-// SKUsAvailabilityListPager provides operations for iterating over paged responses.
-type SKUsAvailabilityListPager struct {
+// SKUsAvailabilityClientListPager provides operations for iterating over paged responses.
+type SKUsAvailabilityClientListPager struct {
 	client    *SKUsAvailabilityClient
-	current   SKUsAvailabilityListResponse
+	current   SKUsAvailabilityClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SKUsAvailabilityListResponse) (*policy.Request, error)
+	advancer  func(context.Context, SKUsAvailabilityClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SKUsAvailabilityListPager) Err() error {
+func (p *SKUsAvailabilityClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SKUsAvailabilityListPager) NextPage(ctx context.Context) bool {
+func (p *SKUsAvailabilityClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -485,7 +485,7 @@ func (p *SKUsAvailabilityListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -497,28 +497,28 @@ func (p *SKUsAvailabilityListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SKUsAvailabilityListResponse page.
-func (p *SKUsAvailabilityListPager) PageResponse() SKUsAvailabilityListResponse {
+// PageResponse returns the current SKUsAvailabilityClientListResponse page.
+func (p *SKUsAvailabilityClientListPager) PageResponse() SKUsAvailabilityClientListResponse {
 	return p.current
 }
 
-// UsagesListPager provides operations for iterating over paged responses.
-type UsagesListPager struct {
+// UsagesClientListPager provides operations for iterating over paged responses.
+type UsagesClientListPager struct {
 	client    *UsagesClient
-	current   UsagesListResponse
+	current   UsagesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, UsagesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, UsagesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *UsagesListPager) Err() error {
+func (p *UsagesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *UsagesListPager) NextPage(ctx context.Context) bool {
+func (p *UsagesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -539,7 +539,7 @@ func (p *UsagesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -551,28 +551,28 @@ func (p *UsagesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current UsagesListResponse page.
-func (p *UsagesListPager) PageResponse() UsagesListResponse {
+// PageResponse returns the current UsagesClientListResponse page.
+func (p *UsagesClientListPager) PageResponse() UsagesClientListResponse {
 	return p.current
 }
 
-// VirtualMachineTemplatesListPager provides operations for iterating over paged responses.
-type VirtualMachineTemplatesListPager struct {
+// VirtualMachineTemplatesClientListPager provides operations for iterating over paged responses.
+type VirtualMachineTemplatesClientListPager struct {
 	client    *VirtualMachineTemplatesClient
-	current   VirtualMachineTemplatesListResponse
+	current   VirtualMachineTemplatesClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualMachineTemplatesListResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualMachineTemplatesClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualMachineTemplatesListPager) Err() error {
+func (p *VirtualMachineTemplatesClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualMachineTemplatesListPager) NextPage(ctx context.Context) bool {
+func (p *VirtualMachineTemplatesClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -593,7 +593,7 @@ func (p *VirtualMachineTemplatesListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -605,28 +605,28 @@ func (p *VirtualMachineTemplatesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current VirtualMachineTemplatesListResponse page.
-func (p *VirtualMachineTemplatesListPager) PageResponse() VirtualMachineTemplatesListResponse {
+// PageResponse returns the current VirtualMachineTemplatesClientListResponse page.
+func (p *VirtualMachineTemplatesClientListPager) PageResponse() VirtualMachineTemplatesClientListResponse {
 	return p.current
 }
 
-// VirtualMachinesListByResourceGroupPager provides operations for iterating over paged responses.
-type VirtualMachinesListByResourceGroupPager struct {
+// VirtualMachinesClientListByResourceGroupPager provides operations for iterating over paged responses.
+type VirtualMachinesClientListByResourceGroupPager struct {
 	client    *VirtualMachinesClient
-	current   VirtualMachinesListByResourceGroupResponse
+	current   VirtualMachinesClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualMachinesListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualMachinesClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualMachinesListByResourceGroupPager) Err() error {
+func (p *VirtualMachinesClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualMachinesListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *VirtualMachinesClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -647,7 +647,7 @@ func (p *VirtualMachinesListByResourceGroupPager) NextPage(ctx context.Context) 
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -659,28 +659,28 @@ func (p *VirtualMachinesListByResourceGroupPager) NextPage(ctx context.Context) 
 	return true
 }
 
-// PageResponse returns the current VirtualMachinesListByResourceGroupResponse page.
-func (p *VirtualMachinesListByResourceGroupPager) PageResponse() VirtualMachinesListByResourceGroupResponse {
+// PageResponse returns the current VirtualMachinesClientListByResourceGroupResponse page.
+func (p *VirtualMachinesClientListByResourceGroupPager) PageResponse() VirtualMachinesClientListByResourceGroupResponse {
 	return p.current
 }
 
-// VirtualMachinesListBySubscriptionPager provides operations for iterating over paged responses.
-type VirtualMachinesListBySubscriptionPager struct {
+// VirtualMachinesClientListBySubscriptionPager provides operations for iterating over paged responses.
+type VirtualMachinesClientListBySubscriptionPager struct {
 	client    *VirtualMachinesClient
-	current   VirtualMachinesListBySubscriptionResponse
+	current   VirtualMachinesClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualMachinesListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualMachinesClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualMachinesListBySubscriptionPager) Err() error {
+func (p *VirtualMachinesClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualMachinesListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *VirtualMachinesClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -701,7 +701,7 @@ func (p *VirtualMachinesListBySubscriptionPager) NextPage(ctx context.Context) b
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -713,28 +713,28 @@ func (p *VirtualMachinesListBySubscriptionPager) NextPage(ctx context.Context) b
 	return true
 }
 
-// PageResponse returns the current VirtualMachinesListBySubscriptionResponse page.
-func (p *VirtualMachinesListBySubscriptionPager) PageResponse() VirtualMachinesListBySubscriptionResponse {
+// PageResponse returns the current VirtualMachinesClientListBySubscriptionResponse page.
+func (p *VirtualMachinesClientListBySubscriptionPager) PageResponse() VirtualMachinesClientListBySubscriptionResponse {
 	return p.current
 }
 
-// VirtualNetworksListPager provides operations for iterating over paged responses.
-type VirtualNetworksListPager struct {
+// VirtualNetworksClientListPager provides operations for iterating over paged responses.
+type VirtualNetworksClientListPager struct {
 	client    *VirtualNetworksClient
-	current   VirtualNetworksListResponse
+	current   VirtualNetworksClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, VirtualNetworksListResponse) (*policy.Request, error)
+	advancer  func(context.Context, VirtualNetworksClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *VirtualNetworksListPager) Err() error {
+func (p *VirtualNetworksClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *VirtualNetworksListPager) NextPage(ctx context.Context) bool {
+func (p *VirtualNetworksClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -755,7 +755,7 @@ func (p *VirtualNetworksListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -767,7 +767,7 @@ func (p *VirtualNetworksListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current VirtualNetworksListResponse page.
-func (p *VirtualNetworksListPager) PageResponse() VirtualNetworksListResponse {
+// PageResponse returns the current VirtualNetworksClientListResponse page.
+func (p *VirtualNetworksClientListPager) PageResponse() VirtualNetworksClientListResponse {
 	return p.current
 }

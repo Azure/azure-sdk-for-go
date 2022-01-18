@@ -15,6 +15,21 @@ import (
 	"time"
 )
 
+// APIClientCheckNameAvailabilityOptions contains the optional parameters for the APIClient.CheckNameAvailability method.
+type APIClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIClientStartTenantBackfillOptions contains the optional parameters for the APIClient.StartTenantBackfill method.
+type APIClientStartTenantBackfillOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIClientTenantBackfillStatusOptions contains the optional parameters for the APIClient.TenantBackfillStatus method.
+type APIClientTenantBackfillStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AzureAsyncOperationResults - The results of Azure-AsyncOperation.
 type AzureAsyncOperationResults struct {
 	// The generic properties of a management group.
@@ -44,18 +59,72 @@ type CheckNameAvailabilityRequest struct {
 
 // CheckNameAvailabilityResult - Describes the result of the request to check management group name availability.
 type CheckNameAvailabilityResult struct {
-	// READ-ONLY; Required if nameAvailable == false. Localized. If reason == invalid, provide the user with the reason why the given name is invalid, and provide
-	// the resource naming requirements so that the user can
-	// select a valid name. If reason == AlreadyExists, explain that is already in use, and direct them to select a different name.
+	// READ-ONLY; Required if nameAvailable == false. Localized. If reason == invalid, provide the user with the reason why the
+	// given name is invalid, and provide the resource naming requirements so that the user can
+	// select a valid name. If reason == AlreadyExists, explain that is already in use, and direct them to select a different
+	// name.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; Required. True indicates name is valid and available. False indicates the name is invalid, unavailable, or both.
 	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
 
-	// READ-ONLY; Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's naming requirements (incorrect
-	// length, unsupported characters, etc.) AlreadyExists
+	// READ-ONLY; Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's
+	// naming requirements (incorrect length, unsupported characters, etc.) AlreadyExists
 	// indicates that the name is already in use and is therefore unavailable.
 	Reason *Reason `json:"reason,omitempty" azure:"ro"`
+}
+
+// ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+type ClientBeginCreateOrUpdateOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+}
+
+// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+type ClientBeginDeleteOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+}
+
+// ClientGetDescendantsOptions contains the optional parameters for the Client.GetDescendants method.
+type ClientGetDescendantsOptions struct {
+	// Page continuation token is only used if a previous operation returned a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a token
+	// parameter that specifies a starting point to use for subsequent calls.
+	Skiptoken *string
+	// Number of elements to return when retrieving results. Passing this in will override $skipToken.
+	Top *int32
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+	// The $expand=children query string parameter allows clients to request inclusion of children in the response payload. $expand=path
+	// includes the path from the root group to the current group.
+	// $expand=ancestors includes the ancestor Ids of the current group.
+	Expand *Enum0
+	// A filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType ne Subscription')
+	Filter *string
+	// The $recurse=true query string parameter allows clients to request inclusion of entire hierarchy in the response payload.
+	// Note that $expand=children must be passed up if $recurse is set to true.
+	Recurse *bool
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+	// Page continuation token is only used if a previous operation returned a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a token
+	// parameter that specifies a starting point to use for subsequent calls.
+	Skiptoken *string
+}
+
+// ClientUpdateOptions contains the optional parameters for the Client.Update method.
+type ClientUpdateOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
 }
 
 // CreateManagementGroupChildInfo - The child information of a management group used during creation.
@@ -186,10 +255,10 @@ type CreateOrUpdateSettingsProperties struct {
 	// Settings that sets the default Management Group under which new subscriptions get added in this tenant. For example, /providers/Microsoft.Management/managementGroups/defaultGroup
 	DefaultManagementGroup *string `json:"defaultManagementGroup,omitempty"`
 
-	// Indicates whether RBAC access is required upon group creation under the root Management Group. If set to true, user will require Microsoft.Management/managementGroups/write
-	// action on the root
-	// Management Group scope in order to create new Groups directly under the root. This will prevent new users from creating new Management Groups, unless
-	// they are given access.
+	// Indicates whether RBAC access is required upon group creation under the root Management Group. If set to true, user will
+	// require Microsoft.Management/managementGroups/write action on the root
+	// Management Group scope in order to create new Groups directly under the root. This will prevent new users from creating
+	// new Management Groups, unless they are given access.
 	RequireAuthorizationForGroupCreation *bool `json:"requireAuthorizationForGroupCreation,omitempty"`
 }
 
@@ -266,34 +335,40 @@ type DescendantParentGroupInfo struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// EntitiesListOptions contains the optional parameters for the Entities.List method.
-type EntitiesListOptions struct {
+// EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
+type EntitiesClientListOptions struct {
 	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
 	CacheControl *string
-	// The filter parameter allows you to filter on the the name or display name fields. You can check for equality on the name field (e.g. name eq '{entityName}')
-	// and you can check for substrings on either the name or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
-	// Note that the '{entityName}' and '{substringToSearch}' fields are checked case insensitively.
+	// The filter parameter allows you to filter on the the name or display name fields. You can check for equality on the name
+	// field (e.g. name eq '{entityName}') and you can check for substrings on either
+	// the name or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
+	// Note that the '{entityName}' and '{substringToSearch}' fields are checked case
+	// insensitively.
 	Filter *string
 	// A filter which allows the get entities call to focus on a particular group (i.e. "$filter=name eq 'groupName'")
 	GroupName *string
-	// The $search parameter is used in conjunction with the $filter parameter to return three different outputs depending on the parameter passed in.
-	// With $search=AllowedParents the API will return the entity info of all groups that the requested entity will be able to reparent to as determined by
-	// the user's permissions.
-	// With $search=AllowedChildren the API will return the entity info of all entities that can be added as children of the requested entity.
-	// With $search=ParentAndFirstLevelChildren the API will return the parent and first level of children that the user has either direct access to or indirect
-	// access via one of their descendants.
-	// With $search=ParentOnly the API will return only the group if the user has access to at least one of the descendants of the group.
-	// With $search=ChildrenOnly the API will return only the first level of children of the group entity info specified in $filter. The user must have direct
-	// access to the children entities or one of it's descendants for it to show up in the results.
+	// The $search parameter is used in conjunction with the $filter parameter to return three different outputs depending on
+	// the parameter passed in. With $search=AllowedParents the API will return the
+	// entity info of all groups that the requested entity will be able to reparent to as determined by the user's permissions.
+	// With $search=AllowedChildren the API will return the entity info of all
+	// entities that can be added as children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return
+	// the parent and first level of children that the user has either direct
+	// access to or indirect access via one of their descendants. With $search=ParentOnly the API will return only the group if
+	// the user has access to at least one of the descendants of the group. With
+	// $search=ChildrenOnly the API will return only the first level of children of the group entity info specified in $filter.
+	// The user must have direct access to the children entities or one of it's
+	// descendants for it to show up in the results.
 	Search *Enum2
 	// This parameter specifies the fields to include in the response. Can include any combination of Name,DisplayName,Type,ParentDisplayNameChain,ParentChain,
-	// e.g. '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can override select in $skipToken.
+	// e.g.
+	// '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can override
+	// select in $skipToken.
 	Select *string
 	// Number of entities to skip over when retrieving results. Passing this in will override $skipToken.
 	Skip *int32
-	// Page continuation token is only used if a previous operation returned a partial result.
-	// If a previous response contains a nextLink element, the value of the nextLink element will include a token parameter that specifies a starting point
-	// to use for subsequent calls.
+	// Page continuation token is only used if a previous operation returned a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a token
+	// parameter that specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// Number of elements to return when retrieving results. Passing this in will override $skipToken.
 	Top *int32
@@ -441,17 +516,9 @@ type ErrorDetails struct {
 }
 
 // ErrorResponse - The error object.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // HierarchySettings - Settings defined at the Management Group scope.
@@ -469,18 +536,29 @@ type HierarchySettings struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// HierarchySettingsCreateOrUpdateOptions contains the optional parameters for the HierarchySettings.CreateOrUpdate method.
-type HierarchySettingsCreateOrUpdateOptions struct {
+// HierarchySettingsClientCreateOrUpdateOptions contains the optional parameters for the HierarchySettingsClient.CreateOrUpdate
+// method.
+type HierarchySettingsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HierarchySettingsDeleteOptions contains the optional parameters for the HierarchySettings.Delete method.
-type HierarchySettingsDeleteOptions struct {
+// HierarchySettingsClientDeleteOptions contains the optional parameters for the HierarchySettingsClient.Delete method.
+type HierarchySettingsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HierarchySettingsGetOptions contains the optional parameters for the HierarchySettings.Get method.
-type HierarchySettingsGetOptions struct {
+// HierarchySettingsClientGetOptions contains the optional parameters for the HierarchySettingsClient.Get method.
+type HierarchySettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HierarchySettingsClientListOptions contains the optional parameters for the HierarchySettingsClient.List method.
+type HierarchySettingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HierarchySettingsClientUpdateOptions contains the optional parameters for the HierarchySettingsClient.Update method.
+type HierarchySettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -516,29 +594,19 @@ func (h HierarchySettingsList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// HierarchySettingsListOptions contains the optional parameters for the HierarchySettings.List method.
-type HierarchySettingsListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // HierarchySettingsProperties - The generic properties of hierarchy settings.
 type HierarchySettingsProperties struct {
 	// Settings that sets the default Management Group under which new subscriptions get added in this tenant. For example, /providers/Microsoft.Management/managementGroups/defaultGroup
 	DefaultManagementGroup *string `json:"defaultManagementGroup,omitempty"`
 
-	// Indicates whether RBAC access is required upon group creation under the root Management Group. If set to true, user will require Microsoft.Management/managementGroups/write
-	// action on the root
-	// Management Group scope in order to create new Groups directly under the root. This will prevent new users from creating new Management Groups, unless
-	// they are given access.
+	// Indicates whether RBAC access is required upon group creation under the root Management Group. If set to true, user will
+	// require Microsoft.Management/managementGroups/write action on the root
+	// Management Group scope in order to create new Groups directly under the root. This will prevent new users from creating
+	// new Management Groups, unless they are given access.
 	RequireAuthorizationForGroupCreation *bool `json:"requireAuthorizationForGroupCreation,omitempty"`
 
 	// The AAD Tenant ID associated with the hierarchy settings. For example, 00000000-0000-0000-0000-000000000000
 	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// HierarchySettingsUpdateOptions contains the optional parameters for the HierarchySettings.Update method.
-type HierarchySettingsUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ListSubscriptionUnderManagementGroup - The details of all subscriptions under management group.
@@ -752,98 +820,34 @@ func (m ManagementGroupProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ManagementGroupSubscriptionsCreateOptions contains the optional parameters for the ManagementGroupSubscriptions.Create method.
-type ManagementGroupSubscriptionsCreateOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-}
-
-// ManagementGroupSubscriptionsDeleteOptions contains the optional parameters for the ManagementGroupSubscriptions.Delete method.
-type ManagementGroupSubscriptionsDeleteOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-}
-
-// ManagementGroupSubscriptionsGetSubscriptionOptions contains the optional parameters for the ManagementGroupSubscriptions.GetSubscription method.
-type ManagementGroupSubscriptionsGetSubscriptionOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-}
-
-// ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupOptions contains the optional parameters for the ManagementGroupSubscriptions.GetSubscriptionsUnderManagementGroup
+// ManagementGroupSubscriptionsClientCreateOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.Create
 // method.
-type ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupOptions struct {
-	// Page continuation token is only used if a previous operation returned a partial result.
-	// If a previous response contains a nextLink element, the value of the nextLink element will include a token parameter that specifies a starting point
-	// to use for subsequent calls.
+type ManagementGroupSubscriptionsClientCreateOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+}
+
+// ManagementGroupSubscriptionsClientDeleteOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.Delete
+// method.
+type ManagementGroupSubscriptionsClientDeleteOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+}
+
+// ManagementGroupSubscriptionsClientGetSubscriptionOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.GetSubscription
+// method.
+type ManagementGroupSubscriptionsClientGetSubscriptionOptions struct {
+	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
+	CacheControl *string
+}
+
+// ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions contains the optional parameters for the
+// ManagementGroupSubscriptionsClient.GetSubscriptionsUnderManagementGroup method.
+type ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions struct {
+	// Page continuation token is only used if a previous operation returned a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a token
+	// parameter that specifies a starting point to use for subsequent calls.
 	Skiptoken *string
-}
-
-// ManagementGroupsAPICheckNameAvailabilityOptions contains the optional parameters for the ManagementGroupsAPI.CheckNameAvailability method.
-type ManagementGroupsAPICheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagementGroupsAPIStartTenantBackfillOptions contains the optional parameters for the ManagementGroupsAPI.StartTenantBackfill method.
-type ManagementGroupsAPIStartTenantBackfillOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagementGroupsAPITenantBackfillStatusOptions contains the optional parameters for the ManagementGroupsAPI.TenantBackfillStatus method.
-type ManagementGroupsAPITenantBackfillStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagementGroupsBeginCreateOrUpdateOptions contains the optional parameters for the ManagementGroups.BeginCreateOrUpdate method.
-type ManagementGroupsBeginCreateOrUpdateOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-}
-
-// ManagementGroupsBeginDeleteOptions contains the optional parameters for the ManagementGroups.BeginDelete method.
-type ManagementGroupsBeginDeleteOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-}
-
-// ManagementGroupsGetDescendantsOptions contains the optional parameters for the ManagementGroups.GetDescendants method.
-type ManagementGroupsGetDescendantsOptions struct {
-	// Page continuation token is only used if a previous operation returned a partial result.
-	// If a previous response contains a nextLink element, the value of the nextLink element will include a token parameter that specifies a starting point
-	// to use for subsequent calls.
-	Skiptoken *string
-	// Number of elements to return when retrieving results. Passing this in will override $skipToken.
-	Top *int32
-}
-
-// ManagementGroupsGetOptions contains the optional parameters for the ManagementGroups.Get method.
-type ManagementGroupsGetOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-	// The $expand=children query string parameter allows clients to request inclusion of children in the response payload. $expand=path includes the path from
-	// the root group to the current group. $expand=ancestors includes the ancestor Ids of the current group.
-	Expand *Enum0
-	// A filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType ne Subscription')
-	Filter *string
-	// The $recurse=true query string parameter allows clients to request inclusion of entire hierarchy in the response payload. Note that $expand=children
-	// must be passed up if $recurse is set to true.
-	Recurse *bool
-}
-
-// ManagementGroupsListOptions contains the optional parameters for the ManagementGroups.List method.
-type ManagementGroupsListOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
-	// Page continuation token is only used if a previous operation returned a partial result.
-	// If a previous response contains a nextLink element, the value of the nextLink element will include a token parameter that specifies a starting point
-	// to use for subsequent calls.
-	Skiptoken *string
-}
-
-// ManagementGroupsUpdateOptions contains the optional parameters for the ManagementGroups.Update method.
-type ManagementGroupsUpdateOptions struct {
-	// Indicates whether the request should utilize any caches. Populate the header with 'no-cache' value to bypass existing caches.
-	CacheControl *string
 }
 
 // Operation supported by the Microsoft.Management resource provider.
@@ -902,8 +906,8 @@ type OperationResults struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

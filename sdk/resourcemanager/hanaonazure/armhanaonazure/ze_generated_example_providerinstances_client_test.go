@@ -30,12 +30,16 @@ func ExampleProviderInstancesClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<sap-monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProviderInstance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleProviderInstancesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProviderInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProviderInstancesClientGetResult)
 }
 
 // x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2020-02-07-preview/examples/ProviderInstances_Create.json
@@ -86,7 +90,7 @@ func ExampleProviderInstancesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ProviderInstance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProviderInstancesClientCreateResult)
 }
 
 // x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2020-02-07-preview/examples/ProviderInstances_Delete.json

@@ -11,7 +11,6 @@ package armrelay
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,60 @@ import (
 // NamespacesClient contains the methods for the Namespaces group.
 // Don't use this type directly, use NewNamespacesClient() instead.
 type NamespacesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewNamespacesClient creates a new instance of NamespacesClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NamespacesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &NamespacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &NamespacesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Check the specified namespace name availability.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailability, options *NamespacesCheckNameAvailabilityOptions) (NamespacesCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// parameters - Parameters to check availability of the specified namespace name.
+// options - NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
+// method.
+func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailability, options *NamespacesClientCheckNameAvailabilityOptions) (NamespacesClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
-		return NamespacesCheckNameAvailabilityResponse{}, err
+		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesCheckNameAvailabilityResponse{}, err
+		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NamespacesCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return NamespacesClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailability, options *NamespacesCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailability, options *NamespacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,50 +89,42 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesCheckNameAvailabilityResponse, error) {
-	result := NamespacesCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesClientCheckNameAvailabilityResponse, error) {
+	result := NamespacesClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return NamespacesCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *NamespacesClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Create Azure Relay namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters RelayNamespace, options *NamespacesBeginCreateOrUpdateOptions) (NamespacesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// parameters - Parameters supplied to create a namespace resource.
+// options - NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// method.
+func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters Namespace, options *NamespacesClientBeginCreateOrUpdateOptions) (NamespacesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
-		return NamespacesCreateOrUpdatePollerResponse{}, err
+		return NamespacesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := NamespacesCreateOrUpdatePollerResponse{
+	result := NamespacesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("NamespacesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("NamespacesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return NamespacesCreateOrUpdatePollerResponse{}, err
+		return NamespacesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &NamespacesCreateOrUpdatePoller{
+	result.Poller = &NamespacesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create Azure Relay namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters RelayNamespace, options *NamespacesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters Namespace, options *NamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -131,13 +134,13 @@ func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters RelayNamespace, options *NamespacesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters Namespace, options *NamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,7 +154,7 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,38 +165,31 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *NamespacesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateAuthorizationRule - Creates or updates an authorization rule for a namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesCreateOrUpdateAuthorizationRuleOptions) (NamespacesCreateOrUpdateAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// authorizationRuleName - The authorization rule name.
+// parameters - The authorization rule parameters.
+// options - NamespacesClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.CreateOrUpdateAuthorizationRule
+// method.
+func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	req, err := client.createOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, parameters, options)
 	if err != nil {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, err
+		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, client.createOrUpdateAuthorizationRuleHandleError(resp)
+		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAuthorizationRuleHandleResponse(resp)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -211,7 +207,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -223,50 +219,40 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := NamespacesCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
+	result := NamespacesClientCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return NamespacesCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAuthorizationRuleHandleError handles the CreateOrUpdateAuthorizationRule error response.
-func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesBeginDeleteOptions) (NamespacesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// options - NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (NamespacesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
-		return NamespacesDeletePollerResponse{}, err
+		return NamespacesClientDeletePollerResponse{}, err
 	}
-	result := NamespacesDeletePollerResponse{
+	result := NamespacesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("NamespacesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("NamespacesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return NamespacesDeletePollerResponse{}, err
+		return NamespacesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &NamespacesDeletePoller{
+	result.Poller = &NamespacesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
@@ -276,13 +262,13 @@ func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesBeginDeleteOptions) (*policy.Request, error) {
+func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -296,7 +282,7 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,38 +293,30 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *NamespacesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteAuthorizationRule - Deletes a namespace authorization rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesDeleteAuthorizationRuleOptions) (NamespacesDeleteAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// authorizationRuleName - The authorization rule name.
+// options - NamespacesClientDeleteAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.DeleteAuthorizationRule
+// method.
+func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientDeleteAuthorizationRuleOptions) (NamespacesClientDeleteAuthorizationRuleResponse, error) {
 	req, err := client.deleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, options)
 	if err != nil {
-		return NamespacesDeleteAuthorizationRuleResponse{}, err
+		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesDeleteAuthorizationRuleResponse{}, err
+		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return NamespacesDeleteAuthorizationRuleResponse{}, client.deleteAuthorizationRuleHandleError(resp)
+		return NamespacesClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return NamespacesDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return NamespacesClientDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesDeleteAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -356,7 +334,7 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -367,38 +345,28 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 	return req, nil
 }
 
-// deleteAuthorizationRuleHandleError handles the DeleteAuthorizationRule error response.
-func (client *NamespacesClient) deleteAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns the description for the specified namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetOptions) (NamespacesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// options - NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientGetOptions) (NamespacesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
-		return NamespacesGetResponse{}, err
+		return NamespacesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesGetResponse{}, err
+		return NamespacesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NamespacesGetResponse{}, client.getHandleError(resp)
+		return NamespacesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetOptions) (*policy.Request, error) {
+func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -412,7 +380,7 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -424,46 +392,38 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesGetResponse, error) {
-	result := NamespacesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RelayNamespace); err != nil {
-		return NamespacesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesClientGetResponse, error) {
+	result := NamespacesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Namespace); err != nil {
+		return NamespacesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *NamespacesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAuthorizationRule - Authorization rule for a namespace by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesGetAuthorizationRuleOptions) (NamespacesGetAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// authorizationRuleName - The authorization rule name.
+// options - NamespacesClientGetAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.GetAuthorizationRule
+// method.
+func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientGetAuthorizationRuleOptions) (NamespacesClientGetAuthorizationRuleResponse, error) {
 	req, err := client.getAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, options)
 	if err != nil {
-		return NamespacesGetAuthorizationRuleResponse{}, err
+		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesGetAuthorizationRuleResponse{}, err
+		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NamespacesGetAuthorizationRuleResponse{}, client.getAuthorizationRuleHandleError(resp)
+		return NamespacesClientGetAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAuthorizationRuleHandleResponse(resp)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -481,7 +441,7 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -493,49 +453,37 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesGetAuthorizationRuleResponse, error) {
-	result := NamespacesGetAuthorizationRuleResponse{RawResponse: resp}
+func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientGetAuthorizationRuleResponse, error) {
+	result := NamespacesClientGetAuthorizationRuleResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return NamespacesGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// getAuthorizationRuleHandleError handles the GetAuthorizationRule error response.
-func (client *NamespacesClient) getAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the available namespaces within the subscription regardless of the resourceGroups.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) List(options *NamespacesListOptions) *NamespacesListPager {
-	return &NamespacesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
+func (client *NamespacesClient) List(options *NamespacesClientListOptions) *NamespacesClientListPager {
+	return &NamespacesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp NamespacesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RelayNamespaceListResult.NextLink)
+		advancer: func(ctx context.Context, resp NamespacesClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.NamespaceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *NamespacesListOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *NamespacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -547,43 +495,34 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesListResponse, error) {
-	result := NamespacesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RelayNamespaceListResult); err != nil {
-		return NamespacesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesClientListResponse, error) {
+	result := NamespacesClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceListResult); err != nil {
+		return NamespacesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *NamespacesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAuthorizationRules - Authorization rules for a namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesListAuthorizationRulesOptions) *NamespacesListAuthorizationRulesPager {
-	return &NamespacesListAuthorizationRulesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
+// method.
+func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *NamespacesClientListAuthorizationRulesPager {
+	return &NamespacesClientListAuthorizationRulesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
-		advancer: func(ctx context.Context, resp NamespacesListAuthorizationRulesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp NamespacesClientListAuthorizationRulesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
 		},
 	}
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -597,7 +536,7 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -609,43 +548,33 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesListAuthorizationRulesResponse, error) {
-	result := NamespacesListAuthorizationRulesResponse{RawResponse: resp}
+func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesClientListAuthorizationRulesResponse, error) {
+	result := NamespacesClientListAuthorizationRulesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
-		return NamespacesListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
+		return NamespacesClientListAuthorizationRulesResponse{}, err
 	}
 	return result, nil
 }
 
-// listAuthorizationRulesHandleError handles the ListAuthorizationRules error response.
-func (client *NamespacesClient) listAuthorizationRulesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Lists all the available namespaces within the ResourceGroup.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string, options *NamespacesListByResourceGroupOptions) *NamespacesListByResourceGroupPager {
-	return &NamespacesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// options - NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.ListByResourceGroup
+// method.
+func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) *NamespacesClientListByResourceGroupPager {
+	return &NamespacesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp NamespacesListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RelayNamespaceListResult.NextLink)
+		advancer: func(ctx context.Context, resp NamespacesClientListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.NamespaceListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NamespacesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NamespacesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -655,7 +584,7 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -667,46 +596,37 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespacesListByResourceGroupResponse, error) {
-	result := NamespacesListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RelayNamespaceListResult); err != nil {
-		return NamespacesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespacesClientListByResourceGroupResponse, error) {
+	result := NamespacesClientListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceListResult); err != nil {
+		return NamespacesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *NamespacesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - Primary and secondary connection strings to the namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesListKeysOptions) (NamespacesListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// authorizationRuleName - The authorization rule name.
+// options - NamespacesClientListKeysOptions contains the optional parameters for the NamespacesClient.ListKeys method.
+func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientListKeysOptions) (NamespacesClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, options)
 	if err != nil {
-		return NamespacesListKeysResponse{}, err
+		return NamespacesClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesListKeysResponse{}, err
+		return NamespacesClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NamespacesListKeysResponse{}, client.listKeysHandleError(resp)
+		return NamespacesClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesListKeysOptions) (*policy.Request, error) {
+func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -724,7 +644,7 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -736,46 +656,39 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesListKeysResponse, error) {
-	result := NamespacesListKeysResponse{RawResponse: resp}
+func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesClientListKeysResponse, error) {
+	result := NamespacesClientListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return NamespacesListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return NamespacesClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *NamespacesClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesRegenerateKeysOptions) (NamespacesRegenerateKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// authorizationRuleName - The authorization rule name.
+// parameters - Parameters supplied to regenerate authorization rule.
+// options - NamespacesClientRegenerateKeysOptions contains the optional parameters for the NamespacesClient.RegenerateKeys
+// method.
+func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesClientRegenerateKeysOptions) (NamespacesClientRegenerateKeysResponse, error) {
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, parameters, options)
 	if err != nil {
-		return NamespacesRegenerateKeysResponse{}, err
+		return NamespacesClientRegenerateKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesRegenerateKeysResponse{}, err
+		return NamespacesClientRegenerateKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return NamespacesRegenerateKeysResponse{}, client.regenerateKeysHandleError(resp)
+		return NamespacesClientRegenerateKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateKeysHandleResponse(resp)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesRegenerateKeysOptions) (*policy.Request, error) {
+func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -793,7 +706,7 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -805,46 +718,38 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesRegenerateKeysResponse, error) {
-	result := NamespacesRegenerateKeysResponse{RawResponse: resp}
+func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesClientRegenerateKeysResponse, error) {
+	result := NamespacesClientRegenerateKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return NamespacesRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
+		return NamespacesClientRegenerateKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// regenerateKeysHandleError handles the RegenerateKeys error response.
-func (client *NamespacesClient) regenerateKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters RelayUpdateParameters, options *NamespacesUpdateOptions) (NamespacesUpdateResponse, error) {
+// Update - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation
+// is idempotent.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// parameters - Parameters for updating a namespace resource.
+// options - NamespacesClientUpdateOptions contains the optional parameters for the NamespacesClient.Update method.
+func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters UpdateParameters, options *NamespacesClientUpdateOptions) (NamespacesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
-		return NamespacesUpdateResponse{}, err
+		return NamespacesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NamespacesUpdateResponse{}, err
+		return NamespacesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return NamespacesUpdateResponse{}, client.updateHandleError(resp)
+		return NamespacesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters RelayUpdateParameters, options *NamespacesUpdateOptions) (*policy.Request, error) {
+func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters UpdateParameters, options *NamespacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -858,7 +763,7 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -870,23 +775,10 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesUpdateResponse, error) {
-	result := NamespacesUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RelayNamespace); err != nil {
-		return NamespacesUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesClientUpdateResponse, error) {
+	result := NamespacesClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Namespace); err != nil {
+		return NamespacesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *NamespacesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,17 @@
 # Release History
 
+## 0.3.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix.
+
+### Other Changes
+
 ## 0.3.3 (2022-01-12)
 
 ### Features Added

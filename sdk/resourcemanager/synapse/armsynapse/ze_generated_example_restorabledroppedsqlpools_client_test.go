@@ -32,7 +32,7 @@ func ExampleRestorableDroppedSQLPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RestorableDroppedSQLPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RestorableDroppedSQLPoolsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlpoolList.json
@@ -43,11 +43,12 @@ func ExampleRestorableDroppedSQLPoolsClient_ListByWorkspace() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewRestorableDroppedSQLPoolsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByWorkspace(ctx,
+	res, err := client.ListByWorkspace(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RestorableDroppedSQLPoolsClientListByWorkspaceResult)
 }

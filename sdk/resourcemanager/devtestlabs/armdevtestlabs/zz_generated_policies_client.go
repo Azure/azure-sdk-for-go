@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // PoliciesClient contains the methods for the Policies group.
 // Don't use this type directly, use NewPoliciesClient() instead.
 type PoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPoliciesClient creates a new instance of PoliciesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or replace an existing policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy Policy, options *PoliciesCreateOrUpdateOptions) (PoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// policySetName - The name of the policy set.
+// name - The name of the policy.
+// policy - A Policy.
+// options - PoliciesClientCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.CreateOrUpdate method.
+func (client *PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy Policy, options *PoliciesClientCreateOrUpdateOptions) (PoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, policySetName, name, policy, options)
 	if err != nil {
-		return PoliciesCreateOrUpdateResponse{}, err
+		return PoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoliciesCreateOrUpdateResponse{}, err
+		return PoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return PoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy Policy, options *PoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy Policy, options *PoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,7 +96,7 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,46 +108,38 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (PoliciesCreateOrUpdateResponse, error) {
-	result := PoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *PoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (PoliciesClientCreateOrUpdateResponse, error) {
+	result := PoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
-		return PoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoliciesClient) Delete(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesDeleteOptions) (PoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// policySetName - The name of the policy set.
+// name - The name of the policy.
+// options - PoliciesClientDeleteOptions contains the optional parameters for the PoliciesClient.Delete method.
+func (client *PoliciesClient) Delete(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesClientDeleteOptions) (PoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, policySetName, name, options)
 	if err != nil {
-		return PoliciesDeleteResponse{}, err
+		return PoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoliciesDeleteResponse{}, err
+		return PoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return PoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PoliciesDeleteResponse{RawResponse: resp}, nil
+	return PoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesDeleteOptions) (*policy.Request, error) {
+func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -156,7 +161,7 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,38 +172,30 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoliciesClient) Get(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesGetOptions) (PoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// policySetName - The name of the policy set.
+// name - The name of the policy.
+// options - PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
+func (client *PoliciesClient) Get(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesClientGetOptions) (PoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, policySetName, name, options)
 	if err != nil {
-		return PoliciesGetResponse{}, err
+		return PoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoliciesGetResponse{}, err
+		return PoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoliciesGetResponse{}, client.getHandleError(resp)
+		return PoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesGetOptions) (*policy.Request, error) {
+func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, options *PoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -220,7 +217,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,43 +232,34 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesGetResponse, error) {
-	result := PoliciesGetResponse{RawResponse: resp}
+func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesClientGetResponse, error) {
+	result := PoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
-		return PoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List policies in a given policy set.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoliciesClient) List(resourceGroupName string, labName string, policySetName string, options *PoliciesListOptions) *PoliciesListPager {
-	return &PoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// policySetName - The name of the policy set.
+// options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.List method.
+func (client *PoliciesClient) List(resourceGroupName string, labName string, policySetName string, options *PoliciesClientListOptions) *PoliciesClientListPager {
+	return &PoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, labName, policySetName, options)
 		},
-		advancer: func(ctx context.Context, resp PoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, options *PoliciesListOptions) (*policy.Request, error) {
+func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, options *PoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -289,7 +277,7 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter policySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policySetName}", url.PathEscape(policySetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,46 +301,39 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 }
 
 // listHandleResponse handles the List response.
-func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesListResponse, error) {
-	result := PoliciesListResponse{RawResponse: resp}
+func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesClientListResponse, error) {
+	result := PoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyList); err != nil {
-		return PoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return PoliciesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *PoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of policies. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoliciesClient) Update(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy PolicyFragment, options *PoliciesUpdateOptions) (PoliciesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// policySetName - The name of the policy set.
+// name - The name of the policy.
+// policy - A Policy.
+// options - PoliciesClientUpdateOptions contains the optional parameters for the PoliciesClient.Update method.
+func (client *PoliciesClient) Update(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy PolicyFragment, options *PoliciesClientUpdateOptions) (PoliciesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, policySetName, name, policy, options)
 	if err != nil {
-		return PoliciesUpdateResponse{}, err
+		return PoliciesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoliciesUpdateResponse{}, err
+		return PoliciesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoliciesUpdateResponse{}, client.updateHandleError(resp)
+		return PoliciesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy PolicyFragment, options *PoliciesUpdateOptions) (*policy.Request, error) {
+func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, policySetName string, name string, policy PolicyFragment, options *PoliciesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -374,7 +355,7 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -386,23 +367,10 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PoliciesClient) updateHandleResponse(resp *http.Response) (PoliciesUpdateResponse, error) {
-	result := PoliciesUpdateResponse{RawResponse: resp}
+func (client *PoliciesClient) updateHandleResponse(resp *http.Response) (PoliciesClientUpdateResponse, error) {
+	result := PoliciesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
-		return PoliciesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PoliciesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *PoliciesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

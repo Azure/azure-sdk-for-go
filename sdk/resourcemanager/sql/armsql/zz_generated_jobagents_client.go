@@ -24,46 +24,61 @@ import (
 // JobAgentsClient contains the methods for the JobAgents group.
 // Don't use this type directly, use NewJobAgentsClient() instead.
 type JobAgentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobAgentsClient creates a new instance of JobAgentsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobAgentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobAgentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobAgentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgent, options *JobAgentsBeginCreateOrUpdateOptions) (JobAgentsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent to be created or updated.
+// parameters - The requested job agent resource state.
+// options - JobAgentsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobAgentsClient.BeginCreateOrUpdate
+// method.
+func (client *JobAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgent, options *JobAgentsClientBeginCreateOrUpdateOptions) (JobAgentsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, jobAgentName, parameters, options)
 	if err != nil {
-		return JobAgentsCreateOrUpdatePollerResponse{}, err
+		return JobAgentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := JobAgentsCreateOrUpdatePollerResponse{
+	result := JobAgentsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("JobAgentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("JobAgentsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return JobAgentsCreateOrUpdatePollerResponse{}, err
+		return JobAgentsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &JobAgentsCreateOrUpdatePoller{
+	result.Poller = &JobAgentsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgent, options *JobAgentsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgent, options *JobAgentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *JobAgentsClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobAgentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgent, options *JobAgentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JobAgentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgent, options *JobAgentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +112,7 @@ func (client *JobAgentsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,41 +123,34 @@ func (client *JobAgentsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JobAgentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsBeginDeleteOptions) (JobAgentsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent to be deleted.
+// options - JobAgentsClientBeginDeleteOptions contains the optional parameters for the JobAgentsClient.BeginDelete method.
+func (client *JobAgentsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsClientBeginDeleteOptions) (JobAgentsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, jobAgentName, options)
 	if err != nil {
-		return JobAgentsDeletePollerResponse{}, err
+		return JobAgentsClientDeletePollerResponse{}, err
 	}
-	result := JobAgentsDeletePollerResponse{
+	result := JobAgentsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("JobAgentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("JobAgentsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return JobAgentsDeletePollerResponse{}, err
+		return JobAgentsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &JobAgentsDeletePoller{
+	result.Poller = &JobAgentsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +160,13 @@ func (client *JobAgentsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobAgentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsBeginDeleteOptions) (*policy.Request, error) {
+func (client *JobAgentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +184,7 @@ func (client *JobAgentsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,37 +194,30 @@ func (client *JobAgentsClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *JobAgentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsGetOptions) (JobAgentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent to be retrieved.
+// options - JobAgentsClientGetOptions contains the optional parameters for the JobAgentsClient.Get method.
+func (client *JobAgentsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsClientGetOptions) (JobAgentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
 	if err != nil {
-		return JobAgentsGetResponse{}, err
+		return JobAgentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobAgentsGetResponse{}, err
+		return JobAgentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobAgentsGetResponse{}, client.getHandleError(resp)
+		return JobAgentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobAgentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsGetOptions) (*policy.Request, error) {
+func (client *JobAgentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobAgentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -234,7 +235,7 @@ func (client *JobAgentsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,42 +247,34 @@ func (client *JobAgentsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobAgentsClient) getHandleResponse(resp *http.Response) (JobAgentsGetResponse, error) {
-	result := JobAgentsGetResponse{RawResponse: resp}
+func (client *JobAgentsClient) getHandleResponse(resp *http.Response) (JobAgentsClientGetResponse, error) {
+	result := JobAgentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobAgent); err != nil {
-		return JobAgentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobAgentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobAgentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Gets a list of job agents in a server.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) ListByServer(resourceGroupName string, serverName string, options *JobAgentsListByServerOptions) *JobAgentsListByServerPager {
-	return &JobAgentsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - JobAgentsClientListByServerOptions contains the optional parameters for the JobAgentsClient.ListByServer method.
+func (client *JobAgentsClient) ListByServer(resourceGroupName string, serverName string, options *JobAgentsClientListByServerOptions) *JobAgentsClientListByServerPager {
+	return &JobAgentsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp JobAgentsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp JobAgentsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobAgentListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *JobAgentsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *JobAgentsListByServerOptions) (*policy.Request, error) {
+func (client *JobAgentsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *JobAgentsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -295,7 +288,7 @@ func (client *JobAgentsClient) listByServerCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,49 +300,43 @@ func (client *JobAgentsClient) listByServerCreateRequest(ctx context.Context, re
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *JobAgentsClient) listByServerHandleResponse(resp *http.Response) (JobAgentsListByServerResponse, error) {
-	result := JobAgentsListByServerResponse{RawResponse: resp}
+func (client *JobAgentsClient) listByServerHandleResponse(resp *http.Response) (JobAgentsClientListByServerResponse, error) {
+	result := JobAgentsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobAgentListResult); err != nil {
-		return JobAgentsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return JobAgentsClientListByServerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerHandleError handles the ListByServer error response.
-func (client *JobAgentsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgentUpdate, options *JobAgentsBeginUpdateOptions) (JobAgentsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent to be updated.
+// parameters - The update to the job agent.
+// options - JobAgentsClientBeginUpdateOptions contains the optional parameters for the JobAgentsClient.BeginUpdate method.
+func (client *JobAgentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgentUpdate, options *JobAgentsClientBeginUpdateOptions) (JobAgentsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serverName, jobAgentName, parameters, options)
 	if err != nil {
-		return JobAgentsUpdatePollerResponse{}, err
+		return JobAgentsClientUpdatePollerResponse{}, err
 	}
-	result := JobAgentsUpdatePollerResponse{
+	result := JobAgentsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("JobAgentsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("JobAgentsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return JobAgentsUpdatePollerResponse{}, err
+		return JobAgentsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &JobAgentsUpdatePoller{
+	result.Poller = &JobAgentsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a job agent.
-// If the operation fails it returns a generic error.
-func (client *JobAgentsClient) update(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgentUpdate, options *JobAgentsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobAgentsClient) update(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgentUpdate, options *JobAgentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -359,13 +346,13 @@ func (client *JobAgentsClient) update(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *JobAgentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgentUpdate, options *JobAgentsBeginUpdateOptions) (*policy.Request, error) {
+func (client *JobAgentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters JobAgentUpdate, options *JobAgentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -383,7 +370,7 @@ func (client *JobAgentsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,16 +379,4 @@ func (client *JobAgentsClient) updateCreateRequest(ctx context.Context, resource
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *JobAgentsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

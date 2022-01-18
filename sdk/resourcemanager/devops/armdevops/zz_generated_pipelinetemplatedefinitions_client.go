@@ -10,7 +10,6 @@ package armdevops
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,48 @@ import (
 // PipelineTemplateDefinitionsClient contains the methods for the PipelineTemplateDefinitions group.
 // Don't use this type directly, use NewPipelineTemplateDefinitionsClient() instead.
 type PipelineTemplateDefinitionsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPipelineTemplateDefinitionsClient creates a new instance of PipelineTemplateDefinitionsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPipelineTemplateDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PipelineTemplateDefinitionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PipelineTemplateDefinitionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PipelineTemplateDefinitionsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all pipeline templates which can be used to configure an Azure Pipeline.
-// If the operation fails it returns the *CloudError error type.
-func (client *PipelineTemplateDefinitionsClient) List(options *PipelineTemplateDefinitionsListOptions) *PipelineTemplateDefinitionsListPager {
-	return &PipelineTemplateDefinitionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PipelineTemplateDefinitionsClientListOptions contains the optional parameters for the PipelineTemplateDefinitionsClient.List
+// method.
+func (client *PipelineTemplateDefinitionsClient) List(options *PipelineTemplateDefinitionsClientListOptions) *PipelineTemplateDefinitionsClientListPager {
+	return &PipelineTemplateDefinitionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PipelineTemplateDefinitionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PipelineTemplateDefinitionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineTemplateDefinitionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PipelineTemplateDefinitionsClient) listCreateRequest(ctx context.Context, options *PipelineTemplateDefinitionsListOptions) (*policy.Request, error) {
+func (client *PipelineTemplateDefinitionsClient) listCreateRequest(ctx context.Context, options *PipelineTemplateDefinitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DevOps/pipelineTemplateDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +74,10 @@ func (client *PipelineTemplateDefinitionsClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client *PipelineTemplateDefinitionsClient) listHandleResponse(resp *http.Response) (PipelineTemplateDefinitionsListResponse, error) {
-	result := PipelineTemplateDefinitionsListResponse{RawResponse: resp}
+func (client *PipelineTemplateDefinitionsClient) listHandleResponse(resp *http.Response) (PipelineTemplateDefinitionsClientListResponse, error) {
+	result := PipelineTemplateDefinitionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineTemplateDefinitionListResult); err != nil {
-		return PipelineTemplateDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
+		return PipelineTemplateDefinitionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PipelineTemplateDefinitionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

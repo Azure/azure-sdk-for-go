@@ -47,7 +47,7 @@ func ExampleLogProfilesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogProfileResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LogProfilesClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/createOrUpdateLogProfile.json
@@ -61,10 +61,8 @@ func ExampleLogProfilesClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<log-profile-name>",
 		armmonitor.LogProfileResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.LogProfileProperties{
 				Categories: []*string{
 					to.StringPtr("Write"),
@@ -84,7 +82,7 @@ func ExampleLogProfilesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogProfileResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LogProfilesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/patchLogProfile.json
@@ -120,7 +118,7 @@ func ExampleLogProfilesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogProfileResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LogProfilesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listLogProfile.json
@@ -131,9 +129,10 @@ func ExampleLogProfilesClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewLogProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LogProfilesClientListResult)
 }

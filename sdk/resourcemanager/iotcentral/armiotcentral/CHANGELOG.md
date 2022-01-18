@@ -1,5 +1,180 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*AppsClient.CheckSubdomainAvailability` parameter(s) have been changed from `(context.Context, OperationInputs, *AppsCheckSubdomainAvailabilityOptions)` to `(context.Context, OperationInputs, *AppsClientCheckSubdomainAvailabilityOptions)`
+- Function `*AppsClient.CheckSubdomainAvailability` return value(s) have been changed from `(AppsCheckSubdomainAvailabilityResponse, error)` to `(AppsClientCheckSubdomainAvailabilityResponse, error)`
+- Function `*AppsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, App, *AppsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, App, *AppsClientBeginCreateOrUpdateOptions)`
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(AppsCreateOrUpdatePollerResponse, error)` to `(AppsClientCreateOrUpdatePollerResponse, error)`
+- Function `*AppsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, AppPatch, *AppsBeginUpdateOptions)` to `(context.Context, string, string, AppPatch, *AppsClientBeginUpdateOptions)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(AppsUpdatePollerResponse, error)` to `(AppsClientUpdatePollerResponse, error)`
+- Function `*AppsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AppsListByResourceGroupOptions)` to `(string, *AppsClientListByResourceGroupOptions)`
+- Function `*AppsClient.ListByResourceGroup` return value(s) have been changed from `(*AppsListByResourceGroupPager)` to `(*AppsClientListByResourceGroupPager)`
+- Function `*AppsClient.CheckNameAvailability` parameter(s) have been changed from `(context.Context, OperationInputs, *AppsCheckNameAvailabilityOptions)` to `(context.Context, OperationInputs, *AppsClientCheckNameAvailabilityOptions)`
+- Function `*AppsClient.CheckNameAvailability` return value(s) have been changed from `(AppsCheckNameAvailabilityResponse, error)` to `(AppsClientCheckNameAvailabilityResponse, error)`
+- Function `*AppsClient.ListTemplates` parameter(s) have been changed from `(*AppsListTemplatesOptions)` to `(*AppsClientListTemplatesOptions)`
+- Function `*AppsClient.ListTemplates` return value(s) have been changed from `(*AppsListTemplatesPager)` to `(*AppsClientListTemplatesPager)`
+- Function `*AppsClient.ListBySubscription` parameter(s) have been changed from `(*AppsListBySubscriptionOptions)` to `(*AppsClientListBySubscriptionOptions)`
+- Function `*AppsClient.ListBySubscription` return value(s) have been changed from `(*AppsListBySubscriptionPager)` to `(*AppsClientListBySubscriptionPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*AppsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AppsGetOptions)` to `(context.Context, string, string, *AppsClientGetOptions)`
+- Function `*AppsClient.Get` return value(s) have been changed from `(AppsGetResponse, error)` to `(AppsClientGetResponse, error)`
+- Function `*AppsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *AppsBeginDeleteOptions)` to `(context.Context, string, string, *AppsClientBeginDeleteOptions)`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(AppsDeletePollerResponse, error)` to `(AppsClientDeletePollerResponse, error)`
+- Function `*AppsListTemplatesPager.Err` has been removed
+- Function `*AppsDeletePoller.ResumeToken` has been removed
+- Function `*AppsUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*AppsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `AppsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AppsListBySubscriptionPager.NextPage` has been removed
+- Function `*AppsUpdatePoller.Done` has been removed
+- Function `*AppsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `AppsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*AppsListByResourceGroupPager.PageResponse` has been removed
+- Function `*AppsUpdatePoller.FinalResponse` has been removed
+- Function `*AppsDeletePollerResponse.Resume` has been removed
+- Function `*AppsUpdatePollerResponse.Resume` has been removed
+- Function `*AppsCreateOrUpdatePoller.Poll` has been removed
+- Function `*AppsListByResourceGroupPager.Err` has been removed
+- Function `*AppsListTemplatesPager.PageResponse` has been removed
+- Function `*AppsDeletePoller.Poll` has been removed
+- Function `*AppsListTemplatesPager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*AppsUpdatePoller.Poll` has been removed
+- Function `*AppsListByResourceGroupPager.NextPage` has been removed
+- Function `*AppsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*AppsListBySubscriptionPager.PageResponse` has been removed
+- Function `*AppsCreateOrUpdatePoller.Done` has been removed
+- Function `*AppsDeletePoller.Done` has been removed
+- Function `*AppsDeletePoller.FinalResponse` has been removed
+- Function `AppsDeletePollerResponse.PollUntilDone` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*AppsListBySubscriptionPager.Err` has been removed
+- Struct `AppsBeginCreateOrUpdateOptions` has been removed
+- Struct `AppsBeginDeleteOptions` has been removed
+- Struct `AppsBeginUpdateOptions` has been removed
+- Struct `AppsCheckNameAvailabilityOptions` has been removed
+- Struct `AppsCheckNameAvailabilityResponse` has been removed
+- Struct `AppsCheckNameAvailabilityResult` has been removed
+- Struct `AppsCheckSubdomainAvailabilityOptions` has been removed
+- Struct `AppsCheckSubdomainAvailabilityResponse` has been removed
+- Struct `AppsCheckSubdomainAvailabilityResult` has been removed
+- Struct `AppsCreateOrUpdatePoller` has been removed
+- Struct `AppsCreateOrUpdatePollerResponse` has been removed
+- Struct `AppsCreateOrUpdateResponse` has been removed
+- Struct `AppsCreateOrUpdateResult` has been removed
+- Struct `AppsDeletePoller` has been removed
+- Struct `AppsDeletePollerResponse` has been removed
+- Struct `AppsDeleteResponse` has been removed
+- Struct `AppsGetOptions` has been removed
+- Struct `AppsGetResponse` has been removed
+- Struct `AppsGetResult` has been removed
+- Struct `AppsListByResourceGroupOptions` has been removed
+- Struct `AppsListByResourceGroupPager` has been removed
+- Struct `AppsListByResourceGroupResponse` has been removed
+- Struct `AppsListByResourceGroupResult` has been removed
+- Struct `AppsListBySubscriptionOptions` has been removed
+- Struct `AppsListBySubscriptionPager` has been removed
+- Struct `AppsListBySubscriptionResponse` has been removed
+- Struct `AppsListBySubscriptionResult` has been removed
+- Struct `AppsListTemplatesOptions` has been removed
+- Struct `AppsListTemplatesPager` has been removed
+- Struct `AppsListTemplatesResponse` has been removed
+- Struct `AppsListTemplatesResult` has been removed
+- Struct `AppsUpdatePoller` has been removed
+- Struct `AppsUpdatePollerResponse` has been removed
+- Struct `AppsUpdateResponse` has been removed
+- Struct `AppsUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `Resource` of struct `App` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+
+### Features Added
+
+- New function `*AppsClientListBySubscriptionPager.PageResponse() AppsClientListBySubscriptionResponse`
+- New function `*AppsClientListByResourceGroupPager.Err() error`
+- New function `*AppsClientDeletePoller.Done() bool`
+- New function `*AppsClientListTemplatesPager.NextPage(context.Context) bool`
+- New function `*AppsClientCreateOrUpdatePoller.FinalResponse(context.Context) (AppsClientCreateOrUpdateResponse, error)`
+- New function `*AppsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AppsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AppsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*AppsClientListTemplatesPager.Err() error`
+- New function `*AppsClientDeletePoller.FinalResponse(context.Context) (AppsClientDeleteResponse, error)`
+- New function `*AppsClientListTemplatesPager.PageResponse() AppsClientListTemplatesResponse`
+- New function `*AppsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AppsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientDeleteResponse, error)`
+- New function `*AppsClientUpdatePoller.Done() bool`
+- New function `*AppsClientUpdatePoller.FinalResponse(context.Context) (AppsClientUpdateResponse, error)`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `AppsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientCreateOrUpdateResponse, error)`
+- New function `*AppsClientCreateOrUpdatePoller.Done() bool`
+- New function `AppsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AppsClientUpdateResponse, error)`
+- New function `*AppsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AppsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AppsClientDeletePollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `*AppsClientUpdatePollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `*AppsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*AppsClientListByResourceGroupPager.PageResponse() AppsClientListByResourceGroupResponse`
+- New function `*AppsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*AppsClientCreateOrUpdatePollerResponse.Resume(context.Context, *AppsClient, string) error`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*AppsClientListBySubscriptionPager.Err() error`
+- New struct `AppsClientBeginCreateOrUpdateOptions`
+- New struct `AppsClientBeginDeleteOptions`
+- New struct `AppsClientBeginUpdateOptions`
+- New struct `AppsClientCheckNameAvailabilityOptions`
+- New struct `AppsClientCheckNameAvailabilityResponse`
+- New struct `AppsClientCheckNameAvailabilityResult`
+- New struct `AppsClientCheckSubdomainAvailabilityOptions`
+- New struct `AppsClientCheckSubdomainAvailabilityResponse`
+- New struct `AppsClientCheckSubdomainAvailabilityResult`
+- New struct `AppsClientCreateOrUpdatePoller`
+- New struct `AppsClientCreateOrUpdatePollerResponse`
+- New struct `AppsClientCreateOrUpdateResponse`
+- New struct `AppsClientCreateOrUpdateResult`
+- New struct `AppsClientDeletePoller`
+- New struct `AppsClientDeletePollerResponse`
+- New struct `AppsClientDeleteResponse`
+- New struct `AppsClientGetOptions`
+- New struct `AppsClientGetResponse`
+- New struct `AppsClientGetResult`
+- New struct `AppsClientListByResourceGroupOptions`
+- New struct `AppsClientListByResourceGroupPager`
+- New struct `AppsClientListByResourceGroupResponse`
+- New struct `AppsClientListByResourceGroupResult`
+- New struct `AppsClientListBySubscriptionOptions`
+- New struct `AppsClientListBySubscriptionPager`
+- New struct `AppsClientListBySubscriptionResponse`
+- New struct `AppsClientListBySubscriptionResult`
+- New struct `AppsClientListTemplatesOptions`
+- New struct `AppsClientListTemplatesPager`
+- New struct `AppsClientListTemplatesResponse`
+- New struct `AppsClientListTemplatesResult`
+- New struct `AppsClientUpdatePoller`
+- New struct `AppsClientUpdatePollerResponse`
+- New struct `AppsClientUpdateResponse`
+- New struct `AppsClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `Error` in struct `CloudError`
+- New field `ID` in struct `App`
+- New field `Name` in struct `App`
+- New field `Type` in struct `App`
+- New field `Location` in struct `App`
+- New field `Tags` in struct `App`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Init release.

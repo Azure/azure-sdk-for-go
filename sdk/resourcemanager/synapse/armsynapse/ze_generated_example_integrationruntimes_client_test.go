@@ -32,14 +32,14 @@ func ExampleIntegrationRuntimesClient_Update() {
 		"<workspace-name>",
 		"<integration-runtime-name>",
 		armsynapse.UpdateIntegrationRuntimeRequest{
-			AutoUpdate:        armsynapse.IntegrationRuntimeAutoUpdateOff.ToPtr(),
+			AutoUpdate:        armsynapse.IntegrationRuntimeAutoUpdate("Off").ToPtr(),
 			UpdateDelayOffset: to.StringPtr("<update-delay-offset>"),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IntegrationRuntimeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Get.json
@@ -54,11 +54,11 @@ func ExampleIntegrationRuntimesClient_Get() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimesGetOptions{IfNoneMatch: nil})
+		&armsynapse.IntegrationRuntimesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IntegrationRuntimeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Create.json
@@ -75,13 +75,11 @@ func ExampleIntegrationRuntimesClient_BeginCreate() {
 		"<integration-runtime-name>",
 		armsynapse.IntegrationRuntimeResource{
 			Properties: &armsynapse.SelfHostedIntegrationRuntime{
-				IntegrationRuntime: armsynapse.IntegrationRuntime{
-					Type:        armsynapse.IntegrationRuntimeTypeSelfHosted.ToPtr(),
-					Description: to.StringPtr("<description>"),
-				},
+				Type:        armsynapse.IntegrationRuntimeType("SelfHosted").ToPtr(),
+				Description: to.StringPtr("<description>"),
 			},
 		},
-		&armsynapse.IntegrationRuntimesBeginCreateOptions{IfMatch: nil})
+		&armsynapse.IntegrationRuntimesClientBeginCreateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,7 +87,7 @@ func ExampleIntegrationRuntimesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("IntegrationRuntimeResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientCreateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Delete.json
@@ -143,12 +141,16 @@ func ExampleIntegrationRuntimesClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("IntegrationRuntimeResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -169,10 +171,11 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientStartResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Stop.json
@@ -205,7 +208,7 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	}
 	ctx := context.Background()
 	client := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
-	_, err = client.ListOutboundNetworkDependenciesEndpoints(ctx,
+	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<integration-runtime-name>",
@@ -213,6 +216,7 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_EnableInteractiveQuery.json

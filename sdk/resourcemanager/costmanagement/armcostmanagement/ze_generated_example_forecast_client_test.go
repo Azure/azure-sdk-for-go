@@ -28,7 +28,7 @@ func ExampleForecastClient_Usage() {
 	res, err := client.Usage(ctx,
 		"<scope>",
 		armcostmanagement.ForecastDefinition{
-			Type: armcostmanagement.ForecastTypeUsage.ToPtr(),
+			Type: armcostmanagement.ForecastType("Usage").ToPtr(),
 			Dataset: &armcostmanagement.ForecastDataset{
 				Filter: &armcostmanagement.QueryFilter{
 					And: []*armcostmanagement.QueryFilter{
@@ -37,7 +37,7 @@ func ExampleForecastClient_Usage() {
 								{
 									Dimension: &armcostmanagement.QueryComparisonExpression{
 										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorTypeIn.ToPtr(),
+										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
 										Values: []*string{
 											to.StringPtr("East US"),
 											to.StringPtr("West Europe")},
@@ -46,7 +46,7 @@ func ExampleForecastClient_Usage() {
 								{
 									Tag: &armcostmanagement.QueryComparisonExpression{
 										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorTypeIn.ToPtr(),
+										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
 										Values: []*string{
 											to.StringPtr("UAT"),
 											to.StringPtr("Prod")},
@@ -56,23 +56,23 @@ func ExampleForecastClient_Usage() {
 						{
 							Dimension: &armcostmanagement.QueryComparisonExpression{
 								Name:     to.StringPtr("<name>"),
-								Operator: armcostmanagement.QueryOperatorTypeIn.ToPtr(),
+								Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
 								Values: []*string{
 									to.StringPtr("API")},
 							},
 						}},
 				},
-				Granularity: armcostmanagement.GranularityTypeDaily.ToPtr(),
+				Granularity: armcostmanagement.GranularityType("Daily").ToPtr(),
 			},
 			IncludeActualCost:       to.BoolPtr(false),
 			IncludeFreshPartialCost: to.BoolPtr(false),
-			Timeframe:               armcostmanagement.ForecastTimeframeTypeMonthToDate.ToPtr(),
+			Timeframe:               armcostmanagement.ForecastTimeframeType("MonthToDate").ToPtr(),
 		},
-		&armcostmanagement.ForecastUsageOptions{Filter: nil})
+		&armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QueryResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ForecastClientUsageResult)
 }
 
 // x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExternalBillingAccountForecast.json
@@ -84,10 +84,10 @@ func ExampleForecastClient_ExternalCloudProviderUsage() {
 	ctx := context.Background()
 	client := armcostmanagement.NewForecastClient(cred, nil)
 	res, err := client.ExternalCloudProviderUsage(ctx,
-		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
+		armcostmanagement.ExternalCloudProviderType("externalBillingAccounts"),
 		"<external-cloud-provider-id>",
 		armcostmanagement.ForecastDefinition{
-			Type: armcostmanagement.ForecastTypeUsage.ToPtr(),
+			Type: armcostmanagement.ForecastType("Usage").ToPtr(),
 			Dataset: &armcostmanagement.ForecastDataset{
 				Filter: &armcostmanagement.QueryFilter{
 					And: []*armcostmanagement.QueryFilter{
@@ -96,7 +96,7 @@ func ExampleForecastClient_ExternalCloudProviderUsage() {
 								{
 									Dimension: &armcostmanagement.QueryComparisonExpression{
 										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorTypeIn.ToPtr(),
+										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
 										Values: []*string{
 											to.StringPtr("East US"),
 											to.StringPtr("West Europe")},
@@ -105,7 +105,7 @@ func ExampleForecastClient_ExternalCloudProviderUsage() {
 								{
 									Tag: &armcostmanagement.QueryComparisonExpression{
 										Name:     to.StringPtr("<name>"),
-										Operator: armcostmanagement.QueryOperatorTypeIn.ToPtr(),
+										Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
 										Values: []*string{
 											to.StringPtr("UAT"),
 											to.StringPtr("Prod")},
@@ -115,19 +115,19 @@ func ExampleForecastClient_ExternalCloudProviderUsage() {
 						{
 							Dimension: &armcostmanagement.QueryComparisonExpression{
 								Name:     to.StringPtr("<name>"),
-								Operator: armcostmanagement.QueryOperatorTypeIn.ToPtr(),
+								Operator: armcostmanagement.QueryOperatorType("In").ToPtr(),
 								Values: []*string{
 									to.StringPtr("API")},
 							},
 						}},
 				},
-				Granularity: armcostmanagement.GranularityTypeDaily.ToPtr(),
+				Granularity: armcostmanagement.GranularityType("Daily").ToPtr(),
 			},
-			Timeframe: armcostmanagement.ForecastTimeframeTypeMonthToDate.ToPtr(),
+			Timeframe: armcostmanagement.ForecastTimeframeType("MonthToDate").ToPtr(),
 		},
-		&armcostmanagement.ForecastExternalCloudProviderUsageOptions{Filter: nil})
+		&armcostmanagement.ForecastClientExternalCloudProviderUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QueryResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ForecastClientExternalCloudProviderUsageResult)
 }

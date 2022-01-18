@@ -30,9 +30,9 @@ func ExampleMoveCollectionsClient_Create() {
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsCreateOptions{Body: &armresourcemover.MoveCollection{
+		&armresourcemover.MoveCollectionsClientCreateOptions{Body: &armresourcemover.MoveCollection{
 			Identity: &armresourcemover.Identity{
-				Type: armresourcemover.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: armresourcemover.ResourceIdentityType("SystemAssigned").ToPtr(),
 			},
 			Location: to.StringPtr("<location>"),
 			Properties: &armresourcemover.MoveCollectionProperties{
@@ -44,7 +44,7 @@ func ExampleMoveCollectionsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MoveCollection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Update.json
@@ -58,9 +58,9 @@ func ExampleMoveCollectionsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsUpdateOptions{Body: &armresourcemover.UpdateMoveCollectionRequest{
+		&armresourcemover.MoveCollectionsClientUpdateOptions{Body: &armresourcemover.UpdateMoveCollectionRequest{
 			Identity: &armresourcemover.Identity{
-				Type: armresourcemover.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: armresourcemover.ResourceIdentityType("SystemAssigned").ToPtr(),
 			},
 			Tags: map[string]*string{
 				"key1": to.StringPtr("mc1"),
@@ -70,7 +70,7 @@ func ExampleMoveCollectionsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MoveCollection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Delete.json
@@ -92,7 +92,7 @@ func ExampleMoveCollectionsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Get.json
@@ -110,7 +110,7 @@ func ExampleMoveCollectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MoveCollection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Prepare.json
@@ -124,7 +124,7 @@ func ExampleMoveCollectionsClient_BeginPrepare() {
 	poller, err := client.BeginPrepare(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsBeginPrepareOptions{Body: &armresourcemover.PrepareRequest{
+		&armresourcemover.MoveCollectionsClientBeginPrepareOptions{Body: &armresourcemover.PrepareRequest{
 			MoveResources: []*string{
 				to.StringPtr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.BoolPtr(false),
@@ -137,7 +137,7 @@ func ExampleMoveCollectionsClient_BeginPrepare() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientPrepareResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_InitiateMove.json
@@ -151,7 +151,7 @@ func ExampleMoveCollectionsClient_BeginInitiateMove() {
 	poller, err := client.BeginInitiateMove(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsBeginInitiateMoveOptions{Body: &armresourcemover.ResourceMoveRequest{
+		&armresourcemover.MoveCollectionsClientBeginInitiateMoveOptions{Body: &armresourcemover.ResourceMoveRequest{
 			MoveResources: []*string{
 				to.StringPtr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.BoolPtr(false),
@@ -164,7 +164,7 @@ func ExampleMoveCollectionsClient_BeginInitiateMove() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientInitiateMoveResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Commit.json
@@ -178,7 +178,7 @@ func ExampleMoveCollectionsClient_BeginCommit() {
 	poller, err := client.BeginCommit(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsBeginCommitOptions{Body: &armresourcemover.CommitRequest{
+		&armresourcemover.MoveCollectionsClientBeginCommitOptions{Body: &armresourcemover.CommitRequest{
 			MoveResources: []*string{
 				to.StringPtr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.BoolPtr(false),
@@ -191,7 +191,7 @@ func ExampleMoveCollectionsClient_BeginCommit() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientCommitResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_Discard.json
@@ -205,7 +205,7 @@ func ExampleMoveCollectionsClient_BeginDiscard() {
 	poller, err := client.BeginDiscard(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsBeginDiscardOptions{Body: &armresourcemover.DiscardRequest{
+		&armresourcemover.MoveCollectionsClientBeginDiscardOptions{Body: &armresourcemover.DiscardRequest{
 			MoveResources: []*string{
 				to.StringPtr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.BoolPtr(false),
@@ -218,7 +218,7 @@ func ExampleMoveCollectionsClient_BeginDiscard() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientDiscardResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ResolveDependencies.json
@@ -240,7 +240,7 @@ func ExampleMoveCollectionsClient_BeginResolveDependencies() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientResolveDependenciesResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_BulkRemove.json
@@ -254,7 +254,7 @@ func ExampleMoveCollectionsClient_BeginBulkRemove() {
 	poller, err := client.BeginBulkRemove(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.MoveCollectionsBeginBulkRemoveOptions{Body: &armresourcemover.BulkRemoveRequest{
+		&armresourcemover.MoveCollectionsClientBeginBulkRemoveOptions{Body: &armresourcemover.BulkRemoveRequest{
 			MoveResources: []*string{
 				to.StringPtr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Migrate/MoveCollections/movecollection1/MoveResources/moveresource1")},
 			ValidateOnly: to.BoolPtr(false),
@@ -267,7 +267,7 @@ func ExampleMoveCollectionsClient_BeginBulkRemove() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientBulkRemoveResult)
 }
 
 // x-ms-original-file: specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
@@ -279,12 +279,16 @@ func ExampleMoveCollectionsClient_ListMoveCollectionsBySubscription() {
 	ctx := context.Background()
 	client := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
 	pager := client.ListMoveCollectionsBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MoveCollection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -299,12 +303,16 @@ func ExampleMoveCollectionsClient_ListMoveCollectionsByResourceGroup() {
 	client := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
 	pager := client.ListMoveCollectionsByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MoveCollection.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -317,7 +325,7 @@ func ExampleMoveCollectionsClient_ListRequiredFor() {
 	}
 	ctx := context.Background()
 	client := armresourcemover.NewMoveCollectionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListRequiredFor(ctx,
+	res, err := client.ListRequiredFor(ctx,
 		"<resource-group-name>",
 		"<move-collection-name>",
 		"<source-id>",
@@ -325,4 +333,5 @@ func ExampleMoveCollectionsClient_ListRequiredFor() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MoveCollectionsClientListRequiredForResult)
 }

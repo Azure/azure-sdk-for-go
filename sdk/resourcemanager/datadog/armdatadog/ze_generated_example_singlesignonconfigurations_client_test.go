@@ -29,12 +29,16 @@ func ExampleSingleSignOnConfigurationsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DatadogSingleSignOnResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -51,7 +55,7 @@ func ExampleSingleSignOnConfigurationsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<monitor-name>",
 		"<configuration-name>",
-		&armdatadog.SingleSignOnConfigurationsBeginCreateOrUpdateOptions{Body: nil})
+		&armdatadog.SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,7 +63,7 @@ func ExampleSingleSignOnConfigurationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatadogSingleSignOnResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SingleSignOnConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/SingleSignOnConfigurations_Get.json
@@ -78,5 +82,5 @@ func ExampleSingleSignOnConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatadogSingleSignOnResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SingleSignOnConfigurationsClientGetResult)
 }

@@ -33,7 +33,7 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedIdentitySQLControlSettingsModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceManagedIdentitySQLControlSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateManagedIdentitySqlControlSettings.json
@@ -50,7 +50,7 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_BeginCreateOrUpdate
 		armsynapse.ManagedIdentitySQLControlSettingsModel{
 			Properties: &armsynapse.ManagedIdentitySQLControlSettingsModelProperties{
 				GrantSQLControlToManagedIdentity: &armsynapse.ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentity{
-					DesiredState: armsynapse.ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentityDesiredStateEnabled.ToPtr(),
+					DesiredState: armsynapse.ManagedIdentitySQLControlSettingsModelPropertiesGrantSQLControlToManagedIdentityDesiredState("Enabled").ToPtr(),
 				},
 			},
 		},
@@ -62,5 +62,5 @@ func ExampleWorkspaceManagedIdentitySQLControlSettingsClient_BeginCreateOrUpdate
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ManagedIdentitySQLControlSettingsModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResult)
 }

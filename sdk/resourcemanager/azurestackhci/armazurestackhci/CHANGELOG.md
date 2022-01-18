@@ -1,5 +1,258 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ExtensionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ExtensionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *ExtensionsClientBeginDeleteOptions)`
+- Function `*ExtensionsClient.BeginDelete` return value(s) have been changed from `(ExtensionsDeletePollerResponse, error)` to `(ExtensionsClientDeletePollerResponse, error)`
+- Function `*ArcSettingsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ArcSettingsBeginDeleteOptions)` to `(context.Context, string, string, string, *ArcSettingsClientBeginDeleteOptions)`
+- Function `*ArcSettingsClient.BeginDelete` return value(s) have been changed from `(ArcSettingsDeletePollerResponse, error)` to `(ArcSettingsClientDeletePollerResponse, error)`
+- Function `*ClustersClient.Create` parameter(s) have been changed from `(context.Context, string, string, Cluster, *ClustersCreateOptions)` to `(context.Context, string, string, Cluster, *ClustersClientCreateOptions)`
+- Function `*ClustersClient.Create` return value(s) have been changed from `(ClustersCreateResponse, error)` to `(ClustersClientCreateResponse, error)`
+- Function `*ClustersClient.ListBySubscription` parameter(s) have been changed from `(*ClustersListBySubscriptionOptions)` to `(*ClustersClientListBySubscriptionOptions)`
+- Function `*ClustersClient.ListBySubscription` return value(s) have been changed from `(*ClustersListBySubscriptionPager)` to `(*ClustersClientListBySubscriptionPager)`
+- Function `*ArcSettingsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, ArcSetting, *ArcSettingsCreateOptions)` to `(context.Context, string, string, string, ArcSetting, *ArcSettingsClientCreateOptions)`
+- Function `*ArcSettingsClient.Create` return value(s) have been changed from `(ArcSettingsCreateResponse, error)` to `(ArcSettingsClientCreateResponse, error)`
+- Function `*ClustersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ClustersGetOptions)` to `(context.Context, string, string, *ClustersClientGetOptions)`
+- Function `*ClustersClient.Get` return value(s) have been changed from `(ClustersGetResponse, error)` to `(ClustersClientGetResponse, error)`
+- Function `*ClustersClient.ListByResourceGroup` parameter(s) have been changed from `(string, *ClustersListByResourceGroupOptions)` to `(string, *ClustersClientListByResourceGroupOptions)`
+- Function `*ClustersClient.ListByResourceGroup` return value(s) have been changed from `(*ClustersListByResourceGroupPager)` to `(*ClustersClientListByResourceGroupPager)`
+- Function `*ClustersClient.Update` parameter(s) have been changed from `(context.Context, string, string, ClusterPatch, *ClustersUpdateOptions)` to `(context.Context, string, string, ClusterPatch, *ClustersClientUpdateOptions)`
+- Function `*ClustersClient.Update` return value(s) have been changed from `(ClustersUpdateResponse, error)` to `(ClustersClientUpdateResponse, error)`
+- Function `*ArcSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ArcSettingsGetOptions)` to `(context.Context, string, string, string, *ArcSettingsClientGetOptions)`
+- Function `*ArcSettingsClient.Get` return value(s) have been changed from `(ArcSettingsGetResponse, error)` to `(ArcSettingsClientGetResponse, error)`
+- Function `*ExtensionsClient.ListByArcSetting` parameter(s) have been changed from `(string, string, string, *ExtensionsListByArcSettingOptions)` to `(string, string, string, *ExtensionsClientListByArcSettingOptions)`
+- Function `*ExtensionsClient.ListByArcSetting` return value(s) have been changed from `(*ExtensionsListByArcSettingPager)` to `(*ExtensionsClientListByArcSettingPager)`
+- Function `*ArcSettingsClient.ListByCluster` parameter(s) have been changed from `(string, string, *ArcSettingsListByClusterOptions)` to `(string, string, *ArcSettingsClientListByClusterOptions)`
+- Function `*ArcSettingsClient.ListByCluster` return value(s) have been changed from `(*ArcSettingsListByClusterPager)` to `(*ArcSettingsClientListByClusterPager)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*ClustersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ClustersDeleteOptions)` to `(context.Context, string, string, *ClustersClientDeleteOptions)`
+- Function `*ClustersClient.Delete` return value(s) have been changed from `(ClustersDeleteResponse, error)` to `(ClustersClientDeleteResponse, error)`
+- Function `*ExtensionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ExtensionsGetOptions)` to `(context.Context, string, string, string, string, *ExtensionsClientGetOptions)`
+- Function `*ExtensionsClient.Get` return value(s) have been changed from `(ExtensionsGetResponse, error)` to `(ExtensionsClientGetResponse, error)`
+- Function `*ExtensionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, Extension, *ExtensionsBeginUpdateOptions)` to `(context.Context, string, string, string, string, Extension, *ExtensionsClientBeginUpdateOptions)`
+- Function `*ExtensionsClient.BeginUpdate` return value(s) have been changed from `(ExtensionsUpdatePollerResponse, error)` to `(ExtensionsClientUpdatePollerResponse, error)`
+- Function `*ExtensionsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, string, Extension, *ExtensionsBeginCreateOptions)` to `(context.Context, string, string, string, string, Extension, *ExtensionsClientBeginCreateOptions)`
+- Function `*ExtensionsClient.BeginCreate` return value(s) have been changed from `(ExtensionsCreatePollerResponse, error)` to `(ExtensionsClientCreatePollerResponse, error)`
+- Function `*ArcSettingsDeletePoller.FinalResponse` has been removed
+- Function `*ArcSettingsDeletePoller.Done` has been removed
+- Function `*ClustersListBySubscriptionPager.PageResponse` has been removed
+- Function `ArcSettingsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExtensionsUpdatePoller.FinalResponse` has been removed
+- Function `*ExtensionsUpdatePoller.ResumeToken` has been removed
+- Function `*ExtensionsCreatePoller.ResumeToken` has been removed
+- Function `*ExtensionsListByArcSettingPager.NextPage` has been removed
+- Function `*ExtensionsUpdatePoller.Poll` has been removed
+- Function `*ClustersListBySubscriptionPager.NextPage` has been removed
+- Function `*ExtensionsListByArcSettingPager.PageResponse` has been removed
+- Function `*ExtensionsCreatePoller.Poll` has been removed
+- Function `*ArcSettingsListByClusterPager.NextPage` has been removed
+- Function `ExtensionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ExtensionsCreatePoller.FinalResponse` has been removed
+- Function `*ExtensionsUpdatePoller.Done` has been removed
+- Function `ArcSetting.MarshalJSON` has been removed
+- Function `*ExtensionsDeletePoller.ResumeToken` has been removed
+- Function `*ClustersListByResourceGroupPager.PageResponse` has been removed
+- Function `ExtensionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ClustersListByResourceGroupPager.NextPage` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*ExtensionsUpdatePollerResponse.Resume` has been removed
+- Function `*ArcSettingsListByClusterPager.PageResponse` has been removed
+- Function `*ExtensionsDeletePoller.Done` has been removed
+- Function `*ArcSettingsListByClusterPager.Err` has been removed
+- Function `*ArcSettingsDeletePoller.Poll` has been removed
+- Function `*ExtensionsCreatePoller.Done` has been removed
+- Function `*ExtensionsListByArcSettingPager.Err` has been removed
+- Function `*ArcSettingsDeletePollerResponse.Resume` has been removed
+- Function `*ExtensionsCreatePollerResponse.Resume` has been removed
+- Function `*ExtensionsDeletePoller.FinalResponse` has been removed
+- Function `*ClustersListByResourceGroupPager.Err` has been removed
+- Function `*ExtensionsDeletePollerResponse.Resume` has been removed
+- Function `*ClustersListBySubscriptionPager.Err` has been removed
+- Function `*ArcSettingsDeletePoller.ResumeToken` has been removed
+- Function `*ExtensionsDeletePoller.Poll` has been removed
+- Function `ExtensionsCreatePollerResponse.PollUntilDone` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Struct `ArcSettingsBeginDeleteOptions` has been removed
+- Struct `ArcSettingsCreateOptions` has been removed
+- Struct `ArcSettingsCreateResponse` has been removed
+- Struct `ArcSettingsCreateResult` has been removed
+- Struct `ArcSettingsDeletePoller` has been removed
+- Struct `ArcSettingsDeletePollerResponse` has been removed
+- Struct `ArcSettingsDeleteResponse` has been removed
+- Struct `ArcSettingsGetOptions` has been removed
+- Struct `ArcSettingsGetResponse` has been removed
+- Struct `ArcSettingsGetResult` has been removed
+- Struct `ArcSettingsListByClusterOptions` has been removed
+- Struct `ArcSettingsListByClusterPager` has been removed
+- Struct `ArcSettingsListByClusterResponse` has been removed
+- Struct `ArcSettingsListByClusterResult` has been removed
+- Struct `ClustersCreateOptions` has been removed
+- Struct `ClustersCreateResponse` has been removed
+- Struct `ClustersCreateResult` has been removed
+- Struct `ClustersDeleteOptions` has been removed
+- Struct `ClustersDeleteResponse` has been removed
+- Struct `ClustersGetOptions` has been removed
+- Struct `ClustersGetResponse` has been removed
+- Struct `ClustersGetResult` has been removed
+- Struct `ClustersListByResourceGroupOptions` has been removed
+- Struct `ClustersListByResourceGroupPager` has been removed
+- Struct `ClustersListByResourceGroupResponse` has been removed
+- Struct `ClustersListByResourceGroupResult` has been removed
+- Struct `ClustersListBySubscriptionOptions` has been removed
+- Struct `ClustersListBySubscriptionPager` has been removed
+- Struct `ClustersListBySubscriptionResponse` has been removed
+- Struct `ClustersListBySubscriptionResult` has been removed
+- Struct `ClustersUpdateOptions` has been removed
+- Struct `ClustersUpdateResponse` has been removed
+- Struct `ClustersUpdateResult` has been removed
+- Struct `ExtensionsBeginCreateOptions` has been removed
+- Struct `ExtensionsBeginDeleteOptions` has been removed
+- Struct `ExtensionsBeginUpdateOptions` has been removed
+- Struct `ExtensionsCreatePoller` has been removed
+- Struct `ExtensionsCreatePollerResponse` has been removed
+- Struct `ExtensionsCreateResponse` has been removed
+- Struct `ExtensionsCreateResult` has been removed
+- Struct `ExtensionsDeletePoller` has been removed
+- Struct `ExtensionsDeletePollerResponse` has been removed
+- Struct `ExtensionsDeleteResponse` has been removed
+- Struct `ExtensionsGetOptions` has been removed
+- Struct `ExtensionsGetResponse` has been removed
+- Struct `ExtensionsGetResult` has been removed
+- Struct `ExtensionsListByArcSettingOptions` has been removed
+- Struct `ExtensionsListByArcSettingPager` has been removed
+- Struct `ExtensionsListByArcSettingResponse` has been removed
+- Struct `ExtensionsListByArcSettingResult` has been removed
+- Struct `ExtensionsUpdatePoller` has been removed
+- Struct `ExtensionsUpdatePollerResponse` has been removed
+- Struct `ExtensionsUpdateResponse` has been removed
+- Struct `ExtensionsUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Field `ProxyResource` of struct `ArcSetting` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `ProxyResource` of struct `Extension` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `TrackedResource` of struct `Cluster` has been removed
+
+### Features Added
+
+- New function `*ExtensionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `ExtensionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ExtensionsClientUpdateResponse, error)`
+- New function `*ExtensionsClientListByArcSettingPager.PageResponse() ExtensionsClientListByArcSettingResponse`
+- New function `*ExtensionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `ArcSettingsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ArcSettingsClientDeleteResponse, error)`
+- New function `*ExtensionsClientDeletePollerResponse.Resume(context.Context, *ExtensionsClient, string) error`
+- New function `*ArcSettingsClientListByClusterPager.NextPage(context.Context) bool`
+- New function `*ArcSettingsClientListByClusterPager.Err() error`
+- New function `*ClustersClientListBySubscriptionPager.Err() error`
+- New function `*ArcSettingsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*ClustersClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*ClustersClientListByResourceGroupPager.PageResponse() ClustersClientListByResourceGroupResponse`
+- New function `*ClustersClientListBySubscriptionPager.PageResponse() ClustersClientListBySubscriptionResponse`
+- New function `*ArcSettingsClientListByClusterPager.PageResponse() ArcSettingsClientListByClusterResponse`
+- New function `*ArcSettingsClientDeletePoller.Done() bool`
+- New function `*ExtensionsClientUpdatePoller.FinalResponse(context.Context) (ExtensionsClientUpdateResponse, error)`
+- New function `*ExtensionsClientUpdatePoller.Done() bool`
+- New function `ExtensionsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (ExtensionsClientCreateResponse, error)`
+- New function `*ArcSettingsClientDeletePollerResponse.Resume(context.Context, *ArcSettingsClient, string) error`
+- New function `*ArcSettingsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ExtensionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersClientListByResourceGroupPager.Err() error`
+- New function `*ExtensionsClientListByArcSettingPager.NextPage(context.Context) bool`
+- New function `*ExtensionsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ExtensionsClientCreatePoller.FinalResponse(context.Context) (ExtensionsClientCreateResponse, error)`
+- New function `*ExtensionsClientCreatePoller.Done() bool`
+- New function `*ExtensionsClientDeletePoller.FinalResponse(context.Context) (ExtensionsClientDeleteResponse, error)`
+- New function `*ExtensionsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*ExtensionsClientCreatePollerResponse.Resume(context.Context, *ExtensionsClient, string) error`
+- New function `*ExtensionsClientDeletePoller.Done() bool`
+- New function `*ExtensionsClientUpdatePollerResponse.Resume(context.Context, *ExtensionsClient, string) error`
+- New function `*ExtensionsClientListByArcSettingPager.Err() error`
+- New function `*ArcSettingsClientDeletePoller.FinalResponse(context.Context) (ArcSettingsClientDeleteResponse, error)`
+- New function `*ExtensionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ExtensionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ExtensionsClientDeleteResponse, error)`
+- New struct `ArcSettingsClientBeginDeleteOptions`
+- New struct `ArcSettingsClientCreateOptions`
+- New struct `ArcSettingsClientCreateResponse`
+- New struct `ArcSettingsClientCreateResult`
+- New struct `ArcSettingsClientDeletePoller`
+- New struct `ArcSettingsClientDeletePollerResponse`
+- New struct `ArcSettingsClientDeleteResponse`
+- New struct `ArcSettingsClientGetOptions`
+- New struct `ArcSettingsClientGetResponse`
+- New struct `ArcSettingsClientGetResult`
+- New struct `ArcSettingsClientListByClusterOptions`
+- New struct `ArcSettingsClientListByClusterPager`
+- New struct `ArcSettingsClientListByClusterResponse`
+- New struct `ArcSettingsClientListByClusterResult`
+- New struct `ClustersClientCreateOptions`
+- New struct `ClustersClientCreateResponse`
+- New struct `ClustersClientCreateResult`
+- New struct `ClustersClientDeleteOptions`
+- New struct `ClustersClientDeleteResponse`
+- New struct `ClustersClientGetOptions`
+- New struct `ClustersClientGetResponse`
+- New struct `ClustersClientGetResult`
+- New struct `ClustersClientListByResourceGroupOptions`
+- New struct `ClustersClientListByResourceGroupPager`
+- New struct `ClustersClientListByResourceGroupResponse`
+- New struct `ClustersClientListByResourceGroupResult`
+- New struct `ClustersClientListBySubscriptionOptions`
+- New struct `ClustersClientListBySubscriptionPager`
+- New struct `ClustersClientListBySubscriptionResponse`
+- New struct `ClustersClientListBySubscriptionResult`
+- New struct `ClustersClientUpdateOptions`
+- New struct `ClustersClientUpdateResponse`
+- New struct `ClustersClientUpdateResult`
+- New struct `ExtensionsClientBeginCreateOptions`
+- New struct `ExtensionsClientBeginDeleteOptions`
+- New struct `ExtensionsClientBeginUpdateOptions`
+- New struct `ExtensionsClientCreatePoller`
+- New struct `ExtensionsClientCreatePollerResponse`
+- New struct `ExtensionsClientCreateResponse`
+- New struct `ExtensionsClientCreateResult`
+- New struct `ExtensionsClientDeletePoller`
+- New struct `ExtensionsClientDeletePollerResponse`
+- New struct `ExtensionsClientDeleteResponse`
+- New struct `ExtensionsClientGetOptions`
+- New struct `ExtensionsClientGetResponse`
+- New struct `ExtensionsClientGetResult`
+- New struct `ExtensionsClientListByArcSettingOptions`
+- New struct `ExtensionsClientListByArcSettingPager`
+- New struct `ExtensionsClientListByArcSettingResponse`
+- New struct `ExtensionsClientListByArcSettingResult`
+- New struct `ExtensionsClientUpdatePoller`
+- New struct `ExtensionsClientUpdatePollerResponse`
+- New struct `ExtensionsClientUpdateResponse`
+- New struct `ExtensionsClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New field `Type` in struct `Extension`
+- New field `ID` in struct `Extension`
+- New field `Name` in struct `Extension`
+- New field `Error` in struct `ErrorResponse`
+- New field `Type` in struct `ArcSetting`
+- New field `ID` in struct `ArcSetting`
+- New field `Name` in struct `ArcSetting`
+- New field `Type` in struct `ProxyResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Tags` in struct `Cluster`
+- New field `ID` in struct `Cluster`
+- New field `Name` in struct `Cluster`
+- New field `Type` in struct `Cluster`
+- New field `Location` in struct `Cluster`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+
+
 ## 0.1.0 (2021-12-01)
 
 - Initial preview release.

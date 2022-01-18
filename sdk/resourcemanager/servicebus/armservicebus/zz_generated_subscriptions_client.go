@@ -11,7 +11,6 @@ package armservicebus
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,58 @@ import (
 // SubscriptionsClient contains the methods for the Subscriptions group.
 // Don't use this type directly, use NewSubscriptionsClient() instead.
 type SubscriptionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubscriptionsClient creates a new instance of SubscriptionsClient with the specified values.
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SubscriptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SubscriptionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates a topic subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SBSubscription, options *SubscriptionsCreateOrUpdateOptions) (SubscriptionsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// parameters - Parameters supplied to create a subscription resource.
+// options - SubscriptionsClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionsClient.CreateOrUpdate
+// method.
+func (client *SubscriptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SBSubscription, options *SubscriptionsClientCreateOrUpdateOptions) (SubscriptionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, parameters, options)
 	if err != nil {
-		return SubscriptionsCreateOrUpdateResponse{}, err
+		return SubscriptionsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionsCreateOrUpdateResponse{}, err
+		return SubscriptionsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SubscriptionsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SBSubscription, options *SubscriptionsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SBSubscription, options *SubscriptionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,58 +98,50 @@ func (client *SubscriptionsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionsCreateOrUpdateResponse, error) {
-	result := SubscriptionsCreateOrUpdateResponse{RawResponse: resp}
+func (client *SubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionsClientCreateOrUpdateResponse, error) {
+	result := SubscriptionsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBSubscription); err != nil {
-		return SubscriptionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SubscriptionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a subscription from the specified topic.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsDeleteOptions) (SubscriptionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// options - SubscriptionsClientDeleteOptions contains the optional parameters for the SubscriptionsClient.Delete method.
+func (client *SubscriptionsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsClientDeleteOptions) (SubscriptionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, options)
 	if err != nil {
-		return SubscriptionsDeleteResponse{}, err
+		return SubscriptionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionsDeleteResponse{}, err
+		return SubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SubscriptionsDeleteResponse{}, client.deleteHandleError(resp)
+		return SubscriptionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionsDeleteResponse{RawResponse: resp}, nil
+	return SubscriptionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsDeleteOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -156,49 +163,41 @@ func (client *SubscriptionsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SubscriptionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a subscription description for the specified topic.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsGetOptions) (SubscriptionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// subscriptionName - The subscription name.
+// options - SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.
+func (client *SubscriptionsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsClientGetOptions) (SubscriptionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, options)
 	if err != nil {
-		return SubscriptionsGetResponse{}, err
+		return SubscriptionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionsGetResponse{}, err
+		return SubscriptionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionsGetResponse{}, client.getHandleError(resp)
+		return SubscriptionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsGetOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *SubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -220,55 +219,47 @@ func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (SubscriptionsGetResponse, error) {
-	result := SubscriptionsGetResponse{RawResponse: resp}
+func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (SubscriptionsClientGetResponse, error) {
+	result := SubscriptionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBSubscription); err != nil {
-		return SubscriptionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SubscriptionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByTopic - List all the subscriptions under a specified topic.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionsClient) ListByTopic(resourceGroupName string, namespaceName string, topicName string, options *SubscriptionsListByTopicOptions) *SubscriptionsListByTopicPager {
-	return &SubscriptionsListByTopicPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// topicName - The topic name.
+// options - SubscriptionsClientListByTopicOptions contains the optional parameters for the SubscriptionsClient.ListByTopic
+// method.
+func (client *SubscriptionsClient) ListByTopic(resourceGroupName string, namespaceName string, topicName string, options *SubscriptionsClientListByTopicOptions) *SubscriptionsClientListByTopicPager {
+	return &SubscriptionsClientListByTopicPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTopicCreateRequest(ctx, resourceGroupName, namespaceName, topicName, options)
 		},
-		advancer: func(ctx context.Context, resp SubscriptionsListByTopicResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SubscriptionsClientListByTopicResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SBSubscriptionListResult.NextLink)
 		},
 	}
 }
 
 // listByTopicCreateRequest creates the ListByTopic request.
-func (client *SubscriptionsClient) listByTopicCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *SubscriptionsListByTopicOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) listByTopicCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *SubscriptionsClientListByTopicOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -286,12 +277,12 @@ func (client *SubscriptionsClient) listByTopicCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -304,23 +295,10 @@ func (client *SubscriptionsClient) listByTopicCreateRequest(ctx context.Context,
 }
 
 // listByTopicHandleResponse handles the ListByTopic response.
-func (client *SubscriptionsClient) listByTopicHandleResponse(resp *http.Response) (SubscriptionsListByTopicResponse, error) {
-	result := SubscriptionsListByTopicResponse{RawResponse: resp}
+func (client *SubscriptionsClient) listByTopicHandleResponse(resp *http.Response) (SubscriptionsClientListByTopicResponse, error) {
+	result := SubscriptionsClientListByTopicResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBSubscriptionListResult); err != nil {
-		return SubscriptionsListByTopicResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionsClientListByTopicResponse{}, err
 	}
 	return result, nil
-}
-
-// listByTopicHandleError handles the ListByTopic error response.
-func (client *SubscriptionsClient) listByTopicHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

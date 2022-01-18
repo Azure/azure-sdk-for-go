@@ -11,7 +11,6 @@ package armservicefabricmesh
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,56 @@ import (
 // ApplicationClient contains the methods for the Application group.
 // Don't use this type directly, use NewApplicationClient() instead.
 type ApplicationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationClient creates a new instance of ApplicationClient with the specified values.
+// subscriptionID - The customer subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Create - Creates an application resource with the specified name, description and properties. If an application resource with the same name exists, then
-// it is updated with the specified description and
+// Create - Creates an application resource with the specified name, description and properties. If an application resource
+// with the same name exists, then it is updated with the specified description and
 // properties.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationClient) Create(ctx context.Context, resourceGroupName string, applicationResourceName string, applicationResourceDescription ApplicationResourceDescription, options *ApplicationCreateOptions) (ApplicationCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// applicationResourceName - The identity of the application.
+// applicationResourceDescription - Description for creating a Application resource.
+// options - ApplicationClientCreateOptions contains the optional parameters for the ApplicationClient.Create method.
+func (client *ApplicationClient) Create(ctx context.Context, resourceGroupName string, applicationResourceName string, applicationResourceDescription ApplicationResourceDescription, options *ApplicationClientCreateOptions) (ApplicationClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, applicationResourceName, applicationResourceDescription, options)
 	if err != nil {
-		return ApplicationCreateResponse{}, err
+		return ApplicationClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationCreateResponse{}, err
+		return ApplicationClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return ApplicationCreateResponse{}, client.createHandleError(resp)
+		return ApplicationClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ApplicationClient) createCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, applicationResourceDescription ApplicationResourceDescription, options *ApplicationCreateOptions) (*policy.Request, error) {
+func (client *ApplicationClient) createCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, applicationResourceDescription ApplicationResourceDescription, options *ApplicationClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -73,7 +84,7 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationResourceName}", applicationResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,46 +96,36 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 }
 
 // createHandleResponse handles the Create response.
-func (client *ApplicationClient) createHandleResponse(resp *http.Response) (ApplicationCreateResponse, error) {
-	result := ApplicationCreateResponse{RawResponse: resp}
+func (client *ApplicationClient) createHandleResponse(resp *http.Response) (ApplicationClientCreateResponse, error) {
+	result := ApplicationClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescription); err != nil {
-		return ApplicationCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ApplicationClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the application resource identified by the name.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationClient) Delete(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationDeleteOptions) (ApplicationDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// applicationResourceName - The identity of the application.
+// options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
+func (client *ApplicationClient) Delete(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationClientDeleteOptions) (ApplicationClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationResourceName, options)
 	if err != nil {
-		return ApplicationDeleteResponse{}, err
+		return ApplicationClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationDeleteResponse{}, err
+		return ApplicationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return ApplicationDeleteResponse{}, client.deleteHandleError(resp)
+		return ApplicationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ApplicationDeleteResponse{RawResponse: resp}, nil
+	return ApplicationClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -135,7 +136,7 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationResourceName}", applicationResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -146,38 +147,29 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ApplicationClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets the information about the application resource with the given name. The information include the description and other properties of the application.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationClient) Get(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationGetOptions) (ApplicationGetResponse, error) {
+// Get - Gets the information about the application resource with the given name. The information include the description
+// and other properties of the application.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// applicationResourceName - The identity of the application.
+// options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
+func (client *ApplicationClient) Get(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationClientGetOptions) (ApplicationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationResourceName, options)
 	if err != nil {
-		return ApplicationGetResponse{}, err
+		return ApplicationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationGetResponse{}, err
+		return ApplicationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationGetResponse{}, client.getHandleError(resp)
+		return ApplicationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationGetOptions) (*policy.Request, error) {
+func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationResourceName string, options *ApplicationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications/{applicationResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -188,7 +180,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationResourceName}", applicationResourceName)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,44 +192,34 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationClient) getHandleResponse(resp *http.Response) (ApplicationGetResponse, error) {
-	result := ApplicationGetResponse{RawResponse: resp}
+func (client *ApplicationClient) getHandleResponse(resp *http.Response) (ApplicationClientGetResponse, error) {
+	result := ApplicationClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescription); err != nil {
-		return ApplicationGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplicationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Gets the information about all application resources in a given resource group. The information include the description and other
-// properties of the Application.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationClient) ListByResourceGroup(resourceGroupName string, options *ApplicationListByResourceGroupOptions) *ApplicationListByResourceGroupPager {
-	return &ApplicationListByResourceGroupPager{
+// ListByResourceGroup - Gets the information about all application resources in a given resource group. The information include
+// the description and other properties of the Application.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group name
+// options - ApplicationClientListByResourceGroupOptions contains the optional parameters for the ApplicationClient.ListByResourceGroup
+// method.
+func (client *ApplicationClient) ListByResourceGroup(resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) *ApplicationClientListByResourceGroupPager {
+	return &ApplicationClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationResourceDescriptionList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ApplicationClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ApplicationClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabricMesh/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -247,7 +229,7 @@ func (client *ApplicationClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,50 +241,39 @@ func (client *ApplicationClient) listByResourceGroupCreateRequest(ctx context.Co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ApplicationClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationListByResourceGroupResponse, error) {
-	result := ApplicationListByResourceGroupResponse{RawResponse: resp}
+func (client *ApplicationClient) listByResourceGroupHandleResponse(resp *http.Response) (ApplicationClientListByResourceGroupResponse, error) {
+	result := ApplicationClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescriptionList); err != nil {
-		return ApplicationListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ApplicationClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Gets the information about all application resources in a given resource group. The information include the description and other
-// properties of the application.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationClient) ListBySubscription(options *ApplicationListBySubscriptionOptions) *ApplicationListBySubscriptionPager {
-	return &ApplicationListBySubscriptionPager{
+// ListBySubscription - Gets the information about all application resources in a given resource group. The information include
+// the description and other properties of the application.
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ApplicationClientListBySubscriptionOptions contains the optional parameters for the ApplicationClient.ListBySubscription
+// method.
+func (client *ApplicationClient) ListBySubscription(options *ApplicationClientListBySubscriptionOptions) *ApplicationClientListBySubscriptionPager {
+	return &ApplicationClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationResourceDescriptionList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ApplicationClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ApplicationClient) listBySubscriptionCreateRequest(ctx context.Context, options *ApplicationClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabricMesh/applications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,23 +285,10 @@ func (client *ApplicationClient) listBySubscriptionCreateRequest(ctx context.Con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ApplicationClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationListBySubscriptionResponse, error) {
-	result := ApplicationListBySubscriptionResponse{RawResponse: resp}
+func (client *ApplicationClient) listBySubscriptionHandleResponse(resp *http.Response) (ApplicationClientListBySubscriptionResponse, error) {
+	result := ApplicationClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResourceDescriptionList); err != nil {
-		return ApplicationListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ApplicationClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

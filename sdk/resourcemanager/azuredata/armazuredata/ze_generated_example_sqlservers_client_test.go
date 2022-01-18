@@ -29,11 +29,11 @@ func ExampleSQLServersClient_Get() {
 		"<resource-group-name>",
 		"<sql-server-registration-name>",
 		"<sql-server-name>",
-		&armazuredata.SQLServersGetOptions{Expand: nil})
+		&armazuredata.SQLServersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLServer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLServersClientGetResult)
 }
 
 // x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/CreateOrUpdateSqlServerWithRegistrationGroup.json
@@ -61,7 +61,7 @@ func ExampleSQLServersClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLServer.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLServersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/DeleteSqlServer.json
@@ -92,13 +92,17 @@ func ExampleSQLServersClient_ListByResourceGroup() {
 	client := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		"<sql-server-registration-name>",
-		&armazuredata.SQLServersListByResourceGroupOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+		&armazuredata.SQLServersClientListByResourceGroupOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLServer.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -35,7 +35,7 @@ func ExampleSQLPoolsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateSqlPool.json
@@ -53,13 +53,9 @@ func ExampleSQLPoolsClient_Update() {
 		armsynapse.SQLPoolPatchInfo{
 			Location: to.StringPtr("<location>"),
 			Properties: &armsynapse.SQLPoolResourceProperties{
-				Collation:             to.StringPtr("<collation>"),
-				CreateMode:            armsynapse.CreateModeDefault.ToPtr(),
-				CreationDate:          to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
-				MaxSizeBytes:          to.Int64Ptr(0),
-				RecoverableDatabaseID: to.StringPtr("<recoverable-database-id>"),
-				RestorePointInTime:    to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
-				SourceDatabaseID:      to.StringPtr("<source-database-id>"),
+				Collation:          to.StringPtr("<collation>"),
+				MaxSizeBytes:       to.Int64Ptr(0),
+				RestorePointInTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
 			},
 			SKU: &armsynapse.SKU{
 				Name: to.StringPtr("<name>"),
@@ -71,7 +67,7 @@ func ExampleSQLPoolsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPool.json
@@ -87,17 +83,15 @@ func ExampleSQLPoolsClient_BeginCreate() {
 		"<workspace-name>",
 		"<sql-pool-name>",
 		armsynapse.SQLPool{
-			TrackedResource: armsynapse.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armsynapse.SQLPoolResourceProperties{
 				Collation:             to.StringPtr("<collation>"),
-				CreateMode:            armsynapse.CreateModeDefault.ToPtr(),
+				CreateMode:            armsynapse.CreateMode("").ToPtr(),
 				MaxSizeBytes:          to.Int64Ptr(0),
 				RecoverableDatabaseID: to.StringPtr("<recoverable-database-id>"),
 				SourceDatabaseID:      to.StringPtr("<source-database-id>"),
-				StorageAccountType:    armsynapse.StorageAccountTypeLRS.ToPtr(),
+				StorageAccountType:    armsynapse.StorageAccountType("LRS").ToPtr(),
 			},
 			SKU: &armsynapse.SKU{
 				Name: to.StringPtr("<name>"),
@@ -112,7 +106,7 @@ func ExampleSQLPoolsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLPool.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLPoolsClientCreateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPool.json
@@ -131,10 +125,11 @@ func ExampleSQLPoolsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SQLPoolsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsInWorkspace.json
@@ -148,12 +143,16 @@ func ExampleSQLPoolsClient_ListByWorkspace() {
 	pager := client.ListByWorkspace("<resource-group-name>",
 		"<workspace-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLPool.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -174,10 +173,11 @@ func ExampleSQLPoolsClient_BeginPause() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SQLPoolsClientPauseResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ResumeSqlPool.json
@@ -196,10 +196,11 @@ func ExampleSQLPoolsClient_BeginResume() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.SQLPoolsClientResumeResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RenameSqlPool.json

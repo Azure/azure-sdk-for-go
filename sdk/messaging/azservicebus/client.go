@@ -21,11 +21,17 @@ import (
 // Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	linksMu     *sync.Mutex
+	// NOTE: values need to be 64-bit aligned. Simplest way to make sure this happens
+	// is just to make it the first value in the struct
+	// See:
+	//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
+	//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
 	linkCounter uint64
-	links       map[uint64]internal.Closeable
-	creds       clientCreds
-	namespace   interface {
+
+	linksMu   *sync.Mutex
+	links     map[uint64]internal.Closeable
+	creds     clientCreds
+	namespace interface {
 		// used internally by `Client`
 		internal.NamespaceWithNewAMQPLinks
 		// for child clients

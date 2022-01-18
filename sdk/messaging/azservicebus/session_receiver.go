@@ -182,7 +182,7 @@ func (sr *SessionReceiver) LockedUntil() time.Time {
 func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) {
 	var sessionState []byte
 
-	err := sr.inner.amqpLinks.Retry(ctx, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+	err := sr.inner.amqpLinks.Retry(ctx, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		s, err := internal.GetSessionState(ctx, lwv.RPC, sr.SessionID())
 
 		if err != nil {
@@ -198,7 +198,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) 
 
 // SetSessionState sets the state associated with the session.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte) error {
-	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
 	}, sr.inner.retryOptions)
 }
@@ -206,7 +206,7 @@ func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte) er
 // RenewSessionLock renews this session's lock. The new expiration time is available
 // using `LockedUntil`.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
-	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
 
 		if err != nil {

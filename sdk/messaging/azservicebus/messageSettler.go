@@ -44,8 +44,8 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 		return internal.ErrNonRetriable{Message: "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable"}
 	}
 
-	err := s.links.Retry(ctx, "settle", func(ctx context.Context, lwr *internal.LinksWithRev, args *utils.RetryFnArgs) error {
-		if err := settleFn(lwr.Receiver, lwr.RPC); err != nil {
+	err := s.links.Retry(ctx, "settle", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		if err := settleFn(lwid.Receiver, lwid.RPC); err != nil {
 			return err
 		}
 

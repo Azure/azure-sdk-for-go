@@ -35,7 +35,7 @@ type FakeAMQPLinks struct {
 	Closed int
 
 	// values to be returned for each `Get` call
-	Revision LinkRev
+	Revision LinkID
 	Receiver AMQPReceiver
 	Sender   AMQPSender
 	RPC      RPCLink
@@ -60,12 +60,12 @@ func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
 	return nil
 }
 
-func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithRev, error) {
-	return &LinksWithRev{
+func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
+	return &LinksWithID{
 		Sender:   l.Sender,
 		Receiver: l.Receiver,
 		RPC:      l.RPC,
-		Rev:      l.Revision,
+		ID:       l.Revision,
 	}, l.Err
 }
 

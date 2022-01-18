@@ -30,36 +30,36 @@ func (pe fakeNetError) Timeout() bool   { return pe.timeout }
 func (pe fakeNetError) Temporary() bool { return pe.temp }
 func (pe fakeNetError) Error() string   { return "Fake but very permanent error" }
 
-func assertFailedLinks(t *testing.T, lwr *LinksWithRev, expectedErr error) {
-	err := lwr.Sender.Send(context.TODO(), &amqp.Message{
+func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error) {
+	err := lwid.Sender.Send(context.TODO(), &amqp.Message{
 		Data: [][]byte{
 			{0},
 		},
 	})
 	require.ErrorIs(t, err, expectedErr)
 
-	_, err = PeekMessages(context.TODO(), lwr.RPC, 0, 1)
+	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
 	require.ErrorIs(t, err, expectedErr)
 
-	msg, err := lwr.Receiver.Receive(context.TODO())
+	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.ErrorIs(t, err, expectedErr)
 	require.Nil(t, msg)
 
 }
 
-func assertLinks(t *testing.T, lwr *LinksWithRev) {
-	err := lwr.Sender.Send(context.TODO(), &amqp.Message{
+func assertLinks(t *testing.T, lwid *LinksWithID) {
+	err := lwid.Sender.Send(context.TODO(), &amqp.Message{
 		Data: [][]byte{
 			{0},
 		},
 	})
 	require.NoError(t, err)
 
-	_, err = PeekMessages(context.TODO(), lwr.RPC, 0, 1)
+	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
 	require.NoError(t, err)
 
-	require.NoError(t, lwr.Receiver.IssueCredit(1))
-	msg, err := lwr.Receiver.Receive(context.TODO())
+	require.NoError(t, lwid.Receiver.IssueCredit(1))
+	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.NoError(t, err)
 	require.NotNil(t, msg)
 }
@@ -103,7 +103,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	})
 
 	require.EqualValues(t, 0, createLinksCalled)
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkRev{}, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
 	require.EqualValues(t, 1, createLinksCalled)
 
 	lwr, err := links.Get(context.Background())
@@ -118,7 +118,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	assertFailedLinks(t, lwr, amqp.ErrConnClosed)
 
 	// now we'll recover, which should recreate everything
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.Rev, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, amqp.ErrConnClosed))
 	require.EqualValues(t, 2, createLinksCalled)
 
 	lwr, err = links.Get(context.Background())
@@ -138,7 +138,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	lwr, err = links.Get(context.Background())
 	require.NoError(t, err)
 
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.Rev, amqp.ErrLinkClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, amqp.ErrLinkClosed))
 	require.EqualValues(t, 3, createLinksCalled)
 
 	lwr, err = links.Get(context.Background())
@@ -166,13 +166,13 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 	})
 
 	require.EqualValues(t, 0, createLinksCalled)
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkRev{}, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
 	require.EqualValues(t, 1, createLinksCalled)
 
 	lwr, err := links.Get(context.Background())
 	require.NoError(t, err)
 
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.Rev, amqp.ErrLinkClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, amqp.ErrLinkClosed))
 	require.EqualValues(t, 2, createLinksCalled)
 }
 
@@ -199,7 +199,7 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			err := links.RecoverIfNeeded(context.Background(), LinkRev{}, amqp.ErrConnClosed)
+			err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
 			require.NoError(t, err)
 		}()
 	}
@@ -235,7 +235,7 @@ func TestAMQPLinksLiveRaceLink(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			err := links.RecoverIfNeeded(context.Background(), LinkRev{}, &amqp.DetachError{})
+			err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.DetachError{})
 			require.NoError(t, err)
 		}()
 	}
@@ -263,7 +263,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 		return newLinksForAMQPLinksTest(entityPath, session)
 	})
 
-	err = links.Retry(context.Background(), "retryOp", func(ctx context.Context, lwr *LinksWithRev, args *utils.RetryFnArgs) error {
+	err = links.Retry(context.Background(), "retryOp", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
 		return &amqp.DetachError{}
 	}, utils.RetryOptions{
@@ -308,18 +308,18 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	lwr, err := links.Get(context.Background())
 	require.NoError(t, err)
 	require.EqualValues(t, 1, createLinksCalled)
-	require.EqualValues(t, 1, lwr.Rev.Link)
+	require.EqualValues(t, 1, lwr.ID.Link)
 
 	lwr2, err := links2.Get(context.Background())
 	require.NoError(t, err)
 	require.EqualValues(t, 1, createLinksCalled2)
-	require.EqualValues(t, 1, lwr2.Rev.Link)
+	require.EqualValues(t, 1, lwr2.ID.Link)
 
 	wg.Add(1)
 
 	go func() {
 		defer wg.Done()
-		err = links.RecoverIfNeeded(context.Background(), lwr.Rev, &amqp.DetachError{})
+		err = links.RecoverIfNeeded(context.Background(), lwr.ID, &amqp.DetachError{})
 		require.NoError(t, err)
 	}()
 
@@ -328,7 +328,7 @@ func TestAMQPLinksMultipleWithSameConnection(t *testing.T) {
 	go func() {
 		defer wg.Done()
 
-		err = links2.RecoverIfNeeded(context.Background(), lwr2.Rev, &amqp.DetachError{})
+		err = links2.RecoverIfNeeded(context.Background(), lwr2.ID, &amqp.DetachError{})
 		require.NoError(t, err)
 	}()
 

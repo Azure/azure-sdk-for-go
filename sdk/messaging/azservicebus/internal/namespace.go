@@ -32,6 +32,13 @@ type (
 	// Namespace is an abstraction over an amqp.Client, allowing us to hold onto a single
 	// instance of a connection per ServiceBusClient.
 	Namespace struct {
+		// NOTE: values need to be 64-bit aligned. Simplest way to make sure this happens
+		// is just to make it the first value in the struct
+		// See:
+		//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
+		//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
+		clientRevision uint64
+
 		FQDN          string
 		TokenProvider *sbauth.TokenProvider
 		tlsConfig     *tls.Config
@@ -41,10 +48,8 @@ type (
 
 		retryOptions utils.RetryOptions
 
-		clientMu       sync.RWMutex
-		clientRevision uint64
-		client         *amqp.Client
-
+		clientMu         sync.RWMutex
+		client           *amqp.Client
 		negotiateClaimMu sync.Mutex
 	}
 

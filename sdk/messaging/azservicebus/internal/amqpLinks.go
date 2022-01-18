@@ -16,14 +16,14 @@ import (
 	"github.com/devigned/tab"
 )
 
-type LinksWithRev struct {
+type LinksWithID struct {
 	Sender   AMQPSender
 	Receiver AMQPReceiver
 	RPC      RPCLink
-	Rev      LinkRev
+	ID       LinkID
 }
 
-type RetryWithLinksFn func(ctx context.Context, lwr *LinksWithRev, args *utils.RetryFnArgs) error
+type RetryWithLinksFn func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error
 
 type AMQPLinks interface {
 	EntityPath() string
@@ -33,14 +33,14 @@ type AMQPLinks interface {
 
 	// Get will initialize a session and call its link.linkCreator function.
 	// If this link has been closed via Close() it will return an non retriable error.
-	Get(ctx context.Context) (*LinksWithRev, error)
+	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
 	Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
-	RecoverIfNeeded(ctx context.Context, linkRev LinkRev, err error) error
+	RecoverIfNeeded(ctx context.Context, linkID LinkID, err error) error
 
 	// Close will close the the link.
 	// If permanent is true the link will not be auto-recreated if Get/Recover
@@ -60,6 +60,13 @@ type AMQPLinks interface {
 // State management can be done through Recover (close and reopen), Close (close permanently, return failures)
 // and Get() (retrieve latest version of all AMQPLinksImpl, or create if needed).
 type AMQPLinksImpl struct {
+	// NOTE: values need to be 64-bit aligned. Simplest way to make sure this happens
+	// is just to make it the first value in the struct
+	// See:
+	//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
+	//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
+	id LinkID
+
 	entityPath     string
 	managementPath string
 	audience       string
@@ -77,10 +84,6 @@ type AMQPLinksImpl struct {
 	// the amqpLinks
 	Sender   AMQPSenderCloser
 	Receiver AMQPReceiverCloser
-
-	// the current 'rev' of our set of links.
-	// starts at 0, increments each time you call Recover().
-	rev LinkRev
 
 	// whether this links set has been closed permanently (via Close)
 	// Recover() does not affect this value.
@@ -105,7 +108,7 @@ func NewAMQPLinks(ns NamespaceForAMQPLinks, entityPath string, createLink Create
 		audience:          ns.GetEntityAudience(entityPath),
 		createLink:        createLink,
 		closedPermanently: false,
-		rev:               LinkRev{},
+		id:                LinkID{},
 		ns:                ns,
 	}
 
@@ -119,13 +122,13 @@ func (links *AMQPLinksImpl) ManagementPath() string {
 
 // recoverLink will recycle all associated links (mgmt, receiver, sender and session)
 // and recreate them using the link.linkCreator function.
-func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision LinkRev) error {
+func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision LinkID) error {
 	ctx, span := tab.StartSpan(ctx, tracing.SpanRecoverLink)
 	defer span.End()
 
 	links.mu.RLock()
 	closedPermanently := links.closedPermanently
-	ourLinkRevision := links.rev
+	ourLinkRevision := links.id
 	links.mu.RUnlock()
 
 	if closedPermanently {
@@ -144,7 +147,7 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 
 	// check once more, just in case someone else modified it before we took
 	// the lock.
-	if links.rev.Link != theirLinkRevision.Link {
+	if links.id.Link != theirLinkRevision.Link {
 		// we've already recovered past their failure.
 		return nil
 	}
@@ -158,14 +161,14 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 
 	span.AddAttributes(
 		tab.StringAttribute("outcome", "recovered"),
-		tab.StringAttribute("revision_new", fmt.Sprintf("%d", links.rev)),
+		tab.StringAttribute("revision_new", fmt.Sprintf("%d", links.id)),
 	)
 	return nil
 }
 
 // Recover will recover the links or the connection, depending
 // on the severity of the error.
-func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirRev LinkRev, origErr error) error {
+func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID, origErr error) error {
 	ctx, span := tab.StartSpan(ctx, tracing.SpanRecover)
 	defer span.End()
 
@@ -184,7 +187,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirRev LinkRe
 	sbe := GetSBErrInfo(origErr)
 
 	if sbe.RecoveryKind == RecoveryKindLink {
-		if err := links.recoverLink(ctx, theirRev); err != nil {
+		if err := links.recoverLink(ctx, theirID); err != nil {
 			log.Writef(EventConn, "failed to recreate link: %s", err.Error())
 			return err
 		}
@@ -192,7 +195,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirRev LinkRe
 		log.Writef(EventConn, "Recovered links")
 		return nil
 	} else if sbe.RecoveryKind == RecoveryKindConn {
-		if err := links.recoverConnection(ctx, theirRev); err != nil {
+		if err := links.recoverConnection(ctx, theirID); err != nil {
 			log.Writef(EventConn, "failed to recreate connection: %s", err.Error())
 			return err
 		}
@@ -205,21 +208,21 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirRev LinkRe
 	return nil
 }
 
-func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirRev LinkRev) error {
+func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkID) error {
 	tab.For(ctx).Info("Connection is dead, recovering")
 
 	links.mu.Lock()
 	defer links.mu.Unlock()
 
-	created, err := links.ns.Recover(ctx, uint64(theirRev.Conn))
+	created, err := links.ns.Recover(ctx, uint64(theirID.Conn))
 
 	if err != nil {
 		log.Writef(EventConn, "Recover connection failure: %s", err)
 		return err
 	}
 
-	if created || theirRev.Link == links.rev.Link {
-		log.Writef(EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.rev, theirRev)
+	if created || theirID.Link == links.id.Link {
+		log.Writef(EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.id, theirID)
 		if err := links.initWithoutLocking(ctx); err != nil {
 			return err
 		}
@@ -228,19 +231,23 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirRev Link
 	return nil
 }
 
-type LinkRev struct {
-	// last connection revision seen by this links instance.
+// LinkID is ID that represent our current link and the client used to create it.
+// These are used when trying to determine what parts need to be recreated when
+// an error occurs, to prevent recovering a connection/link repeatedly.
+// See amqpLinks.RecoverIfNeeded() for usage.
+type LinkID struct {
+	// Conn is the ID of the connection we used to create our links.
 	Conn uint64
 
-	// the current revision of the links held by this instance.
+	// Link is the ID of our current link.
 	Link uint64
 }
 
 // Get will initialize a session and call its link.linkCreator function.
 // If this link has been closed via Close() it will return an non retriable error.
-func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithRev, error) {
+func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	l.mu.RLock()
-	sender, receiver, mgmtLink, revision, closedPermanently := l.Sender, l.Receiver, l.RPCLink, l.rev, l.closedPermanently
+	sender, receiver, mgmtLink, revision, closedPermanently := l.Sender, l.Receiver, l.RPCLink, l.id, l.closedPermanently
 	l.mu.RUnlock()
 
 	if closedPermanently {
@@ -248,11 +255,11 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithRev, error) {
 	}
 
 	if sender != nil || receiver != nil {
-		return &LinksWithRev{
+		return &LinksWithID{
 			Sender:   sender,
 			Receiver: receiver,
 			RPC:      mgmtLink,
-			Rev:      revision,
+			ID:       revision,
 		}, nil
 	}
 
@@ -263,19 +270,19 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithRev, error) {
 		return nil, err
 	}
 
-	return &LinksWithRev{
+	return &LinksWithID{
 		Sender:   l.Sender,
 		Receiver: l.Receiver,
 		RPC:      l.RPCLink,
-		Rev:      l.rev,
+		ID:       l.id,
 	}, nil
 }
 
 func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {
-	var lastRev LinkRev
+	var lastID LinkID
 
 	return utils.Retry(ctx, name, func(ctx context.Context, args *utils.RetryFnArgs) error {
-		if err := l.RecoverIfNeeded(ctx, lastRev, args.LastErr); err != nil {
+		if err := l.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
 		}
 
@@ -285,7 +292,7 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 			return err
 		}
 
-		lastRev = linksWithVersion.Rev
+		lastID = linksWithVersion.ID
 		return fn(ctx, linksWithVersion, args)
 	}, IsFatalSBError, o)
 }
@@ -349,7 +356,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	}
 
 	l.session = sess
-	l.rev.Conn = cr
+	l.id.Conn = cr
 
 	l.Sender, l.Receiver, err = l.createLink(ctx, l.session)
 
@@ -370,7 +377,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	}
 
 	l.RPCLink = rpcLink
-	l.rev.Link++
+	l.id.Link++
 	return nil
 }
 

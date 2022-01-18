@@ -188,8 +188,8 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
-	err := r.amqpLinks.Retry(ctx, "receiveDeferredMessage", func(ctx context.Context, lwr *internal.LinksWithRev, args *utils.RetryFnArgs) error {
-		amqpMessages, err := internal.ReceiveDeferred(ctx, lwr.RPC, r.receiveMode, sequenceNumbers)
+	err := r.amqpLinks.Retry(ctx, "receiveDeferredMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, r.receiveMode, sequenceNumbers)
 
 		if err != nil {
 			return err
@@ -226,7 +226,7 @@ type PeekMessagesOptions struct {
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
-	err := r.amqpLinks.Retry(ctx, "peekMessages", func(ctx context.Context, links *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, "peekMessages", func(ctx context.Context, links *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		var sequenceNumber = r.lastPeekedSequenceNumber + 1
 		updateInternalSequenceNumber := true
 
@@ -264,7 +264,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 
 // RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
-	return r.amqpLinks.Retry(ctx, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+	return r.amqpLinks.Retry(ctx, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
@@ -359,9 +359,9 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		defaultTimeAfterFirstMessage = time.Second
 	}
 
-	var linksWithRev *internal.LinksWithRev
+	var linksWithID *internal.LinksWithID
 
-	err := r.amqpLinks.Retry(ctx, "receiveMessages", func(ctx context.Context, lwr *internal.LinksWithRev, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, "receiveMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		if args.LastErr != nil {
 			// we recovered succesfully (amqpLinks does it for us), we can reset our retry attempts.
 			// This fixes a potential problem where something like this happens:
@@ -376,17 +376,17 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 			args.ResetAttempts()
 		}
 
-		linksWithRev = lwr
+		linksWithID = lwid
 		credits := maxMessages - len(all)
 
-		if err := lwr.Receiver.IssueCredit(uint32(credits)); err != nil {
+		if err := lwid.Receiver.IssueCredit(uint32(credits)); err != nil {
 			return err
 		}
 
 		got := 0
 
 		for {
-			amqpMessage, err := lwr.Receiver.Receive(ctx)
+			amqpMessage, err := lwid.Receiver.Receive(ctx)
 
 			if err != nil {
 				return err
@@ -429,8 +429,8 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	if needsDrain {
 		// start the drain asynchronously. Note that we ignore the user's context at this point
 		// since draining makes sure we don't get messages when nobody is receiving.
-		if err := linksWithRev.Receiver.DrainCredit(context.Background()); err != nil {
-			if err := r.amqpLinks.RecoverIfNeeded(context.Background(), linksWithRev.Rev, err); err != nil {
+		if err := linksWithID.Receiver.DrainCredit(context.Background()); err != nil {
+			if err := r.amqpLinks.RecoverIfNeeded(context.Background(), linksWithID.ID, err); err != nil {
 				log.Writef(internal.EventReceiver, "Failed to recover links after a failed drain: %s", err.Error())
 				return ret(err)
 			}
@@ -441,7 +441,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		// Draining data from the receiver's prefetched queue. This won't wait for new messages to
 		// arrive, so it'll only receive messages that arrived prior to the drain.
 		for {
-			am, err := linksWithRev.Receiver.Prefetched(context.Background())
+			am, err := linksWithID.Receiver.Prefetched(context.Background())
 
 			if am == nil || internal.IsCancelError(err) {
 				return all, nil

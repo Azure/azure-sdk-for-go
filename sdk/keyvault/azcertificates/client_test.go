@@ -742,7 +742,7 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 	for pager.NextPage(ctx) {
 		deletedCount += len(pager.PageResponse().Value)
 		for _, val := range pager.PageResponse().Value {
-			_, _ =client.PurgeDeletedCertificate(ctx, *val.ID, nil)
+			_, _ = client.PurgeDeletedCertificate(ctx, *val.ID, nil)
 		}
 	}
 	require.Equal(t, 4, createdCount)

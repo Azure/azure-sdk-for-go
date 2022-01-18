@@ -31,7 +31,7 @@
         },
         {
             "Name": "keyvault/azcertificates",
-            "CoverageGoal": 0.01
+            "CoverageGoal": 0.78
         },
         {
             "Name": "keyvault/azkeys",

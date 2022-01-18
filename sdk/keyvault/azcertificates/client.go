@@ -1308,3 +1308,38 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 		CertificateBundle: certificateBundleFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
+
+// RestoreCertificateBackupOptions contains the optional parameters for the Client.RestoreCertificateBackup method
+type RestoreCertificateBackupOptions struct{}
+
+func (r *RestoreCertificateBackupOptions) toGenerated() *generated.KeyVaultClientRestoreCertificateOptions {
+	return &generated.KeyVaultClientRestoreCertificateOptions{}
+}
+
+// RestoreCertificateBackupResponse contains the response from method Client.RestoreCertificateBackup
+type RestoreCertificateBackupResponse struct {
+	CertificateBundle
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is applicable in vaults
+// enabled for soft-delete, and must be issued during the retention interval (available in the deleted certificate's attributes).
+// This operation requires the certificates/recover permission.
+func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup []byte, options *RestoreCertificateBackupOptions) (RestoreCertificateBackupResponse, error) {
+	resp, err := c.genClient.RestoreCertificate(
+		ctx,
+		c.vaultURL,
+		generated.CertificateRestoreParameters{CertificateBundleBackup: certificateBackup},
+		options.toGenerated(),
+	)
+	if err != nil {
+		return RestoreCertificateBackupResponse{}, err
+	}
+
+	return RestoreCertificateBackupResponse{
+		RawResponse:       resp.RawResponse,
+		CertificateBundle: certificateBundleFromGenerated(&resp.CertificateBundle),
+	}, nil
+}

@@ -662,3 +662,57 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	require.Contains(t, *recoveredResp.ID, certName)
 
 }
+func TestClient_RestoreCertificateBackup(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	certName, err := createRandomName(t, "certRestore")
+	require.NoError(t, err)
+
+	resp, err := client.BeginCreateCertificate(ctx, certName, CertificatePolicy{
+		IssuerParameters: &IssuerParameters{
+			Name: to.StringPtr("Self"),
+		},
+		X509CertificateProperties: &X509CertificateProperties{
+			Subject: to.StringPtr("CN=DefaultPolicy"),
+			SubjectAlternativeNames: &SubjectAlternativeNames{
+				Upns: []*string{to.StringPtr("john.doe@domain.com")},
+			},
+		},
+	}, nil)
+	require.NoError(t, err)
+	defer cleanUp(t, client, certName)
+
+	pollerResp, err := resp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.NotNil(t, pollerResp.ID)
+
+	// Create a backup
+	certificateBackupResp, err := client.BackupCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	// Delete the certificate
+	deletePoller, err := client.BeginDeleteCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	_, err = deletePoller.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+
+	// Purge the cert
+	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
+
+	// Restore the cert
+	// Poll until no exception
+	count := 0
+	for {
+		_, err = client.RestoreCertificateBackup(ctx, certificateBackupResp.Value, nil)
+		if err == nil {break}
+		count += 1
+		if count > 25 {require.NoError(t, err)}
+		longDelay()
+	}
+}

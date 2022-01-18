@@ -17,20 +17,24 @@
             "CoverageGoal": 0.68
         },
         {
-            "Name": "azkeys",
-            "CoverageGoal": 0.84
-        },
-        {
-            "Name": "azsecrets",
-            "CoverageGoal": 0.86
-        },
-        {
             "Name": "data",
             "CoverageGoal": 0.62
         },
         {
             "Name": "eng/tools",
             "CoverageGoal": 0.0
+        },
+        {
+            "Name": "keyvault/azcertificates",
+            "CoverageGoal": 0.01
+        },
+        {
+            "Name": "keyvault/azkeys",
+            "CoverageGoal": 0.84
+        },
+        {
+            "Name": "keyvault/azsecrets",
+            "CoverageGoal": 0.86
         },
         {
             "Name": "keyvault/internal",

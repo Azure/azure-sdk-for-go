@@ -40,9 +40,7 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("eastus"),
-			},
+			Location: to.StringPtr("eastus"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -75,9 +73,7 @@ func TestVirtualMachineScaleSetsClient_CreateOrUpdate(t *testing.T) {
 		rgName,
 		vmssName,
 		armcompute.VirtualMachineScaleSet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("eastus"),
-			},
+			Location: to.StringPtr("eastus"),
 			SKU: &armcompute.SKU{
 				Name:     to.StringPtr("Basic_A0"), //armcompute.VirtualMachineSizeTypesBasicA0
 				Capacity: to.Int64Ptr(1),

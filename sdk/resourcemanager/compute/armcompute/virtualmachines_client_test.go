@@ -120,10 +120,8 @@ func TestVirtualMachinesClient_BeginUpdate(t *testing.T) {
 		rgName,
 		*vm.Name,
 		armcompute.VirtualMachineUpdate{
-			UpdateResource: armcompute.UpdateResource{
-				Tags: map[string]*string{
-					"tag": to.StringPtr("value"),
-				},
+			Tags: map[string]*string{
+				"tag": to.StringPtr("value"),
 			},
 		},
 		nil,
@@ -143,9 +141,7 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		rgName,
 		vnName,
 		armnetwork.VirtualNetwork{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus2"),
-			},
+			Location: to.StringPtr("westus2"),
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
 					AddressPrefixes: []*string{
@@ -191,9 +187,7 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		rgName,
 		ipName,
 		armnetwork.PublicIPAddress{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus2"),
-			},
+			Location: to.StringPtr("westus2"),
 			Properties: &armnetwork.PublicIPAddressPropertiesFormat{
 				PublicIPAllocationMethod: armnetwork.IPAllocationMethodStatic.ToPtr(), // Static or Dynamic
 			},
@@ -206,18 +200,16 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 	require.Equal(t, *ipResp.Name, ipName)
 
 	// create network security group
-	nsgClient := armnetwork.NewNetworkSecurityGroupsClient(subscriptionID, cred, opt)
+	nsgClient := armnetwork.NewSecurityGroupsClient(subscriptionID, cred, opt)
 	nsgName, err := createRandomName(t, "nsg")
 	require.NoError(t, err)
 	nsgPoller, err := nsgClient.BeginCreateOrUpdate(
 		context.Background(),
 		rgName,
 		nsgName,
-		armnetwork.NetworkSecurityGroup{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus2"),
-			},
-			Properties: &armnetwork.NetworkSecurityGroupPropertiesFormat{
+		armnetwork.SecurityGroup{
+			Location: to.StringPtr("westus2"),
+			Properties: &armnetwork.SecurityGroupPropertiesFormat{
 				SecurityRules: []*armnetwork.SecurityRule{
 					{
 						Name: to.StringPtr("sample_inbound_22"),
@@ -259,41 +251,33 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 	require.Equal(t, *nsgResp.Name, nsgName)
 
 	// create network interface
-	nicClient := armnetwork.NewNetworkInterfacesClient(subscriptionID, cred, opt)
+	nicClient := armnetwork.NewInterfacesClient(subscriptionID, cred, opt)
 	nicName, err := createRandomName(t, "nic")
 	require.NoError(t, err)
 	nicPoller, err := nicClient.BeginCreateOrUpdate(
 		context.Background(),
 		rgName,
 		nicName,
-		armnetwork.NetworkInterface{
-			Resource: armnetwork.Resource{
-				Location: to.StringPtr("westus2"),
-			},
-			Properties: &armnetwork.NetworkInterfacePropertiesFormat{
+		armnetwork.Interface{
+			Location: to.StringPtr("westus2"),
+			Properties: &armnetwork.InterfacePropertiesFormat{
 				//NetworkSecurityGroup:
-				IPConfigurations: []*armnetwork.NetworkInterfaceIPConfiguration{
+				IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
 					{
 						Name: to.StringPtr("ipConfig"),
-						Properties: &armnetwork.NetworkInterfaceIPConfigurationPropertiesFormat{
+						Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
 							PrivateIPAllocationMethod: armnetwork.IPAllocationMethodDynamic.ToPtr(),
 							Subnet: &armnetwork.Subnet{
-								SubResource: armnetwork.SubResource{
-									ID: to.StringPtr(*subResp.ID),
-								},
+								ID: to.StringPtr(*subResp.ID),
 							},
 							PublicIPAddress: &armnetwork.PublicIPAddress{
-								Resource: armnetwork.Resource{
-									ID: to.StringPtr(*ipResp.ID),
-								},
+								ID: to.StringPtr(*ipResp.ID),
 							},
 						},
 					},
 				},
-				NetworkSecurityGroup: &armnetwork.NetworkSecurityGroup{
-					Resource: armnetwork.Resource{
-						ID: to.StringPtr(*nsgResp.ID),
-					},
+				NetworkSecurityGroup: &armnetwork.SecurityGroup{
+					ID: to.StringPtr(*nsgResp.ID),
 				},
 			},
 		},
@@ -315,9 +299,7 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 		rgName,
 		vmName,
 		armcompute.VirtualMachine{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus2"),
-			},
+			Location: to.StringPtr("westus2"),
 			Identity: &armcompute.VirtualMachineIdentity{
 				Type: armcompute.ResourceIdentityTypeNone.ToPtr(),
 			},
@@ -349,9 +331,7 @@ func createVirtualMachineTest(t *testing.T, cred azcore.TokenCredential, opt *ar
 				NetworkProfile: &armcompute.NetworkProfile{
 					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 						{
-							SubResource: armcompute.SubResource{
-								ID: to.StringPtr(*nicResp.ID),
-							},
+							ID: to.StringPtr(*nicResp.ID),
 						},
 					},
 				},

@@ -36,9 +36,7 @@ func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -74,9 +72,7 @@ func TestAvailabilitySetsClient_Delete(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -116,9 +112,7 @@ func TestAvailabilitySetsClient_Get(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -158,9 +152,7 @@ func TestAvailabilitySetsClient_List(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -199,9 +191,7 @@ func TestAvailabilitySetsClient_ListAvailableSizes(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -241,9 +231,7 @@ func TestAvailabilitySetsClient_ListBySubscription(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -283,9 +271,7 @@ func TestAvailabilitySetsClient_Update(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySet{
-			Resource: armcompute.Resource{
-				Location: to.StringPtr("westus"),
-			},
+			Location: to.StringPtr("westus"),
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
 			},
@@ -304,10 +290,8 @@ func TestAvailabilitySetsClient_Update(t *testing.T) {
 		rgName,
 		name,
 		armcompute.AvailabilitySetUpdate{
-			UpdateResource: armcompute.UpdateResource{
-				Tags: map[string]*string{
-					"tag": to.StringPtr("value"),
-				},
+			Tags: map[string]*string{
+				"tag": to.StringPtr("value"),
 			},
 		},
 		nil,

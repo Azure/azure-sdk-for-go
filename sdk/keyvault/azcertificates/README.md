@@ -396,7 +396,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [certificate_client_docs]: https://aka.ms/azsdk/go/azcertificates
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://aka.ms/azsdk/go/azcertificates
-[certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azcertificates/client
+[certificates_client_src]: https://aka.ms/azsdk/go/azcertificates
 [certificates_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azcertificates/example_test.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 

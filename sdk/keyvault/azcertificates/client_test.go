@@ -9,11 +9,13 @@ package azcertificates
 import (
 	"context"
 	"crypto/rand"
-	"crypto/rsa"
 	"crypto/x509"
-	"crypto/x509/pkix"
+	"encoding/base64"
+	"encoding/pem"
 	"fmt"
+	"io/ioutil"
 	"math/big"
+	"strings"
 	"testing"
 	"time"
 
@@ -526,15 +528,16 @@ func TestCRUDOperations(t *testing.T) {
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
 }
 
+// https://stackoverflow.com/questions/42643048/signing-certificate-request-with-certificate-authority
+// Much of this is thanks to this response, thanks @krostar
 func TestMergeCertificate(t *testing.T) {
-	t.Skip()
 	stop := startTest(t)
 	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	certName, err := createRandomName(t, "mergeCert")
+	certName, err := createRandomName(t, "mergeCertificate")
 	require.NoError(t, err)
 
 	certPolicy := CertificatePolicy{
@@ -547,75 +550,62 @@ func TestMergeCertificate(t *testing.T) {
 		},
 	}
 
-	// read testdata/ca.crt
-	// data, err := os.ReadFile("testdata/ca.crt")
-	// require.NoError(t, err)
-	// caCert, err := x509.ParseCertificate(data)
-	// require.NoError(t, err)
+	// Load public key
+	data, err := ioutil.ReadFile("testdata/ca.crt")
+	require.NoError(t, err)
+	block, _ := pem.Decode(data)
+	require.NotNil(t, block)
+	caCert, err := x509.ParseCertificate(block.Bytes)
+	require.NoError(t, err)
 
-	// data, err = os.ReadFile("testdata/ca.key")
-	// require.NoError(t, err)
-	// pkey, err := x509.ParseECPrivateKey(data)
-	// require.NoError(t, err)
+	data, err = ioutil.ReadFile("testdata/ca.key")
+	require.NoError(t, err)
+	pkeyBlock, _ := pem.Decode(data)
+	require.NotNil(t, pkeyBlock)
+	require.Equal(t, pkeyBlock.Type, "RSA PRIVATE KEY")
+	pkey, err := x509.ParsePKCS1PrivateKey(pkeyBlock.Bytes)
+	require.NoError(t, err)
 
 	resp, err := client.BeginCreateCertificate(ctx, certName, certPolicy, nil)
 	require.NoError(t, err)
-	pollerResp, err := resp.PollUntilDone(ctx, time.Second)
+	_, err = resp.PollUntilDone(ctx, time.Second)
+	require.NoError(t, err)
+	defer cleanUp(t, client, certName)
+
+	certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
 	require.NoError(t, err)
 
-	serviceCert, err := x509.ParseCertificate(pollerResp.Csr)
+	mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
+	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
+
+	// load certificate request
+	csrblock, _ := pem.Decode([]byte(csr))
+	require.NotNil(t, csrblock)
+	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
 	require.NoError(t, err)
-	_ = serviceCert
+	require.NoError(t, req.CheckSignature())
 
-	// certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
-	// require.NoError(t, err)
-
-	// mid := base64.StdEncoding.EncodeToString(certOpResp.Csr)
-	// csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
-
-	ca := &x509.Certificate{
-		SerialNumber: big.NewInt(2019),
-		Subject: pkix.Name{
-			Organization:  []string{"Company, INC."},
-			Country:       []string{"US"},
-			Province:      []string{""},
-			Locality:      []string{"San Francisco"},
-			StreetAddress: []string{"Golden Gate Bridge"},
-			PostalCode:    []string{"94016"},
-		},
-		NotBefore:             time.Now(),
-		NotAfter:              time.Now().AddDate(10, 0, 0),
-		IsCA:                  true,
-		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-		BasicConstraintsValid: true,
+	cert := x509.Certificate{
+		SerialNumber:       big.NewInt(1),
+		NotBefore:          time.Now(),
+		NotAfter:           time.Now().Add(24 * time.Hour),
+		Issuer:             caCert.Issuer,
+		Subject:            req.Subject,
+		PublicKey:          req.PublicKey,
+		PublicKeyAlgorithm: req.PublicKeyAlgorithm,
+		Signature:          req.Signature,
+		SignatureAlgorithm: req.SignatureAlgorithm,
 	}
 
-	// create our private and public key
-	caPrivKey, err := rsa.GenerateKey(rand.Reader, 4096)
+	certBytes, err := x509.CreateCertificate(rand.Reader, &cert, caCert, req.PublicKey, pkey)
 	require.NoError(t, err)
 
-	// create the CA
-	caBytes, err := x509.CreateCertificate(rand.Reader, ca, ca, &caPrivKey.PublicKey, caPrivKey)
-	require.NoError(t, err)
+	// Need to strip the BEGIN/END from the certificate
+	certificateString := string(certBytes)
+	certificateString = strings.Replace(certificateString, "-----Begin Certificate-----", "", 1)
+	certificateString = strings.Replace(certificateString, "-----End Certificate-----", "", 1)
 
-	// // pem encode
-	// caPEM := new(bytes.Buffer)
-	// pem.Encode(caPEM, &pem.Block{
-	// 	Type:  "CERTIFICATE",
-	// 	Bytes: caBytes,
-	// })
-
-	// caPrivKeyPEM := new(bytes.Buffer)
-	// pem.Encode(caPrivKeyPEM, &pem.Block{
-	// 	Type:  "RSA PRIVATE KEY",
-	// 	Bytes: x509.MarshalPKCS1PrivateKey(caPrivKey),
-	// })
-
-	var mergedCerts [][]byte
-	mergedCerts = append(mergedCerts, caBytes)
-
-	_, err = client.MergeCertificate(ctx, certName, mergedCerts, nil)
+	_, err = client.MergeCertificate(ctx, certName, [][]byte{[]byte(certificateString)}, nil)
 	require.NoError(t, err)
 }
 
@@ -710,9 +700,13 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 	count := 0
 	for {
 		_, err = client.RestoreCertificateBackup(ctx, certificateBackupResp.Value, nil)
-		if err == nil {break}
+		if err == nil {
+			break
+		}
 		count += 1
-		if count > 25 {require.NoError(t, err)}
+		if count > 25 {
+			require.NoError(t, err)
+		}
 		longDelay()
 	}
 }

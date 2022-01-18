@@ -716,3 +716,44 @@ func TestClient_RestoreCertificateBackup(t *testing.T) {
 		longDelay()
 	}
 }
+
+func TestClient_ListDeletedCertificates(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	createdCount := 0
+	for i := 0; i < 4; i++ {
+		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		require.NoError(t, err)
+		createCert(t, client, name)
+		createdCount++
+	}
+
+	pager := client.ListDeletedCertificates(nil)
+	deletedCount := 0
+	for pager.NextPage(ctx) {
+		deletedCount += len(pager.PageResponse().Value)
+	}
+	require.Equal(t, 0, deletedCount)
+	require.NoError(t, pager.Err())
+
+	for i := 0; i < 4; i++ {
+		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		require.NoError(t, err)
+		poller, err := client.BeginDeleteCertificate(ctx, name, nil)
+		require.NoError(t, err)
+		_, err = poller.PollUntilDone(ctx, delay())
+		require.NoError(t, err)
+	}
+
+	pager = client.ListDeletedCertificates(nil)
+	deletedCount = 0
+	for pager.NextPage(ctx) {
+		deletedCount += len(pager.PageResponse().Value)
+	}
+	require.Equal(t, 4, createdCount)
+	require.NoError(t, pager.Err())
+}

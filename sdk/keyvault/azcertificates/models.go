@@ -371,6 +371,18 @@ type DeletedCertificateBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
+// DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
+type DeletedCertificateItem struct {
+	CertificateItem
+	// The url of the recovery object, used to identify and recover the deleted certificate.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// READ-ONLY; The time when the certificate was deleted, in UTC
+	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+}
 // IssuerAttributes - The attributes of an issuer managed by the Key Vault service.
 type IssuerAttributes struct {
 	// Determines whether the issuer is enabled.

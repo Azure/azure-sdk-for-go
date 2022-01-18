@@ -346,7 +346,7 @@ type DeleteCertificatePoller interface {
 
 // The poller returned by the Client.BeginDeleteCertificate operation
 type beginDeleteCertificatePoller struct {
-	certificateName string // This is the certificate to Poll for in GetDeletedKey
+	certificateName string // This is the certificate to Poll for in GetDeletedCertificate
 	vaultURL        string
 	client          *generated.KeyVaultClient
 	deleteResponse  generated.KeyVaultClientDeleteCertificateResponse
@@ -1477,4 +1477,92 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certName st
 		Poller:        b,
 		RawResponse:   getResp.RawResponse,
 	}, nil
+}
+
+// ListDeletedCertificatesPager is the interface for the Client.ListDeletedCertificates operation
+type ListDeletedCertificatesPager interface {
+	// PageResponse returns the current ListDeletedCertificatesPage
+	PageResponse() ListDeletedCertificatesPage
+
+	// Err returns true if there is another page of data available, false if not
+	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+}
+
+// ListDeletedCertificatesPager is the pager returned by Client.ListDeletedCertificates
+type listDeletedCertificatesPager struct {
+	genPager *generated.KeyVaultClientGetDeletedCertificatesPager
+}
+
+// PageResponse returns the current page of results
+func (l *listDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPage {
+	resp := l.genPager.PageResponse()
+
+	var vals []*DeletedCertificateItem
+
+	for _, v := range resp.Value {
+		vals = append(vals, &DeletedCertificateItem{
+			RecoveryID:         v.RecoveryID,
+			DeletedDate:        v.DeletedDate,
+			ScheduledPurgeDate: v.ScheduledPurgeDate,
+			CertificateItem: CertificateItem{
+				Attributes:     certificateAttributesFromGenerated(v.Attributes),
+				ID:             v.ID,
+				Tags:           v.Tags,
+				X509Thumbprint: v.X509Thumbprint,
+			},
+		})
+	}
+
+	return ListDeletedCertificatesPage{
+		RawResponse: resp.RawResponse,
+		Value:       vals,
+	}
+}
+
+// Err returns an error if the last operation resulted in an error.
+func (l *listDeletedCertificatesPager) Err() error {
+	return l.genPager.Err()
+}
+
+// NextPage fetches the next page of results.
+func (l *listDeletedCertificatesPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+// ListDeletedCertificatesPage holds the data for a single page.
+type ListDeletedCertificatesPage struct {
+	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
+	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ListDeletedCertificatesOptions contains the optional parameters for the Client.ListDeletedCertificates operation.
+type ListDeletedCertificatesOptions struct {
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
+}
+
+// Convert publicly exposed options to the generated version.a
+func (l *ListDeletedCertificatesOptions) toGenerated() *generated.KeyVaultClientGetDeletedCertificatesOptions {
+	return &generated.KeyVaultClientGetDeletedCertificatesOptions{
+		Maxresults: l.MaxResults,
+	}
+}
+
+// ListDeletedCertificates retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
+// This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can
+// only be enabled on soft-delete enabled vaults.
+func (c *Client) ListDeletedCertificates(options *ListDeletedCertificatesOptions) ListDeletedCertificatesPager {
+	if options == nil {
+		options = &ListDeletedCertificatesOptions{}
+	}
+
+	return &listDeletedCertificatesPager{
+		genPager: c.genClient.GetDeletedCertificates(c.vaultURL, options.toGenerated()),
+	}
 }

@@ -10,7 +10,6 @@ package armsynapse
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,47 @@ import (
 // KustoOperationsClient contains the methods for the KustoOperations group.
 // Don't use this type directly, use NewKustoOperationsClient() instead.
 type KustoOperationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewKustoOperationsClient creates a new instance of KustoOperationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKustoOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *KustoOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KustoOperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KustoOperationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists available operations for the Kusto sub-resources inside Microsoft.Synapse provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *KustoOperationsClient) List(options *KustoOperationsListOptions) *KustoOperationsListPager {
-	return &KustoOperationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - KustoOperationsClientListOptions contains the optional parameters for the KustoOperationsClient.List method.
+func (client *KustoOperationsClient) List(options *KustoOperationsClientListOptions) *KustoOperationsClientListPager {
+	return &KustoOperationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp KustoOperationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp KustoOperationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *KustoOperationsClient) listCreateRequest(ctx context.Context, options *KustoOperationsListOptions) (*policy.Request, error) {
+func (client *KustoOperationsClient) listCreateRequest(ctx context.Context, options *KustoOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Synapse/kustooperations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +73,10 @@ func (client *KustoOperationsClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *KustoOperationsClient) listHandleResponse(resp *http.Response) (KustoOperationsListResponse, error) {
-	result := KustoOperationsListResponse{RawResponse: resp}
+func (client *KustoOperationsClient) listHandleResponse(resp *http.Response) (KustoOperationsClientListResponse, error) {
+	result := KustoOperationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return KustoOperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return KustoOperationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *KustoOperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

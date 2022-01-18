@@ -29,12 +29,16 @@ func ExampleWorkspacesClient_ListByResourceGroup() {
 	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Workspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,7 +58,7 @@ func ExampleWorkspacesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
@@ -87,7 +91,7 @@ func ExampleWorkspacesClient_BeginUpdate() {
 					LinkedAccessCheckOnTargetResource: to.BoolPtr(false),
 					PreventDataExfiltration:           to.BoolPtr(false),
 				},
-				PublicNetworkAccess: armsynapse.WorkspacePublicNetworkAccessEnabled.ToPtr(),
+				PublicNetworkAccess: armsynapse.WorkspacePublicNetworkAccess("Enabled").ToPtr(),
 				PurviewConfiguration: &armsynapse.PurviewConfiguration{
 					PurviewResourceID: to.StringPtr("<purview-resource-id>"),
 				},
@@ -114,7 +118,7 @@ func ExampleWorkspacesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateWorkspace.json
@@ -129,11 +133,9 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		armsynapse.Workspace{
-			TrackedResource: armsynapse.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"key": to.StringPtr("value"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"key": to.StringPtr("value"),
 			},
 			Identity: &armsynapse.ManagedIdentity{
 				Type: armsynapse.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
@@ -169,7 +171,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 					LinkedAccessCheckOnTargetResource: to.BoolPtr(false),
 					PreventDataExfiltration:           to.BoolPtr(false),
 				},
-				PublicNetworkAccess: armsynapse.WorkspacePublicNetworkAccessEnabled.ToPtr(),
+				PublicNetworkAccess: armsynapse.WorkspacePublicNetworkAccess("Enabled").ToPtr(),
 				PurviewConfiguration: &armsynapse.PurviewConfiguration{
 					PurviewResourceID: to.StringPtr("<purview-resource-id>"),
 				},
@@ -194,7 +196,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Workspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspace.json
@@ -212,10 +214,11 @@ func ExampleWorkspacesClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.WorkspacesClientDeleteResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInSubscription.json
@@ -227,12 +230,16 @@ func ExampleWorkspacesClient_List() {
 	ctx := context.Background()
 	client := armsynapse.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Workspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

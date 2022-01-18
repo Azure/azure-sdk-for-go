@@ -24,11 +24,12 @@ func ExampleRecommendationTypesClient_List() {
 	}
 	ctx := context.Background()
 	client := armiotsecurity.NewRecommendationTypesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RecommendationTypesClientListResult)
 }
 
 // x-ms-original-file: specification/iotsecurity/resource-manager/Microsoft.IoTSecurity/preview/2021-07-01-preview/examples/RecommendationTypes/GetRecommendationType.json
@@ -45,5 +46,5 @@ func ExampleRecommendationTypesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecommendationType.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RecommendationTypesClientGetResult)
 }

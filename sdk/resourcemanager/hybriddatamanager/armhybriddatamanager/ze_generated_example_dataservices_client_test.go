@@ -27,12 +27,16 @@ func ExampleDataServicesClient_ListByDataManager() {
 	pager := client.ListByDataManager("<resource-group-name>",
 		"<data-manager-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataService.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExampleDataServicesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataService.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DataServicesClientGetResult)
 }

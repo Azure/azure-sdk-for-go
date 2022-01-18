@@ -26,13 +26,17 @@ func ExampleIotRecommendationsClient_List() {
 	client := armiotsecurity.NewIotRecommendationsClient("<subscription-id>",
 		"<iot-defender-location>", cred, nil)
 	pager := client.List("<device-group-name>",
-		&armiotsecurity.IotRecommendationsListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armiotsecurity.IotRecommendationsClientListOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecommendationModel.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExampleIotRecommendationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecommendationModel.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.IotRecommendationsClientGetResult)
 }

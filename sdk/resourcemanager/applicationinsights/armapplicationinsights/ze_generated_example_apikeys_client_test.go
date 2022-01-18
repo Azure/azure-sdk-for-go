@@ -25,13 +25,14 @@ func ExampleAPIKeysClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewAPIKeysClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.APIKeysClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysCreate.json
@@ -57,7 +58,7 @@ func ExampleAPIKeysClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponentAPIKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.APIKeysClientCreateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysDelete.json
@@ -76,7 +77,7 @@ func ExampleAPIKeysClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponentAPIKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.APIKeysClientDeleteResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysGet.json
@@ -95,5 +96,5 @@ func ExampleAPIKeysClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponentAPIKey.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.APIKeysClientGetResult)
 }

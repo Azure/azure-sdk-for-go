@@ -93,23 +93,31 @@ func ConstantlyUpdateQueue(ctx context.Context, adminClient *admin.Client, queue
 	ticker := time.NewTicker(updateInterval)
 
 	for range ticker.C {
-		resp, err := adminClient.GetQueue(ctx, queue, nil)
-
-		if err != nil {
+		if err := ForceQueueDetach(ctx, adminClient, queue); err != nil {
 			return err
 		}
+	}
 
-		if *resp.MaxDeliveryCount == 10 {
-			*resp.MaxDeliveryCount = 11
-		} else {
-			*resp.MaxDeliveryCount = 10
-		}
+	return nil
+}
 
-		_, err = adminClient.UpdateQueue(ctx, queue, resp.QueueProperties, nil)
+func ForceQueueDetach(ctx context.Context, adminClient *admin.Client, queue string) error {
+	resp, err := adminClient.GetQueue(ctx, queue, nil)
 
-		if err != nil {
-			return err
-		}
+	if err != nil {
+		return err
+	}
+
+	if *resp.MaxDeliveryCount == 10 {
+		*resp.MaxDeliveryCount = 11
+	} else {
+		*resp.MaxDeliveryCount = 10
+	}
+
+	_, err = adminClient.UpdateQueue(ctx, queue, resp.QueueProperties, nil)
+
+	if err != nil {
+		return err
 	}
 
 	return nil

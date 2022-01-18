@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureStorage/ProtectionContainers_List.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureStorage/ProtectionContainers_List.json
 func ExampleBackupProtectionContainersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,13 +27,17 @@ func ExampleBackupProtectionContainersClient_List() {
 	client := armrecoveryservicesbackup.NewBackupProtectionContainersClient("<subscription-id>", cred, nil)
 	pager := client.List("<vault-name>",
 		"<resource-group-name>",
-		&armrecoveryservicesbackup.BackupProtectionContainersListOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+		&armrecoveryservicesbackup.BackupProtectionContainersClientListOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ProtectionContainerResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -27,7 +27,7 @@ func ExampleKustoPoolDataConnectionsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolDataConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<kusto-pool-name>",
@@ -40,6 +40,7 @@ func ExampleKustoPoolDataConnectionsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolDataConnectionsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionValidation.json
@@ -58,19 +59,18 @@ func ExampleKustoPoolDataConnectionsClient_BeginDataConnectionValidation() {
 		armsynapse.DataConnectionValidation{
 			DataConnectionName: to.StringPtr("<data-connection-name>"),
 			Properties: &armsynapse.EventHubDataConnection{
-				DataConnection: armsynapse.DataConnection{
-					Kind: armsynapse.DataConnectionKindEventHub.ToPtr(),
-				},
+				Kind: armsynapse.DataConnectionKind("EventHub").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolDataConnectionsClientDataConnectionValidationResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsListByDatabase.json
@@ -81,7 +81,7 @@ func ExampleKustoPoolDataConnectionsClient_ListByDatabase() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewKustoPoolDataConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByDatabase(ctx,
+	res, err := client.ListByDatabase(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<kusto-pool-name>",
@@ -90,6 +90,7 @@ func ExampleKustoPoolDataConnectionsClient_ListByDatabase() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.KustoPoolDataConnectionsClientListByDatabaseResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsGet.json
@@ -110,7 +111,7 @@ func ExampleKustoPoolDataConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataConnectionClassification.GetDataConnection().ID: %s\n", *res.GetDataConnection().ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolDataConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsCreateOrUpdate.json
@@ -128,10 +129,8 @@ func ExampleKustoPoolDataConnectionsClient_BeginCreateOrUpdate() {
 		"<database-name>",
 		"<data-connection-name>",
 		&armsynapse.EventHubDataConnection{
-			DataConnection: armsynapse.DataConnection{
-				Kind:     armsynapse.DataConnectionKindEventHub.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     armsynapse.DataConnectionKind("EventHub").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armsynapse.EventHubConnectionProperties{
 				ConsumerGroup:      to.StringPtr("<consumer-group>"),
 				EventHubResourceID: to.StringPtr("<event-hub-resource-id>"),
@@ -145,7 +144,7 @@ func ExampleKustoPoolDataConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataConnectionClassification.GetDataConnection().ID: %s\n", *res.GetDataConnection().ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolDataConnectionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsUpdate.json
@@ -163,10 +162,8 @@ func ExampleKustoPoolDataConnectionsClient_BeginUpdate() {
 		"<database-name>",
 		"<data-connection-name>",
 		&armsynapse.EventHubDataConnection{
-			DataConnection: armsynapse.DataConnection{
-				Kind:     armsynapse.DataConnectionKindEventHub.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     armsynapse.DataConnectionKind("EventHub").ToPtr(),
+			Location: to.StringPtr("<location>"),
 			Properties: &armsynapse.EventHubConnectionProperties{
 				ConsumerGroup:      to.StringPtr("<consumer-group>"),
 				EventHubResourceID: to.StringPtr("<event-hub-resource-id>"),
@@ -180,7 +177,7 @@ func ExampleKustoPoolDataConnectionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DataConnectionClassification.GetDataConnection().ID: %s\n", *res.GetDataConnection().ID)
+	log.Printf("Response result: %#v\n", res.KustoPoolDataConnectionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsDelete.json

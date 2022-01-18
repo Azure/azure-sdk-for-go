@@ -25,17 +25,18 @@ func ExampleAnalyticsItemsClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePathAnalyticsItems,
-		&armapplicationinsights.AnalyticsItemsListOptions{Scope: nil,
+		armapplicationinsights.ItemScopePath("analyticsItems"),
+		&armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
 			Type:           nil,
 			IncludeContent: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AnalyticsItemsClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemGet.json
@@ -49,14 +50,14 @@ func ExampleAnalyticsItemsClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePathAnalyticsItems,
-		&armapplicationinsights.AnalyticsItemsGetOptions{ID: to.StringPtr("<id>"),
+		armapplicationinsights.ItemScopePath("analyticsItems"),
+		&armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.StringPtr("<id>"),
 			Name: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponentAnalyticsItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AnalyticsItemsClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemPut.json
@@ -70,18 +71,18 @@ func ExampleAnalyticsItemsClient_Put() {
 	res, err := client.Put(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePathAnalyticsItems,
-		armapplicationinsights.ApplicationInsightsComponentAnalyticsItem{
+		armapplicationinsights.ItemScopePath("analyticsItems"),
+		armapplicationinsights.ComponentAnalyticsItem{
 			Content: to.StringPtr("<content>"),
 			Name:    to.StringPtr("<name>"),
-			Scope:   armapplicationinsights.ItemScopeShared.ToPtr(),
-			Type:    armapplicationinsights.ItemTypeQuery.ToPtr(),
+			Scope:   armapplicationinsights.ItemScope("shared").ToPtr(),
+			Type:    armapplicationinsights.ItemType("query").ToPtr(),
 		},
-		&armapplicationinsights.AnalyticsItemsPutOptions{OverrideItem: nil})
+		&armapplicationinsights.AnalyticsItemsClientPutOptions{OverrideItem: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplicationInsightsComponentAnalyticsItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AnalyticsItemsClientPutResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemDelete.json
@@ -95,8 +96,8 @@ func ExampleAnalyticsItemsClient_Delete() {
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ItemScopePathAnalyticsItems,
-		&armapplicationinsights.AnalyticsItemsDeleteOptions{ID: to.StringPtr("<id>"),
+		armapplicationinsights.ItemScopePath("analyticsItems"),
+		&armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.StringPtr("<id>"),
 			Name: nil,
 		})
 	if err != nil {

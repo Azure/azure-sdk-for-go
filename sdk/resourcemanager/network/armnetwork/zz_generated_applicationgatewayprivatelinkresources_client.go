@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,52 @@ import (
 // ApplicationGatewayPrivateLinkResourcesClient contains the methods for the ApplicationGatewayPrivateLinkResources group.
 // Don't use this type directly, use NewApplicationGatewayPrivateLinkResourcesClient() instead.
 type ApplicationGatewayPrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationGatewayPrivateLinkResourcesClient creates a new instance of ApplicationGatewayPrivateLinkResourcesClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationGatewayPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationGatewayPrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationGatewayPrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationGatewayPrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all private link resources on an application gateway.
-// If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) *ApplicationGatewayPrivateLinkResourcesListPager {
-	return &ApplicationGatewayPrivateLinkResourcesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// applicationGatewayName - The name of the application gateway.
+// options - ApplicationGatewayPrivateLinkResourcesClientListOptions contains the optional parameters for the ApplicationGatewayPrivateLinkResourcesClient.List
+// method.
+func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesClientListOptions) *ApplicationGatewayPrivateLinkResourcesClientListPager {
+	return &ApplicationGatewayPrivateLinkResourcesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 		},
-		advancer: func(ctx context.Context, resp ApplicationGatewayPrivateLinkResourcesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ApplicationGatewayPrivateLinkResourcesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ApplicationGatewayPrivateLinkResourceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) (*policy.Request, error) {
+func (client *ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,7 +83,7 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +95,10 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ct
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (ApplicationGatewayPrivateLinkResourcesListResponse, error) {
-	result := ApplicationGatewayPrivateLinkResourcesListResponse{RawResponse: resp}
+func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (ApplicationGatewayPrivateLinkResourcesClientListResponse, error) {
+	result := ApplicationGatewayPrivateLinkResourcesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayPrivateLinkResourceListResult); err != nil {
-		return ApplicationGatewayPrivateLinkResourcesListResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationGatewayPrivateLinkResourcesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

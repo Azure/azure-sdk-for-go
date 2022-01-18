@@ -14,6 +14,7 @@ import (
 
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
@@ -27,12 +28,16 @@ func ExamplePrivateLinkScopesClient_List() {
 	ctx := context.Background()
 	client := armmonitor.NewPrivateLinkScopesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AzureMonitorPrivateLinkScope.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,12 +52,16 @@ func ExamplePrivateLinkScopesClient_ListByResourceGroup() {
 	client := armmonitor.NewPrivateLinkScopesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("AzureMonitorPrivateLinkScope.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -93,7 +102,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureMonitorPrivateLinkScope.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkScopesClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2019-10-17-preview/examples/PrivateLinkScopesCreate.json
@@ -107,12 +116,15 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<scope-name>",
-		armmonitor.AzureMonitorPrivateLinkScope{},
+		armmonitor.AzureMonitorPrivateLinkScope{
+			Location:   to.StringPtr("<location>"),
+			Properties: &armmonitor.AzureMonitorPrivateLinkScopeProperties{},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureMonitorPrivateLinkScope.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkScopesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2019-10-17-preview/examples/PrivateLinkScopesUpdateTagsOnly.json
@@ -126,10 +138,15 @@ func ExamplePrivateLinkScopesClient_UpdateTags() {
 	res, err := client.UpdateTags(ctx,
 		"<resource-group-name>",
 		"<scope-name>",
-		armmonitor.TagsResource{},
+		armmonitor.TagsResource{
+			Tags: map[string]*string{
+				"Tag1": to.StringPtr("Value1"),
+				"Tag2": to.StringPtr("Value2"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AzureMonitorPrivateLinkScope.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateLinkScopesClientUpdateTagsResult)
 }

@@ -15,154 +15,166 @@ import (
 	"time"
 )
 
-// MigrationRecoveryPointsGetResponse contains the response from method MigrationRecoveryPoints.Get.
-type MigrationRecoveryPointsGetResponse struct {
-	MigrationRecoveryPointsGetResult
+// MigrationRecoveryPointsClientGetResponse contains the response from method MigrationRecoveryPointsClient.Get.
+type MigrationRecoveryPointsClientGetResponse struct {
+	MigrationRecoveryPointsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MigrationRecoveryPointsGetResult contains the result from method MigrationRecoveryPoints.Get.
-type MigrationRecoveryPointsGetResult struct {
+// MigrationRecoveryPointsClientGetResult contains the result from method MigrationRecoveryPointsClient.Get.
+type MigrationRecoveryPointsClientGetResult struct {
 	MigrationRecoveryPoint
 }
 
-// MigrationRecoveryPointsListByReplicationMigrationItemsResponse contains the response from method MigrationRecoveryPoints.ListByReplicationMigrationItems.
-type MigrationRecoveryPointsListByReplicationMigrationItemsResponse struct {
-	MigrationRecoveryPointsListByReplicationMigrationItemsResult
+// MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse contains the response from method MigrationRecoveryPointsClient.ListByReplicationMigrationItems.
+type MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse struct {
+	MigrationRecoveryPointsClientListByReplicationMigrationItemsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MigrationRecoveryPointsListByReplicationMigrationItemsResult contains the result from method MigrationRecoveryPoints.ListByReplicationMigrationItems.
-type MigrationRecoveryPointsListByReplicationMigrationItemsResult struct {
+// MigrationRecoveryPointsClientListByReplicationMigrationItemsResult contains the result from method MigrationRecoveryPointsClient.ListByReplicationMigrationItems.
+type MigrationRecoveryPointsClientListByReplicationMigrationItemsResult struct {
 	MigrationRecoveryPointCollection
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationsDiscoveryCollection
 }
 
-// RecoveryPointsGetResponse contains the response from method RecoveryPoints.Get.
-type RecoveryPointsGetResponse struct {
-	RecoveryPointsGetResult
+// RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.
+type RecoveryPointsClientGetResponse struct {
+	RecoveryPointsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecoveryPointsGetResult contains the result from method RecoveryPoints.Get.
-type RecoveryPointsGetResult struct {
+// RecoveryPointsClientGetResult contains the result from method RecoveryPointsClient.Get.
+type RecoveryPointsClientGetResult struct {
 	RecoveryPoint
 }
 
-// RecoveryPointsListByReplicationProtectedItemsResponse contains the response from method RecoveryPoints.ListByReplicationProtectedItems.
-type RecoveryPointsListByReplicationProtectedItemsResponse struct {
-	RecoveryPointsListByReplicationProtectedItemsResult
+// RecoveryPointsClientListByReplicationProtectedItemsResponse contains the response from method RecoveryPointsClient.ListByReplicationProtectedItems.
+type RecoveryPointsClientListByReplicationProtectedItemsResponse struct {
+	RecoveryPointsClientListByReplicationProtectedItemsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecoveryPointsListByReplicationProtectedItemsResult contains the result from method RecoveryPoints.ListByReplicationProtectedItems.
-type RecoveryPointsListByReplicationProtectedItemsResult struct {
+// RecoveryPointsClientListByReplicationProtectedItemsResult contains the result from method RecoveryPointsClient.ListByReplicationProtectedItems.
+type RecoveryPointsClientListByReplicationProtectedItemsResult struct {
 	RecoveryPointCollection
 }
 
-// ReplicationAlertSettingsCreateResponse contains the response from method ReplicationAlertSettings.Create.
-type ReplicationAlertSettingsCreateResponse struct {
-	ReplicationAlertSettingsCreateResult
+// ReplicationAlertSettingsClientCreateResponse contains the response from method ReplicationAlertSettingsClient.Create.
+type ReplicationAlertSettingsClientCreateResponse struct {
+	ReplicationAlertSettingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationAlertSettingsCreateResult contains the result from method ReplicationAlertSettings.Create.
-type ReplicationAlertSettingsCreateResult struct {
+// ReplicationAlertSettingsClientCreateResult contains the result from method ReplicationAlertSettingsClient.Create.
+type ReplicationAlertSettingsClientCreateResult struct {
 	Alert
 }
 
-// ReplicationAlertSettingsGetResponse contains the response from method ReplicationAlertSettings.Get.
-type ReplicationAlertSettingsGetResponse struct {
-	ReplicationAlertSettingsGetResult
+// ReplicationAlertSettingsClientGetResponse contains the response from method ReplicationAlertSettingsClient.Get.
+type ReplicationAlertSettingsClientGetResponse struct {
+	ReplicationAlertSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationAlertSettingsGetResult contains the result from method ReplicationAlertSettings.Get.
-type ReplicationAlertSettingsGetResult struct {
+// ReplicationAlertSettingsClientGetResult contains the result from method ReplicationAlertSettingsClient.Get.
+type ReplicationAlertSettingsClientGetResult struct {
 	Alert
 }
 
-// ReplicationAlertSettingsListResponse contains the response from method ReplicationAlertSettings.List.
-type ReplicationAlertSettingsListResponse struct {
-	ReplicationAlertSettingsListResult
+// ReplicationAlertSettingsClientListResponse contains the response from method ReplicationAlertSettingsClient.List.
+type ReplicationAlertSettingsClientListResponse struct {
+	ReplicationAlertSettingsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationAlertSettingsListResult contains the result from method ReplicationAlertSettings.List.
-type ReplicationAlertSettingsListResult struct {
+// ReplicationAlertSettingsClientListResult contains the result from method ReplicationAlertSettingsClient.List.
+type ReplicationAlertSettingsClientListResult struct {
 	AlertCollection
 }
 
-// ReplicationEligibilityResultsGetResponse contains the response from method ReplicationEligibilityResults.Get.
-type ReplicationEligibilityResultsGetResponse struct {
-	ReplicationEligibilityResultsGetResult
+// ReplicationAppliancesClientListResponse contains the response from method ReplicationAppliancesClient.List.
+type ReplicationAppliancesClientListResponse struct {
+	ReplicationAppliancesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationEligibilityResultsGetResult contains the result from method ReplicationEligibilityResults.Get.
-type ReplicationEligibilityResultsGetResult struct {
+// ReplicationAppliancesClientListResult contains the result from method ReplicationAppliancesClient.List.
+type ReplicationAppliancesClientListResult struct {
+	ApplianceCollection
+}
+
+// ReplicationEligibilityResultsClientGetResponse contains the response from method ReplicationEligibilityResultsClient.Get.
+type ReplicationEligibilityResultsClientGetResponse struct {
+	ReplicationEligibilityResultsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReplicationEligibilityResultsClientGetResult contains the result from method ReplicationEligibilityResultsClient.Get.
+type ReplicationEligibilityResultsClientGetResult struct {
 	ReplicationEligibilityResults
 }
 
-// ReplicationEligibilityResultsListResponse contains the response from method ReplicationEligibilityResults.List.
-type ReplicationEligibilityResultsListResponse struct {
-	ReplicationEligibilityResultsListResult
+// ReplicationEligibilityResultsClientListResponse contains the response from method ReplicationEligibilityResultsClient.List.
+type ReplicationEligibilityResultsClientListResponse struct {
+	ReplicationEligibilityResultsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationEligibilityResultsListResult contains the result from method ReplicationEligibilityResults.List.
-type ReplicationEligibilityResultsListResult struct {
+// ReplicationEligibilityResultsClientListResult contains the result from method ReplicationEligibilityResultsClient.List.
+type ReplicationEligibilityResultsClientListResult struct {
 	ReplicationEligibilityResultsCollection
 }
 
-// ReplicationEventsGetResponse contains the response from method ReplicationEvents.Get.
-type ReplicationEventsGetResponse struct {
-	ReplicationEventsGetResult
+// ReplicationEventsClientGetResponse contains the response from method ReplicationEventsClient.Get.
+type ReplicationEventsClientGetResponse struct {
+	ReplicationEventsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationEventsGetResult contains the result from method ReplicationEvents.Get.
-type ReplicationEventsGetResult struct {
+// ReplicationEventsClientGetResult contains the result from method ReplicationEventsClient.Get.
+type ReplicationEventsClientGetResult struct {
 	Event
 }
 
-// ReplicationEventsListResponse contains the response from method ReplicationEvents.List.
-type ReplicationEventsListResponse struct {
-	ReplicationEventsListResult
+// ReplicationEventsClientListResponse contains the response from method ReplicationEventsClient.List.
+type ReplicationEventsClientListResponse struct {
+	ReplicationEventsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationEventsListResult contains the result from method ReplicationEvents.List.
-type ReplicationEventsListResult struct {
+// ReplicationEventsClientListResult contains the result from method ReplicationEventsClient.List.
+type ReplicationEventsClientListResult struct {
 	EventCollection
 }
 
-// ReplicationFabricsCheckConsistencyPollerResponse contains the response from method ReplicationFabrics.CheckConsistency.
-type ReplicationFabricsCheckConsistencyPollerResponse struct {
+// ReplicationFabricsClientCheckConsistencyPollerResponse contains the response from method ReplicationFabricsClient.CheckConsistency.
+type ReplicationFabricsClientCheckConsistencyPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsCheckConsistencyPoller
+	Poller *ReplicationFabricsClientCheckConsistencyPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -171,8 +183,8 @@ type ReplicationFabricsCheckConsistencyPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsCheckConsistencyPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsCheckConsistencyResponse, error) {
-	respType := ReplicationFabricsCheckConsistencyResponse{}
+func (l ReplicationFabricsClientCheckConsistencyPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientCheckConsistencyResponse, error) {
+	respType := ReplicationFabricsClientCheckConsistencyResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Fabric)
 	if err != nil {
 		return respType, err
@@ -181,13 +193,13 @@ func (l ReplicationFabricsCheckConsistencyPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsCheckConsistencyPollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsCheckConsistencyPollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.CheckConsistency", token, client.pl, client.checkConsistencyHandleError)
+// Resume rehydrates a ReplicationFabricsClientCheckConsistencyPollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientCheckConsistencyPollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.CheckConsistency", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsCheckConsistencyPoller{
+	poller := &ReplicationFabricsClientCheckConsistencyPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -199,22 +211,22 @@ func (l *ReplicationFabricsCheckConsistencyPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// ReplicationFabricsCheckConsistencyResponse contains the response from method ReplicationFabrics.CheckConsistency.
-type ReplicationFabricsCheckConsistencyResponse struct {
-	ReplicationFabricsCheckConsistencyResult
+// ReplicationFabricsClientCheckConsistencyResponse contains the response from method ReplicationFabricsClient.CheckConsistency.
+type ReplicationFabricsClientCheckConsistencyResponse struct {
+	ReplicationFabricsClientCheckConsistencyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsCheckConsistencyResult contains the result from method ReplicationFabrics.CheckConsistency.
-type ReplicationFabricsCheckConsistencyResult struct {
+// ReplicationFabricsClientCheckConsistencyResult contains the result from method ReplicationFabricsClient.CheckConsistency.
+type ReplicationFabricsClientCheckConsistencyResult struct {
 	Fabric
 }
 
-// ReplicationFabricsCreatePollerResponse contains the response from method ReplicationFabrics.Create.
-type ReplicationFabricsCreatePollerResponse struct {
+// ReplicationFabricsClientCreatePollerResponse contains the response from method ReplicationFabricsClient.Create.
+type ReplicationFabricsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsCreatePoller
+	Poller *ReplicationFabricsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -223,8 +235,8 @@ type ReplicationFabricsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsCreateResponse, error) {
-	respType := ReplicationFabricsCreateResponse{}
+func (l ReplicationFabricsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientCreateResponse, error) {
+	respType := ReplicationFabricsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Fabric)
 	if err != nil {
 		return respType, err
@@ -233,13 +245,13 @@ func (l ReplicationFabricsCreatePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsCreatePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationFabricsClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsCreatePoller{
+	poller := &ReplicationFabricsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -251,22 +263,22 @@ func (l *ReplicationFabricsCreatePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// ReplicationFabricsCreateResponse contains the response from method ReplicationFabrics.Create.
-type ReplicationFabricsCreateResponse struct {
-	ReplicationFabricsCreateResult
+// ReplicationFabricsClientCreateResponse contains the response from method ReplicationFabricsClient.Create.
+type ReplicationFabricsClientCreateResponse struct {
+	ReplicationFabricsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsCreateResult contains the result from method ReplicationFabrics.Create.
-type ReplicationFabricsCreateResult struct {
+// ReplicationFabricsClientCreateResult contains the result from method ReplicationFabricsClient.Create.
+type ReplicationFabricsClientCreateResult struct {
 	Fabric
 }
 
-// ReplicationFabricsDeletePollerResponse contains the response from method ReplicationFabrics.Delete.
-type ReplicationFabricsDeletePollerResponse struct {
+// ReplicationFabricsClientDeletePollerResponse contains the response from method ReplicationFabricsClient.Delete.
+type ReplicationFabricsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsDeletePoller
+	Poller *ReplicationFabricsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -275,8 +287,8 @@ type ReplicationFabricsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsDeleteResponse, error) {
-	respType := ReplicationFabricsDeleteResponse{}
+func (l ReplicationFabricsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientDeleteResponse, error) {
+	respType := ReplicationFabricsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -285,13 +297,13 @@ func (l ReplicationFabricsDeletePollerResponse) PollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsDeletePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationFabricsClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsDeletePoller{
+	poller := &ReplicationFabricsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -303,40 +315,40 @@ func (l *ReplicationFabricsDeletePollerResponse) Resume(ctx context.Context, cli
 	return nil
 }
 
-// ReplicationFabricsDeleteResponse contains the response from method ReplicationFabrics.Delete.
-type ReplicationFabricsDeleteResponse struct {
+// ReplicationFabricsClientDeleteResponse contains the response from method ReplicationFabricsClient.Delete.
+type ReplicationFabricsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsGetResponse contains the response from method ReplicationFabrics.Get.
-type ReplicationFabricsGetResponse struct {
-	ReplicationFabricsGetResult
+// ReplicationFabricsClientGetResponse contains the response from method ReplicationFabricsClient.Get.
+type ReplicationFabricsClientGetResponse struct {
+	ReplicationFabricsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsGetResult contains the result from method ReplicationFabrics.Get.
-type ReplicationFabricsGetResult struct {
+// ReplicationFabricsClientGetResult contains the result from method ReplicationFabricsClient.Get.
+type ReplicationFabricsClientGetResult struct {
 	Fabric
 }
 
-// ReplicationFabricsListResponse contains the response from method ReplicationFabrics.List.
-type ReplicationFabricsListResponse struct {
-	ReplicationFabricsListResult
+// ReplicationFabricsClientListResponse contains the response from method ReplicationFabricsClient.List.
+type ReplicationFabricsClientListResponse struct {
+	ReplicationFabricsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsListResult contains the result from method ReplicationFabrics.List.
-type ReplicationFabricsListResult struct {
+// ReplicationFabricsClientListResult contains the result from method ReplicationFabricsClient.List.
+type ReplicationFabricsClientListResult struct {
 	FabricCollection
 }
 
-// ReplicationFabricsMigrateToAADPollerResponse contains the response from method ReplicationFabrics.MigrateToAAD.
-type ReplicationFabricsMigrateToAADPollerResponse struct {
+// ReplicationFabricsClientMigrateToAADPollerResponse contains the response from method ReplicationFabricsClient.MigrateToAAD.
+type ReplicationFabricsClientMigrateToAADPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsMigrateToAADPoller
+	Poller *ReplicationFabricsClientMigrateToAADPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -345,8 +357,8 @@ type ReplicationFabricsMigrateToAADPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsMigrateToAADPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsMigrateToAADResponse, error) {
-	respType := ReplicationFabricsMigrateToAADResponse{}
+func (l ReplicationFabricsClientMigrateToAADPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientMigrateToAADResponse, error) {
+	respType := ReplicationFabricsClientMigrateToAADResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -355,13 +367,13 @@ func (l ReplicationFabricsMigrateToAADPollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsMigrateToAADPollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsMigrateToAADPollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.MigrateToAAD", token, client.pl, client.migrateToAADHandleError)
+// Resume rehydrates a ReplicationFabricsClientMigrateToAADPollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientMigrateToAADPollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.MigrateToAAD", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsMigrateToAADPoller{
+	poller := &ReplicationFabricsClientMigrateToAADPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -373,16 +385,16 @@ func (l *ReplicationFabricsMigrateToAADPollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ReplicationFabricsMigrateToAADResponse contains the response from method ReplicationFabrics.MigrateToAAD.
-type ReplicationFabricsMigrateToAADResponse struct {
+// ReplicationFabricsClientMigrateToAADResponse contains the response from method ReplicationFabricsClient.MigrateToAAD.
+type ReplicationFabricsClientMigrateToAADResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsPurgePollerResponse contains the response from method ReplicationFabrics.Purge.
-type ReplicationFabricsPurgePollerResponse struct {
+// ReplicationFabricsClientPurgePollerResponse contains the response from method ReplicationFabricsClient.Purge.
+type ReplicationFabricsClientPurgePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsPurgePoller
+	Poller *ReplicationFabricsClientPurgePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -391,8 +403,8 @@ type ReplicationFabricsPurgePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsPurgeResponse, error) {
-	respType := ReplicationFabricsPurgeResponse{}
+func (l ReplicationFabricsClientPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientPurgeResponse, error) {
+	respType := ReplicationFabricsClientPurgeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -401,13 +413,13 @@ func (l ReplicationFabricsPurgePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsPurgePollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsPurgePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.Purge", token, client.pl, client.purgeHandleError)
+// Resume rehydrates a ReplicationFabricsClientPurgePollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientPurgePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.Purge", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsPurgePoller{
+	poller := &ReplicationFabricsClientPurgePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -419,16 +431,16 @@ func (l *ReplicationFabricsPurgePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// ReplicationFabricsPurgeResponse contains the response from method ReplicationFabrics.Purge.
-type ReplicationFabricsPurgeResponse struct {
+// ReplicationFabricsClientPurgeResponse contains the response from method ReplicationFabricsClient.Purge.
+type ReplicationFabricsClientPurgeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsReassociateGatewayPollerResponse contains the response from method ReplicationFabrics.ReassociateGateway.
-type ReplicationFabricsReassociateGatewayPollerResponse struct {
+// ReplicationFabricsClientReassociateGatewayPollerResponse contains the response from method ReplicationFabricsClient.ReassociateGateway.
+type ReplicationFabricsClientReassociateGatewayPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsReassociateGatewayPoller
+	Poller *ReplicationFabricsClientReassociateGatewayPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -437,8 +449,8 @@ type ReplicationFabricsReassociateGatewayPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsReassociateGatewayPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsReassociateGatewayResponse, error) {
-	respType := ReplicationFabricsReassociateGatewayResponse{}
+func (l ReplicationFabricsClientReassociateGatewayPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientReassociateGatewayResponse, error) {
+	respType := ReplicationFabricsClientReassociateGatewayResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Fabric)
 	if err != nil {
 		return respType, err
@@ -447,13 +459,13 @@ func (l ReplicationFabricsReassociateGatewayPollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsReassociateGatewayPollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsReassociateGatewayPollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.ReassociateGateway", token, client.pl, client.reassociateGatewayHandleError)
+// Resume rehydrates a ReplicationFabricsClientReassociateGatewayPollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientReassociateGatewayPollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.ReassociateGateway", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsReassociateGatewayPoller{
+	poller := &ReplicationFabricsClientReassociateGatewayPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -465,22 +477,22 @@ func (l *ReplicationFabricsReassociateGatewayPollerResponse) Resume(ctx context.
 	return nil
 }
 
-// ReplicationFabricsReassociateGatewayResponse contains the response from method ReplicationFabrics.ReassociateGateway.
-type ReplicationFabricsReassociateGatewayResponse struct {
-	ReplicationFabricsReassociateGatewayResult
+// ReplicationFabricsClientReassociateGatewayResponse contains the response from method ReplicationFabricsClient.ReassociateGateway.
+type ReplicationFabricsClientReassociateGatewayResponse struct {
+	ReplicationFabricsClientReassociateGatewayResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsReassociateGatewayResult contains the result from method ReplicationFabrics.ReassociateGateway.
-type ReplicationFabricsReassociateGatewayResult struct {
+// ReplicationFabricsClientReassociateGatewayResult contains the result from method ReplicationFabricsClient.ReassociateGateway.
+type ReplicationFabricsClientReassociateGatewayResult struct {
 	Fabric
 }
 
-// ReplicationFabricsRenewCertificatePollerResponse contains the response from method ReplicationFabrics.RenewCertificate.
-type ReplicationFabricsRenewCertificatePollerResponse struct {
+// ReplicationFabricsClientRenewCertificatePollerResponse contains the response from method ReplicationFabricsClient.RenewCertificate.
+type ReplicationFabricsClientRenewCertificatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationFabricsRenewCertificatePoller
+	Poller *ReplicationFabricsClientRenewCertificatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -489,8 +501,8 @@ type ReplicationFabricsRenewCertificatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationFabricsRenewCertificatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsRenewCertificateResponse, error) {
-	respType := ReplicationFabricsRenewCertificateResponse{}
+func (l ReplicationFabricsClientRenewCertificatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationFabricsClientRenewCertificateResponse, error) {
+	respType := ReplicationFabricsClientRenewCertificateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Fabric)
 	if err != nil {
 		return respType, err
@@ -499,13 +511,13 @@ func (l ReplicationFabricsRenewCertificatePollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationFabricsRenewCertificatePollerResponse from the provided client and resume token.
-func (l *ReplicationFabricsRenewCertificatePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.RenewCertificate", token, client.pl, client.renewCertificateHandleError)
+// Resume rehydrates a ReplicationFabricsClientRenewCertificatePollerResponse from the provided client and resume token.
+func (l *ReplicationFabricsClientRenewCertificatePollerResponse) Resume(ctx context.Context, client *ReplicationFabricsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationFabricsClient.RenewCertificate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationFabricsRenewCertificatePoller{
+	poller := &ReplicationFabricsClientRenewCertificatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -517,22 +529,22 @@ func (l *ReplicationFabricsRenewCertificatePollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// ReplicationFabricsRenewCertificateResponse contains the response from method ReplicationFabrics.RenewCertificate.
-type ReplicationFabricsRenewCertificateResponse struct {
-	ReplicationFabricsRenewCertificateResult
+// ReplicationFabricsClientRenewCertificateResponse contains the response from method ReplicationFabricsClient.RenewCertificate.
+type ReplicationFabricsClientRenewCertificateResponse struct {
+	ReplicationFabricsClientRenewCertificateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationFabricsRenewCertificateResult contains the result from method ReplicationFabrics.RenewCertificate.
-type ReplicationFabricsRenewCertificateResult struct {
+// ReplicationFabricsClientRenewCertificateResult contains the result from method ReplicationFabricsClient.RenewCertificate.
+type ReplicationFabricsClientRenewCertificateResult struct {
 	Fabric
 }
 
-// ReplicationJobsCancelPollerResponse contains the response from method ReplicationJobs.Cancel.
-type ReplicationJobsCancelPollerResponse struct {
+// ReplicationJobsClientCancelPollerResponse contains the response from method ReplicationJobsClient.Cancel.
+type ReplicationJobsClientCancelPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationJobsCancelPoller
+	Poller *ReplicationJobsClientCancelPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -541,8 +553,8 @@ type ReplicationJobsCancelPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationJobsCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsCancelResponse, error) {
-	respType := ReplicationJobsCancelResponse{}
+func (l ReplicationJobsClientCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsClientCancelResponse, error) {
+	respType := ReplicationJobsClientCancelResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Job)
 	if err != nil {
 		return respType, err
@@ -551,13 +563,13 @@ func (l ReplicationJobsCancelPollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationJobsCancelPollerResponse from the provided client and resume token.
-func (l *ReplicationJobsCancelPollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Cancel", token, client.pl, client.cancelHandleError)
+// Resume rehydrates a ReplicationJobsClientCancelPollerResponse from the provided client and resume token.
+func (l *ReplicationJobsClientCancelPollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Cancel", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationJobsCancelPoller{
+	poller := &ReplicationJobsClientCancelPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -569,22 +581,22 @@ func (l *ReplicationJobsCancelPollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// ReplicationJobsCancelResponse contains the response from method ReplicationJobs.Cancel.
-type ReplicationJobsCancelResponse struct {
-	ReplicationJobsCancelResult
+// ReplicationJobsClientCancelResponse contains the response from method ReplicationJobsClient.Cancel.
+type ReplicationJobsClientCancelResponse struct {
+	ReplicationJobsClientCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationJobsCancelResult contains the result from method ReplicationJobs.Cancel.
-type ReplicationJobsCancelResult struct {
+// ReplicationJobsClientCancelResult contains the result from method ReplicationJobsClient.Cancel.
+type ReplicationJobsClientCancelResult struct {
 	Job
 }
 
-// ReplicationJobsExportPollerResponse contains the response from method ReplicationJobs.Export.
-type ReplicationJobsExportPollerResponse struct {
+// ReplicationJobsClientExportPollerResponse contains the response from method ReplicationJobsClient.Export.
+type ReplicationJobsClientExportPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationJobsExportPoller
+	Poller *ReplicationJobsClientExportPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -593,8 +605,8 @@ type ReplicationJobsExportPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationJobsExportPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsExportResponse, error) {
-	respType := ReplicationJobsExportResponse{}
+func (l ReplicationJobsClientExportPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsClientExportResponse, error) {
+	respType := ReplicationJobsClientExportResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Job)
 	if err != nil {
 		return respType, err
@@ -603,13 +615,13 @@ func (l ReplicationJobsExportPollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationJobsExportPollerResponse from the provided client and resume token.
-func (l *ReplicationJobsExportPollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Export", token, client.pl, client.exportHandleError)
+// Resume rehydrates a ReplicationJobsClientExportPollerResponse from the provided client and resume token.
+func (l *ReplicationJobsClientExportPollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Export", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationJobsExportPoller{
+	poller := &ReplicationJobsClientExportPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -621,46 +633,46 @@ func (l *ReplicationJobsExportPollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// ReplicationJobsExportResponse contains the response from method ReplicationJobs.Export.
-type ReplicationJobsExportResponse struct {
-	ReplicationJobsExportResult
+// ReplicationJobsClientExportResponse contains the response from method ReplicationJobsClient.Export.
+type ReplicationJobsClientExportResponse struct {
+	ReplicationJobsClientExportResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationJobsExportResult contains the result from method ReplicationJobs.Export.
-type ReplicationJobsExportResult struct {
+// ReplicationJobsClientExportResult contains the result from method ReplicationJobsClient.Export.
+type ReplicationJobsClientExportResult struct {
 	Job
 }
 
-// ReplicationJobsGetResponse contains the response from method ReplicationJobs.Get.
-type ReplicationJobsGetResponse struct {
-	ReplicationJobsGetResult
+// ReplicationJobsClientGetResponse contains the response from method ReplicationJobsClient.Get.
+type ReplicationJobsClientGetResponse struct {
+	ReplicationJobsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationJobsGetResult contains the result from method ReplicationJobs.Get.
-type ReplicationJobsGetResult struct {
+// ReplicationJobsClientGetResult contains the result from method ReplicationJobsClient.Get.
+type ReplicationJobsClientGetResult struct {
 	Job
 }
 
-// ReplicationJobsListResponse contains the response from method ReplicationJobs.List.
-type ReplicationJobsListResponse struct {
-	ReplicationJobsListResult
+// ReplicationJobsClientListResponse contains the response from method ReplicationJobsClient.List.
+type ReplicationJobsClientListResponse struct {
+	ReplicationJobsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationJobsListResult contains the result from method ReplicationJobs.List.
-type ReplicationJobsListResult struct {
+// ReplicationJobsClientListResult contains the result from method ReplicationJobsClient.List.
+type ReplicationJobsClientListResult struct {
 	JobCollection
 }
 
-// ReplicationJobsRestartPollerResponse contains the response from method ReplicationJobs.Restart.
-type ReplicationJobsRestartPollerResponse struct {
+// ReplicationJobsClientRestartPollerResponse contains the response from method ReplicationJobsClient.Restart.
+type ReplicationJobsClientRestartPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationJobsRestartPoller
+	Poller *ReplicationJobsClientRestartPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -669,8 +681,8 @@ type ReplicationJobsRestartPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationJobsRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsRestartResponse, error) {
-	respType := ReplicationJobsRestartResponse{}
+func (l ReplicationJobsClientRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsClientRestartResponse, error) {
+	respType := ReplicationJobsClientRestartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Job)
 	if err != nil {
 		return respType, err
@@ -679,13 +691,13 @@ func (l ReplicationJobsRestartPollerResponse) PollUntilDone(ctx context.Context,
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationJobsRestartPollerResponse from the provided client and resume token.
-func (l *ReplicationJobsRestartPollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Restart", token, client.pl, client.restartHandleError)
+// Resume rehydrates a ReplicationJobsClientRestartPollerResponse from the provided client and resume token.
+func (l *ReplicationJobsClientRestartPollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Restart", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationJobsRestartPoller{
+	poller := &ReplicationJobsClientRestartPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -697,22 +709,22 @@ func (l *ReplicationJobsRestartPollerResponse) Resume(ctx context.Context, clien
 	return nil
 }
 
-// ReplicationJobsRestartResponse contains the response from method ReplicationJobs.Restart.
-type ReplicationJobsRestartResponse struct {
-	ReplicationJobsRestartResult
+// ReplicationJobsClientRestartResponse contains the response from method ReplicationJobsClient.Restart.
+type ReplicationJobsClientRestartResponse struct {
+	ReplicationJobsClientRestartResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationJobsRestartResult contains the result from method ReplicationJobs.Restart.
-type ReplicationJobsRestartResult struct {
+// ReplicationJobsClientRestartResult contains the result from method ReplicationJobsClient.Restart.
+type ReplicationJobsClientRestartResult struct {
 	Job
 }
 
-// ReplicationJobsResumePollerResponse contains the response from method ReplicationJobs.Resume.
-type ReplicationJobsResumePollerResponse struct {
+// ReplicationJobsClientResumePollerResponse contains the response from method ReplicationJobsClient.Resume.
+type ReplicationJobsClientResumePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationJobsResumePoller
+	Poller *ReplicationJobsClientResumePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -721,8 +733,8 @@ type ReplicationJobsResumePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationJobsResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsResumeResponse, error) {
-	respType := ReplicationJobsResumeResponse{}
+func (l ReplicationJobsClientResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationJobsClientResumeResponse, error) {
+	respType := ReplicationJobsClientResumeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Job)
 	if err != nil {
 		return respType, err
@@ -731,13 +743,13 @@ func (l ReplicationJobsResumePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationJobsResumePollerResponse from the provided client and resume token.
-func (l *ReplicationJobsResumePollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Resume", token, client.pl, client.resumeHandleError)
+// Resume rehydrates a ReplicationJobsClientResumePollerResponse from the provided client and resume token.
+func (l *ReplicationJobsClientResumePollerResponse) Resume(ctx context.Context, client *ReplicationJobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationJobsClient.Resume", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationJobsResumePoller{
+	poller := &ReplicationJobsClientResumePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -749,46 +761,46 @@ func (l *ReplicationJobsResumePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// ReplicationJobsResumeResponse contains the response from method ReplicationJobs.Resume.
-type ReplicationJobsResumeResponse struct {
-	ReplicationJobsResumeResult
+// ReplicationJobsClientResumeResponse contains the response from method ReplicationJobsClient.Resume.
+type ReplicationJobsClientResumeResponse struct {
+	ReplicationJobsClientResumeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationJobsResumeResult contains the result from method ReplicationJobs.Resume.
-type ReplicationJobsResumeResult struct {
+// ReplicationJobsClientResumeResult contains the result from method ReplicationJobsClient.Resume.
+type ReplicationJobsClientResumeResult struct {
 	Job
 }
 
-// ReplicationLogicalNetworksGetResponse contains the response from method ReplicationLogicalNetworks.Get.
-type ReplicationLogicalNetworksGetResponse struct {
-	ReplicationLogicalNetworksGetResult
+// ReplicationLogicalNetworksClientGetResponse contains the response from method ReplicationLogicalNetworksClient.Get.
+type ReplicationLogicalNetworksClientGetResponse struct {
+	ReplicationLogicalNetworksClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationLogicalNetworksGetResult contains the result from method ReplicationLogicalNetworks.Get.
-type ReplicationLogicalNetworksGetResult struct {
+// ReplicationLogicalNetworksClientGetResult contains the result from method ReplicationLogicalNetworksClient.Get.
+type ReplicationLogicalNetworksClientGetResult struct {
 	LogicalNetwork
 }
 
-// ReplicationLogicalNetworksListByReplicationFabricsResponse contains the response from method ReplicationLogicalNetworks.ListByReplicationFabrics.
-type ReplicationLogicalNetworksListByReplicationFabricsResponse struct {
-	ReplicationLogicalNetworksListByReplicationFabricsResult
+// ReplicationLogicalNetworksClientListByReplicationFabricsResponse contains the response from method ReplicationLogicalNetworksClient.ListByReplicationFabrics.
+type ReplicationLogicalNetworksClientListByReplicationFabricsResponse struct {
+	ReplicationLogicalNetworksClientListByReplicationFabricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationLogicalNetworksListByReplicationFabricsResult contains the result from method ReplicationLogicalNetworks.ListByReplicationFabrics.
-type ReplicationLogicalNetworksListByReplicationFabricsResult struct {
+// ReplicationLogicalNetworksClientListByReplicationFabricsResult contains the result from method ReplicationLogicalNetworksClient.ListByReplicationFabrics.
+type ReplicationLogicalNetworksClientListByReplicationFabricsResult struct {
 	LogicalNetworkCollection
 }
 
-// ReplicationMigrationItemsCreatePollerResponse contains the response from method ReplicationMigrationItems.Create.
-type ReplicationMigrationItemsCreatePollerResponse struct {
+// ReplicationMigrationItemsClientCreatePollerResponse contains the response from method ReplicationMigrationItemsClient.Create.
+type ReplicationMigrationItemsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsCreatePoller
+	Poller *ReplicationMigrationItemsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -797,8 +809,8 @@ type ReplicationMigrationItemsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsCreateResponse, error) {
-	respType := ReplicationMigrationItemsCreateResponse{}
+func (l ReplicationMigrationItemsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientCreateResponse, error) {
+	respType := ReplicationMigrationItemsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationItem)
 	if err != nil {
 		return respType, err
@@ -807,13 +819,13 @@ func (l ReplicationMigrationItemsCreatePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsCreatePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationMigrationItemsClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsCreatePoller{
+	poller := &ReplicationMigrationItemsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -825,22 +837,22 @@ func (l *ReplicationMigrationItemsCreatePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationMigrationItemsCreateResponse contains the response from method ReplicationMigrationItems.Create.
-type ReplicationMigrationItemsCreateResponse struct {
-	ReplicationMigrationItemsCreateResult
+// ReplicationMigrationItemsClientCreateResponse contains the response from method ReplicationMigrationItemsClient.Create.
+type ReplicationMigrationItemsClientCreateResponse struct {
+	ReplicationMigrationItemsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsCreateResult contains the result from method ReplicationMigrationItems.Create.
-type ReplicationMigrationItemsCreateResult struct {
+// ReplicationMigrationItemsClientCreateResult contains the result from method ReplicationMigrationItemsClient.Create.
+type ReplicationMigrationItemsClientCreateResult struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsDeletePollerResponse contains the response from method ReplicationMigrationItems.Delete.
-type ReplicationMigrationItemsDeletePollerResponse struct {
+// ReplicationMigrationItemsClientDeletePollerResponse contains the response from method ReplicationMigrationItemsClient.Delete.
+type ReplicationMigrationItemsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsDeletePoller
+	Poller *ReplicationMigrationItemsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -849,8 +861,8 @@ type ReplicationMigrationItemsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsDeleteResponse, error) {
-	respType := ReplicationMigrationItemsDeleteResponse{}
+func (l ReplicationMigrationItemsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientDeleteResponse, error) {
+	respType := ReplicationMigrationItemsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -859,13 +871,13 @@ func (l ReplicationMigrationItemsDeletePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsDeletePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationMigrationItemsClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsDeletePoller{
+	poller := &ReplicationMigrationItemsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -877,52 +889,52 @@ func (l *ReplicationMigrationItemsDeletePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationMigrationItemsDeleteResponse contains the response from method ReplicationMigrationItems.Delete.
-type ReplicationMigrationItemsDeleteResponse struct {
+// ReplicationMigrationItemsClientDeleteResponse contains the response from method ReplicationMigrationItemsClient.Delete.
+type ReplicationMigrationItemsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsGetResponse contains the response from method ReplicationMigrationItems.Get.
-type ReplicationMigrationItemsGetResponse struct {
-	ReplicationMigrationItemsGetResult
+// ReplicationMigrationItemsClientGetResponse contains the response from method ReplicationMigrationItemsClient.Get.
+type ReplicationMigrationItemsClientGetResponse struct {
+	ReplicationMigrationItemsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsGetResult contains the result from method ReplicationMigrationItems.Get.
-type ReplicationMigrationItemsGetResult struct {
+// ReplicationMigrationItemsClientGetResult contains the result from method ReplicationMigrationItemsClient.Get.
+type ReplicationMigrationItemsClientGetResult struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsListByReplicationProtectionContainersResponse contains the response from method ReplicationMigrationItems.ListByReplicationProtectionContainers.
-type ReplicationMigrationItemsListByReplicationProtectionContainersResponse struct {
-	ReplicationMigrationItemsListByReplicationProtectionContainersResult
+// ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationMigrationItemsClient.ListByReplicationProtectionContainers.
+type ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse struct {
+	ReplicationMigrationItemsClientListByReplicationProtectionContainersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsListByReplicationProtectionContainersResult contains the result from method ReplicationMigrationItems.ListByReplicationProtectionContainers.
-type ReplicationMigrationItemsListByReplicationProtectionContainersResult struct {
+// ReplicationMigrationItemsClientListByReplicationProtectionContainersResult contains the result from method ReplicationMigrationItemsClient.ListByReplicationProtectionContainers.
+type ReplicationMigrationItemsClientListByReplicationProtectionContainersResult struct {
 	MigrationItemCollection
 }
 
-// ReplicationMigrationItemsListResponse contains the response from method ReplicationMigrationItems.List.
-type ReplicationMigrationItemsListResponse struct {
-	ReplicationMigrationItemsListResult
+// ReplicationMigrationItemsClientListResponse contains the response from method ReplicationMigrationItemsClient.List.
+type ReplicationMigrationItemsClientListResponse struct {
+	ReplicationMigrationItemsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsListResult contains the result from method ReplicationMigrationItems.List.
-type ReplicationMigrationItemsListResult struct {
+// ReplicationMigrationItemsClientListResult contains the result from method ReplicationMigrationItemsClient.List.
+type ReplicationMigrationItemsClientListResult struct {
 	MigrationItemCollection
 }
 
-// ReplicationMigrationItemsMigratePollerResponse contains the response from method ReplicationMigrationItems.Migrate.
-type ReplicationMigrationItemsMigratePollerResponse struct {
+// ReplicationMigrationItemsClientMigratePollerResponse contains the response from method ReplicationMigrationItemsClient.Migrate.
+type ReplicationMigrationItemsClientMigratePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsMigratePoller
+	Poller *ReplicationMigrationItemsClientMigratePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -931,8 +943,8 @@ type ReplicationMigrationItemsMigratePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsMigratePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsMigrateResponse, error) {
-	respType := ReplicationMigrationItemsMigrateResponse{}
+func (l ReplicationMigrationItemsClientMigratePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientMigrateResponse, error) {
+	respType := ReplicationMigrationItemsClientMigrateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationItem)
 	if err != nil {
 		return respType, err
@@ -941,13 +953,13 @@ func (l ReplicationMigrationItemsMigratePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsMigratePollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsMigratePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Migrate", token, client.pl, client.migrateHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientMigratePollerResponse from the provided client and resume token.
+func (l *ReplicationMigrationItemsClientMigratePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Migrate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsMigratePoller{
+	poller := &ReplicationMigrationItemsClientMigratePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -959,22 +971,22 @@ func (l *ReplicationMigrationItemsMigratePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// ReplicationMigrationItemsMigrateResponse contains the response from method ReplicationMigrationItems.Migrate.
-type ReplicationMigrationItemsMigrateResponse struct {
-	ReplicationMigrationItemsMigrateResult
+// ReplicationMigrationItemsClientMigrateResponse contains the response from method ReplicationMigrationItemsClient.Migrate.
+type ReplicationMigrationItemsClientMigrateResponse struct {
+	ReplicationMigrationItemsClientMigrateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsMigrateResult contains the result from method ReplicationMigrationItems.Migrate.
-type ReplicationMigrationItemsMigrateResult struct {
+// ReplicationMigrationItemsClientMigrateResult contains the result from method ReplicationMigrationItemsClient.Migrate.
+type ReplicationMigrationItemsClientMigrateResult struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsResyncPollerResponse contains the response from method ReplicationMigrationItems.Resync.
-type ReplicationMigrationItemsResyncPollerResponse struct {
+// ReplicationMigrationItemsClientResyncPollerResponse contains the response from method ReplicationMigrationItemsClient.Resync.
+type ReplicationMigrationItemsClientResyncPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsResyncPoller
+	Poller *ReplicationMigrationItemsClientResyncPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -983,8 +995,8 @@ type ReplicationMigrationItemsResyncPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsResyncPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsResyncResponse, error) {
-	respType := ReplicationMigrationItemsResyncResponse{}
+func (l ReplicationMigrationItemsClientResyncPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientResyncResponse, error) {
+	respType := ReplicationMigrationItemsClientResyncResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationItem)
 	if err != nil {
 		return respType, err
@@ -993,13 +1005,13 @@ func (l ReplicationMigrationItemsResyncPollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsResyncPollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsResyncPollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Resync", token, client.pl, client.resyncHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientResyncPollerResponse from the provided client and resume token.
+func (l *ReplicationMigrationItemsClientResyncPollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Resync", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsResyncPoller{
+	poller := &ReplicationMigrationItemsClientResyncPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1011,22 +1023,22 @@ func (l *ReplicationMigrationItemsResyncPollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationMigrationItemsResyncResponse contains the response from method ReplicationMigrationItems.Resync.
-type ReplicationMigrationItemsResyncResponse struct {
-	ReplicationMigrationItemsResyncResult
+// ReplicationMigrationItemsClientResyncResponse contains the response from method ReplicationMigrationItemsClient.Resync.
+type ReplicationMigrationItemsClientResyncResponse struct {
+	ReplicationMigrationItemsClientResyncResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsResyncResult contains the result from method ReplicationMigrationItems.Resync.
-type ReplicationMigrationItemsResyncResult struct {
+// ReplicationMigrationItemsClientResyncResult contains the result from method ReplicationMigrationItemsClient.Resync.
+type ReplicationMigrationItemsClientResyncResult struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsTestMigrateCleanupPollerResponse contains the response from method ReplicationMigrationItems.TestMigrateCleanup.
-type ReplicationMigrationItemsTestMigrateCleanupPollerResponse struct {
+// ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse contains the response from method ReplicationMigrationItemsClient.TestMigrateCleanup.
+type ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsTestMigrateCleanupPoller
+	Poller *ReplicationMigrationItemsClientTestMigrateCleanupPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1035,8 +1047,8 @@ type ReplicationMigrationItemsTestMigrateCleanupPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsTestMigrateCleanupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsTestMigrateCleanupResponse, error) {
-	respType := ReplicationMigrationItemsTestMigrateCleanupResponse{}
+func (l ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientTestMigrateCleanupResponse, error) {
+	respType := ReplicationMigrationItemsClientTestMigrateCleanupResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationItem)
 	if err != nil {
 		return respType, err
@@ -1045,13 +1057,14 @@ func (l ReplicationMigrationItemsTestMigrateCleanupPollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsTestMigrateCleanupPollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsTestMigrateCleanupPollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.TestMigrateCleanup", token, client.pl, client.testMigrateCleanupHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationMigrationItemsClientTestMigrateCleanupPollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.TestMigrateCleanup", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsTestMigrateCleanupPoller{
+	poller := &ReplicationMigrationItemsClientTestMigrateCleanupPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1063,22 +1076,22 @@ func (l *ReplicationMigrationItemsTestMigrateCleanupPollerResponse) Resume(ctx c
 	return nil
 }
 
-// ReplicationMigrationItemsTestMigrateCleanupResponse contains the response from method ReplicationMigrationItems.TestMigrateCleanup.
-type ReplicationMigrationItemsTestMigrateCleanupResponse struct {
-	ReplicationMigrationItemsTestMigrateCleanupResult
+// ReplicationMigrationItemsClientTestMigrateCleanupResponse contains the response from method ReplicationMigrationItemsClient.TestMigrateCleanup.
+type ReplicationMigrationItemsClientTestMigrateCleanupResponse struct {
+	ReplicationMigrationItemsClientTestMigrateCleanupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsTestMigrateCleanupResult contains the result from method ReplicationMigrationItems.TestMigrateCleanup.
-type ReplicationMigrationItemsTestMigrateCleanupResult struct {
+// ReplicationMigrationItemsClientTestMigrateCleanupResult contains the result from method ReplicationMigrationItemsClient.TestMigrateCleanup.
+type ReplicationMigrationItemsClientTestMigrateCleanupResult struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsTestMigratePollerResponse contains the response from method ReplicationMigrationItems.TestMigrate.
-type ReplicationMigrationItemsTestMigratePollerResponse struct {
+// ReplicationMigrationItemsClientTestMigratePollerResponse contains the response from method ReplicationMigrationItemsClient.TestMigrate.
+type ReplicationMigrationItemsClientTestMigratePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsTestMigratePoller
+	Poller *ReplicationMigrationItemsClientTestMigratePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1087,8 +1100,8 @@ type ReplicationMigrationItemsTestMigratePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsTestMigratePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsTestMigrateResponse, error) {
-	respType := ReplicationMigrationItemsTestMigrateResponse{}
+func (l ReplicationMigrationItemsClientTestMigratePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientTestMigrateResponse, error) {
+	respType := ReplicationMigrationItemsClientTestMigrateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationItem)
 	if err != nil {
 		return respType, err
@@ -1097,13 +1110,13 @@ func (l ReplicationMigrationItemsTestMigratePollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsTestMigratePollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsTestMigratePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.TestMigrate", token, client.pl, client.testMigrateHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientTestMigratePollerResponse from the provided client and resume token.
+func (l *ReplicationMigrationItemsClientTestMigratePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.TestMigrate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsTestMigratePoller{
+	poller := &ReplicationMigrationItemsClientTestMigratePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1115,22 +1128,22 @@ func (l *ReplicationMigrationItemsTestMigratePollerResponse) Resume(ctx context.
 	return nil
 }
 
-// ReplicationMigrationItemsTestMigrateResponse contains the response from method ReplicationMigrationItems.TestMigrate.
-type ReplicationMigrationItemsTestMigrateResponse struct {
-	ReplicationMigrationItemsTestMigrateResult
+// ReplicationMigrationItemsClientTestMigrateResponse contains the response from method ReplicationMigrationItemsClient.TestMigrate.
+type ReplicationMigrationItemsClientTestMigrateResponse struct {
+	ReplicationMigrationItemsClientTestMigrateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsTestMigrateResult contains the result from method ReplicationMigrationItems.TestMigrate.
-type ReplicationMigrationItemsTestMigrateResult struct {
+// ReplicationMigrationItemsClientTestMigrateResult contains the result from method ReplicationMigrationItemsClient.TestMigrate.
+type ReplicationMigrationItemsClientTestMigrateResult struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsUpdatePollerResponse contains the response from method ReplicationMigrationItems.Update.
-type ReplicationMigrationItemsUpdatePollerResponse struct {
+// ReplicationMigrationItemsClientUpdatePollerResponse contains the response from method ReplicationMigrationItemsClient.Update.
+type ReplicationMigrationItemsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationMigrationItemsUpdatePoller
+	Poller *ReplicationMigrationItemsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1139,8 +1152,8 @@ type ReplicationMigrationItemsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationMigrationItemsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsUpdateResponse, error) {
-	respType := ReplicationMigrationItemsUpdateResponse{}
+func (l ReplicationMigrationItemsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationMigrationItemsClientUpdateResponse, error) {
+	respType := ReplicationMigrationItemsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationItem)
 	if err != nil {
 		return respType, err
@@ -1149,13 +1162,13 @@ func (l ReplicationMigrationItemsUpdatePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationMigrationItemsUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationMigrationItemsUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationMigrationItemsClientUpdatePollerResponse from the provided client and resume token.
+func (l *ReplicationMigrationItemsClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationMigrationItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationMigrationItemsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationMigrationItemsUpdatePoller{
+	poller := &ReplicationMigrationItemsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1167,22 +1180,22 @@ func (l *ReplicationMigrationItemsUpdatePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationMigrationItemsUpdateResponse contains the response from method ReplicationMigrationItems.Update.
-type ReplicationMigrationItemsUpdateResponse struct {
-	ReplicationMigrationItemsUpdateResult
+// ReplicationMigrationItemsClientUpdateResponse contains the response from method ReplicationMigrationItemsClient.Update.
+type ReplicationMigrationItemsClientUpdateResponse struct {
+	ReplicationMigrationItemsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationMigrationItemsUpdateResult contains the result from method ReplicationMigrationItems.Update.
-type ReplicationMigrationItemsUpdateResult struct {
+// ReplicationMigrationItemsClientUpdateResult contains the result from method ReplicationMigrationItemsClient.Update.
+type ReplicationMigrationItemsClientUpdateResult struct {
 	MigrationItem
 }
 
-// ReplicationNetworkMappingsCreatePollerResponse contains the response from method ReplicationNetworkMappings.Create.
-type ReplicationNetworkMappingsCreatePollerResponse struct {
+// ReplicationNetworkMappingsClientCreatePollerResponse contains the response from method ReplicationNetworkMappingsClient.Create.
+type ReplicationNetworkMappingsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationNetworkMappingsCreatePoller
+	Poller *ReplicationNetworkMappingsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1191,8 +1204,8 @@ type ReplicationNetworkMappingsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationNetworkMappingsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationNetworkMappingsCreateResponse, error) {
-	respType := ReplicationNetworkMappingsCreateResponse{}
+func (l ReplicationNetworkMappingsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationNetworkMappingsClientCreateResponse, error) {
+	respType := ReplicationNetworkMappingsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkMapping)
 	if err != nil {
 		return respType, err
@@ -1201,13 +1214,13 @@ func (l ReplicationNetworkMappingsCreatePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationNetworkMappingsCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationNetworkMappingsCreatePollerResponse) Resume(ctx context.Context, client *ReplicationNetworkMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationNetworkMappingsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationNetworkMappingsClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationNetworkMappingsClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationNetworkMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationNetworkMappingsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationNetworkMappingsCreatePoller{
+	poller := &ReplicationNetworkMappingsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1219,22 +1232,22 @@ func (l *ReplicationNetworkMappingsCreatePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// ReplicationNetworkMappingsCreateResponse contains the response from method ReplicationNetworkMappings.Create.
-type ReplicationNetworkMappingsCreateResponse struct {
-	ReplicationNetworkMappingsCreateResult
+// ReplicationNetworkMappingsClientCreateResponse contains the response from method ReplicationNetworkMappingsClient.Create.
+type ReplicationNetworkMappingsClientCreateResponse struct {
+	ReplicationNetworkMappingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworkMappingsCreateResult contains the result from method ReplicationNetworkMappings.Create.
-type ReplicationNetworkMappingsCreateResult struct {
+// ReplicationNetworkMappingsClientCreateResult contains the result from method ReplicationNetworkMappingsClient.Create.
+type ReplicationNetworkMappingsClientCreateResult struct {
 	NetworkMapping
 }
 
-// ReplicationNetworkMappingsDeletePollerResponse contains the response from method ReplicationNetworkMappings.Delete.
-type ReplicationNetworkMappingsDeletePollerResponse struct {
+// ReplicationNetworkMappingsClientDeletePollerResponse contains the response from method ReplicationNetworkMappingsClient.Delete.
+type ReplicationNetworkMappingsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationNetworkMappingsDeletePoller
+	Poller *ReplicationNetworkMappingsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1243,8 +1256,8 @@ type ReplicationNetworkMappingsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationNetworkMappingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationNetworkMappingsDeleteResponse, error) {
-	respType := ReplicationNetworkMappingsDeleteResponse{}
+func (l ReplicationNetworkMappingsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationNetworkMappingsClientDeleteResponse, error) {
+	respType := ReplicationNetworkMappingsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1253,13 +1266,13 @@ func (l ReplicationNetworkMappingsDeletePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationNetworkMappingsDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationNetworkMappingsDeletePollerResponse) Resume(ctx context.Context, client *ReplicationNetworkMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationNetworkMappingsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationNetworkMappingsClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationNetworkMappingsClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationNetworkMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationNetworkMappingsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationNetworkMappingsDeletePoller{
+	poller := &ReplicationNetworkMappingsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1271,52 +1284,52 @@ func (l *ReplicationNetworkMappingsDeletePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// ReplicationNetworkMappingsDeleteResponse contains the response from method ReplicationNetworkMappings.Delete.
-type ReplicationNetworkMappingsDeleteResponse struct {
+// ReplicationNetworkMappingsClientDeleteResponse contains the response from method ReplicationNetworkMappingsClient.Delete.
+type ReplicationNetworkMappingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworkMappingsGetResponse contains the response from method ReplicationNetworkMappings.Get.
-type ReplicationNetworkMappingsGetResponse struct {
-	ReplicationNetworkMappingsGetResult
+// ReplicationNetworkMappingsClientGetResponse contains the response from method ReplicationNetworkMappingsClient.Get.
+type ReplicationNetworkMappingsClientGetResponse struct {
+	ReplicationNetworkMappingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworkMappingsGetResult contains the result from method ReplicationNetworkMappings.Get.
-type ReplicationNetworkMappingsGetResult struct {
+// ReplicationNetworkMappingsClientGetResult contains the result from method ReplicationNetworkMappingsClient.Get.
+type ReplicationNetworkMappingsClientGetResult struct {
 	NetworkMapping
 }
 
-// ReplicationNetworkMappingsListByReplicationNetworksResponse contains the response from method ReplicationNetworkMappings.ListByReplicationNetworks.
-type ReplicationNetworkMappingsListByReplicationNetworksResponse struct {
-	ReplicationNetworkMappingsListByReplicationNetworksResult
+// ReplicationNetworkMappingsClientListByReplicationNetworksResponse contains the response from method ReplicationNetworkMappingsClient.ListByReplicationNetworks.
+type ReplicationNetworkMappingsClientListByReplicationNetworksResponse struct {
+	ReplicationNetworkMappingsClientListByReplicationNetworksResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworkMappingsListByReplicationNetworksResult contains the result from method ReplicationNetworkMappings.ListByReplicationNetworks.
-type ReplicationNetworkMappingsListByReplicationNetworksResult struct {
+// ReplicationNetworkMappingsClientListByReplicationNetworksResult contains the result from method ReplicationNetworkMappingsClient.ListByReplicationNetworks.
+type ReplicationNetworkMappingsClientListByReplicationNetworksResult struct {
 	NetworkMappingCollection
 }
 
-// ReplicationNetworkMappingsListResponse contains the response from method ReplicationNetworkMappings.List.
-type ReplicationNetworkMappingsListResponse struct {
-	ReplicationNetworkMappingsListResult
+// ReplicationNetworkMappingsClientListResponse contains the response from method ReplicationNetworkMappingsClient.List.
+type ReplicationNetworkMappingsClientListResponse struct {
+	ReplicationNetworkMappingsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworkMappingsListResult contains the result from method ReplicationNetworkMappings.List.
-type ReplicationNetworkMappingsListResult struct {
+// ReplicationNetworkMappingsClientListResult contains the result from method ReplicationNetworkMappingsClient.List.
+type ReplicationNetworkMappingsClientListResult struct {
 	NetworkMappingCollection
 }
 
-// ReplicationNetworkMappingsUpdatePollerResponse contains the response from method ReplicationNetworkMappings.Update.
-type ReplicationNetworkMappingsUpdatePollerResponse struct {
+// ReplicationNetworkMappingsClientUpdatePollerResponse contains the response from method ReplicationNetworkMappingsClient.Update.
+type ReplicationNetworkMappingsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationNetworkMappingsUpdatePoller
+	Poller *ReplicationNetworkMappingsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1325,8 +1338,8 @@ type ReplicationNetworkMappingsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationNetworkMappingsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationNetworkMappingsUpdateResponse, error) {
-	respType := ReplicationNetworkMappingsUpdateResponse{}
+func (l ReplicationNetworkMappingsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationNetworkMappingsClientUpdateResponse, error) {
+	respType := ReplicationNetworkMappingsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkMapping)
 	if err != nil {
 		return respType, err
@@ -1335,13 +1348,13 @@ func (l ReplicationNetworkMappingsUpdatePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationNetworkMappingsUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationNetworkMappingsUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationNetworkMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationNetworkMappingsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationNetworkMappingsClientUpdatePollerResponse from the provided client and resume token.
+func (l *ReplicationNetworkMappingsClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationNetworkMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationNetworkMappingsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationNetworkMappingsUpdatePoller{
+	poller := &ReplicationNetworkMappingsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1353,58 +1366,58 @@ func (l *ReplicationNetworkMappingsUpdatePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// ReplicationNetworkMappingsUpdateResponse contains the response from method ReplicationNetworkMappings.Update.
-type ReplicationNetworkMappingsUpdateResponse struct {
-	ReplicationNetworkMappingsUpdateResult
+// ReplicationNetworkMappingsClientUpdateResponse contains the response from method ReplicationNetworkMappingsClient.Update.
+type ReplicationNetworkMappingsClientUpdateResponse struct {
+	ReplicationNetworkMappingsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworkMappingsUpdateResult contains the result from method ReplicationNetworkMappings.Update.
-type ReplicationNetworkMappingsUpdateResult struct {
+// ReplicationNetworkMappingsClientUpdateResult contains the result from method ReplicationNetworkMappingsClient.Update.
+type ReplicationNetworkMappingsClientUpdateResult struct {
 	NetworkMapping
 }
 
-// ReplicationNetworksGetResponse contains the response from method ReplicationNetworks.Get.
-type ReplicationNetworksGetResponse struct {
-	ReplicationNetworksGetResult
+// ReplicationNetworksClientGetResponse contains the response from method ReplicationNetworksClient.Get.
+type ReplicationNetworksClientGetResponse struct {
+	ReplicationNetworksClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworksGetResult contains the result from method ReplicationNetworks.Get.
-type ReplicationNetworksGetResult struct {
+// ReplicationNetworksClientGetResult contains the result from method ReplicationNetworksClient.Get.
+type ReplicationNetworksClientGetResult struct {
 	Network
 }
 
-// ReplicationNetworksListByReplicationFabricsResponse contains the response from method ReplicationNetworks.ListByReplicationFabrics.
-type ReplicationNetworksListByReplicationFabricsResponse struct {
-	ReplicationNetworksListByReplicationFabricsResult
+// ReplicationNetworksClientListByReplicationFabricsResponse contains the response from method ReplicationNetworksClient.ListByReplicationFabrics.
+type ReplicationNetworksClientListByReplicationFabricsResponse struct {
+	ReplicationNetworksClientListByReplicationFabricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworksListByReplicationFabricsResult contains the result from method ReplicationNetworks.ListByReplicationFabrics.
-type ReplicationNetworksListByReplicationFabricsResult struct {
+// ReplicationNetworksClientListByReplicationFabricsResult contains the result from method ReplicationNetworksClient.ListByReplicationFabrics.
+type ReplicationNetworksClientListByReplicationFabricsResult struct {
 	NetworkCollection
 }
 
-// ReplicationNetworksListResponse contains the response from method ReplicationNetworks.List.
-type ReplicationNetworksListResponse struct {
-	ReplicationNetworksListResult
+// ReplicationNetworksClientListResponse contains the response from method ReplicationNetworksClient.List.
+type ReplicationNetworksClientListResponse struct {
+	ReplicationNetworksClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationNetworksListResult contains the result from method ReplicationNetworks.List.
-type ReplicationNetworksListResult struct {
+// ReplicationNetworksClientListResult contains the result from method ReplicationNetworksClient.List.
+type ReplicationNetworksClientListResult struct {
 	NetworkCollection
 }
 
-// ReplicationPoliciesCreatePollerResponse contains the response from method ReplicationPolicies.Create.
-type ReplicationPoliciesCreatePollerResponse struct {
+// ReplicationPoliciesClientCreatePollerResponse contains the response from method ReplicationPoliciesClient.Create.
+type ReplicationPoliciesClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationPoliciesCreatePoller
+	Poller *ReplicationPoliciesClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1413,8 +1426,8 @@ type ReplicationPoliciesCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationPoliciesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationPoliciesCreateResponse, error) {
-	respType := ReplicationPoliciesCreateResponse{}
+func (l ReplicationPoliciesClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationPoliciesClientCreateResponse, error) {
+	respType := ReplicationPoliciesClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Policy)
 	if err != nil {
 		return respType, err
@@ -1423,13 +1436,13 @@ func (l ReplicationPoliciesCreatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationPoliciesCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationPoliciesCreatePollerResponse) Resume(ctx context.Context, client *ReplicationPoliciesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationPoliciesClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationPoliciesClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationPoliciesClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationPoliciesClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationPoliciesCreatePoller{
+	poller := &ReplicationPoliciesClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1441,22 +1454,22 @@ func (l *ReplicationPoliciesCreatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ReplicationPoliciesCreateResponse contains the response from method ReplicationPolicies.Create.
-type ReplicationPoliciesCreateResponse struct {
-	ReplicationPoliciesCreateResult
+// ReplicationPoliciesClientCreateResponse contains the response from method ReplicationPoliciesClient.Create.
+type ReplicationPoliciesClientCreateResponse struct {
+	ReplicationPoliciesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationPoliciesCreateResult contains the result from method ReplicationPolicies.Create.
-type ReplicationPoliciesCreateResult struct {
+// ReplicationPoliciesClientCreateResult contains the result from method ReplicationPoliciesClient.Create.
+type ReplicationPoliciesClientCreateResult struct {
 	Policy
 }
 
-// ReplicationPoliciesDeletePollerResponse contains the response from method ReplicationPolicies.Delete.
-type ReplicationPoliciesDeletePollerResponse struct {
+// ReplicationPoliciesClientDeletePollerResponse contains the response from method ReplicationPoliciesClient.Delete.
+type ReplicationPoliciesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationPoliciesDeletePoller
+	Poller *ReplicationPoliciesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1465,8 +1478,8 @@ type ReplicationPoliciesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationPoliciesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationPoliciesDeleteResponse, error) {
-	respType := ReplicationPoliciesDeleteResponse{}
+func (l ReplicationPoliciesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationPoliciesClientDeleteResponse, error) {
+	respType := ReplicationPoliciesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1475,13 +1488,13 @@ func (l ReplicationPoliciesDeletePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationPoliciesDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationPoliciesDeletePollerResponse) Resume(ctx context.Context, client *ReplicationPoliciesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationPoliciesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationPoliciesClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationPoliciesClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationPoliciesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationPoliciesDeletePoller{
+	poller := &ReplicationPoliciesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1493,40 +1506,40 @@ func (l *ReplicationPoliciesDeletePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ReplicationPoliciesDeleteResponse contains the response from method ReplicationPolicies.Delete.
-type ReplicationPoliciesDeleteResponse struct {
+// ReplicationPoliciesClientDeleteResponse contains the response from method ReplicationPoliciesClient.Delete.
+type ReplicationPoliciesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationPoliciesGetResponse contains the response from method ReplicationPolicies.Get.
-type ReplicationPoliciesGetResponse struct {
-	ReplicationPoliciesGetResult
+// ReplicationPoliciesClientGetResponse contains the response from method ReplicationPoliciesClient.Get.
+type ReplicationPoliciesClientGetResponse struct {
+	ReplicationPoliciesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationPoliciesGetResult contains the result from method ReplicationPolicies.Get.
-type ReplicationPoliciesGetResult struct {
+// ReplicationPoliciesClientGetResult contains the result from method ReplicationPoliciesClient.Get.
+type ReplicationPoliciesClientGetResult struct {
 	Policy
 }
 
-// ReplicationPoliciesListResponse contains the response from method ReplicationPolicies.List.
-type ReplicationPoliciesListResponse struct {
-	ReplicationPoliciesListResult
+// ReplicationPoliciesClientListResponse contains the response from method ReplicationPoliciesClient.List.
+type ReplicationPoliciesClientListResponse struct {
+	ReplicationPoliciesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationPoliciesListResult contains the result from method ReplicationPolicies.List.
-type ReplicationPoliciesListResult struct {
+// ReplicationPoliciesClientListResult contains the result from method ReplicationPoliciesClient.List.
+type ReplicationPoliciesClientListResult struct {
 	PolicyCollection
 }
 
-// ReplicationPoliciesUpdatePollerResponse contains the response from method ReplicationPolicies.Update.
-type ReplicationPoliciesUpdatePollerResponse struct {
+// ReplicationPoliciesClientUpdatePollerResponse contains the response from method ReplicationPoliciesClient.Update.
+type ReplicationPoliciesClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationPoliciesUpdatePoller
+	Poller *ReplicationPoliciesClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1535,8 +1548,8 @@ type ReplicationPoliciesUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationPoliciesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationPoliciesUpdateResponse, error) {
-	respType := ReplicationPoliciesUpdateResponse{}
+func (l ReplicationPoliciesClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationPoliciesClientUpdateResponse, error) {
+	respType := ReplicationPoliciesClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Policy)
 	if err != nil {
 		return respType, err
@@ -1545,13 +1558,13 @@ func (l ReplicationPoliciesUpdatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationPoliciesUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationPoliciesUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationPoliciesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationPoliciesClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationPoliciesClientUpdatePollerResponse from the provided client and resume token.
+func (l *ReplicationPoliciesClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationPoliciesClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationPoliciesUpdatePoller{
+	poller := &ReplicationPoliciesClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1563,46 +1576,46 @@ func (l *ReplicationPoliciesUpdatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ReplicationPoliciesUpdateResponse contains the response from method ReplicationPolicies.Update.
-type ReplicationPoliciesUpdateResponse struct {
-	ReplicationPoliciesUpdateResult
+// ReplicationPoliciesClientUpdateResponse contains the response from method ReplicationPoliciesClient.Update.
+type ReplicationPoliciesClientUpdateResponse struct {
+	ReplicationPoliciesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationPoliciesUpdateResult contains the result from method ReplicationPolicies.Update.
-type ReplicationPoliciesUpdateResult struct {
+// ReplicationPoliciesClientUpdateResult contains the result from method ReplicationPoliciesClient.Update.
+type ReplicationPoliciesClientUpdateResult struct {
 	Policy
 }
 
-// ReplicationProtectableItemsGetResponse contains the response from method ReplicationProtectableItems.Get.
-type ReplicationProtectableItemsGetResponse struct {
-	ReplicationProtectableItemsGetResult
+// ReplicationProtectableItemsClientGetResponse contains the response from method ReplicationProtectableItemsClient.Get.
+type ReplicationProtectableItemsClientGetResponse struct {
+	ReplicationProtectableItemsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectableItemsGetResult contains the result from method ReplicationProtectableItems.Get.
-type ReplicationProtectableItemsGetResult struct {
+// ReplicationProtectableItemsClientGetResult contains the result from method ReplicationProtectableItemsClient.Get.
+type ReplicationProtectableItemsClientGetResult struct {
 	ProtectableItem
 }
 
-// ReplicationProtectableItemsListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectableItems.ListByReplicationProtectionContainers.
-type ReplicationProtectableItemsListByReplicationProtectionContainersResponse struct {
-	ReplicationProtectableItemsListByReplicationProtectionContainersResult
+// ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectableItemsClient.ListByReplicationProtectionContainers.
+type ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse struct {
+	ReplicationProtectableItemsClientListByReplicationProtectionContainersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectableItemsListByReplicationProtectionContainersResult contains the result from method ReplicationProtectableItems.ListByReplicationProtectionContainers.
-type ReplicationProtectableItemsListByReplicationProtectionContainersResult struct {
+// ReplicationProtectableItemsClientListByReplicationProtectionContainersResult contains the result from method ReplicationProtectableItemsClient.ListByReplicationProtectionContainers.
+type ReplicationProtectableItemsClientListByReplicationProtectionContainersResult struct {
 	ProtectableItemCollection
 }
 
-// ReplicationProtectedItemsAddDisksPollerResponse contains the response from method ReplicationProtectedItems.AddDisks.
-type ReplicationProtectedItemsAddDisksPollerResponse struct {
+// ReplicationProtectedItemsClientAddDisksPollerResponse contains the response from method ReplicationProtectedItemsClient.AddDisks.
+type ReplicationProtectedItemsClientAddDisksPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsAddDisksPoller
+	Poller *ReplicationProtectedItemsClientAddDisksPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1611,8 +1624,8 @@ type ReplicationProtectedItemsAddDisksPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsAddDisksPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsAddDisksResponse, error) {
-	respType := ReplicationProtectedItemsAddDisksResponse{}
+func (l ReplicationProtectedItemsClientAddDisksPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientAddDisksResponse, error) {
+	respType := ReplicationProtectedItemsClientAddDisksResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -1621,13 +1634,13 @@ func (l ReplicationProtectedItemsAddDisksPollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsAddDisksPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsAddDisksPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.AddDisks", token, client.pl, client.addDisksHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientAddDisksPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientAddDisksPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.AddDisks", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsAddDisksPoller{
+	poller := &ReplicationProtectedItemsClientAddDisksPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1639,22 +1652,22 @@ func (l *ReplicationProtectedItemsAddDisksPollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// ReplicationProtectedItemsAddDisksResponse contains the response from method ReplicationProtectedItems.AddDisks.
-type ReplicationProtectedItemsAddDisksResponse struct {
-	ReplicationProtectedItemsAddDisksResult
+// ReplicationProtectedItemsClientAddDisksResponse contains the response from method ReplicationProtectedItemsClient.AddDisks.
+type ReplicationProtectedItemsClientAddDisksResponse struct {
+	ReplicationProtectedItemsClientAddDisksResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsAddDisksResult contains the result from method ReplicationProtectedItems.AddDisks.
-type ReplicationProtectedItemsAddDisksResult struct {
+// ReplicationProtectedItemsClientAddDisksResult contains the result from method ReplicationProtectedItemsClient.AddDisks.
+type ReplicationProtectedItemsClientAddDisksResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsApplyRecoveryPointPollerResponse contains the response from method ReplicationProtectedItems.ApplyRecoveryPoint.
-type ReplicationProtectedItemsApplyRecoveryPointPollerResponse struct {
+// ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse contains the response from method ReplicationProtectedItemsClient.ApplyRecoveryPoint.
+type ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsApplyRecoveryPointPoller
+	Poller *ReplicationProtectedItemsClientApplyRecoveryPointPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1663,8 +1676,8 @@ type ReplicationProtectedItemsApplyRecoveryPointPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsApplyRecoveryPointPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsApplyRecoveryPointResponse, error) {
-	respType := ReplicationProtectedItemsApplyRecoveryPointResponse{}
+func (l ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientApplyRecoveryPointResponse, error) {
+	respType := ReplicationProtectedItemsClientApplyRecoveryPointResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -1673,13 +1686,14 @@ func (l ReplicationProtectedItemsApplyRecoveryPointPollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsApplyRecoveryPointPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsApplyRecoveryPointPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.ApplyRecoveryPoint", token, client.pl, client.applyRecoveryPointHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectedItemsClientApplyRecoveryPointPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.ApplyRecoveryPoint", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsApplyRecoveryPointPoller{
+	poller := &ReplicationProtectedItemsClientApplyRecoveryPointPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1691,22 +1705,22 @@ func (l *ReplicationProtectedItemsApplyRecoveryPointPollerResponse) Resume(ctx c
 	return nil
 }
 
-// ReplicationProtectedItemsApplyRecoveryPointResponse contains the response from method ReplicationProtectedItems.ApplyRecoveryPoint.
-type ReplicationProtectedItemsApplyRecoveryPointResponse struct {
-	ReplicationProtectedItemsApplyRecoveryPointResult
+// ReplicationProtectedItemsClientApplyRecoveryPointResponse contains the response from method ReplicationProtectedItemsClient.ApplyRecoveryPoint.
+type ReplicationProtectedItemsClientApplyRecoveryPointResponse struct {
+	ReplicationProtectedItemsClientApplyRecoveryPointResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsApplyRecoveryPointResult contains the result from method ReplicationProtectedItems.ApplyRecoveryPoint.
-type ReplicationProtectedItemsApplyRecoveryPointResult struct {
+// ReplicationProtectedItemsClientApplyRecoveryPointResult contains the result from method ReplicationProtectedItemsClient.ApplyRecoveryPoint.
+type ReplicationProtectedItemsClientApplyRecoveryPointResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsCreatePollerResponse contains the response from method ReplicationProtectedItems.Create.
-type ReplicationProtectedItemsCreatePollerResponse struct {
+// ReplicationProtectedItemsClientCreatePollerResponse contains the response from method ReplicationProtectedItemsClient.Create.
+type ReplicationProtectedItemsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsCreatePoller
+	Poller *ReplicationProtectedItemsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1715,8 +1729,8 @@ type ReplicationProtectedItemsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsCreateResponse, error) {
-	respType := ReplicationProtectedItemsCreateResponse{}
+func (l ReplicationProtectedItemsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientCreateResponse, error) {
+	respType := ReplicationProtectedItemsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -1725,13 +1739,13 @@ func (l ReplicationProtectedItemsCreatePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsCreatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsCreatePoller{
+	poller := &ReplicationProtectedItemsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1743,22 +1757,22 @@ func (l *ReplicationProtectedItemsCreatePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationProtectedItemsCreateResponse contains the response from method ReplicationProtectedItems.Create.
-type ReplicationProtectedItemsCreateResponse struct {
-	ReplicationProtectedItemsCreateResult
+// ReplicationProtectedItemsClientCreateResponse contains the response from method ReplicationProtectedItemsClient.Create.
+type ReplicationProtectedItemsClientCreateResponse struct {
+	ReplicationProtectedItemsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsCreateResult contains the result from method ReplicationProtectedItems.Create.
-type ReplicationProtectedItemsCreateResult struct {
+// ReplicationProtectedItemsClientCreateResult contains the result from method ReplicationProtectedItemsClient.Create.
+type ReplicationProtectedItemsClientCreateResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsDeletePollerResponse contains the response from method ReplicationProtectedItems.Delete.
-type ReplicationProtectedItemsDeletePollerResponse struct {
+// ReplicationProtectedItemsClientDeletePollerResponse contains the response from method ReplicationProtectedItemsClient.Delete.
+type ReplicationProtectedItemsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsDeletePoller
+	Poller *ReplicationProtectedItemsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1767,8 +1781,8 @@ type ReplicationProtectedItemsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsDeleteResponse, error) {
-	respType := ReplicationProtectedItemsDeleteResponse{}
+func (l ReplicationProtectedItemsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientDeleteResponse, error) {
+	respType := ReplicationProtectedItemsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1777,13 +1791,13 @@ func (l ReplicationProtectedItemsDeletePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsDeletePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsDeletePoller{
+	poller := &ReplicationProtectedItemsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1795,16 +1809,16 @@ func (l *ReplicationProtectedItemsDeletePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationProtectedItemsDeleteResponse contains the response from method ReplicationProtectedItems.Delete.
-type ReplicationProtectedItemsDeleteResponse struct {
+// ReplicationProtectedItemsClientDeleteResponse contains the response from method ReplicationProtectedItemsClient.Delete.
+type ReplicationProtectedItemsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsFailoverCancelPollerResponse contains the response from method ReplicationProtectedItems.FailoverCancel.
-type ReplicationProtectedItemsFailoverCancelPollerResponse struct {
+// ReplicationProtectedItemsClientFailoverCancelPollerResponse contains the response from method ReplicationProtectedItemsClient.FailoverCancel.
+type ReplicationProtectedItemsClientFailoverCancelPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsFailoverCancelPoller
+	Poller *ReplicationProtectedItemsClientFailoverCancelPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1813,8 +1827,8 @@ type ReplicationProtectedItemsFailoverCancelPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsFailoverCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsFailoverCancelResponse, error) {
-	respType := ReplicationProtectedItemsFailoverCancelResponse{}
+func (l ReplicationProtectedItemsClientFailoverCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientFailoverCancelResponse, error) {
+	respType := ReplicationProtectedItemsClientFailoverCancelResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -1823,13 +1837,13 @@ func (l ReplicationProtectedItemsFailoverCancelPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsFailoverCancelPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsFailoverCancelPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.FailoverCancel", token, client.pl, client.failoverCancelHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientFailoverCancelPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientFailoverCancelPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.FailoverCancel", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsFailoverCancelPoller{
+	poller := &ReplicationProtectedItemsClientFailoverCancelPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1841,22 +1855,22 @@ func (l *ReplicationProtectedItemsFailoverCancelPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// ReplicationProtectedItemsFailoverCancelResponse contains the response from method ReplicationProtectedItems.FailoverCancel.
-type ReplicationProtectedItemsFailoverCancelResponse struct {
-	ReplicationProtectedItemsFailoverCancelResult
+// ReplicationProtectedItemsClientFailoverCancelResponse contains the response from method ReplicationProtectedItemsClient.FailoverCancel.
+type ReplicationProtectedItemsClientFailoverCancelResponse struct {
+	ReplicationProtectedItemsClientFailoverCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsFailoverCancelResult contains the result from method ReplicationProtectedItems.FailoverCancel.
-type ReplicationProtectedItemsFailoverCancelResult struct {
+// ReplicationProtectedItemsClientFailoverCancelResult contains the result from method ReplicationProtectedItemsClient.FailoverCancel.
+type ReplicationProtectedItemsClientFailoverCancelResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsFailoverCommitPollerResponse contains the response from method ReplicationProtectedItems.FailoverCommit.
-type ReplicationProtectedItemsFailoverCommitPollerResponse struct {
+// ReplicationProtectedItemsClientFailoverCommitPollerResponse contains the response from method ReplicationProtectedItemsClient.FailoverCommit.
+type ReplicationProtectedItemsClientFailoverCommitPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsFailoverCommitPoller
+	Poller *ReplicationProtectedItemsClientFailoverCommitPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1865,8 +1879,8 @@ type ReplicationProtectedItemsFailoverCommitPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsFailoverCommitPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsFailoverCommitResponse, error) {
-	respType := ReplicationProtectedItemsFailoverCommitResponse{}
+func (l ReplicationProtectedItemsClientFailoverCommitPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientFailoverCommitResponse, error) {
+	respType := ReplicationProtectedItemsClientFailoverCommitResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -1875,13 +1889,13 @@ func (l ReplicationProtectedItemsFailoverCommitPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsFailoverCommitPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsFailoverCommitPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.FailoverCommit", token, client.pl, client.failoverCommitHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientFailoverCommitPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientFailoverCommitPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.FailoverCommit", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsFailoverCommitPoller{
+	poller := &ReplicationProtectedItemsClientFailoverCommitPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1893,58 +1907,58 @@ func (l *ReplicationProtectedItemsFailoverCommitPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// ReplicationProtectedItemsFailoverCommitResponse contains the response from method ReplicationProtectedItems.FailoverCommit.
-type ReplicationProtectedItemsFailoverCommitResponse struct {
-	ReplicationProtectedItemsFailoverCommitResult
+// ReplicationProtectedItemsClientFailoverCommitResponse contains the response from method ReplicationProtectedItemsClient.FailoverCommit.
+type ReplicationProtectedItemsClientFailoverCommitResponse struct {
+	ReplicationProtectedItemsClientFailoverCommitResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsFailoverCommitResult contains the result from method ReplicationProtectedItems.FailoverCommit.
-type ReplicationProtectedItemsFailoverCommitResult struct {
+// ReplicationProtectedItemsClientFailoverCommitResult contains the result from method ReplicationProtectedItemsClient.FailoverCommit.
+type ReplicationProtectedItemsClientFailoverCommitResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsGetResponse contains the response from method ReplicationProtectedItems.Get.
-type ReplicationProtectedItemsGetResponse struct {
-	ReplicationProtectedItemsGetResult
+// ReplicationProtectedItemsClientGetResponse contains the response from method ReplicationProtectedItemsClient.Get.
+type ReplicationProtectedItemsClientGetResponse struct {
+	ReplicationProtectedItemsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsGetResult contains the result from method ReplicationProtectedItems.Get.
-type ReplicationProtectedItemsGetResult struct {
+// ReplicationProtectedItemsClientGetResult contains the result from method ReplicationProtectedItemsClient.Get.
+type ReplicationProtectedItemsClientGetResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectedItems.ListByReplicationProtectionContainers.
-type ReplicationProtectedItemsListByReplicationProtectionContainersResponse struct {
-	ReplicationProtectedItemsListByReplicationProtectionContainersResult
+// ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectedItemsClient.ListByReplicationProtectionContainers.
+type ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse struct {
+	ReplicationProtectedItemsClientListByReplicationProtectionContainersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsListByReplicationProtectionContainersResult contains the result from method ReplicationProtectedItems.ListByReplicationProtectionContainers.
-type ReplicationProtectedItemsListByReplicationProtectionContainersResult struct {
+// ReplicationProtectedItemsClientListByReplicationProtectionContainersResult contains the result from method ReplicationProtectedItemsClient.ListByReplicationProtectionContainers.
+type ReplicationProtectedItemsClientListByReplicationProtectionContainersResult struct {
 	ReplicationProtectedItemCollection
 }
 
-// ReplicationProtectedItemsListResponse contains the response from method ReplicationProtectedItems.List.
-type ReplicationProtectedItemsListResponse struct {
-	ReplicationProtectedItemsListResult
+// ReplicationProtectedItemsClientListResponse contains the response from method ReplicationProtectedItemsClient.List.
+type ReplicationProtectedItemsClientListResponse struct {
+	ReplicationProtectedItemsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsListResult contains the result from method ReplicationProtectedItems.List.
-type ReplicationProtectedItemsListResult struct {
+// ReplicationProtectedItemsClientListResult contains the result from method ReplicationProtectedItemsClient.List.
+type ReplicationProtectedItemsClientListResult struct {
 	ReplicationProtectedItemCollection
 }
 
-// ReplicationProtectedItemsPlannedFailoverPollerResponse contains the response from method ReplicationProtectedItems.PlannedFailover.
-type ReplicationProtectedItemsPlannedFailoverPollerResponse struct {
+// ReplicationProtectedItemsClientPlannedFailoverPollerResponse contains the response from method ReplicationProtectedItemsClient.PlannedFailover.
+type ReplicationProtectedItemsClientPlannedFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsPlannedFailoverPoller
+	Poller *ReplicationProtectedItemsClientPlannedFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1953,8 +1967,8 @@ type ReplicationProtectedItemsPlannedFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsPlannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsPlannedFailoverResponse, error) {
-	respType := ReplicationProtectedItemsPlannedFailoverResponse{}
+func (l ReplicationProtectedItemsClientPlannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientPlannedFailoverResponse, error) {
+	respType := ReplicationProtectedItemsClientPlannedFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -1963,13 +1977,13 @@ func (l ReplicationProtectedItemsPlannedFailoverPollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsPlannedFailoverPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsPlannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.PlannedFailover", token, client.pl, client.plannedFailoverHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientPlannedFailoverPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientPlannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.PlannedFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsPlannedFailoverPoller{
+	poller := &ReplicationProtectedItemsClientPlannedFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1981,22 +1995,22 @@ func (l *ReplicationProtectedItemsPlannedFailoverPollerResponse) Resume(ctx cont
 	return nil
 }
 
-// ReplicationProtectedItemsPlannedFailoverResponse contains the response from method ReplicationProtectedItems.PlannedFailover.
-type ReplicationProtectedItemsPlannedFailoverResponse struct {
-	ReplicationProtectedItemsPlannedFailoverResult
+// ReplicationProtectedItemsClientPlannedFailoverResponse contains the response from method ReplicationProtectedItemsClient.PlannedFailover.
+type ReplicationProtectedItemsClientPlannedFailoverResponse struct {
+	ReplicationProtectedItemsClientPlannedFailoverResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsPlannedFailoverResult contains the result from method ReplicationProtectedItems.PlannedFailover.
-type ReplicationProtectedItemsPlannedFailoverResult struct {
+// ReplicationProtectedItemsClientPlannedFailoverResult contains the result from method ReplicationProtectedItemsClient.PlannedFailover.
+type ReplicationProtectedItemsClientPlannedFailoverResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsPurgePollerResponse contains the response from method ReplicationProtectedItems.Purge.
-type ReplicationProtectedItemsPurgePollerResponse struct {
+// ReplicationProtectedItemsClientPurgePollerResponse contains the response from method ReplicationProtectedItemsClient.Purge.
+type ReplicationProtectedItemsClientPurgePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsPurgePoller
+	Poller *ReplicationProtectedItemsClientPurgePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2005,8 +2019,8 @@ type ReplicationProtectedItemsPurgePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsPurgeResponse, error) {
-	respType := ReplicationProtectedItemsPurgeResponse{}
+func (l ReplicationProtectedItemsClientPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientPurgeResponse, error) {
+	respType := ReplicationProtectedItemsClientPurgeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2015,13 +2029,13 @@ func (l ReplicationProtectedItemsPurgePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsPurgePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsPurgePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Purge", token, client.pl, client.purgeHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientPurgePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientPurgePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Purge", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsPurgePoller{
+	poller := &ReplicationProtectedItemsClientPurgePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2033,16 +2047,16 @@ func (l *ReplicationProtectedItemsPurgePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ReplicationProtectedItemsPurgeResponse contains the response from method ReplicationProtectedItems.Purge.
-type ReplicationProtectedItemsPurgeResponse struct {
+// ReplicationProtectedItemsClientPurgeResponse contains the response from method ReplicationProtectedItemsClient.Purge.
+type ReplicationProtectedItemsClientPurgeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsRemoveDisksPollerResponse contains the response from method ReplicationProtectedItems.RemoveDisks.
-type ReplicationProtectedItemsRemoveDisksPollerResponse struct {
+// ReplicationProtectedItemsClientRemoveDisksPollerResponse contains the response from method ReplicationProtectedItemsClient.RemoveDisks.
+type ReplicationProtectedItemsClientRemoveDisksPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsRemoveDisksPoller
+	Poller *ReplicationProtectedItemsClientRemoveDisksPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2051,8 +2065,8 @@ type ReplicationProtectedItemsRemoveDisksPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsRemoveDisksPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsRemoveDisksResponse, error) {
-	respType := ReplicationProtectedItemsRemoveDisksResponse{}
+func (l ReplicationProtectedItemsClientRemoveDisksPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientRemoveDisksResponse, error) {
+	respType := ReplicationProtectedItemsClientRemoveDisksResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2061,13 +2075,13 @@ func (l ReplicationProtectedItemsRemoveDisksPollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsRemoveDisksPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsRemoveDisksPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.RemoveDisks", token, client.pl, client.removeDisksHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientRemoveDisksPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientRemoveDisksPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.RemoveDisks", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsRemoveDisksPoller{
+	poller := &ReplicationProtectedItemsClientRemoveDisksPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2079,22 +2093,22 @@ func (l *ReplicationProtectedItemsRemoveDisksPollerResponse) Resume(ctx context.
 	return nil
 }
 
-// ReplicationProtectedItemsRemoveDisksResponse contains the response from method ReplicationProtectedItems.RemoveDisks.
-type ReplicationProtectedItemsRemoveDisksResponse struct {
-	ReplicationProtectedItemsRemoveDisksResult
+// ReplicationProtectedItemsClientRemoveDisksResponse contains the response from method ReplicationProtectedItemsClient.RemoveDisks.
+type ReplicationProtectedItemsClientRemoveDisksResponse struct {
+	ReplicationProtectedItemsClientRemoveDisksResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsRemoveDisksResult contains the result from method ReplicationProtectedItems.RemoveDisks.
-type ReplicationProtectedItemsRemoveDisksResult struct {
+// ReplicationProtectedItemsClientRemoveDisksResult contains the result from method ReplicationProtectedItemsClient.RemoveDisks.
+type ReplicationProtectedItemsClientRemoveDisksResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsRepairReplicationPollerResponse contains the response from method ReplicationProtectedItems.RepairReplication.
-type ReplicationProtectedItemsRepairReplicationPollerResponse struct {
+// ReplicationProtectedItemsClientRepairReplicationPollerResponse contains the response from method ReplicationProtectedItemsClient.RepairReplication.
+type ReplicationProtectedItemsClientRepairReplicationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsRepairReplicationPoller
+	Poller *ReplicationProtectedItemsClientRepairReplicationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2103,8 +2117,8 @@ type ReplicationProtectedItemsRepairReplicationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsRepairReplicationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsRepairReplicationResponse, error) {
-	respType := ReplicationProtectedItemsRepairReplicationResponse{}
+func (l ReplicationProtectedItemsClientRepairReplicationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientRepairReplicationResponse, error) {
+	respType := ReplicationProtectedItemsClientRepairReplicationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2113,13 +2127,14 @@ func (l ReplicationProtectedItemsRepairReplicationPollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsRepairReplicationPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsRepairReplicationPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.RepairReplication", token, client.pl, client.repairReplicationHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientRepairReplicationPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectedItemsClientRepairReplicationPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.RepairReplication", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsRepairReplicationPoller{
+	poller := &ReplicationProtectedItemsClientRepairReplicationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2131,22 +2146,22 @@ func (l *ReplicationProtectedItemsRepairReplicationPollerResponse) Resume(ctx co
 	return nil
 }
 
-// ReplicationProtectedItemsRepairReplicationResponse contains the response from method ReplicationProtectedItems.RepairReplication.
-type ReplicationProtectedItemsRepairReplicationResponse struct {
-	ReplicationProtectedItemsRepairReplicationResult
+// ReplicationProtectedItemsClientRepairReplicationResponse contains the response from method ReplicationProtectedItemsClient.RepairReplication.
+type ReplicationProtectedItemsClientRepairReplicationResponse struct {
+	ReplicationProtectedItemsClientRepairReplicationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsRepairReplicationResult contains the result from method ReplicationProtectedItems.RepairReplication.
-type ReplicationProtectedItemsRepairReplicationResult struct {
+// ReplicationProtectedItemsClientRepairReplicationResult contains the result from method ReplicationProtectedItemsClient.RepairReplication.
+type ReplicationProtectedItemsClientRepairReplicationResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsReprotectPollerResponse contains the response from method ReplicationProtectedItems.Reprotect.
-type ReplicationProtectedItemsReprotectPollerResponse struct {
+// ReplicationProtectedItemsClientReprotectPollerResponse contains the response from method ReplicationProtectedItemsClient.Reprotect.
+type ReplicationProtectedItemsClientReprotectPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsReprotectPoller
+	Poller *ReplicationProtectedItemsClientReprotectPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2155,8 +2170,8 @@ type ReplicationProtectedItemsReprotectPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsReprotectPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsReprotectResponse, error) {
-	respType := ReplicationProtectedItemsReprotectResponse{}
+func (l ReplicationProtectedItemsClientReprotectPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientReprotectResponse, error) {
+	respType := ReplicationProtectedItemsClientReprotectResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2165,13 +2180,13 @@ func (l ReplicationProtectedItemsReprotectPollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsReprotectPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsReprotectPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Reprotect", token, client.pl, client.reprotectHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientReprotectPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientReprotectPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Reprotect", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsReprotectPoller{
+	poller := &ReplicationProtectedItemsClientReprotectPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2183,22 +2198,22 @@ func (l *ReplicationProtectedItemsReprotectPollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// ReplicationProtectedItemsReprotectResponse contains the response from method ReplicationProtectedItems.Reprotect.
-type ReplicationProtectedItemsReprotectResponse struct {
-	ReplicationProtectedItemsReprotectResult
+// ReplicationProtectedItemsClientReprotectResponse contains the response from method ReplicationProtectedItemsClient.Reprotect.
+type ReplicationProtectedItemsClientReprotectResponse struct {
+	ReplicationProtectedItemsClientReprotectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsReprotectResult contains the result from method ReplicationProtectedItems.Reprotect.
-type ReplicationProtectedItemsReprotectResult struct {
+// ReplicationProtectedItemsClientReprotectResult contains the result from method ReplicationProtectedItemsClient.Reprotect.
+type ReplicationProtectedItemsClientReprotectResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsResolveHealthErrorsPollerResponse contains the response from method ReplicationProtectedItems.ResolveHealthErrors.
-type ReplicationProtectedItemsResolveHealthErrorsPollerResponse struct {
+// ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse contains the response from method ReplicationProtectedItemsClient.ResolveHealthErrors.
+type ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsResolveHealthErrorsPoller
+	Poller *ReplicationProtectedItemsClientResolveHealthErrorsPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2207,8 +2222,8 @@ type ReplicationProtectedItemsResolveHealthErrorsPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsResolveHealthErrorsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsResolveHealthErrorsResponse, error) {
-	respType := ReplicationProtectedItemsResolveHealthErrorsResponse{}
+func (l ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientResolveHealthErrorsResponse, error) {
+	respType := ReplicationProtectedItemsClientResolveHealthErrorsResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2217,13 +2232,14 @@ func (l ReplicationProtectedItemsResolveHealthErrorsPollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsResolveHealthErrorsPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsResolveHealthErrorsPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.ResolveHealthErrors", token, client.pl, client.resolveHealthErrorsHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectedItemsClientResolveHealthErrorsPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.ResolveHealthErrors", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsResolveHealthErrorsPoller{
+	poller := &ReplicationProtectedItemsClientResolveHealthErrorsPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2235,22 +2251,22 @@ func (l *ReplicationProtectedItemsResolveHealthErrorsPollerResponse) Resume(ctx 
 	return nil
 }
 
-// ReplicationProtectedItemsResolveHealthErrorsResponse contains the response from method ReplicationProtectedItems.ResolveHealthErrors.
-type ReplicationProtectedItemsResolveHealthErrorsResponse struct {
-	ReplicationProtectedItemsResolveHealthErrorsResult
+// ReplicationProtectedItemsClientResolveHealthErrorsResponse contains the response from method ReplicationProtectedItemsClient.ResolveHealthErrors.
+type ReplicationProtectedItemsClientResolveHealthErrorsResponse struct {
+	ReplicationProtectedItemsClientResolveHealthErrorsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsResolveHealthErrorsResult contains the result from method ReplicationProtectedItems.ResolveHealthErrors.
-type ReplicationProtectedItemsResolveHealthErrorsResult struct {
+// ReplicationProtectedItemsClientResolveHealthErrorsResult contains the result from method ReplicationProtectedItemsClient.ResolveHealthErrors.
+type ReplicationProtectedItemsClientResolveHealthErrorsResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsTestFailoverCleanupPollerResponse contains the response from method ReplicationProtectedItems.TestFailoverCleanup.
-type ReplicationProtectedItemsTestFailoverCleanupPollerResponse struct {
+// ReplicationProtectedItemsClientSwitchProviderPollerResponse contains the response from method ReplicationProtectedItemsClient.SwitchProvider.
+type ReplicationProtectedItemsClientSwitchProviderPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsTestFailoverCleanupPoller
+	Poller *ReplicationProtectedItemsClientSwitchProviderPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2259,8 +2275,8 @@ type ReplicationProtectedItemsTestFailoverCleanupPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsTestFailoverCleanupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsTestFailoverCleanupResponse, error) {
-	respType := ReplicationProtectedItemsTestFailoverCleanupResponse{}
+func (l ReplicationProtectedItemsClientSwitchProviderPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientSwitchProviderResponse, error) {
+	respType := ReplicationProtectedItemsClientSwitchProviderResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2269,13 +2285,13 @@ func (l ReplicationProtectedItemsTestFailoverCleanupPollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsTestFailoverCleanupPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsTestFailoverCleanupPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.TestFailoverCleanup", token, client.pl, client.testFailoverCleanupHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientSwitchProviderPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientSwitchProviderPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.SwitchProvider", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsTestFailoverCleanupPoller{
+	poller := &ReplicationProtectedItemsClientSwitchProviderPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2287,22 +2303,22 @@ func (l *ReplicationProtectedItemsTestFailoverCleanupPollerResponse) Resume(ctx 
 	return nil
 }
 
-// ReplicationProtectedItemsTestFailoverCleanupResponse contains the response from method ReplicationProtectedItems.TestFailoverCleanup.
-type ReplicationProtectedItemsTestFailoverCleanupResponse struct {
-	ReplicationProtectedItemsTestFailoverCleanupResult
+// ReplicationProtectedItemsClientSwitchProviderResponse contains the response from method ReplicationProtectedItemsClient.SwitchProvider.
+type ReplicationProtectedItemsClientSwitchProviderResponse struct {
+	ReplicationProtectedItemsClientSwitchProviderResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsTestFailoverCleanupResult contains the result from method ReplicationProtectedItems.TestFailoverCleanup.
-type ReplicationProtectedItemsTestFailoverCleanupResult struct {
+// ReplicationProtectedItemsClientSwitchProviderResult contains the result from method ReplicationProtectedItemsClient.SwitchProvider.
+type ReplicationProtectedItemsClientSwitchProviderResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsTestFailoverPollerResponse contains the response from method ReplicationProtectedItems.TestFailover.
-type ReplicationProtectedItemsTestFailoverPollerResponse struct {
+// ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse contains the response from method ReplicationProtectedItemsClient.TestFailoverCleanup.
+type ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsTestFailoverPoller
+	Poller *ReplicationProtectedItemsClientTestFailoverCleanupPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2311,8 +2327,8 @@ type ReplicationProtectedItemsTestFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsTestFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsTestFailoverResponse, error) {
-	respType := ReplicationProtectedItemsTestFailoverResponse{}
+func (l ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientTestFailoverCleanupResponse, error) {
+	respType := ReplicationProtectedItemsClientTestFailoverCleanupResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2321,13 +2337,14 @@ func (l ReplicationProtectedItemsTestFailoverPollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsTestFailoverPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsTestFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.TestFailover", token, client.pl, client.testFailoverHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectedItemsClientTestFailoverCleanupPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.TestFailoverCleanup", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsTestFailoverPoller{
+	poller := &ReplicationProtectedItemsClientTestFailoverCleanupPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2339,22 +2356,22 @@ func (l *ReplicationProtectedItemsTestFailoverPollerResponse) Resume(ctx context
 	return nil
 }
 
-// ReplicationProtectedItemsTestFailoverResponse contains the response from method ReplicationProtectedItems.TestFailover.
-type ReplicationProtectedItemsTestFailoverResponse struct {
-	ReplicationProtectedItemsTestFailoverResult
+// ReplicationProtectedItemsClientTestFailoverCleanupResponse contains the response from method ReplicationProtectedItemsClient.TestFailoverCleanup.
+type ReplicationProtectedItemsClientTestFailoverCleanupResponse struct {
+	ReplicationProtectedItemsClientTestFailoverCleanupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsTestFailoverResult contains the result from method ReplicationProtectedItems.TestFailover.
-type ReplicationProtectedItemsTestFailoverResult struct {
+// ReplicationProtectedItemsClientTestFailoverCleanupResult contains the result from method ReplicationProtectedItemsClient.TestFailoverCleanup.
+type ReplicationProtectedItemsClientTestFailoverCleanupResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsUnplannedFailoverPollerResponse contains the response from method ReplicationProtectedItems.UnplannedFailover.
-type ReplicationProtectedItemsUnplannedFailoverPollerResponse struct {
+// ReplicationProtectedItemsClientTestFailoverPollerResponse contains the response from method ReplicationProtectedItemsClient.TestFailover.
+type ReplicationProtectedItemsClientTestFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsUnplannedFailoverPoller
+	Poller *ReplicationProtectedItemsClientTestFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2363,8 +2380,8 @@ type ReplicationProtectedItemsUnplannedFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsUnplannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsUnplannedFailoverResponse, error) {
-	respType := ReplicationProtectedItemsUnplannedFailoverResponse{}
+func (l ReplicationProtectedItemsClientTestFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientTestFailoverResponse, error) {
+	respType := ReplicationProtectedItemsClientTestFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2373,13 +2390,13 @@ func (l ReplicationProtectedItemsUnplannedFailoverPollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsUnplannedFailoverPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsUnplannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.UnplannedFailover", token, client.pl, client.unplannedFailoverHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientTestFailoverPollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientTestFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.TestFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsUnplannedFailoverPoller{
+	poller := &ReplicationProtectedItemsClientTestFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2391,22 +2408,22 @@ func (l *ReplicationProtectedItemsUnplannedFailoverPollerResponse) Resume(ctx co
 	return nil
 }
 
-// ReplicationProtectedItemsUnplannedFailoverResponse contains the response from method ReplicationProtectedItems.UnplannedFailover.
-type ReplicationProtectedItemsUnplannedFailoverResponse struct {
-	ReplicationProtectedItemsUnplannedFailoverResult
+// ReplicationProtectedItemsClientTestFailoverResponse contains the response from method ReplicationProtectedItemsClient.TestFailover.
+type ReplicationProtectedItemsClientTestFailoverResponse struct {
+	ReplicationProtectedItemsClientTestFailoverResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsUnplannedFailoverResult contains the result from method ReplicationProtectedItems.UnplannedFailover.
-type ReplicationProtectedItemsUnplannedFailoverResult struct {
+// ReplicationProtectedItemsClientTestFailoverResult contains the result from method ReplicationProtectedItemsClient.TestFailover.
+type ReplicationProtectedItemsClientTestFailoverResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsUpdateAppliancePollerResponse contains the response from method ReplicationProtectedItems.UpdateAppliance.
-type ReplicationProtectedItemsUpdateAppliancePollerResponse struct {
+// ReplicationProtectedItemsClientUnplannedFailoverPollerResponse contains the response from method ReplicationProtectedItemsClient.UnplannedFailover.
+type ReplicationProtectedItemsClientUnplannedFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsUpdateAppliancePoller
+	Poller *ReplicationProtectedItemsClientUnplannedFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2415,8 +2432,8 @@ type ReplicationProtectedItemsUpdateAppliancePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsUpdateAppliancePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsUpdateApplianceResponse, error) {
-	respType := ReplicationProtectedItemsUpdateApplianceResponse{}
+func (l ReplicationProtectedItemsClientUnplannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientUnplannedFailoverResponse, error) {
+	respType := ReplicationProtectedItemsClientUnplannedFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2425,13 +2442,14 @@ func (l ReplicationProtectedItemsUpdateAppliancePollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsUpdateAppliancePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsUpdateAppliancePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.UpdateAppliance", token, client.pl, client.updateApplianceHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientUnplannedFailoverPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectedItemsClientUnplannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.UnplannedFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsUpdateAppliancePoller{
+	poller := &ReplicationProtectedItemsClientUnplannedFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2443,22 +2461,22 @@ func (l *ReplicationProtectedItemsUpdateAppliancePollerResponse) Resume(ctx cont
 	return nil
 }
 
-// ReplicationProtectedItemsUpdateApplianceResponse contains the response from method ReplicationProtectedItems.UpdateAppliance.
-type ReplicationProtectedItemsUpdateApplianceResponse struct {
-	ReplicationProtectedItemsUpdateApplianceResult
+// ReplicationProtectedItemsClientUnplannedFailoverResponse contains the response from method ReplicationProtectedItemsClient.UnplannedFailover.
+type ReplicationProtectedItemsClientUnplannedFailoverResponse struct {
+	ReplicationProtectedItemsClientUnplannedFailoverResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsUpdateApplianceResult contains the result from method ReplicationProtectedItems.UpdateAppliance.
-type ReplicationProtectedItemsUpdateApplianceResult struct {
+// ReplicationProtectedItemsClientUnplannedFailoverResult contains the result from method ReplicationProtectedItemsClient.UnplannedFailover.
+type ReplicationProtectedItemsClientUnplannedFailoverResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsUpdateMobilityServicePollerResponse contains the response from method ReplicationProtectedItems.UpdateMobilityService.
-type ReplicationProtectedItemsUpdateMobilityServicePollerResponse struct {
+// ReplicationProtectedItemsClientUpdateAppliancePollerResponse contains the response from method ReplicationProtectedItemsClient.UpdateAppliance.
+type ReplicationProtectedItemsClientUpdateAppliancePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsUpdateMobilityServicePoller
+	Poller *ReplicationProtectedItemsClientUpdateAppliancePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2467,8 +2485,8 @@ type ReplicationProtectedItemsUpdateMobilityServicePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsUpdateMobilityServicePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsUpdateMobilityServiceResponse, error) {
-	respType := ReplicationProtectedItemsUpdateMobilityServiceResponse{}
+func (l ReplicationProtectedItemsClientUpdateAppliancePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientUpdateApplianceResponse, error) {
+	respType := ReplicationProtectedItemsClientUpdateApplianceResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2477,13 +2495,13 @@ func (l ReplicationProtectedItemsUpdateMobilityServicePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsUpdateMobilityServicePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsUpdateMobilityServicePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.UpdateMobilityService", token, client.pl, client.updateMobilityServiceHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientUpdateAppliancePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientUpdateAppliancePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.UpdateAppliance", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsUpdateMobilityServicePoller{
+	poller := &ReplicationProtectedItemsClientUpdateAppliancePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2495,22 +2513,22 @@ func (l *ReplicationProtectedItemsUpdateMobilityServicePollerResponse) Resume(ct
 	return nil
 }
 
-// ReplicationProtectedItemsUpdateMobilityServiceResponse contains the response from method ReplicationProtectedItems.UpdateMobilityService.
-type ReplicationProtectedItemsUpdateMobilityServiceResponse struct {
-	ReplicationProtectedItemsUpdateMobilityServiceResult
+// ReplicationProtectedItemsClientUpdateApplianceResponse contains the response from method ReplicationProtectedItemsClient.UpdateAppliance.
+type ReplicationProtectedItemsClientUpdateApplianceResponse struct {
+	ReplicationProtectedItemsClientUpdateApplianceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsUpdateMobilityServiceResult contains the result from method ReplicationProtectedItems.UpdateMobilityService.
-type ReplicationProtectedItemsUpdateMobilityServiceResult struct {
+// ReplicationProtectedItemsClientUpdateApplianceResult contains the result from method ReplicationProtectedItemsClient.UpdateAppliance.
+type ReplicationProtectedItemsClientUpdateApplianceResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsUpdatePollerResponse contains the response from method ReplicationProtectedItems.Update.
-type ReplicationProtectedItemsUpdatePollerResponse struct {
+// ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse contains the response from method ReplicationProtectedItemsClient.UpdateMobilityService.
+type ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectedItemsUpdatePoller
+	Poller *ReplicationProtectedItemsClientUpdateMobilityServicePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2519,8 +2537,8 @@ type ReplicationProtectedItemsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectedItemsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsUpdateResponse, error) {
-	respType := ReplicationProtectedItemsUpdateResponse{}
+func (l ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientUpdateMobilityServiceResponse, error) {
+	respType := ReplicationProtectedItemsClientUpdateMobilityServiceResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
 	if err != nil {
 		return respType, err
@@ -2529,13 +2547,14 @@ func (l ReplicationProtectedItemsUpdatePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectedItemsUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectedItemsUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectedItemsClientUpdateMobilityServicePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.UpdateMobilityService", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectedItemsUpdatePoller{
+	poller := &ReplicationProtectedItemsClientUpdateMobilityServicePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2547,22 +2566,22 @@ func (l *ReplicationProtectedItemsUpdatePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// ReplicationProtectedItemsUpdateResponse contains the response from method ReplicationProtectedItems.Update.
-type ReplicationProtectedItemsUpdateResponse struct {
-	ReplicationProtectedItemsUpdateResult
+// ReplicationProtectedItemsClientUpdateMobilityServiceResponse contains the response from method ReplicationProtectedItemsClient.UpdateMobilityService.
+type ReplicationProtectedItemsClientUpdateMobilityServiceResponse struct {
+	ReplicationProtectedItemsClientUpdateMobilityServiceResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectedItemsUpdateResult contains the result from method ReplicationProtectedItems.Update.
-type ReplicationProtectedItemsUpdateResult struct {
+// ReplicationProtectedItemsClientUpdateMobilityServiceResult contains the result from method ReplicationProtectedItemsClient.UpdateMobilityService.
+type ReplicationProtectedItemsClientUpdateMobilityServiceResult struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectionContainerMappingsCreatePollerResponse contains the response from method ReplicationProtectionContainerMappings.Create.
-type ReplicationProtectionContainerMappingsCreatePollerResponse struct {
+// ReplicationProtectedItemsClientUpdatePollerResponse contains the response from method ReplicationProtectedItemsClient.Update.
+type ReplicationProtectedItemsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainerMappingsCreatePoller
+	Poller *ReplicationProtectedItemsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2571,8 +2590,60 @@ type ReplicationProtectionContainerMappingsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainerMappingsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsCreateResponse, error) {
-	respType := ReplicationProtectionContainerMappingsCreateResponse{}
+func (l ReplicationProtectedItemsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectedItemsClientUpdateResponse, error) {
+	respType := ReplicationProtectedItemsClientUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ReplicationProtectedItem)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ReplicationProtectedItemsClientUpdatePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectedItemsClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectedItemsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectedItemsClient.Update", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &ReplicationProtectedItemsClientUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// ReplicationProtectedItemsClientUpdateResponse contains the response from method ReplicationProtectedItemsClient.Update.
+type ReplicationProtectedItemsClientUpdateResponse struct {
+	ReplicationProtectedItemsClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReplicationProtectedItemsClientUpdateResult contains the result from method ReplicationProtectedItemsClient.Update.
+type ReplicationProtectedItemsClientUpdateResult struct {
+	ReplicationProtectedItem
+}
+
+// ReplicationProtectionContainerMappingsClientCreatePollerResponse contains the response from method ReplicationProtectionContainerMappingsClient.Create.
+type ReplicationProtectionContainerMappingsClientCreatePollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *ReplicationProtectionContainerMappingsClientCreatePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l ReplicationProtectionContainerMappingsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsClientCreateResponse, error) {
+	respType := ReplicationProtectionContainerMappingsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProtectionContainerMapping)
 	if err != nil {
 		return respType, err
@@ -2581,13 +2652,14 @@ func (l ReplicationProtectionContainerMappingsCreatePollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainerMappingsCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainerMappingsCreatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationProtectionContainerMappingsClientCreatePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectionContainerMappingsClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainerMappingsCreatePoller{
+	poller := &ReplicationProtectionContainerMappingsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2599,22 +2671,22 @@ func (l *ReplicationProtectionContainerMappingsCreatePollerResponse) Resume(ctx 
 	return nil
 }
 
-// ReplicationProtectionContainerMappingsCreateResponse contains the response from method ReplicationProtectionContainerMappings.Create.
-type ReplicationProtectionContainerMappingsCreateResponse struct {
-	ReplicationProtectionContainerMappingsCreateResult
+// ReplicationProtectionContainerMappingsClientCreateResponse contains the response from method ReplicationProtectionContainerMappingsClient.Create.
+type ReplicationProtectionContainerMappingsClientCreateResponse struct {
+	ReplicationProtectionContainerMappingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsCreateResult contains the result from method ReplicationProtectionContainerMappings.Create.
-type ReplicationProtectionContainerMappingsCreateResult struct {
+// ReplicationProtectionContainerMappingsClientCreateResult contains the result from method ReplicationProtectionContainerMappingsClient.Create.
+type ReplicationProtectionContainerMappingsClientCreateResult struct {
 	ProtectionContainerMapping
 }
 
-// ReplicationProtectionContainerMappingsDeletePollerResponse contains the response from method ReplicationProtectionContainerMappings.Delete.
-type ReplicationProtectionContainerMappingsDeletePollerResponse struct {
+// ReplicationProtectionContainerMappingsClientDeletePollerResponse contains the response from method ReplicationProtectionContainerMappingsClient.Delete.
+type ReplicationProtectionContainerMappingsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainerMappingsDeletePoller
+	Poller *ReplicationProtectionContainerMappingsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2623,8 +2695,8 @@ type ReplicationProtectionContainerMappingsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainerMappingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsDeleteResponse, error) {
-	respType := ReplicationProtectionContainerMappingsDeleteResponse{}
+func (l ReplicationProtectionContainerMappingsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsClientDeleteResponse, error) {
+	respType := ReplicationProtectionContainerMappingsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2633,13 +2705,14 @@ func (l ReplicationProtectionContainerMappingsDeletePollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainerMappingsDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainerMappingsDeletePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationProtectionContainerMappingsClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectionContainerMappingsClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainerMappingsDeletePoller{
+	poller := &ReplicationProtectionContainerMappingsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2651,52 +2724,54 @@ func (l *ReplicationProtectionContainerMappingsDeletePollerResponse) Resume(ctx 
 	return nil
 }
 
-// ReplicationProtectionContainerMappingsDeleteResponse contains the response from method ReplicationProtectionContainerMappings.Delete.
-type ReplicationProtectionContainerMappingsDeleteResponse struct {
+// ReplicationProtectionContainerMappingsClientDeleteResponse contains the response from method ReplicationProtectionContainerMappingsClient.Delete.
+type ReplicationProtectionContainerMappingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsGetResponse contains the response from method ReplicationProtectionContainerMappings.Get.
-type ReplicationProtectionContainerMappingsGetResponse struct {
-	ReplicationProtectionContainerMappingsGetResult
+// ReplicationProtectionContainerMappingsClientGetResponse contains the response from method ReplicationProtectionContainerMappingsClient.Get.
+type ReplicationProtectionContainerMappingsClientGetResponse struct {
+	ReplicationProtectionContainerMappingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsGetResult contains the result from method ReplicationProtectionContainerMappings.Get.
-type ReplicationProtectionContainerMappingsGetResult struct {
+// ReplicationProtectionContainerMappingsClientGetResult contains the result from method ReplicationProtectionContainerMappingsClient.Get.
+type ReplicationProtectionContainerMappingsClientGetResult struct {
 	ProtectionContainerMapping
 }
 
-// ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectionContainerMappings.ListByReplicationProtectionContainers.
-type ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResponse struct {
-	ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResult
+// ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse contains the response from method
+// ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers.
+type ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse struct {
+	ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResult contains the result from method ReplicationProtectionContainerMappings.ListByReplicationProtectionContainers.
-type ReplicationProtectionContainerMappingsListByReplicationProtectionContainersResult struct {
+// ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResult contains the result from method
+// ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers.
+type ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResult struct {
 	ProtectionContainerMappingCollection
 }
 
-// ReplicationProtectionContainerMappingsListResponse contains the response from method ReplicationProtectionContainerMappings.List.
-type ReplicationProtectionContainerMappingsListResponse struct {
-	ReplicationProtectionContainerMappingsListResult
+// ReplicationProtectionContainerMappingsClientListResponse contains the response from method ReplicationProtectionContainerMappingsClient.List.
+type ReplicationProtectionContainerMappingsClientListResponse struct {
+	ReplicationProtectionContainerMappingsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsListResult contains the result from method ReplicationProtectionContainerMappings.List.
-type ReplicationProtectionContainerMappingsListResult struct {
+// ReplicationProtectionContainerMappingsClientListResult contains the result from method ReplicationProtectionContainerMappingsClient.List.
+type ReplicationProtectionContainerMappingsClientListResult struct {
 	ProtectionContainerMappingCollection
 }
 
-// ReplicationProtectionContainerMappingsPurgePollerResponse contains the response from method ReplicationProtectionContainerMappings.Purge.
-type ReplicationProtectionContainerMappingsPurgePollerResponse struct {
+// ReplicationProtectionContainerMappingsClientPurgePollerResponse contains the response from method ReplicationProtectionContainerMappingsClient.Purge.
+type ReplicationProtectionContainerMappingsClientPurgePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainerMappingsPurgePoller
+	Poller *ReplicationProtectionContainerMappingsClientPurgePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2705,8 +2780,8 @@ type ReplicationProtectionContainerMappingsPurgePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainerMappingsPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsPurgeResponse, error) {
-	respType := ReplicationProtectionContainerMappingsPurgeResponse{}
+func (l ReplicationProtectionContainerMappingsClientPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsClientPurgeResponse, error) {
+	respType := ReplicationProtectionContainerMappingsClientPurgeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2715,13 +2790,14 @@ func (l ReplicationProtectionContainerMappingsPurgePollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainerMappingsPurgePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainerMappingsPurgePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Purge", token, client.pl, client.purgeHandleError)
+// Resume rehydrates a ReplicationProtectionContainerMappingsClientPurgePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectionContainerMappingsClientPurgePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Purge", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainerMappingsPurgePoller{
+	poller := &ReplicationProtectionContainerMappingsClientPurgePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2733,16 +2809,16 @@ func (l *ReplicationProtectionContainerMappingsPurgePollerResponse) Resume(ctx c
 	return nil
 }
 
-// ReplicationProtectionContainerMappingsPurgeResponse contains the response from method ReplicationProtectionContainerMappings.Purge.
-type ReplicationProtectionContainerMappingsPurgeResponse struct {
+// ReplicationProtectionContainerMappingsClientPurgeResponse contains the response from method ReplicationProtectionContainerMappingsClient.Purge.
+type ReplicationProtectionContainerMappingsClientPurgeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsUpdatePollerResponse contains the response from method ReplicationProtectionContainerMappings.Update.
-type ReplicationProtectionContainerMappingsUpdatePollerResponse struct {
+// ReplicationProtectionContainerMappingsClientUpdatePollerResponse contains the response from method ReplicationProtectionContainerMappingsClient.Update.
+type ReplicationProtectionContainerMappingsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainerMappingsUpdatePoller
+	Poller *ReplicationProtectionContainerMappingsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2751,8 +2827,8 @@ type ReplicationProtectionContainerMappingsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainerMappingsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsUpdateResponse, error) {
-	respType := ReplicationProtectionContainerMappingsUpdateResponse{}
+func (l ReplicationProtectionContainerMappingsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainerMappingsClientUpdateResponse, error) {
+	respType := ReplicationProtectionContainerMappingsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProtectionContainerMapping)
 	if err != nil {
 		return respType, err
@@ -2761,13 +2837,14 @@ func (l ReplicationProtectionContainerMappingsUpdatePollerResponse) PollUntilDon
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainerMappingsUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainerMappingsUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationProtectionContainerMappingsClientUpdatePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectionContainerMappingsClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainerMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainerMappingsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainerMappingsUpdatePoller{
+	poller := &ReplicationProtectionContainerMappingsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2779,22 +2856,22 @@ func (l *ReplicationProtectionContainerMappingsUpdatePollerResponse) Resume(ctx 
 	return nil
 }
 
-// ReplicationProtectionContainerMappingsUpdateResponse contains the response from method ReplicationProtectionContainerMappings.Update.
-type ReplicationProtectionContainerMappingsUpdateResponse struct {
-	ReplicationProtectionContainerMappingsUpdateResult
+// ReplicationProtectionContainerMappingsClientUpdateResponse contains the response from method ReplicationProtectionContainerMappingsClient.Update.
+type ReplicationProtectionContainerMappingsClientUpdateResponse struct {
+	ReplicationProtectionContainerMappingsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainerMappingsUpdateResult contains the result from method ReplicationProtectionContainerMappings.Update.
-type ReplicationProtectionContainerMappingsUpdateResult struct {
+// ReplicationProtectionContainerMappingsClientUpdateResult contains the result from method ReplicationProtectionContainerMappingsClient.Update.
+type ReplicationProtectionContainerMappingsClientUpdateResult struct {
 	ProtectionContainerMapping
 }
 
-// ReplicationProtectionContainersCreatePollerResponse contains the response from method ReplicationProtectionContainers.Create.
-type ReplicationProtectionContainersCreatePollerResponse struct {
+// ReplicationProtectionContainersClientCreatePollerResponse contains the response from method ReplicationProtectionContainersClient.Create.
+type ReplicationProtectionContainersClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainersCreatePoller
+	Poller *ReplicationProtectionContainersClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2803,8 +2880,8 @@ type ReplicationProtectionContainersCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersCreateResponse, error) {
-	respType := ReplicationProtectionContainersCreateResponse{}
+func (l ReplicationProtectionContainersClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersClientCreateResponse, error) {
+	respType := ReplicationProtectionContainersClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProtectionContainer)
 	if err != nil {
 		return respType, err
@@ -2813,13 +2890,13 @@ func (l ReplicationProtectionContainersCreatePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainersCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainersCreatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationProtectionContainersClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectionContainersClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainersCreatePoller{
+	poller := &ReplicationProtectionContainersClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2831,22 +2908,22 @@ func (l *ReplicationProtectionContainersCreatePollerResponse) Resume(ctx context
 	return nil
 }
 
-// ReplicationProtectionContainersCreateResponse contains the response from method ReplicationProtectionContainers.Create.
-type ReplicationProtectionContainersCreateResponse struct {
-	ReplicationProtectionContainersCreateResult
+// ReplicationProtectionContainersClientCreateResponse contains the response from method ReplicationProtectionContainersClient.Create.
+type ReplicationProtectionContainersClientCreateResponse struct {
+	ReplicationProtectionContainersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersCreateResult contains the result from method ReplicationProtectionContainers.Create.
-type ReplicationProtectionContainersCreateResult struct {
+// ReplicationProtectionContainersClientCreateResult contains the result from method ReplicationProtectionContainersClient.Create.
+type ReplicationProtectionContainersClientCreateResult struct {
 	ProtectionContainer
 }
 
-// ReplicationProtectionContainersDeletePollerResponse contains the response from method ReplicationProtectionContainers.Delete.
-type ReplicationProtectionContainersDeletePollerResponse struct {
+// ReplicationProtectionContainersClientDeletePollerResponse contains the response from method ReplicationProtectionContainersClient.Delete.
+type ReplicationProtectionContainersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainersDeletePoller
+	Poller *ReplicationProtectionContainersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2855,8 +2932,8 @@ type ReplicationProtectionContainersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersDeleteResponse, error) {
-	respType := ReplicationProtectionContainersDeleteResponse{}
+func (l ReplicationProtectionContainersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersClientDeleteResponse, error) {
+	respType := ReplicationProtectionContainersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -2865,13 +2942,13 @@ func (l ReplicationProtectionContainersDeletePollerResponse) PollUntilDone(ctx c
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainersDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainersDeletePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationProtectionContainersClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationProtectionContainersClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainersDeletePoller{
+	poller := &ReplicationProtectionContainersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2883,16 +2960,16 @@ func (l *ReplicationProtectionContainersDeletePollerResponse) Resume(ctx context
 	return nil
 }
 
-// ReplicationProtectionContainersDeleteResponse contains the response from method ReplicationProtectionContainers.Delete.
-type ReplicationProtectionContainersDeleteResponse struct {
+// ReplicationProtectionContainersClientDeleteResponse contains the response from method ReplicationProtectionContainersClient.Delete.
+type ReplicationProtectionContainersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersDiscoverProtectableItemPollerResponse contains the response from method ReplicationProtectionContainers.DiscoverProtectableItem.
-type ReplicationProtectionContainersDiscoverProtectableItemPollerResponse struct {
+// ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse contains the response from method ReplicationProtectionContainersClient.DiscoverProtectableItem.
+type ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainersDiscoverProtectableItemPoller
+	Poller *ReplicationProtectionContainersClientDiscoverProtectableItemPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2901,8 +2978,8 @@ type ReplicationProtectionContainersDiscoverProtectableItemPollerResponse struct
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainersDiscoverProtectableItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersDiscoverProtectableItemResponse, error) {
-	respType := ReplicationProtectionContainersDiscoverProtectableItemResponse{}
+func (l ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersClientDiscoverProtectableItemResponse, error) {
+	respType := ReplicationProtectionContainersClientDiscoverProtectableItemResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProtectionContainer)
 	if err != nil {
 		return respType, err
@@ -2911,13 +2988,14 @@ func (l ReplicationProtectionContainersDiscoverProtectableItemPollerResponse) Po
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainersDiscoverProtectableItemPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainersDiscoverProtectableItemPollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.DiscoverProtectableItem", token, client.pl, client.discoverProtectableItemHandleError)
+// Resume rehydrates a ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse from the provided client
+// and resume token.
+func (l *ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.DiscoverProtectableItem", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainersDiscoverProtectableItemPoller{
+	poller := &ReplicationProtectionContainersClientDiscoverProtectableItemPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -2929,58 +3007,58 @@ func (l *ReplicationProtectionContainersDiscoverProtectableItemPollerResponse) R
 	return nil
 }
 
-// ReplicationProtectionContainersDiscoverProtectableItemResponse contains the response from method ReplicationProtectionContainers.DiscoverProtectableItem.
-type ReplicationProtectionContainersDiscoverProtectableItemResponse struct {
-	ReplicationProtectionContainersDiscoverProtectableItemResult
+// ReplicationProtectionContainersClientDiscoverProtectableItemResponse contains the response from method ReplicationProtectionContainersClient.DiscoverProtectableItem.
+type ReplicationProtectionContainersClientDiscoverProtectableItemResponse struct {
+	ReplicationProtectionContainersClientDiscoverProtectableItemResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersDiscoverProtectableItemResult contains the result from method ReplicationProtectionContainers.DiscoverProtectableItem.
-type ReplicationProtectionContainersDiscoverProtectableItemResult struct {
+// ReplicationProtectionContainersClientDiscoverProtectableItemResult contains the result from method ReplicationProtectionContainersClient.DiscoverProtectableItem.
+type ReplicationProtectionContainersClientDiscoverProtectableItemResult struct {
 	ProtectionContainer
 }
 
-// ReplicationProtectionContainersGetResponse contains the response from method ReplicationProtectionContainers.Get.
-type ReplicationProtectionContainersGetResponse struct {
-	ReplicationProtectionContainersGetResult
+// ReplicationProtectionContainersClientGetResponse contains the response from method ReplicationProtectionContainersClient.Get.
+type ReplicationProtectionContainersClientGetResponse struct {
+	ReplicationProtectionContainersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersGetResult contains the result from method ReplicationProtectionContainers.Get.
-type ReplicationProtectionContainersGetResult struct {
+// ReplicationProtectionContainersClientGetResult contains the result from method ReplicationProtectionContainersClient.Get.
+type ReplicationProtectionContainersClientGetResult struct {
 	ProtectionContainer
 }
 
-// ReplicationProtectionContainersListByReplicationFabricsResponse contains the response from method ReplicationProtectionContainers.ListByReplicationFabrics.
-type ReplicationProtectionContainersListByReplicationFabricsResponse struct {
-	ReplicationProtectionContainersListByReplicationFabricsResult
+// ReplicationProtectionContainersClientListByReplicationFabricsResponse contains the response from method ReplicationProtectionContainersClient.ListByReplicationFabrics.
+type ReplicationProtectionContainersClientListByReplicationFabricsResponse struct {
+	ReplicationProtectionContainersClientListByReplicationFabricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersListByReplicationFabricsResult contains the result from method ReplicationProtectionContainers.ListByReplicationFabrics.
-type ReplicationProtectionContainersListByReplicationFabricsResult struct {
+// ReplicationProtectionContainersClientListByReplicationFabricsResult contains the result from method ReplicationProtectionContainersClient.ListByReplicationFabrics.
+type ReplicationProtectionContainersClientListByReplicationFabricsResult struct {
 	ProtectionContainerCollection
 }
 
-// ReplicationProtectionContainersListResponse contains the response from method ReplicationProtectionContainers.List.
-type ReplicationProtectionContainersListResponse struct {
-	ReplicationProtectionContainersListResult
+// ReplicationProtectionContainersClientListResponse contains the response from method ReplicationProtectionContainersClient.List.
+type ReplicationProtectionContainersClientListResponse struct {
+	ReplicationProtectionContainersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersListResult contains the result from method ReplicationProtectionContainers.List.
-type ReplicationProtectionContainersListResult struct {
+// ReplicationProtectionContainersClientListResult contains the result from method ReplicationProtectionContainersClient.List.
+type ReplicationProtectionContainersClientListResult struct {
 	ProtectionContainerCollection
 }
 
-// ReplicationProtectionContainersSwitchProtectionPollerResponse contains the response from method ReplicationProtectionContainers.SwitchProtection.
-type ReplicationProtectionContainersSwitchProtectionPollerResponse struct {
+// ReplicationProtectionContainersClientSwitchProtectionPollerResponse contains the response from method ReplicationProtectionContainersClient.SwitchProtection.
+type ReplicationProtectionContainersClientSwitchProtectionPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationProtectionContainersSwitchProtectionPoller
+	Poller *ReplicationProtectionContainersClientSwitchProtectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2989,8 +3067,8 @@ type ReplicationProtectionContainersSwitchProtectionPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationProtectionContainersSwitchProtectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersSwitchProtectionResponse, error) {
-	respType := ReplicationProtectionContainersSwitchProtectionResponse{}
+func (l ReplicationProtectionContainersClientSwitchProtectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationProtectionContainersClientSwitchProtectionResponse, error) {
+	respType := ReplicationProtectionContainersClientSwitchProtectionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ProtectionContainer)
 	if err != nil {
 		return respType, err
@@ -2999,13 +3077,14 @@ func (l ReplicationProtectionContainersSwitchProtectionPollerResponse) PollUntil
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationProtectionContainersSwitchProtectionPollerResponse from the provided client and resume token.
-func (l *ReplicationProtectionContainersSwitchProtectionPollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.SwitchProtection", token, client.pl, client.switchProtectionHandleError)
+// Resume rehydrates a ReplicationProtectionContainersClientSwitchProtectionPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationProtectionContainersClientSwitchProtectionPollerResponse) Resume(ctx context.Context, client *ReplicationProtectionContainersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationProtectionContainersClient.SwitchProtection", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationProtectionContainersSwitchProtectionPoller{
+	poller := &ReplicationProtectionContainersClientSwitchProtectionPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3017,58 +3096,58 @@ func (l *ReplicationProtectionContainersSwitchProtectionPollerResponse) Resume(c
 	return nil
 }
 
-// ReplicationProtectionContainersSwitchProtectionResponse contains the response from method ReplicationProtectionContainers.SwitchProtection.
-type ReplicationProtectionContainersSwitchProtectionResponse struct {
-	ReplicationProtectionContainersSwitchProtectionResult
+// ReplicationProtectionContainersClientSwitchProtectionResponse contains the response from method ReplicationProtectionContainersClient.SwitchProtection.
+type ReplicationProtectionContainersClientSwitchProtectionResponse struct {
+	ReplicationProtectionContainersClientSwitchProtectionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionContainersSwitchProtectionResult contains the result from method ReplicationProtectionContainers.SwitchProtection.
-type ReplicationProtectionContainersSwitchProtectionResult struct {
+// ReplicationProtectionContainersClientSwitchProtectionResult contains the result from method ReplicationProtectionContainersClient.SwitchProtection.
+type ReplicationProtectionContainersClientSwitchProtectionResult struct {
 	ProtectionContainer
 }
 
-// ReplicationProtectionIntentsCreateResponse contains the response from method ReplicationProtectionIntents.Create.
-type ReplicationProtectionIntentsCreateResponse struct {
-	ReplicationProtectionIntentsCreateResult
+// ReplicationProtectionIntentsClientCreateResponse contains the response from method ReplicationProtectionIntentsClient.Create.
+type ReplicationProtectionIntentsClientCreateResponse struct {
+	ReplicationProtectionIntentsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionIntentsCreateResult contains the result from method ReplicationProtectionIntents.Create.
-type ReplicationProtectionIntentsCreateResult struct {
+// ReplicationProtectionIntentsClientCreateResult contains the result from method ReplicationProtectionIntentsClient.Create.
+type ReplicationProtectionIntentsClientCreateResult struct {
 	ReplicationProtectionIntent
 }
 
-// ReplicationProtectionIntentsGetResponse contains the response from method ReplicationProtectionIntents.Get.
-type ReplicationProtectionIntentsGetResponse struct {
-	ReplicationProtectionIntentsGetResult
+// ReplicationProtectionIntentsClientGetResponse contains the response from method ReplicationProtectionIntentsClient.Get.
+type ReplicationProtectionIntentsClientGetResponse struct {
+	ReplicationProtectionIntentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionIntentsGetResult contains the result from method ReplicationProtectionIntents.Get.
-type ReplicationProtectionIntentsGetResult struct {
+// ReplicationProtectionIntentsClientGetResult contains the result from method ReplicationProtectionIntentsClient.Get.
+type ReplicationProtectionIntentsClientGetResult struct {
 	ReplicationProtectionIntent
 }
 
-// ReplicationProtectionIntentsListResponse contains the response from method ReplicationProtectionIntents.List.
-type ReplicationProtectionIntentsListResponse struct {
-	ReplicationProtectionIntentsListResult
+// ReplicationProtectionIntentsClientListResponse contains the response from method ReplicationProtectionIntentsClient.List.
+type ReplicationProtectionIntentsClientListResponse struct {
+	ReplicationProtectionIntentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationProtectionIntentsListResult contains the result from method ReplicationProtectionIntents.List.
-type ReplicationProtectionIntentsListResult struct {
+// ReplicationProtectionIntentsClientListResult contains the result from method ReplicationProtectionIntentsClient.List.
+type ReplicationProtectionIntentsClientListResult struct {
 	ReplicationProtectionIntentCollection
 }
 
-// ReplicationRecoveryPlansCreatePollerResponse contains the response from method ReplicationRecoveryPlans.Create.
-type ReplicationRecoveryPlansCreatePollerResponse struct {
+// ReplicationRecoveryPlansClientCreatePollerResponse contains the response from method ReplicationRecoveryPlansClient.Create.
+type ReplicationRecoveryPlansClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansCreatePoller
+	Poller *ReplicationRecoveryPlansClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3077,8 +3156,8 @@ type ReplicationRecoveryPlansCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansCreateResponse, error) {
-	respType := ReplicationRecoveryPlansCreateResponse{}
+func (l ReplicationRecoveryPlansClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientCreateResponse, error) {
+	respType := ReplicationRecoveryPlansClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3087,13 +3166,13 @@ func (l ReplicationRecoveryPlansCreatePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansCreatePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansCreatePoller{
+	poller := &ReplicationRecoveryPlansClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3105,22 +3184,22 @@ func (l *ReplicationRecoveryPlansCreatePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ReplicationRecoveryPlansCreateResponse contains the response from method ReplicationRecoveryPlans.Create.
-type ReplicationRecoveryPlansCreateResponse struct {
-	ReplicationRecoveryPlansCreateResult
+// ReplicationRecoveryPlansClientCreateResponse contains the response from method ReplicationRecoveryPlansClient.Create.
+type ReplicationRecoveryPlansClientCreateResponse struct {
+	ReplicationRecoveryPlansClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansCreateResult contains the result from method ReplicationRecoveryPlans.Create.
-type ReplicationRecoveryPlansCreateResult struct {
+// ReplicationRecoveryPlansClientCreateResult contains the result from method ReplicationRecoveryPlansClient.Create.
+type ReplicationRecoveryPlansClientCreateResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansDeletePollerResponse contains the response from method ReplicationRecoveryPlans.Delete.
-type ReplicationRecoveryPlansDeletePollerResponse struct {
+// ReplicationRecoveryPlansClientDeletePollerResponse contains the response from method ReplicationRecoveryPlansClient.Delete.
+type ReplicationRecoveryPlansClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansDeletePoller
+	Poller *ReplicationRecoveryPlansClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3129,8 +3208,8 @@ type ReplicationRecoveryPlansDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansDeleteResponse, error) {
-	respType := ReplicationRecoveryPlansDeleteResponse{}
+func (l ReplicationRecoveryPlansClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientDeleteResponse, error) {
+	respType := ReplicationRecoveryPlansClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3139,13 +3218,13 @@ func (l ReplicationRecoveryPlansDeletePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansDeletePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansDeletePoller{
+	poller := &ReplicationRecoveryPlansClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3157,16 +3236,16 @@ func (l *ReplicationRecoveryPlansDeletePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ReplicationRecoveryPlansDeleteResponse contains the response from method ReplicationRecoveryPlans.Delete.
-type ReplicationRecoveryPlansDeleteResponse struct {
+// ReplicationRecoveryPlansClientDeleteResponse contains the response from method ReplicationRecoveryPlansClient.Delete.
+type ReplicationRecoveryPlansClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansFailoverCancelPollerResponse contains the response from method ReplicationRecoveryPlans.FailoverCancel.
-type ReplicationRecoveryPlansFailoverCancelPollerResponse struct {
+// ReplicationRecoveryPlansClientFailoverCancelPollerResponse contains the response from method ReplicationRecoveryPlansClient.FailoverCancel.
+type ReplicationRecoveryPlansClientFailoverCancelPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansFailoverCancelPoller
+	Poller *ReplicationRecoveryPlansClientFailoverCancelPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3175,8 +3254,8 @@ type ReplicationRecoveryPlansFailoverCancelPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansFailoverCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansFailoverCancelResponse, error) {
-	respType := ReplicationRecoveryPlansFailoverCancelResponse{}
+func (l ReplicationRecoveryPlansClientFailoverCancelPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientFailoverCancelResponse, error) {
+	respType := ReplicationRecoveryPlansClientFailoverCancelResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3185,13 +3264,13 @@ func (l ReplicationRecoveryPlansFailoverCancelPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansFailoverCancelPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansFailoverCancelPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.FailoverCancel", token, client.pl, client.failoverCancelHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientFailoverCancelPollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientFailoverCancelPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.FailoverCancel", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansFailoverCancelPoller{
+	poller := &ReplicationRecoveryPlansClientFailoverCancelPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3203,22 +3282,22 @@ func (l *ReplicationRecoveryPlansFailoverCancelPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// ReplicationRecoveryPlansFailoverCancelResponse contains the response from method ReplicationRecoveryPlans.FailoverCancel.
-type ReplicationRecoveryPlansFailoverCancelResponse struct {
-	ReplicationRecoveryPlansFailoverCancelResult
+// ReplicationRecoveryPlansClientFailoverCancelResponse contains the response from method ReplicationRecoveryPlansClient.FailoverCancel.
+type ReplicationRecoveryPlansClientFailoverCancelResponse struct {
+	ReplicationRecoveryPlansClientFailoverCancelResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansFailoverCancelResult contains the result from method ReplicationRecoveryPlans.FailoverCancel.
-type ReplicationRecoveryPlansFailoverCancelResult struct {
+// ReplicationRecoveryPlansClientFailoverCancelResult contains the result from method ReplicationRecoveryPlansClient.FailoverCancel.
+type ReplicationRecoveryPlansClientFailoverCancelResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansFailoverCommitPollerResponse contains the response from method ReplicationRecoveryPlans.FailoverCommit.
-type ReplicationRecoveryPlansFailoverCommitPollerResponse struct {
+// ReplicationRecoveryPlansClientFailoverCommitPollerResponse contains the response from method ReplicationRecoveryPlansClient.FailoverCommit.
+type ReplicationRecoveryPlansClientFailoverCommitPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansFailoverCommitPoller
+	Poller *ReplicationRecoveryPlansClientFailoverCommitPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3227,8 +3306,8 @@ type ReplicationRecoveryPlansFailoverCommitPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansFailoverCommitPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansFailoverCommitResponse, error) {
-	respType := ReplicationRecoveryPlansFailoverCommitResponse{}
+func (l ReplicationRecoveryPlansClientFailoverCommitPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientFailoverCommitResponse, error) {
+	respType := ReplicationRecoveryPlansClientFailoverCommitResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3237,13 +3316,13 @@ func (l ReplicationRecoveryPlansFailoverCommitPollerResponse) PollUntilDone(ctx 
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansFailoverCommitPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansFailoverCommitPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.FailoverCommit", token, client.pl, client.failoverCommitHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientFailoverCommitPollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientFailoverCommitPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.FailoverCommit", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansFailoverCommitPoller{
+	poller := &ReplicationRecoveryPlansClientFailoverCommitPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3255,46 +3334,46 @@ func (l *ReplicationRecoveryPlansFailoverCommitPollerResponse) Resume(ctx contex
 	return nil
 }
 
-// ReplicationRecoveryPlansFailoverCommitResponse contains the response from method ReplicationRecoveryPlans.FailoverCommit.
-type ReplicationRecoveryPlansFailoverCommitResponse struct {
-	ReplicationRecoveryPlansFailoverCommitResult
+// ReplicationRecoveryPlansClientFailoverCommitResponse contains the response from method ReplicationRecoveryPlansClient.FailoverCommit.
+type ReplicationRecoveryPlansClientFailoverCommitResponse struct {
+	ReplicationRecoveryPlansClientFailoverCommitResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansFailoverCommitResult contains the result from method ReplicationRecoveryPlans.FailoverCommit.
-type ReplicationRecoveryPlansFailoverCommitResult struct {
+// ReplicationRecoveryPlansClientFailoverCommitResult contains the result from method ReplicationRecoveryPlansClient.FailoverCommit.
+type ReplicationRecoveryPlansClientFailoverCommitResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansGetResponse contains the response from method ReplicationRecoveryPlans.Get.
-type ReplicationRecoveryPlansGetResponse struct {
-	ReplicationRecoveryPlansGetResult
+// ReplicationRecoveryPlansClientGetResponse contains the response from method ReplicationRecoveryPlansClient.Get.
+type ReplicationRecoveryPlansClientGetResponse struct {
+	ReplicationRecoveryPlansClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansGetResult contains the result from method ReplicationRecoveryPlans.Get.
-type ReplicationRecoveryPlansGetResult struct {
+// ReplicationRecoveryPlansClientGetResult contains the result from method ReplicationRecoveryPlansClient.Get.
+type ReplicationRecoveryPlansClientGetResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansListResponse contains the response from method ReplicationRecoveryPlans.List.
-type ReplicationRecoveryPlansListResponse struct {
-	ReplicationRecoveryPlansListResult
+// ReplicationRecoveryPlansClientListResponse contains the response from method ReplicationRecoveryPlansClient.List.
+type ReplicationRecoveryPlansClientListResponse struct {
+	ReplicationRecoveryPlansClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansListResult contains the result from method ReplicationRecoveryPlans.List.
-type ReplicationRecoveryPlansListResult struct {
+// ReplicationRecoveryPlansClientListResult contains the result from method ReplicationRecoveryPlansClient.List.
+type ReplicationRecoveryPlansClientListResult struct {
 	RecoveryPlanCollection
 }
 
-// ReplicationRecoveryPlansPlannedFailoverPollerResponse contains the response from method ReplicationRecoveryPlans.PlannedFailover.
-type ReplicationRecoveryPlansPlannedFailoverPollerResponse struct {
+// ReplicationRecoveryPlansClientPlannedFailoverPollerResponse contains the response from method ReplicationRecoveryPlansClient.PlannedFailover.
+type ReplicationRecoveryPlansClientPlannedFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansPlannedFailoverPoller
+	Poller *ReplicationRecoveryPlansClientPlannedFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3303,8 +3382,8 @@ type ReplicationRecoveryPlansPlannedFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansPlannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansPlannedFailoverResponse, error) {
-	respType := ReplicationRecoveryPlansPlannedFailoverResponse{}
+func (l ReplicationRecoveryPlansClientPlannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientPlannedFailoverResponse, error) {
+	respType := ReplicationRecoveryPlansClientPlannedFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3313,13 +3392,13 @@ func (l ReplicationRecoveryPlansPlannedFailoverPollerResponse) PollUntilDone(ctx
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansPlannedFailoverPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansPlannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.PlannedFailover", token, client.pl, client.plannedFailoverHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientPlannedFailoverPollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientPlannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.PlannedFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansPlannedFailoverPoller{
+	poller := &ReplicationRecoveryPlansClientPlannedFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3331,22 +3410,22 @@ func (l *ReplicationRecoveryPlansPlannedFailoverPollerResponse) Resume(ctx conte
 	return nil
 }
 
-// ReplicationRecoveryPlansPlannedFailoverResponse contains the response from method ReplicationRecoveryPlans.PlannedFailover.
-type ReplicationRecoveryPlansPlannedFailoverResponse struct {
-	ReplicationRecoveryPlansPlannedFailoverResult
+// ReplicationRecoveryPlansClientPlannedFailoverResponse contains the response from method ReplicationRecoveryPlansClient.PlannedFailover.
+type ReplicationRecoveryPlansClientPlannedFailoverResponse struct {
+	ReplicationRecoveryPlansClientPlannedFailoverResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansPlannedFailoverResult contains the result from method ReplicationRecoveryPlans.PlannedFailover.
-type ReplicationRecoveryPlansPlannedFailoverResult struct {
+// ReplicationRecoveryPlansClientPlannedFailoverResult contains the result from method ReplicationRecoveryPlansClient.PlannedFailover.
+type ReplicationRecoveryPlansClientPlannedFailoverResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansReprotectPollerResponse contains the response from method ReplicationRecoveryPlans.Reprotect.
-type ReplicationRecoveryPlansReprotectPollerResponse struct {
+// ReplicationRecoveryPlansClientReprotectPollerResponse contains the response from method ReplicationRecoveryPlansClient.Reprotect.
+type ReplicationRecoveryPlansClientReprotectPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansReprotectPoller
+	Poller *ReplicationRecoveryPlansClientReprotectPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3355,8 +3434,8 @@ type ReplicationRecoveryPlansReprotectPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansReprotectPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansReprotectResponse, error) {
-	respType := ReplicationRecoveryPlansReprotectResponse{}
+func (l ReplicationRecoveryPlansClientReprotectPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientReprotectResponse, error) {
+	respType := ReplicationRecoveryPlansClientReprotectResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3365,13 +3444,13 @@ func (l ReplicationRecoveryPlansReprotectPollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansReprotectPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansReprotectPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Reprotect", token, client.pl, client.reprotectHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientReprotectPollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientReprotectPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Reprotect", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansReprotectPoller{
+	poller := &ReplicationRecoveryPlansClientReprotectPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3383,22 +3462,22 @@ func (l *ReplicationRecoveryPlansReprotectPollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// ReplicationRecoveryPlansReprotectResponse contains the response from method ReplicationRecoveryPlans.Reprotect.
-type ReplicationRecoveryPlansReprotectResponse struct {
-	ReplicationRecoveryPlansReprotectResult
+// ReplicationRecoveryPlansClientReprotectResponse contains the response from method ReplicationRecoveryPlansClient.Reprotect.
+type ReplicationRecoveryPlansClientReprotectResponse struct {
+	ReplicationRecoveryPlansClientReprotectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansReprotectResult contains the result from method ReplicationRecoveryPlans.Reprotect.
-type ReplicationRecoveryPlansReprotectResult struct {
+// ReplicationRecoveryPlansClientReprotectResult contains the result from method ReplicationRecoveryPlansClient.Reprotect.
+type ReplicationRecoveryPlansClientReprotectResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansTestFailoverCleanupPollerResponse contains the response from method ReplicationRecoveryPlans.TestFailoverCleanup.
-type ReplicationRecoveryPlansTestFailoverCleanupPollerResponse struct {
+// ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse contains the response from method ReplicationRecoveryPlansClient.TestFailoverCleanup.
+type ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansTestFailoverCleanupPoller
+	Poller *ReplicationRecoveryPlansClientTestFailoverCleanupPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3407,8 +3486,8 @@ type ReplicationRecoveryPlansTestFailoverCleanupPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansTestFailoverCleanupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansTestFailoverCleanupResponse, error) {
-	respType := ReplicationRecoveryPlansTestFailoverCleanupResponse{}
+func (l ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientTestFailoverCleanupResponse, error) {
+	respType := ReplicationRecoveryPlansClientTestFailoverCleanupResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3417,13 +3496,14 @@ func (l ReplicationRecoveryPlansTestFailoverCleanupPollerResponse) PollUntilDone
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansTestFailoverCleanupPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansTestFailoverCleanupPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.TestFailoverCleanup", token, client.pl, client.testFailoverCleanupHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse from the provided client and resume
+// token.
+func (l *ReplicationRecoveryPlansClientTestFailoverCleanupPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.TestFailoverCleanup", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansTestFailoverCleanupPoller{
+	poller := &ReplicationRecoveryPlansClientTestFailoverCleanupPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3435,22 +3515,22 @@ func (l *ReplicationRecoveryPlansTestFailoverCleanupPollerResponse) Resume(ctx c
 	return nil
 }
 
-// ReplicationRecoveryPlansTestFailoverCleanupResponse contains the response from method ReplicationRecoveryPlans.TestFailoverCleanup.
-type ReplicationRecoveryPlansTestFailoverCleanupResponse struct {
-	ReplicationRecoveryPlansTestFailoverCleanupResult
+// ReplicationRecoveryPlansClientTestFailoverCleanupResponse contains the response from method ReplicationRecoveryPlansClient.TestFailoverCleanup.
+type ReplicationRecoveryPlansClientTestFailoverCleanupResponse struct {
+	ReplicationRecoveryPlansClientTestFailoverCleanupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansTestFailoverCleanupResult contains the result from method ReplicationRecoveryPlans.TestFailoverCleanup.
-type ReplicationRecoveryPlansTestFailoverCleanupResult struct {
+// ReplicationRecoveryPlansClientTestFailoverCleanupResult contains the result from method ReplicationRecoveryPlansClient.TestFailoverCleanup.
+type ReplicationRecoveryPlansClientTestFailoverCleanupResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansTestFailoverPollerResponse contains the response from method ReplicationRecoveryPlans.TestFailover.
-type ReplicationRecoveryPlansTestFailoverPollerResponse struct {
+// ReplicationRecoveryPlansClientTestFailoverPollerResponse contains the response from method ReplicationRecoveryPlansClient.TestFailover.
+type ReplicationRecoveryPlansClientTestFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansTestFailoverPoller
+	Poller *ReplicationRecoveryPlansClientTestFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3459,8 +3539,8 @@ type ReplicationRecoveryPlansTestFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansTestFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansTestFailoverResponse, error) {
-	respType := ReplicationRecoveryPlansTestFailoverResponse{}
+func (l ReplicationRecoveryPlansClientTestFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientTestFailoverResponse, error) {
+	respType := ReplicationRecoveryPlansClientTestFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3469,13 +3549,13 @@ func (l ReplicationRecoveryPlansTestFailoverPollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansTestFailoverPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansTestFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.TestFailover", token, client.pl, client.testFailoverHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientTestFailoverPollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientTestFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.TestFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansTestFailoverPoller{
+	poller := &ReplicationRecoveryPlansClientTestFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3487,22 +3567,22 @@ func (l *ReplicationRecoveryPlansTestFailoverPollerResponse) Resume(ctx context.
 	return nil
 }
 
-// ReplicationRecoveryPlansTestFailoverResponse contains the response from method ReplicationRecoveryPlans.TestFailover.
-type ReplicationRecoveryPlansTestFailoverResponse struct {
-	ReplicationRecoveryPlansTestFailoverResult
+// ReplicationRecoveryPlansClientTestFailoverResponse contains the response from method ReplicationRecoveryPlansClient.TestFailover.
+type ReplicationRecoveryPlansClientTestFailoverResponse struct {
+	ReplicationRecoveryPlansClientTestFailoverResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansTestFailoverResult contains the result from method ReplicationRecoveryPlans.TestFailover.
-type ReplicationRecoveryPlansTestFailoverResult struct {
+// ReplicationRecoveryPlansClientTestFailoverResult contains the result from method ReplicationRecoveryPlansClient.TestFailover.
+type ReplicationRecoveryPlansClientTestFailoverResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansUnplannedFailoverPollerResponse contains the response from method ReplicationRecoveryPlans.UnplannedFailover.
-type ReplicationRecoveryPlansUnplannedFailoverPollerResponse struct {
+// ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse contains the response from method ReplicationRecoveryPlansClient.UnplannedFailover.
+type ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansUnplannedFailoverPoller
+	Poller *ReplicationRecoveryPlansClientUnplannedFailoverPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3511,8 +3591,8 @@ type ReplicationRecoveryPlansUnplannedFailoverPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansUnplannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansUnplannedFailoverResponse, error) {
-	respType := ReplicationRecoveryPlansUnplannedFailoverResponse{}
+func (l ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientUnplannedFailoverResponse, error) {
+	respType := ReplicationRecoveryPlansClientUnplannedFailoverResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3521,13 +3601,13 @@ func (l ReplicationRecoveryPlansUnplannedFailoverPollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansUnplannedFailoverPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansUnplannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.UnplannedFailover", token, client.pl, client.unplannedFailoverHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientUnplannedFailoverPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.UnplannedFailover", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansUnplannedFailoverPoller{
+	poller := &ReplicationRecoveryPlansClientUnplannedFailoverPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3539,22 +3619,22 @@ func (l *ReplicationRecoveryPlansUnplannedFailoverPollerResponse) Resume(ctx con
 	return nil
 }
 
-// ReplicationRecoveryPlansUnplannedFailoverResponse contains the response from method ReplicationRecoveryPlans.UnplannedFailover.
-type ReplicationRecoveryPlansUnplannedFailoverResponse struct {
-	ReplicationRecoveryPlansUnplannedFailoverResult
+// ReplicationRecoveryPlansClientUnplannedFailoverResponse contains the response from method ReplicationRecoveryPlansClient.UnplannedFailover.
+type ReplicationRecoveryPlansClientUnplannedFailoverResponse struct {
+	ReplicationRecoveryPlansClientUnplannedFailoverResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansUnplannedFailoverResult contains the result from method ReplicationRecoveryPlans.UnplannedFailover.
-type ReplicationRecoveryPlansUnplannedFailoverResult struct {
+// ReplicationRecoveryPlansClientUnplannedFailoverResult contains the result from method ReplicationRecoveryPlansClient.UnplannedFailover.
+type ReplicationRecoveryPlansClientUnplannedFailoverResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansUpdatePollerResponse contains the response from method ReplicationRecoveryPlans.Update.
-type ReplicationRecoveryPlansUpdatePollerResponse struct {
+// ReplicationRecoveryPlansClientUpdatePollerResponse contains the response from method ReplicationRecoveryPlansClient.Update.
+type ReplicationRecoveryPlansClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryPlansUpdatePoller
+	Poller *ReplicationRecoveryPlansClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3563,8 +3643,8 @@ type ReplicationRecoveryPlansUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryPlansUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansUpdateResponse, error) {
-	respType := ReplicationRecoveryPlansUpdateResponse{}
+func (l ReplicationRecoveryPlansClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryPlansClientUpdateResponse, error) {
+	respType := ReplicationRecoveryPlansClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryPlan)
 	if err != nil {
 		return respType, err
@@ -3573,13 +3653,13 @@ func (l ReplicationRecoveryPlansUpdatePollerResponse) PollUntilDone(ctx context.
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryPlansUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryPlansUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationRecoveryPlansClientUpdatePollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryPlansClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryPlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryPlansClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryPlansUpdatePoller{
+	poller := &ReplicationRecoveryPlansClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3591,22 +3671,22 @@ func (l *ReplicationRecoveryPlansUpdatePollerResponse) Resume(ctx context.Contex
 	return nil
 }
 
-// ReplicationRecoveryPlansUpdateResponse contains the response from method ReplicationRecoveryPlans.Update.
-type ReplicationRecoveryPlansUpdateResponse struct {
-	ReplicationRecoveryPlansUpdateResult
+// ReplicationRecoveryPlansClientUpdateResponse contains the response from method ReplicationRecoveryPlansClient.Update.
+type ReplicationRecoveryPlansClientUpdateResponse struct {
+	ReplicationRecoveryPlansClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryPlansUpdateResult contains the result from method ReplicationRecoveryPlans.Update.
-type ReplicationRecoveryPlansUpdateResult struct {
+// ReplicationRecoveryPlansClientUpdateResult contains the result from method ReplicationRecoveryPlansClient.Update.
+type ReplicationRecoveryPlansClientUpdateResult struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryServicesProvidersCreatePollerResponse contains the response from method ReplicationRecoveryServicesProviders.Create.
-type ReplicationRecoveryServicesProvidersCreatePollerResponse struct {
+// ReplicationRecoveryServicesProvidersClientCreatePollerResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Create.
+type ReplicationRecoveryServicesProvidersClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryServicesProvidersCreatePoller
+	Poller *ReplicationRecoveryServicesProvidersClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3615,8 +3695,8 @@ type ReplicationRecoveryServicesProvidersCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryServicesProvidersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersCreateResponse, error) {
-	respType := ReplicationRecoveryServicesProvidersCreateResponse{}
+func (l ReplicationRecoveryServicesProvidersClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersClientCreateResponse, error) {
+	respType := ReplicationRecoveryServicesProvidersClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryServicesProvider)
 	if err != nil {
 		return respType, err
@@ -3625,13 +3705,14 @@ func (l ReplicationRecoveryServicesProvidersCreatePollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryServicesProvidersCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryServicesProvidersCreatePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationRecoveryServicesProvidersClientCreatePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationRecoveryServicesProvidersClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryServicesProvidersCreatePoller{
+	poller := &ReplicationRecoveryServicesProvidersClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3643,22 +3724,22 @@ func (l *ReplicationRecoveryServicesProvidersCreatePollerResponse) Resume(ctx co
 	return nil
 }
 
-// ReplicationRecoveryServicesProvidersCreateResponse contains the response from method ReplicationRecoveryServicesProviders.Create.
-type ReplicationRecoveryServicesProvidersCreateResponse struct {
-	ReplicationRecoveryServicesProvidersCreateResult
+// ReplicationRecoveryServicesProvidersClientCreateResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Create.
+type ReplicationRecoveryServicesProvidersClientCreateResponse struct {
+	ReplicationRecoveryServicesProvidersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersCreateResult contains the result from method ReplicationRecoveryServicesProviders.Create.
-type ReplicationRecoveryServicesProvidersCreateResult struct {
+// ReplicationRecoveryServicesProvidersClientCreateResult contains the result from method ReplicationRecoveryServicesProvidersClient.Create.
+type ReplicationRecoveryServicesProvidersClientCreateResult struct {
 	RecoveryServicesProvider
 }
 
-// ReplicationRecoveryServicesProvidersDeletePollerResponse contains the response from method ReplicationRecoveryServicesProviders.Delete.
-type ReplicationRecoveryServicesProvidersDeletePollerResponse struct {
+// ReplicationRecoveryServicesProvidersClientDeletePollerResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Delete.
+type ReplicationRecoveryServicesProvidersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryServicesProvidersDeletePoller
+	Poller *ReplicationRecoveryServicesProvidersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3667,8 +3748,8 @@ type ReplicationRecoveryServicesProvidersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryServicesProvidersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersDeleteResponse, error) {
-	respType := ReplicationRecoveryServicesProvidersDeleteResponse{}
+func (l ReplicationRecoveryServicesProvidersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersClientDeleteResponse, error) {
+	respType := ReplicationRecoveryServicesProvidersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3677,13 +3758,14 @@ func (l ReplicationRecoveryServicesProvidersDeletePollerResponse) PollUntilDone(
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryServicesProvidersDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryServicesProvidersDeletePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationRecoveryServicesProvidersClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationRecoveryServicesProvidersClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryServicesProvidersDeletePoller{
+	poller := &ReplicationRecoveryServicesProvidersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3695,52 +3777,52 @@ func (l *ReplicationRecoveryServicesProvidersDeletePollerResponse) Resume(ctx co
 	return nil
 }
 
-// ReplicationRecoveryServicesProvidersDeleteResponse contains the response from method ReplicationRecoveryServicesProviders.Delete.
-type ReplicationRecoveryServicesProvidersDeleteResponse struct {
+// ReplicationRecoveryServicesProvidersClientDeleteResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Delete.
+type ReplicationRecoveryServicesProvidersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersGetResponse contains the response from method ReplicationRecoveryServicesProviders.Get.
-type ReplicationRecoveryServicesProvidersGetResponse struct {
-	ReplicationRecoveryServicesProvidersGetResult
+// ReplicationRecoveryServicesProvidersClientGetResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Get.
+type ReplicationRecoveryServicesProvidersClientGetResponse struct {
+	ReplicationRecoveryServicesProvidersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersGetResult contains the result from method ReplicationRecoveryServicesProviders.Get.
-type ReplicationRecoveryServicesProvidersGetResult struct {
+// ReplicationRecoveryServicesProvidersClientGetResult contains the result from method ReplicationRecoveryServicesProvidersClient.Get.
+type ReplicationRecoveryServicesProvidersClientGetResult struct {
 	RecoveryServicesProvider
 }
 
-// ReplicationRecoveryServicesProvidersListByReplicationFabricsResponse contains the response from method ReplicationRecoveryServicesProviders.ListByReplicationFabrics.
-type ReplicationRecoveryServicesProvidersListByReplicationFabricsResponse struct {
-	ReplicationRecoveryServicesProvidersListByReplicationFabricsResult
+// ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse contains the response from method ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics.
+type ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse struct {
+	ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersListByReplicationFabricsResult contains the result from method ReplicationRecoveryServicesProviders.ListByReplicationFabrics.
-type ReplicationRecoveryServicesProvidersListByReplicationFabricsResult struct {
+// ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResult contains the result from method ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics.
+type ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResult struct {
 	RecoveryServicesProviderCollection
 }
 
-// ReplicationRecoveryServicesProvidersListResponse contains the response from method ReplicationRecoveryServicesProviders.List.
-type ReplicationRecoveryServicesProvidersListResponse struct {
-	ReplicationRecoveryServicesProvidersListResult
+// ReplicationRecoveryServicesProvidersClientListResponse contains the response from method ReplicationRecoveryServicesProvidersClient.List.
+type ReplicationRecoveryServicesProvidersClientListResponse struct {
+	ReplicationRecoveryServicesProvidersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersListResult contains the result from method ReplicationRecoveryServicesProviders.List.
-type ReplicationRecoveryServicesProvidersListResult struct {
+// ReplicationRecoveryServicesProvidersClientListResult contains the result from method ReplicationRecoveryServicesProvidersClient.List.
+type ReplicationRecoveryServicesProvidersClientListResult struct {
 	RecoveryServicesProviderCollection
 }
 
-// ReplicationRecoveryServicesProvidersPurgePollerResponse contains the response from method ReplicationRecoveryServicesProviders.Purge.
-type ReplicationRecoveryServicesProvidersPurgePollerResponse struct {
+// ReplicationRecoveryServicesProvidersClientPurgePollerResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Purge.
+type ReplicationRecoveryServicesProvidersClientPurgePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryServicesProvidersPurgePoller
+	Poller *ReplicationRecoveryServicesProvidersClientPurgePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3749,8 +3831,8 @@ type ReplicationRecoveryServicesProvidersPurgePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryServicesProvidersPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersPurgeResponse, error) {
-	respType := ReplicationRecoveryServicesProvidersPurgeResponse{}
+func (l ReplicationRecoveryServicesProvidersClientPurgePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersClientPurgeResponse, error) {
+	respType := ReplicationRecoveryServicesProvidersClientPurgeResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3759,13 +3841,13 @@ func (l ReplicationRecoveryServicesProvidersPurgePollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryServicesProvidersPurgePollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryServicesProvidersPurgePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.Purge", token, client.pl, client.purgeHandleError)
+// Resume rehydrates a ReplicationRecoveryServicesProvidersClientPurgePollerResponse from the provided client and resume token.
+func (l *ReplicationRecoveryServicesProvidersClientPurgePollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.Purge", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryServicesProvidersPurgePoller{
+	poller := &ReplicationRecoveryServicesProvidersClientPurgePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3777,16 +3859,16 @@ func (l *ReplicationRecoveryServicesProvidersPurgePollerResponse) Resume(ctx con
 	return nil
 }
 
-// ReplicationRecoveryServicesProvidersPurgeResponse contains the response from method ReplicationRecoveryServicesProviders.Purge.
-type ReplicationRecoveryServicesProvidersPurgeResponse struct {
+// ReplicationRecoveryServicesProvidersClientPurgeResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Purge.
+type ReplicationRecoveryServicesProvidersClientPurgeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse contains the response from method ReplicationRecoveryServicesProviders.RefreshProvider.
-type ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse struct {
+// ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse contains the response from method ReplicationRecoveryServicesProvidersClient.RefreshProvider.
+type ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationRecoveryServicesProvidersRefreshProviderPoller
+	Poller *ReplicationRecoveryServicesProvidersClientRefreshProviderPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3795,8 +3877,8 @@ type ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersRefreshProviderResponse, error) {
-	respType := ReplicationRecoveryServicesProvidersRefreshProviderResponse{}
+func (l ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationRecoveryServicesProvidersClientRefreshProviderResponse, error) {
+	respType := ReplicationRecoveryServicesProvidersClientRefreshProviderResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RecoveryServicesProvider)
 	if err != nil {
 		return respType, err
@@ -3805,13 +3887,14 @@ func (l ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse) PollU
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse from the provided client and resume token.
-func (l *ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.RefreshProvider", token, client.pl, client.refreshProviderHandleError)
+// Resume rehydrates a ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse from the provided client and
+// resume token.
+func (l *ReplicationRecoveryServicesProvidersClientRefreshProviderPollerResponse) Resume(ctx context.Context, client *ReplicationRecoveryServicesProvidersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationRecoveryServicesProvidersClient.RefreshProvider", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationRecoveryServicesProvidersRefreshProviderPoller{
+	poller := &ReplicationRecoveryServicesProvidersClientRefreshProviderPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3823,22 +3906,22 @@ func (l *ReplicationRecoveryServicesProvidersRefreshProviderPollerResponse) Resu
 	return nil
 }
 
-// ReplicationRecoveryServicesProvidersRefreshProviderResponse contains the response from method ReplicationRecoveryServicesProviders.RefreshProvider.
-type ReplicationRecoveryServicesProvidersRefreshProviderResponse struct {
-	ReplicationRecoveryServicesProvidersRefreshProviderResult
+// ReplicationRecoveryServicesProvidersClientRefreshProviderResponse contains the response from method ReplicationRecoveryServicesProvidersClient.RefreshProvider.
+type ReplicationRecoveryServicesProvidersClientRefreshProviderResponse struct {
+	ReplicationRecoveryServicesProvidersClientRefreshProviderResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationRecoveryServicesProvidersRefreshProviderResult contains the result from method ReplicationRecoveryServicesProviders.RefreshProvider.
-type ReplicationRecoveryServicesProvidersRefreshProviderResult struct {
+// ReplicationRecoveryServicesProvidersClientRefreshProviderResult contains the result from method ReplicationRecoveryServicesProvidersClient.RefreshProvider.
+type ReplicationRecoveryServicesProvidersClientRefreshProviderResult struct {
 	RecoveryServicesProvider
 }
 
-// ReplicationStorageClassificationMappingsCreatePollerResponse contains the response from method ReplicationStorageClassificationMappings.Create.
-type ReplicationStorageClassificationMappingsCreatePollerResponse struct {
+// ReplicationStorageClassificationMappingsClientCreatePollerResponse contains the response from method ReplicationStorageClassificationMappingsClient.Create.
+type ReplicationStorageClassificationMappingsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationStorageClassificationMappingsCreatePoller
+	Poller *ReplicationStorageClassificationMappingsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3847,8 +3930,8 @@ type ReplicationStorageClassificationMappingsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationStorageClassificationMappingsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationStorageClassificationMappingsCreateResponse, error) {
-	respType := ReplicationStorageClassificationMappingsCreateResponse{}
+func (l ReplicationStorageClassificationMappingsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationStorageClassificationMappingsClientCreateResponse, error) {
+	respType := ReplicationStorageClassificationMappingsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageClassificationMapping)
 	if err != nil {
 		return respType, err
@@ -3857,13 +3940,14 @@ func (l ReplicationStorageClassificationMappingsCreatePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationStorageClassificationMappingsCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationStorageClassificationMappingsCreatePollerResponse) Resume(ctx context.Context, client *ReplicationStorageClassificationMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationStorageClassificationMappingsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationStorageClassificationMappingsClientCreatePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationStorageClassificationMappingsClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationStorageClassificationMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationStorageClassificationMappingsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationStorageClassificationMappingsCreatePoller{
+	poller := &ReplicationStorageClassificationMappingsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3875,22 +3959,22 @@ func (l *ReplicationStorageClassificationMappingsCreatePollerResponse) Resume(ct
 	return nil
 }
 
-// ReplicationStorageClassificationMappingsCreateResponse contains the response from method ReplicationStorageClassificationMappings.Create.
-type ReplicationStorageClassificationMappingsCreateResponse struct {
-	ReplicationStorageClassificationMappingsCreateResult
+// ReplicationStorageClassificationMappingsClientCreateResponse contains the response from method ReplicationStorageClassificationMappingsClient.Create.
+type ReplicationStorageClassificationMappingsClientCreateResponse struct {
+	ReplicationStorageClassificationMappingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationMappingsCreateResult contains the result from method ReplicationStorageClassificationMappings.Create.
-type ReplicationStorageClassificationMappingsCreateResult struct {
+// ReplicationStorageClassificationMappingsClientCreateResult contains the result from method ReplicationStorageClassificationMappingsClient.Create.
+type ReplicationStorageClassificationMappingsClientCreateResult struct {
 	StorageClassificationMapping
 }
 
-// ReplicationStorageClassificationMappingsDeletePollerResponse contains the response from method ReplicationStorageClassificationMappings.Delete.
-type ReplicationStorageClassificationMappingsDeletePollerResponse struct {
+// ReplicationStorageClassificationMappingsClientDeletePollerResponse contains the response from method ReplicationStorageClassificationMappingsClient.Delete.
+type ReplicationStorageClassificationMappingsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationStorageClassificationMappingsDeletePoller
+	Poller *ReplicationStorageClassificationMappingsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -3899,8 +3983,8 @@ type ReplicationStorageClassificationMappingsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationStorageClassificationMappingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationStorageClassificationMappingsDeleteResponse, error) {
-	respType := ReplicationStorageClassificationMappingsDeleteResponse{}
+func (l ReplicationStorageClassificationMappingsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationStorageClassificationMappingsClientDeleteResponse, error) {
+	respType := ReplicationStorageClassificationMappingsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -3909,13 +3993,14 @@ func (l ReplicationStorageClassificationMappingsDeletePollerResponse) PollUntilD
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationStorageClassificationMappingsDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationStorageClassificationMappingsDeletePollerResponse) Resume(ctx context.Context, client *ReplicationStorageClassificationMappingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationStorageClassificationMappingsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationStorageClassificationMappingsClientDeletePollerResponse from the provided client and resume
+// token.
+func (l *ReplicationStorageClassificationMappingsClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationStorageClassificationMappingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationStorageClassificationMappingsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationStorageClassificationMappingsDeletePoller{
+	poller := &ReplicationStorageClassificationMappingsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -3927,100 +4012,102 @@ func (l *ReplicationStorageClassificationMappingsDeletePollerResponse) Resume(ct
 	return nil
 }
 
-// ReplicationStorageClassificationMappingsDeleteResponse contains the response from method ReplicationStorageClassificationMappings.Delete.
-type ReplicationStorageClassificationMappingsDeleteResponse struct {
+// ReplicationStorageClassificationMappingsClientDeleteResponse contains the response from method ReplicationStorageClassificationMappingsClient.Delete.
+type ReplicationStorageClassificationMappingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationMappingsGetResponse contains the response from method ReplicationStorageClassificationMappings.Get.
-type ReplicationStorageClassificationMappingsGetResponse struct {
-	ReplicationStorageClassificationMappingsGetResult
+// ReplicationStorageClassificationMappingsClientGetResponse contains the response from method ReplicationStorageClassificationMappingsClient.Get.
+type ReplicationStorageClassificationMappingsClientGetResponse struct {
+	ReplicationStorageClassificationMappingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationMappingsGetResult contains the result from method ReplicationStorageClassificationMappings.Get.
-type ReplicationStorageClassificationMappingsGetResult struct {
+// ReplicationStorageClassificationMappingsClientGetResult contains the result from method ReplicationStorageClassificationMappingsClient.Get.
+type ReplicationStorageClassificationMappingsClientGetResult struct {
 	StorageClassificationMapping
 }
 
-// ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResponse contains the response from method ReplicationStorageClassificationMappings.ListByReplicationStorageClassifications.
-type ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResponse struct {
-	ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResult
+// ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse contains the response from
+// method ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications.
+type ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse struct {
+	ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResult contains the result from method ReplicationStorageClassificationMappings.ListByReplicationStorageClassifications.
-type ReplicationStorageClassificationMappingsListByReplicationStorageClassificationsResult struct {
+// ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResult contains the result from method
+// ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications.
+type ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResult struct {
 	StorageClassificationMappingCollection
 }
 
-// ReplicationStorageClassificationMappingsListResponse contains the response from method ReplicationStorageClassificationMappings.List.
-type ReplicationStorageClassificationMappingsListResponse struct {
-	ReplicationStorageClassificationMappingsListResult
+// ReplicationStorageClassificationMappingsClientListResponse contains the response from method ReplicationStorageClassificationMappingsClient.List.
+type ReplicationStorageClassificationMappingsClientListResponse struct {
+	ReplicationStorageClassificationMappingsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationMappingsListResult contains the result from method ReplicationStorageClassificationMappings.List.
-type ReplicationStorageClassificationMappingsListResult struct {
+// ReplicationStorageClassificationMappingsClientListResult contains the result from method ReplicationStorageClassificationMappingsClient.List.
+type ReplicationStorageClassificationMappingsClientListResult struct {
 	StorageClassificationMappingCollection
 }
 
-// ReplicationStorageClassificationsGetResponse contains the response from method ReplicationStorageClassifications.Get.
-type ReplicationStorageClassificationsGetResponse struct {
-	ReplicationStorageClassificationsGetResult
+// ReplicationStorageClassificationsClientGetResponse contains the response from method ReplicationStorageClassificationsClient.Get.
+type ReplicationStorageClassificationsClientGetResponse struct {
+	ReplicationStorageClassificationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationsGetResult contains the result from method ReplicationStorageClassifications.Get.
-type ReplicationStorageClassificationsGetResult struct {
+// ReplicationStorageClassificationsClientGetResult contains the result from method ReplicationStorageClassificationsClient.Get.
+type ReplicationStorageClassificationsClientGetResult struct {
 	StorageClassification
 }
 
-// ReplicationStorageClassificationsListByReplicationFabricsResponse contains the response from method ReplicationStorageClassifications.ListByReplicationFabrics.
-type ReplicationStorageClassificationsListByReplicationFabricsResponse struct {
-	ReplicationStorageClassificationsListByReplicationFabricsResult
+// ReplicationStorageClassificationsClientListByReplicationFabricsResponse contains the response from method ReplicationStorageClassificationsClient.ListByReplicationFabrics.
+type ReplicationStorageClassificationsClientListByReplicationFabricsResponse struct {
+	ReplicationStorageClassificationsClientListByReplicationFabricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationsListByReplicationFabricsResult contains the result from method ReplicationStorageClassifications.ListByReplicationFabrics.
-type ReplicationStorageClassificationsListByReplicationFabricsResult struct {
+// ReplicationStorageClassificationsClientListByReplicationFabricsResult contains the result from method ReplicationStorageClassificationsClient.ListByReplicationFabrics.
+type ReplicationStorageClassificationsClientListByReplicationFabricsResult struct {
 	StorageClassificationCollection
 }
 
-// ReplicationStorageClassificationsListResponse contains the response from method ReplicationStorageClassifications.List.
-type ReplicationStorageClassificationsListResponse struct {
-	ReplicationStorageClassificationsListResult
+// ReplicationStorageClassificationsClientListResponse contains the response from method ReplicationStorageClassificationsClient.List.
+type ReplicationStorageClassificationsClientListResponse struct {
+	ReplicationStorageClassificationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationStorageClassificationsListResult contains the result from method ReplicationStorageClassifications.List.
-type ReplicationStorageClassificationsListResult struct {
+// ReplicationStorageClassificationsClientListResult contains the result from method ReplicationStorageClassificationsClient.List.
+type ReplicationStorageClassificationsClientListResult struct {
 	StorageClassificationCollection
 }
 
-// ReplicationVaultHealthGetResponse contains the response from method ReplicationVaultHealth.Get.
-type ReplicationVaultHealthGetResponse struct {
-	ReplicationVaultHealthGetResult
+// ReplicationVaultHealthClientGetResponse contains the response from method ReplicationVaultHealthClient.Get.
+type ReplicationVaultHealthClientGetResponse struct {
+	ReplicationVaultHealthClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationVaultHealthGetResult contains the result from method ReplicationVaultHealth.Get.
-type ReplicationVaultHealthGetResult struct {
+// ReplicationVaultHealthClientGetResult contains the result from method ReplicationVaultHealthClient.Get.
+type ReplicationVaultHealthClientGetResult struct {
 	VaultHealthDetails
 }
 
-// ReplicationVaultHealthRefreshPollerResponse contains the response from method ReplicationVaultHealth.Refresh.
-type ReplicationVaultHealthRefreshPollerResponse struct {
+// ReplicationVaultHealthClientRefreshPollerResponse contains the response from method ReplicationVaultHealthClient.Refresh.
+type ReplicationVaultHealthClientRefreshPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationVaultHealthRefreshPoller
+	Poller *ReplicationVaultHealthClientRefreshPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4029,8 +4116,8 @@ type ReplicationVaultHealthRefreshPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationVaultHealthRefreshPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationVaultHealthRefreshResponse, error) {
-	respType := ReplicationVaultHealthRefreshResponse{}
+func (l ReplicationVaultHealthClientRefreshPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationVaultHealthClientRefreshResponse, error) {
+	respType := ReplicationVaultHealthClientRefreshResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VaultHealthDetails)
 	if err != nil {
 		return respType, err
@@ -4039,13 +4126,13 @@ func (l ReplicationVaultHealthRefreshPollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationVaultHealthRefreshPollerResponse from the provided client and resume token.
-func (l *ReplicationVaultHealthRefreshPollerResponse) Resume(ctx context.Context, client *ReplicationVaultHealthClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationVaultHealthClient.Refresh", token, client.pl, client.refreshHandleError)
+// Resume rehydrates a ReplicationVaultHealthClientRefreshPollerResponse from the provided client and resume token.
+func (l *ReplicationVaultHealthClientRefreshPollerResponse) Resume(ctx context.Context, client *ReplicationVaultHealthClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationVaultHealthClient.Refresh", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationVaultHealthRefreshPoller{
+	poller := &ReplicationVaultHealthClientRefreshPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4057,22 +4144,22 @@ func (l *ReplicationVaultHealthRefreshPollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// ReplicationVaultHealthRefreshResponse contains the response from method ReplicationVaultHealth.Refresh.
-type ReplicationVaultHealthRefreshResponse struct {
-	ReplicationVaultHealthRefreshResult
+// ReplicationVaultHealthClientRefreshResponse contains the response from method ReplicationVaultHealthClient.Refresh.
+type ReplicationVaultHealthClientRefreshResponse struct {
+	ReplicationVaultHealthClientRefreshResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationVaultHealthRefreshResult contains the result from method ReplicationVaultHealth.Refresh.
-type ReplicationVaultHealthRefreshResult struct {
+// ReplicationVaultHealthClientRefreshResult contains the result from method ReplicationVaultHealthClient.Refresh.
+type ReplicationVaultHealthClientRefreshResult struct {
 	VaultHealthDetails
 }
 
-// ReplicationVaultSettingCreatePollerResponse contains the response from method ReplicationVaultSetting.Create.
-type ReplicationVaultSettingCreatePollerResponse struct {
+// ReplicationVaultSettingClientCreatePollerResponse contains the response from method ReplicationVaultSettingClient.Create.
+type ReplicationVaultSettingClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationVaultSettingCreatePoller
+	Poller *ReplicationVaultSettingClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4081,8 +4168,8 @@ type ReplicationVaultSettingCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationVaultSettingCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationVaultSettingCreateResponse, error) {
-	respType := ReplicationVaultSettingCreateResponse{}
+func (l ReplicationVaultSettingClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationVaultSettingClientCreateResponse, error) {
+	respType := ReplicationVaultSettingClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VaultSetting)
 	if err != nil {
 		return respType, err
@@ -4091,13 +4178,13 @@ func (l ReplicationVaultSettingCreatePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationVaultSettingCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationVaultSettingCreatePollerResponse) Resume(ctx context.Context, client *ReplicationVaultSettingClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationVaultSettingClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationVaultSettingClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationVaultSettingClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationVaultSettingClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationVaultSettingClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationVaultSettingCreatePoller{
+	poller := &ReplicationVaultSettingClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4109,46 +4196,46 @@ func (l *ReplicationVaultSettingCreatePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// ReplicationVaultSettingCreateResponse contains the response from method ReplicationVaultSetting.Create.
-type ReplicationVaultSettingCreateResponse struct {
-	ReplicationVaultSettingCreateResult
+// ReplicationVaultSettingClientCreateResponse contains the response from method ReplicationVaultSettingClient.Create.
+type ReplicationVaultSettingClientCreateResponse struct {
+	ReplicationVaultSettingClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationVaultSettingCreateResult contains the result from method ReplicationVaultSetting.Create.
-type ReplicationVaultSettingCreateResult struct {
+// ReplicationVaultSettingClientCreateResult contains the result from method ReplicationVaultSettingClient.Create.
+type ReplicationVaultSettingClientCreateResult struct {
 	VaultSetting
 }
 
-// ReplicationVaultSettingGetResponse contains the response from method ReplicationVaultSetting.Get.
-type ReplicationVaultSettingGetResponse struct {
-	ReplicationVaultSettingGetResult
+// ReplicationVaultSettingClientGetResponse contains the response from method ReplicationVaultSettingClient.Get.
+type ReplicationVaultSettingClientGetResponse struct {
+	ReplicationVaultSettingClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationVaultSettingGetResult contains the result from method ReplicationVaultSetting.Get.
-type ReplicationVaultSettingGetResult struct {
+// ReplicationVaultSettingClientGetResult contains the result from method ReplicationVaultSettingClient.Get.
+type ReplicationVaultSettingClientGetResult struct {
 	VaultSetting
 }
 
-// ReplicationVaultSettingListResponse contains the response from method ReplicationVaultSetting.List.
-type ReplicationVaultSettingListResponse struct {
-	ReplicationVaultSettingListResult
+// ReplicationVaultSettingClientListResponse contains the response from method ReplicationVaultSettingClient.List.
+type ReplicationVaultSettingClientListResponse struct {
+	ReplicationVaultSettingClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationVaultSettingListResult contains the result from method ReplicationVaultSetting.List.
-type ReplicationVaultSettingListResult struct {
+// ReplicationVaultSettingClientListResult contains the result from method ReplicationVaultSettingClient.List.
+type ReplicationVaultSettingClientListResult struct {
 	VaultSettingCollection
 }
 
-// ReplicationvCentersCreatePollerResponse contains the response from method ReplicationvCenters.Create.
-type ReplicationvCentersCreatePollerResponse struct {
+// ReplicationvCentersClientCreatePollerResponse contains the response from method ReplicationvCentersClient.Create.
+type ReplicationvCentersClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationvCentersCreatePoller
+	Poller *ReplicationvCentersClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4157,8 +4244,8 @@ type ReplicationvCentersCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationvCentersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationvCentersCreateResponse, error) {
-	respType := ReplicationvCentersCreateResponse{}
+func (l ReplicationvCentersClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationvCentersClientCreateResponse, error) {
+	respType := ReplicationvCentersClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VCenter)
 	if err != nil {
 		return respType, err
@@ -4167,13 +4254,13 @@ func (l ReplicationvCentersCreatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationvCentersCreatePollerResponse from the provided client and resume token.
-func (l *ReplicationvCentersCreatePollerResponse) Resume(ctx context.Context, client *ReplicationvCentersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationvCentersClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ReplicationvCentersClientCreatePollerResponse from the provided client and resume token.
+func (l *ReplicationvCentersClientCreatePollerResponse) Resume(ctx context.Context, client *ReplicationvCentersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationvCentersClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationvCentersCreatePoller{
+	poller := &ReplicationvCentersClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4185,22 +4272,22 @@ func (l *ReplicationvCentersCreatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ReplicationvCentersCreateResponse contains the response from method ReplicationvCenters.Create.
-type ReplicationvCentersCreateResponse struct {
-	ReplicationvCentersCreateResult
+// ReplicationvCentersClientCreateResponse contains the response from method ReplicationvCentersClient.Create.
+type ReplicationvCentersClientCreateResponse struct {
+	ReplicationvCentersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationvCentersCreateResult contains the result from method ReplicationvCenters.Create.
-type ReplicationvCentersCreateResult struct {
+// ReplicationvCentersClientCreateResult contains the result from method ReplicationvCentersClient.Create.
+type ReplicationvCentersClientCreateResult struct {
 	VCenter
 }
 
-// ReplicationvCentersDeletePollerResponse contains the response from method ReplicationvCenters.Delete.
-type ReplicationvCentersDeletePollerResponse struct {
+// ReplicationvCentersClientDeletePollerResponse contains the response from method ReplicationvCentersClient.Delete.
+type ReplicationvCentersClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationvCentersDeletePoller
+	Poller *ReplicationvCentersClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4209,8 +4296,8 @@ type ReplicationvCentersDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationvCentersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationvCentersDeleteResponse, error) {
-	respType := ReplicationvCentersDeleteResponse{}
+func (l ReplicationvCentersClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationvCentersClientDeleteResponse, error) {
+	respType := ReplicationvCentersClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -4219,13 +4306,13 @@ func (l ReplicationvCentersDeletePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationvCentersDeletePollerResponse from the provided client and resume token.
-func (l *ReplicationvCentersDeletePollerResponse) Resume(ctx context.Context, client *ReplicationvCentersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationvCentersClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ReplicationvCentersClientDeletePollerResponse from the provided client and resume token.
+func (l *ReplicationvCentersClientDeletePollerResponse) Resume(ctx context.Context, client *ReplicationvCentersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationvCentersClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationvCentersDeletePoller{
+	poller := &ReplicationvCentersClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4237,52 +4324,52 @@ func (l *ReplicationvCentersDeletePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ReplicationvCentersDeleteResponse contains the response from method ReplicationvCenters.Delete.
-type ReplicationvCentersDeleteResponse struct {
+// ReplicationvCentersClientDeleteResponse contains the response from method ReplicationvCentersClient.Delete.
+type ReplicationvCentersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationvCentersGetResponse contains the response from method ReplicationvCenters.Get.
-type ReplicationvCentersGetResponse struct {
-	ReplicationvCentersGetResult
+// ReplicationvCentersClientGetResponse contains the response from method ReplicationvCentersClient.Get.
+type ReplicationvCentersClientGetResponse struct {
+	ReplicationvCentersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationvCentersGetResult contains the result from method ReplicationvCenters.Get.
-type ReplicationvCentersGetResult struct {
+// ReplicationvCentersClientGetResult contains the result from method ReplicationvCentersClient.Get.
+type ReplicationvCentersClientGetResult struct {
 	VCenter
 }
 
-// ReplicationvCentersListByReplicationFabricsResponse contains the response from method ReplicationvCenters.ListByReplicationFabrics.
-type ReplicationvCentersListByReplicationFabricsResponse struct {
-	ReplicationvCentersListByReplicationFabricsResult
+// ReplicationvCentersClientListByReplicationFabricsResponse contains the response from method ReplicationvCentersClient.ListByReplicationFabrics.
+type ReplicationvCentersClientListByReplicationFabricsResponse struct {
+	ReplicationvCentersClientListByReplicationFabricsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationvCentersListByReplicationFabricsResult contains the result from method ReplicationvCenters.ListByReplicationFabrics.
-type ReplicationvCentersListByReplicationFabricsResult struct {
+// ReplicationvCentersClientListByReplicationFabricsResult contains the result from method ReplicationvCentersClient.ListByReplicationFabrics.
+type ReplicationvCentersClientListByReplicationFabricsResult struct {
 	VCenterCollection
 }
 
-// ReplicationvCentersListResponse contains the response from method ReplicationvCenters.List.
-type ReplicationvCentersListResponse struct {
-	ReplicationvCentersListResult
+// ReplicationvCentersClientListResponse contains the response from method ReplicationvCentersClient.List.
+type ReplicationvCentersClientListResponse struct {
+	ReplicationvCentersClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationvCentersListResult contains the result from method ReplicationvCenters.List.
-type ReplicationvCentersListResult struct {
+// ReplicationvCentersClientListResult contains the result from method ReplicationvCentersClient.List.
+type ReplicationvCentersClientListResult struct {
 	VCenterCollection
 }
 
-// ReplicationvCentersUpdatePollerResponse contains the response from method ReplicationvCenters.Update.
-type ReplicationvCentersUpdatePollerResponse struct {
+// ReplicationvCentersClientUpdatePollerResponse contains the response from method ReplicationvCentersClient.Update.
+type ReplicationvCentersClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ReplicationvCentersUpdatePoller
+	Poller *ReplicationvCentersClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -4291,8 +4378,8 @@ type ReplicationvCentersUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ReplicationvCentersUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationvCentersUpdateResponse, error) {
-	respType := ReplicationvCentersUpdateResponse{}
+func (l ReplicationvCentersClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ReplicationvCentersClientUpdateResponse, error) {
+	respType := ReplicationvCentersClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.VCenter)
 	if err != nil {
 		return respType, err
@@ -4301,13 +4388,13 @@ func (l ReplicationvCentersUpdatePollerResponse) PollUntilDone(ctx context.Conte
 	return respType, nil
 }
 
-// Resume rehydrates a ReplicationvCentersUpdatePollerResponse from the provided client and resume token.
-func (l *ReplicationvCentersUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationvCentersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ReplicationvCentersClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ReplicationvCentersClientUpdatePollerResponse from the provided client and resume token.
+func (l *ReplicationvCentersClientUpdatePollerResponse) Resume(ctx context.Context, client *ReplicationvCentersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ReplicationvCentersClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ReplicationvCentersUpdatePoller{
+	poller := &ReplicationvCentersClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -4319,38 +4406,38 @@ func (l *ReplicationvCentersUpdatePollerResponse) Resume(ctx context.Context, cl
 	return nil
 }
 
-// ReplicationvCentersUpdateResponse contains the response from method ReplicationvCenters.Update.
-type ReplicationvCentersUpdateResponse struct {
-	ReplicationvCentersUpdateResult
+// ReplicationvCentersClientUpdateResponse contains the response from method ReplicationvCentersClient.Update.
+type ReplicationvCentersClientUpdateResponse struct {
+	ReplicationvCentersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationvCentersUpdateResult contains the result from method ReplicationvCenters.Update.
-type ReplicationvCentersUpdateResult struct {
+// ReplicationvCentersClientUpdateResult contains the result from method ReplicationvCentersClient.Update.
+type ReplicationvCentersClientUpdateResult struct {
 	VCenter
 }
 
-// SupportedOperatingSystemsGetResponse contains the response from method SupportedOperatingSystems.Get.
-type SupportedOperatingSystemsGetResponse struct {
-	SupportedOperatingSystemsGetResult
+// SupportedOperatingSystemsClientGetResponse contains the response from method SupportedOperatingSystemsClient.Get.
+type SupportedOperatingSystemsClientGetResponse struct {
+	SupportedOperatingSystemsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SupportedOperatingSystemsGetResult contains the result from method SupportedOperatingSystems.Get.
-type SupportedOperatingSystemsGetResult struct {
+// SupportedOperatingSystemsClientGetResult contains the result from method SupportedOperatingSystemsClient.Get.
+type SupportedOperatingSystemsClientGetResult struct {
 	SupportedOperatingSystems
 }
 
-// TargetComputeSizesListByReplicationProtectedItemsResponse contains the response from method TargetComputeSizes.ListByReplicationProtectedItems.
-type TargetComputeSizesListByReplicationProtectedItemsResponse struct {
-	TargetComputeSizesListByReplicationProtectedItemsResult
+// TargetComputeSizesClientListByReplicationProtectedItemsResponse contains the response from method TargetComputeSizesClient.ListByReplicationProtectedItems.
+type TargetComputeSizesClientListByReplicationProtectedItemsResponse struct {
+	TargetComputeSizesClientListByReplicationProtectedItemsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TargetComputeSizesListByReplicationProtectedItemsResult contains the result from method TargetComputeSizes.ListByReplicationProtectedItems.
-type TargetComputeSizesListByReplicationProtectedItemsResult struct {
+// TargetComputeSizesClientListByReplicationProtectedItemsResult contains the result from method TargetComputeSizesClient.ListByReplicationProtectedItems.
+type TargetComputeSizesClientListByReplicationProtectedItemsResult struct {
 	TargetComputeSizeCollection
 }

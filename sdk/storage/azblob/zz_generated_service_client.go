@@ -11,13 +11,14 @@ package azblob
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 type serviceClient struct {
@@ -38,7 +39,7 @@ func (client *serviceClient) FilterBlobs(ctx context.Context, options *ServiceFi
 		return ServiceFilterBlobsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceFilterBlobsResponse{}, client.filterBlobsHandleError(resp)
+		return ServiceFilterBlobsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.filterBlobsHandleResponse(resp)
 }
@@ -97,19 +98,6 @@ func (client *serviceClient) filterBlobsHandleResponse(resp *http.Response) (Ser
 	return result, nil
 }
 
-// filterBlobsHandleError handles the FilterBlobs error response.
-func (client *serviceClient) filterBlobsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAccountInfo - Returns the sku name and account kind
 // If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) GetAccountInfo(ctx context.Context, options *ServiceGetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
@@ -122,7 +110,7 @@ func (client *serviceClient) GetAccountInfo(ctx context.Context, options *Servic
 		return ServiceGetAccountInfoResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceGetAccountInfoResponse{}, client.getAccountInfoHandleError(resp)
+		return ServiceGetAccountInfoResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAccountInfoHandleResponse(resp)
 }
@@ -177,19 +165,6 @@ func (client *serviceClient) getAccountInfoHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// getAccountInfoHandleError handles the GetAccountInfo error response.
-func (client *serviceClient) getAccountInfoHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing)
 // rules.
 // If the operation fails it returns the *StorageError error type.
@@ -203,7 +178,7 @@ func (client *serviceClient) GetProperties(ctx context.Context, options *Service
 		return ServiceGetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceGetPropertiesResponse{}, client.getPropertiesHandleError(resp)
+		return ServiceGetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPropertiesHandleResponse(resp)
 }
@@ -247,19 +222,6 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// getPropertiesHandleError handles the GetProperties error response.
-func (client *serviceClient) getPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetStatistics - Retrieves statistics related to replication for the Blob service. It is only available on the secondary location endpoint when read-access
 // geo-redundant replication is enabled for the storage account.
 // If the operation fails it returns the *StorageError error type.
@@ -273,7 +235,7 @@ func (client *serviceClient) GetStatistics(ctx context.Context, options *Service
 		return ServiceGetStatisticsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceGetStatisticsResponse{}, client.getStatisticsHandleError(resp)
+		return ServiceGetStatisticsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStatisticsHandleResponse(resp)
 }
@@ -324,19 +286,6 @@ func (client *serviceClient) getStatisticsHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// getStatisticsHandleError handles the GetStatistics error response.
-func (client *serviceClient) getStatisticsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetUserDelegationKey - Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
 // If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) GetUserDelegationKey(ctx context.Context, keyInfo KeyInfo, options *ServiceGetUserDelegationKeyOptions) (ServiceGetUserDelegationKeyResponse, error) {
@@ -349,7 +298,7 @@ func (client *serviceClient) GetUserDelegationKey(ctx context.Context, keyInfo K
 		return ServiceGetUserDelegationKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceGetUserDelegationKeyResponse{}, client.getUserDelegationKeyHandleError(resp)
+		return ServiceGetUserDelegationKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getUserDelegationKeyHandleResponse(resp)
 }
@@ -398,19 +347,6 @@ func (client *serviceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 		return ServiceGetUserDelegationKeyResponse{}, err
 	}
 	return result, nil
-}
-
-// getUserDelegationKeyHandleError handles the GetUserDelegationKey error response.
-func (client *serviceClient) getUserDelegationKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListContainersSegment - The List Containers Segment operation returns a list of the containers under the specified account
@@ -477,19 +413,6 @@ func (client *serviceClient) listContainersSegmentHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// listContainersSegmentHandleError handles the ListContainersSegment error response.
-func (client *serviceClient) listContainersSegmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SetProperties - Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules
 // If the operation fails it returns the *StorageError error type.
@@ -503,7 +426,7 @@ func (client *serviceClient) SetProperties(ctx context.Context, storageServicePr
 		return ServiceSetPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ServiceSetPropertiesResponse{}, client.setPropertiesHandleError(resp)
+		return ServiceSetPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.setPropertiesHandleResponse(resp)
 }
@@ -544,19 +467,6 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// setPropertiesHandleError handles the SetProperties error response.
-func (client *serviceClient) setPropertiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
 // If the operation fails it returns the *StorageError error type.
 func (client *serviceClient) SubmitBatch(ctx context.Context, contentLength int64, multipartContentType string, body io.ReadSeekCloser, options *ServiceSubmitBatchOptions) (ServiceSubmitBatchResponse, error) {
@@ -569,7 +479,7 @@ func (client *serviceClient) SubmitBatch(ctx context.Context, contentLength int6
 		return ServiceSubmitBatchResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceSubmitBatchResponse{}, client.submitBatchHandleError(resp)
+		return ServiceSubmitBatchResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.submitBatchHandleResponse(resp)
 }
@@ -586,7 +496,7 @@ func (client *serviceClient) submitBatchCreateRequest(ctx context.Context, conte
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	req.Raw().Header.Set("Content-Type", multipartContentType)
 	req.Raw().Header.Set("x-ms-version", "2019-12-12")
@@ -610,17 +520,4 @@ func (client *serviceClient) submitBatchHandleResponse(resp *http.Response) (Ser
 		result.Version = &val
 	}
 	return result, nil
-}
-
-// submitBatchHandleError handles the SubmitBatch error response.
-func (client *serviceClient) submitBatchHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageError{raw: string(body)}
-	if err := runtime.UnmarshalAsXML(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

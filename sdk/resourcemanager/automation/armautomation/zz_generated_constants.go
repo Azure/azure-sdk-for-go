@@ -9,8 +9,8 @@
 package armautomation
 
 const (
-	module  = "armautomation"
-	version = "v0.2.1"
+	moduleName    = "armautomation"
+	moduleVersion = "v0.3.0"
 )
 
 // AgentRegistrationKeyName - Gets or sets the agent registration key name - primary or secondary.
@@ -844,7 +844,8 @@ func (c TokenType) ToPtr() *TokenType {
 	return &c
 }
 
-// WindowsUpdateClasses - Update classification included in the software update configuration. A comma separated string with required values
+// WindowsUpdateClasses - Update classification included in the software update configuration. A comma separated string with
+// required values
 type WindowsUpdateClasses string
 
 const (

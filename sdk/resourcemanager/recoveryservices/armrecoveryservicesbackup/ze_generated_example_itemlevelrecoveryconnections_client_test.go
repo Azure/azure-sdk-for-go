@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/Provision_Ilr.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/Provision_Ilr.json
 func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,9 +34,7 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 		"<recovery-point-id>",
 		armrecoveryservicesbackup.ILRRequestResource{
 			Properties: &armrecoveryservicesbackup.IaasVMILRRegistrationRequest{
-				ILRRequest: armrecoveryservicesbackup.ILRRequest{
-					ObjectType: to.StringPtr("<object-type>"),
-				},
+				ObjectType:                to.StringPtr("<object-type>"),
 				InitiatorName:             to.StringPtr("<initiator-name>"),
 				RecoveryPointID:           to.StringPtr("<recovery-point-id>"),
 				RenewExistingRegistration: to.BoolPtr(true),
@@ -49,7 +47,7 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/Revoke_Ilr.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/Revoke_Ilr.json
 func ExampleItemLevelRecoveryConnectionsClient_Revoke() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

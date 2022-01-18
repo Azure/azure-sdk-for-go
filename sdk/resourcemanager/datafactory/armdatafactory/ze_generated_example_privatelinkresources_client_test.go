@@ -24,11 +24,12 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientGetResult)
 }

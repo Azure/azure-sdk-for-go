@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // PipelinesClient contains the methods for the Pipelines group.
 // Don't use this type directly, use NewPipelinesClient() instead.
 type PipelinesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPipelinesClient creates a new instance of PipelinesClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PipelinesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PipelinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PipelinesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a pipeline.
-// If the operation fails it returns the *CloudError error type.
-func (client *PipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, pipeline PipelineResource, options *PipelinesCreateOrUpdateOptions) (PipelinesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// pipelineName - The pipeline name.
+// pipeline - Pipeline resource definition.
+// options - PipelinesClientCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.CreateOrUpdate
+// method.
+func (client *PipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, pipeline PipelineResource, options *PipelinesClientCreateOrUpdateOptions) (PipelinesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, pipeline, options)
 	if err != nil {
-		return PipelinesCreateOrUpdateResponse{}, err
+		return PipelinesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelinesCreateOrUpdateResponse{}, err
+		return PipelinesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PipelinesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PipelinesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, pipeline PipelineResource, options *PipelinesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, pipeline PipelineResource, options *PipelinesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter pipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +107,37 @@ func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PipelinesClient) createOrUpdateHandleResponse(resp *http.Response) (PipelinesCreateOrUpdateResponse, error) {
-	result := PipelinesCreateOrUpdateResponse{RawResponse: resp}
+func (client *PipelinesClient) createOrUpdateHandleResponse(resp *http.Response) (PipelinesClientCreateOrUpdateResponse, error) {
+	result := PipelinesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineResource); err != nil {
-		return PipelinesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PipelinesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PipelinesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateRun - Creates a run of a pipeline.
-// If the operation fails it returns the *CloudError error type.
-func (client *PipelinesClient) CreateRun(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesCreateRunOptions) (PipelinesCreateRunResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// pipelineName - The pipeline name.
+// options - PipelinesClientCreateRunOptions contains the optional parameters for the PipelinesClient.CreateRun method.
+func (client *PipelinesClient) CreateRun(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientCreateRunOptions) (PipelinesClientCreateRunResponse, error) {
 	req, err := client.createRunCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, options)
 	if err != nil {
-		return PipelinesCreateRunResponse{}, err
+		return PipelinesClientCreateRunResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelinesCreateRunResponse{}, err
+		return PipelinesClientCreateRunResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PipelinesCreateRunResponse{}, client.createRunHandleError(resp)
+		return PipelinesClientCreateRunResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createRunHandleResponse(resp)
 }
 
 // createRunCreateRequest creates the CreateRun request.
-func (client *PipelinesClient) createRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesCreateRunOptions) (*policy.Request, error) {
+func (client *PipelinesClient) createRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientCreateRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}/createRun"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -151,7 +155,7 @@ func (client *PipelinesClient) createRunCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter pipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,46 +182,37 @@ func (client *PipelinesClient) createRunCreateRequest(ctx context.Context, resou
 }
 
 // createRunHandleResponse handles the CreateRun response.
-func (client *PipelinesClient) createRunHandleResponse(resp *http.Response) (PipelinesCreateRunResponse, error) {
-	result := PipelinesCreateRunResponse{RawResponse: resp}
+func (client *PipelinesClient) createRunHandleResponse(resp *http.Response) (PipelinesClientCreateRunResponse, error) {
+	result := PipelinesClientCreateRunResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateRunResponse); err != nil {
-		return PipelinesCreateRunResponse{}, runtime.NewResponseError(err, resp)
+		return PipelinesClientCreateRunResponse{}, err
 	}
 	return result, nil
 }
 
-// createRunHandleError handles the CreateRun error response.
-func (client *PipelinesClient) createRunHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a pipeline.
-// If the operation fails it returns the *CloudError error type.
-func (client *PipelinesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesDeleteOptions) (PipelinesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// pipelineName - The pipeline name.
+// options - PipelinesClientDeleteOptions contains the optional parameters for the PipelinesClient.Delete method.
+func (client *PipelinesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientDeleteOptions) (PipelinesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, options)
 	if err != nil {
-		return PipelinesDeleteResponse{}, err
+		return PipelinesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelinesDeleteResponse{}, err
+		return PipelinesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PipelinesDeleteResponse{}, client.deleteHandleError(resp)
+		return PipelinesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PipelinesDeleteResponse{RawResponse: resp}, nil
+	return PipelinesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesDeleteOptions) (*policy.Request, error) {
+func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -235,7 +230,7 @@ func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter pipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -246,38 +241,29 @@ func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PipelinesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a pipeline.
-// If the operation fails it returns the *CloudError error type.
-func (client *PipelinesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesGetOptions) (PipelinesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// pipelineName - The pipeline name.
+// options - PipelinesClientGetOptions contains the optional parameters for the PipelinesClient.Get method.
+func (client *PipelinesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientGetOptions) (PipelinesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, options)
 	if err != nil {
-		return PipelinesGetResponse{}, err
+		return PipelinesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PipelinesGetResponse{}, err
+		return PipelinesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotModified) {
-		return PipelinesGetResponse{}, client.getHandleError(resp)
+		return PipelinesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesGetOptions) (*policy.Request, error) {
+func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -295,7 +281,7 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter pipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,43 +296,33 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *PipelinesClient) getHandleResponse(resp *http.Response) (PipelinesGetResponse, error) {
-	result := PipelinesGetResponse{RawResponse: resp}
+func (client *PipelinesClient) getHandleResponse(resp *http.Response) (PipelinesClientGetResponse, error) {
+	result := PipelinesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineResource); err != nil {
-		return PipelinesGetResponse{}, runtime.NewResponseError(err, resp)
+		return PipelinesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PipelinesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByFactory - Lists pipelines.
-// If the operation fails it returns the *CloudError error type.
-func (client *PipelinesClient) ListByFactory(resourceGroupName string, factoryName string, options *PipelinesListByFactoryOptions) *PipelinesListByFactoryPager {
-	return &PipelinesListByFactoryPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// options - PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.ListByFactory method.
+func (client *PipelinesClient) ListByFactory(resourceGroupName string, factoryName string, options *PipelinesClientListByFactoryOptions) *PipelinesClientListByFactoryPager {
+	return &PipelinesClientListByFactoryPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp PipelinesListByFactoryResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PipelinesClientListByFactoryResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PipelineListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *PipelinesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *PipelinesListByFactoryOptions) (*policy.Request, error) {
+func (client *PipelinesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *PipelinesClientListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -360,7 +336,7 @@ func (client *PipelinesClient) listByFactoryCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -372,23 +348,10 @@ func (client *PipelinesClient) listByFactoryCreateRequest(ctx context.Context, r
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *PipelinesClient) listByFactoryHandleResponse(resp *http.Response) (PipelinesListByFactoryResponse, error) {
-	result := PipelinesListByFactoryResponse{RawResponse: resp}
+func (client *PipelinesClient) listByFactoryHandleResponse(resp *http.Response) (PipelinesClientListByFactoryResponse, error) {
+	result := PipelinesClientListByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineListResponse); err != nil {
-		return PipelinesListByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return PipelinesClientListByFactoryResponse{}, err
 	}
 	return result, nil
-}
-
-// listByFactoryHandleError handles the ListByFactory error response.
-func (client *PipelinesClient) listByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

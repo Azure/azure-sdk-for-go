@@ -32,7 +32,7 @@ func ExampleDiagnosticSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticSettingsResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/createOrUpdateDiagnosticSetting.json
@@ -77,7 +77,7 @@ func ExampleDiagnosticSettingsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticSettingsResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/deleteDiagnosticSetting.json
@@ -105,10 +105,11 @@ func ExampleDiagnosticSettingsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewDiagnosticSettingsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-uri>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientListResult)
 }

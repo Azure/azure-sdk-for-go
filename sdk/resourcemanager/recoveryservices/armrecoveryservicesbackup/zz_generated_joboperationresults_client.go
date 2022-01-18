@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // JobOperationResultsClient contains the methods for the JobOperationResults group.
 // Don't use this type directly, use NewJobOperationResultsClient() instead.
 type JobOperationResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobOperationResultsClient creates a new instance of JobOperationResultsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewJobOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobOperationResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &JobOperationResultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &JobOperationResultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Fetches the result of any operation.
-// If the operation fails it returns the *CloudError error type.
-func (client *JobOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string, options *JobOperationResultsGetOptions) (JobOperationResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// jobName - Job name whose operation result has to be fetched.
+// operationID - OperationID which represents the operation whose result has to be fetched.
+// options - JobOperationResultsClientGetOptions contains the optional parameters for the JobOperationResultsClient.Get method.
+func (client *JobOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string, options *JobOperationResultsClientGetOptions) (JobOperationResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, jobName, operationID, options)
 	if err != nil {
-		return JobOperationResultsGetResponse{}, err
+		return JobOperationResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobOperationResultsGetResponse{}, err
+		return JobOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return JobOperationResultsGetResponse{}, client.getHandleError(resp)
+		return JobOperationResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobOperationResultsGetResponse{RawResponse: resp}, nil
+	return JobOperationResultsClientGetResponse{RawResponse: resp}, nil
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobOperationResultsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string, options *JobOperationResultsGetOptions) (*policy.Request, error) {
+func (client *JobOperationResultsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string, options *JobOperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}/operationResults/{operationId}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -82,26 +94,13 @@ func (client *JobOperationResultsClient) getCreateRequest(ctx context.Context, v
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *JobOperationResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

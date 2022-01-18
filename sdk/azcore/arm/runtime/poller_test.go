@@ -15,7 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
@@ -261,7 +260,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if err == nil {
 		t.Fatal(err)
 	}
-	if _, ok := err.(*azcore.ResponseError); !ok {
+	if _, ok := err.(*shared.ResponseError); !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
 }

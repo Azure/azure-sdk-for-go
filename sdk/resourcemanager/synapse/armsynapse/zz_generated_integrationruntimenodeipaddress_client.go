@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // IntegrationRuntimeNodeIPAddressClient contains the methods for the IntegrationRuntimeNodeIPAddress group.
 // Don't use this type directly, use NewIntegrationRuntimeNodeIPAddressClient() instead.
 type IntegrationRuntimeNodeIPAddressClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeNodeIPAddressClient creates a new instance of IntegrationRuntimeNodeIPAddressClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationRuntimeNodeIPAddressClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationRuntimeNodeIPAddressClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationRuntimeNodeIPAddressClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationRuntimeNodeIPAddressClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the IP address of an integration runtime node
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationRuntimeNodeIPAddressClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodeIPAddressGetOptions) (IntegrationRuntimeNodeIPAddressGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// integrationRuntimeName - Integration runtime name
+// nodeName - Integration runtime node name
+// options - IntegrationRuntimeNodeIPAddressClientGetOptions contains the optional parameters for the IntegrationRuntimeNodeIPAddressClient.Get
+// method.
+func (client *IntegrationRuntimeNodeIPAddressClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodeIPAddressClientGetOptions) (IntegrationRuntimeNodeIPAddressClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, nodeName, options)
 	if err != nil {
-		return IntegrationRuntimeNodeIPAddressGetResponse{}, err
+		return IntegrationRuntimeNodeIPAddressClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationRuntimeNodeIPAddressGetResponse{}, err
+		return IntegrationRuntimeNodeIPAddressClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationRuntimeNodeIPAddressGetResponse{}, client.getHandleError(resp)
+		return IntegrationRuntimeNodeIPAddressClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationRuntimeNodeIPAddressClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodeIPAddressGetOptions) (*policy.Request, error) {
+func (client *IntegrationRuntimeNodeIPAddressClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodeIPAddressClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *IntegrationRuntimeNodeIPAddressClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,23 +107,10 @@ func (client *IntegrationRuntimeNodeIPAddressClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationRuntimeNodeIPAddressClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeNodeIPAddressGetResponse, error) {
-	result := IntegrationRuntimeNodeIPAddressGetResponse{RawResponse: resp}
+func (client *IntegrationRuntimeNodeIPAddressClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeNodeIPAddressClientGetResponse, error) {
+	result := IntegrationRuntimeNodeIPAddressClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeNodeIPAddress); err != nil {
-		return IntegrationRuntimeNodeIPAddressGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationRuntimeNodeIPAddressClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *IntegrationRuntimeNodeIPAddressClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

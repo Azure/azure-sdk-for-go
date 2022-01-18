@@ -10,873 +10,873 @@ package armapplicationinsights
 
 import "net/http"
 
-// APIKeysCreateResponse contains the response from method APIKeys.Create.
-type APIKeysCreateResponse struct {
-	APIKeysCreateResult
+// APIKeysClientCreateResponse contains the response from method APIKeysClient.Create.
+type APIKeysClientCreateResponse struct {
+	APIKeysClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIKeysCreateResult contains the result from method APIKeys.Create.
-type APIKeysCreateResult struct {
-	ApplicationInsightsComponentAPIKey
+// APIKeysClientCreateResult contains the result from method APIKeysClient.Create.
+type APIKeysClientCreateResult struct {
+	ComponentAPIKey
 }
 
-// APIKeysDeleteResponse contains the response from method APIKeys.Delete.
-type APIKeysDeleteResponse struct {
-	APIKeysDeleteResult
+// APIKeysClientDeleteResponse contains the response from method APIKeysClient.Delete.
+type APIKeysClientDeleteResponse struct {
+	APIKeysClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIKeysDeleteResult contains the result from method APIKeys.Delete.
-type APIKeysDeleteResult struct {
-	ApplicationInsightsComponentAPIKey
+// APIKeysClientDeleteResult contains the result from method APIKeysClient.Delete.
+type APIKeysClientDeleteResult struct {
+	ComponentAPIKey
 }
 
-// APIKeysGetResponse contains the response from method APIKeys.Get.
-type APIKeysGetResponse struct {
-	APIKeysGetResult
+// APIKeysClientGetResponse contains the response from method APIKeysClient.Get.
+type APIKeysClientGetResponse struct {
+	APIKeysClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIKeysGetResult contains the result from method APIKeys.Get.
-type APIKeysGetResult struct {
-	ApplicationInsightsComponentAPIKey
+// APIKeysClientGetResult contains the result from method APIKeysClient.Get.
+type APIKeysClientGetResult struct {
+	ComponentAPIKey
 }
 
-// APIKeysListResponse contains the response from method APIKeys.List.
-type APIKeysListResponse struct {
-	APIKeysListResult
+// APIKeysClientListResponse contains the response from method APIKeysClient.List.
+type APIKeysClientListResponse struct {
+	APIKeysClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// APIKeysListResult contains the result from method APIKeys.List.
-type APIKeysListResult struct {
-	ApplicationInsightsComponentAPIKeyListResult
+// APIKeysClientListResult contains the result from method APIKeysClient.List.
+type APIKeysClientListResult struct {
+	ComponentAPIKeyListResult
 }
 
-// AnalyticsItemsDeleteResponse contains the response from method AnalyticsItems.Delete.
-type AnalyticsItemsDeleteResponse struct {
+// AnalyticsItemsClientDeleteResponse contains the response from method AnalyticsItemsClient.Delete.
+type AnalyticsItemsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnalyticsItemsGetResponse contains the response from method AnalyticsItems.Get.
-type AnalyticsItemsGetResponse struct {
-	AnalyticsItemsGetResult
+// AnalyticsItemsClientGetResponse contains the response from method AnalyticsItemsClient.Get.
+type AnalyticsItemsClientGetResponse struct {
+	AnalyticsItemsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnalyticsItemsGetResult contains the result from method AnalyticsItems.Get.
-type AnalyticsItemsGetResult struct {
-	ApplicationInsightsComponentAnalyticsItem
+// AnalyticsItemsClientGetResult contains the result from method AnalyticsItemsClient.Get.
+type AnalyticsItemsClientGetResult struct {
+	ComponentAnalyticsItem
 }
 
-// AnalyticsItemsListResponse contains the response from method AnalyticsItems.List.
-type AnalyticsItemsListResponse struct {
-	AnalyticsItemsListResult
+// AnalyticsItemsClientListResponse contains the response from method AnalyticsItemsClient.List.
+type AnalyticsItemsClientListResponse struct {
+	AnalyticsItemsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnalyticsItemsListResult contains the result from method AnalyticsItems.List.
-type AnalyticsItemsListResult struct {
+// AnalyticsItemsClientListResult contains the result from method AnalyticsItemsClient.List.
+type AnalyticsItemsClientListResult struct {
 	// Array of ApplicationInsightsComponentAnalyticsItem
-	ApplicationInsightsComponentAnalyticsItemArray []*ApplicationInsightsComponentAnalyticsItem
+	ComponentAnalyticsItemArray []*ComponentAnalyticsItem
 }
 
-// AnalyticsItemsPutResponse contains the response from method AnalyticsItems.Put.
-type AnalyticsItemsPutResponse struct {
-	AnalyticsItemsPutResult
+// AnalyticsItemsClientPutResponse contains the response from method AnalyticsItemsClient.Put.
+type AnalyticsItemsClientPutResponse struct {
+	AnalyticsItemsClientPutResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnalyticsItemsPutResult contains the result from method AnalyticsItems.Put.
-type AnalyticsItemsPutResult struct {
-	ApplicationInsightsComponentAnalyticsItem
+// AnalyticsItemsClientPutResult contains the result from method AnalyticsItemsClient.Put.
+type AnalyticsItemsClientPutResult struct {
+	ComponentAnalyticsItem
 }
 
-// AnnotationsCreateResponse contains the response from method Annotations.Create.
-type AnnotationsCreateResponse struct {
-	AnnotationsCreateResult
+// AnnotationsClientCreateResponse contains the response from method AnnotationsClient.Create.
+type AnnotationsClientCreateResponse struct {
+	AnnotationsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnnotationsCreateResult contains the result from method Annotations.Create.
-type AnnotationsCreateResult struct {
+// AnnotationsClientCreateResult contains the result from method AnnotationsClient.Create.
+type AnnotationsClientCreateResult struct {
 	// Array of Annotation
 	AnnotationArray []*Annotation
 }
 
-// AnnotationsDeleteResponse contains the response from method Annotations.Delete.
-type AnnotationsDeleteResponse struct {
+// AnnotationsClientDeleteResponse contains the response from method AnnotationsClient.Delete.
+type AnnotationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnnotationsGetResponse contains the response from method Annotations.Get.
-type AnnotationsGetResponse struct {
-	AnnotationsGetResult
+// AnnotationsClientGetResponse contains the response from method AnnotationsClient.Get.
+type AnnotationsClientGetResponse struct {
+	AnnotationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnnotationsGetResult contains the result from method Annotations.Get.
-type AnnotationsGetResult struct {
+// AnnotationsClientGetResult contains the result from method AnnotationsClient.Get.
+type AnnotationsClientGetResult struct {
 	// Array of Annotation
 	AnnotationArray []*Annotation
 }
 
-// AnnotationsListResponse contains the response from method Annotations.List.
-type AnnotationsListResponse struct {
-	AnnotationsListResultEnvelope
+// AnnotationsClientListResponse contains the response from method AnnotationsClient.List.
+type AnnotationsClientListResponse struct {
+	AnnotationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AnnotationsListResultEnvelope contains the result from method Annotations.List.
-type AnnotationsListResultEnvelope struct {
+// AnnotationsClientListResult contains the result from method AnnotationsClient.List.
+type AnnotationsClientListResult struct {
 	AnnotationsListResult
 }
 
-// ComponentAvailableFeaturesGetResponse contains the response from method ComponentAvailableFeatures.Get.
-type ComponentAvailableFeaturesGetResponse struct {
-	ComponentAvailableFeaturesGetResult
+// ComponentAvailableFeaturesClientGetResponse contains the response from method ComponentAvailableFeaturesClient.Get.
+type ComponentAvailableFeaturesClientGetResponse struct {
+	ComponentAvailableFeaturesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentAvailableFeaturesGetResult contains the result from method ComponentAvailableFeatures.Get.
-type ComponentAvailableFeaturesGetResult struct {
-	ApplicationInsightsComponentAvailableFeatures
+// ComponentAvailableFeaturesClientGetResult contains the result from method ComponentAvailableFeaturesClient.Get.
+type ComponentAvailableFeaturesClientGetResult struct {
+	ComponentAvailableFeatures
 }
 
-// ComponentCurrentBillingFeaturesGetResponse contains the response from method ComponentCurrentBillingFeatures.Get.
-type ComponentCurrentBillingFeaturesGetResponse struct {
-	ComponentCurrentBillingFeaturesGetResult
+// ComponentCurrentBillingFeaturesClientGetResponse contains the response from method ComponentCurrentBillingFeaturesClient.Get.
+type ComponentCurrentBillingFeaturesClientGetResponse struct {
+	ComponentCurrentBillingFeaturesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentCurrentBillingFeaturesGetResult contains the result from method ComponentCurrentBillingFeatures.Get.
-type ComponentCurrentBillingFeaturesGetResult struct {
-	ApplicationInsightsComponentBillingFeatures
+// ComponentCurrentBillingFeaturesClientGetResult contains the result from method ComponentCurrentBillingFeaturesClient.Get.
+type ComponentCurrentBillingFeaturesClientGetResult struct {
+	ComponentBillingFeatures
 }
 
-// ComponentCurrentBillingFeaturesUpdateResponse contains the response from method ComponentCurrentBillingFeatures.Update.
-type ComponentCurrentBillingFeaturesUpdateResponse struct {
-	ComponentCurrentBillingFeaturesUpdateResult
+// ComponentCurrentBillingFeaturesClientUpdateResponse contains the response from method ComponentCurrentBillingFeaturesClient.Update.
+type ComponentCurrentBillingFeaturesClientUpdateResponse struct {
+	ComponentCurrentBillingFeaturesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentCurrentBillingFeaturesUpdateResult contains the result from method ComponentCurrentBillingFeatures.Update.
-type ComponentCurrentBillingFeaturesUpdateResult struct {
-	ApplicationInsightsComponentBillingFeatures
+// ComponentCurrentBillingFeaturesClientUpdateResult contains the result from method ComponentCurrentBillingFeaturesClient.Update.
+type ComponentCurrentBillingFeaturesClientUpdateResult struct {
+	ComponentBillingFeatures
 }
 
-// ComponentFeatureCapabilitiesGetResponse contains the response from method ComponentFeatureCapabilities.Get.
-type ComponentFeatureCapabilitiesGetResponse struct {
-	ComponentFeatureCapabilitiesGetResult
+// ComponentFeatureCapabilitiesClientGetResponse contains the response from method ComponentFeatureCapabilitiesClient.Get.
+type ComponentFeatureCapabilitiesClientGetResponse struct {
+	ComponentFeatureCapabilitiesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentFeatureCapabilitiesGetResult contains the result from method ComponentFeatureCapabilities.Get.
-type ComponentFeatureCapabilitiesGetResult struct {
-	ApplicationInsightsComponentFeatureCapabilities
+// ComponentFeatureCapabilitiesClientGetResult contains the result from method ComponentFeatureCapabilitiesClient.Get.
+type ComponentFeatureCapabilitiesClientGetResult struct {
+	ComponentFeatureCapabilities
 }
 
-// ComponentLinkedStorageAccountsCreateAndUpdateResponse contains the response from method ComponentLinkedStorageAccounts.CreateAndUpdate.
-type ComponentLinkedStorageAccountsCreateAndUpdateResponse struct {
-	ComponentLinkedStorageAccountsCreateAndUpdateResult
+// ComponentLinkedStorageAccountsClientCreateAndUpdateResponse contains the response from method ComponentLinkedStorageAccountsClient.CreateAndUpdate.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateResponse struct {
+	ComponentLinkedStorageAccountsClientCreateAndUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentLinkedStorageAccountsCreateAndUpdateResult contains the result from method ComponentLinkedStorageAccounts.CreateAndUpdate.
-type ComponentLinkedStorageAccountsCreateAndUpdateResult struct {
+// ComponentLinkedStorageAccountsClientCreateAndUpdateResult contains the result from method ComponentLinkedStorageAccountsClient.CreateAndUpdate.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateResult struct {
 	ComponentLinkedStorageAccounts
 }
 
-// ComponentLinkedStorageAccountsDeleteResponse contains the response from method ComponentLinkedStorageAccounts.Delete.
-type ComponentLinkedStorageAccountsDeleteResponse struct {
+// ComponentLinkedStorageAccountsClientDeleteResponse contains the response from method ComponentLinkedStorageAccountsClient.Delete.
+type ComponentLinkedStorageAccountsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentLinkedStorageAccountsGetResponse contains the response from method ComponentLinkedStorageAccounts.Get.
-type ComponentLinkedStorageAccountsGetResponse struct {
-	ComponentLinkedStorageAccountsGetResult
+// ComponentLinkedStorageAccountsClientGetResponse contains the response from method ComponentLinkedStorageAccountsClient.Get.
+type ComponentLinkedStorageAccountsClientGetResponse struct {
+	ComponentLinkedStorageAccountsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentLinkedStorageAccountsGetResult contains the result from method ComponentLinkedStorageAccounts.Get.
-type ComponentLinkedStorageAccountsGetResult struct {
+// ComponentLinkedStorageAccountsClientGetResult contains the result from method ComponentLinkedStorageAccountsClient.Get.
+type ComponentLinkedStorageAccountsClientGetResult struct {
 	ComponentLinkedStorageAccounts
 }
 
-// ComponentLinkedStorageAccountsUpdateResponse contains the response from method ComponentLinkedStorageAccounts.Update.
-type ComponentLinkedStorageAccountsUpdateResponse struct {
-	ComponentLinkedStorageAccountsUpdateResult
+// ComponentLinkedStorageAccountsClientUpdateResponse contains the response from method ComponentLinkedStorageAccountsClient.Update.
+type ComponentLinkedStorageAccountsClientUpdateResponse struct {
+	ComponentLinkedStorageAccountsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentLinkedStorageAccountsUpdateResult contains the result from method ComponentLinkedStorageAccounts.Update.
-type ComponentLinkedStorageAccountsUpdateResult struct {
+// ComponentLinkedStorageAccountsClientUpdateResult contains the result from method ComponentLinkedStorageAccountsClient.Update.
+type ComponentLinkedStorageAccountsClientUpdateResult struct {
 	ComponentLinkedStorageAccounts
 }
 
-// ComponentQuotaStatusGetResponse contains the response from method ComponentQuotaStatus.Get.
-type ComponentQuotaStatusGetResponse struct {
-	ComponentQuotaStatusGetResult
+// ComponentQuotaStatusClientGetResponse contains the response from method ComponentQuotaStatusClient.Get.
+type ComponentQuotaStatusClientGetResponse struct {
+	ComponentQuotaStatusClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentQuotaStatusGetResult contains the result from method ComponentQuotaStatus.Get.
-type ComponentQuotaStatusGetResult struct {
-	ApplicationInsightsComponentQuotaStatus
+// ComponentQuotaStatusClientGetResult contains the result from method ComponentQuotaStatusClient.Get.
+type ComponentQuotaStatusClientGetResult struct {
+	ComponentQuotaStatus
 }
 
-// ComponentsCreateOrUpdateResponse contains the response from method Components.CreateOrUpdate.
-type ComponentsCreateOrUpdateResponse struct {
-	ComponentsCreateOrUpdateResult
+// ComponentsClientCreateOrUpdateResponse contains the response from method ComponentsClient.CreateOrUpdate.
+type ComponentsClientCreateOrUpdateResponse struct {
+	ComponentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsCreateOrUpdateResult contains the result from method Components.CreateOrUpdate.
-type ComponentsCreateOrUpdateResult struct {
-	ApplicationInsightsComponent
+// ComponentsClientCreateOrUpdateResult contains the result from method ComponentsClient.CreateOrUpdate.
+type ComponentsClientCreateOrUpdateResult struct {
+	Component
 }
 
-// ComponentsDeleteResponse contains the response from method Components.Delete.
-type ComponentsDeleteResponse struct {
+// ComponentsClientDeleteResponse contains the response from method ComponentsClient.Delete.
+type ComponentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsGetPurgeStatusResponse contains the response from method Components.GetPurgeStatus.
-type ComponentsGetPurgeStatusResponse struct {
-	ComponentsGetPurgeStatusResult
+// ComponentsClientGetPurgeStatusResponse contains the response from method ComponentsClient.GetPurgeStatus.
+type ComponentsClientGetPurgeStatusResponse struct {
+	ComponentsClientGetPurgeStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsGetPurgeStatusResult contains the result from method Components.GetPurgeStatus.
-type ComponentsGetPurgeStatusResult struct {
+// ComponentsClientGetPurgeStatusResult contains the result from method ComponentsClient.GetPurgeStatus.
+type ComponentsClientGetPurgeStatusResult struct {
 	ComponentPurgeStatusResponse
 }
 
-// ComponentsGetResponse contains the response from method Components.Get.
-type ComponentsGetResponse struct {
-	ComponentsGetResult
+// ComponentsClientGetResponse contains the response from method ComponentsClient.Get.
+type ComponentsClientGetResponse struct {
+	ComponentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsGetResult contains the result from method Components.Get.
-type ComponentsGetResult struct {
-	ApplicationInsightsComponent
+// ComponentsClientGetResult contains the result from method ComponentsClient.Get.
+type ComponentsClientGetResult struct {
+	Component
 }
 
-// ComponentsListByResourceGroupResponse contains the response from method Components.ListByResourceGroup.
-type ComponentsListByResourceGroupResponse struct {
-	ComponentsListByResourceGroupResult
+// ComponentsClientListByResourceGroupResponse contains the response from method ComponentsClient.ListByResourceGroup.
+type ComponentsClientListByResourceGroupResponse struct {
+	ComponentsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsListByResourceGroupResult contains the result from method Components.ListByResourceGroup.
-type ComponentsListByResourceGroupResult struct {
-	ApplicationInsightsComponentListResult
+// ComponentsClientListByResourceGroupResult contains the result from method ComponentsClient.ListByResourceGroup.
+type ComponentsClientListByResourceGroupResult struct {
+	ComponentListResult
 }
 
-// ComponentsListResponse contains the response from method Components.List.
-type ComponentsListResponse struct {
-	ComponentsListResult
+// ComponentsClientListResponse contains the response from method ComponentsClient.List.
+type ComponentsClientListResponse struct {
+	ComponentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsListResult contains the result from method Components.List.
-type ComponentsListResult struct {
-	ApplicationInsightsComponentListResult
+// ComponentsClientListResult contains the result from method ComponentsClient.List.
+type ComponentsClientListResult struct {
+	ComponentListResult
 }
 
-// ComponentsPurgeResponse contains the response from method Components.Purge.
-type ComponentsPurgeResponse struct {
-	ComponentsPurgeResult
+// ComponentsClientPurgeResponse contains the response from method ComponentsClient.Purge.
+type ComponentsClientPurgeResponse struct {
+	ComponentsClientPurgeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsPurgeResult contains the result from method Components.Purge.
-type ComponentsPurgeResult struct {
+// ComponentsClientPurgeResult contains the result from method ComponentsClient.Purge.
+type ComponentsClientPurgeResult struct {
 	ComponentPurgeResponse
 }
 
-// ComponentsUpdateTagsResponse contains the response from method Components.UpdateTags.
-type ComponentsUpdateTagsResponse struct {
-	ComponentsUpdateTagsResult
+// ComponentsClientUpdateTagsResponse contains the response from method ComponentsClient.UpdateTags.
+type ComponentsClientUpdateTagsResponse struct {
+	ComponentsClientUpdateTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ComponentsUpdateTagsResult contains the result from method Components.UpdateTags.
-type ComponentsUpdateTagsResult struct {
-	ApplicationInsightsComponent
+// ComponentsClientUpdateTagsResult contains the result from method ComponentsClient.UpdateTags.
+type ComponentsClientUpdateTagsResult struct {
+	Component
 }
 
-// ExportConfigurationsCreateResponse contains the response from method ExportConfigurations.Create.
-type ExportConfigurationsCreateResponse struct {
-	ExportConfigurationsCreateResult
+// ExportConfigurationsClientCreateResponse contains the response from method ExportConfigurationsClient.Create.
+type ExportConfigurationsClientCreateResponse struct {
+	ExportConfigurationsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportConfigurationsCreateResult contains the result from method ExportConfigurations.Create.
-type ExportConfigurationsCreateResult struct {
+// ExportConfigurationsClientCreateResult contains the result from method ExportConfigurationsClient.Create.
+type ExportConfigurationsClientCreateResult struct {
 	// A list of Continuous Export configurations.
-	ApplicationInsightsComponentExportConfigurationArray []*ApplicationInsightsComponentExportConfiguration
+	ComponentExportConfigurationArray []*ComponentExportConfiguration
 }
 
-// ExportConfigurationsDeleteResponse contains the response from method ExportConfigurations.Delete.
-type ExportConfigurationsDeleteResponse struct {
-	ExportConfigurationsDeleteResult
+// ExportConfigurationsClientDeleteResponse contains the response from method ExportConfigurationsClient.Delete.
+type ExportConfigurationsClientDeleteResponse struct {
+	ExportConfigurationsClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportConfigurationsDeleteResult contains the result from method ExportConfigurations.Delete.
-type ExportConfigurationsDeleteResult struct {
-	ApplicationInsightsComponentExportConfiguration
+// ExportConfigurationsClientDeleteResult contains the result from method ExportConfigurationsClient.Delete.
+type ExportConfigurationsClientDeleteResult struct {
+	ComponentExportConfiguration
 }
 
-// ExportConfigurationsGetResponse contains the response from method ExportConfigurations.Get.
-type ExportConfigurationsGetResponse struct {
-	ExportConfigurationsGetResult
+// ExportConfigurationsClientGetResponse contains the response from method ExportConfigurationsClient.Get.
+type ExportConfigurationsClientGetResponse struct {
+	ExportConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportConfigurationsGetResult contains the result from method ExportConfigurations.Get.
-type ExportConfigurationsGetResult struct {
-	ApplicationInsightsComponentExportConfiguration
+// ExportConfigurationsClientGetResult contains the result from method ExportConfigurationsClient.Get.
+type ExportConfigurationsClientGetResult struct {
+	ComponentExportConfiguration
 }
 
-// ExportConfigurationsListResponse contains the response from method ExportConfigurations.List.
-type ExportConfigurationsListResponse struct {
-	ExportConfigurationsListResult
+// ExportConfigurationsClientListResponse contains the response from method ExportConfigurationsClient.List.
+type ExportConfigurationsClientListResponse struct {
+	ExportConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportConfigurationsListResult contains the result from method ExportConfigurations.List.
-type ExportConfigurationsListResult struct {
+// ExportConfigurationsClientListResult contains the result from method ExportConfigurationsClient.List.
+type ExportConfigurationsClientListResult struct {
 	// A list of Continuous Export configurations.
-	ApplicationInsightsComponentExportConfigurationArray []*ApplicationInsightsComponentExportConfiguration
+	ComponentExportConfigurationArray []*ComponentExportConfiguration
 }
 
-// ExportConfigurationsUpdateResponse contains the response from method ExportConfigurations.Update.
-type ExportConfigurationsUpdateResponse struct {
-	ExportConfigurationsUpdateResult
+// ExportConfigurationsClientUpdateResponse contains the response from method ExportConfigurationsClient.Update.
+type ExportConfigurationsClientUpdateResponse struct {
+	ExportConfigurationsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportConfigurationsUpdateResult contains the result from method ExportConfigurations.Update.
-type ExportConfigurationsUpdateResult struct {
-	ApplicationInsightsComponentExportConfiguration
+// ExportConfigurationsClientUpdateResult contains the result from method ExportConfigurationsClient.Update.
+type ExportConfigurationsClientUpdateResult struct {
+	ComponentExportConfiguration
 }
 
-// FavoritesAddResponse contains the response from method Favorites.Add.
-type FavoritesAddResponse struct {
-	FavoritesAddResult
+// FavoritesClientAddResponse contains the response from method FavoritesClient.Add.
+type FavoritesClientAddResponse struct {
+	FavoritesClientAddResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FavoritesAddResult contains the result from method Favorites.Add.
-type FavoritesAddResult struct {
-	ApplicationInsightsComponentFavorite
+// FavoritesClientAddResult contains the result from method FavoritesClient.Add.
+type FavoritesClientAddResult struct {
+	ComponentFavorite
 }
 
-// FavoritesDeleteResponse contains the response from method Favorites.Delete.
-type FavoritesDeleteResponse struct {
+// FavoritesClientDeleteResponse contains the response from method FavoritesClient.Delete.
+type FavoritesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FavoritesGetResponse contains the response from method Favorites.Get.
-type FavoritesGetResponse struct {
-	FavoritesGetResult
+// FavoritesClientGetResponse contains the response from method FavoritesClient.Get.
+type FavoritesClientGetResponse struct {
+	FavoritesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FavoritesGetResult contains the result from method Favorites.Get.
-type FavoritesGetResult struct {
-	ApplicationInsightsComponentFavorite
+// FavoritesClientGetResult contains the result from method FavoritesClient.Get.
+type FavoritesClientGetResult struct {
+	ComponentFavorite
 }
 
-// FavoritesListResponse contains the response from method Favorites.List.
-type FavoritesListResponse struct {
-	FavoritesListResult
+// FavoritesClientListResponse contains the response from method FavoritesClient.List.
+type FavoritesClientListResponse struct {
+	FavoritesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FavoritesListResult contains the result from method Favorites.List.
-type FavoritesListResult struct {
+// FavoritesClientListResult contains the result from method FavoritesClient.List.
+type FavoritesClientListResult struct {
 	// Array of ApplicationInsightsComponentFavorite
-	ApplicationInsightsComponentFavoriteArray []*ApplicationInsightsComponentFavorite
+	ComponentFavoriteArray []*ComponentFavorite
 }
 
-// FavoritesUpdateResponse contains the response from method Favorites.Update.
-type FavoritesUpdateResponse struct {
-	FavoritesUpdateResult
+// FavoritesClientUpdateResponse contains the response from method FavoritesClient.Update.
+type FavoritesClientUpdateResponse struct {
+	FavoritesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// FavoritesUpdateResult contains the result from method Favorites.Update.
-type FavoritesUpdateResult struct {
-	ApplicationInsightsComponentFavorite
+// FavoritesClientUpdateResult contains the result from method FavoritesClient.Update.
+type FavoritesClientUpdateResult struct {
+	ComponentFavorite
 }
 
-// LiveTokenGetResponse contains the response from method LiveToken.Get.
-type LiveTokenGetResponse struct {
-	LiveTokenGetResult
+// LiveTokenClientGetResponse contains the response from method LiveTokenClient.Get.
+type LiveTokenClientGetResponse struct {
+	LiveTokenClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LiveTokenGetResult contains the result from method LiveToken.Get.
-type LiveTokenGetResult struct {
+// LiveTokenClientGetResult contains the result from method LiveTokenClient.Get.
+type LiveTokenClientGetResult struct {
 	LiveTokenResponse
 }
 
-// MyWorkbooksCreateOrUpdateResponse contains the response from method MyWorkbooks.CreateOrUpdate.
-type MyWorkbooksCreateOrUpdateResponse struct {
-	MyWorkbooksCreateOrUpdateResult
+// MyWorkbooksClientCreateOrUpdateResponse contains the response from method MyWorkbooksClient.CreateOrUpdate.
+type MyWorkbooksClientCreateOrUpdateResponse struct {
+	MyWorkbooksClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MyWorkbooksCreateOrUpdateResult contains the result from method MyWorkbooks.CreateOrUpdate.
-type MyWorkbooksCreateOrUpdateResult struct {
+// MyWorkbooksClientCreateOrUpdateResult contains the result from method MyWorkbooksClient.CreateOrUpdate.
+type MyWorkbooksClientCreateOrUpdateResult struct {
 	MyWorkbook
 }
 
-// MyWorkbooksDeleteResponse contains the response from method MyWorkbooks.Delete.
-type MyWorkbooksDeleteResponse struct {
+// MyWorkbooksClientDeleteResponse contains the response from method MyWorkbooksClient.Delete.
+type MyWorkbooksClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MyWorkbooksGetResponse contains the response from method MyWorkbooks.Get.
-type MyWorkbooksGetResponse struct {
-	MyWorkbooksGetResult
+// MyWorkbooksClientGetResponse contains the response from method MyWorkbooksClient.Get.
+type MyWorkbooksClientGetResponse struct {
+	MyWorkbooksClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MyWorkbooksGetResult contains the result from method MyWorkbooks.Get.
-type MyWorkbooksGetResult struct {
+// MyWorkbooksClientGetResult contains the result from method MyWorkbooksClient.Get.
+type MyWorkbooksClientGetResult struct {
 	MyWorkbook
 }
 
-// MyWorkbooksListByResourceGroupResponse contains the response from method MyWorkbooks.ListByResourceGroup.
-type MyWorkbooksListByResourceGroupResponse struct {
-	MyWorkbooksListByResourceGroupResult
+// MyWorkbooksClientListByResourceGroupResponse contains the response from method MyWorkbooksClient.ListByResourceGroup.
+type MyWorkbooksClientListByResourceGroupResponse struct {
+	MyWorkbooksClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MyWorkbooksListByResourceGroupResult contains the result from method MyWorkbooks.ListByResourceGroup.
-type MyWorkbooksListByResourceGroupResult struct {
+// MyWorkbooksClientListByResourceGroupResult contains the result from method MyWorkbooksClient.ListByResourceGroup.
+type MyWorkbooksClientListByResourceGroupResult struct {
 	MyWorkbooksListResult
 }
 
-// MyWorkbooksListBySubscriptionResponse contains the response from method MyWorkbooks.ListBySubscription.
-type MyWorkbooksListBySubscriptionResponse struct {
-	MyWorkbooksListBySubscriptionResult
+// MyWorkbooksClientListBySubscriptionResponse contains the response from method MyWorkbooksClient.ListBySubscription.
+type MyWorkbooksClientListBySubscriptionResponse struct {
+	MyWorkbooksClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MyWorkbooksListBySubscriptionResult contains the result from method MyWorkbooks.ListBySubscription.
-type MyWorkbooksListBySubscriptionResult struct {
+// MyWorkbooksClientListBySubscriptionResult contains the result from method MyWorkbooksClient.ListBySubscription.
+type MyWorkbooksClientListBySubscriptionResult struct {
 	MyWorkbooksListResult
 }
 
-// MyWorkbooksUpdateResponse contains the response from method MyWorkbooks.Update.
-type MyWorkbooksUpdateResponse struct {
-	MyWorkbooksUpdateResult
+// MyWorkbooksClientUpdateResponse contains the response from method MyWorkbooksClient.Update.
+type MyWorkbooksClientUpdateResponse struct {
+	MyWorkbooksClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MyWorkbooksUpdateResult contains the result from method MyWorkbooks.Update.
-type MyWorkbooksUpdateResult struct {
+// MyWorkbooksClientUpdateResult contains the result from method MyWorkbooksClient.Update.
+type MyWorkbooksClientUpdateResult struct {
 	MyWorkbook
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResultEnvelope
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResultEnvelope contains the result from method Operations.List.
-type OperationsListResultEnvelope struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationsListResult
 }
 
-// ProactiveDetectionConfigurationsGetResponse contains the response from method ProactiveDetectionConfigurations.Get.
-type ProactiveDetectionConfigurationsGetResponse struct {
-	ProactiveDetectionConfigurationsGetResult
+// ProactiveDetectionConfigurationsClientGetResponse contains the response from method ProactiveDetectionConfigurationsClient.Get.
+type ProactiveDetectionConfigurationsClientGetResponse struct {
+	ProactiveDetectionConfigurationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProactiveDetectionConfigurationsGetResult contains the result from method ProactiveDetectionConfigurations.Get.
-type ProactiveDetectionConfigurationsGetResult struct {
-	ApplicationInsightsComponentProactiveDetectionConfiguration
+// ProactiveDetectionConfigurationsClientGetResult contains the result from method ProactiveDetectionConfigurationsClient.Get.
+type ProactiveDetectionConfigurationsClientGetResult struct {
+	ComponentProactiveDetectionConfiguration
 }
 
-// ProactiveDetectionConfigurationsListResponse contains the response from method ProactiveDetectionConfigurations.List.
-type ProactiveDetectionConfigurationsListResponse struct {
-	ProactiveDetectionConfigurationsListResult
+// ProactiveDetectionConfigurationsClientListResponse contains the response from method ProactiveDetectionConfigurationsClient.List.
+type ProactiveDetectionConfigurationsClientListResponse struct {
+	ProactiveDetectionConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProactiveDetectionConfigurationsListResult contains the result from method ProactiveDetectionConfigurations.List.
-type ProactiveDetectionConfigurationsListResult struct {
+// ProactiveDetectionConfigurationsClientListResult contains the result from method ProactiveDetectionConfigurationsClient.List.
+type ProactiveDetectionConfigurationsClientListResult struct {
 	// A list of ProactiveDetection configurations.
-	ApplicationInsightsComponentProactiveDetectionConfigurationArray []*ApplicationInsightsComponentProactiveDetectionConfiguration
+	ComponentProactiveDetectionConfigurationArray []*ComponentProactiveDetectionConfiguration
 }
 
-// ProactiveDetectionConfigurationsUpdateResponse contains the response from method ProactiveDetectionConfigurations.Update.
-type ProactiveDetectionConfigurationsUpdateResponse struct {
-	ProactiveDetectionConfigurationsUpdateResult
+// ProactiveDetectionConfigurationsClientUpdateResponse contains the response from method ProactiveDetectionConfigurationsClient.Update.
+type ProactiveDetectionConfigurationsClientUpdateResponse struct {
+	ProactiveDetectionConfigurationsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ProactiveDetectionConfigurationsUpdateResult contains the result from method ProactiveDetectionConfigurations.Update.
-type ProactiveDetectionConfigurationsUpdateResult struct {
-	ApplicationInsightsComponentProactiveDetectionConfiguration
+// ProactiveDetectionConfigurationsClientUpdateResult contains the result from method ProactiveDetectionConfigurationsClient.Update.
+type ProactiveDetectionConfigurationsClientUpdateResult struct {
+	ComponentProactiveDetectionConfiguration
 }
 
-// WebTestLocationsListResponse contains the response from method WebTestLocations.List.
-type WebTestLocationsListResponse struct {
+// WebTestLocationsClientListResponse contains the response from method WebTestLocationsClient.List.
+type WebTestLocationsClientListResponse struct {
+	WebTestLocationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// WebTestLocationsClientListResult contains the result from method WebTestLocationsClient.List.
+type WebTestLocationsClientListResult struct {
 	WebTestLocationsListResult
+}
+
+// WebTestsClientCreateOrUpdateResponse contains the response from method WebTestsClient.CreateOrUpdate.
+type WebTestsClientCreateOrUpdateResponse struct {
+	WebTestsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestLocationsListResult contains the result from method WebTestLocations.List.
-type WebTestLocationsListResult struct {
-	ApplicationInsightsWebTestLocationsListResult
-}
-
-// WebTestsCreateOrUpdateResponse contains the response from method WebTests.CreateOrUpdate.
-type WebTestsCreateOrUpdateResponse struct {
-	WebTestsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WebTestsCreateOrUpdateResult contains the result from method WebTests.CreateOrUpdate.
-type WebTestsCreateOrUpdateResult struct {
+// WebTestsClientCreateOrUpdateResult contains the result from method WebTestsClient.CreateOrUpdate.
+type WebTestsClientCreateOrUpdateResult struct {
 	WebTest
 }
 
-// WebTestsDeleteResponse contains the response from method WebTests.Delete.
-type WebTestsDeleteResponse struct {
+// WebTestsClientDeleteResponse contains the response from method WebTestsClient.Delete.
+type WebTestsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestsGetResponse contains the response from method WebTests.Get.
-type WebTestsGetResponse struct {
-	WebTestsGetResult
+// WebTestsClientGetResponse contains the response from method WebTestsClient.Get.
+type WebTestsClientGetResponse struct {
+	WebTestsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestsGetResult contains the result from method WebTests.Get.
-type WebTestsGetResult struct {
+// WebTestsClientGetResult contains the result from method WebTestsClient.Get.
+type WebTestsClientGetResult struct {
 	WebTest
 }
 
-// WebTestsListByComponentResponse contains the response from method WebTests.ListByComponent.
-type WebTestsListByComponentResponse struct {
-	WebTestsListByComponentResult
+// WebTestsClientListByComponentResponse contains the response from method WebTestsClient.ListByComponent.
+type WebTestsClientListByComponentResponse struct {
+	WebTestsClientListByComponentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestsListByComponentResult contains the result from method WebTests.ListByComponent.
-type WebTestsListByComponentResult struct {
+// WebTestsClientListByComponentResult contains the result from method WebTestsClient.ListByComponent.
+type WebTestsClientListByComponentResult struct {
 	WebTestListResult
 }
 
-// WebTestsListByResourceGroupResponse contains the response from method WebTests.ListByResourceGroup.
-type WebTestsListByResourceGroupResponse struct {
-	WebTestsListByResourceGroupResult
+// WebTestsClientListByResourceGroupResponse contains the response from method WebTestsClient.ListByResourceGroup.
+type WebTestsClientListByResourceGroupResponse struct {
+	WebTestsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestsListByResourceGroupResult contains the result from method WebTests.ListByResourceGroup.
-type WebTestsListByResourceGroupResult struct {
+// WebTestsClientListByResourceGroupResult contains the result from method WebTestsClient.ListByResourceGroup.
+type WebTestsClientListByResourceGroupResult struct {
 	WebTestListResult
 }
 
-// WebTestsListResponse contains the response from method WebTests.List.
-type WebTestsListResponse struct {
-	WebTestsListResult
+// WebTestsClientListResponse contains the response from method WebTestsClient.List.
+type WebTestsClientListResponse struct {
+	WebTestsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestsListResult contains the result from method WebTests.List.
-type WebTestsListResult struct {
+// WebTestsClientListResult contains the result from method WebTestsClient.List.
+type WebTestsClientListResult struct {
 	WebTestListResult
 }
 
-// WebTestsUpdateTagsResponse contains the response from method WebTests.UpdateTags.
-type WebTestsUpdateTagsResponse struct {
-	WebTestsUpdateTagsResult
+// WebTestsClientUpdateTagsResponse contains the response from method WebTestsClient.UpdateTags.
+type WebTestsClientUpdateTagsResponse struct {
+	WebTestsClientUpdateTagsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebTestsUpdateTagsResult contains the result from method WebTests.UpdateTags.
-type WebTestsUpdateTagsResult struct {
+// WebTestsClientUpdateTagsResult contains the result from method WebTestsClient.UpdateTags.
+type WebTestsClientUpdateTagsResult struct {
 	WebTest
 }
 
-// WorkItemConfigurationsCreateResponse contains the response from method WorkItemConfigurations.Create.
-type WorkItemConfigurationsCreateResponse struct {
-	WorkItemConfigurationsCreateResult
+// WorkItemConfigurationsClientCreateResponse contains the response from method WorkItemConfigurationsClient.Create.
+type WorkItemConfigurationsClientCreateResponse struct {
+	WorkItemConfigurationsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkItemConfigurationsCreateResult contains the result from method WorkItemConfigurations.Create.
-type WorkItemConfigurationsCreateResult struct {
+// WorkItemConfigurationsClientCreateResult contains the result from method WorkItemConfigurationsClient.Create.
+type WorkItemConfigurationsClientCreateResult struct {
 	WorkItemConfiguration
 }
 
-// WorkItemConfigurationsDeleteResponse contains the response from method WorkItemConfigurations.Delete.
-type WorkItemConfigurationsDeleteResponse struct {
+// WorkItemConfigurationsClientDeleteResponse contains the response from method WorkItemConfigurationsClient.Delete.
+type WorkItemConfigurationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkItemConfigurationsGetDefaultResponse contains the response from method WorkItemConfigurations.GetDefault.
-type WorkItemConfigurationsGetDefaultResponse struct {
-	WorkItemConfigurationsGetDefaultResult
+// WorkItemConfigurationsClientGetDefaultResponse contains the response from method WorkItemConfigurationsClient.GetDefault.
+type WorkItemConfigurationsClientGetDefaultResponse struct {
+	WorkItemConfigurationsClientGetDefaultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkItemConfigurationsGetDefaultResult contains the result from method WorkItemConfigurations.GetDefault.
-type WorkItemConfigurationsGetDefaultResult struct {
+// WorkItemConfigurationsClientGetDefaultResult contains the result from method WorkItemConfigurationsClient.GetDefault.
+type WorkItemConfigurationsClientGetDefaultResult struct {
 	WorkItemConfiguration
 }
 
-// WorkItemConfigurationsGetItemResponse contains the response from method WorkItemConfigurations.GetItem.
-type WorkItemConfigurationsGetItemResponse struct {
-	WorkItemConfigurationsGetItemResult
+// WorkItemConfigurationsClientGetItemResponse contains the response from method WorkItemConfigurationsClient.GetItem.
+type WorkItemConfigurationsClientGetItemResponse struct {
+	WorkItemConfigurationsClientGetItemResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkItemConfigurationsGetItemResult contains the result from method WorkItemConfigurations.GetItem.
-type WorkItemConfigurationsGetItemResult struct {
+// WorkItemConfigurationsClientGetItemResult contains the result from method WorkItemConfigurationsClient.GetItem.
+type WorkItemConfigurationsClientGetItemResult struct {
 	WorkItemConfiguration
 }
 
-// WorkItemConfigurationsListResponse contains the response from method WorkItemConfigurations.List.
-type WorkItemConfigurationsListResponse struct {
-	WorkItemConfigurationsListResultEnvelope
+// WorkItemConfigurationsClientListResponse contains the response from method WorkItemConfigurationsClient.List.
+type WorkItemConfigurationsClientListResponse struct {
+	WorkItemConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkItemConfigurationsListResultEnvelope contains the result from method WorkItemConfigurations.List.
-type WorkItemConfigurationsListResultEnvelope struct {
+// WorkItemConfigurationsClientListResult contains the result from method WorkItemConfigurationsClient.List.
+type WorkItemConfigurationsClientListResult struct {
 	WorkItemConfigurationsListResult
 }
 
-// WorkItemConfigurationsUpdateItemResponse contains the response from method WorkItemConfigurations.UpdateItem.
-type WorkItemConfigurationsUpdateItemResponse struct {
-	WorkItemConfigurationsUpdateItemResult
+// WorkItemConfigurationsClientUpdateItemResponse contains the response from method WorkItemConfigurationsClient.UpdateItem.
+type WorkItemConfigurationsClientUpdateItemResponse struct {
+	WorkItemConfigurationsClientUpdateItemResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkItemConfigurationsUpdateItemResult contains the result from method WorkItemConfigurations.UpdateItem.
-type WorkItemConfigurationsUpdateItemResult struct {
+// WorkItemConfigurationsClientUpdateItemResult contains the result from method WorkItemConfigurationsClient.UpdateItem.
+type WorkItemConfigurationsClientUpdateItemResult struct {
 	WorkItemConfiguration
 }
 
-// WorkbookTemplatesCreateOrUpdateResponse contains the response from method WorkbookTemplates.CreateOrUpdate.
-type WorkbookTemplatesCreateOrUpdateResponse struct {
-	WorkbookTemplatesCreateOrUpdateResult
+// WorkbookTemplatesClientCreateOrUpdateResponse contains the response from method WorkbookTemplatesClient.CreateOrUpdate.
+type WorkbookTemplatesClientCreateOrUpdateResponse struct {
+	WorkbookTemplatesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbookTemplatesCreateOrUpdateResult contains the result from method WorkbookTemplates.CreateOrUpdate.
-type WorkbookTemplatesCreateOrUpdateResult struct {
+// WorkbookTemplatesClientCreateOrUpdateResult contains the result from method WorkbookTemplatesClient.CreateOrUpdate.
+type WorkbookTemplatesClientCreateOrUpdateResult struct {
 	WorkbookTemplate
 }
 
-// WorkbookTemplatesDeleteResponse contains the response from method WorkbookTemplates.Delete.
-type WorkbookTemplatesDeleteResponse struct {
+// WorkbookTemplatesClientDeleteResponse contains the response from method WorkbookTemplatesClient.Delete.
+type WorkbookTemplatesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbookTemplatesGetResponse contains the response from method WorkbookTemplates.Get.
-type WorkbookTemplatesGetResponse struct {
-	WorkbookTemplatesGetResult
+// WorkbookTemplatesClientGetResponse contains the response from method WorkbookTemplatesClient.Get.
+type WorkbookTemplatesClientGetResponse struct {
+	WorkbookTemplatesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbookTemplatesGetResult contains the result from method WorkbookTemplates.Get.
-type WorkbookTemplatesGetResult struct {
+// WorkbookTemplatesClientGetResult contains the result from method WorkbookTemplatesClient.Get.
+type WorkbookTemplatesClientGetResult struct {
 	WorkbookTemplate
 }
 
-// WorkbookTemplatesListByResourceGroupResponse contains the response from method WorkbookTemplates.ListByResourceGroup.
-type WorkbookTemplatesListByResourceGroupResponse struct {
-	WorkbookTemplatesListByResourceGroupResult
+// WorkbookTemplatesClientListByResourceGroupResponse contains the response from method WorkbookTemplatesClient.ListByResourceGroup.
+type WorkbookTemplatesClientListByResourceGroupResponse struct {
+	WorkbookTemplatesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbookTemplatesListByResourceGroupResult contains the result from method WorkbookTemplates.ListByResourceGroup.
-type WorkbookTemplatesListByResourceGroupResult struct {
+// WorkbookTemplatesClientListByResourceGroupResult contains the result from method WorkbookTemplatesClient.ListByResourceGroup.
+type WorkbookTemplatesClientListByResourceGroupResult struct {
 	WorkbookTemplatesListResult
 }
 
-// WorkbookTemplatesUpdateResponse contains the response from method WorkbookTemplates.Update.
-type WorkbookTemplatesUpdateResponse struct {
-	WorkbookTemplatesUpdateResult
+// WorkbookTemplatesClientUpdateResponse contains the response from method WorkbookTemplatesClient.Update.
+type WorkbookTemplatesClientUpdateResponse struct {
+	WorkbookTemplatesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbookTemplatesUpdateResult contains the result from method WorkbookTemplates.Update.
-type WorkbookTemplatesUpdateResult struct {
+// WorkbookTemplatesClientUpdateResult contains the result from method WorkbookTemplatesClient.Update.
+type WorkbookTemplatesClientUpdateResult struct {
 	WorkbookTemplate
 }
 
-// WorkbooksCreateOrUpdateResponse contains the response from method Workbooks.CreateOrUpdate.
-type WorkbooksCreateOrUpdateResponse struct {
-	WorkbooksCreateOrUpdateResult
+// WorkbooksClientCreateOrUpdateResponse contains the response from method WorkbooksClient.CreateOrUpdate.
+type WorkbooksClientCreateOrUpdateResponse struct {
+	WorkbooksClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksCreateOrUpdateResult contains the result from method Workbooks.CreateOrUpdate.
-type WorkbooksCreateOrUpdateResult struct {
+// WorkbooksClientCreateOrUpdateResult contains the result from method WorkbooksClient.CreateOrUpdate.
+type WorkbooksClientCreateOrUpdateResult struct {
 	Workbook
 }
 
-// WorkbooksDeleteResponse contains the response from method Workbooks.Delete.
-type WorkbooksDeleteResponse struct {
+// WorkbooksClientDeleteResponse contains the response from method WorkbooksClient.Delete.
+type WorkbooksClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksGetResponse contains the response from method Workbooks.Get.
-type WorkbooksGetResponse struct {
-	WorkbooksGetResult
+// WorkbooksClientGetResponse contains the response from method WorkbooksClient.Get.
+type WorkbooksClientGetResponse struct {
+	WorkbooksClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksGetResult contains the result from method Workbooks.Get.
-type WorkbooksGetResult struct {
+// WorkbooksClientGetResult contains the result from method WorkbooksClient.Get.
+type WorkbooksClientGetResult struct {
 	Workbook
 }
 
-// WorkbooksListByResourceGroupResponse contains the response from method Workbooks.ListByResourceGroup.
-type WorkbooksListByResourceGroupResponse struct {
-	WorkbooksListByResourceGroupResult
+// WorkbooksClientListByResourceGroupResponse contains the response from method WorkbooksClient.ListByResourceGroup.
+type WorkbooksClientListByResourceGroupResponse struct {
+	WorkbooksClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksListByResourceGroupResult contains the result from method Workbooks.ListByResourceGroup.
-type WorkbooksListByResourceGroupResult struct {
+// WorkbooksClientListByResourceGroupResult contains the result from method WorkbooksClient.ListByResourceGroup.
+type WorkbooksClientListByResourceGroupResult struct {
 	WorkbooksListResult
 }
 
-// WorkbooksListBySubscriptionResponse contains the response from method Workbooks.ListBySubscription.
-type WorkbooksListBySubscriptionResponse struct {
-	WorkbooksListBySubscriptionResult
+// WorkbooksClientListBySubscriptionResponse contains the response from method WorkbooksClient.ListBySubscription.
+type WorkbooksClientListBySubscriptionResponse struct {
+	WorkbooksClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksListBySubscriptionResult contains the result from method Workbooks.ListBySubscription.
-type WorkbooksListBySubscriptionResult struct {
+// WorkbooksClientListBySubscriptionResult contains the result from method WorkbooksClient.ListBySubscription.
+type WorkbooksClientListBySubscriptionResult struct {
 	WorkbooksListResult
 }
 
-// WorkbooksRevisionGetResponse contains the response from method Workbooks.RevisionGet.
-type WorkbooksRevisionGetResponse struct {
-	WorkbooksRevisionGetResult
+// WorkbooksClientRevisionGetResponse contains the response from method WorkbooksClient.RevisionGet.
+type WorkbooksClientRevisionGetResponse struct {
+	WorkbooksClientRevisionGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksRevisionGetResult contains the result from method Workbooks.RevisionGet.
-type WorkbooksRevisionGetResult struct {
+// WorkbooksClientRevisionGetResult contains the result from method WorkbooksClient.RevisionGet.
+type WorkbooksClientRevisionGetResult struct {
 	Workbook
 }
 
-// WorkbooksRevisionsListResponse contains the response from method Workbooks.RevisionsList.
-type WorkbooksRevisionsListResponse struct {
-	WorkbooksRevisionsListResult
+// WorkbooksClientRevisionsListResponse contains the response from method WorkbooksClient.RevisionsList.
+type WorkbooksClientRevisionsListResponse struct {
+	WorkbooksClientRevisionsListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksRevisionsListResult contains the result from method Workbooks.RevisionsList.
-type WorkbooksRevisionsListResult struct {
+// WorkbooksClientRevisionsListResult contains the result from method WorkbooksClient.RevisionsList.
+type WorkbooksClientRevisionsListResult struct {
 	WorkbooksListResult
 }
 
-// WorkbooksUpdateResponse contains the response from method Workbooks.Update.
-type WorkbooksUpdateResponse struct {
-	WorkbooksUpdateResult
+// WorkbooksClientUpdateResponse contains the response from method WorkbooksClient.Update.
+type WorkbooksClientUpdateResponse struct {
+	WorkbooksClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WorkbooksUpdateResult contains the result from method Workbooks.Update.
-type WorkbooksUpdateResult struct {
+// WorkbooksClientUpdateResult contains the result from method WorkbooksClient.Update.
+type WorkbooksClientUpdateResult struct {
 	Workbook
 }

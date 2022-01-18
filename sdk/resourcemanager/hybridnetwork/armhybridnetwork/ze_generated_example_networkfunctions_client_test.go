@@ -55,7 +55,7 @@ func ExampleNetworkFunctionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkFunction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkFunctionsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionCreate.json
@@ -70,9 +70,7 @@ func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<network-function-name>",
 		armhybridnetwork.NetworkFunction{
-			TrackedResource: armhybridnetwork.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armhybridnetwork.NetworkFunctionPropertiesFormat{
 				Device: &armhybridnetwork.SubResource{
 					ID: to.StringPtr("<id>"),
@@ -84,36 +82,34 @@ func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										DNSServers:         []*string{},
 										Gateway:            to.StringPtr("<gateway>"),
 										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethodDynamic.ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersionIPv4.ToPtr(),
+										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
+										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
 										Subnet:             to.StringPtr("<subnet>"),
 									}},
 								MacAddress:           to.StringPtr("<mac-address>"),
 								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchTypeManagement.ToPtr(),
+								VMSwitchType:         armhybridnetwork.VMSwitchType("Management").ToPtr(),
 							},
 							{
 								IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 									{
-										DNSServers:         []*string{},
 										Gateway:            to.StringPtr("<gateway>"),
 										IPAddress:          to.StringPtr("<ipaddress>"),
-										IPAllocationMethod: armhybridnetwork.IPAllocationMethodDynamic.ToPtr(),
-										IPVersion:          armhybridnetwork.IPVersionIPv4.ToPtr(),
+										IPAllocationMethod: armhybridnetwork.IPAllocationMethod("Dynamic").ToPtr(),
+										IPVersion:          armhybridnetwork.IPVersion("IPv4").ToPtr(),
 										Subnet:             to.StringPtr("<subnet>"),
 									}},
 								MacAddress:           to.StringPtr("<mac-address>"),
 								NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-								VMSwitchType:         armhybridnetwork.VMSwitchTypeWan.ToPtr(),
+								VMSwitchType:         armhybridnetwork.VMSwitchType("Wan").ToPtr(),
 							}},
 						RoleName:           to.StringPtr("<role-name>"),
 						UserDataParameters: map[string]interface{}{},
 					}},
 				SKUName:    to.StringPtr("<skuname>"),
-				SKUType:    armhybridnetwork.SKUTypeSDWAN.ToPtr(),
+				SKUType:    armhybridnetwork.SKUType("SDWAN").ToPtr(),
 				VendorName: to.StringPtr("<vendor-name>"),
 			},
 		},
@@ -125,7 +121,7 @@ func ExampleNetworkFunctionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkFunction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkFunctionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionUpdateTags.json
@@ -149,7 +145,7 @@ func ExampleNetworkFunctionsClient_UpdateTags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkFunction.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.NetworkFunctionsClientUpdateTagsResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionListBySubscription.json
@@ -161,12 +157,16 @@ func ExampleNetworkFunctionsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetworkFunction.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -181,12 +181,16 @@ func ExampleNetworkFunctionsClient_ListByResourceGroup() {
 	client := armhybridnetwork.NewNetworkFunctionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetworkFunction.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

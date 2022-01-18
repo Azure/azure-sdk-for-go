@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsight/armsecurityinsight"
 )
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/actions/GetAllActionsByAlertRule.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/actions/GetAllActionsByAlertRule.json
 func ExampleActionsClient_ListByAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,17 +29,21 @@ func ExampleActionsClient_ListByAlertRule() {
 		"<workspace-name>",
 		"<rule-id>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ActionResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/actions/GetActionOfAlertRuleById.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/actions/GetActionOfAlertRuleById.json
 func ExampleActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,10 +60,10 @@ func ExampleActionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ActionResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ActionsClientGetResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/actions/CreateActionOfAlertRule.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/actions/CreateActionOfAlertRule.json
 func ExampleActionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,24 +77,20 @@ func ExampleActionsClient_CreateOrUpdate() {
 		"<rule-id>",
 		"<action-id>",
 		armsecurityinsight.ActionRequest{
-			ResourceWithEtag: armsecurityinsight.ResourceWithEtag{
-				Etag: to.StringPtr("<etag>"),
-			},
+			Etag: to.StringPtr("<etag>"),
 			Properties: &armsecurityinsight.ActionRequestProperties{
-				ActionPropertiesBase: armsecurityinsight.ActionPropertiesBase{
-					LogicAppResourceID: to.StringPtr("<logic-app-resource-id>"),
-				},
-				TriggerURI: to.StringPtr("<trigger-uri>"),
+				LogicAppResourceID: to.StringPtr("<logic-app-resource-id>"),
+				TriggerURI:         to.StringPtr("<trigger-uri>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ActionResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ActionsClientCreateOrUpdateResult)
 }
 
-// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2020-01-01/examples/actions/DeleteActionOfAlertRule.json
+// x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/actions/DeleteActionOfAlertRule.json
 func ExampleActionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

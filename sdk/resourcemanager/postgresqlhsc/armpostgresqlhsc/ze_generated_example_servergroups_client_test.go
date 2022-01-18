@@ -28,12 +28,16 @@ func ExampleServerGroupsClient_List() {
 	ctx := context.Background()
 	client := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServerGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleServerGroupsClient_ListByResourceGroup() {
 	client := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServerGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -70,49 +78,43 @@ func ExampleServerGroupsClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<server-group-name>",
 		armpostgresqlhsc.ServerGroup{
-			TrackedResource: armpostgresqlhsc.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"ElasticServer": to.StringPtr("1"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"ElasticServer": to.StringPtr("1"),
 			},
 			Properties: &armpostgresqlhsc.ServerGroupProperties{
 				AdministratorLogin:         to.StringPtr("<administrator-login>"),
 				AdministratorLoginPassword: to.StringPtr("<administrator-login-password>"),
 				AvailabilityZone:           to.StringPtr("<availability-zone>"),
 				BackupRetentionDays:        to.Int32Ptr(35),
-				CitusVersion:               armpostgresqlhsc.CitusVersionNine5.ToPtr(),
+				CitusVersion:               armpostgresqlhsc.CitusVersion("9.5").ToPtr(),
 				DelegatedSubnetArguments: &armpostgresqlhsc.ServerGroupPropertiesDelegatedSubnetArguments{
 					SubnetArmResourceID: to.StringPtr("<subnet-arm-resource-id>"),
 				},
 				EnableMx:          to.BoolPtr(true),
 				EnableZfs:         to.BoolPtr(false),
-				PostgresqlVersion: armpostgresqlhsc.PostgreSQLVersionTwelve.ToPtr(),
+				PostgresqlVersion: armpostgresqlhsc.PostgreSQLVersion("12").ToPtr(),
 				PrivateDNSZoneArguments: &armpostgresqlhsc.ServerGroupPropertiesPrivateDNSZoneArguments{
 					PrivateDNSZoneArmResourceID: to.StringPtr("<private-dnszone-arm-resource-id>"),
 				},
 				ServerRoleGroups: []*armpostgresqlhsc.ServerRoleGroup{
 					{
-						ServerProperties: armpostgresqlhsc.ServerProperties{
-							EnableHa:         to.BoolPtr(true),
-							ServerEdition:    armpostgresqlhsc.ServerEditionGeneralPurpose.ToPtr(),
-							StorageQuotaInMb: to.Int64Ptr(524288),
-							VCores:           to.Int64Ptr(4),
-						},
-						Name:        to.StringPtr("<name>"),
-						Role:        armpostgresqlhsc.ServerRoleCoordinator.ToPtr(),
-						ServerCount: to.Int32Ptr(1),
+						EnableHa:         to.BoolPtr(true),
+						ServerEdition:    armpostgresqlhsc.ServerEdition("GeneralPurpose").ToPtr(),
+						StorageQuotaInMb: to.Int64Ptr(524288),
+						VCores:           to.Int64Ptr(4),
+						Name:             to.StringPtr("<name>"),
+						Role:             armpostgresqlhsc.ServerRole("Coordinator").ToPtr(),
+						ServerCount:      to.Int32Ptr(1),
 					},
 					{
-						ServerProperties: armpostgresqlhsc.ServerProperties{
-							EnableHa:         to.BoolPtr(false),
-							ServerEdition:    armpostgresqlhsc.ServerEditionMemoryOptimized.ToPtr(),
-							StorageQuotaInMb: to.Int64Ptr(524288),
-							VCores:           to.Int64Ptr(4),
-						},
-						Name:        to.StringPtr("<name>"),
-						Role:        armpostgresqlhsc.ServerRoleWorker.ToPtr(),
-						ServerCount: to.Int32Ptr(3),
+						EnableHa:         to.BoolPtr(false),
+						ServerEdition:    armpostgresqlhsc.ServerEdition("MemoryOptimized").ToPtr(),
+						StorageQuotaInMb: to.Int64Ptr(524288),
+						VCores:           to.Int64Ptr(4),
+						Name:             to.StringPtr("<name>"),
+						Role:             armpostgresqlhsc.ServerRole("Worker").ToPtr(),
+						ServerCount:      to.Int32Ptr(3),
 					}},
 				StandbyAvailabilityZone: to.StringPtr("<standby-availability-zone>"),
 			},
@@ -125,7 +127,7 @@ func ExampleServerGroupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerGroupsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/ServerGroupGet.json
@@ -143,7 +145,7 @@ func ExampleServerGroupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerGroupsClientGetResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/ServerGroupDelete.json
@@ -184,7 +186,7 @@ func ExampleServerGroupsClient_BeginUpdate() {
 				ServerRoleGroups: []*armpostgresqlhsc.ServerRoleGroup{
 					{
 						Name:        to.StringPtr("<name>"),
-						Role:        armpostgresqlhsc.ServerRoleWorker.ToPtr(),
+						Role:        armpostgresqlhsc.ServerRole("Worker").ToPtr(),
 						ServerCount: to.Int32Ptr(10),
 					}},
 			},
@@ -197,7 +199,7 @@ func ExampleServerGroupsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerGroupsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/ServerGroupRestart.json
@@ -271,7 +273,7 @@ func ExampleServerGroupsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armpostgresqlhsc.NameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -280,4 +282,5 @@ func ExampleServerGroupsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ServerGroupsClientCheckNameAvailabilityResult)
 }

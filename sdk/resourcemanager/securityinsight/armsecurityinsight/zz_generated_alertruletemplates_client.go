@@ -11,7 +11,6 @@ package armsecurityinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // AlertRuleTemplatesClient contains the methods for the AlertRuleTemplates group.
 // Don't use this type directly, use NewAlertRuleTemplatesClient() instead.
 type AlertRuleTemplatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAlertRuleTemplatesClient creates a new instance of AlertRuleTemplatesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAlertRuleTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertRuleTemplatesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AlertRuleTemplatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AlertRuleTemplatesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets the alert rule template.
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertRuleTemplatesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string, options *AlertRuleTemplatesGetOptions) (AlertRuleTemplatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// alertRuleTemplateID - Alert rule template ID
+// options - AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
+func (client *AlertRuleTemplatesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string, options *AlertRuleTemplatesClientGetOptions) (AlertRuleTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, alertRuleTemplateID, options)
 	if err != nil {
-		return AlertRuleTemplatesGetResponse{}, err
+		return AlertRuleTemplatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AlertRuleTemplatesGetResponse{}, err
+		return AlertRuleTemplatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AlertRuleTemplatesGetResponse{}, client.getHandleError(resp)
+		return AlertRuleTemplatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertRuleTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string, options *AlertRuleTemplatesGetOptions) (*policy.Request, error) {
+func (client *AlertRuleTemplatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string, options *AlertRuleTemplatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRuleTemplates/{alertRuleTemplateId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,55 +89,45 @@ func (client *AlertRuleTemplatesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter alertRuleTemplateID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertRuleTemplateId}", url.PathEscape(alertRuleTemplateID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertRuleTemplatesClient) getHandleResponse(resp *http.Response) (AlertRuleTemplatesGetResponse, error) {
-	result := AlertRuleTemplatesGetResponse{RawResponse: resp}
+func (client *AlertRuleTemplatesClient) getHandleResponse(resp *http.Response) (AlertRuleTemplatesClientGetResponse, error) {
+	result := AlertRuleTemplatesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return AlertRuleTemplatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return AlertRuleTemplatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AlertRuleTemplatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all alert rule templates.
-// If the operation fails it returns the *CloudError error type.
-func (client *AlertRuleTemplatesClient) List(resourceGroupName string, workspaceName string, options *AlertRuleTemplatesListOptions) *AlertRuleTemplatesListPager {
-	return &AlertRuleTemplatesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.List method.
+func (client *AlertRuleTemplatesClient) List(resourceGroupName string, workspaceName string, options *AlertRuleTemplatesClientListOptions) *AlertRuleTemplatesClientListPager {
+	return &AlertRuleTemplatesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp AlertRuleTemplatesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AlertRuleTemplatesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertRuleTemplatesList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AlertRuleTemplatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AlertRuleTemplatesListOptions) (*policy.Request, error) {
+func (client *AlertRuleTemplatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AlertRuleTemplatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRuleTemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,35 +141,22 @@ func (client *AlertRuleTemplatesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AlertRuleTemplatesClient) listHandleResponse(resp *http.Response) (AlertRuleTemplatesListResponse, error) {
-	result := AlertRuleTemplatesListResponse{RawResponse: resp}
+func (client *AlertRuleTemplatesClient) listHandleResponse(resp *http.Response) (AlertRuleTemplatesClientListResponse, error) {
+	result := AlertRuleTemplatesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleTemplatesList); err != nil {
-		return AlertRuleTemplatesListResponse{}, runtime.NewResponseError(err, resp)
+		return AlertRuleTemplatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AlertRuleTemplatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

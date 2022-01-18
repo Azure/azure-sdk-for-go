@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationEvents_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationEvents_List.json
 func ExampleReplicationEventsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,18 +26,22 @@ func ExampleReplicationEventsClient_List() {
 	client := armrecoveryservicessiterecovery.NewReplicationEventsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationEventsListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armrecoveryservicessiterecovery.ReplicationEventsClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Event.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationEvents_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationEvents_Get.json
 func ExampleReplicationEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,5 +57,5 @@ func ExampleReplicationEventsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Event.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationEventsClientGetResult)
 }

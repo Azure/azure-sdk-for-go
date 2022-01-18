@@ -11,7 +11,6 @@ package armcontainerinstance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // ContainerGroupsClient contains the methods for the ContainerGroups group.
 // Don't use this type directly, use NewContainerGroupsClient() instead.
 type ContainerGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewContainerGroupsClient creates a new instance of ContainerGroupsClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewContainerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContainerGroupsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ContainerGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ContainerGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update container groups with specified configurations.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsBeginCreateOrUpdateOptions) (ContainerGroupsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// containerGroup - The properties of the container group to be created or updated.
+// options - ContainerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *ContainerGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (ContainerGroupsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, containerGroupName, containerGroup, options)
 	if err != nil {
-		return ContainerGroupsCreateOrUpdatePollerResponse{}, err
+		return ContainerGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ContainerGroupsCreateOrUpdatePollerResponse{
+	result := ContainerGroupsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ContainerGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ContainerGroupsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ContainerGroupsCreateOrUpdatePollerResponse{}, err
+		return ContainerGroupsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ContainerGroupsCreateOrUpdatePoller{
+	result.Poller = &ContainerGroupsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update container groups with specified configurations.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, containerGroupName, containerGroup, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, options *ContainerGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,55 +107,46 @@ func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, containerGroup)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ContainerGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDelete - Delete the specified container group in the specified subscription and resource group. The operation does not delete other resources provided
-// by the user, such as volumes.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginDeleteOptions) (ContainerGroupsDeletePollerResponse, error) {
+// BeginDelete - Delete the specified container group in the specified subscription and resource group. The operation does
+// not delete other resources provided by the user, such as volumes.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// options - ContainerGroupsClientBeginDeleteOptions contains the optional parameters for the ContainerGroupsClient.BeginDelete
+// method.
+func (client *ContainerGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (ContainerGroupsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
-		return ContainerGroupsDeletePollerResponse{}, err
+		return ContainerGroupsClientDeletePollerResponse{}, err
 	}
-	result := ContainerGroupsDeletePollerResponse{
+	result := ContainerGroupsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ContainerGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ContainerGroupsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ContainerGroupsDeletePollerResponse{}, err
+		return ContainerGroupsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ContainerGroupsDeletePoller{
+	result.Poller = &ContainerGroupsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Delete the specified container group in the specified subscription and resource group. The operation does not delete other resources provided
-// by the user, such as volumes.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginDeleteOptions) (*http.Response, error) {
+// Delete - Delete the specified container group in the specified subscription and resource group. The operation does not
+// delete other resources provided by the user, such as volumes.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +156,13 @@ func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -172,51 +176,41 @@ func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ContainerGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Gets the properties of the specified container group in the specified subscription and resource group. The operation returns the properties of
-// each container group including containers, image registry
+// Get - Gets the properties of the specified container group in the specified subscription and resource group. The operation
+// returns the properties of each container group including containers, image registry
 // credentials, restart policy, IP address type, OS type, state, and volumes.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) Get(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsGetOptions) (ContainerGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// options - ContainerGroupsClientGetOptions contains the optional parameters for the ContainerGroupsClient.Get method.
+func (client *ContainerGroupsClient) Get(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientGetOptions) (ContainerGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
-		return ContainerGroupsGetResponse{}, err
+		return ContainerGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerGroupsGetResponse{}, err
+		return ContainerGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainerGroupsGetResponse{}, client.getHandleError(resp)
+		return ContainerGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsGetOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -230,59 +224,50 @@ func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContainerGroupsClient) getHandleResponse(resp *http.Response) (ContainerGroupsGetResponse, error) {
-	result := ContainerGroupsGetResponse{RawResponse: resp}
+func (client *ContainerGroupsClient) getHandleResponse(resp *http.Response) (ContainerGroupsClientGetResponse, error) {
+	result := ContainerGroupsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroup); err != nil {
-		return ContainerGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ContainerGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ContainerGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetOutboundNetworkDependenciesEndpoints - Gets all the network dependencies for this container group to allow complete control of network setting and
-// configuration. For container groups, this will always be an empty list.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) GetOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions) (ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse, error) {
+// GetOutboundNetworkDependenciesEndpoints - Gets all the network dependencies for this container group to allow complete
+// control of network setting and configuration. For container groups, this will always be an empty list.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// options - ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the
+// ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints method.
+func (client *ContainerGroupsClient) GetOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions) (ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse, error) {
 	req, err := client.getOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
-		return ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse{}, err
+		return ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse{}, err
+		return ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse{}, client.getOutboundNetworkDependenciesEndpointsHandleError(resp)
+		return ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 }
 
 // getOutboundNetworkDependenciesEndpointsCreateRequest creates the GetOutboundNetworkDependenciesEndpoints request.
-func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -296,113 +281,91 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCrea
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOutboundNetworkDependenciesEndpointsHandleResponse handles the GetOutboundNetworkDependenciesEndpoints response.
-func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringArray); err != nil {
-		return ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(err, resp)
+		return ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
 
-// getOutboundNetworkDependenciesEndpointsHandleError handles the GetOutboundNetworkDependenciesEndpoints error response.
-func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Get a list of container groups in the specified subscription. This operation returns properties of each container group including containers,
-// image registry credentials, restart policy, IP address
+// List - Get a list of container groups in the specified subscription. This operation returns properties of each container
+// group including containers, image registry credentials, restart policy, IP address
 // type, OS type, state, and volumes.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) List(options *ContainerGroupsListOptions) *ContainerGroupsListPager {
-	return &ContainerGroupsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.List method.
+func (client *ContainerGroupsClient) List(options *ContainerGroupsClientListOptions) *ContainerGroupsClientListPager {
+	return &ContainerGroupsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ContainerGroupsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ContainerGroupsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContainerGroupListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, options *ContainerGroupsListOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, options *ContainerGroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response) (ContainerGroupsListResponse, error) {
-	result := ContainerGroupsListResponse{RawResponse: resp}
+func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response) (ContainerGroupsClientListResponse, error) {
+	result := ContainerGroupsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupListResult); err != nil {
-		return ContainerGroupsListResponse{}, runtime.NewResponseError(err, resp)
+		return ContainerGroupsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ContainerGroupsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Get a list of container groups in a specified subscription and resource group. This operation returns properties of each container
-// group including containers, image registry credentials, restart
+// ListByResourceGroup - Get a list of container groups in a specified subscription and resource group. This operation returns
+// properties of each container group including containers, image registry credentials, restart
 // policy, IP address type, OS type, state, and volumes.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) ListByResourceGroup(resourceGroupName string, options *ContainerGroupsListByResourceGroupOptions) *ContainerGroupsListByResourceGroupPager {
-	return &ContainerGroupsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.ListByResourceGroup
+// method.
+func (client *ContainerGroupsClient) ListByResourceGroup(resourceGroupName string, options *ContainerGroupsClientListByResourceGroupOptions) *ContainerGroupsClientListByResourceGroupPager {
+	return &ContainerGroupsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ContainerGroupsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ContainerGroupsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContainerGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ContainerGroupsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ContainerGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -412,62 +375,54 @@ func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ContainerGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ContainerGroupsListByResourceGroupResponse, error) {
-	result := ContainerGroupsListByResourceGroupResponse{RawResponse: resp}
+func (client *ContainerGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ContainerGroupsClientListByResourceGroupResponse, error) {
+	result := ContainerGroupsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupListResult); err != nil {
-		return ContainerGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ContainerGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ContainerGroupsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginRestart - Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginRestartOptions) (ContainerGroupsRestartPollerResponse, error) {
+// BeginRestart - Restarts all containers in a container group in place. If container image has updates, new image will be
+// downloaded.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// options - ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart
+// method.
+func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (ContainerGroupsClientRestartPollerResponse, error) {
 	resp, err := client.restart(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
-		return ContainerGroupsRestartPollerResponse{}, err
+		return ContainerGroupsClientRestartPollerResponse{}, err
 	}
-	result := ContainerGroupsRestartPollerResponse{
+	result := ContainerGroupsClientRestartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ContainerGroupsClient.Restart", "", resp, client.pl, client.restartHandleError)
+	pt, err := armruntime.NewPoller("ContainerGroupsClient.Restart", "", resp, client.pl)
 	if err != nil {
-		return ContainerGroupsRestartPollerResponse{}, err
+		return ContainerGroupsClientRestartPollerResponse{}, err
 	}
-	result.Poller = &ContainerGroupsRestartPoller{
+	result.Poller = &ContainerGroupsClientRestartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Restart - Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginRestartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
 		return nil, err
@@ -477,13 +432,13 @@ func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return nil, client.restartHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginRestartOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -497,53 +452,44 @@ func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// restartHandleError handles the Restart error response.
-func (client *ContainerGroupsClient) restartHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Starts all containers in a container group. Compute resources will be allocated and billing will start.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginStartOptions) (ContainerGroupsStartPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// options - ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart
+// method.
+func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (ContainerGroupsClientStartPollerResponse, error) {
 	resp, err := client.start(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
-		return ContainerGroupsStartPollerResponse{}, err
+		return ContainerGroupsClientStartPollerResponse{}, err
 	}
-	result := ContainerGroupsStartPollerResponse{
+	result := ContainerGroupsClientStartPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ContainerGroupsClient.Start", "", resp, client.pl, client.startHandleError)
+	pt, err := armruntime.NewPoller("ContainerGroupsClient.Start", "", resp, client.pl)
 	if err != nil {
-		return ContainerGroupsStartPollerResponse{}, err
+		return ContainerGroupsClientStartPollerResponse{}, err
 	}
-	result.Poller = &ContainerGroupsStartPoller{
+	result.Poller = &ContainerGroupsClientStartPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Starts all containers in a container group. Compute resources will be allocated and billing will start.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
 		return nil, err
@@ -553,13 +499,13 @@ func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsBeginStartOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -573,49 +519,39 @@ func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *ContainerGroupsClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Stop - Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) Stop(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsStopOptions) (ContainerGroupsStopResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// options - ContainerGroupsClientStopOptions contains the optional parameters for the ContainerGroupsClient.Stop method.
+func (client *ContainerGroupsClient) Stop(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientStopOptions) (ContainerGroupsClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, containerGroupName, options)
 	if err != nil {
-		return ContainerGroupsStopResponse{}, err
+		return ContainerGroupsClientStopResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerGroupsStopResponse{}, err
+		return ContainerGroupsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return ContainerGroupsStopResponse{}, client.stopHandleError(resp)
+		return ContainerGroupsClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContainerGroupsStopResponse{RawResponse: resp}, nil
+	return ContainerGroupsClientStopResponse{RawResponse: resp}, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsStopOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -629,49 +565,40 @@ func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *ContainerGroupsClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates container group tags with specified values.
-// If the operation fails it returns the *CloudError error type.
-func (client *ContainerGroupsClient) Update(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, options *ContainerGroupsUpdateOptions) (ContainerGroupsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// containerGroupName - The name of the container group.
+// resource - The container group resource with just the tags to be updated.
+// options - ContainerGroupsClientUpdateOptions contains the optional parameters for the ContainerGroupsClient.Update method.
+func (client *ContainerGroupsClient) Update(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, options *ContainerGroupsClientUpdateOptions) (ContainerGroupsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, containerGroupName, resource, options)
 	if err != nil {
-		return ContainerGroupsUpdateResponse{}, err
+		return ContainerGroupsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerGroupsUpdateResponse{}, err
+		return ContainerGroupsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainerGroupsUpdateResponse{}, client.updateHandleError(resp)
+		return ContainerGroupsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, options *ContainerGroupsUpdateOptions) (*policy.Request, error) {
+func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, options *ContainerGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -685,35 +612,22 @@ func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter containerGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, resource)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ContainerGroupsClient) updateHandleResponse(resp *http.Response) (ContainerGroupsUpdateResponse, error) {
-	result := ContainerGroupsUpdateResponse{RawResponse: resp}
+func (client *ContainerGroupsClient) updateHandleResponse(resp *http.Response) (ContainerGroupsClientUpdateResponse, error) {
+	result := ContainerGroupsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroup); err != nil {
-		return ContainerGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ContainerGroupsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ContainerGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armdataprotection
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // BackupInstancesClient contains the methods for the BackupInstances group.
 // Don't use this type directly, use NewBackupInstancesClient() instead.
 type BackupInstancesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupInstancesClient creates a new instance of BackupInstancesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupInstancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupInstancesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupInstancesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginAdhocBackup - Trigger adhoc backup
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginAdhocBackup(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesBeginAdhocBackupOptions) (BackupInstancesAdhocBackupPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginAdhocBackupOptions contains the optional parameters for the BackupInstancesClient.BeginAdhocBackup
+// method.
+func (client *BackupInstancesClient) BeginAdhocBackup(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (BackupInstancesClientAdhocBackupPollerResponse, error) {
 	resp, err := client.adhocBackup(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
-		return BackupInstancesAdhocBackupPollerResponse{}, err
+		return BackupInstancesClientAdhocBackupPollerResponse{}, err
 	}
-	result := BackupInstancesAdhocBackupPollerResponse{
+	result := BackupInstancesClientAdhocBackupPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.AdhocBackup", "", resp, client.pl, client.adhocBackupHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.AdhocBackup", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesAdhocBackupPollerResponse{}, err
+		return BackupInstancesClientAdhocBackupPollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesAdhocBackupPoller{
+	result.Poller = &BackupInstancesClientAdhocBackupPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // AdhocBackup - Trigger adhoc backup
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) adhocBackup(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesBeginAdhocBackupOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) adhocBackup(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*http.Response, error) {
 	req, err := client.adhocBackupCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *BackupInstancesClient) adhocBackup(ctx context.Context, vaultName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.adhocBackupHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // adhocBackupCreateRequest creates the AdhocBackup request.
-func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesBeginAdhocBackupOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters TriggerBackupRequest, options *BackupInstancesClientBeginAdhocBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/backup"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -98,7 +111,7 @@ func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,35 @@ func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// adhocBackupHandleError handles the AdhocBackup error response.
-func (client *BackupInstancesClient) adhocBackupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateOrUpdate - Create or update a backup instance in a backup vault
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginCreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesBeginCreateOrUpdateOptions) (BackupInstancesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupInstancesClient.BeginCreateOrUpdate
+// method.
+func (client *BackupInstancesClient) BeginCreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (BackupInstancesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
-		return BackupInstancesCreateOrUpdatePollerResponse{}, err
+		return BackupInstancesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := BackupInstancesCreateOrUpdatePollerResponse{
+	result := BackupInstancesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesCreateOrUpdatePollerResponse{}, err
+		return BackupInstancesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesCreateOrUpdatePoller{
+	result.Poller = &BackupInstancesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a backup instance in a backup vault
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +160,13 @@ func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, vaultNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters BackupInstanceResource, options *BackupInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -178,7 +184,7 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,42 +195,34 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *BackupInstancesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a backup instance in a backup vault
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginDelete(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesBeginDeleteOptions) (BackupInstancesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// options - BackupInstancesClientBeginDeleteOptions contains the optional parameters for the BackupInstancesClient.BeginDelete
+// method.
+func (client *BackupInstancesClient) BeginDelete(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (BackupInstancesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, vaultName, resourceGroupName, backupInstanceName, options)
 	if err != nil {
-		return BackupInstancesDeletePollerResponse{}, err
+		return BackupInstancesClientDeletePollerResponse{}, err
 	}
-	result := BackupInstancesDeletePollerResponse{
+	result := BackupInstancesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesDeletePollerResponse{}, err
+		return BackupInstancesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesDeletePoller{
+	result.Poller = &BackupInstancesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a backup instance in a backup vault
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, options)
 	if err != nil {
 		return nil, err
@@ -234,13 +232,13 @@ func (client *BackupInstancesClient) deleteOperation(ctx context.Context, vaultN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesBeginDeleteOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -258,7 +256,7 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, va
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,38 +267,29 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, va
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BackupInstancesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a backup instance with name in a backup vault
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesGetOptions) (BackupInstancesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// options - BackupInstancesClientGetOptions contains the optional parameters for the BackupInstancesClient.Get method.
+func (client *BackupInstancesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientGetOptions) (BackupInstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, options)
 	if err != nil {
-		return BackupInstancesGetResponse{}, err
+		return BackupInstancesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupInstancesGetResponse{}, err
+		return BackupInstancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupInstancesGetResponse{}, client.getHandleError(resp)
+		return BackupInstancesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesGetOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, options *BackupInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -318,7 +307,7 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vault
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -330,43 +319,33 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, vault
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupInstancesClient) getHandleResponse(resp *http.Response) (BackupInstancesGetResponse, error) {
-	result := BackupInstancesGetResponse{RawResponse: resp}
+func (client *BackupInstancesClient) getHandleResponse(resp *http.Response) (BackupInstancesClientGetResponse, error) {
+	result := BackupInstancesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
-		return BackupInstancesGetResponse{}, runtime.NewResponseError(err, resp)
+		return BackupInstancesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BackupInstancesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a backup instances belonging to a backup vault
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) List(vaultName string, resourceGroupName string, options *BackupInstancesListOptions) *BackupInstancesListPager {
-	return &BackupInstancesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// options - BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.List method.
+func (client *BackupInstancesClient) List(vaultName string, resourceGroupName string, options *BackupInstancesClientListOptions) *BackupInstancesClientListPager {
+	return &BackupInstancesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp BackupInstancesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BackupInstancesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.BackupInstanceResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupInstancesListOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -380,7 +359,7 @@ func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, vaul
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,50 +371,42 @@ func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, vaul
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupInstancesClient) listHandleResponse(resp *http.Response) (BackupInstancesListResponse, error) {
-	result := BackupInstancesListResponse{RawResponse: resp}
+func (client *BackupInstancesClient) listHandleResponse(resp *http.Response) (BackupInstancesClientListResponse, error) {
+	result := BackupInstancesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResourceList); err != nil {
-		return BackupInstancesListResponse{}, runtime.NewResponseError(err, resp)
+		return BackupInstancesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *BackupInstancesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginTriggerRehydrate - rehydrate recovery point for restore for a BackupInstance
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginTriggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesBeginTriggerRehydrateOptions) (BackupInstancesTriggerRehydratePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// vaultName - The name of the backup vault.
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginTriggerRehydrateOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerRehydrate
+// method.
+func (client *BackupInstancesClient) BeginTriggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesClientBeginTriggerRehydrateOptions) (BackupInstancesClientTriggerRehydratePollerResponse, error) {
 	resp, err := client.triggerRehydrate(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {
-		return BackupInstancesTriggerRehydratePollerResponse{}, err
+		return BackupInstancesClientTriggerRehydratePollerResponse{}, err
 	}
-	result := BackupInstancesTriggerRehydratePollerResponse{
+	result := BackupInstancesClientTriggerRehydratePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.TriggerRehydrate", "", resp, client.pl, client.triggerRehydrateHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.TriggerRehydrate", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesTriggerRehydratePollerResponse{}, err
+		return BackupInstancesClientTriggerRehydratePollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesTriggerRehydratePoller{
+	result.Poller = &BackupInstancesClientTriggerRehydratePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // TriggerRehydrate - rehydrate recovery point for restore for a BackupInstance
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesBeginTriggerRehydrateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesClientBeginTriggerRehydrateOptions) (*http.Response, error) {
 	req, err := client.triggerRehydrateCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -445,13 +416,13 @@ func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.triggerRehydrateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // triggerRehydrateCreateRequest creates the TriggerRehydrate request.
-func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesBeginTriggerRehydrateOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupRehydrationRequest, options *BackupInstancesClientBeginTriggerRehydrateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/rehydrate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -469,7 +440,7 @@ func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.C
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -480,42 +451,35 @@ func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// triggerRehydrateHandleError handles the TriggerRehydrate error response.
-func (client *BackupInstancesClient) triggerRehydrateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginTriggerRestore - Triggers restore for a BackupInstance
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginTriggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesBeginTriggerRestoreOptions) (BackupInstancesTriggerRestorePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginTriggerRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerRestore
+// method.
+func (client *BackupInstancesClient) BeginTriggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (BackupInstancesClientTriggerRestorePollerResponse, error) {
 	resp, err := client.triggerRestore(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
-		return BackupInstancesTriggerRestorePollerResponse{}, err
+		return BackupInstancesClientTriggerRestorePollerResponse{}, err
 	}
-	result := BackupInstancesTriggerRestorePollerResponse{
+	result := BackupInstancesClientTriggerRestorePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.TriggerRestore", "", resp, client.pl, client.triggerRestoreHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.TriggerRestore", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesTriggerRestorePollerResponse{}, err
+		return BackupInstancesClientTriggerRestorePollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesTriggerRestorePoller{
+	result.Poller = &BackupInstancesClientTriggerRestorePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // TriggerRestore - Triggers restore for a BackupInstance
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) triggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesBeginTriggerRestoreOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) triggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*http.Response, error) {
 	req, err := client.triggerRestoreCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -525,13 +489,13 @@ func (client *BackupInstancesClient) triggerRestore(ctx context.Context, vaultNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.triggerRestoreHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // triggerRestoreCreateRequest creates the TriggerRestore request.
-func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesBeginTriggerRestoreOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters AzureBackupRestoreRequestClassification, options *BackupInstancesClientBeginTriggerRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/restore"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -549,7 +513,7 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -560,42 +524,34 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// triggerRestoreHandleError handles the TriggerRestore error response.
-func (client *BackupInstancesClient) triggerRestoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginValidateForBackup - Validate whether adhoc backup will be successful or not
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginValidateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesBeginValidateForBackupOptions) (BackupInstancesValidateForBackupPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginValidateForBackupOptions contains the optional parameters for the BackupInstancesClient.BeginValidateForBackup
+// method.
+func (client *BackupInstancesClient) BeginValidateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (BackupInstancesClientValidateForBackupPollerResponse, error) {
 	resp, err := client.validateForBackup(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
-		return BackupInstancesValidateForBackupPollerResponse{}, err
+		return BackupInstancesClientValidateForBackupPollerResponse{}, err
 	}
-	result := BackupInstancesValidateForBackupPollerResponse{
+	result := BackupInstancesClientValidateForBackupPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.ValidateForBackup", "", resp, client.pl, client.validateForBackupHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.ValidateForBackup", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesValidateForBackupPollerResponse{}, err
+		return BackupInstancesClientValidateForBackupPollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesValidateForBackupPoller{
+	result.Poller = &BackupInstancesClientValidateForBackupPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ValidateForBackup - Validate whether adhoc backup will be successful or not
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) validateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesBeginValidateForBackupOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) validateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*http.Response, error) {
 	req, err := client.validateForBackupCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -605,13 +561,13 @@ func (client *BackupInstancesClient) validateForBackup(ctx context.Context, vaul
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.validateForBackupHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // validateForBackupCreateRequest creates the ValidateForBackup request.
-func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesBeginValidateForBackupOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateForBackupRequest, options *BackupInstancesClientBeginValidateForBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/validateForBackup"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -625,7 +581,7 @@ func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -636,42 +592,35 @@ func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// validateForBackupHandleError handles the ValidateForBackup error response.
-func (client *BackupInstancesClient) validateForBackupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginValidateForRestore - Validates if Restore can be triggered for a DataSource
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) BeginValidateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesBeginValidateForRestoreOptions) (BackupInstancesValidateForRestorePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the backup vault.
+// resourceGroupName - The name of the resource group where the backup vault is present.
+// backupInstanceName - The name of the backup instance
+// parameters - Request body for operation
+// options - BackupInstancesClientBeginValidateForRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginValidateForRestore
+// method.
+func (client *BackupInstancesClient) BeginValidateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (BackupInstancesClientValidateForRestorePollerResponse, error) {
 	resp, err := client.validateForRestore(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
-		return BackupInstancesValidateForRestorePollerResponse{}, err
+		return BackupInstancesClientValidateForRestorePollerResponse{}, err
 	}
-	result := BackupInstancesValidateForRestorePollerResponse{
+	result := BackupInstancesClientValidateForRestorePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("BackupInstancesClient.ValidateForRestore", "", resp, client.pl, client.validateForRestoreHandleError)
+	pt, err := armruntime.NewPoller("BackupInstancesClient.ValidateForRestore", "", resp, client.pl)
 	if err != nil {
-		return BackupInstancesValidateForRestorePollerResponse{}, err
+		return BackupInstancesClientValidateForRestorePollerResponse{}, err
 	}
-	result.Poller = &BackupInstancesValidateForRestorePoller{
+	result.Poller = &BackupInstancesClientValidateForRestorePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ValidateForRestore - Validates if Restore can be triggered for a DataSource
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupInstancesClient) validateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesBeginValidateForRestoreOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BackupInstancesClient) validateForRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*http.Response, error) {
 	req, err := client.validateForRestoreCreateRequest(ctx, vaultName, resourceGroupName, backupInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -681,13 +630,13 @@ func (client *BackupInstancesClient) validateForRestore(ctx context.Context, vau
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.validateForRestoreHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // validateForRestoreCreateRequest creates the ValidateForRestore request.
-func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesBeginValidateForRestoreOptions) (*policy.Request, error) {
+func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters ValidateRestoreRequestObject, options *BackupInstancesClientBeginValidateForRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/validateRestore"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -705,7 +654,7 @@ func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context
 		return nil, errors.New("parameter backupInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupInstanceName}", url.PathEscape(backupInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -714,17 +663,4 @@ func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// validateForRestoreHandleError handles the ValidateForRestore error response.
-func (client *BackupInstancesClient) validateForRestoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

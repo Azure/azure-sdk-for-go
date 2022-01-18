@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // IntegrationAccountMapsClient contains the methods for the IntegrationAccountMaps group.
 // Don't use this type directly, use NewIntegrationAccountMapsClient() instead.
 type IntegrationAccountMapsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationAccountMapsClient creates a new instance of IntegrationAccountMapsClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationAccountMapsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountMapsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationAccountMapsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationAccountMapsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an integration account map.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountMapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParam IntegrationAccountMap, options *IntegrationAccountMapsCreateOrUpdateOptions) (IntegrationAccountMapsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// mapName - The integration account map name.
+// mapParam - The integration account map.
+// options - IntegrationAccountMapsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountMapsClient.CreateOrUpdate
+// method.
+func (client *IntegrationAccountMapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParam IntegrationAccountMap, options *IntegrationAccountMapsClientCreateOrUpdateOptions) (IntegrationAccountMapsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, integrationAccountName, mapName, mapParam, options)
 	if err != nil {
-		return IntegrationAccountMapsCreateOrUpdateResponse{}, err
+		return IntegrationAccountMapsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountMapsCreateOrUpdateResponse{}, err
+		return IntegrationAccountMapsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IntegrationAccountMapsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IntegrationAccountMapsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountMapsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParam IntegrationAccountMap, options *IntegrationAccountMapsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationAccountMapsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParam IntegrationAccountMap, options *IntegrationAccountMapsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *IntegrationAccountMapsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter mapName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *IntegrationAccountMapsClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountMapsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountMapsCreateOrUpdateResponse, error) {
-	result := IntegrationAccountMapsCreateOrUpdateResponse{RawResponse: resp}
+func (client *IntegrationAccountMapsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountMapsClientCreateOrUpdateResponse, error) {
+	result := IntegrationAccountMapsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountMap); err != nil {
-		return IntegrationAccountMapsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountMapsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountMapsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration account map.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountMapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsDeleteOptions) (IntegrationAccountMapsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// mapName - The integration account map name.
+// options - IntegrationAccountMapsClientDeleteOptions contains the optional parameters for the IntegrationAccountMapsClient.Delete
+// method.
+func (client *IntegrationAccountMapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsClientDeleteOptions) (IntegrationAccountMapsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, integrationAccountName, mapName, options)
 	if err != nil {
-		return IntegrationAccountMapsDeleteResponse{}, err
+		return IntegrationAccountMapsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountMapsDeleteResponse{}, err
+		return IntegrationAccountMapsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationAccountMapsDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationAccountMapsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountMapsDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountMapsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountMapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationAccountMapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *IntegrationAccountMapsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter mapName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,30 @@ func (client *IntegrationAccountMapsClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountMapsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration account map.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountMapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsGetOptions) (IntegrationAccountMapsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// mapName - The integration account map name.
+// options - IntegrationAccountMapsClientGetOptions contains the optional parameters for the IntegrationAccountMapsClient.Get
+// method.
+func (client *IntegrationAccountMapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsClientGetOptions) (IntegrationAccountMapsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, integrationAccountName, mapName, options)
 	if err != nil {
-		return IntegrationAccountMapsGetResponse{}, err
+		return IntegrationAccountMapsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountMapsGetResponse{}, err
+		return IntegrationAccountMapsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountMapsGetResponse{}, client.getHandleError(resp)
+		return IntegrationAccountMapsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountMapsClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsGetOptions) (*policy.Request, error) {
+func (client *IntegrationAccountMapsClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, options *IntegrationAccountMapsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +205,7 @@ func (client *IntegrationAccountMapsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter mapName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,43 +217,34 @@ func (client *IntegrationAccountMapsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountMapsClient) getHandleResponse(resp *http.Response) (IntegrationAccountMapsGetResponse, error) {
-	result := IntegrationAccountMapsGetResponse{RawResponse: resp}
+func (client *IntegrationAccountMapsClient) getHandleResponse(resp *http.Response) (IntegrationAccountMapsClientGetResponse, error) {
+	result := IntegrationAccountMapsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountMap); err != nil {
-		return IntegrationAccountMapsGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountMapsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationAccountMapsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of integration account maps.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountMapsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsListOptions) *IntegrationAccountMapsListPager {
-	return &IntegrationAccountMapsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// options - IntegrationAccountMapsClientListOptions contains the optional parameters for the IntegrationAccountMapsClient.List
+// method.
+func (client *IntegrationAccountMapsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsClientListOptions) *IntegrationAccountMapsClientListPager {
+	return &IntegrationAccountMapsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountMapsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IntegrationAccountMapsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountMapListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountMapsClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsListOptions) (*policy.Request, error) {
+func (client *IntegrationAccountMapsClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountMapsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +258,7 @@ func (client *IntegrationAccountMapsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,46 +276,38 @@ func (client *IntegrationAccountMapsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountMapsClient) listHandleResponse(resp *http.Response) (IntegrationAccountMapsListResponse, error) {
-	result := IntegrationAccountMapsListResponse{RawResponse: resp}
+func (client *IntegrationAccountMapsClient) listHandleResponse(resp *http.Response) (IntegrationAccountMapsClientListResponse, error) {
+	result := IntegrationAccountMapsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountMapListResult); err != nil {
-		return IntegrationAccountMapsListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountMapsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationAccountMapsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListContentCallbackURL - Get the content callback url.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountMapsClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountMapsListContentCallbackURLOptions) (IntegrationAccountMapsListContentCallbackURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// mapName - The integration account map name.
+// options - IntegrationAccountMapsClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountMapsClient.ListContentCallbackURL
+// method.
+func (client *IntegrationAccountMapsClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountMapsClientListContentCallbackURLOptions) (IntegrationAccountMapsClientListContentCallbackURLResponse, error) {
 	req, err := client.listContentCallbackURLCreateRequest(ctx, resourceGroupName, integrationAccountName, mapName, listContentCallbackURL, options)
 	if err != nil {
-		return IntegrationAccountMapsListContentCallbackURLResponse{}, err
+		return IntegrationAccountMapsClientListContentCallbackURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountMapsListContentCallbackURLResponse{}, err
+		return IntegrationAccountMapsClientListContentCallbackURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountMapsListContentCallbackURLResponse{}, client.listContentCallbackURLHandleError(resp)
+		return IntegrationAccountMapsClientListContentCallbackURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContentCallbackURLHandleResponse(resp)
 }
 
 // listContentCallbackURLCreateRequest creates the ListContentCallbackURL request.
-func (client *IntegrationAccountMapsClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountMapsListContentCallbackURLOptions) (*policy.Request, error) {
+func (client *IntegrationAccountMapsClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountMapsClientListContentCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}/listContentCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -345,7 +325,7 @@ func (client *IntegrationAccountMapsClient) listContentCallbackURLCreateRequest(
 		return nil, errors.New("parameter mapName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mapName}", url.PathEscape(mapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,23 +337,10 @@ func (client *IntegrationAccountMapsClient) listContentCallbackURLCreateRequest(
 }
 
 // listContentCallbackURLHandleResponse handles the ListContentCallbackURL response.
-func (client *IntegrationAccountMapsClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountMapsListContentCallbackURLResponse, error) {
-	result := IntegrationAccountMapsListContentCallbackURLResponse{RawResponse: resp}
+func (client *IntegrationAccountMapsClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountMapsClientListContentCallbackURLResponse, error) {
+	result := IntegrationAccountMapsClientListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountMapsListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountMapsClientListContentCallbackURLResponse{}, err
 	}
 	return result, nil
-}
-
-// listContentCallbackURLHandleError handles the ListContentCallbackURL error response.
-func (client *IntegrationAccountMapsClient) listContentCallbackURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

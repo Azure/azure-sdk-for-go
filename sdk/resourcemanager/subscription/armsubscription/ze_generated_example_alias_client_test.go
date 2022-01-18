@@ -32,7 +32,6 @@ func ExampleAliasClient_BeginCreate() {
 		armsubscription.PutAliasRequest{
 			Properties: &armsubscription.PutAliasRequestProperties{
 				AdditionalProperties: &armsubscription.PutAliasRequestAdditionalProperties{
-					ManagementGroupID:    to.StringPtr("<management-group-id>"),
 					SubscriptionOwnerID:  to.StringPtr("<subscription-owner-id>"),
 					SubscriptionTenantID: to.StringPtr("<subscription-tenant-id>"),
 					Tags: map[string]*string{
@@ -41,10 +40,9 @@ func ExampleAliasClient_BeginCreate() {
 						"tag3": to.StringPtr("Lebron"),
 					},
 				},
-				BillingScope:   to.StringPtr("<billing-scope>"),
-				DisplayName:    to.StringPtr("<display-name>"),
-				SubscriptionID: to.StringPtr("<subscription-id>"),
-				Workload:       armsubscription.WorkloadProduction.ToPtr(),
+				BillingScope: to.StringPtr("<billing-scope>"),
+				DisplayName:  to.StringPtr("<display-name>"),
+				Workload:     armsubscription.Workload("Production").ToPtr(),
 			},
 		},
 		nil)
@@ -55,7 +53,7 @@ func ExampleAliasClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SubscriptionAliasResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AliasClientCreateResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getAlias.json
@@ -72,7 +70,7 @@ func ExampleAliasClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SubscriptionAliasResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AliasClientGetResult)
 }
 
 // x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/deleteAlias.json
@@ -99,9 +97,10 @@ func ExampleAliasClient_List() {
 	}
 	ctx := context.Background()
 	client := armsubscription.NewAliasClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AliasClientListResult)
 }

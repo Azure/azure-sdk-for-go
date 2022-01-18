@@ -24,11 +24,12 @@ func ExampleReplicasClient_ListByServer() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewReplicasClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServer(ctx,
+	res, err := client.ListByServer(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ReplicasClientListByServerResult)
 }

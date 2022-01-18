@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse
+// ManagementClientListAddressesAtResourceGroupLevelPager provides operations for iterating over paged responses.
+type ManagementClientListAddressesAtResourceGroupLevelPager struct {
+	client    *ManagementClient
+	current   ManagementClientListAddressesAtResourceGroupLevelResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListAddressesAtResourceGroupLevelResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager) Err() error {
+func (p *ManagementClientListAddressesAtResourceGroupLevelPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListAddressesAtResourceGroupLevelPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager) NextPa
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAddressesAtResourceGroupLevelHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listAddressesAtResourceGroupLevelHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager) NextPa
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse page.
-func (p *EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager) PageResponse() EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse {
+// PageResponse returns the current ManagementClientListAddressesAtResourceGroupLevelResponse page.
+func (p *ManagementClientListAddressesAtResourceGroupLevelPager) PageResponse() ManagementClientListAddressesAtResourceGroupLevelResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse
+// ManagementClientListAddressesAtSubscriptionLevelPager provides operations for iterating over paged responses.
+type ManagementClientListAddressesAtSubscriptionLevelPager struct {
+	client    *ManagementClient
+	current   ManagementClientListAddressesAtSubscriptionLevelResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListAddressesAtSubscriptionLevelResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager) Err() error {
+func (p *ManagementClientListAddressesAtSubscriptionLevelPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListAddressesAtSubscriptionLevelPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager) NextPag
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listAddressesAtSubscriptionLevelHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listAddressesAtSubscriptionLevelHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager) NextPag
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse page.
-func (p *EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager) PageResponse() EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse {
+// PageResponse returns the current ManagementClientListAddressesAtSubscriptionLevelResponse page.
+func (p *ManagementClientListAddressesAtSubscriptionLevelPager) PageResponse() ManagementClientListAddressesAtSubscriptionLevelResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListConfigurationsPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListConfigurationsPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListConfigurationsResponse
+// ManagementClientListConfigurationsPager provides operations for iterating over paged responses.
+type ManagementClientListConfigurationsPager struct {
+	client    *ManagementClient
+	current   ManagementClientListConfigurationsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListConfigurationsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListConfigurationsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListConfigurationsPager) Err() error {
+func (p *ManagementClientListConfigurationsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListConfigurationsPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListConfigurationsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *EdgeOrderManagementClientListConfigurationsPager) NextPage(ctx context.
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listConfigurationsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listConfigurationsHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *EdgeOrderManagementClientListConfigurationsPager) NextPage(ctx context.
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListConfigurationsResponse page.
-func (p *EdgeOrderManagementClientListConfigurationsPager) PageResponse() EdgeOrderManagementClientListConfigurationsResponse {
+// PageResponse returns the current ManagementClientListConfigurationsResponse page.
+func (p *ManagementClientListConfigurationsPager) PageResponse() ManagementClientListConfigurationsResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListOperationsPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListOperationsPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListOperationsResponse
+// ManagementClientListOperationsPager provides operations for iterating over paged responses.
+type ManagementClientListOperationsPager struct {
+	client    *ManagementClient
+	current   ManagementClientListOperationsResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListOperationsResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListOperationsResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListOperationsPager) Err() error {
+func (p *ManagementClientListOperationsPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListOperationsPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListOperationsPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *EdgeOrderManagementClientListOperationsPager) NextPage(ctx context.Cont
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOperationsHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOperationsHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *EdgeOrderManagementClientListOperationsPager) NextPage(ctx context.Cont
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListOperationsResponse page.
-func (p *EdgeOrderManagementClientListOperationsPager) PageResponse() EdgeOrderManagementClientListOperationsResponse {
+// PageResponse returns the current ManagementClientListOperationsResponse page.
+func (p *ManagementClientListOperationsPager) PageResponse() ManagementClientListOperationsResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListOrderAtResourceGroupLevelPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListOrderAtResourceGroupLevelPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse
+// ManagementClientListOrderAtResourceGroupLevelPager provides operations for iterating over paged responses.
+type ManagementClientListOrderAtResourceGroupLevelPager struct {
+	client    *ManagementClient
+	current   ManagementClientListOrderAtResourceGroupLevelResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListOrderAtResourceGroupLevelResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListOrderAtResourceGroupLevelPager) Err() error {
+func (p *ManagementClientListOrderAtResourceGroupLevelPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListOrderAtResourceGroupLevelPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListOrderAtResourceGroupLevelPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *EdgeOrderManagementClientListOrderAtResourceGroupLevelPager) NextPage(c
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOrderAtResourceGroupLevelHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOrderAtResourceGroupLevelHandleResponse(resp)
@@ -281,28 +281,28 @@ func (p *EdgeOrderManagementClientListOrderAtResourceGroupLevelPager) NextPage(c
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse page.
-func (p *EdgeOrderManagementClientListOrderAtResourceGroupLevelPager) PageResponse() EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse {
+// PageResponse returns the current ManagementClientListOrderAtResourceGroupLevelResponse page.
+func (p *ManagementClientListOrderAtResourceGroupLevelPager) PageResponse() ManagementClientListOrderAtResourceGroupLevelResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListOrderAtSubscriptionLevelPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListOrderAtSubscriptionLevelPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse
+// ManagementClientListOrderAtSubscriptionLevelPager provides operations for iterating over paged responses.
+type ManagementClientListOrderAtSubscriptionLevelPager struct {
+	client    *ManagementClient
+	current   ManagementClientListOrderAtSubscriptionLevelResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListOrderAtSubscriptionLevelResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListOrderAtSubscriptionLevelPager) Err() error {
+func (p *ManagementClientListOrderAtSubscriptionLevelPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListOrderAtSubscriptionLevelPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListOrderAtSubscriptionLevelPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -323,7 +323,7 @@ func (p *EdgeOrderManagementClientListOrderAtSubscriptionLevelPager) NextPage(ct
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOrderAtSubscriptionLevelHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOrderAtSubscriptionLevelHandleResponse(resp)
@@ -335,28 +335,28 @@ func (p *EdgeOrderManagementClientListOrderAtSubscriptionLevelPager) NextPage(ct
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse page.
-func (p *EdgeOrderManagementClientListOrderAtSubscriptionLevelPager) PageResponse() EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse {
+// PageResponse returns the current ManagementClientListOrderAtSubscriptionLevelResponse page.
+func (p *ManagementClientListOrderAtSubscriptionLevelPager) PageResponse() ManagementClientListOrderAtSubscriptionLevelResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse
+// ManagementClientListOrderItemsAtResourceGroupLevelPager provides operations for iterating over paged responses.
+type ManagementClientListOrderItemsAtResourceGroupLevelPager struct {
+	client    *ManagementClient
+	current   ManagementClientListOrderItemsAtResourceGroupLevelResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListOrderItemsAtResourceGroupLevelResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager) Err() error {
+func (p *ManagementClientListOrderItemsAtResourceGroupLevelPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListOrderItemsAtResourceGroupLevelPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -377,7 +377,7 @@ func (p *EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager) NextP
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOrderItemsAtResourceGroupLevelHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOrderItemsAtResourceGroupLevelHandleResponse(resp)
@@ -389,28 +389,28 @@ func (p *EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager) NextP
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse page.
-func (p *EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager) PageResponse() EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse {
+// PageResponse returns the current ManagementClientListOrderItemsAtResourceGroupLevelResponse page.
+func (p *ManagementClientListOrderItemsAtResourceGroupLevelPager) PageResponse() ManagementClientListOrderItemsAtResourceGroupLevelResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse
+// ManagementClientListOrderItemsAtSubscriptionLevelPager provides operations for iterating over paged responses.
+type ManagementClientListOrderItemsAtSubscriptionLevelPager struct {
+	client    *ManagementClient
+	current   ManagementClientListOrderItemsAtSubscriptionLevelResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListOrderItemsAtSubscriptionLevelResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager) Err() error {
+func (p *ManagementClientListOrderItemsAtSubscriptionLevelPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListOrderItemsAtSubscriptionLevelPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -431,7 +431,7 @@ func (p *EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager) NextPa
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listOrderItemsAtSubscriptionLevelHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listOrderItemsAtSubscriptionLevelHandleResponse(resp)
@@ -443,28 +443,28 @@ func (p *EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager) NextPa
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse page.
-func (p *EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager) PageResponse() EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse {
+// PageResponse returns the current ManagementClientListOrderItemsAtSubscriptionLevelResponse page.
+func (p *ManagementClientListOrderItemsAtSubscriptionLevelPager) PageResponse() ManagementClientListOrderItemsAtSubscriptionLevelResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListProductFamiliesMetadataPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListProductFamiliesMetadataPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListProductFamiliesMetadataResponse
+// ManagementClientListProductFamiliesMetadataPager provides operations for iterating over paged responses.
+type ManagementClientListProductFamiliesMetadataPager struct {
+	client    *ManagementClient
+	current   ManagementClientListProductFamiliesMetadataResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListProductFamiliesMetadataResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListProductFamiliesMetadataResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListProductFamiliesMetadataPager) Err() error {
+func (p *ManagementClientListProductFamiliesMetadataPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListProductFamiliesMetadataPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListProductFamiliesMetadataPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -485,7 +485,7 @@ func (p *EdgeOrderManagementClientListProductFamiliesMetadataPager) NextPage(ctx
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listProductFamiliesMetadataHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listProductFamiliesMetadataHandleResponse(resp)
@@ -497,28 +497,28 @@ func (p *EdgeOrderManagementClientListProductFamiliesMetadataPager) NextPage(ctx
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListProductFamiliesMetadataResponse page.
-func (p *EdgeOrderManagementClientListProductFamiliesMetadataPager) PageResponse() EdgeOrderManagementClientListProductFamiliesMetadataResponse {
+// PageResponse returns the current ManagementClientListProductFamiliesMetadataResponse page.
+func (p *ManagementClientListProductFamiliesMetadataPager) PageResponse() ManagementClientListProductFamiliesMetadataResponse {
 	return p.current
 }
 
-// EdgeOrderManagementClientListProductFamiliesPager provides operations for iterating over paged responses.
-type EdgeOrderManagementClientListProductFamiliesPager struct {
-	client    *EdgeOrderManagementClient
-	current   EdgeOrderManagementClientListProductFamiliesResponse
+// ManagementClientListProductFamiliesPager provides operations for iterating over paged responses.
+type ManagementClientListProductFamiliesPager struct {
+	client    *ManagementClient
+	current   ManagementClientListProductFamiliesResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, EdgeOrderManagementClientListProductFamiliesResponse) (*policy.Request, error)
+	advancer  func(context.Context, ManagementClientListProductFamiliesResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *EdgeOrderManagementClientListProductFamiliesPager) Err() error {
+func (p *ManagementClientListProductFamiliesPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *EdgeOrderManagementClientListProductFamiliesPager) NextPage(ctx context.Context) bool {
+func (p *ManagementClientListProductFamiliesPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -539,7 +539,7 @@ func (p *EdgeOrderManagementClientListProductFamiliesPager) NextPage(ctx context
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listProductFamiliesHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listProductFamiliesHandleResponse(resp)
@@ -551,7 +551,7 @@ func (p *EdgeOrderManagementClientListProductFamiliesPager) NextPage(ctx context
 	return true
 }
 
-// PageResponse returns the current EdgeOrderManagementClientListProductFamiliesResponse page.
-func (p *EdgeOrderManagementClientListProductFamiliesPager) PageResponse() EdgeOrderManagementClientListProductFamiliesResponse {
+// PageResponse returns the current ManagementClientListProductFamiliesResponse page.
+func (p *ManagementClientListProductFamiliesPager) PageResponse() ManagementClientListProductFamiliesResponse {
 	return p.current
 }

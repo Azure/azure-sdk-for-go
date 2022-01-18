@@ -15,136 +15,6 @@ import (
 	"time"
 )
 
-// CommunicationServiceBeginCreateOrUpdateOptions contains the optional parameters for the CommunicationService.BeginCreateOrUpdate method.
-type CommunicationServiceBeginCreateOrUpdateOptions struct {
-	// Parameters for the create or update operation
-	Parameters *CommunicationServiceResource
-}
-
-// CommunicationServiceBeginDeleteOptions contains the optional parameters for the CommunicationService.BeginDelete method.
-type CommunicationServiceBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CommunicationServiceCheckNameAvailabilityOptions contains the optional parameters for the CommunicationService.CheckNameAvailability method.
-type CommunicationServiceCheckNameAvailabilityOptions struct {
-	// Parameters supplied to the operation.
-	NameAvailabilityParameters *NameAvailabilityParameters
-}
-
-// CommunicationServiceGetOptions contains the optional parameters for the CommunicationService.Get method.
-type CommunicationServiceGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CommunicationServiceKeys - A class representing the access keys of a CommunicationService.
-type CommunicationServiceKeys struct {
-	// CommunicationService connection string constructed via the primaryKey
-	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
-
-	// The primary access key.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
-
-	// CommunicationService connection string constructed via the secondaryKey
-	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
-
-	// The secondary access key.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
-}
-
-// CommunicationServiceLinkNotificationHubOptions contains the optional parameters for the CommunicationService.LinkNotificationHub method.
-type CommunicationServiceLinkNotificationHubOptions struct {
-	// Parameters supplied to the operation.
-	LinkNotificationHubParameters *LinkNotificationHubParameters
-}
-
-// CommunicationServiceListByResourceGroupOptions contains the optional parameters for the CommunicationService.ListByResourceGroup method.
-type CommunicationServiceListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CommunicationServiceListBySubscriptionOptions contains the optional parameters for the CommunicationService.ListBySubscription method.
-type CommunicationServiceListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CommunicationServiceListKeysOptions contains the optional parameters for the CommunicationService.ListKeys method.
-type CommunicationServiceListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CommunicationServiceProperties - A class that describes the properties of the CommunicationService.
-type CommunicationServiceProperties struct {
-	// REQUIRED; The location where the communication service stores its data at rest.
-	DataLocation *string `json:"dataLocation,omitempty"`
-
-	// READ-ONLY; FQDN of the CommunicationService instance.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The immutable resource Id of the communication service.
-	ImmutableResourceID *string `json:"immutableResourceId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource ID of an Azure Notification Hub linked to this resource.
-	NotificationHubID *string `json:"notificationHubId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Version of the CommunicationService resource. Probably you need the same or higher version of client SDKs.
-	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// CommunicationServiceRegenerateKeyOptions contains the optional parameters for the CommunicationService.RegenerateKey method.
-type CommunicationServiceRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CommunicationServiceResource - A class representing a CommunicationService resource.
-type CommunicationServiceResource struct {
-	LocationResource
-	Resource
-	TaggedResource
-	// The properties of the service.
-	Properties *CommunicationServiceProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CommunicationServiceResource.
-func (c CommunicationServiceResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	c.LocationResource.marshalInternal(objectMap)
-	c.TaggedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// CommunicationServiceResourceList - Object that includes an array of CommunicationServices and a possible link for next set.
-type CommunicationServiceResourceList struct {
-	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of CommunicationService
-	Value []*CommunicationServiceResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CommunicationServiceResourceList.
-func (c CommunicationServiceResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// CommunicationServiceUpdateOptions contains the optional parameters for the CommunicationService.Update method.
-type CommunicationServiceUpdateOptions struct {
-	// Parameters for the update operation
-	Parameters *CommunicationServiceResource
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -183,19 +53,11 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // LinkNotificationHubParameters - Description of an Azure Notification Hub to link to the communication service
@@ -217,17 +79,6 @@ type LinkedNotificationHub struct {
 type LocationResource struct {
 	// The Azure location where the CommunicationService is running.
 	Location *string `json:"location,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationResource.
-func (l LocationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (l LocationResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "location", l.Location)
 }
 
 // NameAvailability - Result of the request to check name availability. It contains a flag and possible reason of failure.
@@ -259,13 +110,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -274,18 +128,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -302,8 +159,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -325,17 +182,149 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
+// ServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceClient.BeginCreateOrUpdate method.
+type ServiceClientBeginCreateOrUpdateOptions struct {
+	// Parameters for the create or update operation
+	Parameters *ServiceResource
+}
+
+// ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
+type ServiceClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientCheckNameAvailabilityOptions contains the optional parameters for the ServiceClient.CheckNameAvailability
+// method.
+type ServiceClientCheckNameAvailabilityOptions struct {
+	// Parameters supplied to the operation.
+	NameAvailabilityParameters *NameAvailabilityParameters
+}
+
+// ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
+type ServiceClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientLinkNotificationHubOptions contains the optional parameters for the ServiceClient.LinkNotificationHub method.
+type ServiceClientLinkNotificationHubOptions struct {
+	// Parameters supplied to the operation.
+	LinkNotificationHubParameters *LinkNotificationHubParameters
+}
+
+// ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup method.
+type ServiceClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientListBySubscriptionOptions contains the optional parameters for the ServiceClient.ListBySubscription method.
+type ServiceClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientListKeysOptions contains the optional parameters for the ServiceClient.ListKeys method.
+type ServiceClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientRegenerateKeyOptions contains the optional parameters for the ServiceClient.RegenerateKey method.
+type ServiceClientRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceClientUpdateOptions contains the optional parameters for the ServiceClient.Update method.
+type ServiceClientUpdateOptions struct {
+	// Parameters for the update operation
+	Parameters *ServiceResource
+}
+
+// ServiceKeys - A class representing the access keys of a CommunicationService.
+type ServiceKeys struct {
+	// CommunicationService connection string constructed via the primaryKey
+	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
+
+	// The primary access key.
+	PrimaryKey *string `json:"primaryKey,omitempty"`
+
+	// CommunicationService connection string constructed via the secondaryKey
+	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
+
+	// The secondary access key.
+	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// ServiceProperties - A class that describes the properties of the CommunicationService.
+type ServiceProperties struct {
+	// REQUIRED; The location where the communication service stores its data at rest.
+	DataLocation *string `json:"dataLocation,omitempty"`
+
+	// READ-ONLY; FQDN of the CommunicationService instance.
+	HostName *string `json:"hostName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The immutable resource Id of the communication service.
+	ImmutableResourceID *string `json:"immutableResourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource ID of an Azure Notification Hub linked to this resource.
+	NotificationHubID *string `json:"notificationHubId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Version of the CommunicationService resource. Probably you need the same or higher version of client SDKs.
+	Version *string `json:"version,omitempty" azure:"ro"`
+}
+
+// ServiceResource - A class representing a CommunicationService resource.
+type ServiceResource struct {
+	// The Azure location where the CommunicationService is running.
+	Location *string `json:"location,omitempty"`
+
+	// The properties of the service.
+	Properties *ServiceProperties `json:"properties,omitempty"`
+
+	// Tags of the service which is a list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceResource.
+func (s ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
+// ServiceResourceList - Object that includes an array of CommunicationServices and a possible link for next set.
+type ServiceResourceList struct {
+	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of CommunicationService
+	Value []*ServiceResource `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceResourceList.
+func (s ServiceResourceList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -415,12 +404,8 @@ type TaggedResource struct {
 // MarshalJSON implements the json.Marshaller interface for type TaggedResource.
 func (t TaggedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TaggedResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", t.Tags)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -1,14 +1,566 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*ApplicationTypeVersionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ApplicationTypeVersionsBeginDeleteOptions)` to `(context.Context, string, string, string, string, *ApplicationTypeVersionsClientBeginDeleteOptions)`
+- Function `*ApplicationTypeVersionsClient.BeginDelete` return value(s) have been changed from `(ApplicationTypeVersionsDeletePollerResponse, error)` to `(ApplicationTypeVersionsClientDeletePollerResponse, error)`
+- Function `*ClusterVersionsClient.GetByEnvironment` parameter(s) have been changed from `(context.Context, string, Enum14, string, *ClusterVersionsGetByEnvironmentOptions)` to `(context.Context, string, Enum14, string, *ClusterVersionsClientGetByEnvironmentOptions)`
+- Function `*ClusterVersionsClient.GetByEnvironment` return value(s) have been changed from `(ClusterVersionsGetByEnvironmentResponse, error)` to `(ClusterVersionsClientGetByEnvironmentResponse, error)`
+- Function `*ApplicationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationsGetOptions)` to `(context.Context, string, string, string, *ApplicationsClientGetOptions)`
+- Function `*ApplicationsClient.Get` return value(s) have been changed from `(ApplicationsGetResponse, error)` to `(ApplicationsClientGetResponse, error)`
+- Function `*ServicesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ServicesGetOptions)` to `(context.Context, string, string, string, string, *ServicesClientGetOptions)`
+- Function `*ServicesClient.Get` return value(s) have been changed from `(ServicesGetResponse, error)` to `(ServicesClientGetResponse, error)`
+- Function `*ClustersClient.List` parameter(s) have been changed from `(context.Context, *ClustersListOptions)` to `(context.Context, *ClustersClientListOptions)`
+- Function `*ClustersClient.List` return value(s) have been changed from `(ClustersListResponse, error)` to `(ClustersClientListResponse, error)`
+- Function `*ApplicationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ApplicationResourceUpdate, *ApplicationsBeginUpdateOptions)` to `(context.Context, string, string, string, ApplicationResourceUpdate, *ApplicationsClientBeginUpdateOptions)`
+- Function `*ApplicationsClient.BeginUpdate` return value(s) have been changed from `(ApplicationsUpdatePollerResponse, error)` to `(ApplicationsClientUpdatePollerResponse, error)`
+- Function `*ApplicationTypeVersionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, ApplicationTypeVersionResource, *ApplicationTypeVersionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, ApplicationTypeVersionResource, *ApplicationTypeVersionsClientBeginCreateOrUpdateOptions)`
+- Function `*ApplicationTypeVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationTypeVersionsCreateOrUpdatePollerResponse, error)` to `(ApplicationTypeVersionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ApplicationsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationsBeginDeleteOptions)` to `(context.Context, string, string, string, *ApplicationsClientBeginDeleteOptions)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(ApplicationsDeletePollerResponse, error)` to `(ApplicationsClientDeletePollerResponse, error)`
+- Function `*ServicesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, ServiceResourceUpdate, *ServicesBeginUpdateOptions)` to `(context.Context, string, string, string, string, ServiceResourceUpdate, *ServicesClientBeginUpdateOptions)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(ServicesUpdatePollerResponse, error)` to `(ServicesClientUpdatePollerResponse, error)`
+- Function `*ApplicationsClient.List` parameter(s) have been changed from `(context.Context, string, string, *ApplicationsListOptions)` to `(context.Context, string, string, *ApplicationsClientListOptions)`
+- Function `*ApplicationsClient.List` return value(s) have been changed from `(ApplicationsListResponse, error)` to `(ApplicationsClientListResponse, error)`
+- Function `*ApplicationTypesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationTypesBeginDeleteOptions)` to `(context.Context, string, string, string, *ApplicationTypesClientBeginDeleteOptions)`
+- Function `*ApplicationTypesClient.BeginDelete` return value(s) have been changed from `(ApplicationTypesDeletePollerResponse, error)` to `(ApplicationTypesClientDeletePollerResponse, error)`
+- Function `*ServicesClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *ServicesListOptions)` to `(context.Context, string, string, string, *ServicesClientListOptions)`
+- Function `*ServicesClient.List` return value(s) have been changed from `(ServicesListResponse, error)` to `(ServicesClientListResponse, error)`
+- Function `*ApplicationTypesClient.List` parameter(s) have been changed from `(context.Context, string, string, *ApplicationTypesListOptions)` to `(context.Context, string, string, *ApplicationTypesClientListOptions)`
+- Function `*ApplicationTypesClient.List` return value(s) have been changed from `(ApplicationTypesListResponse, error)` to `(ApplicationTypesClientListResponse, error)`
+- Function `*ServicesClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, string, *ServicesBeginDeleteOptions)` to `(context.Context, string, string, string, string, *ServicesClientBeginDeleteOptions)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(ServicesDeletePollerResponse, error)` to `(ServicesClientDeletePollerResponse, error)`
+- Function `*ClustersClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ClustersGetOptions)` to `(context.Context, string, string, *ClustersClientGetOptions)`
+- Function `*ClustersClient.Get` return value(s) have been changed from `(ClustersGetResponse, error)` to `(ClustersClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*ClusterVersionsClient.ListByEnvironment` parameter(s) have been changed from `(context.Context, string, Enum14, *ClusterVersionsListByEnvironmentOptions)` to `(context.Context, string, Enum14, *ClusterVersionsClientListByEnvironmentOptions)`
+- Function `*ClusterVersionsClient.ListByEnvironment` return value(s) have been changed from `(ClusterVersionsListByEnvironmentResponse, error)` to `(ClusterVersionsClientListByEnvironmentResponse, error)`
+- Function `*ClustersClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *ClustersDeleteOptions)` to `(context.Context, string, string, *ClustersClientDeleteOptions)`
+- Function `*ClustersClient.Delete` return value(s) have been changed from `(ClustersDeleteResponse, error)` to `(ClustersClientDeleteResponse, error)`
+- Function `*ApplicationTypesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationTypesGetOptions)` to `(context.Context, string, string, string, *ApplicationTypesClientGetOptions)`
+- Function `*ApplicationTypesClient.Get` return value(s) have been changed from `(ApplicationTypesGetResponse, error)` to `(ApplicationTypesClientGetResponse, error)`
+- Function `*ApplicationTypeVersionsClient.List` parameter(s) have been changed from `(context.Context, string, string, string, *ApplicationTypeVersionsListOptions)` to `(context.Context, string, string, string, *ApplicationTypeVersionsClientListOptions)`
+- Function `*ApplicationTypeVersionsClient.List` return value(s) have been changed from `(ApplicationTypeVersionsListResponse, error)` to `(ApplicationTypeVersionsClientListResponse, error)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ApplicationResource, *ApplicationsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, ApplicationResource, *ApplicationsClientBeginCreateOrUpdateOptions)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(ApplicationsCreateOrUpdatePollerResponse, error)` to `(ApplicationsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ClusterVersionsClient.List` parameter(s) have been changed from `(context.Context, string, *ClusterVersionsListOptions)` to `(context.Context, string, *ClusterVersionsClientListOptions)`
+- Function `*ClusterVersionsClient.List` return value(s) have been changed from `(ClusterVersionsListResponse, error)` to `(ClusterVersionsClientListResponse, error)`
+- Function `*ClusterVersionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *ClusterVersionsGetOptions)` to `(context.Context, string, string, *ClusterVersionsClientGetOptions)`
+- Function `*ClusterVersionsClient.Get` return value(s) have been changed from `(ClusterVersionsGetResponse, error)` to `(ClusterVersionsClientGetResponse, error)`
+- Function `*ApplicationTypeVersionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *ApplicationTypeVersionsGetOptions)` to `(context.Context, string, string, string, string, *ApplicationTypeVersionsClientGetOptions)`
+- Function `*ApplicationTypeVersionsClient.Get` return value(s) have been changed from `(ApplicationTypeVersionsGetResponse, error)` to `(ApplicationTypeVersionsClientGetResponse, error)`
+- Function `*ClustersClient.ListUpgradableVersions` parameter(s) have been changed from `(context.Context, string, string, *ClustersListUpgradableVersionsOptions)` to `(context.Context, string, string, *ClustersClientListUpgradableVersionsOptions)`
+- Function `*ClustersClient.ListUpgradableVersions` return value(s) have been changed from `(ClustersListUpgradableVersionsResponse, error)` to `(ClustersClientListUpgradableVersionsResponse, error)`
+- Function `*ClustersClient.ListByResourceGroup` parameter(s) have been changed from `(context.Context, string, *ClustersListByResourceGroupOptions)` to `(context.Context, string, *ClustersClientListByResourceGroupOptions)`
+- Function `*ClustersClient.ListByResourceGroup` return value(s) have been changed from `(ClustersListByResourceGroupResponse, error)` to `(ClustersClientListByResourceGroupResponse, error)`
+- Function `*ApplicationTypesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, ApplicationTypeResource, *ApplicationTypesCreateOrUpdateOptions)` to `(context.Context, string, string, string, ApplicationTypeResource, *ApplicationTypesClientCreateOrUpdateOptions)`
+- Function `*ApplicationTypesClient.CreateOrUpdate` return value(s) have been changed from `(ApplicationTypesCreateOrUpdateResponse, error)` to `(ApplicationTypesClientCreateOrUpdateResponse, error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Cluster, *ClustersBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Cluster, *ClustersClientBeginCreateOrUpdateOptions)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(ClustersCreateOrUpdatePollerResponse, error)` to `(ClustersClientCreateOrUpdatePollerResponse, error)`
+- Function `*ClustersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ClusterUpdateParameters, *ClustersBeginUpdateOptions)` to `(context.Context, string, string, ClusterUpdateParameters, *ClustersClientBeginUpdateOptions)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(ClustersUpdatePollerResponse, error)` to `(ClustersClientUpdatePollerResponse, error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, ServiceResource, *ServicesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, ServiceResource, *ServicesClientBeginCreateOrUpdateOptions)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(ServicesCreateOrUpdatePollerResponse, error)` to `(ServicesClientCreateOrUpdatePollerResponse, error)`
+- Function `*ApplicationsUpdatePoller.ResumeToken` has been removed
+- Function `*PartitionSchemeDescription.UnmarshalJSON` has been removed
+- Function `*ApplicationTypeVersionsDeletePoller.Poll` has been removed
+- Function `*ServicesCreateOrUpdatePoller.Done` has been removed
+- Function `*ServicesDeletePollerResponse.Resume` has been removed
+- Function `ErrorModel.Error` has been removed
+- Function `*ServicesDeletePoller.ResumeToken` has been removed
+- Function `ApplicationTypesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesUpdatePoller.Poll` has been removed
+- Function `*ClustersUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersCreateOrUpdatePoller.Done` has been removed
+- Function `ClustersUpdatePollerResponse.PollUntilDone` has been removed
+- Function `ClustersCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationsDeletePoller.Poll` has been removed
+- Function `ApplicationsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationTypeVersionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServicesUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationTypeVersionResource.UnmarshalJSON` has been removed
+- Function `*ClustersUpdatePoller.Poll` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*ApplicationTypeVersionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationTypeVersionsCreateOrUpdatePoller.Done` has been removed
+- Function `*ApplicationTypesDeletePollerResponse.Resume` has been removed
+- Function `*ClustersUpdatePoller.ResumeToken` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `ApplicationTypeVersionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationTypeVersionsDeletePoller.ResumeToken` has been removed
+- Function `*ServicesCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServicesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationTypeVersionsDeletePoller.Done` has been removed
+- Function `*ProxyResource.UnmarshalJSON` has been removed
+- Function `*ApplicationsCreateOrUpdatePoller.Poll` has been removed
+- Function `*ServicesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationTypesDeletePoller.Poll` has been removed
+- Function `ServicesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ClustersCreateOrUpdatePoller.Poll` has been removed
+- Function `*ClustersCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ClustersUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationsDeletePoller.FinalResponse` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ServicesUpdatePoller.Done` has been removed
+- Function `*ApplicationsUpdatePoller.Poll` has been removed
+- Function `*ApplicationsDeletePoller.Done` has been removed
+- Function `*ServicesDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationTypesDeletePoller.Done` has been removed
+- Function `ServicesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationTypeVersionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationTypesDeletePoller.ResumeToken` has been removed
+- Function `*ApplicationTypeVersionsDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationTypesDeletePoller.FinalResponse` has been removed
+- Function `*ApplicationTypeVersionsDeletePollerResponse.Resume` has been removed
+- Function `*ApplicationsUpdatePoller.FinalResponse` has been removed
+- Function `*ServicesDeletePoller.Done` has been removed
+- Function `*ClustersUpdatePoller.Done` has been removed
+- Function `ApplicationTypeVersionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ServicesDeletePoller.Poll` has been removed
+- Function `*ApplicationResourceUpdate.UnmarshalJSON` has been removed
+- Function `*ApplicationTypeVersionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationResource.UnmarshalJSON` has been removed
+- Function `*ApplicationsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*ApplicationsCreateOrUpdatePoller.Done` has been removed
+- Function `*ClustersCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `ServicesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*ApplicationsDeletePollerResponse.Resume` has been removed
+- Function `ApplicationsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationsUpdatePoller.Done` has been removed
+- Function `ApplicationsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*ApplicationsUpdatePollerResponse.Resume` has been removed
+- Function `*ApplicationsDeletePoller.ResumeToken` has been removed
+- Function `*ApplicationTypeResource.UnmarshalJSON` has been removed
+- Struct `ApplicationTypeVersionsBeginCreateOrUpdateOptions` has been removed
+- Struct `ApplicationTypeVersionsBeginDeleteOptions` has been removed
+- Struct `ApplicationTypeVersionsCreateOrUpdatePoller` has been removed
+- Struct `ApplicationTypeVersionsCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationTypeVersionsCreateOrUpdateResponse` has been removed
+- Struct `ApplicationTypeVersionsCreateOrUpdateResult` has been removed
+- Struct `ApplicationTypeVersionsDeletePoller` has been removed
+- Struct `ApplicationTypeVersionsDeletePollerResponse` has been removed
+- Struct `ApplicationTypeVersionsDeleteResponse` has been removed
+- Struct `ApplicationTypeVersionsGetOptions` has been removed
+- Struct `ApplicationTypeVersionsGetResponse` has been removed
+- Struct `ApplicationTypeVersionsGetResult` has been removed
+- Struct `ApplicationTypeVersionsListOptions` has been removed
+- Struct `ApplicationTypeVersionsListResponse` has been removed
+- Struct `ApplicationTypeVersionsListResult` has been removed
+- Struct `ApplicationTypesBeginDeleteOptions` has been removed
+- Struct `ApplicationTypesCreateOrUpdateOptions` has been removed
+- Struct `ApplicationTypesCreateOrUpdateResponse` has been removed
+- Struct `ApplicationTypesCreateOrUpdateResult` has been removed
+- Struct `ApplicationTypesDeletePoller` has been removed
+- Struct `ApplicationTypesDeletePollerResponse` has been removed
+- Struct `ApplicationTypesDeleteResponse` has been removed
+- Struct `ApplicationTypesGetOptions` has been removed
+- Struct `ApplicationTypesGetResponse` has been removed
+- Struct `ApplicationTypesGetResult` has been removed
+- Struct `ApplicationTypesListOptions` has been removed
+- Struct `ApplicationTypesListResponse` has been removed
+- Struct `ApplicationTypesListResult` has been removed
+- Struct `ApplicationsBeginCreateOrUpdateOptions` has been removed
+- Struct `ApplicationsBeginDeleteOptions` has been removed
+- Struct `ApplicationsBeginUpdateOptions` has been removed
+- Struct `ApplicationsCreateOrUpdatePoller` has been removed
+- Struct `ApplicationsCreateOrUpdatePollerResponse` has been removed
+- Struct `ApplicationsCreateOrUpdateResponse` has been removed
+- Struct `ApplicationsCreateOrUpdateResult` has been removed
+- Struct `ApplicationsDeletePoller` has been removed
+- Struct `ApplicationsDeletePollerResponse` has been removed
+- Struct `ApplicationsDeleteResponse` has been removed
+- Struct `ApplicationsGetOptions` has been removed
+- Struct `ApplicationsGetResponse` has been removed
+- Struct `ApplicationsGetResult` has been removed
+- Struct `ApplicationsListOptions` has been removed
+- Struct `ApplicationsListResponse` has been removed
+- Struct `ApplicationsListResult` has been removed
+- Struct `ApplicationsUpdatePoller` has been removed
+- Struct `ApplicationsUpdatePollerResponse` has been removed
+- Struct `ApplicationsUpdateResponse` has been removed
+- Struct `ApplicationsUpdateResult` has been removed
+- Struct `ClusterVersionsGetByEnvironmentOptions` has been removed
+- Struct `ClusterVersionsGetByEnvironmentResponse` has been removed
+- Struct `ClusterVersionsGetByEnvironmentResult` has been removed
+- Struct `ClusterVersionsGetOptions` has been removed
+- Struct `ClusterVersionsGetResponse` has been removed
+- Struct `ClusterVersionsGetResult` has been removed
+- Struct `ClusterVersionsListByEnvironmentOptions` has been removed
+- Struct `ClusterVersionsListByEnvironmentResponse` has been removed
+- Struct `ClusterVersionsListByEnvironmentResult` has been removed
+- Struct `ClusterVersionsListOptions` has been removed
+- Struct `ClusterVersionsListResponse` has been removed
+- Struct `ClusterVersionsListResult` has been removed
+- Struct `ClustersBeginCreateOrUpdateOptions` has been removed
+- Struct `ClustersBeginUpdateOptions` has been removed
+- Struct `ClustersCreateOrUpdatePoller` has been removed
+- Struct `ClustersCreateOrUpdatePollerResponse` has been removed
+- Struct `ClustersCreateOrUpdateResponse` has been removed
+- Struct `ClustersCreateOrUpdateResult` has been removed
+- Struct `ClustersDeleteOptions` has been removed
+- Struct `ClustersDeleteResponse` has been removed
+- Struct `ClustersGetOptions` has been removed
+- Struct `ClustersGetResponse` has been removed
+- Struct `ClustersGetResult` has been removed
+- Struct `ClustersListByResourceGroupOptions` has been removed
+- Struct `ClustersListByResourceGroupResponse` has been removed
+- Struct `ClustersListByResourceGroupResult` has been removed
+- Struct `ClustersListOptions` has been removed
+- Struct `ClustersListResponse` has been removed
+- Struct `ClustersListResult` has been removed
+- Struct `ClustersListUpgradableVersionsOptions` has been removed
+- Struct `ClustersListUpgradableVersionsResponse` has been removed
+- Struct `ClustersListUpgradableVersionsResult` has been removed
+- Struct `ClustersUpdatePoller` has been removed
+- Struct `ClustersUpdatePollerResponse` has been removed
+- Struct `ClustersUpdateResponse` has been removed
+- Struct `ClustersUpdateResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `ServicesBeginCreateOrUpdateOptions` has been removed
+- Struct `ServicesBeginDeleteOptions` has been removed
+- Struct `ServicesBeginUpdateOptions` has been removed
+- Struct `ServicesCreateOrUpdatePoller` has been removed
+- Struct `ServicesCreateOrUpdatePollerResponse` has been removed
+- Struct `ServicesCreateOrUpdateResponse` has been removed
+- Struct `ServicesCreateOrUpdateResult` has been removed
+- Struct `ServicesDeletePoller` has been removed
+- Struct `ServicesDeletePollerResponse` has been removed
+- Struct `ServicesDeleteResponse` has been removed
+- Struct `ServicesGetOptions` has been removed
+- Struct `ServicesGetResponse` has been removed
+- Struct `ServicesGetResult` has been removed
+- Struct `ServicesListOptions` has been removed
+- Struct `ServicesListResponse` has been removed
+- Struct `ServicesListResult` has been removed
+- Struct `ServicesUpdatePoller` has been removed
+- Struct `ServicesUpdatePollerResponse` has been removed
+- Struct `ServicesUpdateResponse` has been removed
+- Struct `ServicesUpdateResult` has been removed
+- Field `InnerError` of struct `ErrorModel` has been removed
+- Field `ServiceResourceUpdateProperties` of struct `StatelessServiceUpdateProperties` has been removed
+- Field `ProxyResource` of struct `ServiceResource` has been removed
+- Field `ServiceResourceProperties` of struct `StatelessServiceProperties` has been removed
+- Field `ProxyResource` of struct `ApplicationResource` has been removed
+- Field `Resource` of struct `Cluster` has been removed
+- Field `ServiceResourceProperties` of struct `StatefulServiceProperties` has been removed
+- Field `ServiceResourceUpdateProperties` of struct `StatefulServiceUpdateProperties` has been removed
+- Field `PartitionSchemeDescription` of struct `UniformInt64RangePartitionSchemeDescription` has been removed
+- Field `ProxyResource` of struct `ApplicationTypeResource` has been removed
+- Field `PartitionSchemeDescription` of struct `SingletonPartitionSchemeDescription` has been removed
+- Field `PartitionSchemeDescription` of struct `NamedPartitionSchemeDescription` has been removed
+- Field `ProxyResource` of struct `ApplicationTypeVersionResource` has been removed
+- Field `ServiceResourcePropertiesBase` of struct `ServiceResourceUpdateProperties` has been removed
+- Field `ServiceResourcePropertiesBase` of struct `ServiceResourceProperties` has been removed
+- Field `ProxyResource` of struct `ServiceResourceUpdate` has been removed
+- Field `ProxyResource` of struct `ApplicationResourceUpdate` has been removed
+- Field `ApplicationResourceUpdateProperties` of struct `ApplicationResourceProperties` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New function `*ApplicationTypesClientDeletePollerResponse.Resume(context.Context, *ApplicationTypesClient, string) error`
+- New function `*ServicesClientCreateOrUpdatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*ClustersClientCreateOrUpdatePoller.FinalResponse(context.Context) (ClustersClientCreateOrUpdateResponse, error)`
+- New function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServicesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ApplicationTypesClientDeletePoller.FinalResponse(context.Context) (ApplicationTypesClientDeleteResponse, error)`
+- New function `ApplicationTypeVersionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ApplicationTypeVersionsClientDeleteResponse, error)`
+- New function `*ApplicationTypeVersionsClientDeletePoller.Done() bool`
+- New function `*ServicesClientUpdatePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*ServicesClientDeletePoller.FinalResponse(context.Context) (ServicesClientDeleteResponse, error)`
+- New function `*ApplicationsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ApplicationsClientDeletePoller.FinalResponse(context.Context) (ApplicationsClientDeleteResponse, error)`
+- New function `*ServicesClientCreateOrUpdatePoller.FinalResponse(context.Context) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientDeletePollerResponse.Resume(context.Context, *ServicesClient, string) error`
+- New function `*ApplicationsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SingletonPartitionSchemeDescription.UnmarshalJSON([]byte) error`
+- New function `*ApplicationsClientDeletePollerResponse.Resume(context.Context, *ApplicationsClient, string) error`
+- New function `*StatelessServiceUpdateProperties.GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties`
+- New function `ServicesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientDeleteResponse, error)`
+- New function `*ApplicationTypesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ApplicationsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersClientUpdatePoller.FinalResponse(context.Context) (ClustersClientUpdateResponse, error)`
+- New function `*ApplicationsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ApplicationsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ApplicationTypeVersionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `ServiceResourceUpdateProperties.MarshalJSON() ([]byte, error)`
+- New function `ApplicationsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ApplicationsClientUpdateResponse, error)`
+- New function `ServicesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientCreateOrUpdateResponse, error)`
+- New function `*ApplicationTypeVersionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ApplicationTypeVersionsClient, string) error`
+- New function `*ApplicationsClientUpdatePollerResponse.Resume(context.Context, *ApplicationsClient, string) error`
+- New function `*ClustersClientCreateOrUpdatePoller.Done() bool`
+- New function `*NamedPartitionSchemeDescription.GetPartitionSchemeDescription() *PartitionSchemeDescription`
+- New function `*ApplicationsClientCreateOrUpdatePoller.Done() bool`
+- New function `*ApplicationsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ApplicationsClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientUpdatePoller.Done() bool`
+- New function `*ApplicationTypesClientDeletePoller.Done() bool`
+- New function `*ApplicationTypeVersionsClientDeletePollerResponse.Resume(context.Context, *ApplicationTypeVersionsClient, string) error`
+- New function `*ServicesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ApplicationTypesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*ApplicationTypeVersionsClientDeletePoller.FinalResponse(context.Context) (ApplicationTypeVersionsClientDeleteResponse, error)`
+- New function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ApplicationsClientUpdatePoller.FinalResponse(context.Context) (ApplicationsClientUpdateResponse, error)`
+- New function `*StatefulServiceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `*UniformInt64RangePartitionSchemeDescription.GetPartitionSchemeDescription() *PartitionSchemeDescription`
+- New function `ApplicationTypeVersionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ApplicationTypeVersionsClientCreateOrUpdateResponse, error)`
+- New function `*SingletonPartitionSchemeDescription.GetPartitionSchemeDescription() *PartitionSchemeDescription`
+- New function `*ServicesClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ClustersClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ApplicationsClientCreateOrUpdatePollerResponse.Resume(context.Context, *ApplicationsClient, string) error`
+- New function `*ApplicationTypeVersionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StatefulServiceUpdateProperties.GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties`
+- New function `ClustersClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersClientCreateOrUpdateResponse, error)`
+- New function `*ClustersClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ServicesClientDeletePoller.ResumeToken() (string, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `ClustersClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ClustersClientUpdateResponse, error)`
+- New function `*ClustersClientCreateOrUpdatePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `*ClustersClientUpdatePollerResponse.Resume(context.Context, *ClustersClient, string) error`
+- New function `ApplicationTypesClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ApplicationTypesClientDeleteResponse, error)`
+- New function `*ServicesClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `ServicesClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ServicesClientUpdateResponse, error)`
+- New function `*ApplicationsClientDeletePoller.Done() bool`
+- New function `ApplicationsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (ApplicationsClientDeleteResponse, error)`
+- New function `*ClustersClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `ServiceResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `*ApplicationsClientUpdatePoller.Done() bool`
+- New function `*ClustersClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*ApplicationTypeVersionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (ApplicationTypeVersionsClientCreateOrUpdateResponse, error)`
+- New function `*ServicesClientDeletePoller.Done() bool`
+- New function `*ServicesClientUpdatePoller.FinalResponse(context.Context) (ServicesClientUpdateResponse, error)`
+- New function `*ServicesClientCreateOrUpdatePoller.Done() bool`
+- New function `*StatelessServiceProperties.GetServiceResourceProperties() *ServiceResourceProperties`
+- New function `ApplicationsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (ApplicationsClientCreateOrUpdateResponse, error)`
+- New function `*ClustersClientUpdatePoller.Done() bool`
+- New function `*ApplicationsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*ServicesClientUpdatePoller.ResumeToken() (string, error)`
+- New struct `ApplicationTypeVersionsClientBeginCreateOrUpdateOptions`
+- New struct `ApplicationTypeVersionsClientBeginDeleteOptions`
+- New struct `ApplicationTypeVersionsClientCreateOrUpdatePoller`
+- New struct `ApplicationTypeVersionsClientCreateOrUpdatePollerResponse`
+- New struct `ApplicationTypeVersionsClientCreateOrUpdateResponse`
+- New struct `ApplicationTypeVersionsClientCreateOrUpdateResult`
+- New struct `ApplicationTypeVersionsClientDeletePoller`
+- New struct `ApplicationTypeVersionsClientDeletePollerResponse`
+- New struct `ApplicationTypeVersionsClientDeleteResponse`
+- New struct `ApplicationTypeVersionsClientGetOptions`
+- New struct `ApplicationTypeVersionsClientGetResponse`
+- New struct `ApplicationTypeVersionsClientGetResult`
+- New struct `ApplicationTypeVersionsClientListOptions`
+- New struct `ApplicationTypeVersionsClientListResponse`
+- New struct `ApplicationTypeVersionsClientListResult`
+- New struct `ApplicationTypesClientBeginDeleteOptions`
+- New struct `ApplicationTypesClientCreateOrUpdateOptions`
+- New struct `ApplicationTypesClientCreateOrUpdateResponse`
+- New struct `ApplicationTypesClientCreateOrUpdateResult`
+- New struct `ApplicationTypesClientDeletePoller`
+- New struct `ApplicationTypesClientDeletePollerResponse`
+- New struct `ApplicationTypesClientDeleteResponse`
+- New struct `ApplicationTypesClientGetOptions`
+- New struct `ApplicationTypesClientGetResponse`
+- New struct `ApplicationTypesClientGetResult`
+- New struct `ApplicationTypesClientListOptions`
+- New struct `ApplicationTypesClientListResponse`
+- New struct `ApplicationTypesClientListResult`
+- New struct `ApplicationsClientBeginCreateOrUpdateOptions`
+- New struct `ApplicationsClientBeginDeleteOptions`
+- New struct `ApplicationsClientBeginUpdateOptions`
+- New struct `ApplicationsClientCreateOrUpdatePoller`
+- New struct `ApplicationsClientCreateOrUpdatePollerResponse`
+- New struct `ApplicationsClientCreateOrUpdateResponse`
+- New struct `ApplicationsClientCreateOrUpdateResult`
+- New struct `ApplicationsClientDeletePoller`
+- New struct `ApplicationsClientDeletePollerResponse`
+- New struct `ApplicationsClientDeleteResponse`
+- New struct `ApplicationsClientGetOptions`
+- New struct `ApplicationsClientGetResponse`
+- New struct `ApplicationsClientGetResult`
+- New struct `ApplicationsClientListOptions`
+- New struct `ApplicationsClientListResponse`
+- New struct `ApplicationsClientListResult`
+- New struct `ApplicationsClientUpdatePoller`
+- New struct `ApplicationsClientUpdatePollerResponse`
+- New struct `ApplicationsClientUpdateResponse`
+- New struct `ApplicationsClientUpdateResult`
+- New struct `ClusterVersionsClientGetByEnvironmentOptions`
+- New struct `ClusterVersionsClientGetByEnvironmentResponse`
+- New struct `ClusterVersionsClientGetByEnvironmentResult`
+- New struct `ClusterVersionsClientGetOptions`
+- New struct `ClusterVersionsClientGetResponse`
+- New struct `ClusterVersionsClientGetResult`
+- New struct `ClusterVersionsClientListByEnvironmentOptions`
+- New struct `ClusterVersionsClientListByEnvironmentResponse`
+- New struct `ClusterVersionsClientListByEnvironmentResult`
+- New struct `ClusterVersionsClientListOptions`
+- New struct `ClusterVersionsClientListResponse`
+- New struct `ClusterVersionsClientListResult`
+- New struct `ClustersClientBeginCreateOrUpdateOptions`
+- New struct `ClustersClientBeginUpdateOptions`
+- New struct `ClustersClientCreateOrUpdatePoller`
+- New struct `ClustersClientCreateOrUpdatePollerResponse`
+- New struct `ClustersClientCreateOrUpdateResponse`
+- New struct `ClustersClientCreateOrUpdateResult`
+- New struct `ClustersClientDeleteOptions`
+- New struct `ClustersClientDeleteResponse`
+- New struct `ClustersClientGetOptions`
+- New struct `ClustersClientGetResponse`
+- New struct `ClustersClientGetResult`
+- New struct `ClustersClientListByResourceGroupOptions`
+- New struct `ClustersClientListByResourceGroupResponse`
+- New struct `ClustersClientListByResourceGroupResult`
+- New struct `ClustersClientListOptions`
+- New struct `ClustersClientListResponse`
+- New struct `ClustersClientListResult`
+- New struct `ClustersClientListUpgradableVersionsOptions`
+- New struct `ClustersClientListUpgradableVersionsResponse`
+- New struct `ClustersClientListUpgradableVersionsResult`
+- New struct `ClustersClientUpdatePoller`
+- New struct `ClustersClientUpdatePollerResponse`
+- New struct `ClustersClientUpdateResponse`
+- New struct `ClustersClientUpdateResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `ServicesClientBeginCreateOrUpdateOptions`
+- New struct `ServicesClientBeginDeleteOptions`
+- New struct `ServicesClientBeginUpdateOptions`
+- New struct `ServicesClientCreateOrUpdatePoller`
+- New struct `ServicesClientCreateOrUpdatePollerResponse`
+- New struct `ServicesClientCreateOrUpdateResponse`
+- New struct `ServicesClientCreateOrUpdateResult`
+- New struct `ServicesClientDeletePoller`
+- New struct `ServicesClientDeletePollerResponse`
+- New struct `ServicesClientDeleteResponse`
+- New struct `ServicesClientGetOptions`
+- New struct `ServicesClientGetResponse`
+- New struct `ServicesClientGetResult`
+- New struct `ServicesClientListOptions`
+- New struct `ServicesClientListResponse`
+- New struct `ServicesClientListResult`
+- New struct `ServicesClientUpdatePoller`
+- New struct `ServicesClientUpdatePollerResponse`
+- New struct `ServicesClientUpdateResponse`
+- New struct `ServicesClientUpdateResult`
+- New field `CorrelationScheme` in struct `ServiceResourceUpdateProperties`
+- New field `DefaultMoveCost` in struct `ServiceResourceUpdateProperties`
+- New field `PlacementConstraints` in struct `ServiceResourceUpdateProperties`
+- New field `ServiceLoadMetrics` in struct `ServiceResourceUpdateProperties`
+- New field `ServicePlacementPolicies` in struct `ServiceResourceUpdateProperties`
+- New field `ID` in struct `ApplicationResourceUpdate`
+- New field `Name` in struct `ApplicationResourceUpdate`
+- New field `SystemData` in struct `ApplicationResourceUpdate`
+- New field `Type` in struct `ApplicationResourceUpdate`
+- New field `Location` in struct `ApplicationResourceUpdate`
+- New field `Tags` in struct `ApplicationResourceUpdate`
+- New field `Etag` in struct `ApplicationResourceUpdate`
+- New field `PartitionScheme` in struct `SingletonPartitionSchemeDescription`
+- New field `ServicePlacementPolicies` in struct `StatefulServiceUpdateProperties`
+- New field `PlacementConstraints` in struct `StatefulServiceUpdateProperties`
+- New field `ServiceKind` in struct `StatefulServiceUpdateProperties`
+- New field `CorrelationScheme` in struct `StatefulServiceUpdateProperties`
+- New field `DefaultMoveCost` in struct `StatefulServiceUpdateProperties`
+- New field `ServiceLoadMetrics` in struct `StatefulServiceUpdateProperties`
+- New field `Error` in struct `ErrorModel`
+- New field `ServicePlacementPolicies` in struct `StatelessServiceUpdateProperties`
+- New field `ServiceKind` in struct `StatelessServiceUpdateProperties`
+- New field `CorrelationScheme` in struct `StatelessServiceUpdateProperties`
+- New field `DefaultMoveCost` in struct `StatelessServiceUpdateProperties`
+- New field `PlacementConstraints` in struct `StatelessServiceUpdateProperties`
+- New field `ServiceLoadMetrics` in struct `StatelessServiceUpdateProperties`
+- New field `Name` in struct `ApplicationResource`
+- New field `Location` in struct `ApplicationResource`
+- New field `SystemData` in struct `ApplicationResource`
+- New field `Type` in struct `ApplicationResource`
+- New field `Tags` in struct `ApplicationResource`
+- New field `Etag` in struct `ApplicationResource`
+- New field `ID` in struct `ApplicationResource`
+- New field `SystemData` in struct `Cluster`
+- New field `Type` in struct `Cluster`
+- New field `Location` in struct `Cluster`
+- New field `Tags` in struct `Cluster`
+- New field `Etag` in struct `Cluster`
+- New field `ID` in struct `Cluster`
+- New field `Name` in struct `Cluster`
+- New field `PartitionScheme` in struct `NamedPartitionSchemeDescription`
+- New field `ManagedIdentities` in struct `ApplicationResourceProperties`
+- New field `Metrics` in struct `ApplicationResourceProperties`
+- New field `TypeVersion` in struct `ApplicationResourceProperties`
+- New field `UpgradePolicy` in struct `ApplicationResourceProperties`
+- New field `MaximumNodes` in struct `ApplicationResourceProperties`
+- New field `MinimumNodes` in struct `ApplicationResourceProperties`
+- New field `Parameters` in struct `ApplicationResourceProperties`
+- New field `RemoveApplicationCapacity` in struct `ApplicationResourceProperties`
+- New field `Etag` in struct `ApplicationTypeVersionResource`
+- New field `ID` in struct `ApplicationTypeVersionResource`
+- New field `Name` in struct `ApplicationTypeVersionResource`
+- New field `SystemData` in struct `ApplicationTypeVersionResource`
+- New field `Type` in struct `ApplicationTypeVersionResource`
+- New field `Location` in struct `ApplicationTypeVersionResource`
+- New field `Tags` in struct `ApplicationTypeVersionResource`
+- New field `ServiceLoadMetrics` in struct `StatelessServiceProperties`
+- New field `ServicePlacementPolicies` in struct `StatelessServiceProperties`
+- New field `CorrelationScheme` in struct `StatelessServiceProperties`
+- New field `DefaultMoveCost` in struct `StatelessServiceProperties`
+- New field `ServiceDNSName` in struct `StatelessServiceProperties`
+- New field `ServicePackageActivationMode` in struct `StatelessServiceProperties`
+- New field `PlacementConstraints` in struct `StatelessServiceProperties`
+- New field `ServiceTypeName` in struct `StatelessServiceProperties`
+- New field `ProvisioningState` in struct `StatelessServiceProperties`
+- New field `ServiceKind` in struct `StatelessServiceProperties`
+- New field `PartitionDescription` in struct `StatelessServiceProperties`
+- New field `Type` in struct `ServiceResource`
+- New field `Location` in struct `ServiceResource`
+- New field `Tags` in struct `ServiceResource`
+- New field `Etag` in struct `ServiceResource`
+- New field `ID` in struct `ServiceResource`
+- New field `Name` in struct `ServiceResource`
+- New field `SystemData` in struct `ServiceResource`
+- New field `Location` in struct `ServiceResourceUpdate`
+- New field `Tags` in struct `ServiceResourceUpdate`
+- New field `Etag` in struct `ServiceResourceUpdate`
+- New field `ID` in struct `ServiceResourceUpdate`
+- New field `Name` in struct `ServiceResourceUpdate`
+- New field `SystemData` in struct `ServiceResourceUpdate`
+- New field `Type` in struct `ServiceResourceUpdate`
+- New field `CorrelationScheme` in struct `ServiceResourceProperties`
+- New field `DefaultMoveCost` in struct `ServiceResourceProperties`
+- New field `PlacementConstraints` in struct `ServiceResourceProperties`
+- New field `ServiceLoadMetrics` in struct `ServiceResourceProperties`
+- New field `ServicePlacementPolicies` in struct `ServiceResourceProperties`
+- New field `PartitionScheme` in struct `UniformInt64RangePartitionSchemeDescription`
+- New field `Etag` in struct `ApplicationTypeResource`
+- New field `ID` in struct `ApplicationTypeResource`
+- New field `Name` in struct `ApplicationTypeResource`
+- New field `SystemData` in struct `ApplicationTypeResource`
+- New field `Type` in struct `ApplicationTypeResource`
+- New field `Location` in struct `ApplicationTypeResource`
+- New field `Tags` in struct `ApplicationTypeResource`
+- New field `DefaultMoveCost` in struct `StatefulServiceProperties`
+- New field `ServiceTypeName` in struct `StatefulServiceProperties`
+- New field `CorrelationScheme` in struct `StatefulServiceProperties`
+- New field `ServiceKind` in struct `StatefulServiceProperties`
+- New field `ServiceLoadMetrics` in struct `StatefulServiceProperties`
+- New field `ServiceDNSName` in struct `StatefulServiceProperties`
+- New field `ProvisioningState` in struct `StatefulServiceProperties`
+- New field `ServicePackageActivationMode` in struct `StatefulServiceProperties`
+- New field `PlacementConstraints` in struct `StatefulServiceProperties`
+- New field `ServicePlacementPolicies` in struct `StatefulServiceProperties`
+- New field `PartitionDescription` in struct `StatefulServiceProperties`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

@@ -11,7 +11,6 @@ package armcostmanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,62 @@ import (
 // QueryClient contains the methods for the Query group.
 // Don't use this type directly, use NewQueryClient() instead.
 type QueryClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewQueryClient creates a new instance of QueryClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewQueryClient(credential azcore.TokenCredential, options *arm.ClientOptions) *QueryClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &QueryClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &QueryClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Usage - Query the usage data for scope defined.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueryClient) Usage(ctx context.Context, scope string, parameters QueryDefinition, options *QueryUsageOptions) (QueryUsageResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope associated with query and export operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount
+// scope,
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId} for Management Group scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
+// for billingProfile scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// parameters - Parameters supplied to the CreateOrUpdate Query Config operation.
+// options - QueryClientUsageOptions contains the optional parameters for the QueryClient.Usage method.
+func (client *QueryClient) Usage(ctx context.Context, scope string, parameters QueryDefinition, options *QueryClientUsageOptions) (QueryClientUsageResponse, error) {
 	req, err := client.usageCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
-		return QueryUsageResponse{}, err
+		return QueryClientUsageResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueryUsageResponse{}, err
+		return QueryClientUsageResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return QueryUsageResponse{}, client.usageHandleError(resp)
+		return QueryClientUsageResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.usageHandleResponse(resp)
 }
 
 // usageCreateRequest creates the Usage request.
-func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string, parameters QueryDefinition, options *QueryUsageOptions) (*policy.Request, error) {
+func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string, parameters QueryDefinition, options *QueryClientUsageOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/query"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -74,46 +91,40 @@ func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string,
 }
 
 // usageHandleResponse handles the Usage response.
-func (client *QueryClient) usageHandleResponse(resp *http.Response) (QueryUsageResponse, error) {
-	result := QueryUsageResponse{RawResponse: resp}
+func (client *QueryClient) usageHandleResponse(resp *http.Response) (QueryClientUsageResponse, error) {
+	result := QueryClientUsageResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResult); err != nil {
-		return QueryUsageResponse{}, runtime.NewResponseError(err, resp)
+		return QueryClientUsageResponse{}, err
 	}
 	return result, nil
 }
 
-// usageHandleError handles the Usage error response.
-func (client *QueryClient) usageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UsageByExternalCloudProviderType - Query the usage data for external cloud provider type defined.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QueryClient) UsageByExternalCloudProviderType(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, parameters QueryDefinition, options *QueryUsageByExternalCloudProviderTypeOptions) (QueryUsageByExternalCloudProviderTypeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// externalCloudProviderType - The external cloud provider type associated with dimension/query operations. This includes
+// 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated account.
+// externalCloudProviderID - This can be '{externalSubscriptionId}' for linked account or '{externalBillingAccountId}' for
+// consolidated account used with dimension/query operations.
+// parameters - Parameters supplied to the CreateOrUpdate Query Config operation.
+// options - QueryClientUsageByExternalCloudProviderTypeOptions contains the optional parameters for the QueryClient.UsageByExternalCloudProviderType
+// method.
+func (client *QueryClient) UsageByExternalCloudProviderType(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, parameters QueryDefinition, options *QueryClientUsageByExternalCloudProviderTypeOptions) (QueryClientUsageByExternalCloudProviderTypeResponse, error) {
 	req, err := client.usageByExternalCloudProviderTypeCreateRequest(ctx, externalCloudProviderType, externalCloudProviderID, parameters, options)
 	if err != nil {
-		return QueryUsageByExternalCloudProviderTypeResponse{}, err
+		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QueryUsageByExternalCloudProviderTypeResponse{}, err
+		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QueryUsageByExternalCloudProviderTypeResponse{}, client.usageByExternalCloudProviderTypeHandleError(resp)
+		return QueryClientUsageByExternalCloudProviderTypeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.usageByExternalCloudProviderTypeHandleResponse(resp)
 }
 
 // usageByExternalCloudProviderTypeCreateRequest creates the UsageByExternalCloudProviderType request.
-func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, parameters QueryDefinition, options *QueryUsageByExternalCloudProviderTypeOptions) (*policy.Request, error) {
+func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx context.Context, externalCloudProviderType ExternalCloudProviderType, externalCloudProviderID string, parameters QueryDefinition, options *QueryClientUsageByExternalCloudProviderTypeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/query"
 	if externalCloudProviderType == "" {
 		return nil, errors.New("parameter externalCloudProviderType cannot be empty")
@@ -123,7 +134,7 @@ func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx con
 		return nil, errors.New("parameter externalCloudProviderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{externalCloudProviderId}", url.PathEscape(externalCloudProviderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,23 +146,10 @@ func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx con
 }
 
 // usageByExternalCloudProviderTypeHandleResponse handles the UsageByExternalCloudProviderType response.
-func (client *QueryClient) usageByExternalCloudProviderTypeHandleResponse(resp *http.Response) (QueryUsageByExternalCloudProviderTypeResponse, error) {
-	result := QueryUsageByExternalCloudProviderTypeResponse{RawResponse: resp}
+func (client *QueryClient) usageByExternalCloudProviderTypeHandleResponse(resp *http.Response) (QueryClientUsageByExternalCloudProviderTypeResponse, error) {
+	result := QueryClientUsageByExternalCloudProviderTypeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResult); err != nil {
-		return QueryUsageByExternalCloudProviderTypeResponse{}, runtime.NewResponseError(err, resp)
+		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
 	}
 	return result, nil
-}
-
-// usageByExternalCloudProviderTypeHandleError handles the UsageByExternalCloudProviderType error response.
-func (client *QueryClient) usageByExternalCloudProviderTypeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

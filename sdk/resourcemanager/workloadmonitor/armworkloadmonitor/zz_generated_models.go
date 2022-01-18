@@ -25,17 +25,9 @@ type ErrorDetails struct {
 }
 
 // ErrorResponse - Error response
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// Error info.
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
 // ErrorResponseError - Error info.
@@ -61,9 +53,17 @@ func (e ErrorResponseError) MarshalJSON() ([]byte, error) {
 
 // HealthMonitor - Information about the monitor’s current health status.
 type HealthMonitor struct {
-	Resource
 	// Properties of the monitor's health status.
 	Properties *HealthMonitorProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HealthMonitorList - Information about the current health statuses of the monitors.
@@ -121,9 +121,17 @@ type HealthMonitorProperties struct {
 
 // HealthMonitorStateChange - Information about the monitor’s health state change at the provided timestamp.
 type HealthMonitorStateChange struct {
-	Resource
 	// Properties of the monitor's state change.
 	Properties *HealthMonitorStateChangeProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // HealthMonitorStateChangeList - Information about the health state changes of the monitor within the provided time window.
@@ -173,28 +181,30 @@ type HealthMonitorStateChangeProperties struct {
 	PreviousMonitorState *HealthState `json:"previousMonitorState,omitempty" azure:"ro"`
 }
 
-// HealthMonitorsGetOptions contains the optional parameters for the HealthMonitors.Get method.
-type HealthMonitorsGetOptions struct {
+// HealthMonitorsClientGetOptions contains the optional parameters for the HealthMonitorsClient.Get method.
+type HealthMonitorsClientGetOptions struct {
 	// Optionally expand the monitor’s evidence and/or configuration. Example: $expand=evidence,configuration.
 	Expand *string
 }
 
-// HealthMonitorsGetStateChangeOptions contains the optional parameters for the HealthMonitors.GetStateChange method.
-type HealthMonitorsGetStateChangeOptions struct {
+// HealthMonitorsClientGetStateChangeOptions contains the optional parameters for the HealthMonitorsClient.GetStateChange
+// method.
+type HealthMonitorsClientGetStateChangeOptions struct {
 	// Optionally expand the monitor’s evidence and/or configuration. Example: $expand=evidence,configuration.
 	Expand *string
 }
 
-// HealthMonitorsListOptions contains the optional parameters for the HealthMonitors.List method.
-type HealthMonitorsListOptions struct {
+// HealthMonitorsClientListOptions contains the optional parameters for the HealthMonitorsClient.List method.
+type HealthMonitorsClientListOptions struct {
 	// Optionally expand the monitor’s evidence and/or configuration. Example: $expand=evidence,configuration.
 	Expand *string
 	// Optionally filter by monitor name. Example: $filter=monitorName eq 'logical-disks|C:|disk-free-space-mb.'
 	Filter *string
 }
 
-// HealthMonitorsListStateChangesOptions contains the optional parameters for the HealthMonitors.ListStateChanges method.
-type HealthMonitorsListStateChangesOptions struct {
+// HealthMonitorsClientListStateChangesOptions contains the optional parameters for the HealthMonitorsClient.ListStateChanges
+// method.
+type HealthMonitorsClientListStateChangesOptions struct {
 	// The end of the time window.
 	EndTimestampUTC *time.Time
 	// Optionally expand the monitor’s evidence and/or configuration. Example: $expand=evidence,configuration.
@@ -249,8 +259,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -383,13 +383,13 @@ func TestBackupSecret(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = client.GetSecret(context.Background(), secret, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	require.True(t, errors.As(err, &httpErr))
-	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+	require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
 	require.True(t, errors.As(err, &httpErr))
-	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+	require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 	time.Sleep(20 * delay())
 

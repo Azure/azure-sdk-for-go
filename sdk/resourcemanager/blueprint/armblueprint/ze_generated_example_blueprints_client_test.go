@@ -25,52 +25,47 @@ func ExampleBlueprintsClient_CreateOrUpdate() {
 	}
 	ctx := context.Background()
 	client := armblueprint.NewBlueprintsClient(cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	_, err = client.CreateOrUpdate(ctx,
 		"<resource-scope>",
 		"<blueprint-name>",
 		armblueprint.Blueprint{
-			Properties: &armblueprint.BlueprintProperties{
-				SharedBlueprintProperties: armblueprint.SharedBlueprintProperties{
-					BlueprintResourcePropertiesBase: armblueprint.BlueprintResourcePropertiesBase{
-						Description: to.StringPtr("<description>"),
-					},
-					Parameters: map[string]*armblueprint.ParameterDefinition{
-						"costCenter": {
-							Type: armblueprint.TemplateParameterTypeString.ToPtr(),
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								DisplayName: to.StringPtr("<display-name>"),
-							},
-						},
-						"owners": {
-							Type: armblueprint.TemplateParameterTypeArray.ToPtr(),
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								DisplayName: to.StringPtr("<display-name>"),
-							},
-						},
-						"storageAccountType": {
-							Type: armblueprint.TemplateParameterTypeString.ToPtr(),
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								DisplayName: to.StringPtr("<display-name>"),
-							},
+			Properties: &armblueprint.Properties{
+				Description: to.StringPtr("<description>"),
+				Parameters: map[string]*armblueprint.ParameterDefinition{
+					"costCenter": {
+						Type: armblueprint.TemplateParameterType("string").ToPtr(),
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							DisplayName: to.StringPtr("<display-name>"),
 						},
 					},
-					ResourceGroups: map[string]*armblueprint.ResourceGroupDefinition{
-						"storageRG": {
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								Description: to.StringPtr("<description>"),
-								DisplayName: to.StringPtr("<display-name>"),
-							},
+					"owners": {
+						Type: armblueprint.TemplateParameterType("array").ToPtr(),
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							DisplayName: to.StringPtr("<display-name>"),
 						},
 					},
-					TargetScope: armblueprint.BlueprintTargetScopeSubscription.ToPtr(),
+					"storageAccountType": {
+						Type: armblueprint.TemplateParameterType("string").ToPtr(),
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							DisplayName: to.StringPtr("<display-name>"),
+						},
+					},
 				},
+				ResourceGroups: map[string]*armblueprint.ResourceGroupDefinition{
+					"storageRG": {
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							Description: to.StringPtr("<description>"),
+							DisplayName: to.StringPtr("<display-name>"),
+						},
+					},
+				},
+				TargetScope: armblueprint.BlueprintTargetScope("subscription").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Blueprint.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Get.json
@@ -88,7 +83,7 @@ func ExampleBlueprintsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Blueprint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BlueprintsClientGetResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Delete.json
@@ -106,7 +101,7 @@ func ExampleBlueprintsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Blueprint.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BlueprintsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_List.json
@@ -119,12 +114,16 @@ func ExampleBlueprintsClient_List() {
 	client := armblueprint.NewBlueprintsClient(cred, nil)
 	pager := client.List("<resource-scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Blueprint.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

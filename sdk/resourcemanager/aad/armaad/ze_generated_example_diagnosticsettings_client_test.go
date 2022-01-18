@@ -25,11 +25,12 @@ func ExampleDiagnosticSettingsClient_List() {
 	}
 	ctx := context.Background()
 	client := armaad.NewDiagnosticSettingsClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientListResult)
 }
 
 // x-ms-original-file: specification/azureactivedirectory/resource-manager/Microsoft.Aadiam/preview/2017-04-01-preview/examples/getDiagnosticSetting.json
@@ -46,7 +47,7 @@ func ExampleDiagnosticSettingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticSettingsResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientGetResult)
 }
 
 // x-ms-original-file: specification/azureactivedirectory/resource-manager/Microsoft.Aadiam/preview/2017-04-01-preview/examples/createOrUpdateDiagnosticSetting.json
@@ -65,7 +66,7 @@ func ExampleDiagnosticSettingsClient_CreateOrUpdate() {
 				EventHubName:                to.StringPtr("<event-hub-name>"),
 				Logs: []*armaad.LogSettings{
 					{
-						Category: armaad.CategoryAuditLogs.ToPtr(),
+						Category: armaad.Category("AuditLogs").ToPtr(),
 						Enabled:  to.BoolPtr(true),
 						RetentionPolicy: &armaad.RetentionPolicy{
 							Days:    to.Int32Ptr(0),
@@ -80,7 +81,7 @@ func ExampleDiagnosticSettingsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DiagnosticSettingsResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DiagnosticSettingsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azureactivedirectory/resource-manager/Microsoft.Aadiam/preview/2017-04-01-preview/examples/deleteDiagnosticSetting.json

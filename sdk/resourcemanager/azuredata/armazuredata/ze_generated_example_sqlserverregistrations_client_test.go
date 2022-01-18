@@ -32,7 +32,7 @@ func ExampleSQLServerRegistrationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLServerRegistration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLServerRegistrationsClientGetResult)
 }
 
 // x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/CreateOrUpdateSqlServerRegistration.json
@@ -47,11 +47,9 @@ func ExampleSQLServerRegistrationsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<sql-server-registration-name>",
 		armazuredata.SQLServerRegistration{
-			TrackedResource: armazuredata.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"mytag": to.StringPtr("myval"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"mytag": to.StringPtr("myval"),
 			},
 			Properties: &armazuredata.SQLServerRegistrationProperties{},
 		},
@@ -59,7 +57,7 @@ func ExampleSQLServerRegistrationsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLServerRegistration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLServerRegistrationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/DeleteSqlServerRegistration.json
@@ -99,7 +97,7 @@ func ExampleSQLServerRegistrationsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SQLServerRegistration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.SQLServerRegistrationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/ListByResourceGroupSqlServerRegistration.json
@@ -112,12 +110,16 @@ func ExampleSQLServerRegistrationsClient_ListByResourceGroup() {
 	client := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLServerRegistration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -131,12 +133,16 @@ func ExampleSQLServerRegistrationsClient_List() {
 	ctx := context.Background()
 	client := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLServerRegistration.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

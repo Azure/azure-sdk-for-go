@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // InvitationsClient contains the methods for the Invitations group.
 // Don't use this type directly, use NewInvitationsClient() instead.
 type InvitationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewInvitationsClient creates a new instance of InvitationsClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewInvitationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InvitationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &InvitationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &InvitationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create an invitation
-// If the operation fails it returns the *DataShareError error type.
-func (client *InvitationsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation Invitation, options *InvitationsCreateOptions) (InvitationsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share to send the invitation for.
+// invitationName - The name of the invitation.
+// invitation - Invitation details.
+// options - InvitationsClientCreateOptions contains the optional parameters for the InvitationsClient.Create method.
+func (client *InvitationsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation Invitation, options *InvitationsClientCreateOptions) (InvitationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, invitationName, invitation, options)
 	if err != nil {
-		return InvitationsCreateResponse{}, err
+		return InvitationsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InvitationsCreateResponse{}, err
+		return InvitationsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return InvitationsCreateResponse{}, client.createHandleError(resp)
+		return InvitationsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *InvitationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation Invitation, options *InvitationsCreateOptions) (*policy.Request, error) {
+func (client *InvitationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation Invitation, options *InvitationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations/{invitationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +95,7 @@ func (client *InvitationsClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter invitationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invitationName}", url.PathEscape(invitationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +107,38 @@ func (client *InvitationsClient) createCreateRequest(ctx context.Context, resour
 }
 
 // createHandleResponse handles the Create response.
-func (client *InvitationsClient) createHandleResponse(resp *http.Response) (InvitationsCreateResponse, error) {
-	result := InvitationsCreateResponse{RawResponse: resp}
+func (client *InvitationsClient) createHandleResponse(resp *http.Response) (InvitationsClientCreateResponse, error) {
+	result := InvitationsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Invitation); err != nil {
-		return InvitationsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return InvitationsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *InvitationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete an invitation in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *InvitationsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsDeleteOptions) (InvitationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// invitationName - The name of the invitation.
+// options - InvitationsClientDeleteOptions contains the optional parameters for the InvitationsClient.Delete method.
+func (client *InvitationsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsClientDeleteOptions) (InvitationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, invitationName, options)
 	if err != nil {
-		return InvitationsDeleteResponse{}, err
+		return InvitationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InvitationsDeleteResponse{}, err
+		return InvitationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return InvitationsDeleteResponse{}, client.deleteHandleError(resp)
+		return InvitationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return InvitationsDeleteResponse{RawResponse: resp}, nil
+	return InvitationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *InvitationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsDeleteOptions) (*policy.Request, error) {
+func (client *InvitationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations/{invitationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +160,7 @@ func (client *InvitationsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter invitationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invitationName}", url.PathEscape(invitationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +171,30 @@ func (client *InvitationsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *InvitationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get an invitation in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *InvitationsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsGetOptions) (InvitationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// invitationName - The name of the invitation.
+// options - InvitationsClientGetOptions contains the optional parameters for the InvitationsClient.Get method.
+func (client *InvitationsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsClientGetOptions) (InvitationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, invitationName, options)
 	if err != nil {
-		return InvitationsGetResponse{}, err
+		return InvitationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InvitationsGetResponse{}, err
+		return InvitationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InvitationsGetResponse{}, client.getHandleError(resp)
+		return InvitationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *InvitationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsGetOptions) (*policy.Request, error) {
+func (client *InvitationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, options *InvitationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations/{invitationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +216,7 @@ func (client *InvitationsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter invitationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invitationName}", url.PathEscape(invitationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,43 +228,34 @@ func (client *InvitationsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *InvitationsClient) getHandleResponse(resp *http.Response) (InvitationsGetResponse, error) {
-	result := InvitationsGetResponse{RawResponse: resp}
+func (client *InvitationsClient) getHandleResponse(resp *http.Response) (InvitationsClientGetResponse, error) {
+	result := InvitationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Invitation); err != nil {
-		return InvitationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return InvitationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *InvitationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByShare - List invitations in a share
-// If the operation fails it returns the *DataShareError error type.
-func (client *InvitationsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *InvitationsListByShareOptions) *InvitationsListBySharePager {
-	return &InvitationsListBySharePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareName - The name of the share.
+// options - InvitationsClientListByShareOptions contains the optional parameters for the InvitationsClient.ListByShare method.
+func (client *InvitationsClient) ListByShare(resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) *InvitationsClientListBySharePager {
+	return &InvitationsClientListBySharePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByShareCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 		},
-		advancer: func(ctx context.Context, resp InvitationsListByShareResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp InvitationsClientListByShareResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.InvitationList.NextLink)
 		},
 	}
 }
 
 // listByShareCreateRequest creates the ListByShare request.
-func (client *InvitationsClient) listByShareCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *InvitationsListByShareOptions) (*policy.Request, error) {
+func (client *InvitationsClient) listByShareCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,7 +273,7 @@ func (client *InvitationsClient) listByShareCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter shareName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -306,23 +294,10 @@ func (client *InvitationsClient) listByShareCreateRequest(ctx context.Context, r
 }
 
 // listByShareHandleResponse handles the ListByShare response.
-func (client *InvitationsClient) listByShareHandleResponse(resp *http.Response) (InvitationsListByShareResponse, error) {
-	result := InvitationsListByShareResponse{RawResponse: resp}
+func (client *InvitationsClient) listByShareHandleResponse(resp *http.Response) (InvitationsClientListByShareResponse, error) {
+	result := InvitationsClientListByShareResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvitationList); err != nil {
-		return InvitationsListByShareResponse{}, runtime.NewResponseError(err, resp)
+		return InvitationsClientListByShareResponse{}, err
 	}
 	return result, nil
-}
-
-// listByShareHandleError handles the ListByShare error response.
-func (client *InvitationsClient) listByShareHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

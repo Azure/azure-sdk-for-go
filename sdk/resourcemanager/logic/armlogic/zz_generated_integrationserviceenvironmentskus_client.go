@@ -11,7 +11,6 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // IntegrationServiceEnvironmentSKUsClient contains the methods for the IntegrationServiceEnvironmentSKUs group.
 // Don't use this type directly, use NewIntegrationServiceEnvironmentSKUsClient() instead.
 type IntegrationServiceEnvironmentSKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationServiceEnvironmentSKUsClient creates a new instance of IntegrationServiceEnvironmentSKUsClient with the specified values.
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIntegrationServiceEnvironmentSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentSKUsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IntegrationServiceEnvironmentSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IntegrationServiceEnvironmentSKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Gets a list of integration service environment Skus.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentSKUsClient) List(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsListOptions) *IntegrationServiceEnvironmentSKUsListPager {
-	return &IntegrationServiceEnvironmentSKUsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// options - IntegrationServiceEnvironmentSKUsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentSKUsClient.List
+// method.
+func (client *IntegrationServiceEnvironmentSKUsClient) List(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsClientListOptions) *IntegrationServiceEnvironmentSKUsClientListPager {
+	return &IntegrationServiceEnvironmentSKUsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, options)
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentSKUsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentSKUsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationServiceEnvironmentSKUList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationServiceEnvironmentSKUsClient) listCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsListOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentSKUsClient) listCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,7 +82,7 @@ func (client *IntegrationServiceEnvironmentSKUsClient) listCreateRequest(ctx con
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +94,10 @@ func (client *IntegrationServiceEnvironmentSKUsClient) listCreateRequest(ctx con
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationServiceEnvironmentSKUsClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentSKUsListResponse, error) {
-	result := IntegrationServiceEnvironmentSKUsListResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentSKUsClient) listHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentSKUsClientListResponse, error) {
+	result := IntegrationServiceEnvironmentSKUsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentSKUList); err != nil {
-		return IntegrationServiceEnvironmentSKUsListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentSKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *IntegrationServiceEnvironmentSKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

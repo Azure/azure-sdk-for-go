@@ -25,7 +25,7 @@ func ExampleQuotasClient_Update() {
 	}
 	ctx := context.Background()
 	client := armmachinelearningservices.NewQuotasClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<location>",
 		armmachinelearningservices.QuotaUpdateParameters{
 			Value: []*armmachinelearningservices.QuotaBaseProperties{
@@ -33,19 +33,20 @@ func ExampleQuotasClient_Update() {
 					Type:  to.StringPtr("<type>"),
 					ID:    to.StringPtr("<id>"),
 					Limit: to.Int64Ptr(100),
-					Unit:  armmachinelearningservices.QuotaUnitCount.ToPtr(),
+					Unit:  armmachinelearningservices.QuotaUnit("Count").ToPtr(),
 				},
 				{
 					Type:  to.StringPtr("<type>"),
 					ID:    to.StringPtr("<id>"),
 					Limit: to.Int64Ptr(200),
-					Unit:  armmachinelearningservices.QuotaUnitCount.ToPtr(),
+					Unit:  armmachinelearningservices.QuotaUnit("Count").ToPtr(),
 				}},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.QuotasClientUpdateResult)
 }
 
 // x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Quota/list.json
@@ -58,12 +59,16 @@ func ExampleQuotasClient_List() {
 	client := armmachinelearningservices.NewQuotasClient("<subscription-id>", cred, nil)
 	pager := client.List("<location>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ResourceQuota.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

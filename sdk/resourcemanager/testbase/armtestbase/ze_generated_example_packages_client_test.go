@@ -30,12 +30,16 @@ func ExamplePackagesClient_ListByTestBaseAccount() {
 	pager := client.ListByTestBaseAccount("<resource-group-name>",
 		"<test-base-account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PackageResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,10 +57,8 @@ func ExamplePackagesClient_BeginCreate() {
 		"<test-base-account-name>",
 		"<package-name>",
 		armtestbase.PackageResource{
-			TrackedResource: armtestbase.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armtestbase.PackageProperties{
 				ApplicationName: to.StringPtr("<application-name>"),
 				BlobPath:        to.StringPtr("<blob-path>"),
@@ -71,15 +73,15 @@ func ExamplePackagesClient_BeginCreate() {
 				Tests: []*armtestbase.Test{
 					{
 						IsActive: to.BoolPtr(true),
-						TestType: armtestbase.TestTypeOutOfBoxTest.ToPtr(),
+						TestType: armtestbase.TestType("OutOfBoxTest").ToPtr(),
 						Commands: []*armtestbase.Command{
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionInstall.ToPtr(),
+								Action:            armtestbase.Action("Install").ToPtr(),
 								AlwaysRun:         to.BoolPtr(true),
 								ApplyUpdateBefore: to.BoolPtr(false),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(true),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -87,11 +89,11 @@ func ExamplePackagesClient_BeginCreate() {
 							},
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionLaunch.ToPtr(),
+								Action:            armtestbase.Action("Launch").ToPtr(),
 								AlwaysRun:         to.BoolPtr(false),
 								ApplyUpdateBefore: to.BoolPtr(true),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(false),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -99,11 +101,11 @@ func ExamplePackagesClient_BeginCreate() {
 							},
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionClose.ToPtr(),
+								Action:            armtestbase.Action("Close").ToPtr(),
 								AlwaysRun:         to.BoolPtr(false),
 								ApplyUpdateBefore: to.BoolPtr(false),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(false),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -111,11 +113,11 @@ func ExamplePackagesClient_BeginCreate() {
 							},
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionUninstall.ToPtr(),
+								Action:            armtestbase.Action("Uninstall").ToPtr(),
 								AlwaysRun:         to.BoolPtr(true),
 								ApplyUpdateBefore: to.BoolPtr(false),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(false),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -133,7 +135,7 @@ func ExamplePackagesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PackageResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PackagesClientCreateResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/PackageUpdate.json
@@ -163,15 +165,15 @@ func ExamplePackagesClient_BeginUpdate() {
 				Tests: []*armtestbase.Test{
 					{
 						IsActive: to.BoolPtr(true),
-						TestType: armtestbase.TestTypeOutOfBoxTest.ToPtr(),
+						TestType: armtestbase.TestType("OutOfBoxTest").ToPtr(),
 						Commands: []*armtestbase.Command{
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionInstall.ToPtr(),
+								Action:            armtestbase.Action("Install").ToPtr(),
 								AlwaysRun:         to.BoolPtr(true),
 								ApplyUpdateBefore: to.BoolPtr(false),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(true),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -179,11 +181,11 @@ func ExamplePackagesClient_BeginUpdate() {
 							},
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionLaunch.ToPtr(),
+								Action:            armtestbase.Action("Launch").ToPtr(),
 								AlwaysRun:         to.BoolPtr(false),
 								ApplyUpdateBefore: to.BoolPtr(true),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(false),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -191,11 +193,11 @@ func ExamplePackagesClient_BeginUpdate() {
 							},
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionClose.ToPtr(),
+								Action:            armtestbase.Action("Close").ToPtr(),
 								AlwaysRun:         to.BoolPtr(false),
 								ApplyUpdateBefore: to.BoolPtr(false),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(false),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -203,11 +205,11 @@ func ExamplePackagesClient_BeginUpdate() {
 							},
 							{
 								Name:              to.StringPtr("<name>"),
-								Action:            armtestbase.ActionUninstall.ToPtr(),
+								Action:            armtestbase.Action("Uninstall").ToPtr(),
 								AlwaysRun:         to.BoolPtr(true),
 								ApplyUpdateBefore: to.BoolPtr(false),
 								Content:           to.StringPtr("<content>"),
-								ContentType:       armtestbase.ContentTypePath.ToPtr(),
+								ContentType:       armtestbase.ContentType("Path").ToPtr(),
 								MaxRunTime:        to.Int32Ptr(1800),
 								RestartAfter:      to.BoolPtr(false),
 								RunAsInteractive:  to.BoolPtr(true),
@@ -225,7 +227,7 @@ func ExamplePackagesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PackageResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PackagesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/PackageDelete.json
@@ -266,7 +268,7 @@ func ExamplePackagesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PackageResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PackagesClientGetResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/PackageHardDelete.json
@@ -299,7 +301,7 @@ func ExamplePackagesClient_GetDownloadURL() {
 	}
 	ctx := context.Background()
 	client := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
-	_, err = client.GetDownloadURL(ctx,
+	res, err := client.GetDownloadURL(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
 		"<package-name>",
@@ -307,4 +309,5 @@ func ExamplePackagesClient_GetDownloadURL() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PackagesClientGetDownloadURLResult)
 }

@@ -11,7 +11,6 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,49 +24,60 @@ import (
 // DenyAssignmentsClient contains the methods for the DenyAssignments group.
 // Don't use this type directly, use NewDenyAssignmentsClient() instead.
 type DenyAssignmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDenyAssignmentsClient creates a new instance of DenyAssignmentsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDenyAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DenyAssignmentsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DenyAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DenyAssignmentsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the specified deny assignment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DenyAssignmentsClient) Get(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsGetOptions) (DenyAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the deny assignment.
+// denyAssignmentID - The ID of the deny assignment to get.
+// options - DenyAssignmentsClientGetOptions contains the optional parameters for the DenyAssignmentsClient.Get method.
+func (client *DenyAssignmentsClient) Get(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsClientGetOptions) (DenyAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, denyAssignmentID, options)
 	if err != nil {
-		return DenyAssignmentsGetResponse{}, err
+		return DenyAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DenyAssignmentsGetResponse{}, err
+		return DenyAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DenyAssignmentsGetResponse{}, client.getHandleError(resp)
+		return DenyAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsGetOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if denyAssignmentID == "" {
 		return nil, errors.New("parameter denyAssignmentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{denyAssignmentId}", url.PathEscape(denyAssignmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -79,49 +89,40 @@ func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope
 }
 
 // getHandleResponse handles the Get response.
-func (client *DenyAssignmentsClient) getHandleResponse(resp *http.Response) (DenyAssignmentsGetResponse, error) {
-	result := DenyAssignmentsGetResponse{RawResponse: resp}
+func (client *DenyAssignmentsClient) getHandleResponse(resp *http.Response) (DenyAssignmentsClientGetResponse, error) {
+	result := DenyAssignmentsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignment); err != nil {
-		return DenyAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DenyAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DenyAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByID - Gets a deny assignment by ID.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DenyAssignmentsClient) GetByID(ctx context.Context, denyAssignmentID string, options *DenyAssignmentsGetByIDOptions) (DenyAssignmentsGetByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// denyAssignmentID - The fully qualified deny assignment ID. For example, use the format, /subscriptions/{guid}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId}
+// for subscription level deny assignments,
+// or /providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for tenant level deny assignments.
+// options - DenyAssignmentsClientGetByIDOptions contains the optional parameters for the DenyAssignmentsClient.GetByID method.
+func (client *DenyAssignmentsClient) GetByID(ctx context.Context, denyAssignmentID string, options *DenyAssignmentsClientGetByIDOptions) (DenyAssignmentsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, denyAssignmentID, options)
 	if err != nil {
-		return DenyAssignmentsGetByIDResponse{}, err
+		return DenyAssignmentsClientGetByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DenyAssignmentsGetByIDResponse{}, err
+		return DenyAssignmentsClientGetByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DenyAssignmentsGetByIDResponse{}, client.getByIDHandleError(resp)
+		return DenyAssignmentsClientGetByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, denyAssignmentID string, options *DenyAssignmentsGetByIDOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, denyAssignmentID string, options *DenyAssignmentsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{denyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{denyAssignmentId}", denyAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,49 +134,37 @@ func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, d
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *DenyAssignmentsClient) getByIDHandleResponse(resp *http.Response) (DenyAssignmentsGetByIDResponse, error) {
-	result := DenyAssignmentsGetByIDResponse{RawResponse: resp}
+func (client *DenyAssignmentsClient) getByIDHandleResponse(resp *http.Response) (DenyAssignmentsClientGetByIDResponse, error) {
+	result := DenyAssignmentsClientGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignment); err != nil {
-		return DenyAssignmentsGetByIDResponse{}, runtime.NewResponseError(err, resp)
+		return DenyAssignmentsClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// getByIDHandleError handles the GetByID error response.
-func (client *DenyAssignmentsClient) getByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets all deny assignments for the subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DenyAssignmentsClient) List(options *DenyAssignmentsListOptions) *DenyAssignmentsListPager {
-	return &DenyAssignmentsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.List method.
+func (client *DenyAssignmentsClient) List(options *DenyAssignmentsClientListOptions) *DenyAssignmentsClientListPager {
+	return &DenyAssignmentsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DenyAssignmentsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DenyAssignmentsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DenyAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DenyAssignmentsClient) listCreateRequest(ctx context.Context, options *DenyAssignmentsListOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) listCreateRequest(ctx context.Context, options *DenyAssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/denyAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,43 +179,37 @@ func (client *DenyAssignmentsClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *DenyAssignmentsClient) listHandleResponse(resp *http.Response) (DenyAssignmentsListResponse, error) {
-	result := DenyAssignmentsListResponse{RawResponse: resp}
+func (client *DenyAssignmentsClient) listHandleResponse(resp *http.Response) (DenyAssignmentsClientListResponse, error) {
+	result := DenyAssignmentsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListResponse{}, runtime.NewResponseError(err, resp)
+		return DenyAssignmentsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DenyAssignmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForResource - Gets deny assignments for a resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DenyAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *DenyAssignmentsListForResourceOptions) *DenyAssignmentsListForResourcePager {
-	return &DenyAssignmentsListForResourcePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourcePath - The parent resource identity.
+// resourceType - The resource type of the resource.
+// resourceName - The name of the resource to get deny assignments for.
+// options - DenyAssignmentsClientListForResourceOptions contains the optional parameters for the DenyAssignmentsClient.ListForResource
+// method.
+func (client *DenyAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *DenyAssignmentsClientListForResourceOptions) *DenyAssignmentsClientListForResourcePager {
+	return &DenyAssignmentsClientListForResourcePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
 		},
-		advancer: func(ctx context.Context, resp DenyAssignmentsListForResourceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DenyAssignmentsClientListForResourceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DenyAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *DenyAssignmentsListForResourceOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *DenyAssignmentsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/denyAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -243,7 +226,7 @@ func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,43 +241,33 @@ func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 }
 
 // listForResourceHandleResponse handles the ListForResource response.
-func (client *DenyAssignmentsClient) listForResourceHandleResponse(resp *http.Response) (DenyAssignmentsListForResourceResponse, error) {
-	result := DenyAssignmentsListForResourceResponse{RawResponse: resp}
+func (client *DenyAssignmentsClient) listForResourceHandleResponse(resp *http.Response) (DenyAssignmentsClientListForResourceResponse, error) {
+	result := DenyAssignmentsClientListForResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListForResourceResponse{}, runtime.NewResponseError(err, resp)
+		return DenyAssignmentsClientListForResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// listForResourceHandleError handles the ListForResource error response.
-func (client *DenyAssignmentsClient) listForResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForResourceGroup - Gets deny assignments for a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DenyAssignmentsClient) ListForResourceGroup(resourceGroupName string, options *DenyAssignmentsListForResourceGroupOptions) *DenyAssignmentsListForResourceGroupPager {
-	return &DenyAssignmentsListForResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.ListForResourceGroup
+// method.
+func (client *DenyAssignmentsClient) ListForResourceGroup(resourceGroupName string, options *DenyAssignmentsClientListForResourceGroupOptions) *DenyAssignmentsClientListForResourceGroupPager {
+	return &DenyAssignmentsClientListForResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DenyAssignmentsListForResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DenyAssignmentsClientListForResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DenyAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DenyAssignmentsListForResourceGroupOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DenyAssignmentsClientListForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/denyAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,7 +277,7 @@ func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,46 +292,36 @@ func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 }
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
-func (client *DenyAssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (DenyAssignmentsListForResourceGroupResponse, error) {
-	result := DenyAssignmentsListForResourceGroupResponse{RawResponse: resp}
+func (client *DenyAssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (DenyAssignmentsClientListForResourceGroupResponse, error) {
+	result := DenyAssignmentsClientListForResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListForResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DenyAssignmentsClientListForResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listForResourceGroupHandleError handles the ListForResourceGroup error response.
-func (client *DenyAssignmentsClient) listForResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListForScope - Gets deny assignments for a scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DenyAssignmentsClient) ListForScope(scope string, options *DenyAssignmentsListForScopeOptions) *DenyAssignmentsListForScopePager {
-	return &DenyAssignmentsListForScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope of the deny assignments.
+// options - DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.ListForScope
+// method.
+func (client *DenyAssignmentsClient) ListForScope(scope string, options *DenyAssignmentsClientListForScopeOptions) *DenyAssignmentsClientListForScopePager {
+	return &DenyAssignmentsClientListForScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForScopeCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp DenyAssignmentsListForScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DenyAssignmentsClientListForScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DenyAssignmentListResult.NextLink)
 		},
 	}
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *DenyAssignmentsListForScopeOptions) (*policy.Request, error) {
+func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *DenyAssignmentsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/denyAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -373,23 +336,10 @@ func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Conte
 }
 
 // listForScopeHandleResponse handles the ListForScope response.
-func (client *DenyAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (DenyAssignmentsListForScopeResponse, error) {
-	result := DenyAssignmentsListForScopeResponse{RawResponse: resp}
+func (client *DenyAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (DenyAssignmentsClientListForScopeResponse, error) {
+	result := DenyAssignmentsClientListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DenyAssignmentListResult); err != nil {
-		return DenyAssignmentsListForScopeResponse{}, runtime.NewResponseError(err, resp)
+		return DenyAssignmentsClientListForScopeResponse{}, err
 	}
 	return result, nil
-}
-
-// listForScopeHandleError handles the ListForScope error response.
-func (client *DenyAssignmentsClient) listForScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

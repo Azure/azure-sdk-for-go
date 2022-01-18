@@ -52,7 +52,7 @@ func ExampleVendorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Vendor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VendorsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorCreate.json
@@ -65,7 +65,7 @@ func ExampleVendorsClient_BeginCreateOrUpdate() {
 	client := armhybridnetwork.NewVendorsClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<vendor-name>",
-		&armhybridnetwork.VendorsBeginCreateOrUpdateOptions{Parameters: &armhybridnetwork.Vendor{}})
+		&armhybridnetwork.VendorsClientBeginCreateOrUpdateOptions{Parameters: &armhybridnetwork.Vendor{}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func ExampleVendorsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Vendor.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VendorsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorListBySubscription.json
@@ -85,12 +85,16 @@ func ExampleVendorsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armhybridnetwork.NewVendorsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Vendor.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

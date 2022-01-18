@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// ClustersListByResourceGroupPager provides operations for iterating over paged responses.
-type ClustersListByResourceGroupPager struct {
+// ClustersClientListByResourceGroupPager provides operations for iterating over paged responses.
+type ClustersClientListByResourceGroupPager struct {
 	client    *ClustersClient
-	current   ClustersListByResourceGroupResponse
+	current   ClustersClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ClustersListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClustersClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ClustersListByResourceGroupPager) Err() error {
+func (p *ClustersClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *ClustersClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ClustersListByResourceGroupResponse page.
-func (p *ClustersListByResourceGroupPager) PageResponse() ClustersListByResourceGroupResponse {
+// PageResponse returns the current ClustersClientListByResourceGroupResponse page.
+func (p *ClustersClientListByResourceGroupPager) PageResponse() ClustersClientListByResourceGroupResponse {
 	return p.current
 }
 
-// ClustersListPager provides operations for iterating over paged responses.
-type ClustersListPager struct {
+// ClustersClientListPager provides operations for iterating over paged responses.
+type ClustersClientListPager struct {
 	client    *ClustersClient
-	current   ClustersListResponse
+	current   ClustersClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, ClustersListResponse) (*policy.Request, error)
+	advancer  func(context.Context, ClustersClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *ClustersListPager) Err() error {
+func (p *ClustersClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *ClustersListPager) NextPage(ctx context.Context) bool {
+func (p *ClustersClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *ClustersListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *ClustersListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current ClustersListResponse page.
-func (p *ClustersListPager) PageResponse() ClustersListResponse {
+// PageResponse returns the current ClustersClientListResponse page.
+func (p *ClustersClientListPager) PageResponse() ClustersClientListResponse {
 	return p.current
 }
 
-// DataSourcesListByWorkspacePager provides operations for iterating over paged responses.
-type DataSourcesListByWorkspacePager struct {
+// DataSourcesClientListByWorkspacePager provides operations for iterating over paged responses.
+type DataSourcesClientListByWorkspacePager struct {
 	client    *DataSourcesClient
-	current   DataSourcesListByWorkspaceResponse
+	current   DataSourcesClientListByWorkspaceResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, DataSourcesListByWorkspaceResponse) (*policy.Request, error)
+	advancer  func(context.Context, DataSourcesClientListByWorkspaceResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *DataSourcesListByWorkspacePager) Err() error {
+func (p *DataSourcesClientListByWorkspacePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *DataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
+func (p *DataSourcesClientListByWorkspacePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *DataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByWorkspaceHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByWorkspaceHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *DataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current DataSourcesListByWorkspaceResponse page.
-func (p *DataSourcesListByWorkspacePager) PageResponse() DataSourcesListByWorkspaceResponse {
+// PageResponse returns the current DataSourcesClientListByWorkspaceResponse page.
+func (p *DataSourcesClientListByWorkspacePager) PageResponse() DataSourcesClientListByWorkspaceResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// StorageInsightConfigsListByWorkspacePager provides operations for iterating over paged responses.
-type StorageInsightConfigsListByWorkspacePager struct {
+// StorageInsightConfigsClientListByWorkspacePager provides operations for iterating over paged responses.
+type StorageInsightConfigsClientListByWorkspacePager struct {
 	client    *StorageInsightConfigsClient
-	current   StorageInsightConfigsListByWorkspaceResponse
+	current   StorageInsightConfigsClientListByWorkspaceResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, StorageInsightConfigsListByWorkspaceResponse) (*policy.Request, error)
+	advancer  func(context.Context, StorageInsightConfigsClientListByWorkspaceResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *StorageInsightConfigsListByWorkspacePager) Err() error {
+func (p *StorageInsightConfigsClientListByWorkspacePager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *StorageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context) bool {
+func (p *StorageInsightConfigsClientListByWorkspacePager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *StorageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByWorkspaceHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByWorkspaceHandleResponse(resp)
@@ -281,7 +281,7 @@ func (p *StorageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context
 	return true
 }
 
-// PageResponse returns the current StorageInsightConfigsListByWorkspaceResponse page.
-func (p *StorageInsightConfigsListByWorkspacePager) PageResponse() StorageInsightConfigsListByWorkspaceResponse {
+// PageResponse returns the current StorageInsightConfigsClientListByWorkspaceResponse page.
+func (p *StorageInsightConfigsClientListByWorkspacePager) PageResponse() StorageInsightConfigsClientListByWorkspaceResponse {
 	return p.current
 }

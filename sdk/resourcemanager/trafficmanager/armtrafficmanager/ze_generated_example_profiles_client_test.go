@@ -17,25 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager"
 )
 
-// x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/NameAvailabilityTest_NameAvailable-POST-example-21.json
-func ExampleProfilesClient_CheckTrafficManagerRelativeDNSNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckTrafficManagerRelativeDNSNameAvailability(ctx,
-		armtrafficmanager.CheckTrafficManagerRelativeDNSNameAvailabilityParameters{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-ByResourceGroup.json
 func ExampleProfilesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -44,12 +25,13 @@ func ExampleProfilesClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProfilesClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-BySubscription.json
@@ -60,11 +42,12 @@ func ExampleProfilesClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
+	res, err := client.ListBySubscription(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProfilesClientListBySubscriptionResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-GET-WithEndpoints.json
@@ -82,7 +65,7 @@ func ExampleProfilesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Profile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProfilesClientGetResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-PUT-MultiValue.json
@@ -97,9 +80,7 @@ func ExampleProfilesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<profile-name>",
 		armtrafficmanager.Profile{
-			TrackedResource: armtrafficmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armtrafficmanager.ProfileProperties{
 				DNSConfig: &armtrafficmanager.DNSConfig{
 					RelativeName: to.StringPtr("<relative-name>"),
@@ -109,18 +90,18 @@ func ExampleProfilesClient_CreateOrUpdate() {
 				MonitorConfig: &armtrafficmanager.MonitorConfig{
 					Path:     to.StringPtr("<path>"),
 					Port:     to.Int64Ptr(80),
-					Protocol: armtrafficmanager.MonitorProtocolHTTP.ToPtr(),
+					Protocol: armtrafficmanager.MonitorProtocol("HTTP").ToPtr(),
 				},
-				ProfileStatus:               armtrafficmanager.ProfileStatusEnabled.ToPtr(),
-				TrafficRoutingMethod:        armtrafficmanager.TrafficRoutingMethodMultiValue.ToPtr(),
-				TrafficViewEnrollmentStatus: armtrafficmanager.TrafficViewEnrollmentStatusDisabled.ToPtr(),
+				ProfileStatus:               armtrafficmanager.ProfileStatus("Enabled").ToPtr(),
+				TrafficRoutingMethod:        armtrafficmanager.TrafficRoutingMethod("MultiValue").ToPtr(),
+				TrafficViewEnrollmentStatus: armtrafficmanager.TrafficViewEnrollmentStatus("Disabled").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Profile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProfilesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-DELETE.json
@@ -131,13 +112,14 @@ func ExampleProfilesClient_Delete() {
 	}
 	ctx := context.Background()
 	client := armtrafficmanager.NewProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.Delete(ctx,
+	res, err := client.Delete(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProfilesClientDeleteResult)
 }
 
 // x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/Profile-PATCH-MonitorConfig.json
@@ -168,7 +150,7 @@ func ExampleProfilesClient_Update() {
 					Port:                      to.Int64Ptr(80),
 					TimeoutInSeconds:          to.Int64Ptr(6),
 					ToleratedNumberOfFailures: to.Int64Ptr(4),
-					Protocol:                  armtrafficmanager.MonitorProtocolHTTP.ToPtr(),
+					Protocol:                  armtrafficmanager.MonitorProtocol("HTTP").ToPtr(),
 				},
 			},
 		},
@@ -176,5 +158,5 @@ func ExampleProfilesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Profile.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProfilesClientUpdateResult)
 }

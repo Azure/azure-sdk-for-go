@@ -30,12 +30,12 @@ func ExampleServerSecurityAlertPoliciesClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
-		armmariadb.SecurityAlertPolicyNameDefault,
+		armmariadb.SecurityAlertPolicyName("Default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerSecurityAlertPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerSecurityAlertPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsCreateMax.json
@@ -49,7 +49,7 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
-		armmariadb.SecurityAlertPolicyNameDefault,
+		armmariadb.SecurityAlertPolicyName("Default"),
 		armmariadb.ServerSecurityAlertPolicy{
 			Properties: &armmariadb.SecurityAlertPolicyProperties{
 				DisabledAlerts: []*string{
@@ -72,7 +72,7 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ServerSecurityAlertPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ServerSecurityAlertPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ServerSecurityAlertsListByServer.json
@@ -86,12 +86,16 @@ func ExampleServerSecurityAlertPoliciesClient_ListByServer() {
 	pager := client.ListByServer("<resource-group-name>",
 		"<server-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServerSecurityAlertPolicy.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

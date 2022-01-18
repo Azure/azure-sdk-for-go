@@ -11,7 +11,6 @@ package armmarketplace
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,51 @@ import (
 // PrivateStoreClient contains the methods for the PrivateStore group.
 // Don't use this type directly, use NewPrivateStoreClient() instead.
 type PrivateStoreClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPrivateStoreClient creates a new instance of PrivateStoreClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateStoreClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateStoreClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateStoreClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateStoreClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // AcknowledgeOfferNotification - Acknowledge notification for offer
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) AcknowledgeOfferNotification(ctx context.Context, privateStoreID string, offerID string, options *PrivateStoreAcknowledgeOfferNotificationOptions) (PrivateStoreAcknowledgeOfferNotificationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// offerID - The offer ID to update or delete
+// options - PrivateStoreClientAcknowledgeOfferNotificationOptions contains the optional parameters for the PrivateStoreClient.AcknowledgeOfferNotification
+// method.
+func (client *PrivateStoreClient) AcknowledgeOfferNotification(ctx context.Context, privateStoreID string, offerID string, options *PrivateStoreClientAcknowledgeOfferNotificationOptions) (PrivateStoreClientAcknowledgeOfferNotificationResponse, error) {
 	req, err := client.acknowledgeOfferNotificationCreateRequest(ctx, privateStoreID, offerID, options)
 	if err != nil {
-		return PrivateStoreAcknowledgeOfferNotificationResponse{}, err
+		return PrivateStoreClientAcknowledgeOfferNotificationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreAcknowledgeOfferNotificationResponse{}, err
+		return PrivateStoreClientAcknowledgeOfferNotificationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreAcknowledgeOfferNotificationResponse{}, client.acknowledgeOfferNotificationHandleError(resp)
+		return PrivateStoreClientAcknowledgeOfferNotificationResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateStoreAcknowledgeOfferNotificationResponse{RawResponse: resp}, nil
+	return PrivateStoreClientAcknowledgeOfferNotificationResponse{RawResponse: resp}, nil
 }
 
 // acknowledgeOfferNotificationCreateRequest creates the AcknowledgeOfferNotification request.
-func (client *PrivateStoreClient) acknowledgeOfferNotificationCreateRequest(ctx context.Context, privateStoreID string, offerID string, options *PrivateStoreAcknowledgeOfferNotificationOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) acknowledgeOfferNotificationCreateRequest(ctx context.Context, privateStoreID string, offerID string, options *PrivateStoreClientAcknowledgeOfferNotificationOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/offers/{offerId}/acknowledgeNotification"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -69,7 +78,7 @@ func (client *PrivateStoreClient) acknowledgeOfferNotificationCreateRequest(ctx 
 		return nil, errors.New("parameter offerID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,44 +92,34 @@ func (client *PrivateStoreClient) acknowledgeOfferNotificationCreateRequest(ctx 
 	return req, nil
 }
 
-// acknowledgeOfferNotificationHandleError handles the AcknowledgeOfferNotification error response.
-func (client *PrivateStoreClient) acknowledgeOfferNotificationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // AdminRequestApprovalsList - Get list of admin request approvals
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) AdminRequestApprovalsList(ctx context.Context, privateStoreID string, options *PrivateStoreAdminRequestApprovalsListOptions) (PrivateStoreAdminRequestApprovalsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientAdminRequestApprovalsListOptions contains the optional parameters for the PrivateStoreClient.AdminRequestApprovalsList
+// method.
+func (client *PrivateStoreClient) AdminRequestApprovalsList(ctx context.Context, privateStoreID string, options *PrivateStoreClientAdminRequestApprovalsListOptions) (PrivateStoreClientAdminRequestApprovalsListResponse, error) {
 	req, err := client.adminRequestApprovalsListCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreAdminRequestApprovalsListResponse{}, err
+		return PrivateStoreClientAdminRequestApprovalsListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreAdminRequestApprovalsListResponse{}, err
+		return PrivateStoreClientAdminRequestApprovalsListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreAdminRequestApprovalsListResponse{}, client.adminRequestApprovalsListHandleError(resp)
+		return PrivateStoreClientAdminRequestApprovalsListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.adminRequestApprovalsListHandleResponse(resp)
 }
 
 // adminRequestApprovalsListCreateRequest creates the AdminRequestApprovalsList request.
-func (client *PrivateStoreClient) adminRequestApprovalsListCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreAdminRequestApprovalsListOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) adminRequestApprovalsListCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientAdminRequestApprovalsListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/adminRequestApprovals"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,52 +131,42 @@ func (client *PrivateStoreClient) adminRequestApprovalsListCreateRequest(ctx con
 }
 
 // adminRequestApprovalsListHandleResponse handles the AdminRequestApprovalsList response.
-func (client *PrivateStoreClient) adminRequestApprovalsListHandleResponse(resp *http.Response) (PrivateStoreAdminRequestApprovalsListResponse, error) {
-	result := PrivateStoreAdminRequestApprovalsListResponse{RawResponse: resp}
+func (client *PrivateStoreClient) adminRequestApprovalsListHandleResponse(resp *http.Response) (PrivateStoreClientAdminRequestApprovalsListResponse, error) {
+	result := PrivateStoreClientAdminRequestApprovalsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminRequestApprovalsList); err != nil {
-		return PrivateStoreAdminRequestApprovalsListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientAdminRequestApprovalsListResponse{}, err
 	}
 	return result, nil
 }
 
-// adminRequestApprovalsListHandleError handles the AdminRequestApprovalsList error response.
-func (client *PrivateStoreClient) adminRequestApprovalsListHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BillingAccounts - Tenant billing accounts names
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) BillingAccounts(ctx context.Context, privateStoreID string, options *PrivateStoreBillingAccountsOptions) (PrivateStoreBillingAccountsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientBillingAccountsOptions contains the optional parameters for the PrivateStoreClient.BillingAccounts
+// method.
+func (client *PrivateStoreClient) BillingAccounts(ctx context.Context, privateStoreID string, options *PrivateStoreClientBillingAccountsOptions) (PrivateStoreClientBillingAccountsResponse, error) {
 	req, err := client.billingAccountsCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreBillingAccountsResponse{}, err
+		return PrivateStoreClientBillingAccountsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreBillingAccountsResponse{}, err
+		return PrivateStoreClientBillingAccountsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreBillingAccountsResponse{}, client.billingAccountsHandleError(resp)
+		return PrivateStoreClientBillingAccountsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.billingAccountsHandleResponse(resp)
 }
 
 // billingAccountsCreateRequest creates the BillingAccounts request.
-func (client *PrivateStoreClient) billingAccountsCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreBillingAccountsOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) billingAccountsCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientBillingAccountsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/billingAccounts"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,52 +178,42 @@ func (client *PrivateStoreClient) billingAccountsCreateRequest(ctx context.Conte
 }
 
 // billingAccountsHandleResponse handles the BillingAccounts response.
-func (client *PrivateStoreClient) billingAccountsHandleResponse(resp *http.Response) (PrivateStoreBillingAccountsResponse, error) {
-	result := PrivateStoreBillingAccountsResponse{RawResponse: resp}
+func (client *PrivateStoreClient) billingAccountsHandleResponse(resp *http.Response) (PrivateStoreClientBillingAccountsResponse, error) {
+	result := PrivateStoreClientBillingAccountsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingAccountsResponse); err != nil {
-		return PrivateStoreBillingAccountsResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientBillingAccountsResponse{}, err
 	}
 	return result, nil
 }
 
-// billingAccountsHandleError handles the BillingAccounts error response.
-func (client *PrivateStoreClient) billingAccountsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BulkCollectionsAction - Perform an action on bulk collections
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) BulkCollectionsAction(ctx context.Context, privateStoreID string, options *PrivateStoreBulkCollectionsActionOptions) (PrivateStoreBulkCollectionsActionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientBulkCollectionsActionOptions contains the optional parameters for the PrivateStoreClient.BulkCollectionsAction
+// method.
+func (client *PrivateStoreClient) BulkCollectionsAction(ctx context.Context, privateStoreID string, options *PrivateStoreClientBulkCollectionsActionOptions) (PrivateStoreClientBulkCollectionsActionResponse, error) {
 	req, err := client.bulkCollectionsActionCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreBulkCollectionsActionResponse{}, err
+		return PrivateStoreClientBulkCollectionsActionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreBulkCollectionsActionResponse{}, err
+		return PrivateStoreClientBulkCollectionsActionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreBulkCollectionsActionResponse{}, client.bulkCollectionsActionHandleError(resp)
+		return PrivateStoreClientBulkCollectionsActionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.bulkCollectionsActionHandleResponse(resp)
 }
 
 // bulkCollectionsActionCreateRequest creates the BulkCollectionsAction request.
-func (client *PrivateStoreClient) bulkCollectionsActionCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreBulkCollectionsActionOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) bulkCollectionsActionCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientBulkCollectionsActionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/bulkCollectionsAction"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,53 +228,43 @@ func (client *PrivateStoreClient) bulkCollectionsActionCreateRequest(ctx context
 }
 
 // bulkCollectionsActionHandleResponse handles the BulkCollectionsAction response.
-func (client *PrivateStoreClient) bulkCollectionsActionHandleResponse(resp *http.Response) (PrivateStoreBulkCollectionsActionResponse, error) {
-	result := PrivateStoreBulkCollectionsActionResponse{RawResponse: resp}
+func (client *PrivateStoreClient) bulkCollectionsActionHandleResponse(resp *http.Response) (PrivateStoreClientBulkCollectionsActionResponse, error) {
+	result := PrivateStoreClientBulkCollectionsActionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCollectionsResponse); err != nil {
-		return PrivateStoreBulkCollectionsActionResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientBulkCollectionsActionResponse{}, err
 	}
 	return result, nil
 }
 
-// bulkCollectionsActionHandleError handles the BulkCollectionsAction error response.
-func (client *PrivateStoreClient) bulkCollectionsActionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CollectionsToSubscriptionsMapping - For a given subscriptions list, the API will return a map of collections and the related subscriptions from the supplied
-// list.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) CollectionsToSubscriptionsMapping(ctx context.Context, privateStoreID string, options *PrivateStoreCollectionsToSubscriptionsMappingOptions) (PrivateStoreCollectionsToSubscriptionsMappingResponse, error) {
+// CollectionsToSubscriptionsMapping - For a given subscriptions list, the API will return a map of collections and the related
+// subscriptions from the supplied list.
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientCollectionsToSubscriptionsMappingOptions contains the optional parameters for the PrivateStoreClient.CollectionsToSubscriptionsMapping
+// method.
+func (client *PrivateStoreClient) CollectionsToSubscriptionsMapping(ctx context.Context, privateStoreID string, options *PrivateStoreClientCollectionsToSubscriptionsMappingOptions) (PrivateStoreClientCollectionsToSubscriptionsMappingResponse, error) {
 	req, err := client.collectionsToSubscriptionsMappingCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreCollectionsToSubscriptionsMappingResponse{}, err
+		return PrivateStoreClientCollectionsToSubscriptionsMappingResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionsToSubscriptionsMappingResponse{}, err
+		return PrivateStoreClientCollectionsToSubscriptionsMappingResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCollectionsToSubscriptionsMappingResponse{}, client.collectionsToSubscriptionsMappingHandleError(resp)
+		return PrivateStoreClientCollectionsToSubscriptionsMappingResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.collectionsToSubscriptionsMappingHandleResponse(resp)
 }
 
 // collectionsToSubscriptionsMappingCreateRequest creates the CollectionsToSubscriptionsMapping request.
-func (client *PrivateStoreClient) collectionsToSubscriptionsMappingCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreCollectionsToSubscriptionsMappingOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) collectionsToSubscriptionsMappingCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientCollectionsToSubscriptionsMappingOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collectionsToSubscriptionsMapping"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,46 +279,37 @@ func (client *PrivateStoreClient) collectionsToSubscriptionsMappingCreateRequest
 }
 
 // collectionsToSubscriptionsMappingHandleResponse handles the CollectionsToSubscriptionsMapping response.
-func (client *PrivateStoreClient) collectionsToSubscriptionsMappingHandleResponse(resp *http.Response) (PrivateStoreCollectionsToSubscriptionsMappingResponse, error) {
-	result := PrivateStoreCollectionsToSubscriptionsMappingResponse{RawResponse: resp}
+func (client *PrivateStoreClient) collectionsToSubscriptionsMappingHandleResponse(resp *http.Response) (PrivateStoreClientCollectionsToSubscriptionsMappingResponse, error) {
+	result := PrivateStoreClientCollectionsToSubscriptionsMappingResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CollectionsToSubscriptionsMappingResponse); err != nil {
-		return PrivateStoreCollectionsToSubscriptionsMappingResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientCollectionsToSubscriptionsMappingResponse{}, err
 	}
 	return result, nil
 }
 
-// collectionsToSubscriptionsMappingHandleError handles the CollectionsToSubscriptionsMapping error response.
-func (client *PrivateStoreClient) collectionsToSubscriptionsMappingHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateApprovalRequest - Create approval request
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) CreateApprovalRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreCreateApprovalRequestOptions) (PrivateStoreCreateApprovalRequestResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// requestApprovalID - The request approval ID to get create or update
+// options - PrivateStoreClientCreateApprovalRequestOptions contains the optional parameters for the PrivateStoreClient.CreateApprovalRequest
+// method.
+func (client *PrivateStoreClient) CreateApprovalRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientCreateApprovalRequestOptions) (PrivateStoreClientCreateApprovalRequestResponse, error) {
 	req, err := client.createApprovalRequestCreateRequest(ctx, privateStoreID, requestApprovalID, options)
 	if err != nil {
-		return PrivateStoreCreateApprovalRequestResponse{}, err
+		return PrivateStoreClientCreateApprovalRequestResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCreateApprovalRequestResponse{}, err
+		return PrivateStoreClientCreateApprovalRequestResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCreateApprovalRequestResponse{}, client.createApprovalRequestHandleError(resp)
+		return PrivateStoreClientCreateApprovalRequestResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createApprovalRequestHandleResponse(resp)
 }
 
 // createApprovalRequestCreateRequest creates the CreateApprovalRequest request.
-func (client *PrivateStoreClient) createApprovalRequestCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreCreateApprovalRequestOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) createApprovalRequestCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientCreateApprovalRequestOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/requestApprovals/{requestApprovalId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -359,7 +319,7 @@ func (client *PrivateStoreClient) createApprovalRequestCreateRequest(ctx context
 		return nil, errors.New("parameter requestApprovalID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestApprovalId}", url.PathEscape(requestApprovalID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -374,52 +334,42 @@ func (client *PrivateStoreClient) createApprovalRequestCreateRequest(ctx context
 }
 
 // createApprovalRequestHandleResponse handles the CreateApprovalRequest response.
-func (client *PrivateStoreClient) createApprovalRequestHandleResponse(resp *http.Response) (PrivateStoreCreateApprovalRequestResponse, error) {
-	result := PrivateStoreCreateApprovalRequestResponse{RawResponse: resp}
+func (client *PrivateStoreClient) createApprovalRequestHandleResponse(resp *http.Response) (PrivateStoreClientCreateApprovalRequestResponse, error) {
+	result := PrivateStoreClientCreateApprovalRequestResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestApprovalResource); err != nil {
-		return PrivateStoreCreateApprovalRequestResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientCreateApprovalRequestResponse{}, err
 	}
 	return result, nil
 }
 
-// createApprovalRequestHandleError handles the CreateApprovalRequest error response.
-func (client *PrivateStoreClient) createApprovalRequestHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdate - Changes private store properties
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) CreateOrUpdate(ctx context.Context, privateStoreID string, options *PrivateStoreCreateOrUpdateOptions) (PrivateStoreCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreClient.CreateOrUpdate
+// method.
+func (client *PrivateStoreClient) CreateOrUpdate(ctx context.Context, privateStoreID string, options *PrivateStoreClientCreateOrUpdateOptions) (PrivateStoreClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreCreateOrUpdateResponse{}, err
+		return PrivateStoreClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCreateOrUpdateResponse{}, err
+		return PrivateStoreClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PrivateStoreClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateStoreCreateOrUpdateResponse{RawResponse: resp}, nil
+	return PrivateStoreClientCreateOrUpdateResponse{RawResponse: resp}, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateStoreClient) createOrUpdateCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) createOrUpdateCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -433,44 +383,33 @@ func (client *PrivateStoreClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateStoreClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the private store. All that is not saved will be lost.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) Delete(ctx context.Context, privateStoreID string, options *PrivateStoreDeleteOptions) (PrivateStoreDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientDeleteOptions contains the optional parameters for the PrivateStoreClient.Delete method.
+func (client *PrivateStoreClient) Delete(ctx context.Context, privateStoreID string, options *PrivateStoreClientDeleteOptions) (PrivateStoreClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreDeleteResponse{}, err
+		return PrivateStoreClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreDeleteResponse{}, err
+		return PrivateStoreClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PrivateStoreDeleteResponse{}, client.deleteHandleError(resp)
+		return PrivateStoreClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateStoreDeleteResponse{RawResponse: resp}, nil
+	return PrivateStoreClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateStoreClient) deleteCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreDeleteOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) deleteCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -481,44 +420,33 @@ func (client *PrivateStoreClient) deleteCreateRequest(ctx context.Context, priva
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateStoreClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get information about the private store
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) Get(ctx context.Context, privateStoreID string, options *PrivateStoreGetOptions) (PrivateStoreGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientGetOptions contains the optional parameters for the PrivateStoreClient.Get method.
+func (client *PrivateStoreClient) Get(ctx context.Context, privateStoreID string, options *PrivateStoreClientGetOptions) (PrivateStoreClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreGetResponse{}, err
+		return PrivateStoreClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreGetResponse{}, err
+		return PrivateStoreClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreGetResponse{}, client.getHandleError(resp)
+		return PrivateStoreClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateStoreClient) getCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreGetOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) getCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -530,46 +458,38 @@ func (client *PrivateStoreClient) getCreateRequest(ctx context.Context, privateS
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateStoreClient) getHandleResponse(resp *http.Response) (PrivateStoreGetResponse, error) {
-	result := PrivateStoreGetResponse{RawResponse: resp}
+func (client *PrivateStoreClient) getHandleResponse(resp *http.Response) (PrivateStoreClientGetResponse, error) {
+	result := PrivateStoreClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateStore); err != nil {
-		return PrivateStoreGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateStoreClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAdminRequestApproval - Get open approval requests
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) GetAdminRequestApproval(ctx context.Context, privateStoreID string, adminRequestApprovalID string, publisherID string, options *PrivateStoreGetAdminRequestApprovalOptions) (PrivateStoreGetAdminRequestApprovalResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// adminRequestApprovalID - The admin request approval ID to get create or update
+// publisherID - The publisher id of this offer.
+// options - PrivateStoreClientGetAdminRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.GetAdminRequestApproval
+// method.
+func (client *PrivateStoreClient) GetAdminRequestApproval(ctx context.Context, privateStoreID string, adminRequestApprovalID string, publisherID string, options *PrivateStoreClientGetAdminRequestApprovalOptions) (PrivateStoreClientGetAdminRequestApprovalResponse, error) {
 	req, err := client.getAdminRequestApprovalCreateRequest(ctx, privateStoreID, adminRequestApprovalID, publisherID, options)
 	if err != nil {
-		return PrivateStoreGetAdminRequestApprovalResponse{}, err
+		return PrivateStoreClientGetAdminRequestApprovalResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreGetAdminRequestApprovalResponse{}, err
+		return PrivateStoreClientGetAdminRequestApprovalResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreGetAdminRequestApprovalResponse{}, client.getAdminRequestApprovalHandleError(resp)
+		return PrivateStoreClientGetAdminRequestApprovalResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAdminRequestApprovalHandleResponse(resp)
 }
 
 // getAdminRequestApprovalCreateRequest creates the GetAdminRequestApproval request.
-func (client *PrivateStoreClient) getAdminRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, adminRequestApprovalID string, publisherID string, options *PrivateStoreGetAdminRequestApprovalOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) getAdminRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, adminRequestApprovalID string, publisherID string, options *PrivateStoreClientGetAdminRequestApprovalOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/adminRequestApprovals/{adminRequestApprovalId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -579,7 +499,7 @@ func (client *PrivateStoreClient) getAdminRequestApprovalCreateRequest(ctx conte
 		return nil, errors.New("parameter adminRequestApprovalID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{adminRequestApprovalId}", url.PathEscape(adminRequestApprovalID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -592,52 +512,42 @@ func (client *PrivateStoreClient) getAdminRequestApprovalCreateRequest(ctx conte
 }
 
 // getAdminRequestApprovalHandleResponse handles the GetAdminRequestApproval response.
-func (client *PrivateStoreClient) getAdminRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreGetAdminRequestApprovalResponse, error) {
-	result := PrivateStoreGetAdminRequestApprovalResponse{RawResponse: resp}
+func (client *PrivateStoreClient) getAdminRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreClientGetAdminRequestApprovalResponse, error) {
+	result := PrivateStoreClientGetAdminRequestApprovalResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminRequestApprovalsResource); err != nil {
-		return PrivateStoreGetAdminRequestApprovalResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientGetAdminRequestApprovalResponse{}, err
 	}
 	return result, nil
 }
 
-// getAdminRequestApprovalHandleError handles the GetAdminRequestApproval error response.
-func (client *PrivateStoreClient) getAdminRequestApprovalHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetApprovalRequestsList - Get all open approval requests of current user
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) GetApprovalRequestsList(ctx context.Context, privateStoreID string, options *PrivateStoreGetApprovalRequestsListOptions) (PrivateStoreGetApprovalRequestsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientGetApprovalRequestsListOptions contains the optional parameters for the PrivateStoreClient.GetApprovalRequestsList
+// method.
+func (client *PrivateStoreClient) GetApprovalRequestsList(ctx context.Context, privateStoreID string, options *PrivateStoreClientGetApprovalRequestsListOptions) (PrivateStoreClientGetApprovalRequestsListResponse, error) {
 	req, err := client.getApprovalRequestsListCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreGetApprovalRequestsListResponse{}, err
+		return PrivateStoreClientGetApprovalRequestsListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreGetApprovalRequestsListResponse{}, err
+		return PrivateStoreClientGetApprovalRequestsListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreGetApprovalRequestsListResponse{}, client.getApprovalRequestsListHandleError(resp)
+		return PrivateStoreClientGetApprovalRequestsListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getApprovalRequestsListHandleResponse(resp)
 }
 
 // getApprovalRequestsListCreateRequest creates the GetApprovalRequestsList request.
-func (client *PrivateStoreClient) getApprovalRequestsListCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreGetApprovalRequestsListOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) getApprovalRequestsListCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientGetApprovalRequestsListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/requestApprovals"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -649,46 +559,37 @@ func (client *PrivateStoreClient) getApprovalRequestsListCreateRequest(ctx conte
 }
 
 // getApprovalRequestsListHandleResponse handles the GetApprovalRequestsList response.
-func (client *PrivateStoreClient) getApprovalRequestsListHandleResponse(resp *http.Response) (PrivateStoreGetApprovalRequestsListResponse, error) {
-	result := PrivateStoreGetApprovalRequestsListResponse{RawResponse: resp}
+func (client *PrivateStoreClient) getApprovalRequestsListHandleResponse(resp *http.Response) (PrivateStoreClientGetApprovalRequestsListResponse, error) {
+	result := PrivateStoreClientGetApprovalRequestsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestApprovalsList); err != nil {
-		return PrivateStoreGetApprovalRequestsListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientGetApprovalRequestsListResponse{}, err
 	}
 	return result, nil
 }
 
-// getApprovalRequestsListHandleError handles the GetApprovalRequestsList error response.
-func (client *PrivateStoreClient) getApprovalRequestsListHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetRequestApproval - Get open request approval details
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) GetRequestApproval(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreGetRequestApprovalOptions) (PrivateStoreGetRequestApprovalResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// requestApprovalID - The request approval ID to get create or update
+// options - PrivateStoreClientGetRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.GetRequestApproval
+// method.
+func (client *PrivateStoreClient) GetRequestApproval(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientGetRequestApprovalOptions) (PrivateStoreClientGetRequestApprovalResponse, error) {
 	req, err := client.getRequestApprovalCreateRequest(ctx, privateStoreID, requestApprovalID, options)
 	if err != nil {
-		return PrivateStoreGetRequestApprovalResponse{}, err
+		return PrivateStoreClientGetRequestApprovalResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreGetRequestApprovalResponse{}, err
+		return PrivateStoreClientGetRequestApprovalResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreGetRequestApprovalResponse{}, client.getRequestApprovalHandleError(resp)
+		return PrivateStoreClientGetRequestApprovalResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getRequestApprovalHandleResponse(resp)
 }
 
 // getRequestApprovalCreateRequest creates the GetRequestApproval request.
-func (client *PrivateStoreClient) getRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreGetRequestApprovalOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) getRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientGetRequestApprovalOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/requestApprovals/{requestApprovalId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -698,7 +599,7 @@ func (client *PrivateStoreClient) getRequestApprovalCreateRequest(ctx context.Co
 		return nil, errors.New("parameter requestApprovalID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestApprovalId}", url.PathEscape(requestApprovalID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -710,45 +611,33 @@ func (client *PrivateStoreClient) getRequestApprovalCreateRequest(ctx context.Co
 }
 
 // getRequestApprovalHandleResponse handles the GetRequestApproval response.
-func (client *PrivateStoreClient) getRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreGetRequestApprovalResponse, error) {
-	result := PrivateStoreGetRequestApprovalResponse{RawResponse: resp}
+func (client *PrivateStoreClient) getRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreClientGetRequestApprovalResponse, error) {
+	result := PrivateStoreClientGetRequestApprovalResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestApprovalResource); err != nil {
-		return PrivateStoreGetRequestApprovalResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientGetRequestApprovalResponse{}, err
 	}
 	return result, nil
 }
 
-// getRequestApprovalHandleError handles the GetRequestApproval error response.
-func (client *PrivateStoreClient) getRequestApprovalHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets the list of available private stores.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) List(options *PrivateStoreListOptions) *PrivateStoreListPager {
-	return &PrivateStoreListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateStoreClientListOptions contains the optional parameters for the PrivateStoreClient.List method.
+func (client *PrivateStoreClient) List(options *PrivateStoreClientListOptions) *PrivateStoreClientListPager {
+	return &PrivateStoreClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateStoreListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateStoreClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateStoreList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateStoreClient) listCreateRequest(ctx context.Context, options *PrivateStoreListOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) listCreateRequest(ctx context.Context, options *PrivateStoreClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -763,52 +652,42 @@ func (client *PrivateStoreClient) listCreateRequest(ctx context.Context, options
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateStoreClient) listHandleResponse(resp *http.Response) (PrivateStoreListResponse, error) {
-	result := PrivateStoreListResponse{RawResponse: resp}
+func (client *PrivateStoreClient) listHandleResponse(resp *http.Response) (PrivateStoreClientListResponse, error) {
+	result := PrivateStoreClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateStoreList); err != nil {
-		return PrivateStoreListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *PrivateStoreClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // QueryApprovedPlans - Get map of plans and related approved subscriptions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) QueryApprovedPlans(ctx context.Context, privateStoreID string, options *PrivateStoreQueryApprovedPlansOptions) (PrivateStoreQueryApprovedPlansResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientQueryApprovedPlansOptions contains the optional parameters for the PrivateStoreClient.QueryApprovedPlans
+// method.
+func (client *PrivateStoreClient) QueryApprovedPlans(ctx context.Context, privateStoreID string, options *PrivateStoreClientQueryApprovedPlansOptions) (PrivateStoreClientQueryApprovedPlansResponse, error) {
 	req, err := client.queryApprovedPlansCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreQueryApprovedPlansResponse{}, err
+		return PrivateStoreClientQueryApprovedPlansResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreQueryApprovedPlansResponse{}, err
+		return PrivateStoreClientQueryApprovedPlansResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreQueryApprovedPlansResponse{}, client.queryApprovedPlansHandleError(resp)
+		return PrivateStoreClientQueryApprovedPlansResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryApprovedPlansHandleResponse(resp)
 }
 
 // queryApprovedPlansCreateRequest creates the QueryApprovedPlans request.
-func (client *PrivateStoreClient) queryApprovedPlansCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreQueryApprovedPlansOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) queryApprovedPlansCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientQueryApprovedPlansOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/queryApprovedPlans"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -823,52 +702,42 @@ func (client *PrivateStoreClient) queryApprovedPlansCreateRequest(ctx context.Co
 }
 
 // queryApprovedPlansHandleResponse handles the QueryApprovedPlans response.
-func (client *PrivateStoreClient) queryApprovedPlansHandleResponse(resp *http.Response) (PrivateStoreQueryApprovedPlansResponse, error) {
-	result := PrivateStoreQueryApprovedPlansResponse{RawResponse: resp}
+func (client *PrivateStoreClient) queryApprovedPlansHandleResponse(resp *http.Response) (PrivateStoreClientQueryApprovedPlansResponse, error) {
+	result := PrivateStoreClientQueryApprovedPlansResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryApprovedPlansResponse); err != nil {
-		return PrivateStoreQueryApprovedPlansResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientQueryApprovedPlansResponse{}, err
 	}
 	return result, nil
 }
 
-// queryApprovedPlansHandleError handles the QueryApprovedPlans error response.
-func (client *PrivateStoreClient) queryApprovedPlansHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // QueryNotificationsState - Get private store notifications state
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) QueryNotificationsState(ctx context.Context, privateStoreID string, options *PrivateStoreQueryNotificationsStateOptions) (PrivateStoreQueryNotificationsStateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientQueryNotificationsStateOptions contains the optional parameters for the PrivateStoreClient.QueryNotificationsState
+// method.
+func (client *PrivateStoreClient) QueryNotificationsState(ctx context.Context, privateStoreID string, options *PrivateStoreClientQueryNotificationsStateOptions) (PrivateStoreClientQueryNotificationsStateResponse, error) {
 	req, err := client.queryNotificationsStateCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreQueryNotificationsStateResponse{}, err
+		return PrivateStoreClientQueryNotificationsStateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreQueryNotificationsStateResponse{}, err
+		return PrivateStoreClientQueryNotificationsStateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreQueryNotificationsStateResponse{}, client.queryNotificationsStateHandleError(resp)
+		return PrivateStoreClientQueryNotificationsStateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryNotificationsStateHandleResponse(resp)
 }
 
 // queryNotificationsStateCreateRequest creates the QueryNotificationsState request.
-func (client *PrivateStoreClient) queryNotificationsStateCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreQueryNotificationsStateOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) queryNotificationsStateCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientQueryNotificationsStateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/queryNotificationsState"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -880,52 +749,42 @@ func (client *PrivateStoreClient) queryNotificationsStateCreateRequest(ctx conte
 }
 
 // queryNotificationsStateHandleResponse handles the QueryNotificationsState response.
-func (client *PrivateStoreClient) queryNotificationsStateHandleResponse(resp *http.Response) (PrivateStoreQueryNotificationsStateResponse, error) {
-	result := PrivateStoreQueryNotificationsStateResponse{RawResponse: resp}
+func (client *PrivateStoreClient) queryNotificationsStateHandleResponse(resp *http.Response) (PrivateStoreClientQueryNotificationsStateResponse, error) {
+	result := PrivateStoreClientQueryNotificationsStateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateStoreNotificationsState); err != nil {
-		return PrivateStoreQueryNotificationsStateResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientQueryNotificationsStateResponse{}, err
 	}
 	return result, nil
 }
 
-// queryNotificationsStateHandleError handles the QueryNotificationsState error response.
-func (client *PrivateStoreClient) queryNotificationsStateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // QueryOffers - List of offers, regardless the collections
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) QueryOffers(ctx context.Context, privateStoreID string, options *PrivateStoreQueryOffersOptions) (PrivateStoreQueryOffersResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreClientQueryOffersOptions contains the optional parameters for the PrivateStoreClient.QueryOffers
+// method.
+func (client *PrivateStoreClient) QueryOffers(ctx context.Context, privateStoreID string, options *PrivateStoreClientQueryOffersOptions) (PrivateStoreClientQueryOffersResponse, error) {
 	req, err := client.queryOffersCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreQueryOffersResponse{}, err
+		return PrivateStoreClientQueryOffersResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreQueryOffersResponse{}, err
+		return PrivateStoreClientQueryOffersResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreQueryOffersResponse{}, client.queryOffersHandleError(resp)
+		return PrivateStoreClientQueryOffersResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryOffersHandleResponse(resp)
 }
 
 // queryOffersCreateRequest creates the QueryOffers request.
-func (client *PrivateStoreClient) queryOffersCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreQueryOffersOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) queryOffersCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreClientQueryOffersOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/queryOffers"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -937,46 +796,37 @@ func (client *PrivateStoreClient) queryOffersCreateRequest(ctx context.Context, 
 }
 
 // queryOffersHandleResponse handles the QueryOffers response.
-func (client *PrivateStoreClient) queryOffersHandleResponse(resp *http.Response) (PrivateStoreQueryOffersResponse, error) {
-	result := PrivateStoreQueryOffersResponse{RawResponse: resp}
+func (client *PrivateStoreClient) queryOffersHandleResponse(resp *http.Response) (PrivateStoreClientQueryOffersResponse, error) {
+	result := PrivateStoreClientQueryOffersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryOffers); err != nil {
-		return PrivateStoreQueryOffersResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientQueryOffersResponse{}, err
 	}
 	return result, nil
 }
 
-// queryOffersHandleError handles the QueryOffers error response.
-func (client *PrivateStoreClient) queryOffersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // QueryRequestApproval - Get request statuses foreach plan, this api is used as a complex GET action.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) QueryRequestApproval(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreQueryRequestApprovalOptions) (PrivateStoreQueryRequestApprovalResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// requestApprovalID - The request approval ID to get create or update
+// options - PrivateStoreClientQueryRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.QueryRequestApproval
+// method.
+func (client *PrivateStoreClient) QueryRequestApproval(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientQueryRequestApprovalOptions) (PrivateStoreClientQueryRequestApprovalResponse, error) {
 	req, err := client.queryRequestApprovalCreateRequest(ctx, privateStoreID, requestApprovalID, options)
 	if err != nil {
-		return PrivateStoreQueryRequestApprovalResponse{}, err
+		return PrivateStoreClientQueryRequestApprovalResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreQueryRequestApprovalResponse{}, err
+		return PrivateStoreClientQueryRequestApprovalResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreQueryRequestApprovalResponse{}, client.queryRequestApprovalHandleError(resp)
+		return PrivateStoreClientQueryRequestApprovalResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.queryRequestApprovalHandleResponse(resp)
 }
 
 // queryRequestApprovalCreateRequest creates the QueryRequestApproval request.
-func (client *PrivateStoreClient) queryRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreQueryRequestApprovalOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) queryRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientQueryRequestApprovalOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/requestApprovals/{requestApprovalId}/query"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -986,7 +836,7 @@ func (client *PrivateStoreClient) queryRequestApprovalCreateRequest(ctx context.
 		return nil, errors.New("parameter requestApprovalID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestApprovalId}", url.PathEscape(requestApprovalID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1001,46 +851,37 @@ func (client *PrivateStoreClient) queryRequestApprovalCreateRequest(ctx context.
 }
 
 // queryRequestApprovalHandleResponse handles the QueryRequestApproval response.
-func (client *PrivateStoreClient) queryRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreQueryRequestApprovalResponse, error) {
-	result := PrivateStoreQueryRequestApprovalResponse{RawResponse: resp}
+func (client *PrivateStoreClient) queryRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreClientQueryRequestApprovalResponse, error) {
+	result := PrivateStoreClientQueryRequestApprovalResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryRequestApproval); err != nil {
-		return PrivateStoreQueryRequestApprovalResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientQueryRequestApprovalResponse{}, err
 	}
 	return result, nil
 }
 
-// queryRequestApprovalHandleError handles the QueryRequestApproval error response.
-func (client *PrivateStoreClient) queryRequestApprovalHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateAdminRequestApproval - Update the admin action, weather the request is approved or rejected and the approved plans
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) UpdateAdminRequestApproval(ctx context.Context, privateStoreID string, adminRequestApprovalID string, options *PrivateStoreUpdateAdminRequestApprovalOptions) (PrivateStoreUpdateAdminRequestApprovalResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// adminRequestApprovalID - The admin request approval ID to get create or update
+// options - PrivateStoreClientUpdateAdminRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.UpdateAdminRequestApproval
+// method.
+func (client *PrivateStoreClient) UpdateAdminRequestApproval(ctx context.Context, privateStoreID string, adminRequestApprovalID string, options *PrivateStoreClientUpdateAdminRequestApprovalOptions) (PrivateStoreClientUpdateAdminRequestApprovalResponse, error) {
 	req, err := client.updateAdminRequestApprovalCreateRequest(ctx, privateStoreID, adminRequestApprovalID, options)
 	if err != nil {
-		return PrivateStoreUpdateAdminRequestApprovalResponse{}, err
+		return PrivateStoreClientUpdateAdminRequestApprovalResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreUpdateAdminRequestApprovalResponse{}, err
+		return PrivateStoreClientUpdateAdminRequestApprovalResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreUpdateAdminRequestApprovalResponse{}, client.updateAdminRequestApprovalHandleError(resp)
+		return PrivateStoreClientUpdateAdminRequestApprovalResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateAdminRequestApprovalHandleResponse(resp)
 }
 
 // updateAdminRequestApprovalCreateRequest creates the UpdateAdminRequestApproval request.
-func (client *PrivateStoreClient) updateAdminRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, adminRequestApprovalID string, options *PrivateStoreUpdateAdminRequestApprovalOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) updateAdminRequestApprovalCreateRequest(ctx context.Context, privateStoreID string, adminRequestApprovalID string, options *PrivateStoreClientUpdateAdminRequestApprovalOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/adminRequestApprovals/{adminRequestApprovalId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -1050,7 +891,7 @@ func (client *PrivateStoreClient) updateAdminRequestApprovalCreateRequest(ctx co
 		return nil, errors.New("parameter adminRequestApprovalID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{adminRequestApprovalId}", url.PathEscape(adminRequestApprovalID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1065,46 +906,37 @@ func (client *PrivateStoreClient) updateAdminRequestApprovalCreateRequest(ctx co
 }
 
 // updateAdminRequestApprovalHandleResponse handles the UpdateAdminRequestApproval response.
-func (client *PrivateStoreClient) updateAdminRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreUpdateAdminRequestApprovalResponse, error) {
-	result := PrivateStoreUpdateAdminRequestApprovalResponse{RawResponse: resp}
+func (client *PrivateStoreClient) updateAdminRequestApprovalHandleResponse(resp *http.Response) (PrivateStoreClientUpdateAdminRequestApprovalResponse, error) {
+	result := PrivateStoreClientUpdateAdminRequestApprovalResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminRequestApprovalsResource); err != nil {
-		return PrivateStoreUpdateAdminRequestApprovalResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreClientUpdateAdminRequestApprovalResponse{}, err
 	}
 	return result, nil
 }
 
-// updateAdminRequestApprovalHandleError handles the UpdateAdminRequestApproval error response.
-func (client *PrivateStoreClient) updateAdminRequestApprovalHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // WithdrawPlan - Withdraw a user request approval on specific plan
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreClient) WithdrawPlan(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreWithdrawPlanOptions) (PrivateStoreWithdrawPlanResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// privateStoreID - The store ID - must use the tenant ID
+// requestApprovalID - The request approval ID to get create or update
+// options - PrivateStoreClientWithdrawPlanOptions contains the optional parameters for the PrivateStoreClient.WithdrawPlan
+// method.
+func (client *PrivateStoreClient) WithdrawPlan(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientWithdrawPlanOptions) (PrivateStoreClientWithdrawPlanResponse, error) {
 	req, err := client.withdrawPlanCreateRequest(ctx, privateStoreID, requestApprovalID, options)
 	if err != nil {
-		return PrivateStoreWithdrawPlanResponse{}, err
+		return PrivateStoreClientWithdrawPlanResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreWithdrawPlanResponse{}, err
+		return PrivateStoreClientWithdrawPlanResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreWithdrawPlanResponse{}, client.withdrawPlanHandleError(resp)
+		return PrivateStoreClientWithdrawPlanResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateStoreWithdrawPlanResponse{RawResponse: resp}, nil
+	return PrivateStoreClientWithdrawPlanResponse{RawResponse: resp}, nil
 }
 
 // withdrawPlanCreateRequest creates the WithdrawPlan request.
-func (client *PrivateStoreClient) withdrawPlanCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreWithdrawPlanOptions) (*policy.Request, error) {
+func (client *PrivateStoreClient) withdrawPlanCreateRequest(ctx context.Context, privateStoreID string, requestApprovalID string, options *PrivateStoreClientWithdrawPlanOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/requestApprovals/{requestApprovalId}/withdrawPlan"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -1114,7 +946,7 @@ func (client *PrivateStoreClient) withdrawPlanCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter requestApprovalID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestApprovalId}", url.PathEscape(requestApprovalID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1126,17 +958,4 @@ func (client *PrivateStoreClient) withdrawPlanCreateRequest(ctx context.Context,
 		return req, runtime.MarshalAsJSON(req, *options.Payload)
 	}
 	return req, nil
-}
-
-// withdrawPlanHandleError handles the WithdrawPlan error response.
-func (client *PrivateStoreClient) withdrawPlanHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -27,11 +27,12 @@ func ExamplePowerBIResourcesClient_ListByResourceName() {
 	client := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
 		"<resource-group-name>",
 		"<azure-resource-name>", cred, nil)
-	_, err = client.ListByResourceName(ctx,
+	res, err := client.ListByResourceName(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PowerBIResourcesClientListByResourceNameResult)
 }
 
 // x-ms-original-file: specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PowerBIResources_Create.json
@@ -55,11 +56,11 @@ func ExamplePowerBIResourcesClient_Create() {
 				"tag2": to.StringPtr("value2"),
 			},
 		},
-		&armpowerbiprivatelinks.PowerBIResourcesCreateOptions{ClientTenantID: to.StringPtr("<client-tenant-id>")})
+		&armpowerbiprivatelinks.PowerBIResourcesClientCreateOptions{ClientTenantID: to.StringPtr("<client-tenant-id>")})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TenantResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PowerBIResourcesClientCreateResult)
 }
 
 // x-ms-original-file: specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PowerBIResources_Update.json
@@ -83,11 +84,11 @@ func ExamplePowerBIResourcesClient_Update() {
 				"tag2": to.StringPtr("value2"),
 			},
 		},
-		&armpowerbiprivatelinks.PowerBIResourcesUpdateOptions{ClientTenantID: to.StringPtr("<client-tenant-id>")})
+		&armpowerbiprivatelinks.PowerBIResourcesClientUpdateOptions{ClientTenantID: to.StringPtr("<client-tenant-id>")})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TenantResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PowerBIResourcesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PowerBIResources_Delete.json

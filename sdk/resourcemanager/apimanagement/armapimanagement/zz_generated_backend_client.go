@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // BackendClient contains the methods for the Backend group.
 // Don't use this type directly, use NewBackendClient() instead.
 type BackendClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackendClient creates a new instance of BackendClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackendClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackendClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackendClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackendClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or Updates a backend.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, backendID string, parameters BackendContract, options *BackendCreateOrUpdateOptions) (BackendCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// backendID - Identifier of the Backend entity. Must be unique in the current API Management service instance.
+// parameters - Create parameters.
+// options - BackendClientCreateOrUpdateOptions contains the optional parameters for the BackendClient.CreateOrUpdate method.
+func (client *BackendClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, backendID string, parameters BackendContract, options *BackendClientCreateOrUpdateOptions) (BackendClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, backendID, parameters, options)
 	if err != nil {
-		return BackendCreateOrUpdateResponse{}, err
+		return BackendClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackendCreateOrUpdateResponse{}, err
+		return BackendClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return BackendCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return BackendClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BackendClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, parameters BackendContract, options *BackendCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *BackendClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, parameters BackendContract, options *BackendClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends/{backendId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +92,7 @@ func (client *BackendClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,49 +107,42 @@ func (client *BackendClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BackendClient) createOrUpdateHandleResponse(resp *http.Response) (BackendCreateOrUpdateResponse, error) {
-	result := BackendCreateOrUpdateResponse{RawResponse: resp}
+func (client *BackendClient) createOrUpdateHandleResponse(resp *http.Response) (BackendClientCreateOrUpdateResponse, error) {
+	result := BackendClientCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackendContract); err != nil {
-		return BackendCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return BackendClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *BackendClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified backend.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, options *BackendDeleteOptions) (BackendDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// backendID - Identifier of the Backend entity. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - BackendClientDeleteOptions contains the optional parameters for the BackendClient.Delete method.
+func (client *BackendClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, options *BackendClientDeleteOptions) (BackendClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, backendID, ifMatch, options)
 	if err != nil {
-		return BackendDeleteResponse{}, err
+		return BackendClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackendDeleteResponse{}, err
+		return BackendClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return BackendDeleteResponse{}, client.deleteHandleError(resp)
+		return BackendClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return BackendDeleteResponse{RawResponse: resp}, nil
+	return BackendClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *BackendClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, options *BackendDeleteOptions) (*policy.Request, error) {
+func (client *BackendClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, options *BackendClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends/{backendId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,7 +160,7 @@ func (client *BackendClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +172,29 @@ func (client *BackendClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *BackendClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the backend specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) Get(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendGetOptions) (BackendGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// backendID - Identifier of the Backend entity. Must be unique in the current API Management service instance.
+// options - BackendClientGetOptions contains the optional parameters for the BackendClient.Get method.
+func (client *BackendClient) Get(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientGetOptions) (BackendClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, backendID, options)
 	if err != nil {
-		return BackendGetResponse{}, err
+		return BackendClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackendGetResponse{}, err
+		return BackendClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackendGetResponse{}, client.getHandleError(resp)
+		return BackendClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackendClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendGetOptions) (*policy.Request, error) {
+func (client *BackendClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends/{backendId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,7 +212,7 @@ func (client *BackendClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,46 +224,36 @@ func (client *BackendClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackendClient) getHandleResponse(resp *http.Response) (BackendGetResponse, error) {
-	result := BackendGetResponse{RawResponse: resp}
+func (client *BackendClient) getHandleResponse(resp *http.Response) (BackendClientGetResponse, error) {
+	result := BackendClientGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackendContract); err != nil {
-		return BackendGetResponse{}, runtime.NewResponseError(err, resp)
+		return BackendClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BackendClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the backend specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendGetEntityTagOptions) (BackendGetEntityTagResponse, error) {
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// backendID - Identifier of the Backend entity. Must be unique in the current API Management service instance.
+// options - BackendClientGetEntityTagOptions contains the optional parameters for the BackendClient.GetEntityTag method.
+func (client *BackendClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientGetEntityTagOptions) (BackendClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, backendID, options)
 	if err != nil {
-		return BackendGetEntityTagResponse{}, err
+		return BackendClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackendGetEntityTagResponse{}, err
+		return BackendClientGetEntityTagResponse{}, err
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *BackendClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendGetEntityTagOptions) (*policy.Request, error) {
+func (client *BackendClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends/{backendId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,7 +271,7 @@ func (client *BackendClient) getEntityTagCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +283,8 @@ func (client *BackendClient) getEntityTagCreateRequest(ctx context.Context, reso
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (BackendGetEntityTagResponse, error) {
-	result := BackendGetEntityTagResponse{RawResponse: resp}
+func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (BackendClientGetEntityTagResponse, error) {
+	result := BackendClientGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -308,21 +295,24 @@ func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (Ba
 }
 
 // ListByService - Lists a collection of backends in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) ListByService(resourceGroupName string, serviceName string, options *BackendListByServiceOptions) *BackendListByServicePager {
-	return &BackendListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - BackendClientListByServiceOptions contains the optional parameters for the BackendClient.ListByService method.
+func (client *BackendClient) ListByService(resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) *BackendClientListByServicePager {
+	return &BackendClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp BackendListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BackendClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.BackendCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *BackendClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *BackendListByServiceOptions) (*policy.Request, error) {
+func (client *BackendClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *BackendClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -336,7 +326,7 @@ func (client *BackendClient) listByServiceCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,47 +347,38 @@ func (client *BackendClient) listByServiceCreateRequest(ctx context.Context, res
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *BackendClient) listByServiceHandleResponse(resp *http.Response) (BackendListByServiceResponse, error) {
-	result := BackendListByServiceResponse{RawResponse: resp}
+func (client *BackendClient) listByServiceHandleResponse(resp *http.Response) (BackendClientListByServiceResponse, error) {
+	result := BackendClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackendCollection); err != nil {
-		return BackendListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return BackendClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *BackendClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Reconnect - Notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no timeout was specified, timeout of 2
-// minutes is used.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) Reconnect(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendReconnectOptions) (BackendReconnectResponse, error) {
+// Reconnect - Notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no timeout
+// was specified, timeout of 2 minutes is used.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// backendID - Identifier of the Backend entity. Must be unique in the current API Management service instance.
+// options - BackendClientReconnectOptions contains the optional parameters for the BackendClient.Reconnect method.
+func (client *BackendClient) Reconnect(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientReconnectOptions) (BackendClientReconnectResponse, error) {
 	req, err := client.reconnectCreateRequest(ctx, resourceGroupName, serviceName, backendID, options)
 	if err != nil {
-		return BackendReconnectResponse{}, err
+		return BackendClientReconnectResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackendReconnectResponse{}, err
+		return BackendClientReconnectResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return BackendReconnectResponse{}, client.reconnectHandleError(resp)
+		return BackendClientReconnectResponse{}, runtime.NewResponseError(resp)
 	}
-	return BackendReconnectResponse{RawResponse: resp}, nil
+	return BackendClientReconnectResponse{RawResponse: resp}, nil
 }
 
 // reconnectCreateRequest creates the Reconnect request.
-func (client *BackendClient) reconnectCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendReconnectOptions) (*policy.Request, error) {
+func (client *BackendClient) reconnectCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientReconnectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends/{backendId}/reconnect"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -415,7 +396,7 @@ func (client *BackendClient) reconnectCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,38 +410,32 @@ func (client *BackendClient) reconnectCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// reconnectHandleError handles the Reconnect error response.
-func (client *BackendClient) reconnectHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing backend.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *BackendClient) Update(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, parameters BackendUpdateParameters, options *BackendUpdateOptions) (BackendUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// backendID - Identifier of the Backend entity. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - BackendClientUpdateOptions contains the optional parameters for the BackendClient.Update method.
+func (client *BackendClient) Update(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, parameters BackendUpdateParameters, options *BackendClientUpdateOptions) (BackendClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, backendID, ifMatch, parameters, options)
 	if err != nil {
-		return BackendUpdateResponse{}, err
+		return BackendClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackendUpdateResponse{}, err
+		return BackendClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackendUpdateResponse{}, client.updateHandleError(resp)
+		return BackendClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *BackendClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, parameters BackendUpdateParameters, options *BackendUpdateOptions) (*policy.Request, error) {
+func (client *BackendClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, parameters BackendUpdateParameters, options *BackendClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backends/{backendId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -478,7 +453,7 @@ func (client *BackendClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -491,26 +466,13 @@ func (client *BackendClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *BackendClient) updateHandleResponse(resp *http.Response) (BackendUpdateResponse, error) {
-	result := BackendUpdateResponse{RawResponse: resp}
+func (client *BackendClient) updateHandleResponse(resp *http.Response) (BackendClientUpdateResponse, error) {
+	result := BackendClientUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackendContract); err != nil {
-		return BackendUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return BackendClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *BackendClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

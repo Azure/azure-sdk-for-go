@@ -91,3 +91,11 @@ steps:
       parameters:
         PackageName: 'sdk/${{parameters.ServiceDirectory}}'
         ForRelease: false
+
+  - task: PowerShell@2
+    displayName: 'Run Nightly SmokeTests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
+      pwsh: true
+      arguments: '${{ parameters.ServiceDirectory }}'

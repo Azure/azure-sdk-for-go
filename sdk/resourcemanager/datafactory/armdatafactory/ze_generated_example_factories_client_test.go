@@ -26,12 +26,16 @@ func ExampleFactoriesClient_List() {
 	ctx := context.Background()
 	client := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Factory.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -49,23 +53,21 @@ func ExampleFactoriesClient_ConfigureFactoryRepo() {
 		armdatafactory.FactoryRepoUpdate{
 			FactoryResourceID: to.StringPtr("<factory-resource-id>"),
 			RepoConfiguration: &armdatafactory.FactoryVSTSConfiguration{
-				FactoryRepoConfiguration: armdatafactory.FactoryRepoConfiguration{
-					Type:                to.StringPtr("<type>"),
-					AccountName:         to.StringPtr("<account-name>"),
-					CollaborationBranch: to.StringPtr("<collaboration-branch>"),
-					LastCommitID:        to.StringPtr("<last-commit-id>"),
-					RepositoryName:      to.StringPtr("<repository-name>"),
-					RootFolder:          to.StringPtr("<root-folder>"),
-				},
-				ProjectName: to.StringPtr("<project-name>"),
-				TenantID:    to.StringPtr("<tenant-id>"),
+				Type:                to.StringPtr("<type>"),
+				AccountName:         to.StringPtr("<account-name>"),
+				CollaborationBranch: to.StringPtr("<collaboration-branch>"),
+				LastCommitID:        to.StringPtr("<last-commit-id>"),
+				RepositoryName:      to.StringPtr("<repository-name>"),
+				RootFolder:          to.StringPtr("<root-folder>"),
+				ProjectName:         to.StringPtr("<project-name>"),
+				TenantID:            to.StringPtr("<tenant-id>"),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Factory.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FactoriesClientConfigureFactoryRepoResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_ListByResourceGroup.json
@@ -78,12 +80,16 @@ func ExampleFactoriesClient_ListByResourceGroup() {
 	client := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Factory.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -100,15 +106,13 @@ func ExampleFactoriesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.Factory{
-			Resource: armdatafactory.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 		},
-		&armdatafactory.FactoriesCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.FactoriesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Factory.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FactoriesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Update.json
@@ -131,7 +135,7 @@ func ExampleFactoriesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Factory.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FactoriesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Get.json
@@ -145,11 +149,11 @@ func ExampleFactoriesClient_Get() {
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
-		&armdatafactory.FactoriesGetOptions{IfNoneMatch: nil})
+		&armdatafactory.FactoriesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Factory.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FactoriesClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Delete.json
@@ -177,7 +181,7 @@ func ExampleFactoriesClient_GetGitHubAccessToken() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
-	_, err = client.GetGitHubAccessToken(ctx,
+	res, err := client.GetGitHubAccessToken(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.GitHubAccessTokenRequest{
@@ -189,6 +193,7 @@ func ExampleFactoriesClient_GetGitHubAccessToken() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FactoriesClientGetGitHubAccessTokenResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_GetDataPlaneAccess.json
@@ -199,7 +204,7 @@ func ExampleFactoriesClient_GetDataPlaneAccess() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
-	_, err = client.GetDataPlaneAccess(ctx,
+	res, err := client.GetDataPlaneAccess(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.UserAccessPolicy{
@@ -213,4 +218,5 @@ func ExampleFactoriesClient_GetDataPlaneAccess() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FactoriesClientGetDataPlaneAccessResult)
 }

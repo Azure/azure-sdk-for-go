@@ -38,10 +38,11 @@ func ExampleShareSubscriptionsClient_BeginCancelSynchronization() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ShareSubscriptionsClientCancelSynchronizationResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSourceShareSynchronizationSettings.json
@@ -55,10 +56,17 @@ func ExampleShareSubscriptionsClient_ListSourceShareSynchronizationSettings() {
 	pager := client.ListSourceShareSynchronizationSettings("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
-		&armdatashare.ShareSubscriptionsListSourceShareSynchronizationSettingsOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armdatashare.ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -77,13 +85,20 @@ func ExampleShareSubscriptionsClient_ListSynchronizationDetails() {
 		armdatashare.ShareSubscriptionSynchronization{
 			SynchronizationID: to.StringPtr("<synchronization-id>"),
 		},
-		&armdatashare.ShareSubscriptionsListSynchronizationDetailsOptions{SkipToken: nil,
+		&armdatashare.ShareSubscriptionsClientListSynchronizationDetailsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -99,13 +114,20 @@ func ExampleShareSubscriptionsClient_ListSynchronizations() {
 	pager := client.ListSynchronizations("<resource-group-name>",
 		"<account-name>",
 		"<share-subscription-name>",
-		&armdatashare.ShareSubscriptionsListSynchronizationsOptions{SkipToken: nil,
+		&armdatashare.ShareSubscriptionsClientListSynchronizationsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -123,16 +145,17 @@ func ExampleShareSubscriptionsClient_BeginSynchronize() {
 		"<account-name>",
 		"<share-subscription-name>",
 		armdatashare.Synchronize{
-			SynchronizationMode: armdatashare.SynchronizationModeIncremental.ToPtr(),
+			SynchronizationMode: armdatashare.SynchronizationMode("Incremental").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ShareSubscriptionsClientSynchronizeResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Get.json
@@ -151,7 +174,7 @@ func ExampleShareSubscriptionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ShareSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ShareSubscriptionsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Create.json
@@ -177,7 +200,7 @@ func ExampleShareSubscriptionsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ShareSubscription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ShareSubscriptionsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Delete.json
@@ -196,10 +219,11 @@ func ExampleShareSubscriptionsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ShareSubscriptionsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListByAccount.json
@@ -212,16 +236,20 @@ func ExampleShareSubscriptionsClient_ListByAccount() {
 	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByAccount("<resource-group-name>",
 		"<account-name>",
-		&armdatashare.ShareSubscriptionsListByAccountOptions{SkipToken: nil,
+		&armdatashare.ShareSubscriptionsClientListByAccountOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ShareSubscription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

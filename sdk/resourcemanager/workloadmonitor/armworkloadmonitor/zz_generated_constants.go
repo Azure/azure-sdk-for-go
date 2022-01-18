@@ -9,8 +9,8 @@
 package armworkloadmonitor
 
 const (
-	module  = "armworkloadmonitor"
-	version = "v0.1.0"
+	moduleName    = "armworkloadmonitor"
+	moduleVersion = "v0.2.0"
 )
 
 // HealthState - One of health states - healthy, critical, warning, unknown, none, disabled.

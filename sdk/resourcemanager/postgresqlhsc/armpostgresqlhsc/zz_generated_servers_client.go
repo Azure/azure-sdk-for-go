@@ -11,7 +11,6 @@ package armpostgresqlhsc
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ServersClient contains the methods for the Servers group.
 // Don't use this type directly, use NewServersClient() instead.
 type ServersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServersClient creates a new instance of ServersClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets information about a server in server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServersClient) Get(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ServersGetOptions) (ServersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// serverName - The name of the server.
+// options - ServersClientGetOptions contains the optional parameters for the ServersClient.Get method.
+func (client *ServersClient) Get(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ServersClientGetOptions) (ServersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverGroupName, serverName, options)
 	if err != nil {
-		return ServersGetResponse{}, err
+		return ServersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersGetResponse{}, err
+		return ServersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersGetResponse{}, client.getHandleError(resp)
+		return ServersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ServersGetOptions) (*policy.Request, error) {
+func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ServersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/servers/{serverName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +101,37 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersGetResponse, error) {
-	result := ServersGetResponse{RawResponse: resp}
+func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClientGetResponse, error) {
+	result := ServersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupServer); err != nil {
-		return ServersGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServerGroup - Lists servers of a server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServersClient) ListByServerGroup(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServersListByServerGroupOptions) (ServersListByServerGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ServersClientListByServerGroupOptions contains the optional parameters for the ServersClient.ListByServerGroup
+// method.
+func (client *ServersClient) ListByServerGroup(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) (ServersClientListByServerGroupResponse, error) {
 	req, err := client.listByServerGroupCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 	if err != nil {
-		return ServersListByServerGroupResponse{}, err
+		return ServersClientListByServerGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServersListByServerGroupResponse{}, err
+		return ServersClientListByServerGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServersListByServerGroupResponse{}, client.listByServerGroupHandleError(resp)
+		return ServersClientListByServerGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServerGroupHandleResponse(resp)
 }
 
 // listByServerGroupCreateRequest creates the ListByServerGroup request.
-func (client *ServersClient) listByServerGroupCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServersListByServerGroupOptions) (*policy.Request, error) {
+func (client *ServersClient) listByServerGroupCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/servers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,7 +145,7 @@ func (client *ServersClient) listByServerGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -155,23 +157,10 @@ func (client *ServersClient) listByServerGroupCreateRequest(ctx context.Context,
 }
 
 // listByServerGroupHandleResponse handles the ListByServerGroup response.
-func (client *ServersClient) listByServerGroupHandleResponse(resp *http.Response) (ServersListByServerGroupResponse, error) {
-	result := ServersListByServerGroupResponse{RawResponse: resp}
+func (client *ServersClient) listByServerGroupHandleResponse(resp *http.Response) (ServersClientListByServerGroupResponse, error) {
+	result := ServersClientListByServerGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupServerListResult); err != nil {
-		return ServersListByServerGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ServersClientListByServerGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerGroupHandleError handles the ListByServerGroup error response.
-func (client *ServersClient) listByServerGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

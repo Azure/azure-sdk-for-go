@@ -11,7 +11,6 @@ package armkeyvault
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,58 @@ import (
 // KeysClient contains the methods for the Keys group.
 // Don't use this type directly, use NewKeysClient() instead.
 type KeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewKeysClient creates a new instance of KeysClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KeysClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &KeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &KeysClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
-// operations being performed. This API does not create subsequent
+// CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing
+// key is returned without any write operations being performed. This API does not create subsequent
 // versions, and does not update existing keys.
-// If the operation fails it returns the *CloudError error type.
-func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (KeysCreateIfNotExistResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group which contains the specified key vault.
+// vaultName - The name of the key vault which contains the key to be created.
+// keyName - The name of the key to be created.
+// parameters - The parameters used to create the specified key.
+// options - KeysClientCreateIfNotExistOptions contains the optional parameters for the KeysClient.CreateIfNotExist method.
+func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysClientCreateIfNotExistOptions) (KeysClientCreateIfNotExistResponse, error) {
 	req, err := client.createIfNotExistCreateRequest(ctx, resourceGroupName, vaultName, keyName, parameters, options)
 	if err != nil {
-		return KeysCreateIfNotExistResponse{}, err
+		return KeysClientCreateIfNotExistResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysCreateIfNotExistResponse{}, err
+		return KeysClientCreateIfNotExistResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeysCreateIfNotExistResponse{}, client.createIfNotExistHandleError(resp)
+		return KeysClientCreateIfNotExistResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createIfNotExistHandleResponse(resp)
 }
 
 // createIfNotExistCreateRequest creates the CreateIfNotExist request.
-func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*policy.Request, error) {
+func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysClientCreateIfNotExistOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -80,58 +93,49 @@ func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createIfNotExistHandleResponse handles the CreateIfNotExist response.
-func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (KeysCreateIfNotExistResponse, error) {
-	result := KeysCreateIfNotExistResponse{RawResponse: resp}
+func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (KeysClientCreateIfNotExistResponse, error) {
+	result := KeysClientCreateIfNotExistResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysCreateIfNotExistResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientCreateIfNotExistResponse{}, err
 	}
 	return result, nil
 }
 
-// createIfNotExistHandleError handles the CreateIfNotExist error response.
-func (client *KeysClient) createIfNotExistHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the current version of the specified key from the specified key vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (KeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group which contains the specified key vault.
+// vaultName - The name of the vault which contains the key to be retrieved.
+// keyName - The name of the key to be retrieved.
+// options - KeysClientGetOptions contains the optional parameters for the KeysClient.Get method.
+func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysClientGetOptions) (KeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
 	if err != nil {
-		return KeysGetResponse{}, err
+		return KeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysGetResponse{}, err
+		return KeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeysGetResponse{}, client.getHandleError(resp)
+		return KeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*policy.Request, error) {
+func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -149,58 +153,50 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysGetResponse, error) {
-	result := KeysGetResponse{RawResponse: resp}
+func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetResponse, error) {
+	result := KeysClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *KeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetVersion - Gets the specified version of the specified key in the specified key vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (KeysGetVersionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group which contains the specified key vault.
+// vaultName - The name of the vault which contains the key version to be retrieved.
+// keyName - The name of the key version to be retrieved.
+// keyVersion - The version of the key to be retrieved.
+// options - KeysClientGetVersionOptions contains the optional parameters for the KeysClient.GetVersion method.
+func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysClientGetVersionOptions) (KeysClientGetVersionResponse, error) {
 	req, err := client.getVersionCreateRequest(ctx, resourceGroupName, vaultName, keyName, keyVersion, options)
 	if err != nil {
-		return KeysGetVersionResponse{}, err
+		return KeysClientGetVersionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return KeysGetVersionResponse{}, err
+		return KeysClientGetVersionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeysGetVersionResponse{}, client.getVersionHandleError(resp)
+		return KeysClientGetVersionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getVersionHandleResponse(resp)
 }
 
 // getVersionCreateRequest creates the GetVersion request.
-func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*policy.Request, error) {
+func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysClientGetVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}/versions/{keyVersion}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -222,55 +218,45 @@ func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter keyVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyVersion}", url.PathEscape(keyVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getVersionHandleResponse handles the GetVersion response.
-func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysGetVersionResponse, error) {
-	result := KeysGetVersionResponse{RawResponse: resp}
+func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysClientGetVersionResponse, error) {
+	result := KeysClientGetVersionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
-		return KeysGetVersionResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientGetVersionResponse{}, err
 	}
 	return result, nil
 }
 
-// getVersionHandleError handles the GetVersion error response.
-func (client *KeysClient) getVersionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the keys in the specified key vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysListOptions) *KeysListPager {
-	return &KeysListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group which contains the specified key vault.
+// vaultName - The name of the vault which contains the keys to be retrieved.
+// options - KeysClientListOptions contains the optional parameters for the KeysClient.List method.
+func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysClientListOptions) *KeysClientListPager {
+	return &KeysClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
 		},
-		advancer: func(ctx context.Context, resp KeysListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp KeysClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *KeysListOptions) (*policy.Request, error) {
+func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *KeysClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -284,55 +270,46 @@ func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysListResponse, error) {
-	result := KeysListResponse{RawResponse: resp}
+func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysClientListResponse, error) {
+	result := KeysClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return KeysListResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *KeysClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListVersions - Lists the versions of the specified key in the specified key vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) *KeysListVersionsPager {
-	return &KeysListVersionsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group which contains the specified key vault.
+// vaultName - The name of the vault which contains the key versions to be retrieved.
+// keyName - The name of the key versions to be retrieved.
+// options - KeysClientListVersionsOptions contains the optional parameters for the KeysClient.ListVersions method.
+func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysClientListVersionsOptions) *KeysClientListVersionsPager {
+	return &KeysClientListVersionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
 		},
-		advancer: func(ctx context.Context, resp KeysListVersionsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp KeysClientListVersionsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
 		},
 	}
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
-func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) (*policy.Request, error) {
+func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysClientListVersionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -350,35 +327,22 @@ func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listVersionsHandleResponse handles the ListVersions response.
-func (client *KeysClient) listVersionsHandleResponse(resp *http.Response) (KeysListVersionsResponse, error) {
-	result := KeysListVersionsResponse{RawResponse: resp}
+func (client *KeysClient) listVersionsHandleResponse(resp *http.Response) (KeysClientListVersionsResponse, error) {
+	result := KeysClientListVersionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
-		return KeysListVersionsResponse{}, runtime.NewResponseError(err, resp)
+		return KeysClientListVersionsResponse{}, err
 	}
 	return result, nil
-}
-
-// listVersionsHandleError handles the ListVersions error response.
-func (client *KeysClient) listVersionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

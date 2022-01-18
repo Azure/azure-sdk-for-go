@@ -9,158 +9,74 @@
 package armautomanage
 
 const (
-	module  = "armautomanage"
-	version = "v0.1.0"
+	moduleName    = "armautomanage"
+	moduleVersion = "v0.2.0"
 )
 
-// ConfigurationProfile - A value indicating configuration profile.
-type ConfigurationProfile string
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
 
 const (
-	ConfigurationProfileAzureVirtualMachineBestPracticesDevTest    ConfigurationProfile = "Azure virtual machine best practices – Dev/Test"
-	ConfigurationProfileAzureVirtualMachineBestPracticesProduction ConfigurationProfile = "Azure virtual machine best practices – Production"
+	ActionTypeInternal ActionType = "Internal"
 )
 
-// PossibleConfigurationProfileValues returns the possible values for the ConfigurationProfile const type.
-func PossibleConfigurationProfileValues() []ConfigurationProfile {
-	return []ConfigurationProfile{
-		ConfigurationProfileAzureVirtualMachineBestPracticesDevTest,
-		ConfigurationProfileAzureVirtualMachineBestPracticesProduction,
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
 	}
 }
 
-// ToPtr returns a *ConfigurationProfile pointing to the current value.
-func (c ConfigurationProfile) ToPtr() *ConfigurationProfile {
+// ToPtr returns a *ActionType pointing to the current value.
+func (c ActionType) ToPtr() *ActionType {
 	return &c
 }
 
-// EnableRealTimeProtection - Enables or disables Real Time Protection
-type EnableRealTimeProtection string
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
 
 const (
-	EnableRealTimeProtectionFalse EnableRealTimeProtection = "False"
-	EnableRealTimeProtectionTrue  EnableRealTimeProtection = "True"
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
 )
 
-// PossibleEnableRealTimeProtectionValues returns the possible values for the EnableRealTimeProtection const type.
-func PossibleEnableRealTimeProtectionValues() []EnableRealTimeProtection {
-	return []EnableRealTimeProtection{
-		EnableRealTimeProtectionFalse,
-		EnableRealTimeProtectionTrue,
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
-// ToPtr returns a *EnableRealTimeProtection pointing to the current value.
-func (c EnableRealTimeProtection) ToPtr() *EnableRealTimeProtection {
+// ToPtr returns a *CreatedByType pointing to the current value.
+func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-// ProvisioningState - The state of onboarding, which only appears in the response.
-type ProvisioningState string
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
 
 const (
-	ProvisioningStateCreated   ProvisioningState = "Created"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
 )
 
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateCreated,
-		ProvisioningStateFailed,
-		ProvisioningStateSucceeded,
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
-// ResourceIdentityType - The type of identity used for the Automanage account. Currently, the only supported type is 'SystemAssigned', which implicitly
-// creates an identity.
-type ResourceIdentityType string
-
-const (
-	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
-	ResourceIdentityTypeNone           ResourceIdentityType = "None"
-)
-
-// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
-		ResourceIdentityTypeSystemAssigned,
-		ResourceIdentityTypeNone,
-	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
-// RunScheduledScan - Enables or disables a periodic scan for antimalware
-type RunScheduledScan string
-
-const (
-	RunScheduledScanFalse RunScheduledScan = "False"
-	RunScheduledScanTrue  RunScheduledScan = "True"
-)
-
-// PossibleRunScheduledScanValues returns the possible values for the RunScheduledScan const type.
-func PossibleRunScheduledScanValues() []RunScheduledScan {
-	return []RunScheduledScan{
-		RunScheduledScanFalse,
-		RunScheduledScanTrue,
-	}
-}
-
-// ToPtr returns a *RunScheduledScan pointing to the current value.
-func (c RunScheduledScan) ToPtr() *RunScheduledScan {
-	return &c
-}
-
-// ScanType - Type of scheduled scan
-type ScanType string
-
-const (
-	ScanTypeFull  ScanType = "Full"
-	ScanTypeQuick ScanType = "Quick"
-)
-
-// PossibleScanTypeValues returns the possible values for the ScanType const type.
-func PossibleScanTypeValues() []ScanType {
-	return []ScanType{
-		ScanTypeFull,
-		ScanTypeQuick,
-	}
-}
-
-// ToPtr returns a *ScanType pointing to the current value.
-func (c ScanType) ToPtr() *ScanType {
-	return &c
-}
-
-// UpdateStatus - The state of compliance, which only appears in the response.
-type UpdateStatus string
-
-const (
-	UpdateStatusCreated   UpdateStatus = "Created"
-	UpdateStatusFailed    UpdateStatus = "Failed"
-	UpdateStatusSucceeded UpdateStatus = "Succeeded"
-)
-
-// PossibleUpdateStatusValues returns the possible values for the UpdateStatus const type.
-func PossibleUpdateStatusValues() []UpdateStatus {
-	return []UpdateStatus{
-		UpdateStatusCreated,
-		UpdateStatusFailed,
-		UpdateStatusSucceeded,
-	}
-}
-
-// ToPtr returns a *UpdateStatus pointing to the current value.
-func (c UpdateStatus) ToPtr() *UpdateStatus {
+// ToPtr returns a *Origin pointing to the current value.
+func (c Origin) ToPtr() *Origin {
 	return &c
 }

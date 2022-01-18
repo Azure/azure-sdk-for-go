@@ -12,6 +12,9 @@ import (
 	"context"
 	"log"
 
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -24,7 +27,7 @@ func ExampleAnnotationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<start>",
@@ -33,6 +36,7 @@ func ExampleAnnotationsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AnnotationsClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnnotationsCreate.json
@@ -43,14 +47,21 @@ func ExampleAnnotationsClient_Create() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
-	_, err = client.Create(ctx,
+	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.Annotation{},
+		armapplicationinsights.Annotation{
+			AnnotationName: to.StringPtr("<annotation-name>"),
+			Category:       to.StringPtr("<category>"),
+			EventTime:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657Z"); return t }()),
+			ID:             to.StringPtr("<id>"),
+			Properties:     to.StringPtr("<properties>"),
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AnnotationsClientCreateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnnotationsDelete.json
@@ -79,7 +90,7 @@ func ExampleAnnotationsClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<annotation-id>",
@@ -87,4 +98,5 @@ func ExampleAnnotationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AnnotationsClientGetResult)
 }

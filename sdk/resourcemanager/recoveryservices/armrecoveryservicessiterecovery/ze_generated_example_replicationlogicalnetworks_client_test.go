@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
 func ExampleReplicationLogicalNetworksClient_ListByReplicationFabrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,17 +28,21 @@ func ExampleReplicationLogicalNetworksClient_ListByReplicationFabrics() {
 		"<subscription-id>", cred, nil)
 	pager := client.ListByReplicationFabrics("<fabric-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LogicalNetwork.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationLogicalNetworks_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationLogicalNetworks_Get.json
 func ExampleReplicationLogicalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,5 +59,5 @@ func ExampleReplicationLogicalNetworksClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogicalNetwork.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationLogicalNetworksClientGetResult)
 }

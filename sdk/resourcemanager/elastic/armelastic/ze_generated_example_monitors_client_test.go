@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/Monitors_List.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/Monitors_List.json
 func ExampleMonitorsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,17 +27,21 @@ func ExampleMonitorsClient_List() {
 	ctx := context.Background()
 	client := armelastic.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ElasticMonitorResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/Monitors_ListByResourceGroup.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/Monitors_ListByResourceGroup.json
 func ExampleMonitorsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,17 +51,21 @@ func ExampleMonitorsClient_ListByResourceGroup() {
 	client := armelastic.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ElasticMonitorResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/Monitors_Get.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/Monitors_Get.json
 func ExampleMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,10 +80,10 @@ func ExampleMonitorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ElasticMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientGetResult)
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/Monitors_Create.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/Monitors_Create.json
 func ExampleMonitorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +94,7 @@ func ExampleMonitorsClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armelastic.MonitorsBeginCreateOptions{Body: nil})
+		&armelastic.MonitorsClientBeginCreateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -94,10 +102,10 @@ func ExampleMonitorsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ElasticMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientCreateResult)
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/Monitors_Update.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/Monitors_Update.json
 func ExampleMonitorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,14 +116,14 @@ func ExampleMonitorsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armelastic.MonitorsUpdateOptions{Body: nil})
+		&armelastic.MonitorsClientUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ElasticMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/stable/2020-07-01/examples/Monitors_Delete.json
+// x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2020-07-01-preview/examples/Monitors_Delete.json
 func ExampleMonitorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

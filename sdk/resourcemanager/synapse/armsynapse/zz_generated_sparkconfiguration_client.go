@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // SparkConfigurationClient contains the methods for the SparkConfiguration group.
 // Don't use this type directly, use NewSparkConfigurationClient() instead.
 type SparkConfigurationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSparkConfigurationClient creates a new instance of SparkConfigurationClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSparkConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SparkConfigurationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SparkConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SparkConfigurationClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get SparkConfiguration by name in a workspace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SparkConfigurationClient) Get(ctx context.Context, resourceGroupName string, sparkConfigurationName string, workspaceName string, options *SparkConfigurationGetOptions) (SparkConfigurationGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// sparkConfigurationName - SparkConfiguration name
+// workspaceName - The name of the workspace.
+// options - SparkConfigurationClientGetOptions contains the optional parameters for the SparkConfigurationClient.Get method.
+func (client *SparkConfigurationClient) Get(ctx context.Context, resourceGroupName string, sparkConfigurationName string, workspaceName string, options *SparkConfigurationClientGetOptions) (SparkConfigurationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sparkConfigurationName, workspaceName, options)
 	if err != nil {
-		return SparkConfigurationGetResponse{}, err
+		return SparkConfigurationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SparkConfigurationGetResponse{}, err
+		return SparkConfigurationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SparkConfigurationGetResponse{}, client.getHandleError(resp)
+		return SparkConfigurationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SparkConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, sparkConfigurationName string, workspaceName string, options *SparkConfigurationGetOptions) (*policy.Request, error) {
+func (client *SparkConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, sparkConfigurationName string, workspaceName string, options *SparkConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sparkconfigurations/{sparkConfigurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *SparkConfigurationClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +101,10 @@ func (client *SparkConfigurationClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *SparkConfigurationClient) getHandleResponse(resp *http.Response) (SparkConfigurationGetResponse, error) {
-	result := SparkConfigurationGetResponse{RawResponse: resp}
+func (client *SparkConfigurationClient) getHandleResponse(resp *http.Response) (SparkConfigurationClientGetResponse, error) {
+	result := SparkConfigurationClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SparkConfigurationResource); err != nil {
-		return SparkConfigurationGetResponse{}, runtime.NewResponseError(err, resp)
+		return SparkConfigurationClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *SparkConfigurationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -9,8 +9,8 @@
 package armwindowsesu
 
 const (
-	module  = "armwindowsesu"
-	version = "v0.1.0"
+	moduleName    = "armwindowsesu"
+	moduleVersion = "v0.2.0"
 )
 
 // OsType - Type of OS for which the key is requested.

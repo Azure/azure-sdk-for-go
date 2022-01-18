@@ -28,12 +28,16 @@ func ExampleAccountsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetAppAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleAccountsClient_List() {
 	client := armnetapp.NewAccountsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetAppAccount.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -73,7 +81,7 @@ func ExampleAccountsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetAppAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientGetResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Accounts_CreateOrUpdate.json
@@ -87,7 +95,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armnetapp.NetAppAccount{
+		armnetapp.Account{
 			Location: to.StringPtr("<location>"),
 			Properties: &armnetapp.AccountProperties{
 				ActiveDirectories: []*armnetapp.ActiveDirectory{
@@ -113,7 +121,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetAppAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-08-01/examples/Accounts_Delete.json
@@ -148,7 +156,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<account-name>",
-		armnetapp.NetAppAccountPatch{
+		armnetapp.AccountPatch{
 			Tags: map[string]*string{
 				"Tag1": to.StringPtr("Value1"),
 			},
@@ -161,5 +169,5 @@ func ExampleAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetAppAccount.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AccountsClientUpdateResult)
 }

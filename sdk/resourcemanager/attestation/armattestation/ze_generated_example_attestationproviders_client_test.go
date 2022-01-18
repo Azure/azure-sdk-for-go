@@ -18,13 +18,13 @@ import (
 )
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvider.json
-func ExampleAttestationProvidersClient_Get() {
+func ExampleProvidersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
@@ -32,40 +32,40 @@ func ExampleAttestationProvidersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttestationProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProvidersClientGetResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Create_AttestationProvider.json
-func ExampleAttestationProvidersClient_Create() {
+func ExampleProvidersClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
-		armattestation.AttestationServiceCreationParams{},
+		armattestation.ServiceCreationParams{},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttestationProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProvidersClientCreateResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Update_AttestationProvider.json
-func ExampleAttestationProvidersClient_Update() {
+func ExampleProvidersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
-		armattestation.AttestationServicePatchParams{
+		armattestation.ServicePatchParams{
 			Tags: map[string]*string{
 				"Property1": to.StringPtr("Value1"),
 				"Property2": to.StringPtr("Value2"),
@@ -76,17 +76,17 @@ func ExampleAttestationProvidersClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttestationProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProvidersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Delete_AttestationProvider.json
-func ExampleAttestationProvidersClient_Delete() {
+func ExampleProvidersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
@@ -97,64 +97,67 @@ func ExampleAttestationProvidersClient_Delete() {
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvidersList.json
-func ExampleAttestationProvidersClient_List() {
+func ExampleProvidersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProvidersClientListResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvidersListByResourceGroup.json
-func ExampleAttestationProvidersClient_ListByResourceGroup() {
+func ExampleProvidersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProvidersClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_DefaultProviders.json
-func ExampleAttestationProvidersClient_ListDefault() {
+func ExampleProvidersClient_ListDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
-	_, err = client.ListDefault(ctx,
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
+	res, err := client.ListDefault(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ProvidersClientListDefaultResult)
 }
 
 // x-ms-original-file: specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_DefaultProviderByLocation.json
-func ExampleAttestationProvidersClient_GetDefaultByLocation() {
+func ExampleProvidersClient_GetDefaultByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armattestation.NewAttestationProvidersClient("<subscription-id>", cred, nil)
+	client := armattestation.NewProvidersClient("<subscription-id>", cred, nil)
 	res, err := client.GetDefaultByLocation(ctx,
 		"<location>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AttestationProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ProvidersClientGetDefaultByLocationResult)
 }

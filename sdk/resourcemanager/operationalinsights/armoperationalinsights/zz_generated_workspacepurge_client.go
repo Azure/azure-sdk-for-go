@@ -24,42 +24,55 @@ import (
 // WorkspacePurgeClient contains the methods for the WorkspacePurge group.
 // Don't use this type directly, use NewWorkspacePurgeClient() instead.
 type WorkspacePurgeClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspacePurgeClient creates a new instance of WorkspacePurgeClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspacePurgeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacePurgeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspacePurgeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspacePurgeClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // GetPurgeStatus - Gets status of an ongoing purge operation.
-// If the operation fails it returns a generic error.
-func (client *WorkspacePurgeClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string, options *WorkspacePurgeGetPurgeStatusOptions) (WorkspacePurgeGetPurgeStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// purgeID - In a purge status request, this is the Id of the operation the status of which is returned.
+// options - WorkspacePurgeClientGetPurgeStatusOptions contains the optional parameters for the WorkspacePurgeClient.GetPurgeStatus
+// method.
+func (client *WorkspacePurgeClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string, options *WorkspacePurgeClientGetPurgeStatusOptions) (WorkspacePurgeClientGetPurgeStatusResponse, error) {
 	req, err := client.getPurgeStatusCreateRequest(ctx, resourceGroupName, workspaceName, purgeID, options)
 	if err != nil {
-		return WorkspacePurgeGetPurgeStatusResponse{}, err
+		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspacePurgeGetPurgeStatusResponse{}, err
+		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspacePurgeGetPurgeStatusResponse{}, client.getPurgeStatusHandleError(resp)
+		return WorkspacePurgeClientGetPurgeStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPurgeStatusHandleResponse(resp)
 }
 
 // getPurgeStatusCreateRequest creates the GetPurgeStatus request.
-func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string, options *WorkspacePurgeGetPurgeStatusOptions) (*policy.Request, error) {
+func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string, options *WorkspacePurgeClientGetPurgeStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/operations/{purgeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +90,7 @@ func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter purgeID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{purgeId}", url.PathEscape(purgeID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,49 +102,41 @@ func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Cont
 }
 
 // getPurgeStatusHandleResponse handles the GetPurgeStatus response.
-func (client *WorkspacePurgeClient) getPurgeStatusHandleResponse(resp *http.Response) (WorkspacePurgeGetPurgeStatusResponse, error) {
-	result := WorkspacePurgeGetPurgeStatusResponse{RawResponse: resp}
+func (client *WorkspacePurgeClient) getPurgeStatusHandleResponse(resp *http.Response) (WorkspacePurgeClientGetPurgeStatusResponse, error) {
+	result := WorkspacePurgeClientGetPurgeStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspacePurgeStatusResponse); err != nil {
-		return WorkspacePurgeGetPurgeStatusResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getPurgeStatusHandleError handles the GetPurgeStatus error response.
-func (client *WorkspacePurgeClient) getPurgeStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Purge - Purges data in an Log Analytics workspace by a set of user-defined filters.
-// In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending
-// a single command whose predicate includes all
-// user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request
-// to verify that the results are expected.
-// If the operation fails it returns a generic error.
-func (client *WorkspacePurgeClient) Purge(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody, options *WorkspacePurgePurgeOptions) (WorkspacePurgePurgeResponse, error) {
+// In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution
+// of purge requests by sending a single command whose predicate includes all
+// user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior
+// to using for a purge request to verify that the results are expected.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// body - Describes the body of a request to purge data in a single table of an Log Analytics Workspace
+// options - WorkspacePurgeClientPurgeOptions contains the optional parameters for the WorkspacePurgeClient.Purge method.
+func (client *WorkspacePurgeClient) Purge(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody, options *WorkspacePurgeClientPurgeOptions) (WorkspacePurgeClientPurgeResponse, error) {
 	req, err := client.purgeCreateRequest(ctx, resourceGroupName, workspaceName, body, options)
 	if err != nil {
-		return WorkspacePurgePurgeResponse{}, err
+		return WorkspacePurgeClientPurgeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspacePurgePurgeResponse{}, err
+		return WorkspacePurgeClientPurgeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return WorkspacePurgePurgeResponse{}, client.purgeHandleError(resp)
+		return WorkspacePurgeClientPurgeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.purgeHandleResponse(resp)
 }
 
 // purgeCreateRequest creates the Purge request.
-func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody, options *WorkspacePurgePurgeOptions) (*policy.Request, error) {
+func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody, options *WorkspacePurgeClientPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/purge"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,7 +150,7 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -157,25 +162,13 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 }
 
 // purgeHandleResponse handles the Purge response.
-func (client *WorkspacePurgeClient) purgeHandleResponse(resp *http.Response) (WorkspacePurgePurgeResponse, error) {
-	result := WorkspacePurgePurgeResponse{RawResponse: resp}
+func (client *WorkspacePurgeClient) purgeHandleResponse(resp *http.Response) (WorkspacePurgeClientPurgeResponse, error) {
+	result := WorkspacePurgeClientPurgeResponse{RawResponse: resp}
 	if val := resp.Header.Get("x-ms-status-location"); val != "" {
 		result.XMSStatusLocation = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspacePurgeResponse); err != nil {
-		return WorkspacePurgePurgeResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspacePurgeClientPurgeResponse{}, err
 	}
 	return result, nil
-}
-
-// purgeHandleError handles the Purge error response.
-func (client *WorkspacePurgeClient) purgeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

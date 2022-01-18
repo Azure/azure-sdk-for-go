@@ -24,39 +24,51 @@ import (
 // BackupProtectionIntentClient contains the methods for the BackupProtectionIntent group.
 // Don't use this type directly, use NewBackupProtectionIntentClient() instead.
 type BackupProtectionIntentClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupProtectionIntentClient creates a new instance of BackupProtectionIntentClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupProtectionIntentClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupProtectionIntentClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupProtectionIntentClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Provides a pageable list of all intents that are present within a vault.
-// If the operation fails it returns a generic error.
-func (client *BackupProtectionIntentClient) List(vaultName string, resourceGroupName string, options *BackupProtectionIntentListOptions) *BackupProtectionIntentListPager {
-	return &BackupProtectionIntentListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - BackupProtectionIntentClientListOptions contains the optional parameters for the BackupProtectionIntentClient.List
+// method.
+func (client *BackupProtectionIntentClient) List(vaultName string, resourceGroupName string, options *BackupProtectionIntentClientListOptions) *BackupProtectionIntentClientListPager {
+	return &BackupProtectionIntentClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp BackupProtectionIntentListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BackupProtectionIntentClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectionIntentResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupProtectionIntentClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupProtectionIntentListOptions) (*policy.Request, error) {
+func (client *BackupProtectionIntentClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupProtectionIntentClientListOptions) (*policy.Request, error) {
 	urlPath := "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupProtectionIntents"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -70,12 +82,12 @@ func (client *BackupProtectionIntentClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -88,22 +100,10 @@ func (client *BackupProtectionIntentClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupProtectionIntentClient) listHandleResponse(resp *http.Response) (BackupProtectionIntentListResponse, error) {
-	result := BackupProtectionIntentListResponse{RawResponse: resp}
+func (client *BackupProtectionIntentClient) listHandleResponse(resp *http.Response) (BackupProtectionIntentClientListResponse, error) {
+	result := BackupProtectionIntentClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionIntentResourceList); err != nil {
-		return BackupProtectionIntentListResponse{}, runtime.NewResponseError(err, resp)
+		return BackupProtectionIntentClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BackupProtectionIntentClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

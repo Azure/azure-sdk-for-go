@@ -15,22 +15,34 @@ import (
 	"time"
 )
 
-// CommunicationServiceCheckNameAvailabilityResponse contains the response from method CommunicationService.CheckNameAvailability.
-type CommunicationServiceCheckNameAvailabilityResponse struct {
-	CommunicationServiceCheckNameAvailabilityResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceCheckNameAvailabilityResult contains the result from method CommunicationService.CheckNameAvailability.
-type CommunicationServiceCheckNameAvailabilityResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
+}
+
+// ServiceClientCheckNameAvailabilityResponse contains the response from method ServiceClient.CheckNameAvailability.
+type ServiceClientCheckNameAvailabilityResponse struct {
+	ServiceClientCheckNameAvailabilityResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ServiceClientCheckNameAvailabilityResult contains the result from method ServiceClient.CheckNameAvailability.
+type ServiceClientCheckNameAvailabilityResult struct {
 	NameAvailability
 }
 
-// CommunicationServiceCreateOrUpdatePollerResponse contains the response from method CommunicationService.CreateOrUpdate.
-type CommunicationServiceCreateOrUpdatePollerResponse struct {
+// ServiceClientCreateOrUpdatePollerResponse contains the response from method ServiceClient.CreateOrUpdate.
+type ServiceClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CommunicationServiceCreateOrUpdatePoller
+	Poller *ServiceClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,9 +51,9 @@ type CommunicationServiceCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CommunicationServiceCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CommunicationServiceCreateOrUpdateResponse, error) {
-	respType := CommunicationServiceCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CommunicationServiceResource)
+func (l ServiceClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientCreateOrUpdateResponse, error) {
+	respType := ServiceClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServiceResource)
 	if err != nil {
 		return respType, err
 	}
@@ -49,13 +61,13 @@ func (l CommunicationServiceCreateOrUpdatePollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a CommunicationServiceCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *CommunicationServiceCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *CommunicationServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CommunicationServiceClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a ServiceClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ServiceClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CommunicationServiceCreateOrUpdatePoller{
+	poller := &ServiceClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,22 +79,22 @@ func (l *CommunicationServiceCreateOrUpdatePollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// CommunicationServiceCreateOrUpdateResponse contains the response from method CommunicationService.CreateOrUpdate.
-type CommunicationServiceCreateOrUpdateResponse struct {
-	CommunicationServiceCreateOrUpdateResult
+// ServiceClientCreateOrUpdateResponse contains the response from method ServiceClient.CreateOrUpdate.
+type ServiceClientCreateOrUpdateResponse struct {
+	ServiceClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceCreateOrUpdateResult contains the result from method CommunicationService.CreateOrUpdate.
-type CommunicationServiceCreateOrUpdateResult struct {
-	CommunicationServiceResource
+// ServiceClientCreateOrUpdateResult contains the result from method ServiceClient.CreateOrUpdate.
+type ServiceClientCreateOrUpdateResult struct {
+	ServiceResource
 }
 
-// CommunicationServiceDeletePollerResponse contains the response from method CommunicationService.Delete.
-type CommunicationServiceDeletePollerResponse struct {
+// ServiceClientDeletePollerResponse contains the response from method ServiceClient.Delete.
+type ServiceClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CommunicationServiceDeletePoller
+	Poller *ServiceClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -91,8 +103,8 @@ type CommunicationServiceDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CommunicationServiceDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CommunicationServiceDeleteResponse, error) {
-	respType := CommunicationServiceDeleteResponse{}
+func (l ServiceClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServiceClientDeleteResponse, error) {
+	respType := ServiceClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -101,13 +113,13 @@ func (l CommunicationServiceDeletePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a CommunicationServiceDeletePollerResponse from the provided client and resume token.
-func (l *CommunicationServiceDeletePollerResponse) Resume(ctx context.Context, client *CommunicationServiceClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CommunicationServiceClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ServiceClientDeletePollerResponse from the provided client and resume token.
+func (l *ServiceClientDeletePollerResponse) Resume(ctx context.Context, client *ServiceClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ServiceClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CommunicationServiceDeletePoller{
+	poller := &ServiceClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -119,104 +131,92 @@ func (l *CommunicationServiceDeletePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// CommunicationServiceDeleteResponse contains the response from method CommunicationService.Delete.
-type CommunicationServiceDeleteResponse struct {
+// ServiceClientDeleteResponse contains the response from method ServiceClient.Delete.
+type ServiceClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceGetResponse contains the response from method CommunicationService.Get.
-type CommunicationServiceGetResponse struct {
-	CommunicationServiceGetResult
+// ServiceClientGetResponse contains the response from method ServiceClient.Get.
+type ServiceClientGetResponse struct {
+	ServiceClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceGetResult contains the result from method CommunicationService.Get.
-type CommunicationServiceGetResult struct {
-	CommunicationServiceResource
+// ServiceClientGetResult contains the result from method ServiceClient.Get.
+type ServiceClientGetResult struct {
+	ServiceResource
 }
 
-// CommunicationServiceLinkNotificationHubResponse contains the response from method CommunicationService.LinkNotificationHub.
-type CommunicationServiceLinkNotificationHubResponse struct {
-	CommunicationServiceLinkNotificationHubResult
+// ServiceClientLinkNotificationHubResponse contains the response from method ServiceClient.LinkNotificationHub.
+type ServiceClientLinkNotificationHubResponse struct {
+	ServiceClientLinkNotificationHubResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceLinkNotificationHubResult contains the result from method CommunicationService.LinkNotificationHub.
-type CommunicationServiceLinkNotificationHubResult struct {
+// ServiceClientLinkNotificationHubResult contains the result from method ServiceClient.LinkNotificationHub.
+type ServiceClientLinkNotificationHubResult struct {
 	LinkedNotificationHub
 }
 
-// CommunicationServiceListByResourceGroupResponse contains the response from method CommunicationService.ListByResourceGroup.
-type CommunicationServiceListByResourceGroupResponse struct {
-	CommunicationServiceListByResourceGroupResult
+// ServiceClientListByResourceGroupResponse contains the response from method ServiceClient.ListByResourceGroup.
+type ServiceClientListByResourceGroupResponse struct {
+	ServiceClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceListByResourceGroupResult contains the result from method CommunicationService.ListByResourceGroup.
-type CommunicationServiceListByResourceGroupResult struct {
-	CommunicationServiceResourceList
+// ServiceClientListByResourceGroupResult contains the result from method ServiceClient.ListByResourceGroup.
+type ServiceClientListByResourceGroupResult struct {
+	ServiceResourceList
 }
 
-// CommunicationServiceListBySubscriptionResponse contains the response from method CommunicationService.ListBySubscription.
-type CommunicationServiceListBySubscriptionResponse struct {
-	CommunicationServiceListBySubscriptionResult
+// ServiceClientListBySubscriptionResponse contains the response from method ServiceClient.ListBySubscription.
+type ServiceClientListBySubscriptionResponse struct {
+	ServiceClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceListBySubscriptionResult contains the result from method CommunicationService.ListBySubscription.
-type CommunicationServiceListBySubscriptionResult struct {
-	CommunicationServiceResourceList
+// ServiceClientListBySubscriptionResult contains the result from method ServiceClient.ListBySubscription.
+type ServiceClientListBySubscriptionResult struct {
+	ServiceResourceList
 }
 
-// CommunicationServiceListKeysResponse contains the response from method CommunicationService.ListKeys.
-type CommunicationServiceListKeysResponse struct {
-	CommunicationServiceListKeysResult
+// ServiceClientListKeysResponse contains the response from method ServiceClient.ListKeys.
+type ServiceClientListKeysResponse struct {
+	ServiceClientListKeysResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceListKeysResult contains the result from method CommunicationService.ListKeys.
-type CommunicationServiceListKeysResult struct {
-	CommunicationServiceKeys
+// ServiceClientListKeysResult contains the result from method ServiceClient.ListKeys.
+type ServiceClientListKeysResult struct {
+	ServiceKeys
 }
 
-// CommunicationServiceRegenerateKeyResponse contains the response from method CommunicationService.RegenerateKey.
-type CommunicationServiceRegenerateKeyResponse struct {
-	CommunicationServiceRegenerateKeyResult
+// ServiceClientRegenerateKeyResponse contains the response from method ServiceClient.RegenerateKey.
+type ServiceClientRegenerateKeyResponse struct {
+	ServiceClientRegenerateKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceRegenerateKeyResult contains the result from method CommunicationService.RegenerateKey.
-type CommunicationServiceRegenerateKeyResult struct {
-	CommunicationServiceKeys
+// ServiceClientRegenerateKeyResult contains the result from method ServiceClient.RegenerateKey.
+type ServiceClientRegenerateKeyResult struct {
+	ServiceKeys
 }
 
-// CommunicationServiceUpdateResponse contains the response from method CommunicationService.Update.
-type CommunicationServiceUpdateResponse struct {
-	CommunicationServiceUpdateResult
+// ServiceClientUpdateResponse contains the response from method ServiceClient.Update.
+type ServiceClientUpdateResponse struct {
+	ServiceClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CommunicationServiceUpdateResult contains the result from method CommunicationService.Update.
-type CommunicationServiceUpdateResult struct {
-	CommunicationServiceResource
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationListResult
+// ServiceClientUpdateResult contains the result from method ServiceClient.Update.
+type ServiceClientUpdateResult struct {
+	ServiceResource
 }

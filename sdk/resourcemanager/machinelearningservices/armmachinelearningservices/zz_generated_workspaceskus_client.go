@@ -11,7 +11,6 @@ package armmachinelearningservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,54 @@ import (
 // WorkspaceSKUsClient contains the methods for the WorkspaceSKUs group.
 // Don't use this type directly, use NewWorkspaceSKUsClient() instead.
 type WorkspaceSKUsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceSKUsClient creates a new instance of WorkspaceSKUsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceSKUsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceSKUsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all skus with associated features
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceSKUsClient) List(options *WorkspaceSKUsListOptions) *WorkspaceSKUsListPager {
-	return &WorkspaceSKUsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - WorkspaceSKUsClientListOptions contains the optional parameters for the WorkspaceSKUsClient.List method.
+func (client *WorkspaceSKUsClient) List(options *WorkspaceSKUsClientListOptions) *WorkspaceSKUsClientListPager {
+	return &WorkspaceSKUsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspaceSKUsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspaceSKUsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.SKUListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceSKUsClient) listCreateRequest(ctx context.Context, options *WorkspaceSKUsListOptions) (*policy.Request, error) {
+func (client *WorkspaceSKUsClient) listCreateRequest(ctx context.Context, options *WorkspaceSKUsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,23 +83,10 @@ func (client *WorkspaceSKUsClient) listCreateRequest(ctx context.Context, option
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceSKUsClient) listHandleResponse(resp *http.Response) (WorkspaceSKUsListResponse, error) {
-	result := WorkspaceSKUsListResponse{RawResponse: resp}
+func (client *WorkspaceSKUsClient) listHandleResponse(resp *http.Response) (WorkspaceSKUsClientListResponse, error) {
+	result := WorkspaceSKUsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUListResult); err != nil {
-		return WorkspaceSKUsListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceSKUsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkspaceSKUsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

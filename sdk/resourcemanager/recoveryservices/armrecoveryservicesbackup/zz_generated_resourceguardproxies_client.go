@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,51 @@ import (
 // ResourceGuardProxiesClient contains the methods for the ResourceGuardProxies group.
 // Don't use this type directly, use NewResourceGuardProxiesClient() instead.
 type ResourceGuardProxiesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourceGuardProxiesClient creates a new instance of ResourceGuardProxiesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceGuardProxiesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ResourceGuardProxiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourceGuardProxiesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - List the ResourceGuardProxies under vault
-// If the operation fails it returns the *CloudError error type.
-func (client *ResourceGuardProxiesClient) Get(vaultName string, resourceGroupName string, options *ResourceGuardProxiesGetOptions) *ResourceGuardProxiesGetPager {
-	return &ResourceGuardProxiesGetPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.Get
+// method.
+func (client *ResourceGuardProxiesClient) Get(vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) *ResourceGuardProxiesClientGetPager {
+	return &ResourceGuardProxiesClientGetPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ResourceGuardProxiesGetResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceGuardProxiesClientGetResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceGuardProxyBaseResourceList.NextLink)
 		},
 	}
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceGuardProxiesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *ResourceGuardProxiesGetOptions) (*policy.Request, error) {
+func (client *ResourceGuardProxiesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupResourceGuardProxies"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -71,35 +82,22 @@ func (client *ResourceGuardProxiesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceGuardProxiesClient) getHandleResponse(resp *http.Response) (ResourceGuardProxiesGetResponse, error) {
-	result := ResourceGuardProxiesGetResponse{RawResponse: resp}
+func (client *ResourceGuardProxiesClient) getHandleResponse(resp *http.Response) (ResourceGuardProxiesClientGetResponse, error) {
+	result := ResourceGuardProxiesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardProxyBaseResourceList); err != nil {
-		return ResourceGuardProxiesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceGuardProxiesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ResourceGuardProxiesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

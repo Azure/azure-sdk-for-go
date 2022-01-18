@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // AnalysisResultsClient contains the methods for the AnalysisResults group.
 // Don't use this type directly, use NewAnalysisResultsClient() instead.
 type AnalysisResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAnalysisResultsClient creates a new instance of AnalysisResultsClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAnalysisResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AnalysisResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AnalysisResultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AnalysisResultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets an Analysis Result of a Test Result by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AnalysisResultsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultName AnalysisResultName, options *AnalysisResultsGetOptions) (AnalysisResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// analysisResultName - The name of the Analysis Result of a Test Result.
+// options - AnalysisResultsClientGetOptions contains the optional parameters for the AnalysisResultsClient.Get method.
+func (client *AnalysisResultsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultName AnalysisResultName, options *AnalysisResultsClientGetOptions) (AnalysisResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, analysisResultName, options)
 	if err != nil {
-		return AnalysisResultsGetResponse{}, err
+		return AnalysisResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnalysisResultsGetResponse{}, err
+		return AnalysisResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalysisResultsGetResponse{}, client.getHandleError(resp)
+		return AnalysisResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AnalysisResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultName AnalysisResultName, options *AnalysisResultsGetOptions) (*policy.Request, error) {
+func (client *AnalysisResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultName AnalysisResultName, options *AnalysisResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults/{testResultName}/analysisResults/{analysisResultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +99,7 @@ func (client *AnalysisResultsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter analysisResultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{analysisResultName}", url.PathEscape(string(analysisResultName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -98,47 +111,40 @@ func (client *AnalysisResultsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (AnalysisResultsGetResponse, error) {
-	result := AnalysisResultsGetResponse{RawResponse: resp}
+func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (AnalysisResultsClientGetResponse, error) {
+	result := AnalysisResultsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisResultSingletonResource); err != nil {
-		return AnalysisResultsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AnalysisResultsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AnalysisResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists the Analysis Results of a Test Result. The result collection will only contain one element as all the data will be nested in a singleton
-// object.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AnalysisResultsClient) List(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsListOptions) (AnalysisResultsListResponse, error) {
+// List - Lists the Analysis Results of a Test Result. The result collection will only contain one element as all the data
+// will be nested in a singleton object.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// analysisResultType - The type of the Analysis Result of a Test Result.
+// options - AnalysisResultsClientListOptions contains the optional parameters for the AnalysisResultsClient.List method.
+func (client *AnalysisResultsClient) List(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) (AnalysisResultsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, analysisResultType, options)
 	if err != nil {
-		return AnalysisResultsListResponse{}, err
+		return AnalysisResultsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AnalysisResultsListResponse{}, err
+		return AnalysisResultsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AnalysisResultsListResponse{}, client.listHandleError(resp)
+		return AnalysisResultsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *AnalysisResultsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsListOptions) (*policy.Request, error) {
+func (client *AnalysisResultsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults/{testResultName}/analysisResults"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -160,7 +166,7 @@ func (client *AnalysisResultsClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter testResultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testResultName}", url.PathEscape(testResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,23 +179,10 @@ func (client *AnalysisResultsClient) listCreateRequest(ctx context.Context, reso
 }
 
 // listHandleResponse handles the List response.
-func (client *AnalysisResultsClient) listHandleResponse(resp *http.Response) (AnalysisResultsListResponse, error) {
-	result := AnalysisResultsListResponse{RawResponse: resp}
+func (client *AnalysisResultsClient) listHandleResponse(resp *http.Response) (AnalysisResultsClientListResponse, error) {
+	result := AnalysisResultsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisResultListResult); err != nil {
-		return AnalysisResultsListResponse{}, runtime.NewResponseError(err, resp)
+		return AnalysisResultsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *AnalysisResultsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

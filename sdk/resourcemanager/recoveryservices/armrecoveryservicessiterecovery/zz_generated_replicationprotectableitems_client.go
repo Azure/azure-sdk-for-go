@@ -24,44 +24,61 @@ import (
 // ReplicationProtectableItemsClient contains the methods for the ReplicationProtectableItems group.
 // Don't use this type directly, use NewReplicationProtectableItemsClient() instead.
 type ReplicationProtectableItemsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationProtectableItemsClient creates a new instance of ReplicationProtectableItemsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationProtectableItemsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationProtectableItemsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationProtectableItemsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationProtectableItemsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - The operation to get the details of a protectable item.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectableItemsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, protectableItemName string, options *ReplicationProtectableItemsGetOptions) (ReplicationProtectableItemsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// protectableItemName - Protectable item name.
+// options - ReplicationProtectableItemsClientGetOptions contains the optional parameters for the ReplicationProtectableItemsClient.Get
+// method.
+func (client *ReplicationProtectableItemsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, protectableItemName string, options *ReplicationProtectableItemsClientGetOptions) (ReplicationProtectableItemsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, protectableItemName, options)
 	if err != nil {
-		return ReplicationProtectableItemsGetResponse{}, err
+		return ReplicationProtectableItemsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationProtectableItemsGetResponse{}, err
+		return ReplicationProtectableItemsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationProtectableItemsGetResponse{}, client.getHandleError(resp)
+		return ReplicationProtectableItemsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationProtectableItemsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, protectableItemName string, options *ReplicationProtectableItemsGetOptions) (*policy.Request, error) {
+func (client *ReplicationProtectableItemsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, protectableItemName string, options *ReplicationProtectableItemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectableItems/{protectableItemName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -87,54 +104,46 @@ func (client *ReplicationProtectableItemsClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter protectableItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectableItemName}", url.PathEscape(protectableItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationProtectableItemsClient) getHandleResponse(resp *http.Response) (ReplicationProtectableItemsGetResponse, error) {
-	result := ReplicationProtectableItemsGetResponse{RawResponse: resp}
+func (client *ReplicationProtectableItemsClient) getHandleResponse(resp *http.Response) (ReplicationProtectableItemsClientGetResponse, error) {
+	result := ReplicationProtectableItemsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectableItem); err != nil {
-		return ReplicationProtectableItemsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectableItemsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationProtectableItemsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationProtectionContainers - Lists the protectable items in a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectableItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectableItemsListByReplicationProtectionContainersOptions) *ReplicationProtectableItemsListByReplicationProtectionContainersPager {
-	return &ReplicationProtectableItemsListByReplicationProtectionContainersPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// options - ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
+// for the ReplicationProtectableItemsClient.ListByReplicationProtectionContainers method.
+func (client *ReplicationProtectableItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions) *ReplicationProtectableItemsClientListByReplicationProtectionContainersPager {
+	return &ReplicationProtectableItemsClientListByReplicationProtectionContainersPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectableItemsListByReplicationProtectionContainersResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectableItemCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
-func (client *ReplicationProtectableItemsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectableItemsListByReplicationProtectionContainersOptions) (*policy.Request, error) {
+func (client *ReplicationProtectableItemsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectableItems"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -156,12 +165,12 @@ func (client *ReplicationProtectableItemsClient) listByReplicationProtectionCont
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -177,22 +186,10 @@ func (client *ReplicationProtectableItemsClient) listByReplicationProtectionCont
 }
 
 // listByReplicationProtectionContainersHandleResponse handles the ListByReplicationProtectionContainers response.
-func (client *ReplicationProtectableItemsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationProtectableItemsListByReplicationProtectionContainersResponse, error) {
-	result := ReplicationProtectableItemsListByReplicationProtectionContainersResponse{RawResponse: resp}
+func (client *ReplicationProtectableItemsClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse, error) {
+	result := ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectableItemCollection); err != nil {
-		return ReplicationProtectableItemsListByReplicationProtectionContainersResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse{}, err
 	}
 	return result, nil
-}
-
-// listByReplicationProtectionContainersHandleError handles the ListByReplicationProtectionContainers error response.
-func (client *ReplicationProtectableItemsClient) listByReplicationProtectionContainersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

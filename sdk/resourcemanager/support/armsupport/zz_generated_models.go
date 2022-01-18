@@ -119,26 +119,28 @@ func (c *CommunicationDetailsProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CommunicationsBeginCreateOptions contains the optional parameters for the Communications.BeginCreate method.
-type CommunicationsBeginCreateOptions struct {
+// CommunicationsClientBeginCreateOptions contains the optional parameters for the CommunicationsClient.BeginCreate method.
+type CommunicationsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CommunicationsCheckNameAvailabilityOptions contains the optional parameters for the Communications.CheckNameAvailability method.
-type CommunicationsCheckNameAvailabilityOptions struct {
+// CommunicationsClientCheckNameAvailabilityOptions contains the optional parameters for the CommunicationsClient.CheckNameAvailability
+// method.
+type CommunicationsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CommunicationsGetOptions contains the optional parameters for the Communications.Get method.
-type CommunicationsGetOptions struct {
+// CommunicationsClientGetOptions contains the optional parameters for the CommunicationsClient.Get method.
+type CommunicationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CommunicationsListOptions contains the optional parameters for the Communications.List method.
-type CommunicationsListOptions struct {
-	// The filter to apply on the operation. You can filter by communicationType and createdDate properties. CommunicationType supports Equals ('eq') operator
-	// and createdDate supports Greater Than ('gt') and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters
-	// by Logical And ('and') operator.
+// CommunicationsClientListOptions contains the optional parameters for the CommunicationsClient.List method.
+type CommunicationsClientListOptions struct {
+	// The filter to apply on the operation. You can filter by communicationType and createdDate properties. CommunicationType
+	// supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+	// Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical And ('and')
+	// operator.
 	Filter *string
 	// The number of values to return in the collection. Default is 10 and max is 10.
 	Top *int32
@@ -175,11 +177,12 @@ type ContactProfile struct {
 	// REQUIRED; Preferred contact method.
 	PreferredContactMethod *PreferredContactMethod `json:"preferredContactMethod,omitempty"`
 
-	// REQUIRED; Preferred language of support from Azure. Support languages vary based on the severity you choose for your support ticket. Learn more at Azure
-	// Severity and responsiveness
-	// [https://azure.microsoft.com/support/plans/response]. Use the standard language-country code. Valid values are 'en-us' for English, 'zh-hans' for Chinese,
-	// 'es-es' for Spanish, 'fr-fr' for French,
-	// 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for Chinese and 'de-de' for German.
+	// REQUIRED; Preferred language of support from Azure. Support languages vary based on the severity you choose for your support
+	// ticket. Learn more at Azure Severity and responsiveness
+	// [https://azure.microsoft.com/support/plans/response]. Use the standard language-country code. Valid values are 'en-us'
+	// for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French,
+	// 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
+	// Chinese and 'de-de' for German.
 	PreferredSupportLanguage *string `json:"preferredSupportLanguage,omitempty"`
 
 	// REQUIRED; Time zone of the user. This is the name of the time zone from Microsoft Time Zone Index Values [https://support.microsoft.com/help/973627/microsoft-time-zone-index-values].
@@ -210,18 +213,16 @@ func (c ContactProfile) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ExceptionResponse - The API error.
-// Implements the error and azcore.HTTPResponse interfaces.
-type ExceptionResponse struct {
-	raw string
-	// The API error details.
-	InnerError *ServiceError `json:"error,omitempty"`
+// Engineer - Support engineer information.
+type Engineer struct {
+	// READ-ONLY; Email address of the Azure Support engineer assigned to the support ticket.
+	EmailAddress *string `json:"emailAddress,omitempty" azure:"ro"`
 }
 
-// Error implements the error interface for type ExceptionResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ExceptionResponse) Error() string {
-	return e.raw
+// ExceptionResponse - The API error.
+type ExceptionResponse struct {
+	// The API error details.
+	Error *ServiceError `json:"error,omitempty"`
 }
 
 // Operation - The operation supported by Microsoft Support resource provider.
@@ -248,8 +249,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -287,13 +288,13 @@ type ProblemClassificationProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// ProblemClassificationsGetOptions contains the optional parameters for the ProblemClassifications.Get method.
-type ProblemClassificationsGetOptions struct {
+// ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get method.
+type ProblemClassificationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProblemClassificationsListOptions contains the optional parameters for the ProblemClassifications.List method.
-type ProblemClassificationsListOptions struct {
+// ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.List method.
+type ProblemClassificationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -319,8 +320,8 @@ type QuotaChangeRequest struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// QuotaTicketDetails - Additional set of information required for quota increase support ticket for certain quota types, e.g.: Virtual machine cores. Get
-// complete details about Quota payload support request along with
+// QuotaTicketDetails - Additional set of information required for quota increase support ticket for certain quota types,
+// e.g.: Virtual machine cores. Get complete details about Quota payload support request along with
 // examples at Support quota request [https://aka.ms/supportrpquotarequestpayload].
 type QuotaTicketDetails struct {
 	// Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota increase.
@@ -458,13 +459,13 @@ func (s ServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServicesGetOptions contains the optional parameters for the Services.Get method.
-type ServicesGetOptions struct {
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesListOptions contains the optional parameters for the Services.List method.
-type ServicesListOptions struct {
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -481,16 +482,17 @@ func (s ServicesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SupportEngineer - Support engineer information.
-type SupportEngineer struct {
-	// READ-ONLY; Email address of the Azure Support engineer assigned to the support ticket.
-	EmailAddress *string `json:"emailAddress,omitempty" azure:"ro"`
+// TechnicalTicketDetails - Additional information for technical support ticket.
+type TechnicalTicketDetails struct {
+	// This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight resource)
+	// for which the support ticket is created.
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// SupportTicketDetails - Object that represents SupportTicketDetails resource.
-type SupportTicketDetails struct {
+// TicketDetails - Object that represents SupportTicketDetails resource.
+type TicketDetails struct {
 	// Properties of the resource.
-	Properties *SupportTicketDetailsProperties `json:"properties,omitempty"`
+	Properties *TicketDetailsProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Id of the resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -502,24 +504,25 @@ type SupportTicketDetails struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SupportTicketDetailsProperties - Describes the properties of a support ticket.
-type SupportTicketDetailsProperties struct {
+// TicketDetailsProperties - Describes the properties of a support ticket.
+type TicketDetailsProperties struct {
 	// REQUIRED; Contact information of the user requesting to create a support ticket.
 	ContactDetails *ContactProfile `json:"contactDetails,omitempty"`
 
 	// REQUIRED; Detailed description of the question or issue.
 	Description *string `json:"description,omitempty"`
 
-	// REQUIRED; Each Azure service has its own set of issue categories, also known as problem classification. This parameter is the unique Id for the type
-	// of problem you are experiencing.
+	// REQUIRED; Each Azure service has its own set of issue categories, also known as problem classification. This parameter
+	// is the unique Id for the type of problem you are experiencing.
 	ProblemClassificationID *string `json:"problemClassificationId,omitempty"`
 
 	// REQUIRED; This is the resource Id of the Azure service resource associated with the support ticket.
 	ServiceID *string `json:"serviceId,omitempty"`
 
-	// REQUIRED; A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the
-	// technical support plan you have with Azure. Note: 'Highest
-	// critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
+	// REQUIRED; A value that indicates the urgency of the case, which in turn determines the response time according to the service
+	// level agreement of the technical support plan you have with Azure. Note: 'Highest
+	// critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium
+	// customers.
 	Severity *SeverityLevel `json:"severity,omitempty"`
 
 	// REQUIRED; Title of the support ticket.
@@ -538,7 +541,7 @@ type SupportTicketDetailsProperties struct {
 	ServiceLevelAgreement *ServiceLevelAgreement `json:"serviceLevelAgreement,omitempty"`
 
 	// Information about the support engineer working on this support ticket.
-	SupportEngineer *SupportEngineer `json:"supportEngineer,omitempty"`
+	SupportEngineer *Engineer `json:"supportEngineer,omitempty"`
 
 	// System generated support ticket Id that is unique.
 	SupportTicketID *string `json:"supportTicketId,omitempty"`
@@ -568,34 +571,34 @@ type SupportTicketDetailsProperties struct {
 	SupportPlanType *string `json:"supportPlanType,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SupportTicketDetailsProperties.
-func (s SupportTicketDetailsProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type TicketDetailsProperties.
+func (t TicketDetailsProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "contactDetails", s.ContactDetails)
-	populateTimeRFC3339(objectMap, "createdDate", s.CreatedDate)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "enrollmentId", s.EnrollmentID)
-	populateTimeRFC3339(objectMap, "modifiedDate", s.ModifiedDate)
-	populate(objectMap, "problemClassificationDisplayName", s.ProblemClassificationDisplayName)
-	populate(objectMap, "problemClassificationId", s.ProblemClassificationID)
-	populateTimeRFC3339(objectMap, "problemStartTime", s.ProblemStartTime)
-	populate(objectMap, "quotaTicketDetails", s.QuotaTicketDetails)
-	populate(objectMap, "require24X7Response", s.Require24X7Response)
-	populate(objectMap, "serviceDisplayName", s.ServiceDisplayName)
-	populate(objectMap, "serviceId", s.ServiceID)
-	populate(objectMap, "serviceLevelAgreement", s.ServiceLevelAgreement)
-	populate(objectMap, "severity", s.Severity)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "supportEngineer", s.SupportEngineer)
-	populate(objectMap, "supportPlanType", s.SupportPlanType)
-	populate(objectMap, "supportTicketId", s.SupportTicketID)
-	populate(objectMap, "technicalTicketDetails", s.TechnicalTicketDetails)
-	populate(objectMap, "title", s.Title)
+	populate(objectMap, "contactDetails", t.ContactDetails)
+	populateTimeRFC3339(objectMap, "createdDate", t.CreatedDate)
+	populate(objectMap, "description", t.Description)
+	populate(objectMap, "enrollmentId", t.EnrollmentID)
+	populateTimeRFC3339(objectMap, "modifiedDate", t.ModifiedDate)
+	populate(objectMap, "problemClassificationDisplayName", t.ProblemClassificationDisplayName)
+	populate(objectMap, "problemClassificationId", t.ProblemClassificationID)
+	populateTimeRFC3339(objectMap, "problemStartTime", t.ProblemStartTime)
+	populate(objectMap, "quotaTicketDetails", t.QuotaTicketDetails)
+	populate(objectMap, "require24X7Response", t.Require24X7Response)
+	populate(objectMap, "serviceDisplayName", t.ServiceDisplayName)
+	populate(objectMap, "serviceId", t.ServiceID)
+	populate(objectMap, "serviceLevelAgreement", t.ServiceLevelAgreement)
+	populate(objectMap, "severity", t.Severity)
+	populate(objectMap, "status", t.Status)
+	populate(objectMap, "supportEngineer", t.SupportEngineer)
+	populate(objectMap, "supportPlanType", t.SupportPlanType)
+	populate(objectMap, "supportTicketId", t.SupportTicketID)
+	populate(objectMap, "technicalTicketDetails", t.TechnicalTicketDetails)
+	populate(objectMap, "title", t.Title)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SupportTicketDetailsProperties.
-func (s *SupportTicketDetailsProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type TicketDetailsProperties.
+func (t *TicketDetailsProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -604,64 +607,64 @@ func (s *SupportTicketDetailsProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contactDetails":
-			err = unpopulate(val, &s.ContactDetails)
+			err = unpopulate(val, &t.ContactDetails)
 			delete(rawMsg, key)
 		case "createdDate":
-			err = unpopulateTimeRFC3339(val, &s.CreatedDate)
+			err = unpopulateTimeRFC3339(val, &t.CreatedDate)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &s.Description)
+			err = unpopulate(val, &t.Description)
 			delete(rawMsg, key)
 		case "enrollmentId":
-			err = unpopulate(val, &s.EnrollmentID)
+			err = unpopulate(val, &t.EnrollmentID)
 			delete(rawMsg, key)
 		case "modifiedDate":
-			err = unpopulateTimeRFC3339(val, &s.ModifiedDate)
+			err = unpopulateTimeRFC3339(val, &t.ModifiedDate)
 			delete(rawMsg, key)
 		case "problemClassificationDisplayName":
-			err = unpopulate(val, &s.ProblemClassificationDisplayName)
+			err = unpopulate(val, &t.ProblemClassificationDisplayName)
 			delete(rawMsg, key)
 		case "problemClassificationId":
-			err = unpopulate(val, &s.ProblemClassificationID)
+			err = unpopulate(val, &t.ProblemClassificationID)
 			delete(rawMsg, key)
 		case "problemStartTime":
-			err = unpopulateTimeRFC3339(val, &s.ProblemStartTime)
+			err = unpopulateTimeRFC3339(val, &t.ProblemStartTime)
 			delete(rawMsg, key)
 		case "quotaTicketDetails":
-			err = unpopulate(val, &s.QuotaTicketDetails)
+			err = unpopulate(val, &t.QuotaTicketDetails)
 			delete(rawMsg, key)
 		case "require24X7Response":
-			err = unpopulate(val, &s.Require24X7Response)
+			err = unpopulate(val, &t.Require24X7Response)
 			delete(rawMsg, key)
 		case "serviceDisplayName":
-			err = unpopulate(val, &s.ServiceDisplayName)
+			err = unpopulate(val, &t.ServiceDisplayName)
 			delete(rawMsg, key)
 		case "serviceId":
-			err = unpopulate(val, &s.ServiceID)
+			err = unpopulate(val, &t.ServiceID)
 			delete(rawMsg, key)
 		case "serviceLevelAgreement":
-			err = unpopulate(val, &s.ServiceLevelAgreement)
+			err = unpopulate(val, &t.ServiceLevelAgreement)
 			delete(rawMsg, key)
 		case "severity":
-			err = unpopulate(val, &s.Severity)
+			err = unpopulate(val, &t.Severity)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &s.Status)
+			err = unpopulate(val, &t.Status)
 			delete(rawMsg, key)
 		case "supportEngineer":
-			err = unpopulate(val, &s.SupportEngineer)
+			err = unpopulate(val, &t.SupportEngineer)
 			delete(rawMsg, key)
 		case "supportPlanType":
-			err = unpopulate(val, &s.SupportPlanType)
+			err = unpopulate(val, &t.SupportPlanType)
 			delete(rawMsg, key)
 		case "supportTicketId":
-			err = unpopulate(val, &s.SupportTicketID)
+			err = unpopulate(val, &t.SupportTicketID)
 			delete(rawMsg, key)
 		case "technicalTicketDetails":
-			err = unpopulate(val, &s.TechnicalTicketDetails)
+			err = unpopulate(val, &t.TechnicalTicketDetails)
 			delete(rawMsg, key)
 		case "title":
-			err = unpopulate(val, &s.Title)
+			err = unpopulate(val, &t.Title)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -671,58 +674,53 @@ func (s *SupportTicketDetailsProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SupportTicketsBeginCreateOptions contains the optional parameters for the SupportTickets.BeginCreate method.
-type SupportTicketsBeginCreateOptions struct {
+// TicketsClientBeginCreateOptions contains the optional parameters for the TicketsClient.BeginCreate method.
+type TicketsClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SupportTicketsCheckNameAvailabilityOptions contains the optional parameters for the SupportTickets.CheckNameAvailability method.
-type SupportTicketsCheckNameAvailabilityOptions struct {
+// TicketsClientCheckNameAvailabilityOptions contains the optional parameters for the TicketsClient.CheckNameAvailability
+// method.
+type TicketsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SupportTicketsGetOptions contains the optional parameters for the SupportTickets.Get method.
-type SupportTicketsGetOptions struct {
+// TicketsClientGetOptions contains the optional parameters for the TicketsClient.Get method.
+type TicketsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SupportTicketsListOptions contains the optional parameters for the SupportTickets.List method.
-type SupportTicketsListOptions struct {
-	// The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn more](https://docs.microsoft.com/odata/concepts/queryoptions-overview).
-	// _Status_ filter can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater Than
-	// or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+// TicketsClientListOptions contains the optional parameters for the TicketsClient.List method.
+type TicketsClientListOptions struct {
+	// The filter to apply on the operation. We support 'odata v4.0' filter semantics. Learn more [https://docs.microsoft.com/odata/concepts/queryoptions-overview].
+	// Status filter can only be used with Equals
+	// ('eq') operator. For CreatedDate filter, the supported operators are Greater Than ('gt') and Greater Than or Equals ('ge').
+	// When using both filters, combine them using the logical 'AND'.
 	Filter *string
 	// The number of values to return in the collection. Default is 25 and max is 100.
 	Top *int32
 }
 
-// SupportTicketsListResult - Object that represents a collection of SupportTicket resources.
-type SupportTicketsListResult struct {
+// TicketsClientUpdateOptions contains the optional parameters for the TicketsClient.Update method.
+type TicketsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TicketsListResult - Object that represents a collection of SupportTicket resources.
+type TicketsListResult struct {
 	// The URI to fetch the next page of SupportTicket resources.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// List of SupportTicket resources.
-	Value []*SupportTicketDetails `json:"value,omitempty"`
+	Value []*TicketDetails `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SupportTicketsListResult.
-func (s SupportTicketsListResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type TicketsListResult.
+func (t TicketsListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
+	populate(objectMap, "nextLink", t.NextLink)
+	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
-}
-
-// SupportTicketsUpdateOptions contains the optional parameters for the SupportTickets.Update method.
-type SupportTicketsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TechnicalTicketDetails - Additional information for technical support ticket.
-type TechnicalTicketDetails struct {
-	// This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight resource) for which the support ticket
-	// is created.
-	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // UpdateContactProfile - Contact information associated with the support ticket.
@@ -745,11 +743,12 @@ type UpdateContactProfile struct {
 	// Preferred contact method.
 	PreferredContactMethod *PreferredContactMethod `json:"preferredContactMethod,omitempty"`
 
-	// Preferred language of support from Azure. Support languages vary based on the severity you choose for your support ticket. Learn more at Azure Severity
-	// and responsiveness
-	// [https://azure.microsoft.com/support/plans/response/]. Use the standard language-country code. Valid values are 'en-us' for English, 'zh-hans' for Chinese,
-	// 'es-es' for Spanish, 'fr-fr' for French,
-	// 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for Chinese and 'de-de' for German.
+	// Preferred language of support from Azure. Support languages vary based on the severity you choose for your support ticket.
+	// Learn more at Azure Severity and responsiveness
+	// [https://azure.microsoft.com/support/plans/response/]. Use the standard language-country code. Valid values are 'en-us'
+	// for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French,
+	// 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
+	// Chinese and 'de-de' for German.
 	PreferredSupportLanguage *string `json:"preferredSupportLanguage,omitempty"`
 
 	// Time zone of the user. This is the name of the time zone from Microsoft Time Zone Index Values [https://support.microsoft.com/help/973627/microsoft-time-zone-index-values].

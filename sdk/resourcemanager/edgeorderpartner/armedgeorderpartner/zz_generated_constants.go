@@ -9,8 +9,8 @@
 package armedgeorderpartner
 
 const (
-	module  = "armedgeorderpartner"
-	version = "v0.1.0"
+	moduleName    = "armedgeorderpartner"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -81,7 +81,8 @@ func (c OrderItemType) ToPtr() *OrderItemType {
 	return &c
 }
 
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (

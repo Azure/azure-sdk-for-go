@@ -30,12 +30,16 @@ func ExampleWorkloadNetworksClient_ListSegments() {
 	pager := client.ListSegments("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkSegment.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleWorkloadNetworksClient_GetSegment() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkSegment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetSegmentResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreateSegments.json
@@ -91,7 +95,7 @@ func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkSegment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientCreateSegmentsResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateSegments.json
@@ -125,7 +129,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkSegment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientUpdateSegmentsResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeleteSegments.json
@@ -161,12 +165,16 @@ func ExampleWorkloadNetworksClient_ListDhcp() {
 	pager := client.ListDhcp("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkDhcp.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -187,7 +195,7 @@ func ExampleWorkloadNetworksClient_GetDhcp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkDhcp.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetDhcpResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreateDhcpConfigurations.json
@@ -204,11 +212,9 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 		"<dhcp-id>",
 		armavs.WorkloadNetworkDhcp{
 			Properties: &armavs.WorkloadNetworkDhcpServer{
-				WorkloadNetworkDhcpEntity: armavs.WorkloadNetworkDhcpEntity{
-					DhcpType:    armavs.DhcpTypeEnumSERVER.ToPtr(),
-					DisplayName: to.StringPtr("<display-name>"),
-					Revision:    to.Int64Ptr(1),
-				},
+				DhcpType:      armavs.DhcpTypeEnum("SERVER").ToPtr(),
+				DisplayName:   to.StringPtr("<display-name>"),
+				Revision:      to.Int64Ptr(1),
 				LeaseTime:     to.Int64Ptr(86400),
 				ServerAddress: to.StringPtr("<server-address>"),
 			},
@@ -221,7 +227,7 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkDhcp.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientCreateDhcpResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
@@ -238,10 +244,8 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 		"<dhcp-id>",
 		armavs.WorkloadNetworkDhcp{
 			Properties: &armavs.WorkloadNetworkDhcpServer{
-				WorkloadNetworkDhcpEntity: armavs.WorkloadNetworkDhcpEntity{
-					DhcpType: armavs.DhcpTypeEnumSERVER.ToPtr(),
-					Revision: to.Int64Ptr(1),
-				},
+				DhcpType:      armavs.DhcpTypeEnum("SERVER").ToPtr(),
+				Revision:      to.Int64Ptr(1),
 				LeaseTime:     to.Int64Ptr(86400),
 				ServerAddress: to.StringPtr("<server-address>"),
 			},
@@ -254,7 +258,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkDhcp.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientUpdateDhcpResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeleteDhcpConfigurations.json
@@ -290,12 +294,16 @@ func ExampleWorkloadNetworksClient_ListGateways() {
 	pager := client.ListGateways("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkGateway.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -316,7 +324,7 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkGateway.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetGatewayResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListPortMirroringProfiles.json
@@ -330,12 +338,16 @@ func ExampleWorkloadNetworksClient_ListPortMirroring() {
 	pager := client.ListPortMirroring("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkPortMirroring.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -356,7 +368,7 @@ func ExampleWorkloadNetworksClient_GetPortMirroring() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkPortMirroring.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetPortMirroringResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreatePortMirroringProfiles.json
@@ -374,7 +386,7 @@ func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 		armavs.WorkloadNetworkPortMirroring{
 			Properties: &armavs.WorkloadNetworkPortMirroringProperties{
 				Destination: to.StringPtr("<destination>"),
-				Direction:   armavs.PortMirroringDirectionEnumBIDIRECTIONAL.ToPtr(),
+				Direction:   armavs.PortMirroringDirectionEnum("BIDIRECTIONAL").ToPtr(),
 				DisplayName: to.StringPtr("<display-name>"),
 				Revision:    to.Int64Ptr(1),
 				Source:      to.StringPtr("<source>"),
@@ -388,7 +400,7 @@ func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkPortMirroring.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientCreatePortMirroringResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdatePortMirroringProfiles.json
@@ -406,7 +418,7 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 		armavs.WorkloadNetworkPortMirroring{
 			Properties: &armavs.WorkloadNetworkPortMirroringProperties{
 				Destination: to.StringPtr("<destination>"),
-				Direction:   armavs.PortMirroringDirectionEnumBIDIRECTIONAL.ToPtr(),
+				Direction:   armavs.PortMirroringDirectionEnum("BIDIRECTIONAL").ToPtr(),
 				Revision:    to.Int64Ptr(1),
 				Source:      to.StringPtr("<source>"),
 			},
@@ -419,7 +431,7 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkPortMirroring.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientUpdatePortMirroringResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeletePortMirroringProfiles.json
@@ -455,12 +467,16 @@ func ExampleWorkloadNetworksClient_ListVMGroups() {
 	pager := client.ListVMGroups("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkVMGroup.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -481,7 +497,7 @@ func ExampleWorkloadNetworksClient_GetVMGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkVMGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetVMGroupResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreateVMGroups.json
@@ -512,7 +528,7 @@ func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkVMGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientCreateVMGroupResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateVMGroups.json
@@ -542,7 +558,7 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkVMGroup.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientUpdateVMGroupResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeleteVMGroups.json
@@ -578,12 +594,16 @@ func ExampleWorkloadNetworksClient_ListVirtualMachines() {
 	pager := client.ListVirtualMachines("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkVirtualMachine.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -604,265 +624,7 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkVirtualMachine.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListDnsServices.json
-func ExampleWorkloadNetworksClient_ListDNSServices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	pager := client.ListDNSServices("<resource-group-name>",
-		"<private-cloud-name>",
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkDNSService.ID: %s\n", *v.ID)
-		}
-	}
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_GetDnsServices.json
-func ExampleWorkloadNetworksClient_GetDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	res, err := client.GetDNSService(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<dns-service-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("WorkloadNetworkDNSService.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreateDnsServices.json
-func ExampleWorkloadNetworksClient_BeginCreateDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginCreateDNSService(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<dns-service-id>",
-		armavs.WorkloadNetworkDNSService{
-			Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-				DefaultDNSZone: to.StringPtr("<default-dnszone>"),
-				DisplayName:    to.StringPtr("<display-name>"),
-				DNSServiceIP:   to.StringPtr("<dnsservice-ip>"),
-				FqdnZones: []*string{
-					to.StringPtr("fqdnZone1")},
-				LogLevel: armavs.DNSServiceLogLevelEnumINFO.ToPtr(),
-				Revision: to.Int64Ptr(1),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("WorkloadNetworkDNSService.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateDnsServices.json
-func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginUpdateDNSService(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<dns-service-id>",
-		armavs.WorkloadNetworkDNSService{
-			Properties: &armavs.WorkloadNetworkDNSServiceProperties{
-				DefaultDNSZone: to.StringPtr("<default-dnszone>"),
-				DisplayName:    to.StringPtr("<display-name>"),
-				DNSServiceIP:   to.StringPtr("<dnsservice-ip>"),
-				FqdnZones: []*string{
-					to.StringPtr("fqdnZone1")},
-				LogLevel: armavs.DNSServiceLogLevelEnumINFO.ToPtr(),
-				Revision: to.Int64Ptr(1),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("WorkloadNetworkDNSService.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeleteDnsServices.json
-func ExampleWorkloadNetworksClient_BeginDeleteDNSService() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDeleteDNSService(ctx,
-		"<resource-group-name>",
-		"<dns-service-id>",
-		"<private-cloud-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListDnsZones.json
-func ExampleWorkloadNetworksClient_ListDNSZones() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	pager := client.ListDNSZones("<resource-group-name>",
-		"<private-cloud-name>",
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkDNSZone.ID: %s\n", *v.ID)
-		}
-	}
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_GetDnsZones.json
-func ExampleWorkloadNetworksClient_GetDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	res, err := client.GetDNSZone(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<dns-zone-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("WorkloadNetworkDNSZone.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreateDnsZones.json
-func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginCreateDNSZone(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<dns-zone-id>",
-		armavs.WorkloadNetworkDNSZone{
-			Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-				DisplayName: to.StringPtr("<display-name>"),
-				DNSServerIPs: []*string{
-					to.StringPtr("1.1.1.1")},
-				Domain:   []*string{},
-				Revision: to.Int64Ptr(1),
-				SourceIP: to.StringPtr("<source-ip>"),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("WorkloadNetworkDNSZone.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateDnsZones.json
-func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginUpdateDNSZone(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<dns-zone-id>",
-		armavs.WorkloadNetworkDNSZone{
-			Properties: &armavs.WorkloadNetworkDNSZoneProperties{
-				DisplayName: to.StringPtr("<display-name>"),
-				DNSServerIPs: []*string{
-					to.StringPtr("1.1.1.1")},
-				Domain:   []*string{},
-				Revision: to.Int64Ptr(1),
-				SourceIP: to.StringPtr("<source-ip>"),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("WorkloadNetworkDNSZone.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeleteDnsZones.json
-func ExampleWorkloadNetworksClient_BeginDeleteDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDeleteDNSZone(ctx,
-		"<resource-group-name>",
-		"<dns-zone-id>",
-		"<private-cloud-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetVirtualMachineResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListPublicIPs.json
@@ -876,12 +638,16 @@ func ExampleWorkloadNetworksClient_ListPublicIPs() {
 	pager := client.ListPublicIPs("<resource-group-name>",
 		"<private-cloud-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("WorkloadNetworkPublicIP.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -902,7 +668,7 @@ func ExampleWorkloadNetworksClient_GetPublicIP() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkPublicIP.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientGetPublicIPResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreatePublicIPs.json
@@ -931,7 +697,7 @@ func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("WorkloadNetworkPublicIP.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkloadNetworksClientCreatePublicIPResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeletePublicIPs.json

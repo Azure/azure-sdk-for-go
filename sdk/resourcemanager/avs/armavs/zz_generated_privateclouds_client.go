@@ -11,7 +11,6 @@ package armavs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // PrivateCloudsClient contains the methods for the PrivateClouds group.
 // Don't use this type directly, use NewPrivateCloudsClient() instead.
 type PrivateCloudsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateCloudsClient creates a new instance of PrivateCloudsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateCloudsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PrivateCloudsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PrivateCloudsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Create or update a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsBeginCreateOrUpdateOptions) (PrivateCloudsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// privateCloud - The private cloud
+// options - PrivateCloudsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateCloudsClient.BeginCreateOrUpdate
+// method.
+func (client *PrivateCloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (PrivateCloudsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, privateCloud, options)
 	if err != nil {
-		return PrivateCloudsCreateOrUpdatePollerResponse{}, err
+		return PrivateCloudsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := PrivateCloudsCreateOrUpdatePollerResponse{
+	result := PrivateCloudsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateCloudsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("PrivateCloudsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return PrivateCloudsCreateOrUpdatePollerResponse{}, err
+		return PrivateCloudsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &PrivateCloudsCreateOrUpdatePoller{
+	result.Poller = &PrivateCloudsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateCloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, privateCloud, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *PrivateCloudsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateCloudsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *PrivateCloudsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,42 +117,33 @@ func (client *PrivateCloudsClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, runtime.MarshalAsJSON(req, privateCloud)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateCloudsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginDeleteOptions) (PrivateCloudsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - PrivateCloudsClientBeginDeleteOptions contains the optional parameters for the PrivateCloudsClient.BeginDelete
+// method.
+func (client *PrivateCloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (PrivateCloudsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
-		return PrivateCloudsDeletePollerResponse{}, err
+		return PrivateCloudsClientDeletePollerResponse{}, err
 	}
-	result := PrivateCloudsDeletePollerResponse{
+	result := PrivateCloudsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateCloudsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("PrivateCloudsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return PrivateCloudsDeletePollerResponse{}, err
+		return PrivateCloudsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &PrivateCloudsDeletePoller{
+	result.Poller = &PrivateCloudsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateCloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +153,13 @@ func (client *PrivateCloudsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateCloudsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +173,7 @@ func (client *PrivateCloudsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,38 +184,28 @@ func (client *PrivateCloudsClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateCloudsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsGetOptions) (PrivateCloudsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
+func (client *PrivateCloudsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientGetOptions) (PrivateCloudsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
-		return PrivateCloudsGetResponse{}, err
+		return PrivateCloudsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateCloudsGetResponse{}, err
+		return PrivateCloudsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateCloudsGetResponse{}, client.getHandleError(resp)
+		return PrivateCloudsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsGetOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +219,7 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,43 +231,32 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (PrivateCloudsGetResponse, error) {
-	result := PrivateCloudsGetResponse{RawResponse: resp}
+func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (PrivateCloudsClientGetResponse, error) {
+	result := PrivateCloudsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloud); err != nil {
-		return PrivateCloudsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateCloudsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateCloudsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List private clouds in a resource group
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) List(resourceGroupName string, options *PrivateCloudsListOptions) *PrivateCloudsListPager {
-	return &PrivateCloudsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
+func (client *PrivateCloudsClient) List(resourceGroupName string, options *PrivateCloudsClientListOptions) *PrivateCloudsClientListPager {
+	return &PrivateCloudsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateCloudsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateCloudsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateCloudList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateCloudsListOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateCloudsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -284,7 +266,7 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,46 +278,37 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsListResponse, error) {
-	result := PrivateCloudsListResponse{RawResponse: resp}
+func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsClientListResponse, error) {
+	result := PrivateCloudsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
-		return PrivateCloudsListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateCloudsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *PrivateCloudsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAdminCredentials - List the admin credentials for the private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) ListAdminCredentials(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsListAdminCredentialsOptions) (PrivateCloudsListAdminCredentialsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - PrivateCloudsClientListAdminCredentialsOptions contains the optional parameters for the PrivateCloudsClient.ListAdminCredentials
+// method.
+func (client *PrivateCloudsClient) ListAdminCredentials(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientListAdminCredentialsOptions) (PrivateCloudsClientListAdminCredentialsResponse, error) {
 	req, err := client.listAdminCredentialsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
-		return PrivateCloudsListAdminCredentialsResponse{}, err
+		return PrivateCloudsClientListAdminCredentialsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateCloudsListAdminCredentialsResponse{}, err
+		return PrivateCloudsClientListAdminCredentialsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateCloudsListAdminCredentialsResponse{}, client.listAdminCredentialsHandleError(resp)
+		return PrivateCloudsClientListAdminCredentialsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listAdminCredentialsHandleResponse(resp)
 }
 
 // listAdminCredentialsCreateRequest creates the ListAdminCredentials request.
-func (client *PrivateCloudsClient) listAdminCredentialsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsListAdminCredentialsOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) listAdminCredentialsCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientListAdminCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/listAdminCredentials"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -349,7 +322,7 @@ func (client *PrivateCloudsClient) listAdminCredentialsCreateRequest(ctx context
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -361,49 +334,38 @@ func (client *PrivateCloudsClient) listAdminCredentialsCreateRequest(ctx context
 }
 
 // listAdminCredentialsHandleResponse handles the ListAdminCredentials response.
-func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http.Response) (PrivateCloudsListAdminCredentialsResponse, error) {
-	result := PrivateCloudsListAdminCredentialsResponse{RawResponse: resp}
+func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http.Response) (PrivateCloudsClientListAdminCredentialsResponse, error) {
+	result := PrivateCloudsClientListAdminCredentialsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminCredentials); err != nil {
-		return PrivateCloudsListAdminCredentialsResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateCloudsClientListAdminCredentialsResponse{}, err
 	}
 	return result, nil
 }
 
-// listAdminCredentialsHandleError handles the ListAdminCredentials error response.
-func (client *PrivateCloudsClient) listAdminCredentialsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListInSubscription - List private clouds in a subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) ListInSubscription(options *PrivateCloudsListInSubscriptionOptions) *PrivateCloudsListInSubscriptionPager {
-	return &PrivateCloudsListInSubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - PrivateCloudsClientListInSubscriptionOptions contains the optional parameters for the PrivateCloudsClient.ListInSubscription
+// method.
+func (client *PrivateCloudsClient) ListInSubscription(options *PrivateCloudsClientListInSubscriptionOptions) *PrivateCloudsClientListInSubscriptionPager {
+	return &PrivateCloudsClientListInSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listInSubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateCloudsListInSubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PrivateCloudsClientListInSubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateCloudList.NextLink)
 		},
 	}
 }
 
 // listInSubscriptionCreateRequest creates the ListInSubscription request.
-func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.Context, options *PrivateCloudsListInSubscriptionOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.Context, options *PrivateCloudsClientListInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/privateClouds"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -415,50 +377,41 @@ func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.C
 }
 
 // listInSubscriptionHandleResponse handles the ListInSubscription response.
-func (client *PrivateCloudsClient) listInSubscriptionHandleResponse(resp *http.Response) (PrivateCloudsListInSubscriptionResponse, error) {
-	result := PrivateCloudsListInSubscriptionResponse{RawResponse: resp}
+func (client *PrivateCloudsClient) listInSubscriptionHandleResponse(resp *http.Response) (PrivateCloudsClientListInSubscriptionResponse, error) {
+	result := PrivateCloudsClientListInSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
-		return PrivateCloudsListInSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateCloudsClientListInSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listInSubscriptionHandleError handles the ListInSubscription error response.
-func (client *PrivateCloudsClient) listInSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRotateNsxtPassword - Rotate the NSX-T Manager password
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) BeginRotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginRotateNsxtPasswordOptions) (PrivateCloudsRotateNsxtPasswordPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - PrivateCloudsClientBeginRotateNsxtPasswordOptions contains the optional parameters for the PrivateCloudsClient.BeginRotateNsxtPassword
+// method.
+func (client *PrivateCloudsClient) BeginRotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (PrivateCloudsClientRotateNsxtPasswordPollerResponse, error) {
 	resp, err := client.rotateNsxtPassword(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
-		return PrivateCloudsRotateNsxtPasswordPollerResponse{}, err
+		return PrivateCloudsClientRotateNsxtPasswordPollerResponse{}, err
 	}
-	result := PrivateCloudsRotateNsxtPasswordPollerResponse{
+	result := PrivateCloudsClientRotateNsxtPasswordPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateCloudsClient.RotateNsxtPassword", "", resp, client.pl, client.rotateNsxtPasswordHandleError)
+	pt, err := armruntime.NewPoller("PrivateCloudsClient.RotateNsxtPassword", "", resp, client.pl)
 	if err != nil {
-		return PrivateCloudsRotateNsxtPasswordPollerResponse{}, err
+		return PrivateCloudsClientRotateNsxtPasswordPollerResponse{}, err
 	}
-	result.Poller = &PrivateCloudsRotateNsxtPasswordPoller{
+	result.Poller = &PrivateCloudsClientRotateNsxtPasswordPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RotateNsxtPassword - Rotate the NSX-T Manager password
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) rotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginRotateNsxtPasswordOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateCloudsClient) rotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (*http.Response, error) {
 	req, err := client.rotateNsxtPasswordCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -468,13 +421,13 @@ func (client *PrivateCloudsClient) rotateNsxtPassword(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.rotateNsxtPasswordHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // rotateNsxtPasswordCreateRequest creates the RotateNsxtPassword request.
-func (client *PrivateCloudsClient) rotateNsxtPasswordCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginRotateNsxtPasswordOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) rotateNsxtPasswordCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateNsxtPassword"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -488,7 +441,7 @@ func (client *PrivateCloudsClient) rotateNsxtPasswordCreateRequest(ctx context.C
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -499,42 +452,33 @@ func (client *PrivateCloudsClient) rotateNsxtPasswordCreateRequest(ctx context.C
 	return req, nil
 }
 
-// rotateNsxtPasswordHandleError handles the RotateNsxtPassword error response.
-func (client *PrivateCloudsClient) rotateNsxtPasswordHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRotateVcenterPassword - Rotate the vCenter password
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) BeginRotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginRotateVcenterPasswordOptions) (PrivateCloudsRotateVcenterPasswordPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// options - PrivateCloudsClientBeginRotateVcenterPasswordOptions contains the optional parameters for the PrivateCloudsClient.BeginRotateVcenterPassword
+// method.
+func (client *PrivateCloudsClient) BeginRotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (PrivateCloudsClientRotateVcenterPasswordPollerResponse, error) {
 	resp, err := client.rotateVcenterPassword(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
-		return PrivateCloudsRotateVcenterPasswordPollerResponse{}, err
+		return PrivateCloudsClientRotateVcenterPasswordPollerResponse{}, err
 	}
-	result := PrivateCloudsRotateVcenterPasswordPollerResponse{
+	result := PrivateCloudsClientRotateVcenterPasswordPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateCloudsClient.RotateVcenterPassword", "", resp, client.pl, client.rotateVcenterPasswordHandleError)
+	pt, err := armruntime.NewPoller("PrivateCloudsClient.RotateVcenterPassword", "", resp, client.pl)
 	if err != nil {
-		return PrivateCloudsRotateVcenterPasswordPollerResponse{}, err
+		return PrivateCloudsClientRotateVcenterPasswordPollerResponse{}, err
 	}
-	result.Poller = &PrivateCloudsRotateVcenterPasswordPoller{
+	result.Poller = &PrivateCloudsClientRotateVcenterPasswordPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RotateVcenterPassword - Rotate the vCenter password
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) rotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginRotateVcenterPasswordOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateCloudsClient) rotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (*http.Response, error) {
 	req, err := client.rotateVcenterPasswordCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -544,13 +488,13 @@ func (client *PrivateCloudsClient) rotateVcenterPassword(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.rotateVcenterPasswordHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // rotateVcenterPasswordCreateRequest creates the RotateVcenterPassword request.
-func (client *PrivateCloudsClient) rotateVcenterPasswordCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsBeginRotateVcenterPasswordOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) rotateVcenterPasswordCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateVcenterPassword"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -564,7 +508,7 @@ func (client *PrivateCloudsClient) rotateVcenterPasswordCreateRequest(ctx contex
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -575,42 +519,34 @@ func (client *PrivateCloudsClient) rotateVcenterPasswordCreateRequest(ctx contex
 	return req, nil
 }
 
-// rotateVcenterPasswordHandleError handles the RotateVcenterPassword error response.
-func (client *PrivateCloudsClient) rotateVcenterPasswordHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsBeginUpdateOptions) (PrivateCloudsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// privateCloudName - Name of the private cloud
+// privateCloudUpdate - The private cloud properties to be updated
+// options - PrivateCloudsClientBeginUpdateOptions contains the optional parameters for the PrivateCloudsClient.BeginUpdate
+// method.
+func (client *PrivateCloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (PrivateCloudsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, privateCloudName, privateCloudUpdate, options)
 	if err != nil {
-		return PrivateCloudsUpdatePollerResponse{}, err
+		return PrivateCloudsClientUpdatePollerResponse{}, err
 	}
-	result := PrivateCloudsUpdatePollerResponse{
+	result := PrivateCloudsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("PrivateCloudsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("PrivateCloudsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return PrivateCloudsUpdatePollerResponse{}, err
+		return PrivateCloudsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &PrivateCloudsUpdatePoller{
+	result.Poller = &PrivateCloudsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update a private cloud
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateCloudsClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateCloudsClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateCloudName, privateCloudUpdate, options)
 	if err != nil {
 		return nil, err
@@ -620,13 +556,13 @@ func (client *PrivateCloudsClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PrivateCloudsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsBeginUpdateOptions) (*policy.Request, error) {
+func (client *PrivateCloudsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -640,7 +576,7 @@ func (client *PrivateCloudsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -649,17 +585,4 @@ func (client *PrivateCloudsClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, privateCloudUpdate)
-}
-
-// updateHandleError handles the Update error response.
-func (client *PrivateCloudsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

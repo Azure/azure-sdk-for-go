@@ -42,7 +42,7 @@ func TestMain(m *testing.M) {
 	// 3. Reset
 	// TODO: Add after sanitizer PR
 	if recording.GetRecordMode() != "live" {
-		err := recording.ResetSanitizers(nil)
+		err := recording.ResetProxy(nil)
 		if err != nil {
 			panic(err)
 		}

@@ -9,8 +9,8 @@
 package armbatch
 
 const (
-	module  = "armbatch"
-	version = "v0.1.0"
+	moduleName    = "armbatch"
+	moduleVersion = "v0.2.0"
 )
 
 // AccountKeyType - The type of account key to regenerate.
@@ -40,12 +40,14 @@ func (c AccountKeyType) ToPtr() *AccountKeyType {
 type AllocationState string
 
 const (
-	// AllocationStateSteady - The pool is not resizing. There are no changes to the number of nodes in the pool in progress. A pool enters this state when
-	// it is created and when no operations are being performed on the pool to change the number of nodes.
+	// AllocationStateSteady - The pool is not resizing. There are no changes to the number of nodes in the pool in progress.
+	// A pool enters this state when it is created and when no operations are being performed on the pool to change the number
+	// of nodes.
 	AllocationStateSteady AllocationState = "Steady"
 	// AllocationStateResizing - The pool is resizing; that is, compute nodes are being added to or removed from the pool.
 	AllocationStateResizing AllocationState = "Resizing"
-	// AllocationStateStopping - The pool was resizing, but the user has requested that the resize be stopped, but the stop request has not yet been completed.
+	// AllocationStateStopping - The pool was resizing, but the user has requested that the resize be stopped, but the stop request
+	// has not yet been completed.
 	AllocationStateStopping AllocationState = "Stopping"
 )
 
@@ -93,10 +95,11 @@ func (c AuthenticationMode) ToPtr() *AuthenticationMode {
 type AutoStorageAuthenticationMode string
 
 const (
-	// AutoStorageAuthenticationModeStorageKeys - The Batch service will authenticate requests to auto-storage using storage account keys.
+	// AutoStorageAuthenticationModeStorageKeys - The Batch service will authenticate requests to auto-storage using storage account
+	// keys.
 	AutoStorageAuthenticationModeStorageKeys AutoStorageAuthenticationMode = "StorageKeys"
-	// AutoStorageAuthenticationModeBatchAccountManagedIdentity - The Batch service will authenticate requests to auto-storage using the managed identity assigned
-	// to the Batch account.
+	// AutoStorageAuthenticationModeBatchAccountManagedIdentity - The Batch service will authenticate requests to auto-storage
+	// using the managed identity assigned to the Batch account.
 	AutoStorageAuthenticationModeBatchAccountManagedIdentity AutoStorageAuthenticationMode = "BatchAccountManagedIdentity"
 )
 
@@ -113,10 +116,10 @@ func (c AutoStorageAuthenticationMode) ToPtr() *AutoStorageAuthenticationMode {
 	return &c
 }
 
-// AutoUserScope - The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is
-// required. For example, if the task mutates the registry in a way
-// which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible
-// by start tasks.
+// AutoUserScope - The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter
+// isolation between tasks is required. For example, if the task mutates the registry in a way
+// which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal
+// tasks but should be accessible by start tasks.
 type AutoUserScope string
 
 const (
@@ -193,13 +196,14 @@ type CertificateProvisioningState string
 const (
 	// CertificateProvisioningStateSucceeded - The certificate is available for use in pools.
 	CertificateProvisioningStateSucceeded CertificateProvisioningState = "Succeeded"
-	// CertificateProvisioningStateDeleting - The user has requested that the certificate be deleted, but the delete operation has not yet completed. You may
-	// not reference the certificate when creating or updating pools.
+	// CertificateProvisioningStateDeleting - The user has requested that the certificate be deleted, but the delete operation
+	// has not yet completed. You may not reference the certificate when creating or updating pools.
 	CertificateProvisioningStateDeleting CertificateProvisioningState = "Deleting"
-	// CertificateProvisioningStateFailed - The user requested that the certificate be deleted, but there are pools that still have references to the certificate,
-	// or it is still installed on one or more compute nodes. (The latter can occur if the certificate has been removed from the pool, but the node has not
-	// yet restarted. Nodes refresh their certificates only when they restart.) You may use the cancel certificate delete operation to cancel the delete, or
-	// the delete certificate operation to retry the delete.
+	// CertificateProvisioningStateFailed - The user requested that the certificate be deleted, but there are pools that still
+	// have references to the certificate, or it is still installed on one or more compute nodes. (The latter can occur if the
+	// certificate has been removed from the pool, but the node has not yet restarted. Nodes refresh their certificates only when
+	// they restart.) You may use the cancel certificate delete operation to cancel the delete, or the delete certificate operation
+	// to retry the delete.
 	CertificateProvisioningStateFailed CertificateProvisioningState = "Failed"
 )
 
@@ -217,12 +221,12 @@ func (c CertificateProvisioningState) ToPtr() *CertificateProvisioningState {
 	return &c
 }
 
-// CertificateStoreLocation - The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that is, created
-// with cloudServiceConfiguration, or with virtualMachineConfiguration using a
-// Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable
-// AZBATCHCERTIFICATES_DIR is supplied to the
-// task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
-// /home/{user-name}/certs) and certificates are
+// CertificateStoreLocation - The default value is currentUser. This property is applicable only for pools configured with
+// Windows nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a
+// Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory
+// and an environment variable AZBATCHCERTIFICATES_DIR is supplied to the
+// task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the
+// user's home directory (e.g., /home/{user-name}/certs) and certificates are
 // placed in that directory.
 type CertificateStoreLocation string
 
@@ -249,12 +253,14 @@ func (c CertificateStoreLocation) ToPtr() *CertificateStoreLocation {
 type CertificateVisibility string
 
 const (
-	// CertificateVisibilityStartTask - The certificate should be visible to the user account under which the start task is run. Note that if AutoUser Scope
-	// is Pool for both the StartTask and a Task, this certificate will be visible to the Task as well.
+	// CertificateVisibilityStartTask - The certificate should be visible to the user account under which the start task is run.
+	// Note that if AutoUser Scope is Pool for both the StartTask and a Task, this certificate will be visible to the Task as
+	// well.
 	CertificateVisibilityStartTask CertificateVisibility = "StartTask"
 	// CertificateVisibilityTask - The certificate should be visible to the user accounts under which job tasks are run.
 	CertificateVisibilityTask CertificateVisibility = "Task"
-	// CertificateVisibilityRemoteUser - The certificate should be visible to the user accounts under which users remotely access the node.
+	// CertificateVisibilityRemoteUser - The certificate should be visible to the user accounts under which users remotely access
+	// the node.
 	CertificateVisibilityRemoteUser CertificateVisibility = "RemoteUser"
 )
 
@@ -272,21 +278,22 @@ func (c CertificateVisibility) ToPtr() *CertificateVisibility {
 	return &c
 }
 
-// ComputeNodeDeallocationOption - Determines what to do with a node and its running task(s) after it has been selected for deallocation.
+// ComputeNodeDeallocationOption - Determines what to do with a node and its running task(s) after it has been selected for
+// deallocation.
 type ComputeNodeDeallocationOption string
 
 const (
-	// ComputeNodeDeallocationOptionRequeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Remove
-	// nodes as soon as tasks have been terminated.
+	// ComputeNodeDeallocationOptionRequeue - Terminate running task processes and requeue the tasks. The tasks will run again
+	// when a node is available. Remove nodes as soon as tasks have been terminated.
 	ComputeNodeDeallocationOptionRequeue ComputeNodeDeallocationOption = "Requeue"
-	// ComputeNodeDeallocationOptionTerminate - Terminate running tasks. The tasks will be completed with failureInfo indicating that they were terminated,
-	// and will not run again. Remove nodes as soon as tasks have been terminated.
+	// ComputeNodeDeallocationOptionTerminate - Terminate running tasks. The tasks will be completed with failureInfo indicating
+	// that they were terminated, and will not run again. Remove nodes as soon as tasks have been terminated.
 	ComputeNodeDeallocationOptionTerminate ComputeNodeDeallocationOption = "Terminate"
-	// ComputeNodeDeallocationOptionTaskCompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Remove nodes when all tasks
-	// have completed.
+	// ComputeNodeDeallocationOptionTaskCompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting.
+	// Remove nodes when all tasks have completed.
 	ComputeNodeDeallocationOptionTaskCompletion ComputeNodeDeallocationOption = "TaskCompletion"
-	// ComputeNodeDeallocationOptionRetainedData - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule
-	// no new tasks while waiting. Remove nodes when all task retention periods have expired.
+	// ComputeNodeDeallocationOptionRetainedData - Allow currently running tasks to complete, then wait for all task data retention
+	// periods to expire. Schedule no new tasks while waiting. Remove nodes when all task retention periods have expired.
 	ComputeNodeDeallocationOptionRetainedData ComputeNodeDeallocationOption = "RetainedData"
 )
 
@@ -311,8 +318,8 @@ type ComputeNodeFillType string
 const (
 	// ComputeNodeFillTypeSpread - Tasks should be assigned evenly across all nodes in the pool.
 	ComputeNodeFillTypeSpread ComputeNodeFillType = "Spread"
-	// ComputeNodeFillTypePack - As many tasks as possible (taskSlotsPerNode) should be assigned to each node in the pool before any tasks are assigned to the
-	// next node in the pool.
+	// ComputeNodeFillTypePack - As many tasks as possible (taskSlotsPerNode) should be assigned to each node in the pool before
+	// any tasks are assigned to the next node in the pool.
 	ComputeNodeFillTypePack ComputeNodeFillType = "Pack"
 )
 
@@ -333,11 +340,11 @@ func (c ComputeNodeFillType) ToPtr() *ComputeNodeFillType {
 type ContainerWorkingDirectory string
 
 const (
-	// ContainerWorkingDirectoryTaskWorkingDirectory - Use the standard Batch service task working directory, which will contain the Task resource files populated
-	// by Batch.
+	// ContainerWorkingDirectoryTaskWorkingDirectory - Use the standard Batch service task working directory, which will contain
+	// the Task resource files populated by Batch.
 	ContainerWorkingDirectoryTaskWorkingDirectory ContainerWorkingDirectory = "TaskWorkingDirectory"
-	// ContainerWorkingDirectoryContainerImageDefault - Using container image defined working directory. Beware that this directory will not contain the resource
-	// files downloaded by Batch.
+	// ContainerWorkingDirectoryContainerImageDefault - Using container image defined working directory. Beware that this directory
+	// will not contain the resource files downloaded by Batch.
 	ContainerWorkingDirectoryContainerImageDefault ContainerWorkingDirectory = "ContainerImageDefault"
 )
 
@@ -360,8 +367,8 @@ type DiskEncryptionTarget string
 const (
 	// DiskEncryptionTargetOsDisk - The OS Disk on the compute node is encrypted.
 	DiskEncryptionTargetOsDisk DiskEncryptionTarget = "OsDisk"
-	// DiskEncryptionTargetTemporaryDisk - The temporary disk on the compute node is encrypted. On Linux this encryption applies to other partitions (such as
-	// those on mounted data disks) when encryption occurs at boot time.
+	// DiskEncryptionTargetTemporaryDisk - The temporary disk on the compute node is encrypted. On Linux this encryption applies
+	// to other partitions (such as those on mounted data disks) when encryption occurs at boot time.
 	DiskEncryptionTargetTemporaryDisk DiskEncryptionTarget = "TemporaryDisk"
 )
 
@@ -405,8 +412,8 @@ func (c ElevationLevel) ToPtr() *ElevationLevel {
 type IPAddressProvisioningType string
 
 const (
-	// IPAddressProvisioningTypeBatchManaged - A public IP will be created and managed by Batch. There may be multiple public IPs depending on the size of the
-	// Pool.
+	// IPAddressProvisioningTypeBatchManaged - A public IP will be created and managed by Batch. There may be multiple public
+	// IPs depending on the size of the Pool.
 	IPAddressProvisioningTypeBatchManaged IPAddressProvisioningType = "BatchManaged"
 	// IPAddressProvisioningTypeUserManaged - Public IPs are provided by the user and will be used to provision the Compute Nodes.
 	IPAddressProvisioningTypeUserManaged IPAddressProvisioningType = "UserManaged"
@@ -451,8 +458,8 @@ func (c InboundEndpointProtocol) ToPtr() *InboundEndpointProtocol {
 	return &c
 }
 
-// InterNodeCommunicationState - This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of the
-// requested number of nodes to be allocated in the pool. If not specified, this
+// InterNodeCommunicationState - This imposes restrictions on which nodes can be assigned to the pool. Enabling this value
+// can reduce the chance of the requested number of nodes to be allocated in the pool. If not specified, this
 // value defaults to 'Disabled'.
 type InterNodeCommunicationState string
 
@@ -482,8 +489,9 @@ type KeySource string
 const (
 	// KeySourceMicrosoftBatch - Batch creates and manages the encryption keys used to protect the account data.
 	KeySourceMicrosoftBatch KeySource = "Microsoft.Batch"
-	// KeySourceMicrosoftKeyVault - The encryption keys used to protect the account data are stored in an external key vault. If this is set then the Batch
-	// Account identity must be set to `SystemAssigned` and a valid Key Identifier must also be supplied under the keyVaultProperties.
+	// KeySourceMicrosoftKeyVault - The encryption keys used to protect the account data are stored in an external key vault.
+	// If this is set then the Batch Account identity must be set to `SystemAssigned` and a valid Key Identifier must also be
+	// supplied under the keyVaultProperties.
 	KeySourceMicrosoftKeyVault KeySource = "Microsoft.KeyVault"
 )
 
@@ -500,15 +508,16 @@ func (c KeySource) ToPtr() *KeySource {
 	return &c
 }
 
-// LoginMode - Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode and for CloudServiceConfiguration
-// pools is batch mode.
+// LoginMode - Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
+// and for CloudServiceConfiguration pools is batch mode.
 type LoginMode string
 
 const (
-	// LoginModeBatch - The LOGON32_LOGON_BATCH Win32 login mode. The batch login mode is recommended for long running parallel processes.
+	// LoginModeBatch - The LOGON32_LOGON_BATCH Win32 login mode. The batch login mode is recommended for long running parallel
+	// processes.
 	LoginModeBatch LoginMode = "Batch"
-	// LoginModeInteractive - The LOGON32_LOGON_INTERACTIVE Win32 login mode. Some applications require having permissions associated with the interactive login
-	// mode. If this is the case for an application used in your task, then this option is recommended.
+	// LoginModeInteractive - The LOGON32_LOGON_INTERACTIVE Win32 login mode. Some applications require having permissions associated
+	// with the interactive login mode. If this is the case for an application used in your task, then this option is recommended.
 	LoginModeInteractive LoginMode = "Interactive"
 )
 
@@ -525,7 +534,8 @@ func (c LoginMode) ToPtr() *LoginMode {
 	return &c
 }
 
-// NameAvailabilityReason - Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable is false.
+// NameAvailabilityReason - Gets the reason that a Batch account name could not be used. The Reason element is only returned
+// if NameAvailable is false.
 type NameAvailabilityReason string
 
 const (
@@ -646,7 +656,8 @@ type PoolIdentityType string
 const (
 	// PoolIdentityTypeUserAssigned - Batch pool has user assigned identities with it.
 	PoolIdentityTypeUserAssigned PoolIdentityType = "UserAssigned"
-	// PoolIdentityTypeNone - Batch pool has no identity associated with it. Setting `None` in update pool will remove existing identities.
+	// PoolIdentityTypeNone - Batch pool has no identity associated with it. Setting `None` in update pool will remove existing
+	// identities.
 	PoolIdentityTypeNone PoolIdentityType = "None"
 )
 
@@ -690,12 +701,14 @@ func (c PoolProvisioningState) ToPtr() *PoolProvisioningState {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	// PrivateEndpointConnectionProvisioningStateSucceeded - The connection status is final and is ready for use if Status is Approved.
+	// PrivateEndpointConnectionProvisioningStateSucceeded - The connection status is final and is ready for use if Status is
+	// Approved.
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
-	// PrivateEndpointConnectionProvisioningStateUpdating - The user has requested that the connection status be updated, but the update operation has not yet
-	// completed. You may not reference the connection when connecting the Batch account.
+	// PrivateEndpointConnectionProvisioningStateUpdating - The user has requested that the connection status be updated, but
+	// the update operation has not yet completed. You may not reference the connection when connecting the Batch account.
 	PrivateEndpointConnectionProvisioningStateUpdating PrivateEndpointConnectionProvisioningState = "Updating"
-	// PrivateEndpointConnectionProvisioningStateFailed - The user requested that the connection be updated and it failed. You may retry the update operation.
+	// PrivateEndpointConnectionProvisioningStateFailed - The user requested that the connection be updated and it failed. You
+	// may retry the update operation.
 	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
 )
 
@@ -717,13 +730,17 @@ func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConn
 type PrivateLinkServiceConnectionStatus string
 
 const (
-	// PrivateLinkServiceConnectionStatusApproved - The private endpoint connection is approved and can be used to access Batch account
+	// PrivateLinkServiceConnectionStatusApproved - The private endpoint connection is approved and can be used to access Batch
+	// account
 	PrivateLinkServiceConnectionStatusApproved PrivateLinkServiceConnectionStatus = "Approved"
-	// PrivateLinkServiceConnectionStatusPending - The private endpoint connection is pending and cannot be used to access Batch account
+	// PrivateLinkServiceConnectionStatusPending - The private endpoint connection is pending and cannot be used to access Batch
+	// account
 	PrivateLinkServiceConnectionStatusPending PrivateLinkServiceConnectionStatus = "Pending"
-	// PrivateLinkServiceConnectionStatusRejected - The private endpoint connection is rejected and cannot be used to access Batch account
+	// PrivateLinkServiceConnectionStatusRejected - The private endpoint connection is rejected and cannot be used to access Batch
+	// account
 	PrivateLinkServiceConnectionStatusRejected PrivateLinkServiceConnectionStatus = "Rejected"
-	// PrivateLinkServiceConnectionStatusDisconnected - The private endpoint connection is disconnected and cannot be used to access Batch account
+	// PrivateLinkServiceConnectionStatusDisconnected - The private endpoint connection is disconnected and cannot be used to
+	// access Batch account
 	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = "Disconnected"
 )
 
@@ -783,7 +800,8 @@ type PublicNetworkAccessType string
 const (
 	// PublicNetworkAccessTypeEnabled - Enables connectivity to Azure Batch through public DNS.
 	PublicNetworkAccessTypeEnabled PublicNetworkAccessType = "Enabled"
-	// PublicNetworkAccessTypeDisabled - Disables public connectivity and enables private connectivity to Azure Batch Service through private endpoint resource.
+	// PublicNetworkAccessTypeDisabled - Disables public connectivity and enables private connectivity to Azure Batch Service
+	// through private endpoint resource.
 	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = "Disabled"
 )
 
@@ -808,7 +826,8 @@ const (
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	// ResourceIdentityTypeUserAssigned - Batch account has user assigned identities with it.
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
-	// ResourceIdentityTypeNone - Batch account has no identity associated with it. Setting `None` in update account will remove existing identities.
+	// ResourceIdentityTypeNone - Batch account has no identity associated with it. Setting `None` in update account will remove
+	// existing identities.
 	ResourceIdentityTypeNone ResourceIdentityType = "None"
 )
 

@@ -36,7 +36,7 @@ func ExampleApplyUpdatesClient_GetParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplyUpdate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplyUpdatesClientGetParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_Get.json
@@ -57,7 +57,7 @@ func ExampleApplyUpdatesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplyUpdate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplyUpdatesClientGetResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdateParent.json
@@ -79,7 +79,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplyUpdate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplyUpdatesClientCreateOrUpdateParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdate.json
@@ -99,7 +99,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ApplyUpdate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplyUpdatesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_List.json
@@ -110,9 +110,10 @@ func ExampleApplyUpdatesClient_List() {
 	}
 	ctx := context.Background()
 	client := armmaintenance.NewApplyUpdatesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ApplyUpdatesClientListResult)
 }

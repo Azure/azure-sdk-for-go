@@ -11,7 +11,6 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
@@ -25,7 +24,7 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "52459468-47ef-11ec-bf7c-000d3a5f7959",
+        "x-ms-request-id": "acfef2e0-61b3-11ec-985f-000d3aec06d7",
         "x-ms-server-latency": "0"
       },
       "ResponseBody": null
@@ -59,11 +58,48 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "southcentralus",
-        "x-ms-request-id": "52682dde-47ef-11ec-bf7c-000d3a5f7959",
+        "x-ms-request-id": "ad2074ce-61b3-11ec-985f-000d3aec06d7",
         "x-ms-server-latency": "1"
       },
       "ResponseBody": {
-        "value": "qJd_Hk4Wac0-k62RlbssIIJYjAIfL89XxAQw94kDuobejgjc2j_XoiNHsdP7_W5XzezrUzwsDlRG0CGB4Hb024jxY4Z4xZUV0NZNPwGsTBq9FsBtHQylpsmN0YWAlAkiFRFXCA"
+        "value": "XaIS3waclBp-dm7CdScmgd7Ig_RqnlV-W8zMl0_61VzglD2Lo90oXPgsumLOCurraIMzozq0LlvjmPXOAiWndZSK8PK6Jb09_0hX0QoOdveSQJl4XKUHQeDuja0pVuLzQImbNQ"
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.managedhsm.azure.net/rng?api-version=7.3-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/rng?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "12",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-internal/v0.1.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
+      },
+      "RequestBody": {
+        "count": -1
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "168",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "ad2b07cc-61b3-11ec-985f-000d3aec06d7",
+        "x-ms-server-latency": "0"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "BadParameter",
+          "message": "GetRandomBytesRequest: count cannot be greater than 128 or less than 1 (Activity ID: ad2b07cc-61b3-11ec-985f-000d3aec06d7)"
+        }
       }
     }
   ],

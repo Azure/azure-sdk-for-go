@@ -20,13 +20,13 @@ import (
 )
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsGet_example.json
-func ExampleDigitalTwinsClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -34,24 +34,22 @@ func ExampleDigitalTwinsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsPut_example.json
-func ExampleDigitalTwinsClient_BeginCreateOrUpdate() {
+func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armdigitaltwins.DigitalTwinsDescription{
-			DigitalTwinsResource: armdigitaltwins.DigitalTwinsResource{
-				Location: to.StringPtr("<location>"),
-			},
+		armdigitaltwins.Description{
+			Location: to.StringPtr("<location>"),
 		},
 		nil)
 	if err != nil {
@@ -61,21 +59,21 @@ func ExampleDigitalTwinsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsPatch_example.json
-func ExampleDigitalTwinsClient_BeginUpdate() {
+func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armdigitaltwins.DigitalTwinsPatchDescription{
+		armdigitaltwins.PatchDescription{
 			Tags: map[string]*string{
 				"purpose": to.StringPtr("dev"),
 			},
@@ -88,17 +86,17 @@ func ExampleDigitalTwinsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsDelete_example.json
-func ExampleDigitalTwinsClient_BeginDelete() {
+func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
@@ -110,57 +108,65 @@ func ExampleDigitalTwinsClient_BeginDelete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DigitalTwinsDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientDeleteResult)
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsList_example.json
-func ExampleDigitalTwinsClient_List() {
+func ExampleClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DigitalTwinsDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsListByResourceGroup_example.json
-func ExampleDigitalTwinsClient_ListByResourceGroup() {
+func ExampleClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DigitalTwinsDescription.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2020-12-01/examples/DigitalTwinsCheckNameAvailability_example.json
-func ExampleDigitalTwinsClient_CheckNameAvailability() {
+func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdigitaltwins.NewDigitalTwinsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armdigitaltwins.NewClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armdigitaltwins.CheckNameRequest{
 			Name: to.StringPtr("<name>"),
@@ -170,4 +176,5 @@ func ExampleDigitalTwinsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
 }

@@ -31,5 +31,5 @@ func ExampleAscOperationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AscOperation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AscOperationsClientGetResult)
 }

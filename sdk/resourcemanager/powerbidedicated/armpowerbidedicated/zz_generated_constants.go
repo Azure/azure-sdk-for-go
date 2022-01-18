@@ -9,11 +9,12 @@
 package armpowerbidedicated
 
 const (
-	module  = "armpowerbidedicated"
-	version = "v0.1.0"
+	moduleName    = "armpowerbidedicated"
+	moduleVersion = "v0.2.0"
 )
 
-// CapacityProvisioningState - The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning.
+// CapacityProvisioningState - The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate
+// states for resource provisioning.
 type CapacityProvisioningState string
 
 const (
@@ -102,7 +103,8 @@ func (c IdentityType) ToPtr() *IdentityType {
 	return &c
 }
 
-// Mode - Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used. Learn More
+// Mode - Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is
+// used. Learn More
 // [https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2]
 type Mode string
 
@@ -165,7 +167,8 @@ func (c State) ToPtr() *State {
 	return &c
 }
 
-// VCoreProvisioningState - The current deployment state of an auto scale v-core resource. The provisioningState is to indicate states for resource provisioning.
+// VCoreProvisioningState - The current deployment state of an auto scale v-core resource. The provisioningState is to indicate
+// states for resource provisioning.
 type VCoreProvisioningState string
 
 const (

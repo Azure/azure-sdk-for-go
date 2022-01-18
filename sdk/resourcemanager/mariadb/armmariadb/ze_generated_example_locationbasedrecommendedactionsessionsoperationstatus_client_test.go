@@ -24,11 +24,12 @@ func ExampleLocationBasedRecommendedActionSessionsOperationStatusClient_Get() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewLocationBasedRecommendedActionSessionsOperationStatusClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<location-name>",
 		"<operation-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationBasedRecommendedActionSessionsOperationStatusClientGetResult)
 }

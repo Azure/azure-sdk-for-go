@@ -9,8 +9,8 @@
 package armcustomerlockbox
 
 const (
-	module  = "armcustomerlockbox"
-	version = "v0.1.0"
+	moduleName    = "armcustomerlockbox"
+	moduleVersion = "v0.2.0"
 )
 
 // Status - The status of the request.

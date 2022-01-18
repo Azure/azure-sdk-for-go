@@ -1,5 +1,132 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PipelineTemplateDefinitionsClient.List` parameter(s) have been changed from `(*PipelineTemplateDefinitionsListOptions)` to `(*PipelineTemplateDefinitionsClientListOptions)`
+- Function `*PipelineTemplateDefinitionsClient.List` return value(s) have been changed from `(*PipelineTemplateDefinitionsListPager)` to `(*PipelineTemplateDefinitionsClientListPager)`
+- Function `*PipelinesClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *PipelinesDeleteOptions)` to `(context.Context, string, string, *PipelinesClientDeleteOptions)`
+- Function `*PipelinesClient.Delete` return value(s) have been changed from `(PipelinesDeleteResponse, error)` to `(PipelinesClientDeleteResponse, error)`
+- Function `*PipelinesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Pipeline, *PipelinesBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Pipeline, *PipelinesClientBeginCreateOrUpdateOptions)`
+- Function `*PipelinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(PipelinesCreateOrUpdatePollerResponse, error)` to `(PipelinesClientCreateOrUpdatePollerResponse, error)`
+- Function `*PipelinesClient.Get` parameter(s) have been changed from `(context.Context, string, string, *PipelinesGetOptions)` to `(context.Context, string, string, *PipelinesClientGetOptions)`
+- Function `*PipelinesClient.Get` return value(s) have been changed from `(PipelinesGetResponse, error)` to `(PipelinesClientGetResponse, error)`
+- Function `*PipelinesClient.ListBySubscription` parameter(s) have been changed from `(*PipelinesListBySubscriptionOptions)` to `(*PipelinesClientListBySubscriptionOptions)`
+- Function `*PipelinesClient.ListBySubscription` return value(s) have been changed from `(*PipelinesListBySubscriptionPager)` to `(*PipelinesClientListBySubscriptionPager)`
+- Function `*PipelinesClient.ListByResourceGroup` parameter(s) have been changed from `(string, *PipelinesListByResourceGroupOptions)` to `(string, *PipelinesClientListByResourceGroupOptions)`
+- Function `*PipelinesClient.ListByResourceGroup` return value(s) have been changed from `(*PipelinesListByResourceGroupPager)` to `(*PipelinesClientListByResourceGroupPager)`
+- Function `*PipelinesClient.Update` parameter(s) have been changed from `(context.Context, string, string, PipelineUpdateParameters, *PipelinesUpdateOptions)` to `(context.Context, string, string, PipelineUpdateParameters, *PipelinesClientUpdateOptions)`
+- Function `*PipelinesClient.Update` return value(s) have been changed from `(PipelinesUpdateResponse, error)` to `(PipelinesClientUpdateResponse, error)`
+- Function `*PipelinesCreateOrUpdatePoller.Poll` has been removed
+- Function `*PipelinesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PipelinesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PipelinesCreateOrUpdatePoller.Done` has been removed
+- Function `*PipelineTemplateDefinitionsListPager.NextPage` has been removed
+- Function `*PipelinesListBySubscriptionPager.PageResponse` has been removed
+- Function `*PipelineTemplateDefinitionsListPager.Err` has been removed
+- Function `*PipelineTemplateDefinitionsListPager.PageResponse` has been removed
+- Function `*PipelinesListByResourceGroupPager.PageResponse` has been removed
+- Function `*PipelinesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PipelinesListBySubscriptionPager.Err` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `PipelinesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*PipelinesListByResourceGroupPager.NextPage` has been removed
+- Function `*PipelinesListBySubscriptionPager.NextPage` has been removed
+- Function `CloudError.Error` has been removed
+- Function `*PipelinesListByResourceGroupPager.Err` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PipelineTemplateDefinitionsListOptions` has been removed
+- Struct `PipelineTemplateDefinitionsListPager` has been removed
+- Struct `PipelineTemplateDefinitionsListResponse` has been removed
+- Struct `PipelineTemplateDefinitionsListResult` has been removed
+- Struct `PipelinesBeginCreateOrUpdateOptions` has been removed
+- Struct `PipelinesCreateOrUpdatePoller` has been removed
+- Struct `PipelinesCreateOrUpdatePollerResponse` has been removed
+- Struct `PipelinesCreateOrUpdateResponse` has been removed
+- Struct `PipelinesCreateOrUpdateResult` has been removed
+- Struct `PipelinesDeleteOptions` has been removed
+- Struct `PipelinesDeleteResponse` has been removed
+- Struct `PipelinesGetOptions` has been removed
+- Struct `PipelinesGetResponse` has been removed
+- Struct `PipelinesGetResult` has been removed
+- Struct `PipelinesListByResourceGroupOptions` has been removed
+- Struct `PipelinesListByResourceGroupPager` has been removed
+- Struct `PipelinesListByResourceGroupResponse` has been removed
+- Struct `PipelinesListByResourceGroupResult` has been removed
+- Struct `PipelinesListBySubscriptionOptions` has been removed
+- Struct `PipelinesListBySubscriptionPager` has been removed
+- Struct `PipelinesListBySubscriptionResponse` has been removed
+- Struct `PipelinesListBySubscriptionResult` has been removed
+- Struct `PipelinesUpdateOptions` has been removed
+- Struct `PipelinesUpdateResponse` has been removed
+- Struct `PipelinesUpdateResult` has been removed
+- Field `InnerError` of struct `CloudError` has been removed
+- Field `Resource` of struct `Pipeline` has been removed
+
+### Features Added
+
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*PipelinesClientCreateOrUpdatePoller.FinalResponse(context.Context) (PipelinesClientCreateOrUpdateResponse, error)`
+- New function `*PipelinesClientListByResourceGroupPager.Err() error`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*PipelinesClientCreateOrUpdatePollerResponse.Resume(context.Context, *PipelinesClient, string) error`
+- New function `*PipelinesClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*PipelineTemplateDefinitionsClientListPager.PageResponse() PipelineTemplateDefinitionsClientListResponse`
+- New function `*PipelinesClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*PipelineTemplateDefinitionsClientListPager.NextPage(context.Context) bool`
+- New function `*PipelinesClientListBySubscriptionPager.Err() error`
+- New function `*PipelineTemplateDefinitionsClientListPager.Err() error`
+- New function `*PipelinesClientListByResourceGroupPager.PageResponse() PipelinesClientListByResourceGroupResponse`
+- New function `PipelinesClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PipelinesClientCreateOrUpdateResponse, error)`
+- New function `*PipelinesClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PipelinesClientCreateOrUpdatePoller.Done() bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*PipelinesClientListBySubscriptionPager.PageResponse() PipelinesClientListBySubscriptionResponse`
+- New function `*PipelinesClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PipelineTemplateDefinitionsClientListOptions`
+- New struct `PipelineTemplateDefinitionsClientListPager`
+- New struct `PipelineTemplateDefinitionsClientListResponse`
+- New struct `PipelineTemplateDefinitionsClientListResult`
+- New struct `PipelinesClientBeginCreateOrUpdateOptions`
+- New struct `PipelinesClientCreateOrUpdatePoller`
+- New struct `PipelinesClientCreateOrUpdatePollerResponse`
+- New struct `PipelinesClientCreateOrUpdateResponse`
+- New struct `PipelinesClientCreateOrUpdateResult`
+- New struct `PipelinesClientDeleteOptions`
+- New struct `PipelinesClientDeleteResponse`
+- New struct `PipelinesClientGetOptions`
+- New struct `PipelinesClientGetResponse`
+- New struct `PipelinesClientGetResult`
+- New struct `PipelinesClientListByResourceGroupOptions`
+- New struct `PipelinesClientListByResourceGroupPager`
+- New struct `PipelinesClientListByResourceGroupResponse`
+- New struct `PipelinesClientListByResourceGroupResult`
+- New struct `PipelinesClientListBySubscriptionOptions`
+- New struct `PipelinesClientListBySubscriptionPager`
+- New struct `PipelinesClientListBySubscriptionResponse`
+- New struct `PipelinesClientListBySubscriptionResult`
+- New struct `PipelinesClientUpdateOptions`
+- New struct `PipelinesClientUpdateResponse`
+- New struct `PipelinesClientUpdateResult`
+- New field `Error` in struct `CloudError`
+- New field `Location` in struct `Pipeline`
+- New field `Tags` in struct `Pipeline`
+- New field `ID` in struct `Pipeline`
+- New field `Name` in struct `Pipeline`
+- New field `Type` in struct `Pipeline`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

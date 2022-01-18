@@ -18,17 +18,17 @@ import (
 )
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinition.json
-func ExamplePolicyDefinitionsClient_CreateOrUpdate() {
+func ExampleDefinitionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	_, err = client.CreateOrUpdate(ctx,
 		"<policy-definition-name>",
-		armpolicy.PolicyDefinition{
-			Properties: &armpolicy.PolicyDefinitionProperties{
+		armpolicy.Definition{
+			Properties: &armpolicy.DefinitionProperties{
 				Description: to.StringPtr("<description>"),
 				DisplayName: to.StringPtr("<display-name>"),
 				Metadata: map[string]interface{}{
@@ -37,14 +37,14 @@ func ExamplePolicyDefinitionsClient_CreateOrUpdate() {
 				Mode: to.StringPtr("<mode>"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: armpolicy.ParameterType("String").ToPtr(),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
 							Description: to.StringPtr("<description>"),
 							DisplayName: to.StringPtr("<display-name>"),
 						},
 					},
 					"suffix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: armpolicy.ParameterType("String").ToPtr(),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
 							Description: to.StringPtr("<description>"),
 							DisplayName: to.StringPtr("<display-name>"),
@@ -68,17 +68,16 @@ func ExamplePolicyDefinitionsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyDefinition.json
-func ExamplePolicyDefinitionsClient_Delete() {
+func ExampleDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
 	_, err = client.Delete(ctx,
 		"<policy-definition-name>",
 		nil)
@@ -88,52 +87,52 @@ func ExamplePolicyDefinitionsClient_Delete() {
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinition.json
-func ExamplePolicyDefinitionsClient_Get() {
+func ExampleDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<policy-definition-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DefinitionsClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getBuiltinPolicyDefinition.json
-func ExamplePolicyDefinitionsClient_GetBuiltIn() {
+func ExampleDefinitionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
 	res, err := client.GetBuiltIn(ctx,
 		"<policy-definition-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DefinitionsClientGetBuiltInResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinitionAtManagementGroup.json
-func ExamplePolicyDefinitionsClient_CreateOrUpdateAtManagementGroup() {
+func ExampleDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdateAtManagementGroup(ctx,
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	_, err = client.CreateOrUpdateAtManagementGroup(ctx,
 		"<policy-definition-name>",
 		"<management-group-id>",
-		armpolicy.PolicyDefinition{
-			Properties: &armpolicy.PolicyDefinitionProperties{
+		armpolicy.Definition{
+			Properties: &armpolicy.DefinitionProperties{
 				Description: to.StringPtr("<description>"),
 				DisplayName: to.StringPtr("<display-name>"),
 				Metadata: map[string]interface{}{
@@ -142,14 +141,14 @@ func ExamplePolicyDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 				Mode: to.StringPtr("<mode>"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: armpolicy.ParameterType("String").ToPtr(),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
 							Description: to.StringPtr("<description>"),
 							DisplayName: to.StringPtr("<display-name>"),
 						},
 					},
 					"suffix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: armpolicy.ParameterType("String").ToPtr(),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
 							Description: to.StringPtr("<description>"),
 							DisplayName: to.StringPtr("<display-name>"),
@@ -173,17 +172,16 @@ func ExamplePolicyDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyDefinitionAtManagementGroup.json
-func ExamplePolicyDefinitionsClient_DeleteAtManagementGroup() {
+func ExampleDefinitionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
 	_, err = client.DeleteAtManagementGroup(ctx,
 		"<policy-definition-name>",
 		"<management-group-id>",
@@ -194,13 +192,13 @@ func ExamplePolicyDefinitionsClient_DeleteAtManagementGroup() {
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinitionAtManagementGroup.json
-func ExamplePolicyDefinitionsClient_GetAtManagementGroup() {
+func ExampleDefinitionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
 	res, err := client.GetAtManagementGroup(ctx,
 		"<policy-definition-name>",
 		"<management-group-id>",
@@ -208,69 +206,81 @@ func ExamplePolicyDefinitionsClient_GetAtManagementGroup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DefinitionsClientGetAtManagementGroupResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitions.json
-func ExamplePolicyDefinitionsClient_List() {
+func ExampleDefinitionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armpolicy.PolicyDefinitionsListOptions{Filter: nil,
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	pager := client.List(&armpolicy.DefinitionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicyDefinitions.json
-func ExamplePolicyDefinitionsClient_ListBuiltIn() {
+func ExampleDefinitionsClient_ListBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.ListBuiltIn(&armpolicy.PolicyDefinitionsListBuiltInOptions{Filter: nil,
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	pager := client.ListBuiltIn(&armpolicy.DefinitionsClientListBuiltInOptions{Filter: nil,
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitionsByManagementGroup.json
-func ExamplePolicyDefinitionsClient_ListByManagementGroup() {
+func ExampleDefinitionsClient_ListByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
 	pager := client.ListByManagementGroup("<management-group-id>",
-		&armpolicy.PolicyDefinitionsListByManagementGroupOptions{Filter: nil,
+		&armpolicy.DefinitionsClientListByManagementGroupOptions{Filter: nil,
 			Top: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyDefinition.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

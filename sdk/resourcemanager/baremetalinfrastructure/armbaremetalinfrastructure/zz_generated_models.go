@@ -17,20 +17,38 @@ import (
 
 // AzureBareMetalInstance - AzureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties)
 type AzureBareMetalInstance struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// AzureBareMetal instance properties
 	Properties *AzureBareMetalInstanceProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AzureBareMetalInstance.
 func (a AzureBareMetalInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -67,18 +85,26 @@ type AzureBareMetalInstanceProperties struct {
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty" azure:"ro"`
 }
 
-// AzureBareMetalInstancesGetOptions contains the optional parameters for the AzureBareMetalInstances.Get method.
-type AzureBareMetalInstancesGetOptions struct {
+// AzureBareMetalInstancesClientGetOptions contains the optional parameters for the AzureBareMetalInstancesClient.Get method.
+type AzureBareMetalInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureBareMetalInstancesListByResourceGroupOptions contains the optional parameters for the AzureBareMetalInstances.ListByResourceGroup method.
-type AzureBareMetalInstancesListByResourceGroupOptions struct {
+// AzureBareMetalInstancesClientListByResourceGroupOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListByResourceGroup
+// method.
+type AzureBareMetalInstancesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureBareMetalInstancesListBySubscriptionOptions contains the optional parameters for the AzureBareMetalInstances.ListBySubscription method.
-type AzureBareMetalInstancesListBySubscriptionOptions struct {
+// AzureBareMetalInstancesClientListBySubscriptionOptions contains the optional parameters for the AzureBareMetalInstancesClient.ListBySubscription
+// method.
+type AzureBareMetalInstancesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalInstancesClientUpdateOptions contains the optional parameters for the AzureBareMetalInstancesClient.Update
+// method.
+type AzureBareMetalInstancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -99,11 +125,6 @@ func (a AzureBareMetalInstancesListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AzureBareMetalInstancesUpdateOptions contains the optional parameters for the AzureBareMetalInstances.Update method.
-type AzureBareMetalInstancesUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // Disk - Specifies the disk information fo the AzureBareMetal instance
 type Disk struct {
 	// Specifies the size of an empty data disk in gigabytes.
@@ -112,8 +133,8 @@ type Disk struct {
 	// The disk name.
 	Name *string `json:"name,omitempty"`
 
-	// READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for
-	// each data disk attached to a VM.
+	// READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM
+	// and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty" azure:"ro"`
 }
 
@@ -154,17 +175,9 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // HardwareProfile - Specifies the hardware settings for the AzureBareMetal instance.
@@ -222,8 +235,8 @@ type Operation struct {
 	// READ-ONLY; indicates whether an operation is a data action or not.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event
-	// service.
+	// READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name
+	// that appears in RBAC / the event service.
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
@@ -240,8 +253,8 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -255,19 +268,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // Result - Sample result definition
@@ -374,27 +374,34 @@ func (t Tags) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

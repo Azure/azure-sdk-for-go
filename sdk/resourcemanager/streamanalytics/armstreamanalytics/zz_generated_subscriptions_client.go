@@ -11,7 +11,6 @@ package armstreamanalytics
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,103 +24,54 @@ import (
 // SubscriptionsClient contains the methods for the Subscriptions group.
 // Don't use this type directly, use NewSubscriptionsClient() instead.
 type SubscriptionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubscriptionsClient creates a new instance of SubscriptionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SubscriptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
-}
-
-// CompileQuery - Compile the Stream Analytics query.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) CompileQuery(ctx context.Context, location string, compileQuery CompileQuery, options *SubscriptionsCompileQueryOptions) (SubscriptionsCompileQueryResponse, error) {
-	req, err := client.compileQueryCreateRequest(ctx, location, compileQuery, options)
-	if err != nil {
-		return SubscriptionsCompileQueryResponse{}, err
+	client := &SubscriptionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
 	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return SubscriptionsCompileQueryResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionsCompileQueryResponse{}, client.compileQueryHandleError(resp)
-	}
-	return client.compileQueryHandleResponse(resp)
-}
-
-// compileQueryCreateRequest creates the CompileQuery request.
-func (client *SubscriptionsClient) compileQueryCreateRequest(ctx context.Context, location string, compileQuery CompileQuery, options *SubscriptionsCompileQueryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/compileQuery"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, compileQuery)
-}
-
-// compileQueryHandleResponse handles the CompileQuery response.
-func (client *SubscriptionsClient) compileQueryHandleResponse(resp *http.Response) (SubscriptionsCompileQueryResponse, error) {
-	result := SubscriptionsCompileQueryResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QueryCompilationResult); err != nil {
-		return SubscriptionsCompileQueryResponse{}, runtime.NewResponseError(err, resp)
-	}
-	return result, nil
-}
-
-// compileQueryHandleError handles the CompileQuery error response.
-func (client *SubscriptionsClient) compileQueryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
+	return client
 }
 
 // ListQuotas - Retrieves the subscription's current quota information in a particular region.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) ListQuotas(ctx context.Context, location string, options *SubscriptionsListQuotasOptions) (SubscriptionsListQuotasResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// location - The region in which to retrieve the subscription's quota information. You can find out which regions Azure Stream
+// Analytics is supported in here: https://azure.microsoft.com/en-us/regions/
+// options - SubscriptionsClientListQuotasOptions contains the optional parameters for the SubscriptionsClient.ListQuotas
+// method.
+func (client *SubscriptionsClient) ListQuotas(ctx context.Context, location string, options *SubscriptionsClientListQuotasOptions) (SubscriptionsClientListQuotasResponse, error) {
 	req, err := client.listQuotasCreateRequest(ctx, location, options)
 	if err != nil {
-		return SubscriptionsListQuotasResponse{}, err
+		return SubscriptionsClientListQuotasResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionsListQuotasResponse{}, err
+		return SubscriptionsClientListQuotasResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionsListQuotasResponse{}, client.listQuotasHandleError(resp)
+		return SubscriptionsClientListQuotasResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listQuotasHandleResponse(resp)
 }
 
 // listQuotasCreateRequest creates the ListQuotas request.
-func (client *SubscriptionsClient) listQuotasCreateRequest(ctx context.Context, location string, options *SubscriptionsListQuotasOptions) (*policy.Request, error) {
+func (client *SubscriptionsClient) listQuotasCreateRequest(ctx context.Context, location string, options *SubscriptionsClientListQuotasOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/quotas"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -131,323 +81,22 @@ func (client *SubscriptionsClient) listQuotasCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
+	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listQuotasHandleResponse handles the ListQuotas response.
-func (client *SubscriptionsClient) listQuotasHandleResponse(resp *http.Response) (SubscriptionsListQuotasResponse, error) {
-	result := SubscriptionsListQuotasResponse{RawResponse: resp}
+func (client *SubscriptionsClient) listQuotasHandleResponse(resp *http.Response) (SubscriptionsClientListQuotasResponse, error) {
+	result := SubscriptionsClientListQuotasResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotasListResult); err != nil {
-		return SubscriptionsListQuotasResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionsClientListQuotasResponse{}, err
 	}
 	return result, nil
-}
-
-// listQuotasHandleError handles the ListQuotas error response.
-func (client *SubscriptionsClient) listQuotasHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginSampleInput - Sample the Stream Analytics input data.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) BeginSampleInput(ctx context.Context, location string, sampleInput SampleInput, options *SubscriptionsBeginSampleInputOptions) (SubscriptionsSampleInputPollerResponse, error) {
-	resp, err := client.sampleInput(ctx, location, sampleInput, options)
-	if err != nil {
-		return SubscriptionsSampleInputPollerResponse{}, err
-	}
-	result := SubscriptionsSampleInputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SubscriptionsClient.SampleInput", "location", resp, client.pl, client.sampleInputHandleError)
-	if err != nil {
-		return SubscriptionsSampleInputPollerResponse{}, err
-	}
-	result.Poller = &SubscriptionsSampleInputPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// SampleInput - Sample the Stream Analytics input data.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) sampleInput(ctx context.Context, location string, sampleInput SampleInput, options *SubscriptionsBeginSampleInputOptions) (*http.Response, error) {
-	req, err := client.sampleInputCreateRequest(ctx, location, sampleInput, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.sampleInputHandleError(resp)
-	}
-	return resp, nil
-}
-
-// sampleInputCreateRequest creates the SampleInput request.
-func (client *SubscriptionsClient) sampleInputCreateRequest(ctx context.Context, location string, sampleInput SampleInput, options *SubscriptionsBeginSampleInputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/sampleInput"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, sampleInput)
-}
-
-// sampleInputHandleError handles the SampleInput error response.
-func (client *SubscriptionsClient) sampleInputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginTestInput - Test the Stream Analytics input.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) BeginTestInput(ctx context.Context, location string, testInput TestInput, options *SubscriptionsBeginTestInputOptions) (SubscriptionsTestInputPollerResponse, error) {
-	resp, err := client.testInput(ctx, location, testInput, options)
-	if err != nil {
-		return SubscriptionsTestInputPollerResponse{}, err
-	}
-	result := SubscriptionsTestInputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SubscriptionsClient.TestInput", "location", resp, client.pl, client.testInputHandleError)
-	if err != nil {
-		return SubscriptionsTestInputPollerResponse{}, err
-	}
-	result.Poller = &SubscriptionsTestInputPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// TestInput - Test the Stream Analytics input.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) testInput(ctx context.Context, location string, testInput TestInput, options *SubscriptionsBeginTestInputOptions) (*http.Response, error) {
-	req, err := client.testInputCreateRequest(ctx, location, testInput, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.testInputHandleError(resp)
-	}
-	return resp, nil
-}
-
-// testInputCreateRequest creates the TestInput request.
-func (client *SubscriptionsClient) testInputCreateRequest(ctx context.Context, location string, testInput TestInput, options *SubscriptionsBeginTestInputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testInput"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, testInput)
-}
-
-// testInputHandleError handles the TestInput error response.
-func (client *SubscriptionsClient) testInputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginTestOutput - Test the Stream Analytics output.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) BeginTestOutput(ctx context.Context, location string, testOutput TestOutput, options *SubscriptionsBeginTestOutputOptions) (SubscriptionsTestOutputPollerResponse, error) {
-	resp, err := client.testOutput(ctx, location, testOutput, options)
-	if err != nil {
-		return SubscriptionsTestOutputPollerResponse{}, err
-	}
-	result := SubscriptionsTestOutputPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SubscriptionsClient.TestOutput", "location", resp, client.pl, client.testOutputHandleError)
-	if err != nil {
-		return SubscriptionsTestOutputPollerResponse{}, err
-	}
-	result.Poller = &SubscriptionsTestOutputPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// TestOutput - Test the Stream Analytics output.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) testOutput(ctx context.Context, location string, testOutput TestOutput, options *SubscriptionsBeginTestOutputOptions) (*http.Response, error) {
-	req, err := client.testOutputCreateRequest(ctx, location, testOutput, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.testOutputHandleError(resp)
-	}
-	return resp, nil
-}
-
-// testOutputCreateRequest creates the TestOutput request.
-func (client *SubscriptionsClient) testOutputCreateRequest(ctx context.Context, location string, testOutput TestOutput, options *SubscriptionsBeginTestOutputOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testOutput"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, testOutput)
-}
-
-// testOutputHandleError handles the TestOutput error response.
-func (client *SubscriptionsClient) testOutputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginTestQuery - Test the Stream Analytics query on a sample input.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) BeginTestQuery(ctx context.Context, location string, testQuery TestQuery, options *SubscriptionsBeginTestQueryOptions) (SubscriptionsTestQueryPollerResponse, error) {
-	resp, err := client.testQuery(ctx, location, testQuery, options)
-	if err != nil {
-		return SubscriptionsTestQueryPollerResponse{}, err
-	}
-	result := SubscriptionsTestQueryPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SubscriptionsClient.TestQuery", "location", resp, client.pl, client.testQueryHandleError)
-	if err != nil {
-		return SubscriptionsTestQueryPollerResponse{}, err
-	}
-	result.Poller = &SubscriptionsTestQueryPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// TestQuery - Test the Stream Analytics query on a sample input.
-// If the operation fails it returns the *Error error type.
-func (client *SubscriptionsClient) testQuery(ctx context.Context, location string, testQuery TestQuery, options *SubscriptionsBeginTestQueryOptions) (*http.Response, error) {
-	req, err := client.testQueryCreateRequest(ctx, location, testQuery, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.testQueryHandleError(resp)
-	}
-	return resp, nil
-}
-
-// testQueryCreateRequest creates the TestQuery request.
-func (client *SubscriptionsClient) testQueryCreateRequest(ctx context.Context, location string, testQuery TestQuery, options *SubscriptionsBeginTestQueryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testQuery"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, testQuery)
-}
-
-// testQueryHandleError handles the TestQuery error response.
-func (client *SubscriptionsClient) testQueryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

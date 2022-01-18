@@ -20,13 +20,13 @@ import (
 )
 
 // x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getComputeOneSkuQuotaLimit.json
-func ExampleQuotaClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armquota.NewQuotaClient(cred, nil)
+	client := armquota.NewClient(cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-name>",
 		"<scope>",
@@ -34,30 +34,28 @@ func ExampleQuotaClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CurrentQuotaLimitBase.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/putNetworkOneSkuQuotaRequest.json
-func ExampleQuotaClient_BeginCreateOrUpdate() {
+func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armquota.NewQuotaClient(cred, nil)
+	client := armquota.NewClient(cred, nil)
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-name>",
 		"<scope>",
 		armquota.CurrentQuotaLimitBase{
-			Properties: &armquota.QuotaProperties{
+			Properties: &armquota.Properties{
 				Name: &armquota.ResourceName{
 					Value: to.StringPtr("<value>"),
 				},
 				Limit: &armquota.LimitObject{
-					LimitJSONObject: armquota.LimitJSONObject{
-						LimitObjectType: armquota.LimitTypeLimitValue.ToPtr(),
-					},
-					Value: to.Int32Ptr(10),
+					LimitObjectType: armquota.LimitType("LimitValue").ToPtr(),
+					Value:           to.Int32Ptr(10),
 				},
 				ResourceType: to.StringPtr("<resource-type>"),
 			},
@@ -70,30 +68,28 @@ func ExampleQuotaClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CurrentQuotaLimitBase.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/patchComputeQuotaRequest.json
-func ExampleQuotaClient_BeginUpdate() {
+func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armquota.NewQuotaClient(cred, nil)
+	client := armquota.NewClient(cred, nil)
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-name>",
 		"<scope>",
 		armquota.CurrentQuotaLimitBase{
-			Properties: &armquota.QuotaProperties{
+			Properties: &armquota.Properties{
 				Name: &armquota.ResourceName{
 					Value: to.StringPtr("<value>"),
 				},
 				Limit: &armquota.LimitObject{
-					LimitJSONObject: armquota.LimitJSONObject{
-						LimitObjectType: armquota.LimitTypeLimitValue.ToPtr(),
-					},
-					Value: to.Int32Ptr(10),
+					LimitObjectType: armquota.LimitType("LimitValue").ToPtr(),
+					Value:           to.Int32Ptr(10),
 				},
 			},
 		},
@@ -105,25 +101,29 @@ func ExampleQuotaClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CurrentQuotaLimitBase.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResult)
 }
 
 // x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getComputeQuotaLimits.json
-func ExampleQuotaClient_List() {
+func ExampleClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armquota.NewQuotaClient(cred, nil)
+	client := armquota.NewClient(cred, nil)
 	pager := client.List("<scope>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CurrentQuotaLimitBase.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

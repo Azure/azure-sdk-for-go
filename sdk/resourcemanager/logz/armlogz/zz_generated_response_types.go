@@ -15,46 +15,46 @@ import (
 	"time"
 )
 
-// MonitorListVMHostUpdateResponse contains the response from method Monitor.ListVMHostUpdate.
-type MonitorListVMHostUpdateResponse struct {
-	MonitorListVMHostUpdateResult
+// MonitorClientListVMHostUpdateResponse contains the response from method MonitorClient.ListVMHostUpdate.
+type MonitorClientListVMHostUpdateResponse struct {
+	MonitorClientListVMHostUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorListVMHostUpdateResult contains the result from method Monitor.ListVMHostUpdate.
-type MonitorListVMHostUpdateResult struct {
+// MonitorClientListVMHostUpdateResult contains the result from method MonitorClient.ListVMHostUpdate.
+type MonitorClientListVMHostUpdateResult struct {
 	VMResourcesListResponse
 }
 
-// MonitorListVMHostsResponse contains the response from method Monitor.ListVMHosts.
-type MonitorListVMHostsResponse struct {
-	MonitorListVMHostsResult
+// MonitorClientListVMHostsResponse contains the response from method MonitorClient.ListVMHosts.
+type MonitorClientListVMHostsResponse struct {
+	MonitorClientListVMHostsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorListVMHostsResult contains the result from method Monitor.ListVMHosts.
-type MonitorListVMHostsResult struct {
+// MonitorClientListVMHostsResult contains the result from method MonitorClient.ListVMHosts.
+type MonitorClientListVMHostsResult struct {
 	VMResourcesListResponse
 }
 
-// MonitorVMHostPayloadResponse contains the response from method Monitor.VMHostPayload.
-type MonitorVMHostPayloadResponse struct {
-	MonitorVMHostPayloadResult
+// MonitorClientVMHostPayloadResponse contains the response from method MonitorClient.VMHostPayload.
+type MonitorClientVMHostPayloadResponse struct {
+	MonitorClientVMHostPayloadResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorVMHostPayloadResult contains the result from method Monitor.VMHostPayload.
-type MonitorVMHostPayloadResult struct {
+// MonitorClientVMHostPayloadResult contains the result from method MonitorClient.VMHostPayload.
+type MonitorClientVMHostPayloadResult struct {
 	VMExtensionPayload
 }
 
-// MonitorsCreatePollerResponse contains the response from method Monitors.Create.
-type MonitorsCreatePollerResponse struct {
+// MonitorsClientCreatePollerResponse contains the response from method MonitorsClient.Create.
+type MonitorsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MonitorsCreatePoller
+	Poller *MonitorsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -63,9 +63,9 @@ type MonitorsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MonitorsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsCreateResponse, error) {
-	respType := MonitorsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LogzMonitorResource)
+func (l MonitorsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsClientCreateResponse, error) {
+	respType := MonitorsClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MonitorResource)
 	if err != nil {
 		return respType, err
 	}
@@ -73,13 +73,13 @@ func (l MonitorsCreatePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a MonitorsCreatePollerResponse from the provided client and resume token.
-func (l *MonitorsCreatePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a MonitorsClientCreatePollerResponse from the provided client and resume token.
+func (l *MonitorsClientCreatePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MonitorsCreatePoller{
+	poller := &MonitorsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -91,22 +91,22 @@ func (l *MonitorsCreatePollerResponse) Resume(ctx context.Context, client *Monit
 	return nil
 }
 
-// MonitorsCreateResponse contains the response from method Monitors.Create.
-type MonitorsCreateResponse struct {
-	MonitorsCreateResult
+// MonitorsClientCreateResponse contains the response from method MonitorsClient.Create.
+type MonitorsClientCreateResponse struct {
+	MonitorsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsCreateResult contains the result from method Monitors.Create.
-type MonitorsCreateResult struct {
-	LogzMonitorResource
+// MonitorsClientCreateResult contains the result from method MonitorsClient.Create.
+type MonitorsClientCreateResult struct {
+	MonitorResource
 }
 
-// MonitorsDeletePollerResponse contains the response from method Monitors.Delete.
-type MonitorsDeletePollerResponse struct {
+// MonitorsClientDeletePollerResponse contains the response from method MonitorsClient.Delete.
+type MonitorsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *MonitorsDeletePoller
+	Poller *MonitorsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -115,8 +115,8 @@ type MonitorsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MonitorsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsDeleteResponse, error) {
-	respType := MonitorsDeleteResponse{}
+func (l MonitorsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MonitorsClientDeleteResponse, error) {
+	respType := MonitorsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -125,13 +125,13 @@ func (l MonitorsDeletePollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a MonitorsDeletePollerResponse from the provided client and resume token.
-func (l *MonitorsDeletePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a MonitorsClientDeletePollerResponse from the provided client and resume token.
+func (l *MonitorsClientDeletePollerResponse) Resume(ctx context.Context, client *MonitorsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MonitorsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &MonitorsDeletePoller{
+	poller := &MonitorsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -143,100 +143,100 @@ func (l *MonitorsDeletePollerResponse) Resume(ctx context.Context, client *Monit
 	return nil
 }
 
-// MonitorsDeleteResponse contains the response from method Monitors.Delete.
-type MonitorsDeleteResponse struct {
+// MonitorsClientDeleteResponse contains the response from method MonitorsClient.Delete.
+type MonitorsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsGetResponse contains the response from method Monitors.Get.
-type MonitorsGetResponse struct {
-	MonitorsGetResult
+// MonitorsClientGetResponse contains the response from method MonitorsClient.Get.
+type MonitorsClientGetResponse struct {
+	MonitorsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsGetResult contains the result from method Monitors.Get.
-type MonitorsGetResult struct {
-	LogzMonitorResource
+// MonitorsClientGetResult contains the result from method MonitorsClient.Get.
+type MonitorsClientGetResult struct {
+	MonitorResource
 }
 
-// MonitorsListByResourceGroupResponse contains the response from method Monitors.ListByResourceGroup.
-type MonitorsListByResourceGroupResponse struct {
-	MonitorsListByResourceGroupResult
+// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.ListByResourceGroup.
+type MonitorsClientListByResourceGroupResponse struct {
+	MonitorsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListByResourceGroupResult contains the result from method Monitors.ListByResourceGroup.
-type MonitorsListByResourceGroupResult struct {
-	LogzMonitorResourceListResponse
+// MonitorsClientListByResourceGroupResult contains the result from method MonitorsClient.ListByResourceGroup.
+type MonitorsClientListByResourceGroupResult struct {
+	MonitorResourceListResponse
 }
 
-// MonitorsListBySubscriptionResponse contains the response from method Monitors.ListBySubscription.
-type MonitorsListBySubscriptionResponse struct {
-	MonitorsListBySubscriptionResult
+// MonitorsClientListBySubscriptionResponse contains the response from method MonitorsClient.ListBySubscription.
+type MonitorsClientListBySubscriptionResponse struct {
+	MonitorsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListBySubscriptionResult contains the result from method Monitors.ListBySubscription.
-type MonitorsListBySubscriptionResult struct {
-	LogzMonitorResourceListResponse
+// MonitorsClientListBySubscriptionResult contains the result from method MonitorsClient.ListBySubscription.
+type MonitorsClientListBySubscriptionResult struct {
+	MonitorResourceListResponse
 }
 
-// MonitorsListMonitoredResourcesResponse contains the response from method Monitors.ListMonitoredResources.
-type MonitorsListMonitoredResourcesResponse struct {
-	MonitorsListMonitoredResourcesResult
+// MonitorsClientListMonitoredResourcesResponse contains the response from method MonitorsClient.ListMonitoredResources.
+type MonitorsClientListMonitoredResourcesResponse struct {
+	MonitorsClientListMonitoredResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListMonitoredResourcesResult contains the result from method Monitors.ListMonitoredResources.
-type MonitorsListMonitoredResourcesResult struct {
+// MonitorsClientListMonitoredResourcesResult contains the result from method MonitorsClient.ListMonitoredResources.
+type MonitorsClientListMonitoredResourcesResult struct {
 	MonitoredResourceListResponse
 }
 
-// MonitorsListUserRolesResponse contains the response from method Monitors.ListUserRoles.
-type MonitorsListUserRolesResponse struct {
-	MonitorsListUserRolesResult
+// MonitorsClientListUserRolesResponse contains the response from method MonitorsClient.ListUserRoles.
+type MonitorsClientListUserRolesResponse struct {
+	MonitorsClientListUserRolesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsListUserRolesResult contains the result from method Monitors.ListUserRoles.
-type MonitorsListUserRolesResult struct {
+// MonitorsClientListUserRolesResult contains the result from method MonitorsClient.ListUserRoles.
+type MonitorsClientListUserRolesResult struct {
 	UserRoleListResponse
 }
 
-// MonitorsUpdateResponse contains the response from method Monitors.Update.
-type MonitorsUpdateResponse struct {
-	MonitorsUpdateResult
+// MonitorsClientUpdateResponse contains the response from method MonitorsClient.Update.
+type MonitorsClientUpdateResponse struct {
+	MonitorsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MonitorsUpdateResult contains the result from method Monitors.Update.
-type MonitorsUpdateResult struct {
-	LogzMonitorResource
+// MonitorsClientUpdateResult contains the result from method MonitorsClient.Update.
+type MonitorsClientUpdateResult struct {
+	MonitorResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SingleSignOnCreateOrUpdatePollerResponse contains the response from method SingleSignOn.CreateOrUpdate.
-type SingleSignOnCreateOrUpdatePollerResponse struct {
+// SingleSignOnClientCreateOrUpdatePollerResponse contains the response from method SingleSignOnClient.CreateOrUpdate.
+type SingleSignOnClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SingleSignOnCreateOrUpdatePoller
+	Poller *SingleSignOnClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -245,9 +245,9 @@ type SingleSignOnCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SingleSignOnCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SingleSignOnCreateOrUpdateResponse, error) {
-	respType := SingleSignOnCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LogzSingleSignOnResource)
+func (l SingleSignOnClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SingleSignOnClientCreateOrUpdateResponse, error) {
+	respType := SingleSignOnClientCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SingleSignOnResource)
 	if err != nil {
 		return respType, err
 	}
@@ -255,13 +255,13 @@ func (l SingleSignOnCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a SingleSignOnCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SingleSignOnCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SingleSignOnClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SingleSignOnClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a SingleSignOnClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *SingleSignOnClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SingleSignOnClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SingleSignOnClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SingleSignOnCreateOrUpdatePoller{
+	poller := &SingleSignOnClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -273,46 +273,46 @@ func (l *SingleSignOnCreateOrUpdatePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// SingleSignOnCreateOrUpdateResponse contains the response from method SingleSignOn.CreateOrUpdate.
-type SingleSignOnCreateOrUpdateResponse struct {
-	SingleSignOnCreateOrUpdateResult
+// SingleSignOnClientCreateOrUpdateResponse contains the response from method SingleSignOnClient.CreateOrUpdate.
+type SingleSignOnClientCreateOrUpdateResponse struct {
+	SingleSignOnClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SingleSignOnCreateOrUpdateResult contains the result from method SingleSignOn.CreateOrUpdate.
-type SingleSignOnCreateOrUpdateResult struct {
-	LogzSingleSignOnResource
+// SingleSignOnClientCreateOrUpdateResult contains the result from method SingleSignOnClient.CreateOrUpdate.
+type SingleSignOnClientCreateOrUpdateResult struct {
+	SingleSignOnResource
 }
 
-// SingleSignOnGetResponse contains the response from method SingleSignOn.Get.
-type SingleSignOnGetResponse struct {
-	SingleSignOnGetResult
+// SingleSignOnClientGetResponse contains the response from method SingleSignOnClient.Get.
+type SingleSignOnClientGetResponse struct {
+	SingleSignOnClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SingleSignOnGetResult contains the result from method SingleSignOn.Get.
-type SingleSignOnGetResult struct {
-	LogzSingleSignOnResource
+// SingleSignOnClientGetResult contains the result from method SingleSignOnClient.Get.
+type SingleSignOnClientGetResult struct {
+	SingleSignOnResource
 }
 
-// SingleSignOnListResponse contains the response from method SingleSignOn.List.
-type SingleSignOnListResponse struct {
-	SingleSignOnListResult
+// SingleSignOnClientListResponse contains the response from method SingleSignOnClient.List.
+type SingleSignOnClientListResponse struct {
+	SingleSignOnClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SingleSignOnListResult contains the result from method SingleSignOn.List.
-type SingleSignOnListResult struct {
-	LogzSingleSignOnResourceListResponse
+// SingleSignOnClientListResult contains the result from method SingleSignOnClient.List.
+type SingleSignOnClientListResult struct {
+	SingleSignOnResourceListResponse
 }
 
-// SubAccountCreatePollerResponse contains the response from method SubAccount.Create.
-type SubAccountCreatePollerResponse struct {
+// SubAccountClientCreatePollerResponse contains the response from method SubAccountClient.Create.
+type SubAccountClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SubAccountCreatePoller
+	Poller *SubAccountClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -321,9 +321,9 @@ type SubAccountCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SubAccountCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubAccountCreateResponse, error) {
-	respType := SubAccountCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LogzMonitorResource)
+func (l SubAccountClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubAccountClientCreateResponse, error) {
+	respType := SubAccountClientCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MonitorResource)
 	if err != nil {
 		return respType, err
 	}
@@ -331,13 +331,13 @@ func (l SubAccountCreatePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a SubAccountCreatePollerResponse from the provided client and resume token.
-func (l *SubAccountCreatePollerResponse) Resume(ctx context.Context, client *SubAccountClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SubAccountClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a SubAccountClientCreatePollerResponse from the provided client and resume token.
+func (l *SubAccountClientCreatePollerResponse) Resume(ctx context.Context, client *SubAccountClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubAccountClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SubAccountCreatePoller{
+	poller := &SubAccountClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -349,22 +349,22 @@ func (l *SubAccountCreatePollerResponse) Resume(ctx context.Context, client *Sub
 	return nil
 }
 
-// SubAccountCreateResponse contains the response from method SubAccount.Create.
-type SubAccountCreateResponse struct {
-	SubAccountCreateResult
+// SubAccountClientCreateResponse contains the response from method SubAccountClient.Create.
+type SubAccountClientCreateResponse struct {
+	SubAccountClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountCreateResult contains the result from method SubAccount.Create.
-type SubAccountCreateResult struct {
-	LogzMonitorResource
+// SubAccountClientCreateResult contains the result from method SubAccountClient.Create.
+type SubAccountClientCreateResult struct {
+	MonitorResource
 }
 
-// SubAccountDeletePollerResponse contains the response from method SubAccount.Delete.
-type SubAccountDeletePollerResponse struct {
+// SubAccountClientDeletePollerResponse contains the response from method SubAccountClient.Delete.
+type SubAccountClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *SubAccountDeletePoller
+	Poller *SubAccountClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -373,8 +373,8 @@ type SubAccountDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SubAccountDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubAccountDeleteResponse, error) {
-	respType := SubAccountDeleteResponse{}
+func (l SubAccountClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SubAccountClientDeleteResponse, error) {
+	respType := SubAccountClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -383,13 +383,13 @@ func (l SubAccountDeletePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a SubAccountDeletePollerResponse from the provided client and resume token.
-func (l *SubAccountDeletePollerResponse) Resume(ctx context.Context, client *SubAccountClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SubAccountClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a SubAccountClientDeletePollerResponse from the provided client and resume token.
+func (l *SubAccountClientDeletePollerResponse) Resume(ctx context.Context, client *SubAccountClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SubAccountClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &SubAccountDeletePoller{
+	poller := &SubAccountClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -401,190 +401,190 @@ func (l *SubAccountDeletePollerResponse) Resume(ctx context.Context, client *Sub
 	return nil
 }
 
-// SubAccountDeleteResponse contains the response from method SubAccount.Delete.
-type SubAccountDeleteResponse struct {
+// SubAccountClientDeleteResponse contains the response from method SubAccountClient.Delete.
+type SubAccountClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountGetResponse contains the response from method SubAccount.Get.
-type SubAccountGetResponse struct {
-	SubAccountGetResult
+// SubAccountClientGetResponse contains the response from method SubAccountClient.Get.
+type SubAccountClientGetResponse struct {
+	SubAccountClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountGetResult contains the result from method SubAccount.Get.
-type SubAccountGetResult struct {
-	LogzMonitorResource
+// SubAccountClientGetResult contains the result from method SubAccountClient.Get.
+type SubAccountClientGetResult struct {
+	MonitorResource
 }
 
-// SubAccountListMonitoredResourcesResponse contains the response from method SubAccount.ListMonitoredResources.
-type SubAccountListMonitoredResourcesResponse struct {
-	SubAccountListMonitoredResourcesResult
+// SubAccountClientListMonitoredResourcesResponse contains the response from method SubAccountClient.ListMonitoredResources.
+type SubAccountClientListMonitoredResourcesResponse struct {
+	SubAccountClientListMonitoredResourcesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountListMonitoredResourcesResult contains the result from method SubAccount.ListMonitoredResources.
-type SubAccountListMonitoredResourcesResult struct {
+// SubAccountClientListMonitoredResourcesResult contains the result from method SubAccountClient.ListMonitoredResources.
+type SubAccountClientListMonitoredResourcesResult struct {
 	MonitoredResourceListResponse
 }
 
-// SubAccountListResponse contains the response from method SubAccount.List.
-type SubAccountListResponse struct {
-	SubAccountListResult
+// SubAccountClientListResponse contains the response from method SubAccountClient.List.
+type SubAccountClientListResponse struct {
+	SubAccountClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountListResult contains the result from method SubAccount.List.
-type SubAccountListResult struct {
-	LogzMonitorResourceListResponse
+// SubAccountClientListResult contains the result from method SubAccountClient.List.
+type SubAccountClientListResult struct {
+	MonitorResourceListResponse
 }
 
-// SubAccountListVMHostUpdateResponse contains the response from method SubAccount.ListVMHostUpdate.
-type SubAccountListVMHostUpdateResponse struct {
-	SubAccountListVMHostUpdateResult
+// SubAccountClientListVMHostUpdateResponse contains the response from method SubAccountClient.ListVMHostUpdate.
+type SubAccountClientListVMHostUpdateResponse struct {
+	SubAccountClientListVMHostUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountListVMHostUpdateResult contains the result from method SubAccount.ListVMHostUpdate.
-type SubAccountListVMHostUpdateResult struct {
+// SubAccountClientListVMHostUpdateResult contains the result from method SubAccountClient.ListVMHostUpdate.
+type SubAccountClientListVMHostUpdateResult struct {
 	VMResourcesListResponse
 }
 
-// SubAccountListVMHostsResponse contains the response from method SubAccount.ListVMHosts.
-type SubAccountListVMHostsResponse struct {
-	SubAccountListVMHostsResult
+// SubAccountClientListVMHostsResponse contains the response from method SubAccountClient.ListVMHosts.
+type SubAccountClientListVMHostsResponse struct {
+	SubAccountClientListVMHostsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountListVMHostsResult contains the result from method SubAccount.ListVMHosts.
-type SubAccountListVMHostsResult struct {
+// SubAccountClientListVMHostsResult contains the result from method SubAccountClient.ListVMHosts.
+type SubAccountClientListVMHostsResult struct {
 	VMResourcesListResponse
 }
 
-// SubAccountTagRulesCreateOrUpdateResponse contains the response from method SubAccountTagRules.CreateOrUpdate.
-type SubAccountTagRulesCreateOrUpdateResponse struct {
-	SubAccountTagRulesCreateOrUpdateResult
+// SubAccountClientUpdateResponse contains the response from method SubAccountClient.Update.
+type SubAccountClientUpdateResponse struct {
+	SubAccountClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountTagRulesCreateOrUpdateResult contains the result from method SubAccountTagRules.CreateOrUpdate.
-type SubAccountTagRulesCreateOrUpdateResult struct {
-	MonitoringTagRules
+// SubAccountClientUpdateResult contains the result from method SubAccountClient.Update.
+type SubAccountClientUpdateResult struct {
+	MonitorResource
 }
 
-// SubAccountTagRulesDeleteResponse contains the response from method SubAccountTagRules.Delete.
-type SubAccountTagRulesDeleteResponse struct {
-	SubAccountTagRulesDeleteResult
+// SubAccountClientVMHostPayloadResponse contains the response from method SubAccountClient.VMHostPayload.
+type SubAccountClientVMHostPayloadResponse struct {
+	SubAccountClientVMHostPayloadResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SubAccountTagRulesDeleteResult contains the result from method SubAccountTagRules.Delete.
-type SubAccountTagRulesDeleteResult struct {
-	// Location contains the information returned from the location header response.
-	Location *string
-}
-
-// SubAccountTagRulesGetResponse contains the response from method SubAccountTagRules.Get.
-type SubAccountTagRulesGetResponse struct {
-	SubAccountTagRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubAccountTagRulesGetResult contains the result from method SubAccountTagRules.Get.
-type SubAccountTagRulesGetResult struct {
-	MonitoringTagRules
-}
-
-// SubAccountTagRulesListResponse contains the response from method SubAccountTagRules.List.
-type SubAccountTagRulesListResponse struct {
-	SubAccountTagRulesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubAccountTagRulesListResult contains the result from method SubAccountTagRules.List.
-type SubAccountTagRulesListResult struct {
-	MonitoringTagRulesListResponse
-}
-
-// SubAccountUpdateResponse contains the response from method SubAccount.Update.
-type SubAccountUpdateResponse struct {
-	SubAccountUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubAccountUpdateResult contains the result from method SubAccount.Update.
-type SubAccountUpdateResult struct {
-	LogzMonitorResource
-}
-
-// SubAccountVMHostPayloadResponse contains the response from method SubAccount.VMHostPayload.
-type SubAccountVMHostPayloadResponse struct {
-	SubAccountVMHostPayloadResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubAccountVMHostPayloadResult contains the result from method SubAccount.VMHostPayload.
-type SubAccountVMHostPayloadResult struct {
+// SubAccountClientVMHostPayloadResult contains the result from method SubAccountClient.VMHostPayload.
+type SubAccountClientVMHostPayloadResult struct {
 	VMExtensionPayload
 }
 
-// TagRulesCreateOrUpdateResponse contains the response from method TagRules.CreateOrUpdate.
-type TagRulesCreateOrUpdateResponse struct {
-	TagRulesCreateOrUpdateResult
+// SubAccountTagRulesClientCreateOrUpdateResponse contains the response from method SubAccountTagRulesClient.CreateOrUpdate.
+type SubAccountTagRulesClientCreateOrUpdateResponse struct {
+	SubAccountTagRulesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesCreateOrUpdateResult contains the result from method TagRules.CreateOrUpdate.
-type TagRulesCreateOrUpdateResult struct {
+// SubAccountTagRulesClientCreateOrUpdateResult contains the result from method SubAccountTagRulesClient.CreateOrUpdate.
+type SubAccountTagRulesClientCreateOrUpdateResult struct {
 	MonitoringTagRules
 }
 
-// TagRulesDeleteResponse contains the response from method TagRules.Delete.
-type TagRulesDeleteResponse struct {
-	TagRulesDeleteResult
+// SubAccountTagRulesClientDeleteResponse contains the response from method SubAccountTagRulesClient.Delete.
+type SubAccountTagRulesClientDeleteResponse struct {
+	SubAccountTagRulesClientDeleteResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesDeleteResult contains the result from method TagRules.Delete.
-type TagRulesDeleteResult struct {
+// SubAccountTagRulesClientDeleteResult contains the result from method SubAccountTagRulesClient.Delete.
+type SubAccountTagRulesClientDeleteResult struct {
 	// Location contains the information returned from the location header response.
 	Location *string
 }
 
-// TagRulesGetResponse contains the response from method TagRules.Get.
-type TagRulesGetResponse struct {
-	TagRulesGetResult
+// SubAccountTagRulesClientGetResponse contains the response from method SubAccountTagRulesClient.Get.
+type SubAccountTagRulesClientGetResponse struct {
+	SubAccountTagRulesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesGetResult contains the result from method TagRules.Get.
-type TagRulesGetResult struct {
+// SubAccountTagRulesClientGetResult contains the result from method SubAccountTagRulesClient.Get.
+type SubAccountTagRulesClientGetResult struct {
 	MonitoringTagRules
 }
 
-// TagRulesListResponse contains the response from method TagRules.List.
-type TagRulesListResponse struct {
-	TagRulesListResult
+// SubAccountTagRulesClientListResponse contains the response from method SubAccountTagRulesClient.List.
+type SubAccountTagRulesClientListResponse struct {
+	SubAccountTagRulesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TagRulesListResult contains the result from method TagRules.List.
-type TagRulesListResult struct {
+// SubAccountTagRulesClientListResult contains the result from method SubAccountTagRulesClient.List.
+type SubAccountTagRulesClientListResult struct {
+	MonitoringTagRulesListResponse
+}
+
+// TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.CreateOrUpdate.
+type TagRulesClientCreateOrUpdateResponse struct {
+	TagRulesClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagRulesClientCreateOrUpdateResult contains the result from method TagRulesClient.CreateOrUpdate.
+type TagRulesClientCreateOrUpdateResult struct {
+	MonitoringTagRules
+}
+
+// TagRulesClientDeleteResponse contains the response from method TagRulesClient.Delete.
+type TagRulesClientDeleteResponse struct {
+	TagRulesClientDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagRulesClientDeleteResult contains the result from method TagRulesClient.Delete.
+type TagRulesClientDeleteResult struct {
+	// Location contains the information returned from the location header response.
+	Location *string
+}
+
+// TagRulesClientGetResponse contains the response from method TagRulesClient.Get.
+type TagRulesClientGetResponse struct {
+	TagRulesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagRulesClientGetResult contains the result from method TagRulesClient.Get.
+type TagRulesClientGetResult struct {
+	MonitoringTagRules
+}
+
+// TagRulesClientListResponse contains the response from method TagRulesClient.List.
+type TagRulesClientListResponse struct {
+	TagRulesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TagRulesClientListResult contains the result from method TagRulesClient.List.
+type TagRulesClientListResult struct {
 	MonitoringTagRulesListResponse
 }

@@ -16,24 +16,54 @@ import (
 
 // Application - Information about managed application.
 type Application struct {
-	GenericResource
 	// REQUIRED; The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
 	Kind *string `json:"kind,omitempty"`
 
 	// REQUIRED; The managed application properties.
 	Properties *ApplicationProperties `json:"properties,omitempty"`
 
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+
 	// The plan information.
 	Plan *Plan `json:"plan,omitempty"`
+
+	// The SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Application.
 func (a Application) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.GenericResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "managedBy", a.ManagedBy)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "plan", a.Plan)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -56,16 +86,46 @@ type ApplicationClientListOperationsOptions struct {
 
 // ApplicationDefinition - Information about managed application definition.
 type ApplicationDefinition struct {
-	GenericResource
 	// REQUIRED; The managed application definition properties.
 	Properties *ApplicationDefinitionProperties `json:"properties,omitempty"`
+
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+
+	// The SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ApplicationDefinition.
 func (a ApplicationDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.GenericResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "managedBy", a.ManagedBy)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -94,12 +154,13 @@ type ApplicationDefinitionProperties struct {
 	// REQUIRED; The managed application lock level.
 	LockLevel *ApplicationLockLevel `json:"lockLevel,omitempty"`
 
-	// The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the user experience of creating a
-	// managed application from a managed application
+	// The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the
+	// user experience of creating a managed application from a managed application
 	// definition.
 	Artifacts []*ApplicationArtifact `json:"artifacts,omitempty"`
 
-	// The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
+	// The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject
+	// or well-formed JSON string.
 	CreateUIDefinition map[string]interface{} `json:"createUiDefinition,omitempty"`
 
 	// The managed application definition description.
@@ -133,38 +194,44 @@ func (a ApplicationDefinitionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationDefinitionsBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationDefinitions.BeginCreateOrUpdateByID method.
-type ApplicationDefinitionsBeginCreateOrUpdateByIDOptions struct {
+// ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdateByID
+// method.
+type ApplicationDefinitionsClientBeginCreateOrUpdateByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationDefinitionsBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitions.BeginCreateOrUpdate method.
-type ApplicationDefinitionsBeginCreateOrUpdateOptions struct {
+// ApplicationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdate
+// method.
+type ApplicationDefinitionsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationDefinitionsBeginDeleteByIDOptions contains the optional parameters for the ApplicationDefinitions.BeginDeleteByID method.
-type ApplicationDefinitionsBeginDeleteByIDOptions struct {
+// ApplicationDefinitionsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDeleteByID
+// method.
+type ApplicationDefinitionsClientBeginDeleteByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationDefinitionsBeginDeleteOptions contains the optional parameters for the ApplicationDefinitions.BeginDelete method.
-type ApplicationDefinitionsBeginDeleteOptions struct {
+// ApplicationDefinitionsClientBeginDeleteOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginDelete
+// method.
+type ApplicationDefinitionsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationDefinitionsGetByIDOptions contains the optional parameters for the ApplicationDefinitions.GetByID method.
-type ApplicationDefinitionsGetByIDOptions struct {
+// ApplicationDefinitionsClientGetByIDOptions contains the optional parameters for the ApplicationDefinitionsClient.GetByID
+// method.
+type ApplicationDefinitionsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationDefinitionsGetOptions contains the optional parameters for the ApplicationDefinitions.Get method.
-type ApplicationDefinitionsGetOptions struct {
+// ApplicationDefinitionsClientGetOptions contains the optional parameters for the ApplicationDefinitionsClient.Get method.
+type ApplicationDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationDefinitionsListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitions.ListByResourceGroup method.
-type ApplicationDefinitionsListByResourceGroupOptions struct {
+// ApplicationDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitionsClient.ListByResourceGroup
+// method.
+type ApplicationDefinitionsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -187,24 +254,54 @@ func (a ApplicationListResult) MarshalJSON() ([]byte, error) {
 
 // ApplicationPatchable - Information about managed application.
 type ApplicationPatchable struct {
-	GenericResource
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
 	// The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
 	Kind *string `json:"kind,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
 
 	// The plan information.
 	Plan *PlanPatchable `json:"plan,omitempty"`
 
 	// The managed application properties.
 	Properties *ApplicationPropertiesPatchable `json:"properties,omitempty"`
+
+	// The SKU of the resource.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ApplicationPatchable.
 func (a ApplicationPatchable) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	a.GenericResource.marshalInternal(objectMap)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "kind", a.Kind)
+	populate(objectMap, "location", a.Location)
+	populate(objectMap, "managedBy", a.ManagedBy)
+	populate(objectMap, "name", a.Name)
 	populate(objectMap, "plan", a.Plan)
 	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "tags", a.Tags)
+	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -246,71 +343,75 @@ type ApplicationPropertiesPatchable struct {
 
 // ApplicationProviderAuthorization - The managed application provider authorization.
 type ApplicationProviderAuthorization struct {
-	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the managed application resources.
+	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
+	// managed application resources.
 	PrincipalID *string `json:"principalId,omitempty"`
 
-	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have on the managed application's
-	// container resource group. This role definition cannot have
+	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
+	// on the managed application's container resource group. This role definition cannot have
 	// permission to delete the resource group.
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 }
 
-// ApplicationsBeginCreateOrUpdateByIDOptions contains the optional parameters for the Applications.BeginCreateOrUpdateByID method.
-type ApplicationsBeginCreateOrUpdateByIDOptions struct {
+// ApplicationsClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdateByID
+// method.
+type ApplicationsClientBeginCreateOrUpdateByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsBeginCreateOrUpdateOptions contains the optional parameters for the Applications.BeginCreateOrUpdate method.
-type ApplicationsBeginCreateOrUpdateOptions struct {
+// ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
+// method.
+type ApplicationsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsBeginDeleteByIDOptions contains the optional parameters for the Applications.BeginDeleteByID method.
-type ApplicationsBeginDeleteByIDOptions struct {
+// ApplicationsClientBeginDeleteByIDOptions contains the optional parameters for the ApplicationsClient.BeginDeleteByID method.
+type ApplicationsClientBeginDeleteByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsBeginDeleteOptions contains the optional parameters for the Applications.BeginDelete method.
-type ApplicationsBeginDeleteOptions struct {
+// ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
+type ApplicationsClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsGetByIDOptions contains the optional parameters for the Applications.GetByID method.
-type ApplicationsGetByIDOptions struct {
+// ApplicationsClientGetByIDOptions contains the optional parameters for the ApplicationsClient.GetByID method.
+type ApplicationsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsGetOptions contains the optional parameters for the Applications.Get method.
-type ApplicationsGetOptions struct {
+// ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
+type ApplicationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsListByResourceGroupOptions contains the optional parameters for the Applications.ListByResourceGroup method.
-type ApplicationsListByResourceGroupOptions struct {
+// ApplicationsClientListByResourceGroupOptions contains the optional parameters for the ApplicationsClient.ListByResourceGroup
+// method.
+type ApplicationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsListBySubscriptionOptions contains the optional parameters for the Applications.ListBySubscription method.
-type ApplicationsListBySubscriptionOptions struct {
+// ApplicationsClientListBySubscriptionOptions contains the optional parameters for the ApplicationsClient.ListBySubscription
+// method.
+type ApplicationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsUpdateByIDOptions contains the optional parameters for the Applications.UpdateByID method.
-type ApplicationsUpdateByIDOptions struct {
+// ApplicationsClientUpdateByIDOptions contains the optional parameters for the ApplicationsClient.UpdateByID method.
+type ApplicationsClientUpdateByIDOptions struct {
 	// Parameters supplied to update an existing managed application.
 	Parameters *Application
 }
 
-// ApplicationsUpdateOptions contains the optional parameters for the Applications.Update method.
-type ApplicationsUpdateOptions struct {
+// ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
+type ApplicationsClientUpdateOptions struct {
 	// Parameters supplied to update an existing managed application.
 	Parameters *ApplicationPatchable
 }
 
-// ErrorResponse - Error response indicates managed application is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates managed application is not able to process the incoming request. The reason is
+// provided in the error message.
 type ErrorResponse struct {
-	raw string
 	// Error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
 
@@ -321,37 +422,45 @@ type ErrorResponse struct {
 	HTTPStatus *string `json:"httpStatus,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
 // GenericResource - Resource information.
 type GenericResource struct {
-	Resource
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
 
 	// ID of the resource that manages this resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 
 	// The SKU of the resource.
 	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type GenericResource.
 func (g GenericResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	g.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (g GenericResource) marshalInternal(objectMap map[string]interface{}) {
-	g.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", g.ID)
 	populate(objectMap, "identity", g.Identity)
+	populate(objectMap, "location", g.Location)
 	populate(objectMap, "managedBy", g.ManagedBy)
+	populate(objectMap, "name", g.Name)
 	populate(objectMap, "sku", g.SKU)
+	populate(objectMap, "tags", g.Tags)
+	populate(objectMap, "type", g.Type)
+	return json.Marshal(objectMap)
 }
 
 // Identity for the resource.
@@ -387,8 +496,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Microsoft.Solutions operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list Microsoft.Solutions operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -462,16 +571,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // SKU for the resource.

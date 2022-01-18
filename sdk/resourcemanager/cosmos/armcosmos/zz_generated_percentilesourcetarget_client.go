@@ -24,43 +24,60 @@ import (
 // PercentileSourceTargetClient contains the methods for the PercentileSourceTarget group.
 // Don't use this type directly, use NewPercentileSourceTargetClient() instead.
 type PercentileSourceTargetClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPercentileSourceTargetClient creates a new instance of PercentileSourceTargetClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPercentileSourceTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PercentileSourceTargetClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PercentileSourceTargetClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PercentileSourceTargetClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// ListMetrics - Retrieves the metrics determined by the given filter for the given account, source and target region. This url is only for PBS and Replication
-// Latency data
-// If the operation fails it returns a generic error.
-func (client *PercentileSourceTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string, options *PercentileSourceTargetListMetricsOptions) (PercentileSourceTargetListMetricsResponse, error) {
+// ListMetrics - Retrieves the metrics determined by the given filter for the given account, source and target region. This
+// url is only for PBS and Replication Latency data
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// sourceRegion - Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
+// targetRegion - Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
+// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+// and timeGrain. The supported operator is eq.
+// options - PercentileSourceTargetClientListMetricsOptions contains the optional parameters for the PercentileSourceTargetClient.ListMetrics
+// method.
+func (client *PercentileSourceTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string, options *PercentileSourceTargetClientListMetricsOptions) (PercentileSourceTargetClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, sourceRegion, targetRegion, filter, options)
 	if err != nil {
-		return PercentileSourceTargetListMetricsResponse{}, err
+		return PercentileSourceTargetClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PercentileSourceTargetListMetricsResponse{}, err
+		return PercentileSourceTargetClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PercentileSourceTargetListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return PercentileSourceTargetClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string, options *PercentileSourceTargetListMetricsOptions) (*policy.Request, error) {
+func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string, options *PercentileSourceTargetClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sourceRegion/{sourceRegion}/targetRegion/{targetRegion}/percentile/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +99,7 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 		return nil, errors.New("parameter targetRegion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{targetRegion}", url.PathEscape(targetRegion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,22 +112,10 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *PercentileSourceTargetClient) listMetricsHandleResponse(resp *http.Response) (PercentileSourceTargetListMetricsResponse, error) {
-	result := PercentileSourceTargetListMetricsResponse{RawResponse: resp}
+func (client *PercentileSourceTargetClient) listMetricsHandleResponse(resp *http.Response) (PercentileSourceTargetClientListMetricsResponse, error) {
+	result := PercentileSourceTargetClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PercentileMetricListResult); err != nil {
-		return PercentileSourceTargetListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return PercentileSourceTargetClientListMetricsResponse{}, err
 	}
 	return result, nil
-}
-
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *PercentileSourceTargetClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

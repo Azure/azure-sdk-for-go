@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// AssociationsCreateOrUpdatePollerResponse contains the response from method Associations.CreateOrUpdate.
-type AssociationsCreateOrUpdatePollerResponse struct {
+// AssociationsClientCreateOrUpdatePollerResponse contains the response from method AssociationsClient.CreateOrUpdate.
+type AssociationsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AssociationsCreateOrUpdatePoller
+	Poller *AssociationsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type AssociationsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AssociationsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AssociationsCreateOrUpdateResponse, error) {
-	respType := AssociationsCreateOrUpdateResponse{}
+func (l AssociationsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AssociationsClientCreateOrUpdateResponse, error) {
+	respType := AssociationsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Association)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l AssociationsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a AssociationsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *AssociationsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AssociationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AssociationsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a AssociationsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *AssociationsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AssociationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AssociationsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AssociationsCreateOrUpdatePoller{
+	poller := &AssociationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *AssociationsCreateOrUpdatePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// AssociationsCreateOrUpdateResponse contains the response from method Associations.CreateOrUpdate.
-type AssociationsCreateOrUpdateResponse struct {
-	AssociationsCreateOrUpdateResult
+// AssociationsClientCreateOrUpdateResponse contains the response from method AssociationsClient.CreateOrUpdate.
+type AssociationsClientCreateOrUpdateResponse struct {
+	AssociationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssociationsCreateOrUpdateResult contains the result from method Associations.CreateOrUpdate.
-type AssociationsCreateOrUpdateResult struct {
+// AssociationsClientCreateOrUpdateResult contains the result from method AssociationsClient.CreateOrUpdate.
+type AssociationsClientCreateOrUpdateResult struct {
 	Association
 }
 
-// AssociationsDeletePollerResponse contains the response from method Associations.Delete.
-type AssociationsDeletePollerResponse struct {
+// AssociationsClientDeletePollerResponse contains the response from method AssociationsClient.Delete.
+type AssociationsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *AssociationsDeletePoller
+	Poller *AssociationsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type AssociationsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AssociationsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AssociationsDeleteResponse, error) {
-	respType := AssociationsDeleteResponse{}
+func (l AssociationsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AssociationsClientDeleteResponse, error) {
+	respType := AssociationsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l AssociationsDeletePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a AssociationsDeletePollerResponse from the provided client and resume token.
-func (l *AssociationsDeletePollerResponse) Resume(ctx context.Context, client *AssociationsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AssociationsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a AssociationsClientDeletePollerResponse from the provided client and resume token.
+func (l *AssociationsClientDeletePollerResponse) Resume(ctx context.Context, client *AssociationsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AssociationsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &AssociationsDeletePoller{
+	poller := &AssociationsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,40 +107,40 @@ func (l *AssociationsDeletePollerResponse) Resume(ctx context.Context, client *A
 	return nil
 }
 
-// AssociationsDeleteResponse contains the response from method Associations.Delete.
-type AssociationsDeleteResponse struct {
+// AssociationsClientDeleteResponse contains the response from method AssociationsClient.Delete.
+type AssociationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssociationsGetResponse contains the response from method Associations.Get.
-type AssociationsGetResponse struct {
-	AssociationsGetResult
+// AssociationsClientGetResponse contains the response from method AssociationsClient.Get.
+type AssociationsClientGetResponse struct {
+	AssociationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssociationsGetResult contains the result from method Associations.Get.
-type AssociationsGetResult struct {
+// AssociationsClientGetResult contains the result from method AssociationsClient.Get.
+type AssociationsClientGetResult struct {
 	Association
 }
 
-// AssociationsListAllResponse contains the response from method Associations.ListAll.
-type AssociationsListAllResponse struct {
-	AssociationsListAllResult
+// AssociationsClientListAllResponse contains the response from method AssociationsClient.ListAll.
+type AssociationsClientListAllResponse struct {
+	AssociationsClientListAllResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AssociationsListAllResult contains the result from method Associations.ListAll.
-type AssociationsListAllResult struct {
+// AssociationsClientListAllResult contains the result from method AssociationsClient.ListAll.
+type AssociationsClientListAllResult struct {
 	AssociationsList
 }
 
-// CustomResourceProviderCreateOrUpdatePollerResponse contains the response from method CustomResourceProvider.CreateOrUpdate.
-type CustomResourceProviderCreateOrUpdatePollerResponse struct {
+// CustomResourceProviderClientCreateOrUpdatePollerResponse contains the response from method CustomResourceProviderClient.CreateOrUpdate.
+type CustomResourceProviderClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CustomResourceProviderCreateOrUpdatePoller
+	Poller *CustomResourceProviderClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -149,8 +149,8 @@ type CustomResourceProviderCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CustomResourceProviderCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomResourceProviderCreateOrUpdateResponse, error) {
-	respType := CustomResourceProviderCreateOrUpdateResponse{}
+func (l CustomResourceProviderClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomResourceProviderClientCreateOrUpdateResponse, error) {
+	respType := CustomResourceProviderClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomRPManifest)
 	if err != nil {
 		return respType, err
@@ -159,13 +159,13 @@ func (l CustomResourceProviderCreateOrUpdatePollerResponse) PollUntilDone(ctx co
 	return respType, nil
 }
 
-// Resume rehydrates a CustomResourceProviderCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *CustomResourceProviderCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *CustomResourceProviderClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CustomResourceProviderClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a CustomResourceProviderClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *CustomResourceProviderClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *CustomResourceProviderClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomResourceProviderClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CustomResourceProviderCreateOrUpdatePoller{
+	poller := &CustomResourceProviderClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -177,22 +177,22 @@ func (l *CustomResourceProviderCreateOrUpdatePollerResponse) Resume(ctx context.
 	return nil
 }
 
-// CustomResourceProviderCreateOrUpdateResponse contains the response from method CustomResourceProvider.CreateOrUpdate.
-type CustomResourceProviderCreateOrUpdateResponse struct {
-	CustomResourceProviderCreateOrUpdateResult
+// CustomResourceProviderClientCreateOrUpdateResponse contains the response from method CustomResourceProviderClient.CreateOrUpdate.
+type CustomResourceProviderClientCreateOrUpdateResponse struct {
+	CustomResourceProviderClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomResourceProviderCreateOrUpdateResult contains the result from method CustomResourceProvider.CreateOrUpdate.
-type CustomResourceProviderCreateOrUpdateResult struct {
+// CustomResourceProviderClientCreateOrUpdateResult contains the result from method CustomResourceProviderClient.CreateOrUpdate.
+type CustomResourceProviderClientCreateOrUpdateResult struct {
 	CustomRPManifest
 }
 
-// CustomResourceProviderDeletePollerResponse contains the response from method CustomResourceProvider.Delete.
-type CustomResourceProviderDeletePollerResponse struct {
+// CustomResourceProviderClientDeletePollerResponse contains the response from method CustomResourceProviderClient.Delete.
+type CustomResourceProviderClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *CustomResourceProviderDeletePoller
+	Poller *CustomResourceProviderClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -201,8 +201,8 @@ type CustomResourceProviderDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CustomResourceProviderDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomResourceProviderDeleteResponse, error) {
-	respType := CustomResourceProviderDeleteResponse{}
+func (l CustomResourceProviderClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomResourceProviderClientDeleteResponse, error) {
+	respType := CustomResourceProviderClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -211,13 +211,13 @@ func (l CustomResourceProviderDeletePollerResponse) PollUntilDone(ctx context.Co
 	return respType, nil
 }
 
-// Resume rehydrates a CustomResourceProviderDeletePollerResponse from the provided client and resume token.
-func (l *CustomResourceProviderDeletePollerResponse) Resume(ctx context.Context, client *CustomResourceProviderClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CustomResourceProviderClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a CustomResourceProviderClientDeletePollerResponse from the provided client and resume token.
+func (l *CustomResourceProviderClientDeletePollerResponse) Resume(ctx context.Context, client *CustomResourceProviderClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomResourceProviderClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &CustomResourceProviderDeletePoller{
+	poller := &CustomResourceProviderClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -229,68 +229,68 @@ func (l *CustomResourceProviderDeletePollerResponse) Resume(ctx context.Context,
 	return nil
 }
 
-// CustomResourceProviderDeleteResponse contains the response from method CustomResourceProvider.Delete.
-type CustomResourceProviderDeleteResponse struct {
+// CustomResourceProviderClientDeleteResponse contains the response from method CustomResourceProviderClient.Delete.
+type CustomResourceProviderClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomResourceProviderGetResponse contains the response from method CustomResourceProvider.Get.
-type CustomResourceProviderGetResponse struct {
-	CustomResourceProviderGetResult
+// CustomResourceProviderClientGetResponse contains the response from method CustomResourceProviderClient.Get.
+type CustomResourceProviderClientGetResponse struct {
+	CustomResourceProviderClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomResourceProviderGetResult contains the result from method CustomResourceProvider.Get.
-type CustomResourceProviderGetResult struct {
+// CustomResourceProviderClientGetResult contains the result from method CustomResourceProviderClient.Get.
+type CustomResourceProviderClientGetResult struct {
 	CustomRPManifest
 }
 
-// CustomResourceProviderListByResourceGroupResponse contains the response from method CustomResourceProvider.ListByResourceGroup.
-type CustomResourceProviderListByResourceGroupResponse struct {
-	CustomResourceProviderListByResourceGroupResult
+// CustomResourceProviderClientListByResourceGroupResponse contains the response from method CustomResourceProviderClient.ListByResourceGroup.
+type CustomResourceProviderClientListByResourceGroupResponse struct {
+	CustomResourceProviderClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomResourceProviderListByResourceGroupResult contains the result from method CustomResourceProvider.ListByResourceGroup.
-type CustomResourceProviderListByResourceGroupResult struct {
+// CustomResourceProviderClientListByResourceGroupResult contains the result from method CustomResourceProviderClient.ListByResourceGroup.
+type CustomResourceProviderClientListByResourceGroupResult struct {
 	ListByCustomRPManifest
 }
 
-// CustomResourceProviderListBySubscriptionResponse contains the response from method CustomResourceProvider.ListBySubscription.
-type CustomResourceProviderListBySubscriptionResponse struct {
-	CustomResourceProviderListBySubscriptionResult
+// CustomResourceProviderClientListBySubscriptionResponse contains the response from method CustomResourceProviderClient.ListBySubscription.
+type CustomResourceProviderClientListBySubscriptionResponse struct {
+	CustomResourceProviderClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomResourceProviderListBySubscriptionResult contains the result from method CustomResourceProvider.ListBySubscription.
-type CustomResourceProviderListBySubscriptionResult struct {
+// CustomResourceProviderClientListBySubscriptionResult contains the result from method CustomResourceProviderClient.ListBySubscription.
+type CustomResourceProviderClientListBySubscriptionResult struct {
 	ListByCustomRPManifest
 }
 
-// CustomResourceProviderUpdateResponse contains the response from method CustomResourceProvider.Update.
-type CustomResourceProviderUpdateResponse struct {
-	CustomResourceProviderUpdateResult
+// CustomResourceProviderClientUpdateResponse contains the response from method CustomResourceProviderClient.Update.
+type CustomResourceProviderClientUpdateResponse struct {
+	CustomResourceProviderClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CustomResourceProviderUpdateResult contains the result from method CustomResourceProvider.Update.
-type CustomResourceProviderUpdateResult struct {
+// CustomResourceProviderClientUpdateResult contains the result from method CustomResourceProviderClient.Update.
+type CustomResourceProviderClientUpdateResult struct {
 	CustomRPManifest
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	ResourceProviderOperationList
 }

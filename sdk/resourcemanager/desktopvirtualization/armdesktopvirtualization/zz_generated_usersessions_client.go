@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // UserSessionsClient contains the methods for the UserSessions group.
 // Don't use this type directly, use NewUserSessionsClient() instead.
 type UserSessionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUserSessionsClient creates a new instance of UserSessionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewUserSessionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UserSessionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &UserSessionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &UserSessionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Remove a userSession.
-// If the operation fails it returns the *CloudError error type.
-func (client *UserSessionsClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsDeleteOptions) (UserSessionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// sessionHostName - The name of the session host within the specified host pool
+// userSessionID - The name of the user session within the specified session host
+// options - UserSessionsClientDeleteOptions contains the optional parameters for the UserSessionsClient.Delete method.
+func (client *UserSessionsClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientDeleteOptions) (UserSessionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
-		return UserSessionsDeleteResponse{}, err
+		return UserSessionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserSessionsDeleteResponse{}, err
+		return UserSessionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return UserSessionsDeleteResponse{}, client.deleteHandleError(resp)
+		return UserSessionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return UserSessionsDeleteResponse{RawResponse: resp}, nil
+	return UserSessionsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UserSessionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsDeleteOptions) (*policy.Request, error) {
+func (client *UserSessionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,7 +95,7 @@ func (client *UserSessionsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,38 +109,30 @@ func (client *UserSessionsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *UserSessionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Disconnect - Disconnect a userSession.
-// If the operation fails it returns the *CloudError error type.
-func (client *UserSessionsClient) Disconnect(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsDisconnectOptions) (UserSessionsDisconnectResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// sessionHostName - The name of the session host within the specified host pool
+// userSessionID - The name of the user session within the specified session host
+// options - UserSessionsClientDisconnectOptions contains the optional parameters for the UserSessionsClient.Disconnect method.
+func (client *UserSessionsClient) Disconnect(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientDisconnectOptions) (UserSessionsClientDisconnectResponse, error) {
 	req, err := client.disconnectCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
-		return UserSessionsDisconnectResponse{}, err
+		return UserSessionsClientDisconnectResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserSessionsDisconnectResponse{}, err
+		return UserSessionsClientDisconnectResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserSessionsDisconnectResponse{}, client.disconnectHandleError(resp)
+		return UserSessionsClientDisconnectResponse{}, runtime.NewResponseError(resp)
 	}
-	return UserSessionsDisconnectResponse{RawResponse: resp}, nil
+	return UserSessionsClientDisconnectResponse{RawResponse: resp}, nil
 }
 
 // disconnectCreateRequest creates the Disconnect request.
-func (client *UserSessionsClient) disconnectCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsDisconnectOptions) (*policy.Request, error) {
+func (client *UserSessionsClient) disconnectCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientDisconnectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}/disconnect"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +154,7 @@ func (client *UserSessionsClient) disconnectCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +165,30 @@ func (client *UserSessionsClient) disconnectCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// disconnectHandleError handles the Disconnect error response.
-func (client *UserSessionsClient) disconnectHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a userSession.
-// If the operation fails it returns the *CloudError error type.
-func (client *UserSessionsClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsGetOptions) (UserSessionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// sessionHostName - The name of the session host within the specified host pool
+// userSessionID - The name of the user session within the specified session host
+// options - UserSessionsClientGetOptions contains the optional parameters for the UserSessionsClient.Get method.
+func (client *UserSessionsClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientGetOptions) (UserSessionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
-		return UserSessionsGetResponse{}, err
+		return UserSessionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserSessionsGetResponse{}, err
+		return UserSessionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserSessionsGetResponse{}, client.getHandleError(resp)
+		return UserSessionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UserSessionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsGetOptions) (*policy.Request, error) {
+func (client *UserSessionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -214,7 +210,7 @@ func (client *UserSessionsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -226,43 +222,34 @@ func (client *UserSessionsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *UserSessionsClient) getHandleResponse(resp *http.Response) (UserSessionsGetResponse, error) {
-	result := UserSessionsGetResponse{RawResponse: resp}
+func (client *UserSessionsClient) getHandleResponse(resp *http.Response) (UserSessionsClientGetResponse, error) {
+	result := UserSessionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserSession); err != nil {
-		return UserSessionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return UserSessionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *UserSessionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List userSessions.
-// If the operation fails it returns the *CloudError error type.
-func (client *UserSessionsClient) List(resourceGroupName string, hostPoolName string, sessionHostName string, options *UserSessionsListOptions) *UserSessionsListPager {
-	return &UserSessionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// sessionHostName - The name of the session host within the specified host pool
+// options - UserSessionsClientListOptions contains the optional parameters for the UserSessionsClient.List method.
+func (client *UserSessionsClient) List(resourceGroupName string, hostPoolName string, sessionHostName string, options *UserSessionsClientListOptions) *UserSessionsClientListPager {
+	return &UserSessionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, options)
 		},
-		advancer: func(ctx context.Context, resp UserSessionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UserSessionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserSessionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UserSessionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, options *UserSessionsListOptions) (*policy.Request, error) {
+func (client *UserSessionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, options *UserSessionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -280,7 +267,7 @@ func (client *UserSessionsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter sessionHostName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sessionHostName}", url.PathEscape(sessionHostName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -292,43 +279,34 @@ func (client *UserSessionsClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *UserSessionsClient) listHandleResponse(resp *http.Response) (UserSessionsListResponse, error) {
-	result := UserSessionsListResponse{RawResponse: resp}
+func (client *UserSessionsClient) listHandleResponse(resp *http.Response) (UserSessionsClientListResponse, error) {
+	result := UserSessionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserSessionList); err != nil {
-		return UserSessionsListResponse{}, runtime.NewResponseError(err, resp)
+		return UserSessionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *UserSessionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByHostPool - List userSessions.
-// If the operation fails it returns the *CloudError error type.
-func (client *UserSessionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *UserSessionsListByHostPoolOptions) *UserSessionsListByHostPoolPager {
-	return &UserSessionsListByHostPoolPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// options - UserSessionsClientListByHostPoolOptions contains the optional parameters for the UserSessionsClient.ListByHostPool
+// method.
+func (client *UserSessionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *UserSessionsClientListByHostPoolOptions) *UserSessionsClientListByHostPoolPager {
+	return &UserSessionsClientListByHostPoolPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp UserSessionsListByHostPoolResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp UserSessionsClientListByHostPoolResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserSessionList.NextLink)
 		},
 	}
 }
 
 // listByHostPoolCreateRequest creates the ListByHostPool request.
-func (client *UserSessionsClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *UserSessionsListByHostPoolOptions) (*policy.Request, error) {
+func (client *UserSessionsClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *UserSessionsClientListByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/userSessions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -342,7 +320,7 @@ func (client *UserSessionsClient) listByHostPoolCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,46 +335,39 @@ func (client *UserSessionsClient) listByHostPoolCreateRequest(ctx context.Contex
 }
 
 // listByHostPoolHandleResponse handles the ListByHostPool response.
-func (client *UserSessionsClient) listByHostPoolHandleResponse(resp *http.Response) (UserSessionsListByHostPoolResponse, error) {
-	result := UserSessionsListByHostPoolResponse{RawResponse: resp}
+func (client *UserSessionsClient) listByHostPoolHandleResponse(resp *http.Response) (UserSessionsClientListByHostPoolResponse, error) {
+	result := UserSessionsClientListByHostPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserSessionList); err != nil {
-		return UserSessionsListByHostPoolResponse{}, runtime.NewResponseError(err, resp)
+		return UserSessionsClientListByHostPoolResponse{}, err
 	}
 	return result, nil
 }
 
-// listByHostPoolHandleError handles the ListByHostPool error response.
-func (client *UserSessionsClient) listByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // SendMessage - Send a message to a user.
-// If the operation fails it returns the *CloudError error type.
-func (client *UserSessionsClient) SendMessage(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsSendMessageOptions) (UserSessionsSendMessageResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// sessionHostName - The name of the session host within the specified host pool
+// userSessionID - The name of the user session within the specified session host
+// options - UserSessionsClientSendMessageOptions contains the optional parameters for the UserSessionsClient.SendMessage
+// method.
+func (client *UserSessionsClient) SendMessage(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientSendMessageOptions) (UserSessionsClientSendMessageResponse, error) {
 	req, err := client.sendMessageCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
-		return UserSessionsSendMessageResponse{}, err
+		return UserSessionsClientSendMessageResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UserSessionsSendMessageResponse{}, err
+		return UserSessionsClientSendMessageResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UserSessionsSendMessageResponse{}, client.sendMessageHandleError(resp)
+		return UserSessionsClientSendMessageResponse{}, runtime.NewResponseError(resp)
 	}
-	return UserSessionsSendMessageResponse{RawResponse: resp}, nil
+	return UserSessionsClientSendMessageResponse{RawResponse: resp}, nil
 }
 
 // sendMessageCreateRequest creates the SendMessage request.
-func (client *UserSessionsClient) sendMessageCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsSendMessageOptions) (*policy.Request, error) {
+func (client *UserSessionsClient) sendMessageCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientSendMessageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/sessionHosts/{sessionHostName}/userSessions/{userSessionId}/sendMessage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -418,7 +389,7 @@ func (client *UserSessionsClient) sendMessageCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter userSessionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userSessionId}", url.PathEscape(userSessionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -430,17 +401,4 @@ func (client *UserSessionsClient) sendMessageCreateRequest(ctx context.Context, 
 		return req, runtime.MarshalAsJSON(req, *options.SendMessage)
 	}
 	return req, nil
-}
-
-// sendMessageHandleError handles the SendMessage error response.
-func (client *UserSessionsClient) sendMessageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

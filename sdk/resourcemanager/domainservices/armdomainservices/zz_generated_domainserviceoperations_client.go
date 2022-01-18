@@ -10,7 +10,6 @@ package armdomainservices
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,48 @@ import (
 // DomainServiceOperationsClient contains the methods for the DomainServiceOperations group.
 // Don't use this type directly, use NewDomainServiceOperationsClient() instead.
 type DomainServiceOperationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewDomainServiceOperationsClient creates a new instance of DomainServiceOperationsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDomainServiceOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DomainServiceOperationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DomainServiceOperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DomainServiceOperationsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all the available Domain Services operations.
-// If the operation fails it returns the *CloudError error type.
-func (client *DomainServiceOperationsClient) List(options *DomainServiceOperationsListOptions) *DomainServiceOperationsListPager {
-	return &DomainServiceOperationsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DomainServiceOperationsClientListOptions contains the optional parameters for the DomainServiceOperationsClient.List
+// method.
+func (client *DomainServiceOperationsClient) List(options *DomainServiceOperationsClientListOptions) *DomainServiceOperationsClientListPager {
+	return &DomainServiceOperationsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DomainServiceOperationsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DomainServiceOperationsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationEntityListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DomainServiceOperationsClient) listCreateRequest(ctx context.Context, options *DomainServiceOperationsListOptions) (*policy.Request, error) {
+func (client *DomainServiceOperationsClient) listCreateRequest(ctx context.Context, options *DomainServiceOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.AAD/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +74,10 @@ func (client *DomainServiceOperationsClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *DomainServiceOperationsClient) listHandleResponse(resp *http.Response) (DomainServiceOperationsListResponse, error) {
-	result := DomainServiceOperationsListResponse{RawResponse: resp}
+func (client *DomainServiceOperationsClient) listHandleResponse(resp *http.Response) (DomainServiceOperationsClientListResponse, error) {
+	result := DomainServiceOperationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationEntityListResult); err != nil {
-		return DomainServiceOperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return DomainServiceOperationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DomainServiceOperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

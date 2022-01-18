@@ -15,166 +15,166 @@ import (
 	"time"
 )
 
-// AlertsDismissResponse contains the response from method Alerts.Dismiss.
-type AlertsDismissResponse struct {
-	AlertsDismissResult
+// AlertsClientDismissResponse contains the response from method AlertsClient.Dismiss.
+type AlertsClientDismissResponse struct {
+	AlertsClientDismissResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AlertsDismissResult contains the result from method Alerts.Dismiss.
-type AlertsDismissResult struct {
+// AlertsClientDismissResult contains the result from method AlertsClient.Dismiss.
+type AlertsClientDismissResult struct {
 	Alert
 }
 
-// AlertsGetResponse contains the response from method Alerts.Get.
-type AlertsGetResponse struct {
-	AlertsGetResult
+// AlertsClientGetResponse contains the response from method AlertsClient.Get.
+type AlertsClientGetResponse struct {
+	AlertsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AlertsGetResult contains the result from method Alerts.Get.
-type AlertsGetResult struct {
+// AlertsClientGetResult contains the result from method AlertsClient.Get.
+type AlertsClientGetResult struct {
 	Alert
 }
 
-// AlertsListExternalResponse contains the response from method Alerts.ListExternal.
-type AlertsListExternalResponse struct {
-	AlertsListExternalResult
+// AlertsClientListExternalResponse contains the response from method AlertsClient.ListExternal.
+type AlertsClientListExternalResponse struct {
+	AlertsClientListExternalResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AlertsListExternalResult contains the result from method Alerts.ListExternal.
-type AlertsListExternalResult struct {
+// AlertsClientListExternalResult contains the result from method AlertsClient.ListExternal.
+type AlertsClientListExternalResult struct {
 	AlertsResult
 }
 
-// AlertsListResponse contains the response from method Alerts.List.
-type AlertsListResponse struct {
-	AlertsListResult
+// AlertsClientListResponse contains the response from method AlertsClient.List.
+type AlertsClientListResponse struct {
+	AlertsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AlertsListResult contains the result from method Alerts.List.
-type AlertsListResult struct {
+// AlertsClientListResult contains the result from method AlertsClient.List.
+type AlertsClientListResult struct {
 	AlertsResult
 }
 
-// DimensionsByExternalCloudProviderTypeResponse contains the response from method Dimensions.ByExternalCloudProviderType.
-type DimensionsByExternalCloudProviderTypeResponse struct {
-	DimensionsByExternalCloudProviderTypeResult
+// DimensionsClientByExternalCloudProviderTypeResponse contains the response from method DimensionsClient.ByExternalCloudProviderType.
+type DimensionsClientByExternalCloudProviderTypeResponse struct {
+	DimensionsClientByExternalCloudProviderTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DimensionsByExternalCloudProviderTypeResult contains the result from method Dimensions.ByExternalCloudProviderType.
-type DimensionsByExternalCloudProviderTypeResult struct {
+// DimensionsClientByExternalCloudProviderTypeResult contains the result from method DimensionsClient.ByExternalCloudProviderType.
+type DimensionsClientByExternalCloudProviderTypeResult struct {
 	DimensionsListResult
 }
 
-// DimensionsListResponse contains the response from method Dimensions.List.
-type DimensionsListResponse struct {
-	DimensionsListResultEnvelope
+// DimensionsClientListResponse contains the response from method DimensionsClient.List.
+type DimensionsClientListResponse struct {
+	DimensionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DimensionsListResultEnvelope contains the result from method Dimensions.List.
-type DimensionsListResultEnvelope struct {
+// DimensionsClientListResult contains the result from method DimensionsClient.List.
+type DimensionsClientListResult struct {
 	DimensionsListResult
 }
 
-// ExportsCreateOrUpdateResponse contains the response from method Exports.CreateOrUpdate.
-type ExportsCreateOrUpdateResponse struct {
-	ExportsCreateOrUpdateResult
+// ExportsClientCreateOrUpdateResponse contains the response from method ExportsClient.CreateOrUpdate.
+type ExportsClientCreateOrUpdateResponse struct {
+	ExportsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportsCreateOrUpdateResult contains the result from method Exports.CreateOrUpdate.
-type ExportsCreateOrUpdateResult struct {
+// ExportsClientCreateOrUpdateResult contains the result from method ExportsClient.CreateOrUpdate.
+type ExportsClientCreateOrUpdateResult struct {
 	Export
 }
 
-// ExportsDeleteResponse contains the response from method Exports.Delete.
-type ExportsDeleteResponse struct {
+// ExportsClientDeleteResponse contains the response from method ExportsClient.Delete.
+type ExportsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportsExecuteResponse contains the response from method Exports.Execute.
-type ExportsExecuteResponse struct {
+// ExportsClientExecuteResponse contains the response from method ExportsClient.Execute.
+type ExportsClientExecuteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportsGetExecutionHistoryResponse contains the response from method Exports.GetExecutionHistory.
-type ExportsGetExecutionHistoryResponse struct {
-	ExportsGetExecutionHistoryResult
+// ExportsClientGetExecutionHistoryResponse contains the response from method ExportsClient.GetExecutionHistory.
+type ExportsClientGetExecutionHistoryResponse struct {
+	ExportsClientGetExecutionHistoryResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportsGetExecutionHistoryResult contains the result from method Exports.GetExecutionHistory.
-type ExportsGetExecutionHistoryResult struct {
+// ExportsClientGetExecutionHistoryResult contains the result from method ExportsClient.GetExecutionHistory.
+type ExportsClientGetExecutionHistoryResult struct {
 	ExportExecutionListResult
 }
 
-// ExportsGetResponse contains the response from method Exports.Get.
-type ExportsGetResponse struct {
-	ExportsGetResult
+// ExportsClientGetResponse contains the response from method ExportsClient.Get.
+type ExportsClientGetResponse struct {
+	ExportsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportsGetResult contains the result from method Exports.Get.
-type ExportsGetResult struct {
+// ExportsClientGetResult contains the result from method ExportsClient.Get.
+type ExportsClientGetResult struct {
 	Export
 }
 
-// ExportsListResponse contains the response from method Exports.List.
-type ExportsListResponse struct {
-	ExportsListResult
+// ExportsClientListResponse contains the response from method ExportsClient.List.
+type ExportsClientListResponse struct {
+	ExportsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExportsListResult contains the result from method Exports.List.
-type ExportsListResult struct {
+// ExportsClientListResult contains the result from method ExportsClient.List.
+type ExportsClientListResult struct {
 	ExportListResult
 }
 
-// ForecastExternalCloudProviderUsageResponse contains the response from method Forecast.ExternalCloudProviderUsage.
-type ForecastExternalCloudProviderUsageResponse struct {
-	ForecastExternalCloudProviderUsageResult
+// ForecastClientExternalCloudProviderUsageResponse contains the response from method ForecastClient.ExternalCloudProviderUsage.
+type ForecastClientExternalCloudProviderUsageResponse struct {
+	ForecastClientExternalCloudProviderUsageResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ForecastExternalCloudProviderUsageResult contains the result from method Forecast.ExternalCloudProviderUsage.
-type ForecastExternalCloudProviderUsageResult struct {
+// ForecastClientExternalCloudProviderUsageResult contains the result from method ForecastClient.ExternalCloudProviderUsage.
+type ForecastClientExternalCloudProviderUsageResult struct {
 	QueryResult
 }
 
-// ForecastUsageResponse contains the response from method Forecast.Usage.
-type ForecastUsageResponse struct {
-	ForecastUsageResult
+// ForecastClientUsageResponse contains the response from method ForecastClient.Usage.
+type ForecastClientUsageResponse struct {
+	ForecastClientUsageResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ForecastUsageResult contains the result from method Forecast.Usage.
-type ForecastUsageResult struct {
+// ForecastClientUsageResult contains the result from method ForecastClient.Usage.
+type ForecastClientUsageResult struct {
 	QueryResult
 }
 
-// GenerateDetailedCostReportCreateOperationPollerResponse contains the response from method GenerateDetailedCostReport.CreateOperation.
-type GenerateDetailedCostReportCreateOperationPollerResponse struct {
+// GenerateDetailedCostReportClientCreateOperationPollerResponse contains the response from method GenerateDetailedCostReportClient.CreateOperation.
+type GenerateDetailedCostReportClientCreateOperationPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *GenerateDetailedCostReportCreateOperationPoller
+	Poller *GenerateDetailedCostReportClientCreateOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -183,8 +183,8 @@ type GenerateDetailedCostReportCreateOperationPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l GenerateDetailedCostReportCreateOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GenerateDetailedCostReportCreateOperationResponse, error) {
-	respType := GenerateDetailedCostReportCreateOperationResponse{}
+func (l GenerateDetailedCostReportClientCreateOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (GenerateDetailedCostReportClientCreateOperationResponse, error) {
+	respType := GenerateDetailedCostReportClientCreateOperationResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.GenerateDetailedCostReportOperationResult)
 	if err != nil {
 		return respType, err
@@ -193,13 +193,13 @@ func (l GenerateDetailedCostReportCreateOperationPollerResponse) PollUntilDone(c
 	return respType, nil
 }
 
-// Resume rehydrates a GenerateDetailedCostReportCreateOperationPollerResponse from the provided client and resume token.
-func (l *GenerateDetailedCostReportCreateOperationPollerResponse) Resume(ctx context.Context, client *GenerateDetailedCostReportClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("GenerateDetailedCostReportClient.CreateOperation", token, client.pl, client.createOperationHandleError)
+// Resume rehydrates a GenerateDetailedCostReportClientCreateOperationPollerResponse from the provided client and resume token.
+func (l *GenerateDetailedCostReportClientCreateOperationPollerResponse) Resume(ctx context.Context, client *GenerateDetailedCostReportClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("GenerateDetailedCostReportClient.CreateOperation", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &GenerateDetailedCostReportCreateOperationPoller{
+	poller := &GenerateDetailedCostReportClientCreateOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -211,158 +211,158 @@ func (l *GenerateDetailedCostReportCreateOperationPollerResponse) Resume(ctx con
 	return nil
 }
 
-// GenerateDetailedCostReportCreateOperationResponse contains the response from method GenerateDetailedCostReport.CreateOperation.
-type GenerateDetailedCostReportCreateOperationResponse struct {
-	GenerateDetailedCostReportCreateOperationResult
+// GenerateDetailedCostReportClientCreateOperationResponse contains the response from method GenerateDetailedCostReportClient.CreateOperation.
+type GenerateDetailedCostReportClientCreateOperationResponse struct {
+	GenerateDetailedCostReportClientCreateOperationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GenerateDetailedCostReportCreateOperationResult contains the result from method GenerateDetailedCostReport.CreateOperation.
-type GenerateDetailedCostReportCreateOperationResult struct {
+// GenerateDetailedCostReportClientCreateOperationResult contains the result from method GenerateDetailedCostReportClient.CreateOperation.
+type GenerateDetailedCostReportClientCreateOperationResult struct {
 	GenerateDetailedCostReportOperationResult
 }
 
-// GenerateDetailedCostReportOperationResultsGetResponse contains the response from method GenerateDetailedCostReportOperationResults.Get.
-type GenerateDetailedCostReportOperationResultsGetResponse struct {
-	GenerateDetailedCostReportOperationResultsGetResult
+// GenerateDetailedCostReportOperationResultsClientGetResponse contains the response from method GenerateDetailedCostReportOperationResultsClient.Get.
+type GenerateDetailedCostReportOperationResultsClientGetResponse struct {
+	GenerateDetailedCostReportOperationResultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GenerateDetailedCostReportOperationResultsGetResult contains the result from method GenerateDetailedCostReportOperationResults.Get.
-type GenerateDetailedCostReportOperationResultsGetResult struct {
+// GenerateDetailedCostReportOperationResultsClientGetResult contains the result from method GenerateDetailedCostReportOperationResultsClient.Get.
+type GenerateDetailedCostReportOperationResultsClientGetResult struct {
 	GenerateDetailedCostReportOperationResult
 }
 
-// GenerateDetailedCostReportOperationStatusGetResponse contains the response from method GenerateDetailedCostReportOperationStatus.Get.
-type GenerateDetailedCostReportOperationStatusGetResponse struct {
-	GenerateDetailedCostReportOperationStatusGetResult
+// GenerateDetailedCostReportOperationStatusClientGetResponse contains the response from method GenerateDetailedCostReportOperationStatusClient.Get.
+type GenerateDetailedCostReportOperationStatusClientGetResponse struct {
+	GenerateDetailedCostReportOperationStatusClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GenerateDetailedCostReportOperationStatusGetResult contains the result from method GenerateDetailedCostReportOperationStatus.Get.
-type GenerateDetailedCostReportOperationStatusGetResult struct {
+// GenerateDetailedCostReportOperationStatusClientGetResult contains the result from method GenerateDetailedCostReportOperationStatusClient.Get.
+type GenerateDetailedCostReportOperationStatusClientGetResult struct {
 	GenerateDetailedCostReportOperationStatuses
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// QueryUsageByExternalCloudProviderTypeResponse contains the response from method Query.UsageByExternalCloudProviderType.
-type QueryUsageByExternalCloudProviderTypeResponse struct {
-	QueryUsageByExternalCloudProviderTypeResult
+// QueryClientUsageByExternalCloudProviderTypeResponse contains the response from method QueryClient.UsageByExternalCloudProviderType.
+type QueryClientUsageByExternalCloudProviderTypeResponse struct {
+	QueryClientUsageByExternalCloudProviderTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QueryUsageByExternalCloudProviderTypeResult contains the result from method Query.UsageByExternalCloudProviderType.
-type QueryUsageByExternalCloudProviderTypeResult struct {
+// QueryClientUsageByExternalCloudProviderTypeResult contains the result from method QueryClient.UsageByExternalCloudProviderType.
+type QueryClientUsageByExternalCloudProviderTypeResult struct {
 	QueryResult
 }
 
-// QueryUsageResponse contains the response from method Query.Usage.
-type QueryUsageResponse struct {
-	QueryUsageResult
+// QueryClientUsageResponse contains the response from method QueryClient.Usage.
+type QueryClientUsageResponse struct {
+	QueryClientUsageResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// QueryUsageResult contains the result from method Query.Usage.
-type QueryUsageResult struct {
+// QueryClientUsageResult contains the result from method QueryClient.Usage.
+type QueryClientUsageResult struct {
 	QueryResult
 }
 
-// ViewsCreateOrUpdateByScopeResponse contains the response from method Views.CreateOrUpdateByScope.
-type ViewsCreateOrUpdateByScopeResponse struct {
-	ViewsCreateOrUpdateByScopeResult
+// ViewsClientCreateOrUpdateByScopeResponse contains the response from method ViewsClient.CreateOrUpdateByScope.
+type ViewsClientCreateOrUpdateByScopeResponse struct {
+	ViewsClientCreateOrUpdateByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsCreateOrUpdateByScopeResult contains the result from method Views.CreateOrUpdateByScope.
-type ViewsCreateOrUpdateByScopeResult struct {
+// ViewsClientCreateOrUpdateByScopeResult contains the result from method ViewsClient.CreateOrUpdateByScope.
+type ViewsClientCreateOrUpdateByScopeResult struct {
 	View
 }
 
-// ViewsCreateOrUpdateResponse contains the response from method Views.CreateOrUpdate.
-type ViewsCreateOrUpdateResponse struct {
-	ViewsCreateOrUpdateResult
+// ViewsClientCreateOrUpdateResponse contains the response from method ViewsClient.CreateOrUpdate.
+type ViewsClientCreateOrUpdateResponse struct {
+	ViewsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsCreateOrUpdateResult contains the result from method Views.CreateOrUpdate.
-type ViewsCreateOrUpdateResult struct {
+// ViewsClientCreateOrUpdateResult contains the result from method ViewsClient.CreateOrUpdate.
+type ViewsClientCreateOrUpdateResult struct {
 	View
 }
 
-// ViewsDeleteByScopeResponse contains the response from method Views.DeleteByScope.
-type ViewsDeleteByScopeResponse struct {
+// ViewsClientDeleteByScopeResponse contains the response from method ViewsClient.DeleteByScope.
+type ViewsClientDeleteByScopeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsDeleteResponse contains the response from method Views.Delete.
-type ViewsDeleteResponse struct {
+// ViewsClientDeleteResponse contains the response from method ViewsClient.Delete.
+type ViewsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsGetByScopeResponse contains the response from method Views.GetByScope.
-type ViewsGetByScopeResponse struct {
-	ViewsGetByScopeResult
+// ViewsClientGetByScopeResponse contains the response from method ViewsClient.GetByScope.
+type ViewsClientGetByScopeResponse struct {
+	ViewsClientGetByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsGetByScopeResult contains the result from method Views.GetByScope.
-type ViewsGetByScopeResult struct {
+// ViewsClientGetByScopeResult contains the result from method ViewsClient.GetByScope.
+type ViewsClientGetByScopeResult struct {
 	View
 }
 
-// ViewsGetResponse contains the response from method Views.Get.
-type ViewsGetResponse struct {
-	ViewsGetResult
+// ViewsClientGetResponse contains the response from method ViewsClient.Get.
+type ViewsClientGetResponse struct {
+	ViewsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsGetResult contains the result from method Views.Get.
-type ViewsGetResult struct {
+// ViewsClientGetResult contains the result from method ViewsClient.Get.
+type ViewsClientGetResult struct {
 	View
 }
 
-// ViewsListByScopeResponse contains the response from method Views.ListByScope.
-type ViewsListByScopeResponse struct {
-	ViewsListByScopeResult
+// ViewsClientListByScopeResponse contains the response from method ViewsClient.ListByScope.
+type ViewsClientListByScopeResponse struct {
+	ViewsClientListByScopeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsListByScopeResult contains the result from method Views.ListByScope.
-type ViewsListByScopeResult struct {
+// ViewsClientListByScopeResult contains the result from method ViewsClient.ListByScope.
+type ViewsClientListByScopeResult struct {
 	ViewListResult
 }
 
-// ViewsListResponse contains the response from method Views.List.
-type ViewsListResponse struct {
-	ViewsListResult
+// ViewsClientListResponse contains the response from method ViewsClient.List.
+type ViewsClientListResponse struct {
+	ViewsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ViewsListResult contains the result from method Views.List.
-type ViewsListResult struct {
+// ViewsClientListResult contains the result from method ViewsClient.List.
+type ViewsClientListResult struct {
 	ViewListResult
 }

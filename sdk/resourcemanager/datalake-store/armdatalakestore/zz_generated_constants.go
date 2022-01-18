@@ -9,11 +9,12 @@
 package armdatalakestore
 
 const (
-	module  = "armdatalakestore"
-	version = "v0.2.1"
+	moduleName    = "armdatalakestore"
+	moduleVersion = "v0.3.0"
 )
 
-// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value is Microsoft.DataLakeStore/accounts
+// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value
+// is Microsoft.DataLakeStore/accounts
 type CheckNameAvailabilityParametersType string
 
 const (
@@ -92,7 +93,8 @@ func (c DataLakeStoreAccountStatus) ToPtr() *DataLakeStoreAccountStatus {
 	return &c
 }
 
-// EncryptionConfigType - The type of encryption configuration being used. Currently the only supported types are 'UserManaged' and 'ServiceManaged'.
+// EncryptionConfigType - The type of encryption configuration being used. Currently the only supported types are 'UserManaged'
+// and 'ServiceManaged'.
 type EncryptionConfigType string
 
 const (
@@ -155,8 +157,8 @@ func (c EncryptionState) ToPtr() *EncryptionState {
 	return &c
 }
 
-// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
-// this is not enforced.
+// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall.
+// If the firewall is disabled, this is not enforced.
 type FirewallAllowAzureIPsState string
 
 const (

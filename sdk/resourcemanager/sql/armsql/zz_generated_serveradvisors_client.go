@@ -24,42 +24,55 @@ import (
 // ServerAdvisorsClient contains the methods for the ServerAdvisors group.
 // Don't use this type directly, use NewServerAdvisorsClient() instead.
 type ServerAdvisorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerAdvisorsClient creates a new instance of ServerAdvisorsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewServerAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAdvisorsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ServerAdvisorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ServerAdvisorsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a server advisor.
-// If the operation fails it returns a generic error.
-func (client *ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *ServerAdvisorsGetOptions) (ServerAdvisorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// advisorName - The name of the Server Advisor.
+// options - ServerAdvisorsClientGetOptions contains the optional parameters for the ServerAdvisorsClient.Get method.
+func (client *ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *ServerAdvisorsClientGetOptions) (ServerAdvisorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, advisorName, options)
 	if err != nil {
-		return ServerAdvisorsGetResponse{}, err
+		return ServerAdvisorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAdvisorsGetResponse{}, err
+		return ServerAdvisorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAdvisorsGetResponse{}, client.getHandleError(resp)
+		return ServerAdvisorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *ServerAdvisorsGetOptions) (*policy.Request, error) {
+func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *ServerAdvisorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advisors/{advisorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +90,7 @@ func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,45 +102,38 @@ func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (ServerAdvisorsGetResponse, error) {
-	result := ServerAdvisorsGetResponse{RawResponse: resp}
+func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (ServerAdvisorsClientGetResponse, error) {
+	result := ServerAdvisorsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return ServerAdvisorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAdvisorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServerAdvisorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Gets a list of server advisors.
-// If the operation fails it returns a generic error.
-func (client *ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdvisorsListByServerOptions) (ServerAdvisorsListByServerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServerAdvisorsClientListByServerOptions contains the optional parameters for the ServerAdvisorsClient.ListByServer
+// method.
+func (client *ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdvisorsClientListByServerOptions) (ServerAdvisorsClientListByServerResponse, error) {
 	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
-		return ServerAdvisorsListByServerResponse{}, err
+		return ServerAdvisorsClientListByServerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAdvisorsListByServerResponse{}, err
+		return ServerAdvisorsClientListByServerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAdvisorsListByServerResponse{}, client.listByServerHandleError(resp)
+		return ServerAdvisorsClientListByServerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServerHandleResponse(resp)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdvisorsListByServerOptions) (*policy.Request, error) {
+func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdvisorsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advisors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,7 +147,7 @@ func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,45 +162,39 @@ func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Contex
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response) (ServerAdvisorsListByServerResponse, error) {
-	result := ServerAdvisorsListByServerResponse{RawResponse: resp}
+func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response) (ServerAdvisorsClientListByServerResponse, error) {
+	result := ServerAdvisorsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
-		return ServerAdvisorsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAdvisorsClientListByServerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServerAdvisorsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates a server advisor.
-// If the operation fails it returns a generic error.
-func (client *ServerAdvisorsClient) Update(ctx context.Context, resourceGroupName string, serverName string, advisorName string, parameters Advisor, options *ServerAdvisorsUpdateOptions) (ServerAdvisorsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// advisorName - The name of the Server Advisor.
+// parameters - The requested advisor resource state.
+// options - ServerAdvisorsClientUpdateOptions contains the optional parameters for the ServerAdvisorsClient.Update method.
+func (client *ServerAdvisorsClient) Update(ctx context.Context, resourceGroupName string, serverName string, advisorName string, parameters Advisor, options *ServerAdvisorsClientUpdateOptions) (ServerAdvisorsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, advisorName, parameters, options)
 	if err != nil {
-		return ServerAdvisorsUpdateResponse{}, err
+		return ServerAdvisorsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServerAdvisorsUpdateResponse{}, err
+		return ServerAdvisorsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerAdvisorsUpdateResponse{}, client.updateHandleError(resp)
+		return ServerAdvisorsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, parameters Advisor, options *ServerAdvisorsUpdateOptions) (*policy.Request, error) {
+func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, parameters Advisor, options *ServerAdvisorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advisors/{advisorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -212,7 +212,7 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,22 +224,10 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response) (ServerAdvisorsUpdateResponse, error) {
-	result := ServerAdvisorsUpdateResponse{RawResponse: resp}
+func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response) (ServerAdvisorsClientUpdateResponse, error) {
+	result := ServerAdvisorsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return ServerAdvisorsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ServerAdvisorsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ServerAdvisorsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

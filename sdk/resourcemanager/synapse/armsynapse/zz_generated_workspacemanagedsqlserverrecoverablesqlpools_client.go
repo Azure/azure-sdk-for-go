@@ -24,42 +24,55 @@ import (
 // WorkspaceManagedSQLServerRecoverableSQLPoolsClient contains the methods for the WorkspaceManagedSQLServerRecoverableSQLPools group.
 // Don't use this type directly, use NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient() instead.
 type WorkspaceManagedSQLServerRecoverableSQLPoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient creates a new instance of WorkspaceManagedSQLServerRecoverableSQLPoolsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceManagedSQLServerRecoverableSQLPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceManagedSQLServerRecoverableSQLPoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceManagedSQLServerRecoverableSQLPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceManagedSQLServerRecoverableSQLPoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get recoverable sql pools for workspace managed sql server.
-// If the operation fails it returns a generic error.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsGetOptions) (WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - The name of the sql pool
+// options - WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetOptions contains the optional parameters for the WorkspaceManagedSQLServerRecoverableSQLPoolsClient.Get
+// method.
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetOptions) (WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse{}, err
+		return WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse{}, err
+		return WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse{}, client.getHandleError(resp)
+		return WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsGetOptions) (*policy.Request, error) {
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools/{sqlPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,7 +90,7 @@ func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getCreateReque
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,42 +102,34 @@ func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getCreateReque
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse, error) {
-	result := WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse{RawResponse: resp}
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse, error) {
+	result := WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableSQLPool); err != nil {
-		return WorkspaceManagedSQLServerRecoverableSQLPoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceManagedSQLServerRecoverableSQLPoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Get list of recoverable sql pools for workspace managed sql server.
-// If the operation fails it returns a generic error.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsListOptions) *WorkspaceManagedSQLServerRecoverableSQLPoolsListPager {
-	return &WorkspaceManagedSQLServerRecoverableSQLPoolsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerRecoverableSQLPoolsClient.List
+// method.
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions) *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager {
+	return &WorkspaceManagedSQLServerRecoverableSQLPoolsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp WorkspaceManagedSQLServerRecoverableSQLPoolsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecoverableSQLPoolListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsListOptions) (*policy.Request, error) {
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerRecoverableSQLPoolsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,7 +143,7 @@ func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listCreateRequ
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,22 +155,10 @@ func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listCreateRequ
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerRecoverableSQLPoolsListResponse, error) {
-	result := WorkspaceManagedSQLServerRecoverableSQLPoolsListResponse{RawResponse: resp}
+func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listHandleResponse(resp *http.Response) (WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse, error) {
+	result := WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableSQLPoolListResult); err != nil {
-		return WorkspaceManagedSQLServerRecoverableSQLPoolsListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceManagedSQLServerRecoverableSQLPoolsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkspaceManagedSQLServerRecoverableSQLPoolsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

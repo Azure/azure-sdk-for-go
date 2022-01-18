@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,52 @@ import (
 // ConsumerSourceDataSetsClient contains the methods for the ConsumerSourceDataSets group.
 // Don't use this type directly, use NewConsumerSourceDataSetsClient() instead.
 type ConsumerSourceDataSetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewConsumerSourceDataSetsClient creates a new instance of ConsumerSourceDataSetsClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewConsumerSourceDataSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConsumerSourceDataSetsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ConsumerSourceDataSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ConsumerSourceDataSetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByShareSubscription - Get source dataSets of a shareSubscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *ConsumerSourceDataSetsClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *ConsumerSourceDataSetsListByShareSubscriptionOptions) *ConsumerSourceDataSetsListByShareSubscriptionPager {
-	return &ConsumerSourceDataSetsListByShareSubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the shareSubscription.
+// options - ConsumerSourceDataSetsClientListByShareSubscriptionOptions contains the optional parameters for the ConsumerSourceDataSetsClient.ListByShareSubscription
+// method.
+func (client *ConsumerSourceDataSetsClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *ConsumerSourceDataSetsClientListByShareSubscriptionOptions) *ConsumerSourceDataSetsClientListByShareSubscriptionPager {
+	return &ConsumerSourceDataSetsClientListByShareSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByShareSubscriptionCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, options)
 		},
-		advancer: func(ctx context.Context, resp ConsumerSourceDataSetsListByShareSubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ConsumerSourceDataSetsClientListByShareSubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConsumerSourceDataSetList.NextLink)
 		},
 	}
 }
 
 // listByShareSubscriptionCreateRequest creates the ListByShareSubscription request.
-func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *ConsumerSourceDataSetsListByShareSubscriptionOptions) (*policy.Request, error) {
+func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *ConsumerSourceDataSetsClientListByShareSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/consumerSourceDataSets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -75,7 +87,7 @@ func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionCreateRequest
 		return nil, errors.New("parameter shareSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareSubscriptionName}", url.PathEscape(shareSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,23 +102,10 @@ func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionCreateRequest
 }
 
 // listByShareSubscriptionHandleResponse handles the ListByShareSubscription response.
-func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionHandleResponse(resp *http.Response) (ConsumerSourceDataSetsListByShareSubscriptionResponse, error) {
-	result := ConsumerSourceDataSetsListByShareSubscriptionResponse{RawResponse: resp}
+func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionHandleResponse(resp *http.Response) (ConsumerSourceDataSetsClientListByShareSubscriptionResponse, error) {
+	result := ConsumerSourceDataSetsClientListByShareSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerSourceDataSetList); err != nil {
-		return ConsumerSourceDataSetsListByShareSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ConsumerSourceDataSetsClientListByShareSubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listByShareSubscriptionHandleError handles the ListByShareSubscription error response.
-func (client *ConsumerSourceDataSetsClient) listByShareSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

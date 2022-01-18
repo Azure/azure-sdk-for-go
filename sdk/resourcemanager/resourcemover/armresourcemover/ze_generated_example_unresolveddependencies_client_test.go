@@ -26,16 +26,20 @@ func ExampleUnresolvedDependenciesClient_Get() {
 	client := armresourcemover.NewUnresolvedDependenciesClient("<subscription-id>", cred, nil)
 	pager := client.Get("<resource-group-name>",
 		"<move-collection-name>",
-		&armresourcemover.UnresolvedDependenciesGetOptions{DependencyLevel: nil,
+		&armresourcemover.UnresolvedDependenciesClientGetOptions{DependencyLevel: nil,
 			Orderby: nil,
 			Filter:  nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("UnresolvedDependency.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

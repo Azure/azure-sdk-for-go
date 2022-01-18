@@ -9,8 +9,8 @@
 package armlocks
 
 const (
-	module  = "armlocks"
-	version = "v0.1.1"
+	moduleName    = "armlocks"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -38,8 +38,8 @@ func (c CreatedByType) ToPtr() *CreatedByType {
 	return &c
 }
 
-// LockLevel - The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized users are able to read and
-// modify the resources, but not delete. ReadOnly means
+// LockLevel - The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
+// users are able to read and modify the resources, but not delete. ReadOnly means
 // authorized users can only read from a resource, but they can't modify or delete it.
 type LockLevel string
 

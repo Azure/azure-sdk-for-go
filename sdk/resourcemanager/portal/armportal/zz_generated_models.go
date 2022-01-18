@@ -16,9 +16,17 @@ import (
 
 // Configuration - Tenant configuration.
 type Configuration struct {
-	ProxyResource
 	// Tenant configuration properties.
 	Properties *ConfigurationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ConfigurationList - List of tenant configurations.
@@ -40,7 +48,8 @@ func (c ConfigurationList) MarshalJSON() ([]byte, error) {
 
 // ConfigurationProperties - Tenant configuration properties.
 type ConfigurationProperties struct {
-	// When flag is set to true Markdown tile will require external storage configuration (URI). The inline content configuration will be prohibited.
+	// When flag is set to true Markdown tile will require external storage configuration (URI). The inline content configuration
+	// will be prohibited.
 	EnforcePrivateMarkdownStorage *bool `json:"enforcePrivateMarkdownStorage,omitempty"`
 }
 
@@ -136,26 +145,24 @@ type DashboardPartMetadata struct {
 // GetDashboardPartMetadata implements the DashboardPartMetadataClassification interface for type DashboardPartMetadata.
 func (d *DashboardPartMetadata) GetDashboardPartMetadata() *DashboardPartMetadata { return d }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DashboardPartMetadata.
-func (d *DashboardPartMetadata) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DashboardPartMetadata) marshalInternal(objectMap map[string]interface{}, discValue string) {
-	d.Type = &discValue
+// MarshalJSON implements the json.Marshaller interface for type DashboardPartMetadata.
+func (d DashboardPartMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	objectMap["type"] = d.Type
 	if d.AdditionalProperties != nil {
 		for key, val := range d.AdditionalProperties {
 			objectMap[key] = val
 		}
 	}
+	return json.Marshal(objectMap)
 }
 
-func (d *DashboardPartMetadata) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DashboardPartMetadata.
+func (d *DashboardPartMetadata) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -266,33 +273,35 @@ func (d DashboardProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DashboardsCreateOrUpdateOptions contains the optional parameters for the Dashboards.CreateOrUpdate method.
-type DashboardsCreateOrUpdateOptions struct {
+// DashboardsClientCreateOrUpdateOptions contains the optional parameters for the DashboardsClient.CreateOrUpdate method.
+type DashboardsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DashboardsDeleteOptions contains the optional parameters for the Dashboards.Delete method.
-type DashboardsDeleteOptions struct {
+// DashboardsClientDeleteOptions contains the optional parameters for the DashboardsClient.Delete method.
+type DashboardsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DashboardsGetOptions contains the optional parameters for the Dashboards.Get method.
-type DashboardsGetOptions struct {
+// DashboardsClientGetOptions contains the optional parameters for the DashboardsClient.Get method.
+type DashboardsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DashboardsListByResourceGroupOptions contains the optional parameters for the Dashboards.ListByResourceGroup method.
-type DashboardsListByResourceGroupOptions struct {
+// DashboardsClientListByResourceGroupOptions contains the optional parameters for the DashboardsClient.ListByResourceGroup
+// method.
+type DashboardsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DashboardsListBySubscriptionOptions contains the optional parameters for the Dashboards.ListBySubscription method.
-type DashboardsListBySubscriptionOptions struct {
+// DashboardsClientListBySubscriptionOptions contains the optional parameters for the DashboardsClient.ListBySubscription
+// method.
+type DashboardsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DashboardsUpdateOptions contains the optional parameters for the Dashboards.Update method.
-type DashboardsUpdateOptions struct {
+// DashboardsClientUpdateOptions contains the optional parameters for the DashboardsClient.Update method.
+type DashboardsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -318,27 +327,25 @@ func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
 }
 
 // ErrorResponse - Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
-	raw string
 	// The error details.
-	InnerError *ErrorDefinition `json:"error,omitempty"`
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// ListTenantConfigurationViolationsListOptions contains the optional parameters for the ListTenantConfigurationViolations.List method.
-type ListTenantConfigurationViolationsListOptions struct {
+// ListTenantConfigurationViolationsClientListOptions contains the optional parameters for the ListTenantConfigurationViolationsClient.List
+// method.
+type ListTenantConfigurationViolationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // MarkdownPartMetadata - Markdown part metadata.
 type MarkdownPartMetadata struct {
-	DashboardPartMetadata
+	// REQUIRED; The type of dashboard part.
+	Type *string `json:"type,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
 	// Input to dashboard part.
 	Inputs []map[string]interface{} `json:"inputs,omitempty"`
 
@@ -346,12 +353,25 @@ type MarkdownPartMetadata struct {
 	Settings *MarkdownPartMetadataSettings `json:"settings,omitempty"`
 }
 
+// GetDashboardPartMetadata implements the DashboardPartMetadataClassification interface for type MarkdownPartMetadata.
+func (m *MarkdownPartMetadata) GetDashboardPartMetadata() *DashboardPartMetadata {
+	return &DashboardPartMetadata{
+		Type:                 m.Type,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MarshalJSON implements the json.Marshaller interface for type MarkdownPartMetadata.
 func (m MarkdownPartMetadata) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	m.DashboardPartMetadata.marshalInternal(objectMap, "Extension/HubsExtension/PartType/MarkdownPart")
 	populate(objectMap, "inputs", m.Inputs)
 	populate(objectMap, "settings", m.Settings)
+	objectMap["type"] = "Extension/HubsExtension/PartType/MarkdownPart"
+	if m.AdditionalProperties != nil {
+		for key, val := range m.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -370,13 +390,23 @@ func (m *MarkdownPartMetadata) UnmarshalJSON(data []byte) error {
 		case "settings":
 			err = unpopulate(val, &m.Settings)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &m.Type)
+			delete(rawMsg, key)
+		default:
+			if m.AdditionalProperties == nil {
+				m.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				m.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
 		}
-	}
-	if err := m.DashboardPartMetadata.unmarshalInternal(rawMsg); err != nil {
-		return err
 	}
 	return nil
 }
@@ -411,8 +441,8 @@ type MarkdownPartMetadataSettingsContentSettings struct {
 	Title *string `json:"title,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -433,9 +463,17 @@ func (p PatchableDashboard) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -494,23 +532,23 @@ func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TenantConfigurationsCreateOptions contains the optional parameters for the TenantConfigurations.Create method.
-type TenantConfigurationsCreateOptions struct {
+// TenantConfigurationsClientCreateOptions contains the optional parameters for the TenantConfigurationsClient.Create method.
+type TenantConfigurationsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationsDeleteOptions contains the optional parameters for the TenantConfigurations.Delete method.
-type TenantConfigurationsDeleteOptions struct {
+// TenantConfigurationsClientDeleteOptions contains the optional parameters for the TenantConfigurationsClient.Delete method.
+type TenantConfigurationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationsGetOptions contains the optional parameters for the TenantConfigurations.Get method.
-type TenantConfigurationsGetOptions struct {
+// TenantConfigurationsClientGetOptions contains the optional parameters for the TenantConfigurationsClient.Get method.
+type TenantConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TenantConfigurationsListOptions contains the optional parameters for the TenantConfigurations.List method.
-type TenantConfigurationsListOptions struct {
+// TenantConfigurationsClientListOptions contains the optional parameters for the TenantConfigurationsClient.List method.
+type TenantConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -30,12 +30,16 @@ func ExampleDatabasesClient_ListByCluster() {
 	pager := client.ListByCluster("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Database.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -54,9 +58,9 @@ func ExampleDatabasesClient_BeginCreate() {
 		"<database-name>",
 		armredisenterprise.Database{
 			Properties: &armredisenterprise.DatabaseProperties{
-				ClientProtocol:   armredisenterprise.ProtocolEncrypted.ToPtr(),
-				ClusteringPolicy: armredisenterprise.ClusteringPolicyEnterpriseCluster.ToPtr(),
-				EvictionPolicy:   armredisenterprise.EvictionPolicyAllKeysLRU.ToPtr(),
+				ClientProtocol:   armredisenterprise.Protocol("Encrypted").ToPtr(),
+				ClusteringPolicy: armredisenterprise.ClusteringPolicy("EnterpriseCluster").ToPtr(),
+				EvictionPolicy:   armredisenterprise.EvictionPolicy("AllKeysLRU").ToPtr(),
 				Modules: []*armredisenterprise.Module{
 					{
 						Name: to.StringPtr("<name>"),
@@ -71,7 +75,7 @@ func ExampleDatabasesClient_BeginCreate() {
 					}},
 				Persistence: &armredisenterprise.Persistence{
 					AofEnabled:   to.BoolPtr(true),
-					AofFrequency: armredisenterprise.AofFrequencyOneS.ToPtr(),
+					AofFrequency: armredisenterprise.AofFrequency("1s").ToPtr(),
 				},
 				Port: to.Int32Ptr(10000),
 			},
@@ -84,7 +88,7 @@ func ExampleDatabasesClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientCreateResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesUpdate.json
@@ -101,11 +105,11 @@ func ExampleDatabasesClient_BeginUpdate() {
 		"<database-name>",
 		armredisenterprise.DatabaseUpdate{
 			Properties: &armredisenterprise.DatabaseProperties{
-				ClientProtocol: armredisenterprise.ProtocolEncrypted.ToPtr(),
-				EvictionPolicy: armredisenterprise.EvictionPolicyAllKeysLRU.ToPtr(),
+				ClientProtocol: armredisenterprise.Protocol("Encrypted").ToPtr(),
+				EvictionPolicy: armredisenterprise.EvictionPolicy("AllKeysLRU").ToPtr(),
 				Persistence: &armredisenterprise.Persistence{
 					RdbEnabled:   to.BoolPtr(true),
-					RdbFrequency: armredisenterprise.RdbFrequencyTwelveH.ToPtr(),
+					RdbFrequency: armredisenterprise.RdbFrequency("12h").ToPtr(),
 				},
 			},
 		},
@@ -117,7 +121,7 @@ func ExampleDatabasesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesGet.json
@@ -136,7 +140,7 @@ func ExampleDatabasesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.DatabasesClientGetResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesDelete.json
@@ -169,7 +173,7 @@ func ExampleDatabasesClient_ListKeys() {
 	}
 	ctx := context.Background()
 	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
+	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -177,6 +181,7 @@ func ExampleDatabasesClient_ListKeys() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientListKeysResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesRegenerateKey.json
@@ -198,10 +203,11 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.DatabasesClientRegenerateKeyResult)
 }
 
 // x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesImport.json

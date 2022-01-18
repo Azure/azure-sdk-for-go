@@ -18,14 +18,14 @@ import (
 )
 
 // x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2021-05-13-preview/examples/CheckNameAvailability.json
-func ExampleConfidentialLedgerClient_CheckNameAvailability() {
+func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armconfidentialledger.NewConfidentialLedgerClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armconfidentialledger.NewClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		armconfidentialledger.CheckNameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -34,4 +34,5 @@ func ExampleConfidentialLedgerClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
 }

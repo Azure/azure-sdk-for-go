@@ -317,7 +317,7 @@ For more advanced usage of LRO and design guidelines of LRO, please visit [this 
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples](https://aka.ms/azsdk/go/mgmt/samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/example_networkinterfaces_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/ze_generated_example_loadbalancernetworkinterfaces_client_test.go)
 
 Need help?
 ----------

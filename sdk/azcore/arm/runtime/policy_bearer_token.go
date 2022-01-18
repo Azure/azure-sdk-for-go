@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -26,7 +25,7 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.ctx, azpolicy.TokenRequestOptions{
+	tk, err := s.p.cred.GetToken(s.ctx, shared.TokenRequestOptions{
 		Scopes:   s.p.options.Scopes,
 		TenantID: s.tenant,
 	})
@@ -43,14 +42,14 @@ type BearerTokenPolicy struct {
 	// auxResources are additional resources that are required for cross-tenant applications
 	auxResources map[string]*shared.ExpiringResource
 	// the following fields are read-only
-	cred    azcore.TokenCredential
+	cred    shared.TokenCredential
 	options armpolicy.BearerTokenOptions
 }
 
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTokenOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred shared.TokenCredential, opts *armpolicy.BearerTokenOptions) *BearerTokenPolicy {
 	if opts == nil {
 		opts = &armpolicy.BearerTokenOptions{}
 	}
@@ -79,7 +78,7 @@ func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	if token, ok := tk.(*azcore.AccessToken); ok {
+	if token, ok := tk.(*shared.AccessToken); ok {
 		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+token.Token)
 	}
 	auxTokens := []string{}
@@ -89,7 +88,7 @@ func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 		if err != nil {
 			return nil, err
 		}
-		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", shared.BearerTokenPrefix, auxTk.(*azcore.AccessToken).Token))
+		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", shared.BearerTokenPrefix, auxTk.(*shared.AccessToken).Token))
 	}
 	if len(auxTokens) > 0 {
 		req.Raw().Header.Set(shared.HeaderAuxiliaryAuthorization, strings.Join(auxTokens, ", "))

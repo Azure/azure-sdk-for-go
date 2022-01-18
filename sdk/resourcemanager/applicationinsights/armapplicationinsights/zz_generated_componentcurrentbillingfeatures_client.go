@@ -24,42 +24,54 @@ import (
 // ComponentCurrentBillingFeaturesClient contains the methods for the ComponentCurrentBillingFeatures group.
 // Don't use this type directly, use NewComponentCurrentBillingFeaturesClient() instead.
 type ComponentCurrentBillingFeaturesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewComponentCurrentBillingFeaturesClient creates a new instance of ComponentCurrentBillingFeaturesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewComponentCurrentBillingFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComponentCurrentBillingFeaturesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ComponentCurrentBillingFeaturesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ComponentCurrentBillingFeaturesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns current billing features for an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ComponentCurrentBillingFeaturesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentCurrentBillingFeaturesGetOptions) (ComponentCurrentBillingFeaturesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - ComponentCurrentBillingFeaturesClientGetOptions contains the optional parameters for the ComponentCurrentBillingFeaturesClient.Get
+// method.
+func (client *ComponentCurrentBillingFeaturesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentCurrentBillingFeaturesClientGetOptions) (ComponentCurrentBillingFeaturesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ComponentCurrentBillingFeaturesGetResponse{}, err
+		return ComponentCurrentBillingFeaturesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentCurrentBillingFeaturesGetResponse{}, err
+		return ComponentCurrentBillingFeaturesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentCurrentBillingFeaturesGetResponse{}, client.getHandleError(resp)
+		return ComponentCurrentBillingFeaturesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComponentCurrentBillingFeaturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentCurrentBillingFeaturesGetOptions) (*policy.Request, error) {
+func (client *ComponentCurrentBillingFeaturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ComponentCurrentBillingFeaturesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/currentbillingfeatures"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +85,7 @@ func (client *ComponentCurrentBillingFeaturesClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +97,39 @@ func (client *ComponentCurrentBillingFeaturesClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentCurrentBillingFeaturesClient) getHandleResponse(resp *http.Response) (ComponentCurrentBillingFeaturesGetResponse, error) {
-	result := ComponentCurrentBillingFeaturesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentBillingFeatures); err != nil {
-		return ComponentCurrentBillingFeaturesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentCurrentBillingFeaturesClient) getHandleResponse(resp *http.Response) (ComponentCurrentBillingFeaturesClientGetResponse, error) {
+	result := ComponentCurrentBillingFeaturesClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentBillingFeatures); err != nil {
+		return ComponentCurrentBillingFeaturesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ComponentCurrentBillingFeaturesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update current billing features for an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ComponentCurrentBillingFeaturesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, billingFeaturesProperties ApplicationInsightsComponentBillingFeatures, options *ComponentCurrentBillingFeaturesUpdateOptions) (ComponentCurrentBillingFeaturesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// billingFeaturesProperties - Properties that need to be specified to update billing features for an Application Insights
+// component.
+// options - ComponentCurrentBillingFeaturesClientUpdateOptions contains the optional parameters for the ComponentCurrentBillingFeaturesClient.Update
+// method.
+func (client *ComponentCurrentBillingFeaturesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, billingFeaturesProperties ComponentBillingFeatures, options *ComponentCurrentBillingFeaturesClientUpdateOptions) (ComponentCurrentBillingFeaturesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, billingFeaturesProperties, options)
 	if err != nil {
-		return ComponentCurrentBillingFeaturesUpdateResponse{}, err
+		return ComponentCurrentBillingFeaturesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComponentCurrentBillingFeaturesUpdateResponse{}, err
+		return ComponentCurrentBillingFeaturesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComponentCurrentBillingFeaturesUpdateResponse{}, client.updateHandleError(resp)
+		return ComponentCurrentBillingFeaturesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ComponentCurrentBillingFeaturesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, billingFeaturesProperties ApplicationInsightsComponentBillingFeatures, options *ComponentCurrentBillingFeaturesUpdateOptions) (*policy.Request, error) {
+func (client *ComponentCurrentBillingFeaturesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, billingFeaturesProperties ComponentBillingFeatures, options *ComponentCurrentBillingFeaturesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/currentbillingfeatures"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,7 +143,7 @@ func (client *ComponentCurrentBillingFeaturesClient) updateCreateRequest(ctx con
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -149,22 +155,10 @@ func (client *ComponentCurrentBillingFeaturesClient) updateCreateRequest(ctx con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ComponentCurrentBillingFeaturesClient) updateHandleResponse(resp *http.Response) (ComponentCurrentBillingFeaturesUpdateResponse, error) {
-	result := ComponentCurrentBillingFeaturesUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentBillingFeatures); err != nil {
-		return ComponentCurrentBillingFeaturesUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *ComponentCurrentBillingFeaturesClient) updateHandleResponse(resp *http.Response) (ComponentCurrentBillingFeaturesClientUpdateResponse, error) {
+	result := ComponentCurrentBillingFeaturesClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentBillingFeatures); err != nil {
+		return ComponentCurrentBillingFeaturesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ComponentCurrentBillingFeaturesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

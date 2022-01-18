@@ -18,7 +18,7 @@ import (
 // ActionClassification provides polymorphic access to related types.
 // Call the interface's GetAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *Action
+// - *Action, *ContinuousAction, *DelayAction, *DiscreteAction
 type ActionClassification interface {
 	// GetAction returns the Action content of the underlying type.
 	GetAction() *Action
@@ -126,44 +126,43 @@ func (b BranchStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CapabilitiesCreateOrUpdateOptions contains the optional parameters for the Capabilities.CreateOrUpdate method.
-type CapabilitiesCreateOrUpdateOptions struct {
+// CapabilitiesClientCreateOrUpdateOptions contains the optional parameters for the CapabilitiesClient.CreateOrUpdate method.
+type CapabilitiesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapabilitiesDeleteOptions contains the optional parameters for the Capabilities.Delete method.
-type CapabilitiesDeleteOptions struct {
+// CapabilitiesClientDeleteOptions contains the optional parameters for the CapabilitiesClient.Delete method.
+type CapabilitiesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapabilitiesGetOptions contains the optional parameters for the Capabilities.Get method.
-type CapabilitiesGetOptions struct {
+// CapabilitiesClientGetOptions contains the optional parameters for the CapabilitiesClient.Get method.
+type CapabilitiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapabilitiesListOptions contains the optional parameters for the Capabilities.List method.
-type CapabilitiesListOptions struct {
+// CapabilitiesClientListOptions contains the optional parameters for the CapabilitiesClient.List method.
+type CapabilitiesClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
 }
 
 // Capability - Model that represents a Capability resource.
 type Capability struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The properties of a capability resource.
 	Properties *CapabilityProperties `json:"properties,omitempty" azure:"ro"`
 
 	// READ-ONLY; The standard system metadata of a resource type.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Capability.
-func (c Capability) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CapabilityListResult - Model that represents a list of Capability resources and a link for pagination.
@@ -203,25 +202,23 @@ type CapabilityProperties struct {
 
 // CapabilityType - Model that represents a Capability Type resource.
 type CapabilityType struct {
-	Resource
 	// Location of the Capability Type resource.
 	Location *string `json:"location,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The properties of the capability type resource.
 	Properties *CapabilityTypeProperties `json:"properties,omitempty" azure:"ro"`
 
 	// READ-ONLY; The system metadata properties of the capability type resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CapabilityType.
-func (c CapabilityType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CapabilityTypeListResult - Model that represents a list of Capability Type resources and a link for pagination.
@@ -262,15 +259,201 @@ type CapabilityTypeProperties struct {
 	Urn *string `json:"urn,omitempty" azure:"ro"`
 }
 
-// CapabilityTypesGetOptions contains the optional parameters for the CapabilityTypes.Get method.
-type CapabilityTypesGetOptions struct {
+// CapabilityTypesClientGetOptions contains the optional parameters for the CapabilityTypesClient.Get method.
+type CapabilityTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CapabilityTypesListOptions contains the optional parameters for the CapabilityTypes.List method.
-type CapabilityTypesListOptions struct {
+// CapabilityTypesClientListOptions contains the optional parameters for the CapabilityTypesClient.List method.
+type CapabilityTypesClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
+}
+
+// ContinuousAction - Model that represents a continuous action.
+type ContinuousAction struct {
+	// REQUIRED; ISO8601 formatted string that represents a duration.
+	Duration *string `json:"duration,omitempty"`
+
+	// REQUIRED; String that represents a Capability URN.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; List of key value pairs.
+	Parameters []*KeyValuePair `json:"parameters,omitempty"`
+
+	// REQUIRED; String that represents a selector.
+	SelectorID *string `json:"selectorId,omitempty"`
+
+	// REQUIRED; Enum that discriminates between action models.
+	Type *string `json:"type,omitempty"`
+}
+
+// GetAction implements the ActionClassification interface for type ContinuousAction.
+func (c *ContinuousAction) GetAction() *Action {
+	return &Action{
+		Type: c.Type,
+		Name: c.Name,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContinuousAction.
+func (c ContinuousAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "duration", c.Duration)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "parameters", c.Parameters)
+	populate(objectMap, "selectorId", c.SelectorID)
+	objectMap["type"] = "continuous"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContinuousAction.
+func (c *ContinuousAction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "duration":
+			err = unpopulate(val, &c.Duration)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &c.Name)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, &c.Parameters)
+			delete(rawMsg, key)
+		case "selectorId":
+			err = unpopulate(val, &c.SelectorID)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &c.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// DelayAction - Model that represents a delay action.
+type DelayAction struct {
+	// REQUIRED; ISO8601 formatted string that represents a duration.
+	Duration *string `json:"duration,omitempty"`
+
+	// REQUIRED; String that represents a Capability URN.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; Enum that discriminates between action models.
+	Type *string `json:"type,omitempty"`
+}
+
+// GetAction implements the ActionClassification interface for type DelayAction.
+func (d *DelayAction) GetAction() *Action {
+	return &Action{
+		Type: d.Type,
+		Name: d.Name,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DelayAction.
+func (d DelayAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "duration", d.Duration)
+	populate(objectMap, "name", d.Name)
+	objectMap["type"] = "delay"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DelayAction.
+func (d *DelayAction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "duration":
+			err = unpopulate(val, &d.Duration)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &d.Name)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &d.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// DiscreteAction - Model that represents a discrete action.
+type DiscreteAction struct {
+	// REQUIRED; String that represents a Capability URN.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; List of key value pairs.
+	Parameters []*KeyValuePair `json:"parameters,omitempty"`
+
+	// REQUIRED; String that represents a selector.
+	SelectorID *string `json:"selectorId,omitempty"`
+
+	// REQUIRED; Enum that discriminates between action models.
+	Type *string `json:"type,omitempty"`
+}
+
+// GetAction implements the ActionClassification interface for type DiscreteAction.
+func (d *DiscreteAction) GetAction() *Action {
+	return &Action{
+		Type: d.Type,
+		Name: d.Name,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DiscreteAction.
+func (d DiscreteAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "parameters", d.Parameters)
+	populate(objectMap, "selectorId", d.SelectorID)
+	objectMap["type"] = "discrete"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DiscreteAction.
+func (d *DiscreteAction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, &d.Name)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, &d.Parameters)
+			delete(rawMsg, key)
+		case "selectorId":
+			err = unpopulate(val, &d.SelectorID)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &d.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -311,41 +494,51 @@ func (e ErrorDetail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Experiment - Model that represents a Experiment resource.
 type Experiment struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; The properties of the experiment resource.
 	Properties *ExperimentProperties `json:"properties,omitempty"`
 
 	// The identity of the experiment resource.
 	Identity *ResourceIdentity `json:"identity,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata of the experiment resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Experiment.
 func (e Experiment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", e.ID)
 	populate(objectMap, "identity", e.Identity)
+	populate(objectMap, "location", e.Location)
+	populate(objectMap, "name", e.Name)
 	populate(objectMap, "properties", e.Properties)
 	populate(objectMap, "systemData", e.SystemData)
+	populate(objectMap, "tags", e.Tags)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -367,7 +560,8 @@ type ExperimentExecutionActionTargetDetailsError struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ExperimentExecutionActionTargetDetailsProperties - Model that represents the Experiment action target details properties model.
+// ExperimentExecutionActionTargetDetailsProperties - Model that represents the Experiment action target details properties
+// model.
 type ExperimentExecutionActionTargetDetailsProperties struct {
 	// READ-ONLY; String that represents the completed date time.
 	CompletedDateUTC *time.Time `json:"completedDateUtc,omitempty" azure:"ro"`
@@ -681,65 +875,79 @@ func (e *ExperimentStatusProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ExperimentsBeginCancelOptions contains the optional parameters for the Experiments.BeginCancel method.
-type ExperimentsBeginCancelOptions struct {
+// ExperimentsClientBeginCancelOptions contains the optional parameters for the ExperimentsClient.BeginCancel method.
+type ExperimentsClientBeginCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsBeginCreateOrUpdateOptions contains the optional parameters for the Experiments.BeginCreateOrUpdate method.
-type ExperimentsBeginCreateOrUpdateOptions struct {
+// ExperimentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ExperimentsClient.BeginCreateOrUpdate
+// method.
+type ExperimentsClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsDeleteOptions contains the optional parameters for the Experiments.Delete method.
-type ExperimentsDeleteOptions struct {
+// ExperimentsClientDeleteOptions contains the optional parameters for the ExperimentsClient.Delete method.
+type ExperimentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsGetExecutionDetailsOptions contains the optional parameters for the Experiments.GetExecutionDetails method.
-type ExperimentsGetExecutionDetailsOptions struct {
+// ExperimentsClientGetExecutionDetailsOptions contains the optional parameters for the ExperimentsClient.GetExecutionDetails
+// method.
+type ExperimentsClientGetExecutionDetailsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsGetOptions contains the optional parameters for the Experiments.Get method.
-type ExperimentsGetOptions struct {
+// ExperimentsClientGetOptions contains the optional parameters for the ExperimentsClient.Get method.
+type ExperimentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsGetStatusOptions contains the optional parameters for the Experiments.GetStatus method.
-type ExperimentsGetStatusOptions struct {
+// ExperimentsClientGetStatusOptions contains the optional parameters for the ExperimentsClient.GetStatus method.
+type ExperimentsClientGetStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsListAllOptions contains the optional parameters for the Experiments.ListAll method.
-type ExperimentsListAllOptions struct {
+// ExperimentsClientListAllOptions contains the optional parameters for the ExperimentsClient.ListAll method.
+type ExperimentsClientListAllOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
-	// Optional value that indicates whether to filter results based on if the Experiment is currently running. If null, then the results will not be filtered.
+	// Optional value that indicates whether to filter results based on if the Experiment is currently running. If null, then
+	// the results will not be filtered.
 	Running *bool
 }
 
-// ExperimentsListAllStatusesOptions contains the optional parameters for the Experiments.ListAllStatuses method.
-type ExperimentsListAllStatusesOptions struct {
+// ExperimentsClientListAllStatusesOptions contains the optional parameters for the ExperimentsClient.ListAllStatuses method.
+type ExperimentsClientListAllStatusesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsListExecutionDetailsOptions contains the optional parameters for the Experiments.ListExecutionDetails method.
-type ExperimentsListExecutionDetailsOptions struct {
+// ExperimentsClientListExecutionDetailsOptions contains the optional parameters for the ExperimentsClient.ListExecutionDetails
+// method.
+type ExperimentsClientListExecutionDetailsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExperimentsListOptions contains the optional parameters for the Experiments.List method.
-type ExperimentsListOptions struct {
+// ExperimentsClientListOptions contains the optional parameters for the ExperimentsClient.List method.
+type ExperimentsClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
-	// Optional value that indicates whether to filter results based on if the Experiment is currently running. If null, then the results will not be filtered.
+	// Optional value that indicates whether to filter results based on if the Experiment is currently running. If null, then
+	// the results will not be filtered.
 	Running *bool
 }
 
-// ExperimentsStartOptions contains the optional parameters for the Experiments.Start method.
-type ExperimentsStartOptions struct {
+// ExperimentsClientStartOptions contains the optional parameters for the ExperimentsClient.Start method.
+type ExperimentsClientStartOptions struct {
 	// placeholder for future optional parameters
+}
+
+// KeyValuePair - A map to describe the settings of an action.
+type KeyValuePair struct {
+	// REQUIRED; The name of the setting for the action.
+	Key *string `json:"key,omitempty"`
+
+	// REQUIRED; The value of the setting for the action.
+	Value *string `json:"value,omitempty"`
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -750,13 +958,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -765,18 +976,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -793,8 +1007,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListAllOptions contains the optional parameters for the Operations.ListAll method.
-type OperationsListAllOptions struct {
+// OperationsClientListAllOptions contains the optional parameters for the OperationsClient.ListAll method.
+type OperationsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -808,19 +1022,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceIdentity - The managed identity of a resource.
@@ -968,24 +1169,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // Target - Model that represents a Target resource.
 type Target struct {
-	Resource
 	// REQUIRED; The properties of the target resource.
 	Properties map[string]interface{} `json:"properties,omitempty"`
 
 	// Location of the target resource.
 	Location *string `json:"location,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata of the target resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Target.
 func (t Target) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "properties", t.Properties)
 	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1017,25 +1228,23 @@ type TargetReference struct {
 
 // TargetType - Model that represents a Target Type resource.
 type TargetType struct {
-	Resource
 	// REQUIRED; The properties of the target type resource.
 	Properties *TargetTypeProperties `json:"properties,omitempty"`
 
 	// Location of the Target Type resource.
 	Location *string `json:"location,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata properties of the target type resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TargetType.
-func (t TargetType) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TargetTypeListResult - Model that represents a list of Target Type resources and a link for pagination.
@@ -1080,59 +1289,66 @@ func (t TargetTypeProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TargetTypesGetOptions contains the optional parameters for the TargetTypes.Get method.
-type TargetTypesGetOptions struct {
+// TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
+type TargetTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TargetTypesListOptions contains the optional parameters for the TargetTypes.List method.
-type TargetTypesListOptions struct {
+// TargetTypesClientListOptions contains the optional parameters for the TargetTypesClient.List method.
+type TargetTypesClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
 }
 
-// TargetsCreateOrUpdateOptions contains the optional parameters for the Targets.CreateOrUpdate method.
-type TargetsCreateOrUpdateOptions struct {
+// TargetsClientCreateOrUpdateOptions contains the optional parameters for the TargetsClient.CreateOrUpdate method.
+type TargetsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TargetsDeleteOptions contains the optional parameters for the Targets.Delete method.
-type TargetsDeleteOptions struct {
+// TargetsClientDeleteOptions contains the optional parameters for the TargetsClient.Delete method.
+type TargetsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TargetsGetOptions contains the optional parameters for the Targets.Get method.
-type TargetsGetOptions struct {
+// TargetsClientGetOptions contains the optional parameters for the TargetsClient.Get method.
+type TargetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TargetsListOptions contains the optional parameters for the Targets.List method.
-type TargetsListOptions struct {
+// TargetsClientListOptions contains the optional parameters for the TargetsClient.List method.
+type TargetsClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

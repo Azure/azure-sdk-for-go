@@ -11,7 +11,6 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,36 +24,46 @@ import (
 // DatabaseAccountsClient contains the methods for the DatabaseAccounts group.
 // Don't use this type directly, use NewDatabaseAccountsClient() instead.
 type DatabaseAccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseAccountsClient creates a new instance of DatabaseAccountsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseAccountsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DatabaseAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DatabaseAccountsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CheckNameExists - Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase letters, numbers, and
-// the '-' character, and must be between 3 and 50 characters.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) CheckNameExists(ctx context.Context, accountName string, options *DatabaseAccountsCheckNameExistsOptions) (DatabaseAccountsCheckNameExistsResponse, error) {
+// CheckNameExists - Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+// letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientCheckNameExistsOptions contains the optional parameters for the DatabaseAccountsClient.CheckNameExists
+// method.
+func (client *DatabaseAccountsClient) CheckNameExists(ctx context.Context, accountName string, options *DatabaseAccountsClientCheckNameExistsOptions) (DatabaseAccountsClientCheckNameExistsResponse, error) {
 	req, err := client.checkNameExistsCreateRequest(ctx, accountName, options)
 	if err != nil {
-		return DatabaseAccountsCheckNameExistsResponse{}, err
+		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsCheckNameExistsResponse{}, err
+		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
-	result := DatabaseAccountsCheckNameExistsResponse{RawResponse: resp}
+	result := DatabaseAccountsClientCheckNameExistsResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -62,13 +71,13 @@ func (client *DatabaseAccountsClient) CheckNameExists(ctx context.Context, accou
 }
 
 // checkNameExistsCreateRequest creates the CheckNameExists request.
-func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.Context, accountName string, options *DatabaseAccountsCheckNameExistsOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.Context, accountName string, options *DatabaseAccountsClientCheckNameExistsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DocumentDB/databaseAccountNames/{accountName}"
 	if accountName == "" {
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,29 +87,36 @@ func (client *DatabaseAccountsClient) checkNameExistsCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsBeginCreateOrUpdateOptions) (DatabaseAccountsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing
+// updates on an account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// createUpdateParameters - The parameters to provide for the current database account.
+// options - DatabaseAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabaseAccountsClient.BeginCreateOrUpdate
+// method.
+func (client *DatabaseAccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsClientBeginCreateOrUpdateOptions) (DatabaseAccountsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, createUpdateParameters, options)
 	if err != nil {
-		return DatabaseAccountsCreateOrUpdatePollerResponse{}, err
+		return DatabaseAccountsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := DatabaseAccountsCreateOrUpdatePollerResponse{
+	result := DatabaseAccountsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsCreateOrUpdatePollerResponse{}, err
+		return DatabaseAccountsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsCreateOrUpdatePoller{
+	result.Poller = &DatabaseAccountsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing
+// updates on an account.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, createUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -110,13 +126,13 @@ func (client *DatabaseAccountsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -130,7 +146,7 @@ func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,41 +157,33 @@ func (client *DatabaseAccountsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, createUpdateParameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DatabaseAccountsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsBeginDeleteOptions) (DatabaseAccountsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientBeginDeleteOptions contains the optional parameters for the DatabaseAccountsClient.BeginDelete
+// method.
+func (client *DatabaseAccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientBeginDeleteOptions) (DatabaseAccountsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsDeletePollerResponse{}, err
+		return DatabaseAccountsClientDeletePollerResponse{}, err
 	}
-	result := DatabaseAccountsDeletePollerResponse{
+	result := DatabaseAccountsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsDeletePollerResponse{}, err
+		return DatabaseAccountsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsDeletePoller{
+	result.Poller = &DatabaseAccountsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
@@ -185,13 +193,13 @@ func (client *DatabaseAccountsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsBeginDeleteOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -205,7 +213,7 @@ func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -215,45 +223,38 @@ func (client *DatabaseAccountsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DatabaseAccountsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// BeginFailoverPriorityChange - Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region.
-// The maximum value for a failover priority = (total number of regions - 1).
+// BeginFailoverPriorityChange - Changes the failover priority for the Azure Cosmos DB database account. A failover priority
+// of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1).
 // Failover priority values must be unique for each of the regions in which the database account exists.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) BeginFailoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsBeginFailoverPriorityChangeOptions) (DatabaseAccountsFailoverPriorityChangePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// failoverParameters - The new failover policies for the database account.
+// options - DatabaseAccountsClientBeginFailoverPriorityChangeOptions contains the optional parameters for the DatabaseAccountsClient.BeginFailoverPriorityChange
+// method.
+func (client *DatabaseAccountsClient) BeginFailoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsClientBeginFailoverPriorityChangeOptions) (DatabaseAccountsClientFailoverPriorityChangePollerResponse, error) {
 	resp, err := client.failoverPriorityChange(ctx, resourceGroupName, accountName, failoverParameters, options)
 	if err != nil {
-		return DatabaseAccountsFailoverPriorityChangePollerResponse{}, err
+		return DatabaseAccountsClientFailoverPriorityChangePollerResponse{}, err
 	}
-	result := DatabaseAccountsFailoverPriorityChangePollerResponse{
+	result := DatabaseAccountsClientFailoverPriorityChangePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.FailoverPriorityChange", "", resp, client.pl, client.failoverPriorityChangeHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.FailoverPriorityChange", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsFailoverPriorityChangePollerResponse{}, err
+		return DatabaseAccountsClientFailoverPriorityChangePollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsFailoverPriorityChangePoller{
+	result.Poller = &DatabaseAccountsClientFailoverPriorityChangePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// FailoverPriorityChange - Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The
-// maximum value for a failover priority = (total number of regions - 1).
+// FailoverPriorityChange - Changes the failover priority for the Azure Cosmos DB database account. A failover priority of
+// 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1).
 // Failover priority values must be unique for each of the regions in which the database account exists.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) failoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsBeginFailoverPriorityChangeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) failoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsClientBeginFailoverPriorityChangeOptions) (*http.Response, error) {
 	req, err := client.failoverPriorityChangeCreateRequest(ctx, resourceGroupName, accountName, failoverParameters, options)
 	if err != nil {
 		return nil, err
@@ -263,13 +264,13 @@ func (client *DatabaseAccountsClient) failoverPriorityChange(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.failoverPriorityChangeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // failoverPriorityChangeCreateRequest creates the FailoverPriorityChange request.
-func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsBeginFailoverPriorityChangeOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsClientBeginFailoverPriorityChangeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/failoverPriorityChange"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -283,7 +284,7 @@ func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -293,37 +294,28 @@ func (client *DatabaseAccountsClient) failoverPriorityChangeCreateRequest(ctx co
 	return req, runtime.MarshalAsJSON(req, failoverParameters)
 }
 
-// failoverPriorityChangeHandleError handles the FailoverPriorityChange error response.
-func (client *DatabaseAccountsClient) failoverPriorityChangeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Retrieves the properties of an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsGetOptions) (DatabaseAccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientGetOptions contains the optional parameters for the DatabaseAccountsClient.Get method.
+func (client *DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientGetOptions) (DatabaseAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsGetResponse{}, err
+		return DatabaseAccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsGetResponse{}, err
+		return DatabaseAccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsGetResponse{}, client.getHandleError(resp)
+		return DatabaseAccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsGetOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -337,7 +329,7 @@ func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -349,45 +341,37 @@ func (client *DatabaseAccountsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseAccountsClient) getHandleResponse(resp *http.Response) (DatabaseAccountsGetResponse, error) {
-	result := DatabaseAccountsGetResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) getHandleResponse(resp *http.Response) (DatabaseAccountsClientGetResponse, error) {
+	result := DatabaseAccountsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountGetResults); err != nil {
-		return DatabaseAccountsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseAccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetReadOnlyKeys - Lists the read-only access keys for the specified Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) GetReadOnlyKeys(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsGetReadOnlyKeysOptions) (DatabaseAccountsGetReadOnlyKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientGetReadOnlyKeysOptions contains the optional parameters for the DatabaseAccountsClient.GetReadOnlyKeys
+// method.
+func (client *DatabaseAccountsClient) GetReadOnlyKeys(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientGetReadOnlyKeysOptions) (DatabaseAccountsClientGetReadOnlyKeysResponse, error) {
 	req, err := client.getReadOnlyKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsGetReadOnlyKeysResponse{}, err
+		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsGetReadOnlyKeysResponse{}, err
+		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsGetReadOnlyKeysResponse{}, client.getReadOnlyKeysHandleError(resp)
+		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getReadOnlyKeysHandleResponse(resp)
 }
 
 // getReadOnlyKeysCreateRequest creates the GetReadOnlyKeys request.
-func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsGetReadOnlyKeysOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientGetReadOnlyKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/readonlykeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -401,7 +385,7 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -413,51 +397,40 @@ func (client *DatabaseAccountsClient) getReadOnlyKeysCreateRequest(ctx context.C
 }
 
 // getReadOnlyKeysHandleResponse handles the GetReadOnlyKeys response.
-func (client *DatabaseAccountsClient) getReadOnlyKeysHandleResponse(resp *http.Response) (DatabaseAccountsGetReadOnlyKeysResponse, error) {
-	result := DatabaseAccountsGetReadOnlyKeysResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) getReadOnlyKeysHandleResponse(resp *http.Response) (DatabaseAccountsClientGetReadOnlyKeysResponse, error) {
+	result := DatabaseAccountsClientGetReadOnlyKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListReadOnlyKeysResult); err != nil {
-		return DatabaseAccountsGetReadOnlyKeysResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// getReadOnlyKeysHandleError handles the GetReadOnlyKeys error response.
-func (client *DatabaseAccountsClient) getReadOnlyKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists all the Azure Cosmos DB database accounts available under the subscription.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) List(ctx context.Context, options *DatabaseAccountsListOptions) (DatabaseAccountsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - DatabaseAccountsClientListOptions contains the optional parameters for the DatabaseAccountsClient.List method.
+func (client *DatabaseAccountsClient) List(ctx context.Context, options *DatabaseAccountsClientListOptions) (DatabaseAccountsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return DatabaseAccountsListResponse{}, err
+		return DatabaseAccountsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListResponse{}, err
+		return DatabaseAccountsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListResponse{}, client.listHandleError(resp)
+		return DatabaseAccountsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, options *DatabaseAccountsListOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, options *DatabaseAccountsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -469,45 +442,36 @@ func (client *DatabaseAccountsClient) listCreateRequest(ctx context.Context, opt
 }
 
 // listHandleResponse handles the List response.
-func (client *DatabaseAccountsClient) listHandleResponse(resp *http.Response) (DatabaseAccountsListResponse, error) {
-	result := DatabaseAccountsListResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listHandleResponse(resp *http.Response) (DatabaseAccountsClientListResponse, error) {
+	result := DatabaseAccountsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountsListResult); err != nil {
-		return DatabaseAccountsListResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DatabaseAccountsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroup - Lists all the Azure Cosmos DB database accounts available under the given resource group.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *DatabaseAccountsListByResourceGroupOptions) (DatabaseAccountsListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - DatabaseAccountsClientListByResourceGroupOptions contains the optional parameters for the DatabaseAccountsClient.ListByResourceGroup
+// method.
+func (client *DatabaseAccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *DatabaseAccountsClientListByResourceGroupOptions) (DatabaseAccountsClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
-		return DatabaseAccountsListByResourceGroupResponse{}, err
+		return DatabaseAccountsClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListByResourceGroupResponse{}, err
+		return DatabaseAccountsClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return DatabaseAccountsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DatabaseAccountsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DatabaseAccountsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -517,7 +481,7 @@ func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -529,45 +493,37 @@ func (client *DatabaseAccountsClient) listByResourceGroupCreateRequest(ctx conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DatabaseAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (DatabaseAccountsListByResourceGroupResponse, error) {
-	result := DatabaseAccountsListByResourceGroupResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (DatabaseAccountsClientListByResourceGroupResponse, error) {
+	result := DatabaseAccountsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountsListResult); err != nil {
-		return DatabaseAccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DatabaseAccountsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListConnectionStrings - Lists the connection strings for the specified Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListConnectionStringsOptions) (DatabaseAccountsListConnectionStringsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientListConnectionStringsOptions contains the optional parameters for the DatabaseAccountsClient.ListConnectionStrings
+// method.
+func (client *DatabaseAccountsClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListConnectionStringsOptions) (DatabaseAccountsClientListConnectionStringsResponse, error) {
 	req, err := client.listConnectionStringsCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsListConnectionStringsResponse{}, err
+		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListConnectionStringsResponse{}, err
+		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListConnectionStringsResponse{}, client.listConnectionStringsHandleError(resp)
+		return DatabaseAccountsClientListConnectionStringsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listConnectionStringsHandleResponse(resp)
 }
 
 // listConnectionStringsCreateRequest creates the ListConnectionStrings request.
-func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListConnectionStringsOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListConnectionStringsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/listConnectionStrings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -581,7 +537,7 @@ func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -593,45 +549,37 @@ func (client *DatabaseAccountsClient) listConnectionStringsCreateRequest(ctx con
 }
 
 // listConnectionStringsHandleResponse handles the ListConnectionStrings response.
-func (client *DatabaseAccountsClient) listConnectionStringsHandleResponse(resp *http.Response) (DatabaseAccountsListConnectionStringsResponse, error) {
-	result := DatabaseAccountsListConnectionStringsResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listConnectionStringsHandleResponse(resp *http.Response) (DatabaseAccountsClientListConnectionStringsResponse, error) {
+	result := DatabaseAccountsClientListConnectionStringsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListConnectionStringsResult); err != nil {
-		return DatabaseAccountsListConnectionStringsResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
 	return result, nil
 }
 
-// listConnectionStringsHandleError handles the ListConnectionStrings error response.
-func (client *DatabaseAccountsClient) listConnectionStringsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListKeys - Lists the access keys for the specified Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListKeysOptions) (DatabaseAccountsListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientListKeysOptions contains the optional parameters for the DatabaseAccountsClient.ListKeys
+// method.
+func (client *DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListKeysOptions) (DatabaseAccountsClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsListKeysResponse{}, err
+		return DatabaseAccountsClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListKeysResponse{}, err
+		return DatabaseAccountsClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListKeysResponse{}, client.listKeysHandleError(resp)
+		return DatabaseAccountsClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListKeysOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -645,7 +593,7 @@ func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -657,45 +605,37 @@ func (client *DatabaseAccountsClient) listKeysCreateRequest(ctx context.Context,
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *DatabaseAccountsClient) listKeysHandleResponse(resp *http.Response) (DatabaseAccountsListKeysResponse, error) {
-	result := DatabaseAccountsListKeysResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listKeysHandleResponse(resp *http.Response) (DatabaseAccountsClientListKeysResponse, error) {
+	result := DatabaseAccountsClientListKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListKeysResult); err != nil {
-		return DatabaseAccountsListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *DatabaseAccountsClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListMetricDefinitions - Retrieves metric definitions for the given database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListMetricDefinitionsOptions) (DatabaseAccountsListMetricDefinitionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseAccountsClient.ListMetricDefinitions
+// method.
+func (client *DatabaseAccountsClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListMetricDefinitionsOptions) (DatabaseAccountsClientListMetricDefinitionsResponse, error) {
 	req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsListMetricDefinitionsResponse{}, err
+		return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListMetricDefinitionsResponse{}, err
+		return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListMetricDefinitionsResponse{}, client.listMetricDefinitionsHandleError(resp)
+		return DatabaseAccountsClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricDefinitionsHandleResponse(resp)
 }
 
 // listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
-func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListMetricDefinitionsOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/metricDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -709,7 +649,7 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -721,45 +661,40 @@ func (client *DatabaseAccountsClient) listMetricDefinitionsCreateRequest(ctx con
 }
 
 // listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
-func (client *DatabaseAccountsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseAccountsListMetricDefinitionsResponse, error) {
-	result := DatabaseAccountsListMetricDefinitionsResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabaseAccountsClientListMetricDefinitionsResponse, error) {
+	result := DatabaseAccountsClientListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionsListResult); err != nil {
-		return DatabaseAccountsListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listMetricDefinitionsHandleError handles the ListMetricDefinitions error response.
-func (client *DatabaseAccountsClient) listMetricDefinitionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListMetrics - Retrieves the metrics determined by the given filter for the given database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, filter string, options *DatabaseAccountsListMetricsOptions) (DatabaseAccountsListMetricsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+// and timeGrain. The supported operator is eq.
+// options - DatabaseAccountsClientListMetricsOptions contains the optional parameters for the DatabaseAccountsClient.ListMetrics
+// method.
+func (client *DatabaseAccountsClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, filter string, options *DatabaseAccountsClientListMetricsOptions) (DatabaseAccountsClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, accountName, filter, options)
 	if err != nil {
-		return DatabaseAccountsListMetricsResponse{}, err
+		return DatabaseAccountsClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListMetricsResponse{}, err
+		return DatabaseAccountsClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return DatabaseAccountsClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, filter string, options *DatabaseAccountsListMetricsOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, filter string, options *DatabaseAccountsClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -773,7 +708,7 @@ func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -786,45 +721,37 @@ func (client *DatabaseAccountsClient) listMetricsCreateRequest(ctx context.Conte
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *DatabaseAccountsClient) listMetricsHandleResponse(resp *http.Response) (DatabaseAccountsListMetricsResponse, error) {
-	result := DatabaseAccountsListMetricsResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listMetricsHandleResponse(resp *http.Response) (DatabaseAccountsClientListMetricsResponse, error) {
+	result := DatabaseAccountsClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return DatabaseAccountsListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListMetricsResponse{}, err
 	}
 	return result, nil
 }
 
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *DatabaseAccountsClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListReadOnlyKeys - Lists the read-only access keys for the specified Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListReadOnlyKeysOptions) (DatabaseAccountsListReadOnlyKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientListReadOnlyKeysOptions contains the optional parameters for the DatabaseAccountsClient.ListReadOnlyKeys
+// method.
+func (client *DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListReadOnlyKeysOptions) (DatabaseAccountsClientListReadOnlyKeysResponse, error) {
 	req, err := client.listReadOnlyKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsListReadOnlyKeysResponse{}, err
+		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListReadOnlyKeysResponse{}, err
+		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListReadOnlyKeysResponse{}, client.listReadOnlyKeysHandleError(resp)
+		return DatabaseAccountsClientListReadOnlyKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listReadOnlyKeysHandleResponse(resp)
 }
 
 // listReadOnlyKeysCreateRequest creates the ListReadOnlyKeys request.
-func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListReadOnlyKeysOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListReadOnlyKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/readonlykeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -838,7 +765,7 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -850,45 +777,37 @@ func (client *DatabaseAccountsClient) listReadOnlyKeysCreateRequest(ctx context.
 }
 
 // listReadOnlyKeysHandleResponse handles the ListReadOnlyKeys response.
-func (client *DatabaseAccountsClient) listReadOnlyKeysHandleResponse(resp *http.Response) (DatabaseAccountsListReadOnlyKeysResponse, error) {
-	result := DatabaseAccountsListReadOnlyKeysResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listReadOnlyKeysHandleResponse(resp *http.Response) (DatabaseAccountsClientListReadOnlyKeysResponse, error) {
+	result := DatabaseAccountsClientListReadOnlyKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAccountListReadOnlyKeysResult); err != nil {
-		return DatabaseAccountsListReadOnlyKeysResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listReadOnlyKeysHandleError handles the ListReadOnlyKeys error response.
-func (client *DatabaseAccountsClient) listReadOnlyKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListUsages - Retrieves the usages (most recent data) for the given database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListUsagesOptions) (DatabaseAccountsListUsagesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - DatabaseAccountsClientListUsagesOptions contains the optional parameters for the DatabaseAccountsClient.ListUsages
+// method.
+func (client *DatabaseAccountsClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListUsagesOptions) (DatabaseAccountsClientListUsagesResponse, error) {
 	req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return DatabaseAccountsListUsagesResponse{}, err
+		return DatabaseAccountsClientListUsagesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAccountsListUsagesResponse{}, err
+		return DatabaseAccountsClientListUsagesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAccountsListUsagesResponse{}, client.listUsagesHandleError(resp)
+		return DatabaseAccountsClientListUsagesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listUsagesHandleResponse(resp)
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsListUsagesOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -902,7 +821,7 @@ func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -917,49 +836,42 @@ func (client *DatabaseAccountsClient) listUsagesCreateRequest(ctx context.Contex
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *DatabaseAccountsClient) listUsagesHandleResponse(resp *http.Response) (DatabaseAccountsListUsagesResponse, error) {
-	result := DatabaseAccountsListUsagesResponse{RawResponse: resp}
+func (client *DatabaseAccountsClient) listUsagesHandleResponse(resp *http.Response) (DatabaseAccountsClientListUsagesResponse, error) {
+	result := DatabaseAccountsClientListUsagesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesResult); err != nil {
-		return DatabaseAccountsListUsagesResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAccountsClientListUsagesResponse{}, err
 	}
 	return result, nil
 }
 
-// listUsagesHandleError handles the ListUsages error response.
-func (client *DatabaseAccountsClient) listUsagesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginOfflineRegion - Offline the specified region for the specified Azure Cosmos DB database account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DatabaseAccountsClient) BeginOfflineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsBeginOfflineRegionOptions) (DatabaseAccountsOfflineRegionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// regionParameterForOffline - Cosmos DB region to offline for the database account.
+// options - DatabaseAccountsClientBeginOfflineRegionOptions contains the optional parameters for the DatabaseAccountsClient.BeginOfflineRegion
+// method.
+func (client *DatabaseAccountsClient) BeginOfflineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOfflineRegionOptions) (DatabaseAccountsClientOfflineRegionPollerResponse, error) {
 	resp, err := client.offlineRegion(ctx, resourceGroupName, accountName, regionParameterForOffline, options)
 	if err != nil {
-		return DatabaseAccountsOfflineRegionPollerResponse{}, err
+		return DatabaseAccountsClientOfflineRegionPollerResponse{}, err
 	}
-	result := DatabaseAccountsOfflineRegionPollerResponse{
+	result := DatabaseAccountsClientOfflineRegionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.OfflineRegion", "", resp, client.pl, client.offlineRegionHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.OfflineRegion", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsOfflineRegionPollerResponse{}, err
+		return DatabaseAccountsClientOfflineRegionPollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsOfflineRegionPoller{
+	result.Poller = &DatabaseAccountsClientOfflineRegionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // OfflineRegion - Offline the specified region for the specified Azure Cosmos DB database account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DatabaseAccountsClient) offlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsBeginOfflineRegionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) offlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOfflineRegionOptions) (*http.Response, error) {
 	req, err := client.offlineRegionCreateRequest(ctx, resourceGroupName, accountName, regionParameterForOffline, options)
 	if err != nil {
 		return nil, err
@@ -969,13 +881,13 @@ func (client *DatabaseAccountsClient) offlineRegion(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.offlineRegionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // offlineRegionCreateRequest creates the OfflineRegion request.
-func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsBeginOfflineRegionOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOfflineRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/offlineRegion"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -989,7 +901,7 @@ func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1000,42 +912,34 @@ func (client *DatabaseAccountsClient) offlineRegionCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, regionParameterForOffline)
 }
 
-// offlineRegionHandleError handles the OfflineRegion error response.
-func (client *DatabaseAccountsClient) offlineRegionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginOnlineRegion - Online the specified region for the specified Azure Cosmos DB database account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DatabaseAccountsClient) BeginOnlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsBeginOnlineRegionOptions) (DatabaseAccountsOnlineRegionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// regionParameterForOnline - Cosmos DB region to online for the database account.
+// options - DatabaseAccountsClientBeginOnlineRegionOptions contains the optional parameters for the DatabaseAccountsClient.BeginOnlineRegion
+// method.
+func (client *DatabaseAccountsClient) BeginOnlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOnlineRegionOptions) (DatabaseAccountsClientOnlineRegionPollerResponse, error) {
 	resp, err := client.onlineRegion(ctx, resourceGroupName, accountName, regionParameterForOnline, options)
 	if err != nil {
-		return DatabaseAccountsOnlineRegionPollerResponse{}, err
+		return DatabaseAccountsClientOnlineRegionPollerResponse{}, err
 	}
-	result := DatabaseAccountsOnlineRegionPollerResponse{
+	result := DatabaseAccountsClientOnlineRegionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.OnlineRegion", "", resp, client.pl, client.onlineRegionHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.OnlineRegion", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsOnlineRegionPollerResponse{}, err
+		return DatabaseAccountsClientOnlineRegionPollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsOnlineRegionPoller{
+	result.Poller = &DatabaseAccountsClientOnlineRegionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // OnlineRegion - Online the specified region for the specified Azure Cosmos DB database account.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DatabaseAccountsClient) onlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsBeginOnlineRegionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) onlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOnlineRegionOptions) (*http.Response, error) {
 	req, err := client.onlineRegionCreateRequest(ctx, resourceGroupName, accountName, regionParameterForOnline, options)
 	if err != nil {
 		return nil, err
@@ -1045,13 +949,13 @@ func (client *DatabaseAccountsClient) onlineRegion(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.onlineRegionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // onlineRegionCreateRequest creates the OnlineRegion request.
-func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsBeginOnlineRegionOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOnlineRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/onlineRegion"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1065,7 +969,7 @@ func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1076,42 +980,34 @@ func (client *DatabaseAccountsClient) onlineRegionCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, regionParameterForOnline)
 }
 
-// onlineRegionHandleError handles the OnlineRegion error response.
-func (client *DatabaseAccountsClient) onlineRegionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRegenerateKey - Regenerates an access key for the specified Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) BeginRegenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsBeginRegenerateKeyOptions) (DatabaseAccountsRegenerateKeyPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// keyToRegenerate - The name of the key to regenerate.
+// options - DatabaseAccountsClientBeginRegenerateKeyOptions contains the optional parameters for the DatabaseAccountsClient.BeginRegenerateKey
+// method.
+func (client *DatabaseAccountsClient) BeginRegenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsClientBeginRegenerateKeyOptions) (DatabaseAccountsClientRegenerateKeyPollerResponse, error) {
 	resp, err := client.regenerateKey(ctx, resourceGroupName, accountName, keyToRegenerate, options)
 	if err != nil {
-		return DatabaseAccountsRegenerateKeyPollerResponse{}, err
+		return DatabaseAccountsClientRegenerateKeyPollerResponse{}, err
 	}
-	result := DatabaseAccountsRegenerateKeyPollerResponse{
+	result := DatabaseAccountsClientRegenerateKeyPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.RegenerateKey", "", resp, client.pl, client.regenerateKeyHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.RegenerateKey", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsRegenerateKeyPollerResponse{}, err
+		return DatabaseAccountsClientRegenerateKeyPollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsRegenerateKeyPoller{
+	result.Poller = &DatabaseAccountsClientRegenerateKeyPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RegenerateKey - Regenerates an access key for the specified Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) regenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsBeginRegenerateKeyOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) regenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, accountName, keyToRegenerate, options)
 	if err != nil {
 		return nil, err
@@ -1121,13 +1017,13 @@ func (client *DatabaseAccountsClient) regenerateKey(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.regenerateKeyHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsBeginRegenerateKeyOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsClientBeginRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/regenerateKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1141,7 +1037,7 @@ func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1151,41 +1047,34 @@ func (client *DatabaseAccountsClient) regenerateKeyCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, keyToRegenerate)
 }
 
-// regenerateKeyHandleError handles the RegenerateKey error response.
-func (client *DatabaseAccountsClient) regenerateKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates the properties of an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsBeginUpdateOptions) (DatabaseAccountsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// updateParameters - The parameters to provide for the current database account.
+// options - DatabaseAccountsClientBeginUpdateOptions contains the optional parameters for the DatabaseAccountsClient.BeginUpdate
+// method.
+func (client *DatabaseAccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsClientBeginUpdateOptions) (DatabaseAccountsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, accountName, updateParameters, options)
 	if err != nil {
-		return DatabaseAccountsUpdatePollerResponse{}, err
+		return DatabaseAccountsClientUpdatePollerResponse{}, err
 	}
-	result := DatabaseAccountsUpdatePollerResponse{
+	result := DatabaseAccountsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("DatabaseAccountsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("DatabaseAccountsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return DatabaseAccountsUpdatePollerResponse{}, err
+		return DatabaseAccountsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &DatabaseAccountsUpdatePoller{
+	result.Poller = &DatabaseAccountsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates the properties of an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseAccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, updateParameters, options)
 	if err != nil {
 		return nil, err
@@ -1195,13 +1084,13 @@ func (client *DatabaseAccountsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsBeginUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1215,7 +1104,7 @@ func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1224,16 +1113,4 @@ func (client *DatabaseAccountsClient) updateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateParameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *DatabaseAccountsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

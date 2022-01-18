@@ -9,8 +9,8 @@
 package armedgeorder
 
 const (
-	module  = "armedgeorder"
-	version = "v0.1.0"
+	moduleName    = "armedgeorder"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionStatusEnum - Describes whether the order item is deletable or not.
@@ -241,7 +241,8 @@ const (
 	DisabledReasonCountry DisabledReason = "Country"
 	// DisabledReasonFeature - Required features are not enabled.
 	DisabledReasonFeature DisabledReason = "Feature"
-	// DisabledReasonNoSubscriptionInfo - Subscription has not registered to Microsoft.DataBox and Service does not have the subscription notification.
+	// DisabledReasonNoSubscriptionInfo - Subscription has not registered to Microsoft.DataBox and Service does not have the subscription
+	// notification.
 	DisabledReasonNoSubscriptionInfo DisabledReason = "NoSubscriptionInfo"
 	// DisabledReasonNone - Not disabled.
 	DisabledReasonNone DisabledReason = "None"
@@ -274,8 +275,8 @@ func (c DisabledReason) ToPtr() *DisabledReason {
 	return &c
 }
 
-// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled' policy
-// is configured.
+// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if
+// the 'Deny' or 'Disabled' policy is configured.
 type DoubleEncryptionStatus string
 
 const (
@@ -506,7 +507,8 @@ func (c OrderItemType) ToPtr() *OrderItemType {
 	return &c
 }
 
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (

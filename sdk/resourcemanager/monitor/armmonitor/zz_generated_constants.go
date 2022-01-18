@@ -9,8 +9,8 @@
 package armmonitor
 
 const (
-	module  = "armmonitor"
-	version = "v0.3.0"
+	moduleName    = "armmonitor"
+	moduleVersion = "v0.4.0"
 )
 
 // AggregationType - the aggregation type of the metric.
@@ -267,8 +267,8 @@ func (c CriterionType) ToPtr() *CriterionType {
 	return &c
 }
 
-// DataStatus - The status of VM Insights data from the resource. When reported as present the data array will contain information about the data containers
-// to which data for the specified resource is being routed.
+// DataStatus - The status of VM Insights data from the resource. When reported as present the data array will contain information
+// about the data containers to which data for the specified resource is being routed.
 type DataStatus string
 
 const (
@@ -312,8 +312,8 @@ func (c DynamicThresholdOperator) ToPtr() *DynamicThresholdOperator {
 	return &c
 }
 
-// DynamicThresholdSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series
-// pattern.
+// DynamicThresholdSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold
+// is to the metric series pattern.
 type DynamicThresholdSensitivity string
 
 const (
@@ -579,7 +579,8 @@ func (c KnownPerfCounterDataSourceStreams) ToPtr() *KnownPerfCounterDataSourceSt
 	return &c
 }
 
-// KnownPublicNetworkAccessOptions - The configuration to set whether network access from public internet to the endpoints are allowed.
+// KnownPublicNetworkAccessOptions - The configuration to set whether network access from public internet to the endpoints
+// are allowed.
 type KnownPublicNetworkAccessOptions string
 
 const (
@@ -894,8 +895,8 @@ func (c Odatatype) ToPtr() *Odatatype {
 	return &c
 }
 
-// OnboardingStatus - The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription, is considered onboarded
-// if at least one resource under it is onboarded.
+// OnboardingStatus - The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
+// is considered onboarded if at least one resource under it is onboarded.
 type OnboardingStatus string
 
 const (
@@ -1014,8 +1015,8 @@ func (c ReceiverStatus) ToPtr() *ReceiverStatus {
 	return &c
 }
 
-// RecurrenceFrequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have
-// the same set of profiles. For example, to set a daily schedule, set
+// RecurrenceFrequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week,
+// meaning each week will have the same set of profiles. For example, to set a daily schedule, set
 // schedule to every day of the week. The frequency property specifies that the schedule is repeated weekly.
 type RecurrenceFrequency string
 
@@ -1092,8 +1093,8 @@ func (c ScaleDirection) ToPtr() *ScaleDirection {
 	return &c
 }
 
-// ScaleRuleMetricDimensionOperationType - the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being equal to any of the values.
-// 'NotEquals' being not equal to all of the values
+// ScaleRuleMetricDimensionOperationType - the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being
+// equal to any of the values. 'NotEquals' being not equal to all of the values
 type ScaleRuleMetricDimensionOperationType string
 
 const (
@@ -1166,7 +1167,8 @@ func (c TimeAggregationOperator) ToPtr() *TimeAggregationOperator {
 	return &c
 }
 
-// TimeAggregationType - time aggregation type. How the data that is collected should be combined over time. The default value is Average.
+// TimeAggregationType - time aggregation type. How the data that is collected should be combined over time. The default value
+// is Average.
 type TimeAggregationType string
 
 const (

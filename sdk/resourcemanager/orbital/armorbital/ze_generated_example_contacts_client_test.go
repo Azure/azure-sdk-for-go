@@ -27,13 +27,14 @@ func ExampleContactsClient_List() {
 	}
 	ctx := context.Background()
 	client := armorbital.NewContactsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<spacecraft-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ContactsClientListResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactGet.json
@@ -52,7 +53,7 @@ func ExampleContactsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Contact.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContactsClientGetResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactCreate.json
@@ -85,7 +86,7 @@ func ExampleContactsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Contact.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ContactsClientCreateResult)
 }
 
 // x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactDelete.json

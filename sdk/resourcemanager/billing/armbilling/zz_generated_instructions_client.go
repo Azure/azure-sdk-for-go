@@ -11,7 +11,6 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,51 @@ import (
 // InstructionsClient contains the methods for the Instructions group.
 // Don't use this type directly, use NewInstructionsClient() instead.
 type InstructionsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewInstructionsClient creates a new instance of InstructionsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewInstructionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *InstructionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &InstructionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &InstructionsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstructionsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, options *InstructionsGetOptions) (InstructionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// instructionName - Instruction Name.
+// options - InstructionsClientGetOptions contains the optional parameters for the InstructionsClient.Get method.
+func (client *InstructionsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, options *InstructionsClientGetOptions) (InstructionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, instructionName, options)
 	if err != nil {
-		return InstructionsGetResponse{}, err
+		return InstructionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InstructionsGetResponse{}, err
+		return InstructionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InstructionsGetResponse{}, client.getHandleError(resp)
+		return InstructionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *InstructionsClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, options *InstructionsGetOptions) (*policy.Request, error) {
+func (client *InstructionsClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, options *InstructionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/instructions/{instructionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -73,7 +82,7 @@ func (client *InstructionsClient) getCreateRequest(ctx context.Context, billingA
 		return nil, errors.New("parameter instructionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instructionName}", url.PathEscape(instructionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,43 +94,34 @@ func (client *InstructionsClient) getCreateRequest(ctx context.Context, billingA
 }
 
 // getHandleResponse handles the Get response.
-func (client *InstructionsClient) getHandleResponse(resp *http.Response) (InstructionsGetResponse, error) {
-	result := InstructionsGetResponse{RawResponse: resp}
+func (client *InstructionsClient) getHandleResponse(resp *http.Response) (InstructionsClientGetResponse, error) {
+	result := InstructionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instruction); err != nil {
-		return InstructionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return InstructionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *InstructionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByBillingProfile - Lists the instructions by billing profile id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstructionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *InstructionsListByBillingProfileOptions) *InstructionsListByBillingProfilePager {
-	return &InstructionsListByBillingProfilePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// options - InstructionsClientListByBillingProfileOptions contains the optional parameters for the InstructionsClient.ListByBillingProfile
+// method.
+func (client *InstructionsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) *InstructionsClientListByBillingProfilePager {
+	return &InstructionsClientListByBillingProfilePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
 		},
-		advancer: func(ctx context.Context, resp InstructionsListByBillingProfileResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp InstructionsClientListByBillingProfileResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.InstructionListResult.NextLink)
 		},
 	}
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *InstructionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *InstructionsListByBillingProfileOptions) (*policy.Request, error) {
+func (client *InstructionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *InstructionsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/instructions"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -131,7 +131,7 @@ func (client *InstructionsClient) listByBillingProfileCreateRequest(ctx context.
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,46 +143,38 @@ func (client *InstructionsClient) listByBillingProfileCreateRequest(ctx context.
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *InstructionsClient) listByBillingProfileHandleResponse(resp *http.Response) (InstructionsListByBillingProfileResponse, error) {
-	result := InstructionsListByBillingProfileResponse{RawResponse: resp}
+func (client *InstructionsClient) listByBillingProfileHandleResponse(resp *http.Response) (InstructionsClientListByBillingProfileResponse, error) {
+	result := InstructionsClientListByBillingProfileResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstructionListResult); err != nil {
-		return InstructionsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
+		return InstructionsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingProfileHandleError handles the ListByBillingProfile error response.
-func (client *InstructionsClient) listByBillingProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Put - Creates or updates an instruction. These are custom billing instructions and are only applicable for certain customers.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *InstructionsClient) Put(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, parameters Instruction, options *InstructionsPutOptions) (InstructionsPutResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// instructionName - Instruction Name.
+// parameters - The new instruction.
+// options - InstructionsClientPutOptions contains the optional parameters for the InstructionsClient.Put method.
+func (client *InstructionsClient) Put(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, parameters Instruction, options *InstructionsClientPutOptions) (InstructionsClientPutResponse, error) {
 	req, err := client.putCreateRequest(ctx, billingAccountName, billingProfileName, instructionName, parameters, options)
 	if err != nil {
-		return InstructionsPutResponse{}, err
+		return InstructionsClientPutResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InstructionsPutResponse{}, err
+		return InstructionsClientPutResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InstructionsPutResponse{}, client.putHandleError(resp)
+		return InstructionsClientPutResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.putHandleResponse(resp)
 }
 
 // putCreateRequest creates the Put request.
-func (client *InstructionsClient) putCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, parameters Instruction, options *InstructionsPutOptions) (*policy.Request, error) {
+func (client *InstructionsClient) putCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, instructionName string, parameters Instruction, options *InstructionsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/instructions/{instructionName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -196,7 +188,7 @@ func (client *InstructionsClient) putCreateRequest(ctx context.Context, billingA
 		return nil, errors.New("parameter instructionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instructionName}", url.PathEscape(instructionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,23 +200,10 @@ func (client *InstructionsClient) putCreateRequest(ctx context.Context, billingA
 }
 
 // putHandleResponse handles the Put response.
-func (client *InstructionsClient) putHandleResponse(resp *http.Response) (InstructionsPutResponse, error) {
-	result := InstructionsPutResponse{RawResponse: resp}
+func (client *InstructionsClient) putHandleResponse(resp *http.Response) (InstructionsClientPutResponse, error) {
+	result := InstructionsClientPutResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Instruction); err != nil {
-		return InstructionsPutResponse{}, runtime.NewResponseError(err, resp)
+		return InstructionsClientPutResponse{}, err
 	}
 	return result, nil
-}
-
-// putHandleError handles the Put error response.
-func (client *InstructionsClient) putHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armproviderhub
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,59 @@ import (
 // ResourceTypeRegistrationsClient contains the methods for the ResourceTypeRegistrations group.
 // Don't use this type directly, use NewResourceTypeRegistrationsClient() instead.
 type ResourceTypeRegistrationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourceTypeRegistrationsClient creates a new instance of ResourceTypeRegistrationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceTypeRegistrationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ResourceTypeRegistrationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ResourceTypeRegistrationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a resource type.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsBeginCreateOrUpdateOptions) (ResourceTypeRegistrationsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// resourceType - The resource type.
+// properties - The required request body parameters supplied to the resource type registration CreateOrUpdate operation.
+// options - ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceTypeRegistrationsClient.BeginCreateOrUpdate
+// method.
+func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, providerNamespace, resourceType, properties, options)
 	if err != nil {
-		return ResourceTypeRegistrationsCreateOrUpdatePollerResponse{}, err
+		return ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ResourceTypeRegistrationsCreateOrUpdatePollerResponse{
+	result := ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ResourceTypeRegistrationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ResourceTypeRegistrationsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return ResourceTypeRegistrationsCreateOrUpdatePollerResponse{}, err
+		return ResourceTypeRegistrationsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ResourceTypeRegistrationsCreateOrUpdatePoller{
+	result.Poller = &ResourceTypeRegistrationsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a resource type.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, resourceType, properties, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +86,13 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +106,7 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter resourceType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,38 +117,29 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx c
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ResourceTypeRegistrationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a resource type
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceTypeRegistrationsClient) Delete(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsDeleteOptions) (ResourceTypeRegistrationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// resourceType - The resource type.
+// options - ResourceTypeRegistrationsClientDeleteOptions contains the optional parameters for the ResourceTypeRegistrationsClient.Delete
+// method.
+func (client *ResourceTypeRegistrationsClient) Delete(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientDeleteOptions) (ResourceTypeRegistrationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, providerNamespace, resourceType, options)
 	if err != nil {
-		return ResourceTypeRegistrationsDeleteResponse{}, err
+		return ResourceTypeRegistrationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ResourceTypeRegistrationsDeleteResponse{}, err
+		return ResourceTypeRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ResourceTypeRegistrationsDeleteResponse{}, client.deleteHandleError(resp)
+		return ResourceTypeRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ResourceTypeRegistrationsDeleteResponse{RawResponse: resp}, nil
+	return ResourceTypeRegistrationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsDeleteOptions) (*policy.Request, error) {
+func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +153,7 @@ func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +164,29 @@ func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ResourceTypeRegistrationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a resource type details in the given subscription and provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceTypeRegistrationsClient) Get(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsGetOptions) (ResourceTypeRegistrationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// resourceType - The resource type.
+// options - ResourceTypeRegistrationsClientGetOptions contains the optional parameters for the ResourceTypeRegistrationsClient.Get
+// method.
+func (client *ResourceTypeRegistrationsClient) Get(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientGetOptions) (ResourceTypeRegistrationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, providerNamespace, resourceType, options)
 	if err != nil {
-		return ResourceTypeRegistrationsGetResponse{}, err
+		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ResourceTypeRegistrationsGetResponse{}, err
+		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ResourceTypeRegistrationsGetResponse{}, client.getHandleError(resp)
+		return ResourceTypeRegistrationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsGetOptions) (*policy.Request, error) {
+func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +200,7 @@ func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,43 +212,33 @@ func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Response) (ResourceTypeRegistrationsGetResponse, error) {
-	result := ResourceTypeRegistrationsGetResponse{RawResponse: resp}
+func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Response) (ResourceTypeRegistrationsClientGetResponse, error) {
+	result := ResourceTypeRegistrationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistration); err != nil {
-		return ResourceTypeRegistrationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ResourceTypeRegistrationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByProviderRegistration - Gets the list of the resource types for the given provider.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ResourceTypeRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *ResourceTypeRegistrationsListByProviderRegistrationOptions) *ResourceTypeRegistrationsListByProviderRegistrationPager {
-	return &ResourceTypeRegistrationsListByProviderRegistrationPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// providerNamespace - The name of the resource provider hosted within ProviderHub.
+// options - ResourceTypeRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the ResourceTypeRegistrationsClient.ListByProviderRegistration
+// method.
+func (client *ResourceTypeRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *ResourceTypeRegistrationsClientListByProviderRegistrationPager {
+	return &ResourceTypeRegistrationsClientListByProviderRegistrationPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
 		},
-		advancer: func(ctx context.Context, resp ResourceTypeRegistrationsListByProviderRegistrationResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ResourceTypeRegistrationsClientListByProviderRegistrationResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceTypeRegistrationArrayResponseWithContinuation.NextLink)
 		},
 	}
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *ResourceTypeRegistrationsListByProviderRegistrationOptions) (*policy.Request, error) {
+func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -264,7 +248,7 @@ func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateR
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,23 +260,10 @@ func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateR
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (ResourceTypeRegistrationsListByProviderRegistrationResponse, error) {
-	result := ResourceTypeRegistrationsListByProviderRegistrationResponse{RawResponse: resp}
+func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (ResourceTypeRegistrationsClientListByProviderRegistrationResponse, error) {
+	result := ResourceTypeRegistrationsClientListByProviderRegistrationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistrationArrayResponseWithContinuation); err != nil {
-		return ResourceTypeRegistrationsListByProviderRegistrationResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByProviderRegistrationHandleError handles the ListByProviderRegistration error response.
-func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

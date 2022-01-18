@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
 func ExampleReplicationNetworkMappingsClient_ListByReplicationNetworks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,17 +32,21 @@ func ExampleReplicationNetworkMappingsClient_ListByReplicationNetworks() {
 	pager := client.ListByReplicationNetworks("<fabric-name>",
 		"<network-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetworkMapping.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationNetworkMappings_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Get.json
 func ExampleReplicationNetworkMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,10 +64,10 @@ func ExampleReplicationNetworkMappingsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationNetworkMappingsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationNetworkMappings_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Create.json
 func ExampleReplicationNetworkMappingsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,9 +84,7 @@ func ExampleReplicationNetworkMappingsClient_BeginCreate() {
 		armrecoveryservicessiterecovery.CreateNetworkMappingInput{
 			Properties: &armrecoveryservicessiterecovery.CreateNetworkMappingInputProperties{
 				FabricSpecificDetails: &armrecoveryservicessiterecovery.VmmToAzureCreateNetworkMappingInput{
-					FabricSpecificCreateNetworkMappingInput: armrecoveryservicessiterecovery.FabricSpecificCreateNetworkMappingInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 				RecoveryFabricName: to.StringPtr("<recovery-fabric-name>"),
 				RecoveryNetworkID:  to.StringPtr("<recovery-network-id>"),
@@ -96,10 +98,10 @@ func ExampleReplicationNetworkMappingsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationNetworkMappingsClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationNetworkMappings_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Delete.json
 func ExampleReplicationNetworkMappingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +125,7 @@ func ExampleReplicationNetworkMappingsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationNetworkMappings_Update.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_Update.json
 func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,9 +142,7 @@ func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 		armrecoveryservicessiterecovery.UpdateNetworkMappingInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateNetworkMappingInputProperties{
 				FabricSpecificDetails: &armrecoveryservicessiterecovery.VmmToAzureUpdateNetworkMappingInput{
-					FabricSpecificUpdateNetworkMappingInput: armrecoveryservicessiterecovery.FabricSpecificUpdateNetworkMappingInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 				RecoveryFabricName: to.StringPtr("<recovery-fabric-name>"),
 				RecoveryNetworkID:  to.StringPtr("<recovery-network-id>"),
@@ -156,10 +156,10 @@ func ExampleReplicationNetworkMappingsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("NetworkMapping.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationNetworkMappingsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationNetworkMappings_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationNetworkMappings_List.json
 func ExampleReplicationNetworkMappingsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,12 +170,16 @@ func ExampleReplicationNetworkMappingsClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("NetworkMapping.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

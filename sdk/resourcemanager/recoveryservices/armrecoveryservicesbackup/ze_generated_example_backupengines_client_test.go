@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Dpm/BackupEngines_List.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Dpm/BackupEngines_List.json
 func ExampleBackupEnginesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,20 +26,24 @@ func ExampleBackupEnginesClient_List() {
 	client := armrecoveryservicesbackup.NewBackupEnginesClient("<subscription-id>", cred, nil)
 	pager := client.List("<vault-name>",
 		"<resource-group-name>",
-		&armrecoveryservicesbackup.BackupEnginesListOptions{Filter: nil,
+		&armrecoveryservicesbackup.BackupEnginesClientListOptions{Filter: nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("BackupEngineBaseResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Dpm/BackupEngines_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Dpm/BackupEngines_Get.json
 func ExampleBackupEnginesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,11 +55,11 @@ func ExampleBackupEnginesClient_Get() {
 		"<vault-name>",
 		"<resource-group-name>",
 		"<backup-engine-name>",
-		&armrecoveryservicesbackup.BackupEnginesGetOptions{Filter: nil,
+		&armrecoveryservicesbackup.BackupEnginesClientGetOptions{Filter: nil,
 			SkipToken: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupEngineBaseResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupEnginesClientGetResult)
 }

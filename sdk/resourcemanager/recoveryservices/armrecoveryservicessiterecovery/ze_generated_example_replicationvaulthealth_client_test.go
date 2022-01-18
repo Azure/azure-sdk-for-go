@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationVaultHealth_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationVaultHealth_Get.json
 func ExampleReplicationVaultHealthClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,10 +33,10 @@ func ExampleReplicationVaultHealthClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VaultHealthDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationVaultHealthClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationVaultHealth_Refresh.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationVaultHealth_Refresh.json
 func ExampleReplicationVaultHealthClient_BeginRefresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,5 +55,5 @@ func ExampleReplicationVaultHealthClient_BeginRefresh() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("VaultHealthDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationVaultHealthClientRefreshResult)
 }

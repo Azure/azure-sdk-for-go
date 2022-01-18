@@ -30,6 +30,18 @@ type AccountKeys struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
 }
 
+// AccountProperties - Common Properties shared by Mixed Reality Accounts
+type AccountProperties struct {
+	// The name of the storage account associated with this accountId
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
+
+	// READ-ONLY; Correspond domain name of certain Spatial Anchors Account
+	AccountDomain *string `json:"accountDomain,omitempty" azure:"ro"`
+
+	// READ-ONLY; unique id of certain account.
+	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+}
+
 // CheckNameAvailabilityRequest - Check Name Availability Request
 type CheckNameAvailabilityRequest struct {
 	// REQUIRED; Resource Name To Verify
@@ -51,18 +63,15 @@ type CheckNameAvailabilityResponse struct {
 	Reason *NameUnavailableReason `json:"reason,omitempty"`
 }
 
-// CloudError - An Error response.
-// Implements the error and azcore.HTTPResponse interfaces.
-type CloudError struct {
-	raw string
-	// An Error response.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
+// ClientCheckNameAvailabilityLocalOptions contains the optional parameters for the Client.CheckNameAvailabilityLocal method.
+type ClientCheckNameAvailabilityLocalOptions struct {
+	// placeholder for future optional parameters
 }
 
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+// CloudError - An Error response.
+type CloudError struct {
+	// An Error response.
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from Azure.
@@ -202,26 +211,10 @@ func (m MetricSpecification) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MixedRealityAccountProperties - Common Properties shared by Mixed Reality Accounts
-type MixedRealityAccountProperties struct {
-	// The name of the storage account associated with this accountId
-	StorageAccountName *string `json:"storageAccountName,omitempty"`
-
-	// READ-ONLY; Correspond domain name of certain Spatial Anchors Account
-	AccountDomain *string `json:"accountDomain,omitempty" azure:"ro"`
-
-	// READ-ONLY; unique id of certain account.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
-}
-
-// MixedRealityClientCheckNameAvailabilityLocalOptions contains the optional parameters for the MixedRealityClient.CheckNameAvailabilityLocal method.
-type MixedRealityClientCheckNameAvailabilityLocalOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ObjectAnchorsAccount Response.
 type ObjectAnchorsAccount struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string                       `json:"location,omitempty"`
 	Identity *ObjectAnchorsAccountIdentity `json:"identity,omitempty"`
 
 	// The kind of account, if supported
@@ -231,33 +224,57 @@ type ObjectAnchorsAccount struct {
 	Plan *Identity `json:"plan,omitempty"`
 
 	// Property bag.
-	Properties *MixedRealityAccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties `json:"properties,omitempty"`
 
 	// The sku associated with this account
 	SKU *SKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system metadata related to an object anchors account.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ObjectAnchorsAccount.
 func (o ObjectAnchorsAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", o.ID)
 	populate(objectMap, "identity", o.Identity)
 	populate(objectMap, "kind", o.Kind)
+	populate(objectMap, "location", o.Location)
+	populate(objectMap, "name", o.Name)
 	populate(objectMap, "plan", o.Plan)
 	populate(objectMap, "properties", o.Properties)
 	populate(objectMap, "sku", o.SKU)
 	populate(objectMap, "systemData", o.SystemData)
+	populate(objectMap, "tags", o.Tags)
+	populate(objectMap, "type", o.Type)
 	return json.Marshal(objectMap)
 }
 
 type ObjectAnchorsAccountIdentity struct {
-	Identity
+	// The identity type.
+	Type *string `json:"type,omitempty"`
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// ObjectAnchorsAccountPage - Result of the request to get resource collection. It contains a list of resources and a URL link to get the next set of results.
+// ObjectAnchorsAccountPage - Result of the request to get resource collection. It contains a list of resources and a URL
+// link to get the next set of results.
 type ObjectAnchorsAccountPage struct {
 	// URL to get the next set of resource list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -274,43 +291,47 @@ func (o ObjectAnchorsAccountPage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ObjectAnchorsAccountsCreateOptions contains the optional parameters for the ObjectAnchorsAccounts.Create method.
-type ObjectAnchorsAccountsCreateOptions struct {
+// ObjectAnchorsAccountsClientCreateOptions contains the optional parameters for the ObjectAnchorsAccountsClient.Create method.
+type ObjectAnchorsAccountsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsDeleteOptions contains the optional parameters for the ObjectAnchorsAccounts.Delete method.
-type ObjectAnchorsAccountsDeleteOptions struct {
+// ObjectAnchorsAccountsClientDeleteOptions contains the optional parameters for the ObjectAnchorsAccountsClient.Delete method.
+type ObjectAnchorsAccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsGetOptions contains the optional parameters for the ObjectAnchorsAccounts.Get method.
-type ObjectAnchorsAccountsGetOptions struct {
+// ObjectAnchorsAccountsClientGetOptions contains the optional parameters for the ObjectAnchorsAccountsClient.Get method.
+type ObjectAnchorsAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsListByResourceGroupOptions contains the optional parameters for the ObjectAnchorsAccounts.ListByResourceGroup method.
-type ObjectAnchorsAccountsListByResourceGroupOptions struct {
+// ObjectAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListByResourceGroup
+// method.
+type ObjectAnchorsAccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsListBySubscriptionOptions contains the optional parameters for the ObjectAnchorsAccounts.ListBySubscription method.
-type ObjectAnchorsAccountsListBySubscriptionOptions struct {
+// ObjectAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListBySubscription
+// method.
+type ObjectAnchorsAccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsListKeysOptions contains the optional parameters for the ObjectAnchorsAccounts.ListKeys method.
-type ObjectAnchorsAccountsListKeysOptions struct {
+// ObjectAnchorsAccountsClientListKeysOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListKeys
+// method.
+type ObjectAnchorsAccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsRegenerateKeysOptions contains the optional parameters for the ObjectAnchorsAccounts.RegenerateKeys method.
-type ObjectAnchorsAccountsRegenerateKeysOptions struct {
+// ObjectAnchorsAccountsClientRegenerateKeysOptions contains the optional parameters for the ObjectAnchorsAccountsClient.RegenerateKeys
+// method.
+type ObjectAnchorsAccountsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectAnchorsAccountsUpdateOptions contains the optional parameters for the ObjectAnchorsAccounts.Update method.
-type ObjectAnchorsAccountsUpdateOptions struct {
+// ObjectAnchorsAccountsClientUpdateOptions contains the optional parameters for the ObjectAnchorsAccountsClient.Update method.
+type ObjectAnchorsAccountsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -347,7 +368,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationPage - Result of the request to list Resource Provider operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationPage - Result of the request to list Resource Provider operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationPage struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -370,14 +392,16 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // RemoteRenderingAccount Response.
 type RemoteRenderingAccount struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The identity associated with this account
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -388,30 +412,46 @@ type RemoteRenderingAccount struct {
 	Plan *Identity `json:"plan,omitempty"`
 
 	// Property bag.
-	Properties *MixedRealityAccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties `json:"properties,omitempty"`
 
 	// The sku associated with this account
 	SKU *SKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System metadata for this account
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RemoteRenderingAccount.
 func (r RemoteRenderingAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", r.ID)
 	populate(objectMap, "identity", r.Identity)
 	populate(objectMap, "kind", r.Kind)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
 	populate(objectMap, "plan", r.Plan)
 	populate(objectMap, "properties", r.Properties)
 	populate(objectMap, "sku", r.SKU)
 	populate(objectMap, "systemData", r.SystemData)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
-// RemoteRenderingAccountPage - Result of the request to get resource collection. It contains a list of resources and a URL link to get the next set of
-// results.
+// RemoteRenderingAccountPage - Result of the request to get resource collection. It contains a list of resources and a URL
+// link to get the next set of results.
 type RemoteRenderingAccountPage struct {
 	// URL to get the next set of resource list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -428,43 +468,50 @@ func (r RemoteRenderingAccountPage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RemoteRenderingAccountsCreateOptions contains the optional parameters for the RemoteRenderingAccounts.Create method.
-type RemoteRenderingAccountsCreateOptions struct {
+// RemoteRenderingAccountsClientCreateOptions contains the optional parameters for the RemoteRenderingAccountsClient.Create
+// method.
+type RemoteRenderingAccountsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsDeleteOptions contains the optional parameters for the RemoteRenderingAccounts.Delete method.
-type RemoteRenderingAccountsDeleteOptions struct {
+// RemoteRenderingAccountsClientDeleteOptions contains the optional parameters for the RemoteRenderingAccountsClient.Delete
+// method.
+type RemoteRenderingAccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsGetOptions contains the optional parameters for the RemoteRenderingAccounts.Get method.
-type RemoteRenderingAccountsGetOptions struct {
+// RemoteRenderingAccountsClientGetOptions contains the optional parameters for the RemoteRenderingAccountsClient.Get method.
+type RemoteRenderingAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsListByResourceGroupOptions contains the optional parameters for the RemoteRenderingAccounts.ListByResourceGroup method.
-type RemoteRenderingAccountsListByResourceGroupOptions struct {
+// RemoteRenderingAccountsClientListByResourceGroupOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListByResourceGroup
+// method.
+type RemoteRenderingAccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsListBySubscriptionOptions contains the optional parameters for the RemoteRenderingAccounts.ListBySubscription method.
-type RemoteRenderingAccountsListBySubscriptionOptions struct {
+// RemoteRenderingAccountsClientListBySubscriptionOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListBySubscription
+// method.
+type RemoteRenderingAccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsListKeysOptions contains the optional parameters for the RemoteRenderingAccounts.ListKeys method.
-type RemoteRenderingAccountsListKeysOptions struct {
+// RemoteRenderingAccountsClientListKeysOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListKeys
+// method.
+type RemoteRenderingAccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsRegenerateKeysOptions contains the optional parameters for the RemoteRenderingAccounts.RegenerateKeys method.
-type RemoteRenderingAccountsRegenerateKeysOptions struct {
+// RemoteRenderingAccountsClientRegenerateKeysOptions contains the optional parameters for the RemoteRenderingAccountsClient.RegenerateKeys
+// method.
+type RemoteRenderingAccountsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RemoteRenderingAccountsUpdateOptions contains the optional parameters for the RemoteRenderingAccounts.Update method.
-type RemoteRenderingAccountsUpdateOptions struct {
+// RemoteRenderingAccountsClientUpdateOptions contains the optional parameters for the RemoteRenderingAccountsClient.Update
+// method.
+type RemoteRenderingAccountsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -480,25 +527,13 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
 
-	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
@@ -507,7 +542,8 @@ type SKU struct {
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 
-	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
 	Tier *SKUTier `json:"tier,omitempty"`
 }
 
@@ -530,7 +566,9 @@ func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
 
 // SpatialAnchorsAccount Response.
 type SpatialAnchorsAccount struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// The identity associated with this account
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -541,29 +579,46 @@ type SpatialAnchorsAccount struct {
 	Plan *Identity `json:"plan,omitempty"`
 
 	// Property bag.
-	Properties *MixedRealityAccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties `json:"properties,omitempty"`
 
 	// The sku associated with this account
 	SKU *SKU `json:"sku,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System metadata for this account
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SpatialAnchorsAccount.
 func (s SpatialAnchorsAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", s.ID)
 	populate(objectMap, "identity", s.Identity)
 	populate(objectMap, "kind", s.Kind)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
 	populate(objectMap, "plan", s.Plan)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "sku", s.SKU)
 	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
-// SpatialAnchorsAccountPage - Result of the request to get resource collection. It contains a list of resources and a URL link to get the next set of results.
+// SpatialAnchorsAccountPage - Result of the request to get resource collection. It contains a list of resources and a URL
+// link to get the next set of results.
 type SpatialAnchorsAccountPage struct {
 	// URL to get the next set of resource list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -580,43 +635,50 @@ func (s SpatialAnchorsAccountPage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SpatialAnchorsAccountsCreateOptions contains the optional parameters for the SpatialAnchorsAccounts.Create method.
-type SpatialAnchorsAccountsCreateOptions struct {
+// SpatialAnchorsAccountsClientCreateOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Create
+// method.
+type SpatialAnchorsAccountsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsDeleteOptions contains the optional parameters for the SpatialAnchorsAccounts.Delete method.
-type SpatialAnchorsAccountsDeleteOptions struct {
+// SpatialAnchorsAccountsClientDeleteOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Delete
+// method.
+type SpatialAnchorsAccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsGetOptions contains the optional parameters for the SpatialAnchorsAccounts.Get method.
-type SpatialAnchorsAccountsGetOptions struct {
+// SpatialAnchorsAccountsClientGetOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Get method.
+type SpatialAnchorsAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsListByResourceGroupOptions contains the optional parameters for the SpatialAnchorsAccounts.ListByResourceGroup method.
-type SpatialAnchorsAccountsListByResourceGroupOptions struct {
+// SpatialAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListByResourceGroup
+// method.
+type SpatialAnchorsAccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsListBySubscriptionOptions contains the optional parameters for the SpatialAnchorsAccounts.ListBySubscription method.
-type SpatialAnchorsAccountsListBySubscriptionOptions struct {
+// SpatialAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListBySubscription
+// method.
+type SpatialAnchorsAccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsListKeysOptions contains the optional parameters for the SpatialAnchorsAccounts.ListKeys method.
-type SpatialAnchorsAccountsListKeysOptions struct {
+// SpatialAnchorsAccountsClientListKeysOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListKeys
+// method.
+type SpatialAnchorsAccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsRegenerateKeysOptions contains the optional parameters for the SpatialAnchorsAccounts.RegenerateKeys method.
-type SpatialAnchorsAccountsRegenerateKeysOptions struct {
+// SpatialAnchorsAccountsClientRegenerateKeysOptions contains the optional parameters for the SpatialAnchorsAccountsClient.RegenerateKeys
+// method.
+type SpatialAnchorsAccountsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SpatialAnchorsAccountsUpdateOptions contains the optional parameters for the SpatialAnchorsAccounts.Update method.
-type SpatialAnchorsAccountsUpdateOptions struct {
+// SpatialAnchorsAccountsClientUpdateOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Update
+// method.
+type SpatialAnchorsAccountsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -688,27 +750,34 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

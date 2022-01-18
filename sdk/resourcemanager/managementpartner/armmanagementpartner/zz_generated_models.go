@@ -16,26 +16,29 @@ import (
 )
 
 // Error - this is the management partner operations error
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw string
-	// this is the ExtendedErrorInfo property
-	InnerError *ExtendedErrorInfo `json:"error,omitempty"`
-}
+	// this is the error response code
+	Code *string `json:"code,omitempty"`
 
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	// this is the ExtendedErrorInfo property
+	Error *ExtendedErrorInfo `json:"error,omitempty"`
+
+	// this is the extended error info message
+	Message *string `json:"message,omitempty"`
 }
 
 // ExtendedErrorInfo - this is the extended error info
 type ExtendedErrorInfo struct {
 	// this is the error response code
-	Code *ErrorResponseCode `json:"code,omitempty"`
+	Code *string `json:"code,omitempty"`
 
 	// this is the extended error info message
 	Message *string `json:"message,omitempty"`
+}
+
+// OperationClientListOptions contains the optional parameters for the OperationClient.List method.
+type OperationClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationDisplay - this is the management partner operation
@@ -70,11 +73,6 @@ func (o OperationList) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationListOptions contains the optional parameters for the Operation.List method.
-type OperationListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationResponse - this is the management partner operations response
 type OperationResponse struct {
 	// this is the operation display
@@ -87,18 +85,23 @@ type OperationResponse struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// PartnerCreateOptions contains the optional parameters for the Partner.Create method.
-type PartnerCreateOptions struct {
+// PartnerClientCreateOptions contains the optional parameters for the PartnerClient.Create method.
+type PartnerClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PartnerDeleteOptions contains the optional parameters for the Partner.Delete method.
-type PartnerDeleteOptions struct {
+// PartnerClientDeleteOptions contains the optional parameters for the PartnerClient.Delete method.
+type PartnerClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PartnerGetOptions contains the optional parameters for the Partner.Get method.
-type PartnerGetOptions struct {
+// PartnerClientGetOptions contains the optional parameters for the PartnerClient.Get method.
+type PartnerClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PartnerClientUpdateOptions contains the optional parameters for the PartnerClient.Update method.
+type PartnerClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -202,13 +205,8 @@ type PartnerResponse struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PartnerUpdateOptions contains the optional parameters for the Partner.Update method.
-type PartnerUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PartnersGetOptions contains the optional parameters for the Partners.Get method.
-type PartnersGetOptions struct {
+// PartnersClientGetOptions contains the optional parameters for the PartnersClient.Get method.
+type PartnersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 

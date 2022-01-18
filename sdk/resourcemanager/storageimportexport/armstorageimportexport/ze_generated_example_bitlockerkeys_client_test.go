@@ -25,11 +25,12 @@ func ExampleBitLockerKeysClient_List() {
 	ctx := context.Background()
 	client := armstorageimportexport.NewBitLockerKeysClient("<subscription-id>",
 		nil, cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<job-name>",
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BitLockerKeysClientListResult)
 }

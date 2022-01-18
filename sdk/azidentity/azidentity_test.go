@@ -30,9 +30,15 @@ const (
 // Set environment variables for the duration of a test. Restore their prior values
 // after the test completes. Obviated by 1.17's T.Setenv
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
+	unsetSentinel := "variables having no initial value must be unset after the test"
 	priorValues := make(map[string]string, len(vars))
 	for k, v := range vars {
-		priorValues[k] = os.Getenv(k)
+		priorValue, ok := os.LookupEnv(k)
+		if ok {
+			priorValues[k] = priorValue
+		} else {
+			priorValues[k] = unsetSentinel
+		}
 		err := os.Setenv(k, v)
 		if err != nil {
 			t.Fatalf("Unexpected error setting %s: %v", k, err)
@@ -41,7 +47,12 @@ func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 
 	t.Cleanup(func() {
 		for k, v := range priorValues {
-			err := os.Setenv(k, v)
+			var err error
+			if v == unsetSentinel {
+				err = os.Unsetenv(k)
+			} else {
+				err = os.Setenv(k, v)
+			}
 			if err != nil {
 				t.Fatalf("Unexpected error resetting %s: %v", k, err)
 			}

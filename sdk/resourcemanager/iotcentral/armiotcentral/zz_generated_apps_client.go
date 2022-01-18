@@ -11,7 +11,6 @@ package armiotcentral
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,48 +24,60 @@ import (
 // AppsClient contains the methods for the Apps group.
 // Don't use this type directly, use NewAppsClient() instead.
 type AppsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAppsClient creates a new instance of AppsClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AppsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AppsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Check if an IoT Central application name is available.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs, options *AppsCheckNameAvailabilityOptions) (AppsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// operationInputs - Set the name parameter in the OperationInputs structure to the name of the IoT Central application to
+// check.
+// options - AppsClientCheckNameAvailabilityOptions contains the optional parameters for the AppsClient.CheckNameAvailability
+// method.
+func (client *AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs, options *AppsClientCheckNameAvailabilityOptions) (AppsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, operationInputs, options)
 	if err != nil {
-		return AppsCheckNameAvailabilityResponse{}, err
+		return AppsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppsCheckNameAvailabilityResponse{}, err
+		return AppsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return AppsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *AppsClient) checkNameAvailabilityCreateRequest(ctx context.Context, operationInputs OperationInputs, options *AppsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *AppsClient) checkNameAvailabilityCreateRequest(ctx context.Context, operationInputs OperationInputs, options *AppsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,52 +89,43 @@ func (client *AppsClient) checkNameAvailabilityCreateRequest(ctx context.Context
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *AppsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AppsCheckNameAvailabilityResponse, error) {
-	result := AppsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *AppsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AppsClientCheckNameAvailabilityResponse, error) {
+	result := AppsClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppAvailabilityInfo); err != nil {
-		return AppsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *AppsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CheckSubdomainAvailability - Check if an IoT Central application subdomain is available.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) CheckSubdomainAvailability(ctx context.Context, operationInputs OperationInputs, options *AppsCheckSubdomainAvailabilityOptions) (AppsCheckSubdomainAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// operationInputs - Set the name parameter in the OperationInputs structure to the subdomain of the IoT Central application
+// to check.
+// options - AppsClientCheckSubdomainAvailabilityOptions contains the optional parameters for the AppsClient.CheckSubdomainAvailability
+// method.
+func (client *AppsClient) CheckSubdomainAvailability(ctx context.Context, operationInputs OperationInputs, options *AppsClientCheckSubdomainAvailabilityOptions) (AppsClientCheckSubdomainAvailabilityResponse, error) {
 	req, err := client.checkSubdomainAvailabilityCreateRequest(ctx, operationInputs, options)
 	if err != nil {
-		return AppsCheckSubdomainAvailabilityResponse{}, err
+		return AppsClientCheckSubdomainAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppsCheckSubdomainAvailabilityResponse{}, err
+		return AppsClientCheckSubdomainAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppsCheckSubdomainAvailabilityResponse{}, client.checkSubdomainAvailabilityHandleError(resp)
+		return AppsClientCheckSubdomainAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkSubdomainAvailabilityHandleResponse(resp)
 }
 
 // checkSubdomainAvailabilityCreateRequest creates the CheckSubdomainAvailability request.
-func (client *AppsClient) checkSubdomainAvailabilityCreateRequest(ctx context.Context, operationInputs OperationInputs, options *AppsCheckSubdomainAvailabilityOptions) (*policy.Request, error) {
+func (client *AppsClient) checkSubdomainAvailabilityCreateRequest(ctx context.Context, operationInputs OperationInputs, options *AppsClientCheckSubdomainAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,54 +137,46 @@ func (client *AppsClient) checkSubdomainAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkSubdomainAvailabilityHandleResponse handles the CheckSubdomainAvailability response.
-func (client *AppsClient) checkSubdomainAvailabilityHandleResponse(resp *http.Response) (AppsCheckSubdomainAvailabilityResponse, error) {
-	result := AppsCheckSubdomainAvailabilityResponse{RawResponse: resp}
+func (client *AppsClient) checkSubdomainAvailabilityHandleResponse(resp *http.Response) (AppsClientCheckSubdomainAvailabilityResponse, error) {
+	result := AppsClientCheckSubdomainAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppAvailabilityInfo); err != nil {
-		return AppsCheckSubdomainAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientCheckSubdomainAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkSubdomainAvailabilityHandleError handles the CheckSubdomainAvailability error response.
-func (client *AppsClient) checkSubdomainAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginCreateOrUpdate - Create or update the metadata of an IoT Central application. The usual pattern to modify a property is to retrieve the IoT Central
-// application metadata and security metadata, and then combine them
+// BeginCreateOrUpdate - Create or update the metadata of an IoT Central application. The usual pattern to modify a property
+// is to retrieve the IoT Central application metadata and security metadata, and then combine them
 // with the modified values in a new body to update the IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsBeginCreateOrUpdateOptions) (AppsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the IoT Central application.
+// resourceName - The ARM resource name of the IoT Central application.
+// app - The IoT Central application metadata and security metadata.
+// options - AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate
+// method.
+func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsClientBeginCreateOrUpdateOptions) (AppsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, app, options)
 	if err != nil {
-		return AppsCreateOrUpdatePollerResponse{}, err
+		return AppsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := AppsCreateOrUpdatePollerResponse{
+	result := AppsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AppsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("AppsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return AppsCreateOrUpdatePollerResponse{}, err
+		return AppsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &AppsCreateOrUpdatePoller{
+	result.Poller = &AppsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Create or update the metadata of an IoT Central application. The usual pattern to modify a property is to retrieve the IoT Central application
-// metadata and security metadata, and then combine them
+// CreateOrUpdate - Create or update the metadata of an IoT Central application. The usual pattern to modify a property is
+// to retrieve the IoT Central application metadata and security metadata, and then combine them
 // with the modified values in a new body to update the IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, app, options)
 	if err != nil {
 		return nil, err
@@ -192,13 +186,13 @@ func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, app App, options *AppsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/iotApps/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -212,7 +206,7 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -223,42 +217,32 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	return req, runtime.MarshalAsJSON(req, app)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AppsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete an IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *AppsBeginDeleteOptions) (AppsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the IoT Central application.
+// resourceName - The ARM resource name of the IoT Central application.
+// options - AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
+func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientBeginDeleteOptions) (AppsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return AppsDeletePollerResponse{}, err
+		return AppsClientDeletePollerResponse{}, err
 	}
-	result := AppsDeletePollerResponse{
+	result := AppsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AppsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("AppsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return AppsDeletePollerResponse{}, err
+		return AppsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &AppsDeletePoller{
+	result.Poller = &AppsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete an IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *AppsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -268,13 +252,13 @@ func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AppsBeginDeleteOptions) (*policy.Request, error) {
+func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/iotApps/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -288,7 +272,7 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -299,38 +283,28 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AppsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the metadata of an IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *AppsGetOptions) (AppsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the IoT Central application.
+// resourceName - The ARM resource name of the IoT Central application.
+// options - AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
+func (client *AppsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientGetOptions) (AppsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return AppsGetResponse{}, err
+		return AppsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppsGetResponse{}, err
+		return AppsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppsGetResponse{}, client.getHandleError(resp)
+		return AppsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AppsGetOptions) (*policy.Request, error) {
+func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AppsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/iotApps/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -344,7 +318,7 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,43 +330,33 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsGetResponse, error) {
-	result := AppsGetResponse{RawResponse: resp}
+func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetResponse, error) {
+	result := AppsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.App); err != nil {
-		return AppsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AppsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Get all the IoT Central Applications in a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) ListByResourceGroup(resourceGroupName string, options *AppsListByResourceGroupOptions) *AppsListByResourceGroupPager {
-	return &AppsListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the IoT Central application.
+// options - AppsClientListByResourceGroupOptions contains the optional parameters for the AppsClient.ListByResourceGroup
+// method.
+func (client *AppsClient) ListByResourceGroup(resourceGroupName string, options *AppsClientListByResourceGroupOptions) *AppsClientListByResourceGroupPager {
+	return &AppsClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AppsListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AppsClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/iotApps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -402,7 +366,7 @@ func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -414,49 +378,37 @@ func (client *AppsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppsClient) listByResourceGroupHandleResponse(resp *http.Response) (AppsListByResourceGroupResponse, error) {
-	result := AppsListByResourceGroupResponse{RawResponse: resp}
+func (client *AppsClient) listByResourceGroupHandleResponse(resp *http.Response) (AppsClientListByResourceGroupResponse, error) {
+	result := AppsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppListResult); err != nil {
-		return AppsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AppsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Get all IoT Central Applications in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) ListBySubscription(options *AppsListBySubscriptionOptions) *AppsListBySubscriptionPager {
-	return &AppsListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AppsClientListBySubscriptionOptions contains the optional parameters for the AppsClient.ListBySubscription method.
+func (client *AppsClient) ListBySubscription(options *AppsClientListBySubscriptionOptions) *AppsClientListBySubscriptionPager {
+	return &AppsClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AppsListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AppsClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AppsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AppsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *AppsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AppsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/iotApps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -468,49 +420,37 @@ func (client *AppsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AppsClient) listBySubscriptionHandleResponse(resp *http.Response) (AppsListBySubscriptionResponse, error) {
-	result := AppsListBySubscriptionResponse{RawResponse: resp}
+func (client *AppsClient) listBySubscriptionHandleResponse(resp *http.Response) (AppsClientListBySubscriptionResponse, error) {
+	result := AppsClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppListResult); err != nil {
-		return AppsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *AppsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListTemplates - Get all available application templates.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) ListTemplates(options *AppsListTemplatesOptions) *AppsListTemplatesPager {
-	return &AppsListTemplatesPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - AppsClientListTemplatesOptions contains the optional parameters for the AppsClient.ListTemplates method.
+func (client *AppsClient) ListTemplates(options *AppsClientListTemplatesOptions) *AppsClientListTemplatesPager {
+	return &AppsClientListTemplatesPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listTemplatesCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AppsListTemplatesResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AppsClientListTemplatesResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppTemplatesResult.NextLink)
 		},
 	}
 }
 
 // listTemplatesCreateRequest creates the ListTemplates request.
-func (client *AppsClient) listTemplatesCreateRequest(ctx context.Context, options *AppsListTemplatesOptions) (*policy.Request, error) {
+func (client *AppsClient) listTemplatesCreateRequest(ctx context.Context, options *AppsClientListTemplatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -522,50 +462,41 @@ func (client *AppsClient) listTemplatesCreateRequest(ctx context.Context, option
 }
 
 // listTemplatesHandleResponse handles the ListTemplates response.
-func (client *AppsClient) listTemplatesHandleResponse(resp *http.Response) (AppsListTemplatesResponse, error) {
-	result := AppsListTemplatesResponse{RawResponse: resp}
+func (client *AppsClient) listTemplatesHandleResponse(resp *http.Response) (AppsClientListTemplatesResponse, error) {
+	result := AppsClientListTemplatesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppTemplatesResult); err != nil {
-		return AppsListTemplatesResponse{}, runtime.NewResponseError(err, resp)
+		return AppsClientListTemplatesResponse{}, err
 	}
 	return result, nil
 }
 
-// listTemplatesHandleError handles the ListTemplates error response.
-func (client *AppsClient) listTemplatesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update the metadata of an IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsBeginUpdateOptions) (AppsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the IoT Central application.
+// resourceName - The ARM resource name of the IoT Central application.
+// appPatch - The IoT Central application metadata and security metadata.
+// options - AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
+func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsClientBeginUpdateOptions) (AppsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, resourceName, appPatch, options)
 	if err != nil {
-		return AppsUpdatePollerResponse{}, err
+		return AppsClientUpdatePollerResponse{}, err
 	}
-	result := AppsUpdatePollerResponse{
+	result := AppsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("AppsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("AppsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return AppsUpdatePollerResponse{}, err
+		return AppsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &AppsUpdatePoller{
+	result.Poller = &AppsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update the metadata of an IoT Central application.
-// If the operation fails it returns the *CloudError error type.
-func (client *AppsClient) update(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppsClient) update(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, appPatch, options)
 	if err != nil {
 		return nil, err
@@ -575,13 +506,13 @@ func (client *AppsClient) update(ctx context.Context, resourceGroupName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsBeginUpdateOptions) (*policy.Request, error) {
+func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch, options *AppsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTCentral/iotApps/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -595,7 +526,7 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -604,17 +535,4 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appPatch)
-}
-
-// updateHandleError handles the Update error response.
-func (client *AppsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

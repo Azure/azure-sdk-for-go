@@ -11,7 +11,6 @@ package armhealthcareapis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,39 +24,52 @@ import (
 // FhirDestinationsClient contains the methods for the FhirDestinations group.
 // Don't use this type directly, use NewFhirDestinationsClient() instead.
 type FhirDestinationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFhirDestinationsClient creates a new instance of FhirDestinationsClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FhirDestinationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FhirDestinationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FhirDestinationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByIotConnector - Lists all FHIR destinations for the given IoT Connector
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirDestinationsClient) ListByIotConnector(resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsListByIotConnectorOptions) *FhirDestinationsListByIotConnectorPager {
-	return &FhirDestinationsListByIotConnectorPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// iotConnectorName - The name of IoT Connector resource.
+// options - FhirDestinationsClientListByIotConnectorOptions contains the optional parameters for the FhirDestinationsClient.ListByIotConnector
+// method.
+func (client *FhirDestinationsClient) ListByIotConnector(resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsClientListByIotConnectorOptions) *FhirDestinationsClientListByIotConnectorPager {
+	return &FhirDestinationsClientListByIotConnectorPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByIotConnectorCreateRequest(ctx, resourceGroupName, workspaceName, iotConnectorName, options)
 		},
-		advancer: func(ctx context.Context, resp FhirDestinationsListByIotConnectorResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FhirDestinationsClientListByIotConnectorResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IotFhirDestinationCollection.NextLink)
 		},
 	}
 }
 
 // listByIotConnectorCreateRequest creates the ListByIotConnector request.
-func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsListByIotConnectorOptions) (*policy.Request, error) {
+func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsClientListByIotConnectorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -75,7 +87,7 @@ func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx contex
 		return nil, errors.New("parameter iotConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{iotConnectorName}", url.PathEscape(iotConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,23 +99,10 @@ func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx contex
 }
 
 // listByIotConnectorHandleResponse handles the ListByIotConnector response.
-func (client *FhirDestinationsClient) listByIotConnectorHandleResponse(resp *http.Response) (FhirDestinationsListByIotConnectorResponse, error) {
-	result := FhirDestinationsListByIotConnectorResponse{RawResponse: resp}
+func (client *FhirDestinationsClient) listByIotConnectorHandleResponse(resp *http.Response) (FhirDestinationsClientListByIotConnectorResponse, error) {
+	result := FhirDestinationsClientListByIotConnectorResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotFhirDestinationCollection); err != nil {
-		return FhirDestinationsListByIotConnectorResponse{}, runtime.NewResponseError(err, resp)
+		return FhirDestinationsClientListByIotConnectorResponse{}, err
 	}
 	return result, nil
-}
-
-// listByIotConnectorHandleError handles the ListByIotConnector error response.
-func (client *FhirDestinationsClient) listByIotConnectorHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

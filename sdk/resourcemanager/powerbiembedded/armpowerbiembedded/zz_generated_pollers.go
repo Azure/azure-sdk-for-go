@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// WorkspaceCollectionsDeletePoller provides polling facilities until the operation reaches a terminal state.
-type WorkspaceCollectionsDeletePoller struct {
+// WorkspaceCollectionsClientDeletePoller provides polling facilities until the operation reaches a terminal state.
+type WorkspaceCollectionsClientDeletePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *WorkspaceCollectionsDeletePoller) Done() bool {
+func (p *WorkspaceCollectionsClientDeletePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *WorkspaceCollectionsDeletePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *WorkspaceCollectionsDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *WorkspaceCollectionsClientDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final WorkspaceCollectionsDeleteResponse will be returned.
-func (p *WorkspaceCollectionsDeletePoller) FinalResponse(ctx context.Context) (WorkspaceCollectionsDeleteResponse, error) {
-	respType := WorkspaceCollectionsDeleteResponse{}
+// If the final GET succeeded then the final WorkspaceCollectionsClientDeleteResponse will be returned.
+func (p *WorkspaceCollectionsClientDeletePoller) FinalResponse(ctx context.Context) (WorkspaceCollectionsClientDeleteResponse, error) {
+	respType := WorkspaceCollectionsClientDeleteResponse{}
 	resp, err := p.pt.FinalResponse(ctx, nil)
 	if err != nil {
-		return WorkspaceCollectionsDeleteResponse{}, err
+		return WorkspaceCollectionsClientDeleteResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *WorkspaceCollectionsDeletePoller) FinalResponse(ctx context.Context) (W
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *WorkspaceCollectionsDeletePoller) ResumeToken() (string, error) {
+func (p *WorkspaceCollectionsClientDeletePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

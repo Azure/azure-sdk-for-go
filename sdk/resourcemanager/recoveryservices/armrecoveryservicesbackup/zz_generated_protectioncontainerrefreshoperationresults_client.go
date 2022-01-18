@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ProtectionContainerRefreshOperationResultsClient contains the methods for the ProtectionContainerRefreshOperationResults group.
 // Don't use this type directly, use NewProtectionContainerRefreshOperationResultsClient() instead.
 type ProtectionContainerRefreshOperationResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProtectionContainerRefreshOperationResultsClient creates a new instance of ProtectionContainerRefreshOperationResultsClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProtectionContainerRefreshOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProtectionContainerRefreshOperationResultsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProtectionContainerRefreshOperationResultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProtectionContainerRefreshOperationResultsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Provides the result of the refresh operation triggered by the BeginRefresh operation.
-// If the operation fails it returns the *CloudError error type.
-func (client *ProtectionContainerRefreshOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationResultsGetOptions) (ProtectionContainerRefreshOperationResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// fabricName - Fabric name associated with the container.
+// operationID - Operation ID associated with the operation whose result needs to be fetched.
+// options - ProtectionContainerRefreshOperationResultsClientGetOptions contains the optional parameters for the ProtectionContainerRefreshOperationResultsClient.Get
+// method.
+func (client *ProtectionContainerRefreshOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationResultsClientGetOptions) (ProtectionContainerRefreshOperationResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, operationID, options)
 	if err != nil {
-		return ProtectionContainerRefreshOperationResultsGetResponse{}, err
+		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProtectionContainerRefreshOperationResultsGetResponse{}, err
+		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return ProtectionContainerRefreshOperationResultsGetResponse{}, client.getHandleError(resp)
+		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProtectionContainerRefreshOperationResultsGetResponse{RawResponse: resp}, nil
+	return ProtectionContainerRefreshOperationResultsClientGetResponse{RawResponse: resp}, nil
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationResultsGetOptions) (*policy.Request, error) {
+func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/operationResults/{operationId}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -82,26 +95,13 @@ func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ProtectionContainerRefreshOperationResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

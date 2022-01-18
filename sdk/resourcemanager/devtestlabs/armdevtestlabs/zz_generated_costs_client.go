@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // CostsClient contains the methods for the Costs group.
 // Don't use this type directly, use NewCostsClient() instead.
 type CostsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCostsClient creates a new instance of CostsClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewCostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CostsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &CostsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &CostsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or replace an existing cost.
-// If the operation fails it returns the *CloudError error type.
-func (client *CostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, labCost LabCost, options *CostsCreateOrUpdateOptions) (CostsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the cost.
+// labCost - A cost item.
+// options - CostsClientCreateOrUpdateOptions contains the optional parameters for the CostsClient.CreateOrUpdate method.
+func (client *CostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, labCost LabCost, options *CostsClientCreateOrUpdateOptions) (CostsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, labCost, options)
 	if err != nil {
-		return CostsCreateOrUpdateResponse{}, err
+		return CostsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CostsCreateOrUpdateResponse{}, err
+		return CostsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CostsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CostsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, labCost LabCost, options *CostsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, labCost LabCost, options *CostsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +90,7 @@ func (client *CostsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,37 @@ func (client *CostsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CostsClient) createOrUpdateHandleResponse(resp *http.Response) (CostsCreateOrUpdateResponse, error) {
-	result := CostsCreateOrUpdateResponse{RawResponse: resp}
+func (client *CostsClient) createOrUpdateHandleResponse(resp *http.Response) (CostsClientCreateOrUpdateResponse, error) {
+	result := CostsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabCost); err != nil {
-		return CostsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CostsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CostsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get cost.
-// If the operation fails it returns the *CloudError error type.
-func (client *CostsClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *CostsGetOptions) (CostsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the cost.
+// options - CostsClientGetOptions contains the optional parameters for the CostsClient.Get method.
+func (client *CostsClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *CostsClientGetOptions) (CostsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return CostsGetResponse{}, err
+		return CostsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CostsGetResponse{}, err
+		return CostsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CostsGetResponse{}, client.getHandleError(resp)
+		return CostsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CostsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *CostsGetOptions) (*policy.Request, error) {
+func (client *CostsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *CostsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +150,7 @@ func (client *CostsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,23 +165,10 @@ func (client *CostsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *CostsClient) getHandleResponse(resp *http.Response) (CostsGetResponse, error) {
-	result := CostsGetResponse{RawResponse: resp}
+func (client *CostsClient) getHandleResponse(resp *http.Response) (CostsClientGetResponse, error) {
+	result := CostsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabCost); err != nil {
-		return CostsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CostsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *CostsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

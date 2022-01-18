@@ -32,9 +32,7 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 		"<machine-name>",
 		"<extension-name>",
 		armhybridcompute.MachineExtension{
-			TrackedResource: armhybridcompute.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Properties: &armhybridcompute.MachineExtensionProperties{
 				Type:      to.StringPtr("<type>"),
 				Publisher: to.StringPtr("<publisher>"),
@@ -52,7 +50,7 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MachineExtension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MachineExtensionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/UpdateExtension.json
@@ -85,7 +83,7 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MachineExtension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MachineExtensionsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/DELETEExtension.json
@@ -126,7 +124,7 @@ func ExampleMachineExtensionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("MachineExtension.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MachineExtensionsClientGetResult)
 }
 
 // x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-06-10-preview/examples/LISTExtension.json
@@ -139,13 +137,17 @@ func ExampleMachineExtensionsClient_List() {
 	client := armhybridcompute.NewMachineExtensionsClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-group-name>",
 		"<machine-name>",
-		&armhybridcompute.MachineExtensionsListOptions{Expand: nil})
-	for pager.NextPage(ctx) {
+		&armhybridcompute.MachineExtensionsClientListOptions{Expand: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MachineExtension.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

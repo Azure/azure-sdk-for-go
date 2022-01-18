@@ -25,7 +25,7 @@ func ExampleEmailRegistrationsClient_ActivateEmail() {
 	}
 	ctx := context.Background()
 	client := armdatashare.NewEmailRegistrationsClient(cred, nil)
-	_, err = client.ActivateEmail(ctx,
+	res, err := client.ActivateEmail(ctx,
 		"<location>",
 		armdatashare.EmailRegistration{
 			ActivationCode: to.StringPtr("<activation-code>"),
@@ -34,6 +34,7 @@ func ExampleEmailRegistrationsClient_ActivateEmail() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.EmailRegistrationsClientActivateEmailResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/EmailRegistrations_RegisterEmail.json
@@ -44,10 +45,11 @@ func ExampleEmailRegistrationsClient_RegisterEmail() {
 	}
 	ctx := context.Background()
 	client := armdatashare.NewEmailRegistrationsClient(cred, nil)
-	_, err = client.RegisterEmail(ctx,
+	res, err := client.RegisterEmail(ctx,
 		"<location>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.EmailRegistrationsClientRegisterEmailResult)
 }

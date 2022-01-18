@@ -18,14 +18,14 @@ import (
 )
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/CheckNameAvailability_AlreadyExists.json
-func ExampleDeviceUpdateClient_CheckNameAvailability() {
+func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeviceupdate.NewDeviceUpdateClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client := armdeviceupdate.NewClient("<subscription-id>", cred, nil)
+	res, err := client.CheckNameAvailability(ctx,
 		armdeviceupdate.CheckNameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -34,4 +34,5 @@ func ExampleDeviceUpdateClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClientCheckNameAvailabilityResult)
 }

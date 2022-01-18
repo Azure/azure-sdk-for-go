@@ -80,7 +80,9 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions}
+		sendChainEnv := os.Getenv("AZURE_CLIENT_SEND_CERTIFICATE_CHAIN")
+		sendCertChain := sendChainEnv == "true" || sendChainEnv == "1"
+		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions, SendCertificateChain: sendCertChain}
 		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, o)
 		if err != nil {
 			return nil, err

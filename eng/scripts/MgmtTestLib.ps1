@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 
 $MOCK_SERVER_NAME = "mock-server"
-$MOCK_SERVER_Directory = "mock-service-host"
+$MOCK_SERVER_DIR = "mock-service-host"
 $MOCK_SERVER_READY = "validator initialized"
 $MOCK_SERVER_WAIT_TIME = 600
 function Invoke-MgmtTestgen ()
@@ -103,7 +103,7 @@ function Invoke-MgmtTestgen ()
 function PrepareMockServer()
 {
     # install mock server
-    $folder = Join-Path $env:TEMP "$MOCK_SERVER_Directory"
+    $folder = Join-Path $env:TEMP "$MOCK_SERVER_DIR"
     StopMockServer
     try
     {
@@ -123,14 +123,14 @@ function StartMockServer()
     param(
         [string]$specDir = "",
         [string]$rpSDKFolder,
-        [string]$AUTOREST_CONFIG_FILE = "autorest.md"
+        [string]$autorestConfigFile = "autorest.md"
     )
-    $folder = Join-Path $env:TEMP  "$MOCK_SERVER_Directory"
+    $folder = Join-Path $env:TEMP  "$MOCK_SERVER_DIR"
     Set-Location $folder
 
     # change .env file to use the specific swagger file
     $envFile = Join-Path $folder .env
-    $swaggerInfo = GetSwaggerInfo -specDir $specDir -rpSDKFolder $rpSDKFolder -AUTOREST_CONFIG_FILE $AUTOREST_CONFIG_FILE
+    $swaggerInfo = GetSwaggerInfo -specDir $specDir -rpSDKFolder $rpSDKFolder -autorestConfigFile $autorestConfigFile
     New-Item -Path $envFile -ItemType File -Value '' -Force
 
     $swaggerPath = $swaggerInfo.path
@@ -196,7 +196,7 @@ function GetSwaggerInfo() {
     param(
         [string]$specDir = "",
         [string]$rpSDKFolder,
-        [string]$AUTOREST_CONFIG_FILE = "autorest.md"
+        [string]$autorestConfigFile = "autorest.md"
     )
 
     if ([string]::IsNullOrEmpty($rpSDKFolder))
@@ -220,10 +220,8 @@ function GetSwaggerInfo() {
                 commitID = ""
             }
         }
-        
-        return $swaggerInfo
     } else {
-        $file="$rpSDKFolder/$AUTOREST_CONFIG_FILE"
+        $file="$rpSDKFolder/$autorestConfigFile"
         $readmefile = (Select-String -Path $file -Pattern ".*readme.md" | ForEach-Object {$_.Matches.Value}) -replace "require *:|- ", ""
         if ([string]::IsNullOrEmpty($readmefile)) {
             Write-Host "Cannot get swagger info"
@@ -282,7 +280,7 @@ function GetSwaggerInfo() {
             }
         }
         
-        return [PSCustomObject]@{
+        $swaggerInfo = [PSCustomObject]@{
             isRepoUrl = $isRepoUrl
             path = $path
             specName = $specName
@@ -291,6 +289,8 @@ function GetSwaggerInfo() {
             commitID = $commitID
         }
     }
+
+    return $swaggerInfo
 }
 
 function TestAndGenerateReport($dir)
@@ -330,16 +330,16 @@ function JudgeExitCode($errorMsg = "execution error")
     }
 }
 
-function ExecuteSingleTest($sdk, $needRunMockServe=$true)
+function ExecuteSingleTest($sdk, $needRunMockServer=$true)
 {
     Write-Host "Start mock server"
-    if ($needRunMockServe -eq $true) {
+    if ($needRunMockServer -eq $true) {
         StartMockServer -rpSDKFolder $sdk.DirectoryPath
     }
     Write-Host "Execute mock test for $($sdk.Name)"
     TestAndGenerateReport $sdk.DirectoryPath
     Write-Host "Stop mock server"
-    if ($needRunMockServe -eq $true) {
+    if ($needRunMockServer -eq $true) {
         StopMockServer
     }
 }

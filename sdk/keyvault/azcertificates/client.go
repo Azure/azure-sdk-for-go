@@ -191,8 +191,8 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 			CertificateOperation: CertificateOperation{
 				CancellationRequested: resp.CancellationRequested,
 				Csr:                   resp.Csr,
-				Error:                 resp.Error,
-				IssuerParameters:      resp.IssuerParameters,
+				Error:                 certificateErrorFromGenerated(resp.Error),
+				IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
 				RequestID:             resp.RequestID,
 				Status:                resp.Status,
 				StatusDetails:         resp.StatusDetails,
@@ -279,8 +279,8 @@ func (c *Client) GetCertificateOperation(ctx context.Context, certName string, o
 		CertificateOperation: CertificateOperation{
 			CancellationRequested: resp.CancellationRequested,
 			Csr:                   resp.Csr,
-			Error:                 resp.Error,
-			IssuerParameters:      resp.IssuerParameters,
+			Error:                 certificateErrorFromGenerated(resp.Error),
+			IssuerParameters:      issuerParametersFromGenerated(resp.IssuerParameters),
 			RequestID:             resp.RequestID,
 			Status:                resp.Status,
 			StatusDetails:         resp.StatusDetails,
@@ -1343,7 +1343,6 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 		CertificateBundle: certificateBundleFromGenerated(&resp.CertificateBundle),
 	}, nil
 }
-
 
 type BeginRecoverDeletedCertificateOptions struct{}
 

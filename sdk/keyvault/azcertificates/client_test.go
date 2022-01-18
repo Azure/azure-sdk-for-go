@@ -21,6 +21,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -531,6 +532,7 @@ func TestCRUDOperations(t *testing.T) {
 // https://stackoverflow.com/questions/42643048/signing-certificate-request-with-certificate-authority
 // Much of this is thanks to this response, thanks @krostar
 func TestMergeCertificate(t *testing.T) {
+	recording.LiveOnly(t)
 	stop := startTest(t)
 	defer stop()
 
@@ -720,22 +722,14 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 
 	createdCount := 0
 	for i := 0; i < 4; i++ {
-		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		name, err := createRandomName(t, fmt.Sprintf("delCert%d", i))
 		require.NoError(t, err)
 		createCert(t, client, name)
 		createdCount++
 	}
 
-	pager := client.ListDeletedCertificates(nil)
-	deletedCount := 0
-	for pager.NextPage(ctx) {
-		deletedCount += len(pager.PageResponse().Value)
-	}
-	require.Equal(t, 0, deletedCount)
-	require.NoError(t, pager.Err())
-
 	for i := 0; i < 4; i++ {
-		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
+		name, err := createRandomName(t, fmt.Sprintf("delCert%d", i))
 		require.NoError(t, err)
 		poller, err := client.BeginDeleteCertificate(ctx, name, nil)
 		require.NoError(t, err)
@@ -743,10 +737,13 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	pager = client.ListDeletedCertificates(nil)
-	deletedCount = 0
+	pager := client.ListDeletedCertificates(nil)
+	deletedCount := 0
 	for pager.NextPage(ctx) {
 		deletedCount += len(pager.PageResponse().Value)
+		for _, val := range pager.PageResponse().Value {
+			_, _ =client.PurgeDeletedCertificate(ctx, *val.ID, nil)
+		}
 	}
 	require.Equal(t, 4, createdCount)
 	require.NoError(t, pager.Err())

@@ -183,6 +183,30 @@ func certificateBundleFromGenerated(g *generated.CertificateBundle) CertificateB
 	}
 }
 
+// CertificateError - The key vault server error.
+type CertificateError struct {
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key vault server error.
+	InnerError *CertificateError `json:"innererror,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+func certificateErrorFromGenerated(g *generated.Error) *CertificateError {
+	if g == nil {
+		return nil
+	}
+
+	return &CertificateError{
+		Code:       g.Code,
+		Message:    g.Message,
+		InnerError: certificateErrorFromGenerated(g.InnerError),
+	}
+}
+
 // CertificateIssuerItem - The certificate issuer item containing certificate issuer metadata.
 type CertificateIssuerItem struct {
 	// Certificate Identifier.
@@ -224,10 +248,10 @@ type CertificateOperation struct {
 	Csr []byte `json:"csr,omitempty"`
 
 	// Error encountered, if any, during the certificate operation.
-	Error *generated.Error `json:"error,omitempty"`
+	Error *CertificateError `json:"error,omitempty"`
 
 	// Parameters for the issuer of the X509 component of a certificate.
-	IssuerParameters *generated.IssuerParameters `json:"issuer,omitempty"`
+	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
 
 	// Identifier for the certificate operation.
 	RequestID *string `json:"request_id,omitempty"`
@@ -383,6 +407,7 @@ type DeletedCertificateItem struct {
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
+
 // IssuerAttributes - The attributes of an issuer managed by the Key Vault service.
 type IssuerAttributes struct {
 	// Determines whether the issuer is enabled.

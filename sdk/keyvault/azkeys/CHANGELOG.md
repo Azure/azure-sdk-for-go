@@ -1,10 +1,13 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (Unreleased)
 
 ### Features Added
+* Adds the `ReleasePolicy` parameter to the `UpdateKeyPropertiesOptions` struct
+* Adds the `Immutable` boolean to the `KeyReleasePolicy` model.
 
 ### Breaking Changes
+* Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
 
 ### Bugs Fixed
 

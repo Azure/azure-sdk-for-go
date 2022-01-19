@@ -66,36 +66,31 @@ func TestCreateKeyRSA(t *testing.T) {
 	}
 }
 func TestCreateKeyRSATags(t *testing.T) {
-	for _, testType := range testTypes {
-		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
-			stop := startTest(t)
-			defer stop()
+	stop := startTest(t)
+	defer stop()
 
-			client, err := createClient(t, testType)
-			require.NoError(t, err)
+	client, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
 
-			key, err := createRandomName(t, "key")
-			require.NoError(t, err)
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
 
-			resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
-				Tags: map[string]string{
-					"Tag1": "Val1",
-				},
-			})
-			defer cleanUpKey(t, client, key)
-			require.NoError(t, err)
-			require.NotNil(t, resp.Key)
-			require.Equal(t, 1, len(resp.Tags))
+	resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+		Tags: map[string]string{
+			"Tag1": "Val1",
+		},
+	})
+	defer cleanUpKey(t, client, key)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
+	require.Equal(t, 1, len(resp.Tags))
 
-			// Remove the tag
-			resp2, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				Tags: map[string]string{},
-			})
-			require.NoError(t, err)
-			require.Equal(t, 0, len(resp2.Tags))
-		})
-	}
+	// Remove the tag
+	resp2, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+		Tags: map[string]string{},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 0, len(resp2.Tags))
 }
 
 func TestCreateECKey(t *testing.T) {

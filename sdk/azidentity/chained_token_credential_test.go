@@ -172,7 +172,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	cred.chainedCredentialName = "CustomNameCredential"
+	cred.name = "CustomNameCredential"
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")

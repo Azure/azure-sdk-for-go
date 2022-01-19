@@ -90,7 +90,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if err != nil {
 		return nil, err
 	}
-	chain.chainedCredentialName = "DefaultAzureCredential"
+	chain.name = "DefaultAzureCredential"
 	return &DefaultAzureCredential{chain: chain}, nil
 }
 

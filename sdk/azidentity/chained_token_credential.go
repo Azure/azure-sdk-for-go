@@ -74,7 +74,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			}
 			return nil, err
 		} else {
-			log.Write(EventAuthentication, fmt.Sprintf("Azure Identity => GetToken() result for %s %s:", c.name, extractCredentialName(cred)))
+			log.Writef(EventAuthentication, "Azure Identity => GetToken() result for %s %s:", c.name, extractCredentialName(cred))
 			c.successfulCredential = cred
 			return token, nil
 		}

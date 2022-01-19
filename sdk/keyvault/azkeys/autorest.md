@@ -21,11 +21,3 @@ use: "@autorest/go@4.0.0-preview.35"
 module-version: 0.1.0
 export-clients: true
 ```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: '$.definitions["KeyBundle"].properties.tags'
-    transform: >
-      $["x-nullable"] = true;
-```

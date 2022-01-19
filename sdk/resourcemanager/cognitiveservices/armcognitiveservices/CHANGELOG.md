@@ -1,14 +1,458 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsCreateOrUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*ResourceSKUsClient.List` parameter(s) have been changed from `(*ResourceSKUsListOptions)` to `(*ResourceSKUsClientListOptions)`
+- Function `*ResourceSKUsClient.List` return value(s) have been changed from `(*ResourceSKUsListPager)` to `(*ResourceSKUsClientListPager)`
+- Function `*DeletedAccountsClient.BeginPurge` parameter(s) have been changed from `(context.Context, string, string, string, *DeletedAccountsBeginPurgeOptions)` to `(context.Context, string, string, string, *DeletedAccountsClientBeginPurgeOptions)`
+- Function `*DeletedAccountsClient.BeginPurge` return value(s) have been changed from `(DeletedAccountsPurgePollerResponse, error)` to `(DeletedAccountsClientPurgePollerResponse, error)`
+- Function `*AccountsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, Account, *AccountsBeginCreateOptions)` to `(context.Context, string, string, Account, *AccountsClientBeginCreateOptions)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(AccountsCreatePollerResponse, error)` to `(AccountsClientCreatePollerResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*AccountsClient.ListUsages` parameter(s) have been changed from `(context.Context, string, string, *AccountsListUsagesOptions)` to `(context.Context, string, string, *AccountsClientListUsagesOptions)`
+- Function `*AccountsClient.ListUsages` return value(s) have been changed from `(AccountsListUsagesResponse, error)` to `(AccountsClientListUsagesResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateEndpointConnectionsListOptions)` to `(context.Context, string, string, *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateEndpointConnectionsClient.List` return value(s) have been changed from `(PrivateEndpointConnectionsListResponse, error)` to `(PrivateEndpointConnectionsClientListResponse, error)`
+- Function `*AccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *AccountsGetOptions)` to `(context.Context, string, string, *AccountsClientGetOptions)`
+- Function `*AccountsClient.Get` return value(s) have been changed from `(AccountsGetResponse, error)` to `(AccountsClientGetResponse, error)`
+- Function `*AccountsClient.List` parameter(s) have been changed from `(*AccountsListOptions)` to `(*AccountsClientListOptions)`
+- Function `*AccountsClient.List` return value(s) have been changed from `(*AccountsListPager)` to `(*AccountsClientListPager)`
+- Function `*AccountsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, Account, *AccountsBeginUpdateOptions)` to `(context.Context, string, string, Account, *AccountsClientBeginUpdateOptions)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(AccountsUpdatePollerResponse, error)` to `(AccountsClientUpdatePollerResponse, error)`
+- Function `*DeletedAccountsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DeletedAccountsGetOptions)` to `(context.Context, string, string, string, *DeletedAccountsClientGetOptions)`
+- Function `*DeletedAccountsClient.Get` return value(s) have been changed from `(DeletedAccountsGetResponse, error)` to `(DeletedAccountsClientGetResponse, error)`
+- Function `*AccountsClient.RegenerateKey` parameter(s) have been changed from `(context.Context, string, string, RegenerateKeyParameters, *AccountsRegenerateKeyOptions)` to `(context.Context, string, string, RegenerateKeyParameters, *AccountsClientRegenerateKeyOptions)`
+- Function `*AccountsClient.RegenerateKey` return value(s) have been changed from `(AccountsRegenerateKeyResponse, error)` to `(AccountsClientRegenerateKeyResponse, error)`
+- Function `*PrivateLinkResourcesClient.List` parameter(s) have been changed from `(context.Context, string, string, *PrivateLinkResourcesListOptions)` to `(context.Context, string, string, *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinkResourcesClient.List` return value(s) have been changed from `(PrivateLinkResourcesListResponse, error)` to `(PrivateLinkResourcesClientListResponse, error)`
+- Function `*DeletedAccountsClient.List` parameter(s) have been changed from `(*DeletedAccountsListOptions)` to `(*DeletedAccountsClientListOptions)`
+- Function `*DeletedAccountsClient.List` return value(s) have been changed from `(*DeletedAccountsListPager)` to `(*DeletedAccountsClientListPager)`
+- Function `*AccountsClient.ListSKUs` parameter(s) have been changed from `(context.Context, string, string, *AccountsListSKUsOptions)` to `(context.Context, string, string, *AccountsClientListSKUsOptions)`
+- Function `*AccountsClient.ListSKUs` return value(s) have been changed from `(AccountsListSKUsResponse, error)` to `(AccountsClientListSKUsResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*AccountsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *AccountsListByResourceGroupOptions)` to `(string, *AccountsClientListByResourceGroupOptions)`
+- Function `*AccountsClient.ListByResourceGroup` return value(s) have been changed from `(*AccountsListByResourceGroupPager)` to `(*AccountsClientListByResourceGroupPager)`
+- Function `*AccountsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *AccountsBeginDeleteOptions)` to `(context.Context, string, string, *AccountsClientBeginDeleteOptions)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(AccountsDeletePollerResponse, error)` to `(AccountsClientDeletePollerResponse, error)`
+- Function `*AccountsClient.ListKeys` parameter(s) have been changed from `(context.Context, string, string, *AccountsListKeysOptions)` to `(context.Context, string, string, *AccountsClientListKeysOptions)`
+- Function `*AccountsClient.ListKeys` return value(s) have been changed from `(AccountsListKeysResponse, error)` to `(AccountsClientListKeysResponse, error)`
+- Function `*AccountsCreatePollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeletedAccountsListPager.NextPage` has been removed
+- Function `*DeletedAccountsListPager.Err` has been removed
+- Function `AccountsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*DeletedAccountsPurgePoller.Poll` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*AccountsUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsListByResourceGroupPager.PageResponse` has been removed
+- Function `PrivateLinkResource.MarshalJSON` has been removed
+- Function `*AccountsCreatePoller.Poll` has been removed
+- Function `*AccountsUpdatePoller.FinalResponse` has been removed
+- Function `AccountsCreatePollerResponse.PollUntilDone` has been removed
+- Function `*DeletedAccountsPurgePoller.Done` has been removed
+- Function `*AccountsDeletePollerResponse.Resume` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*AccountsListByResourceGroupPager.NextPage` has been removed
+- Function `*AccountsListByResourceGroupPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `AccountsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*AccountsDeletePoller.Poll` has been removed
+- Function `*ResourceSKUsListPager.Err` has been removed
+- Function `*ResourceSKUsListPager.PageResponse` has been removed
+- Function `*DeletedAccountsPurgePollerResponse.Resume` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*AccountsDeletePoller.ResumeToken` has been removed
+- Function `*DeletedAccountsPurgePoller.ResumeToken` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*AccountsCreatePoller.ResumeToken` has been removed
+- Function `*DeletedAccountsPurgePoller.FinalResponse` has been removed
+- Function `*AccountsDeletePoller.Done` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*AccountsUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*AccountsListPager.Err` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*AccountsCreatePoller.Done` has been removed
+- Function `*AccountsCreatePoller.FinalResponse` has been removed
+- Function `*DeletedAccountsListPager.PageResponse` has been removed
+- Function `DeletedAccountsPurgePollerResponse.PollUntilDone` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*AccountsListPager.PageResponse` has been removed
+- Function `*PrivateEndpointConnectionsCreateOrUpdatePoller.Done` has been removed
+- Function `*AccountsUpdatePoller.Done` has been removed
+- Function `*ResourceSKUsListPager.NextPage` has been removed
+- Function `*CognitiveServicesManagementClient.CheckDomainAvailability` has been removed
+- Function `*AccountsUpdatePoller.ResumeToken` has been removed
+- Function `NewCognitiveServicesManagementClient` has been removed
+- Function `*CognitiveServicesManagementClient.CheckSKUAvailability` has been removed
+- Function `AzureEntityResource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*AccountsListPager.NextPage` has been removed
+- Function `*AccountsDeletePoller.FinalResponse` has been removed
+- Struct `AccountsBeginCreateOptions` has been removed
+- Struct `AccountsBeginDeleteOptions` has been removed
+- Struct `AccountsBeginUpdateOptions` has been removed
+- Struct `AccountsCreatePoller` has been removed
+- Struct `AccountsCreatePollerResponse` has been removed
+- Struct `AccountsCreateResponse` has been removed
+- Struct `AccountsCreateResult` has been removed
+- Struct `AccountsDeletePoller` has been removed
+- Struct `AccountsDeletePollerResponse` has been removed
+- Struct `AccountsDeleteResponse` has been removed
+- Struct `AccountsGetOptions` has been removed
+- Struct `AccountsGetResponse` has been removed
+- Struct `AccountsGetResult` has been removed
+- Struct `AccountsListByResourceGroupOptions` has been removed
+- Struct `AccountsListByResourceGroupPager` has been removed
+- Struct `AccountsListByResourceGroupResponse` has been removed
+- Struct `AccountsListByResourceGroupResult` has been removed
+- Struct `AccountsListKeysOptions` has been removed
+- Struct `AccountsListKeysResponse` has been removed
+- Struct `AccountsListKeysResult` has been removed
+- Struct `AccountsListOptions` has been removed
+- Struct `AccountsListPager` has been removed
+- Struct `AccountsListResponse` has been removed
+- Struct `AccountsListResult` has been removed
+- Struct `AccountsListSKUsOptions` has been removed
+- Struct `AccountsListSKUsResponse` has been removed
+- Struct `AccountsListSKUsResult` has been removed
+- Struct `AccountsListUsagesOptions` has been removed
+- Struct `AccountsListUsagesResponse` has been removed
+- Struct `AccountsListUsagesResult` has been removed
+- Struct `AccountsRegenerateKeyOptions` has been removed
+- Struct `AccountsRegenerateKeyResponse` has been removed
+- Struct `AccountsRegenerateKeyResult` has been removed
+- Struct `AccountsUpdatePoller` has been removed
+- Struct `AccountsUpdatePollerResponse` has been removed
+- Struct `AccountsUpdateResponse` has been removed
+- Struct `AccountsUpdateResult` has been removed
+- Struct `CognitiveServicesManagementClient` has been removed
+- Struct `CognitiveServicesManagementClientCheckDomainAvailabilityOptions` has been removed
+- Struct `CognitiveServicesManagementClientCheckDomainAvailabilityResponse` has been removed
+- Struct `CognitiveServicesManagementClientCheckDomainAvailabilityResult` has been removed
+- Struct `CognitiveServicesManagementClientCheckSKUAvailabilityOptions` has been removed
+- Struct `CognitiveServicesManagementClientCheckSKUAvailabilityResponse` has been removed
+- Struct `CognitiveServicesManagementClientCheckSKUAvailabilityResult` has been removed
+- Struct `DeletedAccountsBeginPurgeOptions` has been removed
+- Struct `DeletedAccountsGetOptions` has been removed
+- Struct `DeletedAccountsGetResponse` has been removed
+- Struct `DeletedAccountsGetResult` has been removed
+- Struct `DeletedAccountsListOptions` has been removed
+- Struct `DeletedAccountsListPager` has been removed
+- Struct `DeletedAccountsListResponse` has been removed
+- Struct `DeletedAccountsListResult` has been removed
+- Struct `DeletedAccountsPurgePoller` has been removed
+- Struct `DeletedAccountsPurgePollerResponse` has been removed
+- Struct `DeletedAccountsPurgeResponse` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PrivateEndpointConnectionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsCreateOrUpdateResult` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListOptions` has been removed
+- Struct `PrivateEndpointConnectionsListResponse` has been removed
+- Struct `PrivateEndpointConnectionsListResult` has been removed
+- Struct `PrivateLinkResourcesListOptions` has been removed
+- Struct `PrivateLinkResourcesListResponse` has been removed
+- Struct `PrivateLinkResourcesListResult` has been removed
+- Struct `ResourceSKUsListOptions` has been removed
+- Struct `ResourceSKUsListPager` has been removed
+- Struct `ResourceSKUsListResponse` has been removed
+- Struct `ResourceSKUsListResult` has been removed
+- Field `Resource` of struct `PrivateLinkResource` has been removed
+- Field `AzureEntityResource` of struct `PrivateEndpointConnection` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `AzureEntityResource` has been removed
+- Field `AzureEntityResource` of struct `Account` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `HostingModelWeb`
+- New const `HostingModelConnectedContainer`
+- New const `DeploymentProvisioningStateDeleting`
+- New const `DeploymentScaleTypeManual`
+- New const `HostingModelDisconnectedContainer`
+- New const `DeploymentProvisioningStateMoving`
+- New const `DeploymentProvisioningStateFailed`
+- New const `DeploymentProvisioningStateAccepted`
+- New const `DeploymentProvisioningStateCreating`
+- New const `DeploymentProvisioningStateSucceeded`
+- New function `*DeploymentsClientDeletePoller.FinalResponse(context.Context) (DeploymentsClientDeleteResponse, error)`
+- New function `*CommitmentPlansClient.Get(context.Context, string, string, string, *CommitmentPlansClientGetOptions) (CommitmentPlansClientGetResponse, error)`
+- New function `*DeletedAccountsClientPurgePoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClient.Get(context.Context, string, string, string, *DeploymentsClientGetOptions) (DeploymentsClientGetResponse, error)`
+- New function `*CommitmentPlansClientListPager.Err() error`
+- New function `*DeploymentsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DeploymentsClientCreateOrUpdateResponse, error)`
+- New function `*AccountsClientListByResourceGroupPager.PageResponse() AccountsClientListByResourceGroupResponse`
+- New function `DeploymentProvisioningState.ToPtr() *DeploymentProvisioningState`
+- New function `PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClient.BeginDelete(context.Context, string, string, string, *DeploymentsClientBeginDeleteOptions) (DeploymentsClientDeletePollerResponse, error)`
+- New function `*AccountsClientCreatePoller.Done() bool`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientUpdatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*ManagementClient.CheckSKUAvailability(context.Context, string, CheckSKUAvailabilityParameter, *ManagementClientCheckSKUAvailabilityOptions) (ManagementClientCheckSKUAvailabilityResponse, error)`
+- New function `*CommitmentPlansClient.CreateOrUpdate(context.Context, string, string, string, CommitmentPlan, *CommitmentPlansClientCreateOrUpdateOptions) (CommitmentPlansClientCreateOrUpdateResponse, error)`
+- New function `DeploymentsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientCreateOrUpdateResponse, error)`
+- New function `HostingModel.ToPtr() *HostingModel`
+- New function `AccountsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientUpdateResponse, error)`
+- New function `DeploymentListResult.MarshalJSON() ([]byte, error)`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `*DeploymentsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DeletedAccountsClientPurgePollerResponse.Resume(context.Context, *DeletedAccountsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*DeploymentsClientDeletePoller.Done() bool`
+- New function `*AccountsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientListByResourceGroupPager.Err() error`
+- New function `*CommitmentTiersClientListPager.Err() error`
+- New function `PossibleDeploymentScaleTypeValues() []DeploymentScaleType`
+- New function `*CommitmentPlansClientDeletePoller.ResumeToken() (string, error)`
+- New function `PossibleHostingModelValues() []HostingModel`
+- New function `*CommitmentPlansClientDeletePollerResponse.Resume(context.Context, *CommitmentPlansClient, string) error`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*AccountsClientCreatePoller.FinalResponse(context.Context) (AccountsClientCreateResponse, error)`
+- New function `*ResourceSKUsClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*AccountsClientCreatePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) *ManagementClient`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DeploymentsClientCreateOrUpdatePoller.Done() bool`
+- New function `*CommitmentPlansClientDeletePoller.FinalResponse(context.Context) (CommitmentPlansClientDeleteResponse, error)`
+- New function `*CommitmentTiersClientListPager.NextPage(context.Context) bool`
+- New function `*DeploymentsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*ResourceSKUsClientListPager.Err() error`
+- New function `*AccountsClientUpdatePoller.FinalResponse(context.Context) (AccountsClientUpdateResponse, error)`
+- New function `*DeploymentsClientDeletePollerResponse.Resume(context.Context, *DeploymentsClient, string) error`
+- New function `*DeploymentsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*AccountsClientCreatePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*DeploymentsClient.List(string, string, *DeploymentsClientListOptions) *DeploymentsClientListPager`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*DeploymentsClientListPager.PageResponse() DeploymentsClientListResponse`
+- New function `*CommitmentPlansClient.BeginDelete(context.Context, string, string, string, *CommitmentPlansClientBeginDeleteOptions) (CommitmentPlansClientDeletePollerResponse, error)`
+- New function `NewCommitmentTiersClient(string, azcore.TokenCredential, *arm.ClientOptions) *CommitmentTiersClient`
+- New function `*DeploymentsClient.BeginCreateOrUpdate(context.Context, string, string, string, Deployment, *DeploymentsClientBeginCreateOrUpdateOptions) (DeploymentsClientCreateOrUpdatePollerResponse, error)`
+- New function `NewDeploymentsClient(string, azcore.TokenCredential, *arm.ClientOptions) *DeploymentsClient`
+- New function `CommitmentTierListResult.MarshalJSON() ([]byte, error)`
+- New function `*DeploymentsClientListPager.NextPage(context.Context) bool`
+- New function `*DeletedAccountsClientPurgePoller.Done() bool`
+- New function `*CommitmentPlansClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeletedAccountsClientListPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DeletedAccountsClientPurgePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientDeletePoller.Done() bool`
+- New function `AccountsClientCreatePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientCreateResponse, error)`
+- New function `*AccountsClientListPager.NextPage(context.Context) bool`
+- New function `*DeploymentsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*AccountsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*DeletedAccountsClientPurgePoller.FinalResponse(context.Context) (DeletedAccountsClientPurgeResponse, error)`
+- New function `DeploymentScaleType.ToPtr() *DeploymentScaleType`
+- New function `CommitmentPlanListResult.MarshalJSON() ([]byte, error)`
+- New function `DeploymentsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DeploymentsClientDeleteResponse, error)`
+- New function `CommitmentPlansClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (CommitmentPlansClientDeleteResponse, error)`
+- New function `*DeploymentsClientListPager.Err() error`
+- New function `*CommitmentPlansClientListPager.PageResponse() CommitmentPlansClientListResponse`
+- New function `*CommitmentPlansClient.List(string, string, *CommitmentPlansClientListOptions) *CommitmentPlansClientListPager`
+- New function `*DeletedAccountsClientListPager.Err() error`
+- New function `*ManagementClient.CheckDomainAvailability(context.Context, CheckDomainAvailabilityParameter, *ManagementClientCheckDomainAvailabilityOptions) (ManagementClientCheckDomainAvailabilityResponse, error)`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*AccountsClientListPager.Err() error`
+- New function `DeletedAccountsClientPurgePollerResponse.PollUntilDone(context.Context, time.Duration) (DeletedAccountsClientPurgeResponse, error)`
+- New function `*AccountsClientDeletePoller.FinalResponse(context.Context) (AccountsClientDeleteResponse, error)`
+- New function `*ResourceSKUsClientListPager.PageResponse() ResourceSKUsClientListResponse`
+- New function `*CommitmentTiersClient.List(string, *CommitmentTiersClientListOptions) *CommitmentTiersClientListPager`
+- New function `NewCommitmentPlansClient(string, azcore.TokenCredential, *arm.ClientOptions) *CommitmentPlansClient`
+- New function `*DeletedAccountsClientListPager.PageResponse() DeletedAccountsClientListResponse`
+- New function `*DeploymentsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*CommitmentPlansClientDeletePoller.Done() bool`
+- New function `*CommitmentPlansClientListPager.NextPage(context.Context) bool`
+- New function `*AccountsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*AccountsClientDeletePollerResponse.Resume(context.Context, *AccountsClient, string) error`
+- New function `*AccountsClientCreatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `AccountsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (AccountsClientDeleteResponse, error)`
+- New function `*AccountsClientUpdatePoller.Done() bool`
+- New function `*CommitmentTiersClientListPager.PageResponse() CommitmentTiersClientListResponse`
+- New function `*AccountsClientListPager.PageResponse() AccountsClientListResponse`
+- New struct `AccountsClientBeginCreateOptions`
+- New struct `AccountsClientBeginDeleteOptions`
+- New struct `AccountsClientBeginUpdateOptions`
+- New struct `AccountsClientCreatePoller`
+- New struct `AccountsClientCreatePollerResponse`
+- New struct `AccountsClientCreateResponse`
+- New struct `AccountsClientCreateResult`
+- New struct `AccountsClientDeletePoller`
+- New struct `AccountsClientDeletePollerResponse`
+- New struct `AccountsClientDeleteResponse`
+- New struct `AccountsClientGetOptions`
+- New struct `AccountsClientGetResponse`
+- New struct `AccountsClientGetResult`
+- New struct `AccountsClientListByResourceGroupOptions`
+- New struct `AccountsClientListByResourceGroupPager`
+- New struct `AccountsClientListByResourceGroupResponse`
+- New struct `AccountsClientListByResourceGroupResult`
+- New struct `AccountsClientListKeysOptions`
+- New struct `AccountsClientListKeysResponse`
+- New struct `AccountsClientListKeysResult`
+- New struct `AccountsClientListOptions`
+- New struct `AccountsClientListPager`
+- New struct `AccountsClientListResponse`
+- New struct `AccountsClientListResult`
+- New struct `AccountsClientListSKUsOptions`
+- New struct `AccountsClientListSKUsResponse`
+- New struct `AccountsClientListSKUsResult`
+- New struct `AccountsClientListUsagesOptions`
+- New struct `AccountsClientListUsagesResponse`
+- New struct `AccountsClientListUsagesResult`
+- New struct `AccountsClientRegenerateKeyOptions`
+- New struct `AccountsClientRegenerateKeyResponse`
+- New struct `AccountsClientRegenerateKeyResult`
+- New struct `AccountsClientUpdatePoller`
+- New struct `AccountsClientUpdatePollerResponse`
+- New struct `AccountsClientUpdateResponse`
+- New struct `AccountsClientUpdateResult`
+- New struct `CommitmentCost`
+- New struct `CommitmentPeriod`
+- New struct `CommitmentPlan`
+- New struct `CommitmentPlanListResult`
+- New struct `CommitmentPlanProperties`
+- New struct `CommitmentPlansClient`
+- New struct `CommitmentPlansClientBeginDeleteOptions`
+- New struct `CommitmentPlansClientCreateOrUpdateOptions`
+- New struct `CommitmentPlansClientCreateOrUpdateResponse`
+- New struct `CommitmentPlansClientCreateOrUpdateResult`
+- New struct `CommitmentPlansClientDeletePoller`
+- New struct `CommitmentPlansClientDeletePollerResponse`
+- New struct `CommitmentPlansClientDeleteResponse`
+- New struct `CommitmentPlansClientGetOptions`
+- New struct `CommitmentPlansClientGetResponse`
+- New struct `CommitmentPlansClientGetResult`
+- New struct `CommitmentPlansClientListOptions`
+- New struct `CommitmentPlansClientListPager`
+- New struct `CommitmentPlansClientListResponse`
+- New struct `CommitmentPlansClientListResult`
+- New struct `CommitmentQuota`
+- New struct `CommitmentTier`
+- New struct `CommitmentTierListResult`
+- New struct `CommitmentTiersClient`
+- New struct `CommitmentTiersClientListOptions`
+- New struct `CommitmentTiersClientListPager`
+- New struct `CommitmentTiersClientListResponse`
+- New struct `CommitmentTiersClientListResult`
+- New struct `DeletedAccountsClientBeginPurgeOptions`
+- New struct `DeletedAccountsClientGetOptions`
+- New struct `DeletedAccountsClientGetResponse`
+- New struct `DeletedAccountsClientGetResult`
+- New struct `DeletedAccountsClientListOptions`
+- New struct `DeletedAccountsClientListPager`
+- New struct `DeletedAccountsClientListResponse`
+- New struct `DeletedAccountsClientListResult`
+- New struct `DeletedAccountsClientPurgePoller`
+- New struct `DeletedAccountsClientPurgePollerResponse`
+- New struct `DeletedAccountsClientPurgeResponse`
+- New struct `Deployment`
+- New struct `DeploymentListResult`
+- New struct `DeploymentModel`
+- New struct `DeploymentProperties`
+- New struct `DeploymentScaleSettings`
+- New struct `DeploymentsClient`
+- New struct `DeploymentsClientBeginCreateOrUpdateOptions`
+- New struct `DeploymentsClientBeginDeleteOptions`
+- New struct `DeploymentsClientCreateOrUpdatePoller`
+- New struct `DeploymentsClientCreateOrUpdatePollerResponse`
+- New struct `DeploymentsClientCreateOrUpdateResponse`
+- New struct `DeploymentsClientCreateOrUpdateResult`
+- New struct `DeploymentsClientDeletePoller`
+- New struct `DeploymentsClientDeletePollerResponse`
+- New struct `DeploymentsClientDeleteResponse`
+- New struct `DeploymentsClientGetOptions`
+- New struct `DeploymentsClientGetResponse`
+- New struct `DeploymentsClientGetResult`
+- New struct `DeploymentsClientListOptions`
+- New struct `DeploymentsClientListPager`
+- New struct `DeploymentsClientListResponse`
+- New struct `DeploymentsClientListResult`
+- New struct `ManagementClient`
+- New struct `ManagementClientCheckDomainAvailabilityOptions`
+- New struct `ManagementClientCheckDomainAvailabilityResponse`
+- New struct `ManagementClientCheckDomainAvailabilityResult`
+- New struct `ManagementClientCheckSKUAvailabilityOptions`
+- New struct `ManagementClientCheckSKUAvailabilityResponse`
+- New struct `ManagementClientCheckSKUAvailabilityResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResult`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateEndpointConnectionsClientListResult`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesClientListResult`
+- New struct `ProxyResource`
+- New struct `ResourceSKUsClientListOptions`
+- New struct `ResourceSKUsClientListPager`
+- New struct `ResourceSKUsClientListResponse`
+- New struct `ResourceSKUsClientListResult`
+- New field `Kind` in struct `DomainAvailability`
+- New field `ID` in struct `Account`
+- New field `Name` in struct `Account`
+- New field `Type` in struct `Account`
+- New field `Etag` in struct `Account`
+- New field `Error` in struct `ErrorResponse`
+- New field `Name` in struct `AzureEntityResource`
+- New field `Type` in struct `AzureEntityResource`
+- New field `ID` in struct `AzureEntityResource`
+- New field `Kind` in struct `CheckDomainAvailabilityParameter`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `Etag` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `Name` in struct `PrivateLinkResource`
+- New field `Type` in struct `PrivateLinkResource`
+- New field `ID` in struct `PrivateLinkResource`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

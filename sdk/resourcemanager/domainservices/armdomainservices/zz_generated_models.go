@@ -15,18 +15,40 @@ import (
 	"time"
 )
 
-// CloudError - An error response from the Domain Services.
-// Implements the error and azcore.HTTPResponse interfaces.
-type CloudError struct {
-	raw string
-	// An error response from the Domain Services.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
+// ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+type ClientBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+type ClientBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+type ClientBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+type ClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudError - An error response from the Domain Services.
+type CloudError struct {
+	// An error response from the Domain Services.
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Domain Services.
@@ -183,16 +205,42 @@ type DomainSecuritySettings struct {
 
 // DomainService - Domain service.
 type DomainService struct {
-	Resource
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Domain service properties
 	Properties *DomainServiceProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DomainService.
 func (d DomainService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", d.Etag)
+	populate(objectMap, "id", d.ID)
+	populate(objectMap, "location", d.Location)
+	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "systemData", d.SystemData)
+	populate(objectMap, "tags", d.Tags)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -213,8 +261,8 @@ func (d DomainServiceListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DomainServiceOperationsListOptions contains the optional parameters for the DomainServiceOperations.List method.
-type DomainServiceOperationsListOptions struct {
+// DomainServiceOperationsClientListOptions contains the optional parameters for the DomainServiceOperationsClient.List method.
+type DomainServiceOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -289,36 +337,6 @@ func (d DomainServiceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "tenantId", d.TenantID)
 	populate(objectMap, "version", d.Version)
 	return json.Marshal(objectMap)
-}
-
-// DomainServicesBeginCreateOrUpdateOptions contains the optional parameters for the DomainServices.BeginCreateOrUpdate method.
-type DomainServicesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainServicesBeginDeleteOptions contains the optional parameters for the DomainServices.BeginDelete method.
-type DomainServicesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainServicesBeginUpdateOptions contains the optional parameters for the DomainServices.BeginUpdate method.
-type DomainServicesBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainServicesGetOptions contains the optional parameters for the DomainServices.Get method.
-type DomainServicesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainServicesListByResourceGroupOptions contains the optional parameters for the DomainServices.ListByResourceGroup method.
-type DomainServicesListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainServicesListOptions contains the optional parameters for the DomainServices.List method.
-type DomainServicesListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ForestTrust - Forest Trust Setting
@@ -434,7 +452,8 @@ type LdapsSettings struct {
 	// A flag to determine whether or not Secure LDAP is enabled or disabled.
 	Ldaps *Ldaps `json:"ldaps,omitempty"`
 
-	// The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of the certificate pfx file.
+	// The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of
+	// the certificate pfx file.
 	PfxCertificate *string `json:"pfxCertificate,omitempty"`
 
 	// The password to decrypt the provided Secure LDAP certificate pfx file.
@@ -589,41 +608,67 @@ func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
 
 // OuContainer - Resource for OuContainer.
 type OuContainer struct {
-	Resource
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// OuContainer properties
 	Properties *OuContainerProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OuContainer.
 func (o OuContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	o.Resource.marshalInternal(objectMap)
+	populate(objectMap, "etag", o.Etag)
+	populate(objectMap, "id", o.ID)
+	populate(objectMap, "location", o.Location)
+	populate(objectMap, "name", o.Name)
 	populate(objectMap, "properties", o.Properties)
+	populate(objectMap, "systemData", o.SystemData)
+	populate(objectMap, "tags", o.Tags)
+	populate(objectMap, "type", o.Type)
 	return json.Marshal(objectMap)
 }
 
-// OuContainerBeginCreateOptions contains the optional parameters for the OuContainer.BeginCreate method.
-type OuContainerBeginCreateOptions struct {
+// OuContainerClientBeginCreateOptions contains the optional parameters for the OuContainerClient.BeginCreate method.
+type OuContainerClientBeginCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OuContainerBeginDeleteOptions contains the optional parameters for the OuContainer.BeginDelete method.
-type OuContainerBeginDeleteOptions struct {
+// OuContainerClientBeginDeleteOptions contains the optional parameters for the OuContainerClient.BeginDelete method.
+type OuContainerClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OuContainerBeginUpdateOptions contains the optional parameters for the OuContainer.BeginUpdate method.
-type OuContainerBeginUpdateOptions struct {
+// OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
+type OuContainerClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OuContainerGetOptions contains the optional parameters for the OuContainer.Get method.
-type OuContainerGetOptions struct {
+// OuContainerClientGetOptions contains the optional parameters for the OuContainerClient.Get method.
+type OuContainerClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OuContainerListOptions contains the optional parameters for the OuContainer.List method.
-type OuContainerListOptions struct {
+// OuContainerClientListOptions contains the optional parameters for the OuContainerClient.List method.
+type OuContainerClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -644,8 +689,8 @@ func (o OuContainerListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OuContainerOperationsListOptions contains the optional parameters for the OuContainerOperations.List method.
-type OuContainerOperationsListOptions struct {
+// OuContainerOperationsClientListOptions contains the optional parameters for the OuContainerOperationsClient.List method.
+type OuContainerOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -695,7 +740,8 @@ type ReplicaSet struct {
 	// Virtual network location
 	Location *string `json:"location,omitempty"`
 
-	// The name of the virtual network that Domain Services will be deployed on. The id of the subnet that Domain Services will be deployed on. /virtualNetwork/vnetName/subnets/subnetName.
+	// The name of the virtual network that Domain Services will be deployed on. The id of the subnet that Domain Services will
+	// be deployed on. /virtualNetwork/vnetName/subnets/subnetName.
 	SubnetID *string `json:"subnetId,omitempty"`
 
 	// READ-ONLY; List of Domain Controller IP Address
@@ -813,11 +859,6 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", r.Etag)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
@@ -825,6 +866,7 @@ func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "systemData", r.SystemData)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // ResourceForestSettings - Settings for Resource Forest

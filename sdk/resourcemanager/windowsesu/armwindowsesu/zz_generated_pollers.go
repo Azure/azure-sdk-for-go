@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// MultipleActivationKeysCreatePoller provides polling facilities until the operation reaches a terminal state.
-type MultipleActivationKeysCreatePoller struct {
+// MultipleActivationKeysClientCreatePoller provides polling facilities until the operation reaches a terminal state.
+type MultipleActivationKeysClientCreatePoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *MultipleActivationKeysCreatePoller) Done() bool {
+func (p *MultipleActivationKeysClientCreatePoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *MultipleActivationKeysCreatePoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *MultipleActivationKeysCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *MultipleActivationKeysClientCreatePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final MultipleActivationKeysCreateResponse will be returned.
-func (p *MultipleActivationKeysCreatePoller) FinalResponse(ctx context.Context) (MultipleActivationKeysCreateResponse, error) {
-	respType := MultipleActivationKeysCreateResponse{}
+// If the final GET succeeded then the final MultipleActivationKeysClientCreateResponse will be returned.
+func (p *MultipleActivationKeysClientCreatePoller) FinalResponse(ctx context.Context) (MultipleActivationKeysClientCreateResponse, error) {
+	respType := MultipleActivationKeysClientCreateResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.MultipleActivationKey)
 	if err != nil {
-		return MultipleActivationKeysCreateResponse{}, err
+		return MultipleActivationKeysClientCreateResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *MultipleActivationKeysCreatePoller) FinalResponse(ctx context.Context) 
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *MultipleActivationKeysCreatePoller) ResumeToken() (string, error) {
+func (p *MultipleActivationKeysClientCreatePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

@@ -9,8 +9,8 @@
 package armvmwarecloudsimple
 
 const (
-	module  = "armvmwarecloudsimple"
-	version = "v0.1.0"
+	moduleName    = "armvmwarecloudsimple"
+	moduleVersion = "v0.2.0"
 )
 
 // AggregationType - Metric's aggregation type for e.g. (Average, Total)

@@ -34,7 +34,7 @@ func ExampleWorkspacesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QuantumWorkspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientGetResult)
 }
 
 // x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2019-11-04-preview/examples/quantumWorkspacesPut.json
@@ -48,7 +48,25 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
-		armquantum.QuantumWorkspace{},
+		armquantum.Workspace{
+			Location: to.StringPtr("<location>"),
+			Properties: &armquantum.WorkspaceResourceProperties{
+				Providers: []*armquantum.Provider{
+					{
+						ProviderID:  to.StringPtr("<provider-id>"),
+						ProviderSKU: to.StringPtr("<provider-sku>"),
+					},
+					{
+						ProviderID:  to.StringPtr("<provider-id>"),
+						ProviderSKU: to.StringPtr("<provider-sku>"),
+					},
+					{
+						ProviderID:  to.StringPtr("<provider-id>"),
+						ProviderSKU: to.StringPtr("<provider-sku>"),
+					}},
+				StorageAccount: to.StringPtr("<storage-account>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -57,7 +75,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QuantumWorkspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2019-11-04-preview/examples/quantumWorkspacesPatch.json
@@ -81,7 +99,7 @@ func ExampleWorkspacesClient_UpdateTags() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QuantumWorkspace.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.WorkspacesClientUpdateTagsResult)
 }
 
 // x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2019-11-04-preview/examples/quantumWorkspacesDelete.json
@@ -114,12 +132,16 @@ func ExampleWorkspacesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("QuantumWorkspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -134,12 +156,16 @@ func ExampleWorkspacesClient_ListByResourceGroup() {
 	client := armquantum.NewWorkspacesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("QuantumWorkspace.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

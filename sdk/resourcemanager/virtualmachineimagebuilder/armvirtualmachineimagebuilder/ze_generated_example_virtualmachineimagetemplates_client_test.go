@@ -28,12 +28,16 @@ func ExampleVirtualMachineImageTemplatesClient_List() {
 	ctx := context.Background()
 	client := armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ImageTemplate.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleVirtualMachineImageTemplatesClient_ListByResourceGroup() {
 	client := armvirtualmachineimagebuilder.NewVirtualMachineImageTemplatesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ImageTemplate.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -70,12 +78,10 @@ func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<image-template-name>",
 		armvirtualmachineimagebuilder.ImageTemplate{
-			TrackedResource: armvirtualmachineimagebuilder.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"imagetemplate_tag1": to.StringPtr("IT_T1"),
-					"imagetemplate_tag2": to.StringPtr("IT_T2"),
-				},
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"imagetemplate_tag1": to.StringPtr("IT_T1"),
+				"imagetemplate_tag2": to.StringPtr("IT_T2"),
 			},
 			Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
 				Type: armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned.ToPtr(),
@@ -86,28 +92,22 @@ func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate() {
 			Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
 				Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
 					&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
-						ImageTemplateCustomizer: armvirtualmachineimagebuilder.ImageTemplateCustomizer{
-							Name: to.StringPtr("<name>"),
-							Type: to.StringPtr("<type>"),
-						},
+						Name:      to.StringPtr("<name>"),
+						Type:      to.StringPtr("<type>"),
 						ScriptURI: to.StringPtr("<script-uri>"),
 					}},
 				Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
 					&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
-						ImageTemplateDistributor: armvirtualmachineimagebuilder.ImageTemplateDistributor{
-							Type: to.StringPtr("<type>"),
-							ArtifactTags: map[string]*string{
-								"tagName": to.StringPtr("value"),
-							},
-							RunOutputName: to.StringPtr("<run-output-name>"),
+						Type: to.StringPtr("<type>"),
+						ArtifactTags: map[string]*string{
+							"tagName": to.StringPtr("value"),
 						},
-						ImageID:  to.StringPtr("<image-id>"),
-						Location: to.StringPtr("<location>"),
+						RunOutputName: to.StringPtr("<run-output-name>"),
+						ImageID:       to.StringPtr("<image-id>"),
+						Location:      to.StringPtr("<location>"),
 					}},
 				Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
-					ImageTemplateSource: armvirtualmachineimagebuilder.ImageTemplateSource{
-						Type: to.StringPtr("<type>"),
-					},
+					Type:    to.StringPtr("<type>"),
 					ImageID: to.StringPtr("<image-id>"),
 				},
 				VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
@@ -127,7 +127,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ImageTemplate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachineImageTemplatesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2021-10-01/examples/UpdateImageTemplateToRemoveIdentities.json
@@ -154,7 +154,7 @@ func ExampleVirtualMachineImageTemplatesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ImageTemplate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachineImageTemplatesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2021-10-01/examples/GetImageTemplate.json
@@ -172,7 +172,7 @@ func ExampleVirtualMachineImageTemplatesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ImageTemplate.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachineImageTemplatesClientGetResult)
 }
 
 // x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2021-10-01/examples/DeleteImageTemplate.json
@@ -249,12 +249,16 @@ func ExampleVirtualMachineImageTemplatesClient_ListRunOutputs() {
 	pager := client.ListRunOutputs("<resource-group-name>",
 		"<image-template-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RunOutput.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -275,5 +279,5 @@ func ExampleVirtualMachineImageTemplatesClient_GetRunOutput() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RunOutput.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.VirtualMachineImageTemplatesClientGetRunOutputResult)
 }

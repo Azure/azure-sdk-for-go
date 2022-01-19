@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
 func ExampleBMSPrepareDataMoveOperationResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,7 +24,7 @@ func ExampleBMSPrepareDataMoveOperationResultClient_Get() {
 	}
 	ctx := context.Background()
 	client := armrecoveryservicesbackup.NewBMSPrepareDataMoveOperationResultClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		"<operation-id>",
@@ -32,4 +32,5 @@ func ExampleBMSPrepareDataMoveOperationResultClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BMSPrepareDataMoveOperationResultClientGetResult)
 }

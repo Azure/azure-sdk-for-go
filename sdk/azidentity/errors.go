@@ -4,7 +4,11 @@
 package azidentity
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -12,58 +16,66 @@ import (
 )
 
 // AuthenticationFailedError indicates an authentication request has failed.
-type AuthenticationFailedError interface {
-	errorinfo.NonRetriable
-	RawResponse() *http.Response
-	authenticationFailed()
-}
+type AuthenticationFailedError struct {
+	err error
 
-type authenticationFailedError struct {
-	error
-	resp *http.Response
+	// RawResponse is the HTTP response motivating the error, if available.
+	RawResponse *http.Response
 }
 
 func newAuthenticationFailedError(err error, resp *http.Response) AuthenticationFailedError {
 	if resp == nil {
 		var e msal.CallErr
 		if errors.As(err, &e) {
-			return authenticationFailedError{err, e.Resp}
+			return AuthenticationFailedError{err: e, RawResponse: e.Resp}
 		}
 	}
-	return authenticationFailedError{err, resp}
+	return AuthenticationFailedError{err: err, RawResponse: resp}
+}
+
+// Error implements the error interface for type ResponseError.
+// Note that the message contents are not contractual and can change over time.
+func (e AuthenticationFailedError) Error() string {
+	if e.RawResponse == nil {
+		return e.err.Error()
+	}
+	msg := &bytes.Buffer{}
+	fmt.Fprintf(msg, "%s %s://%s%s\n", e.RawResponse.Request.Method, e.RawResponse.Request.URL.Scheme, e.RawResponse.Request.URL.Host, e.RawResponse.Request.URL.Path)
+	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
+	fmt.Fprintf(msg, "RESPONSE %s\n", e.RawResponse.Status)
+	fmt.Fprintln(msg, "--------------------------------------------------------------------------------")
+	body, err := io.ReadAll(e.RawResponse.Body)
+	e.RawResponse.Body.Close()
+	if err != nil {
+		fmt.Fprintf(msg, "Error reading response body: %v", err)
+	} else if len(body) > 0 {
+		e.RawResponse.Body = io.NopCloser(bytes.NewReader(body))
+		if err := json.Indent(msg, body, "", "  "); err != nil {
+			// failed to pretty-print so just dump it verbatim
+			fmt.Fprint(msg, string(body))
+		}
+	} else {
+		fmt.Fprint(msg, "Response contained no body")
+	}
+	fmt.Fprintln(msg, "\n--------------------------------------------------------------------------------")
+	return msg.String()
 }
 
 // NonRetriable indicates that this error should not be retried.
-func (authenticationFailedError) NonRetriable() {
+func (AuthenticationFailedError) NonRetriable() {
 	// marker method
 }
 
-// AuthenticationFailed indicates that an authentication attempt failed
-func (authenticationFailedError) authenticationFailed() {
-	// marker method
-}
+var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
-// RawResponse returns the HTTP response motivating the error, if available.
-func (e authenticationFailedError) RawResponse() *http.Response {
-	return e.resp
-}
-
-var _ AuthenticationFailedError = (*authenticationFailedError)(nil)
-var _ errorinfo.NonRetriable = (*authenticationFailedError)(nil)
-
-// CredentialUnavailableError indicates a credential can't attempt authenticate
-// because it lacks required data or state.
-type CredentialUnavailableError interface {
-	errorinfo.NonRetriable
-	credentialUnavailable()
-}
-
+// credentialUnavailableError indicates a credential can't attempt
+// authentication because it lacks required data or state.
 type credentialUnavailableError struct {
 	credType string
 	message  string
 }
 
-func newCredentialUnavailableError(credType, message string) CredentialUnavailableError {
+func newCredentialUnavailableError(credType, message string) credentialUnavailableError {
 	return credentialUnavailableError{credType: credType, message: message}
 }
 
@@ -76,10 +88,4 @@ func (e credentialUnavailableError) NonRetriable() {
 	// marker method
 }
 
-// CredentialUnavailable indicates that the credential didn't attempt to authenticate
-func (e credentialUnavailableError) credentialUnavailable() {
-	// marker method
-}
-
-var _ CredentialUnavailableError = (*credentialUnavailableError)(nil)
 var _ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)

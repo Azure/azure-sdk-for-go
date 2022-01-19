@@ -7,15 +7,16 @@ import (
 	"bytes"
 	"crypto/md5"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"github.com/stretchr/testify/assert"
 )
 
 //nolint
@@ -2099,7 +2100,7 @@ func validateBlobDeleted(_assert *assert.Assertions, bbClient BlobClient) {
 	_assert.NotNil(err)
 
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError), true)
+	_assert.Equal(true, errors.As(err, &storageError))
 	_assert.Equal(storageError.ErrorCode, StorageErrorCodeBlobNotFound)
 }
 

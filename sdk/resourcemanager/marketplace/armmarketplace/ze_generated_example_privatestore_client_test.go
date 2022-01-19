@@ -25,13 +25,17 @@ func ExamplePrivateStoreClient_List() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	pager := client.List(&armmarketplace.PrivateStoreListOptions{UseCache: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armmarketplace.PrivateStoreClientListOptions{UseCache: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateStore.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -50,7 +54,7 @@ func ExamplePrivateStoreClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateStore.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientGetResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/PrivateStores_update.json
@@ -63,9 +67,9 @@ func ExamplePrivateStoreClient_CreateOrUpdate() {
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
 	_, err = client.CreateOrUpdate(ctx,
 		"<private-store-id>",
-		&armmarketplace.PrivateStoreCreateOrUpdateOptions{Payload: &armmarketplace.PrivateStore{
+		&armmarketplace.PrivateStoreClientCreateOrUpdateOptions{Payload: &armmarketplace.PrivateStore{
 			Properties: &armmarketplace.PrivateStoreProperties{
-				Availability: armmarketplace.AvailabilityDisabled.ToPtr(),
+				Availability: armmarketplace.Availability("disabled").ToPtr(),
 				ETag:         to.StringPtr("<etag>"),
 			},
 		},
@@ -99,12 +103,13 @@ func ExamplePrivateStoreClient_QueryOffers() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.QueryOffers(ctx,
+	res, err := client.QueryOffers(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientQueryOffersResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/BillingAccounts.json
@@ -115,12 +120,13 @@ func ExamplePrivateStoreClient_BillingAccounts() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.BillingAccounts(ctx,
+	res, err := client.BillingAccounts(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientBillingAccountsResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/CollectionsToSubscriptionsMapping.json
@@ -131,9 +137,9 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.CollectionsToSubscriptionsMapping(ctx,
+	res, err := client.CollectionsToSubscriptionsMapping(ctx,
 		"<private-store-id>",
-		&armmarketplace.PrivateStoreCollectionsToSubscriptionsMappingOptions{Payload: &armmarketplace.CollectionsToSubscriptionsMappingPayload{
+		&armmarketplace.PrivateStoreClientCollectionsToSubscriptionsMappingOptions{Payload: &armmarketplace.CollectionsToSubscriptionsMappingPayload{
 			Properties: &armmarketplace.CollectionsToSubscriptionsMappingProperties{
 				SubscriptionIDs: []*string{
 					to.StringPtr("b340914e-353d-453a-85fb-8f9b65b51f91"),
@@ -144,6 +150,7 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientCollectionsToSubscriptionsMappingResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/QueryApprovedPlans.json
@@ -154,9 +161,9 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.QueryApprovedPlans(ctx,
+	res, err := client.QueryApprovedPlans(ctx,
 		"<private-store-id>",
-		&armmarketplace.PrivateStoreQueryApprovedPlansOptions{Payload: &armmarketplace.QueryApprovedPlansPayload{
+		&armmarketplace.PrivateStoreClientQueryApprovedPlansOptions{Payload: &armmarketplace.QueryApprovedPlansPayload{
 			Properties: &armmarketplace.QueryApprovedPlans{
 				OfferID: to.StringPtr("<offer-id>"),
 				PlanIDs: []*string{
@@ -169,6 +176,7 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientQueryApprovedPlansResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/BulkCollectionsAction.json
@@ -179,9 +187,9 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.BulkCollectionsAction(ctx,
+	res, err := client.BulkCollectionsAction(ctx,
 		"<private-store-id>",
-		&armmarketplace.PrivateStoreBulkCollectionsActionOptions{Payload: &armmarketplace.BulkCollectionsPayload{
+		&armmarketplace.PrivateStoreClientBulkCollectionsActionOptions{Payload: &armmarketplace.BulkCollectionsPayload{
 			Properties: &armmarketplace.BulkCollectionsDetails{
 				Action: to.StringPtr("<action>"),
 				CollectionIDs: []*string{
@@ -193,6 +201,7 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientBulkCollectionsActionResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/GetApprovalRequestsList.json
@@ -203,12 +212,13 @@ func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.GetApprovalRequestsList(ctx,
+	res, err := client.GetApprovalRequestsList(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientGetApprovalRequestsListResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/GetRequestApproval.json
@@ -226,7 +236,7 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RequestApprovalResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientGetRequestApprovalResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/CreateApprovalRequest.json
@@ -240,11 +250,11 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 	res, err := client.CreateApprovalRequest(ctx,
 		"<private-store-id>",
 		"<request-approval-id>",
-		&armmarketplace.PrivateStoreCreateApprovalRequestOptions{Payload: nil})
+		&armmarketplace.PrivateStoreClientCreateApprovalRequestOptions{Payload: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RequestApprovalResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientCreateApprovalRequestResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/QueryRequestApproval.json
@@ -255,10 +265,10 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.QueryRequestApproval(ctx,
+	res, err := client.QueryRequestApproval(ctx,
 		"<private-store-id>",
 		"<request-approval-id>",
-		&armmarketplace.PrivateStoreQueryRequestApprovalOptions{Payload: &armmarketplace.QueryRequestApprovalProperties{
+		&armmarketplace.PrivateStoreClientQueryRequestApprovalOptions{Payload: &armmarketplace.QueryRequestApprovalProperties{
 			Properties: &armmarketplace.RequestDetails{
 				PlanIDs: []*string{
 					to.StringPtr("testPlanA"),
@@ -271,6 +281,7 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientQueryRequestApprovalResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/AdminRequestApprovalsList.json
@@ -281,12 +292,13 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.AdminRequestApprovalsList(ctx,
+	res, err := client.AdminRequestApprovalsList(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientAdminRequestApprovalsListResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/GetAdminRequestApproval.json
@@ -305,7 +317,7 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AdminRequestApprovalsResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientGetAdminRequestApprovalResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/UpdateAdminRequestApproval.json
@@ -319,9 +331,9 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	res, err := client.UpdateAdminRequestApproval(ctx,
 		"<private-store-id>",
 		"<admin-request-approval-id>",
-		&armmarketplace.PrivateStoreUpdateAdminRequestApprovalOptions{Payload: &armmarketplace.AdminRequestApprovalsResource{
+		&armmarketplace.PrivateStoreClientUpdateAdminRequestApprovalOptions{Payload: &armmarketplace.AdminRequestApprovalsResource{
 			Properties: &armmarketplace.AdminRequestApprovalProperties{
-				AdminAction: armmarketplace.AdminActionApproved.ToPtr(),
+				AdminAction: armmarketplace.AdminAction("Approved").ToPtr(),
 				ApprovedPlans: []*string{
 					to.StringPtr("testPlan")},
 				CollectionIDs: []*string{
@@ -335,7 +347,7 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AdminRequestApprovalsResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientUpdateAdminRequestApprovalResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/NotificationsState.json
@@ -346,12 +358,13 @@ func ExamplePrivateStoreClient_QueryNotificationsState() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreClient(cred, nil)
-	_, err = client.QueryNotificationsState(ctx,
+	res, err := client.QueryNotificationsState(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreClientQueryNotificationsStateResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/AcknowledgeNotification.json
@@ -365,10 +378,9 @@ func ExamplePrivateStoreClient_AcknowledgeOfferNotification() {
 	_, err = client.AcknowledgeOfferNotification(ctx,
 		"<private-store-id>",
 		"<offer-id>",
-		&armmarketplace.PrivateStoreAcknowledgeOfferNotificationOptions{Payload: &armmarketplace.AcknowledgeOfferNotificationProperties{
+		&armmarketplace.PrivateStoreClientAcknowledgeOfferNotificationOptions{Payload: &armmarketplace.AcknowledgeOfferNotificationProperties{
 			Properties: &armmarketplace.AcknowledgeOfferNotificationDetails{
 				Acknowledge: to.BoolPtr(false),
-				AddPlans:    []*string{},
 				Dismiss:     to.BoolPtr(false),
 				RemoveOffer: to.BoolPtr(false),
 				RemovePlans: []*string{
@@ -392,7 +404,7 @@ func ExamplePrivateStoreClient_WithdrawPlan() {
 	_, err = client.WithdrawPlan(ctx,
 		"<private-store-id>",
 		"<request-approval-id>",
-		&armmarketplace.PrivateStoreWithdrawPlanOptions{Payload: &armmarketplace.WithdrawProperties{
+		&armmarketplace.PrivateStoreClientWithdrawPlanOptions{Payload: &armmarketplace.WithdrawProperties{
 			Properties: &armmarketplace.WithdrawDetails{
 				PlanID:      to.StringPtr("<plan-id>"),
 				PublisherID: to.StringPtr("<publisher-id>"),

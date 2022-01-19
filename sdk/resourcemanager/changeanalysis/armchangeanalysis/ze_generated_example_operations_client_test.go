@@ -24,10 +24,17 @@ func ExampleOperationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armchangeanalysis.NewOperationsClient(cred, nil)
-	pager := client.List(&armchangeanalysis.OperationsListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+	pager := client.List(&armchangeanalysis.OperationsClientListOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

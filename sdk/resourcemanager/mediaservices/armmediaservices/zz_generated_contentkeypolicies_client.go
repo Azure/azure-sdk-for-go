@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,56 @@ import (
 // ContentKeyPoliciesClient contains the methods for the ContentKeyPolicies group.
 // Don't use this type directly, use NewContentKeyPoliciesClient() instead.
 type ContentKeyPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewContentKeyPoliciesClient creates a new instance of ContentKeyPoliciesClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ContentKeyPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ContentKeyPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ContentKeyPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a Content Key Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentKeyPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesCreateOrUpdateOptions) (ContentKeyPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// contentKeyPolicyName - The Content Key Policy name.
+// parameters - The request parameters
+// options - ContentKeyPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.CreateOrUpdate
+// method.
+func (client *ContentKeyPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesClientCreateOrUpdateOptions) (ContentKeyPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, parameters, options)
 	if err != nil {
-		return ContentKeyPoliciesCreateOrUpdateResponse{}, err
+		return ContentKeyPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentKeyPoliciesCreateOrUpdateResponse{}, err
+		return ContentKeyPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ContentKeyPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ContentKeyPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContentKeyPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ContentKeyPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +92,7 @@ func (client *ContentKeyPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter contentKeyPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{contentKeyPolicyName}", url.PathEscape(contentKeyPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +104,38 @@ func (client *ContentKeyPoliciesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ContentKeyPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ContentKeyPoliciesCreateOrUpdateResponse, error) {
-	result := ContentKeyPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ContentKeyPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ContentKeyPoliciesClientCreateOrUpdateResponse, error) {
+	result := ContentKeyPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicy); err != nil {
-		return ContentKeyPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ContentKeyPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ContentKeyPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Content Key Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentKeyPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesDeleteOptions) (ContentKeyPoliciesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// contentKeyPolicyName - The Content Key Policy name.
+// options - ContentKeyPoliciesClientDeleteOptions contains the optional parameters for the ContentKeyPoliciesClient.Delete
+// method.
+func (client *ContentKeyPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientDeleteOptions) (ContentKeyPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, options)
 	if err != nil {
-		return ContentKeyPoliciesDeleteResponse{}, err
+		return ContentKeyPoliciesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentKeyPoliciesDeleteResponse{}, err
+		return ContentKeyPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ContentKeyPoliciesDeleteResponse{}, client.deleteHandleError(resp)
+		return ContentKeyPoliciesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ContentKeyPoliciesDeleteResponse{RawResponse: resp}, nil
+	return ContentKeyPoliciesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContentKeyPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesDeleteOptions) (*policy.Request, error) {
+func (client *ContentKeyPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +153,7 @@ func (client *ContentKeyPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter contentKeyPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{contentKeyPolicyName}", url.PathEscape(contentKeyPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +164,29 @@ func (client *ContentKeyPoliciesClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ContentKeyPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the details of a Content Key Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentKeyPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesGetOptions) (ContentKeyPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// contentKeyPolicyName - The Content Key Policy name.
+// options - ContentKeyPoliciesClientGetOptions contains the optional parameters for the ContentKeyPoliciesClient.Get method.
+func (client *ContentKeyPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientGetOptions) (ContentKeyPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, options)
 	if err != nil {
-		return ContentKeyPoliciesGetResponse{}, err
+		return ContentKeyPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentKeyPoliciesGetResponse{}, err
+		return ContentKeyPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContentKeyPoliciesGetResponse{}, client.getHandleError(resp)
+		return ContentKeyPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContentKeyPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesGetOptions) (*policy.Request, error) {
+func (client *ContentKeyPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +204,7 @@ func (client *ContentKeyPoliciesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter contentKeyPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{contentKeyPolicyName}", url.PathEscape(contentKeyPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,46 +216,38 @@ func (client *ContentKeyPoliciesClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContentKeyPoliciesClient) getHandleResponse(resp *http.Response) (ContentKeyPoliciesGetResponse, error) {
-	result := ContentKeyPoliciesGetResponse{RawResponse: resp}
+func (client *ContentKeyPoliciesClient) getHandleResponse(resp *http.Response) (ContentKeyPoliciesClientGetResponse, error) {
+	result := ContentKeyPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicy); err != nil {
-		return ContentKeyPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ContentKeyPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ContentKeyPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetPolicyPropertiesWithSecrets - Get a Content Key Policy including secret values
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentKeyPoliciesClient) GetPolicyPropertiesWithSecrets(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesGetPolicyPropertiesWithSecretsOptions) (ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// contentKeyPolicyName - The Content Key Policy name.
+// options - ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions contains the optional parameters for the ContentKeyPoliciesClient.GetPolicyPropertiesWithSecrets
+// method.
+func (client *ContentKeyPoliciesClient) GetPolicyPropertiesWithSecrets(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions) (ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse, error) {
 	req, err := client.getPolicyPropertiesWithSecretsCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, options)
 	if err != nil {
-		return ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse{}, err
+		return ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse{}, err
+		return ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse{}, client.getPolicyPropertiesWithSecretsHandleError(resp)
+		return ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPolicyPropertiesWithSecretsHandleResponse(resp)
 }
 
 // getPolicyPropertiesWithSecretsCreateRequest creates the GetPolicyPropertiesWithSecrets request.
-func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesGetPolicyPropertiesWithSecretsOptions) (*policy.Request, error) {
+func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}/getPolicyPropertiesWithSecrets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -277,7 +265,7 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsCreateRequ
 		return nil, errors.New("parameter contentKeyPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{contentKeyPolicyName}", url.PathEscape(contentKeyPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,43 +277,33 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsCreateRequ
 }
 
 // getPolicyPropertiesWithSecretsHandleResponse handles the GetPolicyPropertiesWithSecrets response.
-func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResponse(resp *http.Response) (ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse, error) {
-	result := ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse{RawResponse: resp}
+func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResponse(resp *http.Response) (ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse, error) {
+	result := ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicyProperties); err != nil {
-		return ContentKeyPoliciesGetPolicyPropertiesWithSecretsResponse{}, runtime.NewResponseError(err, resp)
+		return ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse{}, err
 	}
 	return result, nil
 }
 
-// getPolicyPropertiesWithSecretsHandleError handles the GetPolicyPropertiesWithSecrets error response.
-func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the Content Key Policies in the account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentKeyPoliciesClient) List(resourceGroupName string, accountName string, options *ContentKeyPoliciesListOptions) *ContentKeyPoliciesListPager {
-	return &ContentKeyPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// options - ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
+func (client *ContentKeyPoliciesClient) List(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *ContentKeyPoliciesClientListPager {
+	return &ContentKeyPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp ContentKeyPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ContentKeyPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContentKeyPolicyCollection.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ContentKeyPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *ContentKeyPoliciesListOptions) (*policy.Request, error) {
+func (client *ContentKeyPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,7 +317,7 @@ func (client *ContentKeyPoliciesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,46 +338,39 @@ func (client *ContentKeyPoliciesClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *ContentKeyPoliciesClient) listHandleResponse(resp *http.Response) (ContentKeyPoliciesListResponse, error) {
-	result := ContentKeyPoliciesListResponse{RawResponse: resp}
+func (client *ContentKeyPoliciesClient) listHandleResponse(resp *http.Response) (ContentKeyPoliciesClientListResponse, error) {
+	result := ContentKeyPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicyCollection); err != nil {
-		return ContentKeyPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return ContentKeyPoliciesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ContentKeyPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing Content Key Policy in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentKeyPoliciesClient) Update(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesUpdateOptions) (ContentKeyPoliciesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// contentKeyPolicyName - The Content Key Policy name.
+// parameters - The request parameters
+// options - ContentKeyPoliciesClientUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.Update
+// method.
+func (client *ContentKeyPoliciesClient) Update(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesClientUpdateOptions) (ContentKeyPoliciesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, parameters, options)
 	if err != nil {
-		return ContentKeyPoliciesUpdateResponse{}, err
+		return ContentKeyPoliciesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContentKeyPoliciesUpdateResponse{}, err
+		return ContentKeyPoliciesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContentKeyPoliciesUpdateResponse{}, client.updateHandleError(resp)
+		return ContentKeyPoliciesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ContentKeyPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesUpdateOptions) (*policy.Request, error) {
+func (client *ContentKeyPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -417,7 +388,7 @@ func (client *ContentKeyPoliciesClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter contentKeyPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{contentKeyPolicyName}", url.PathEscape(contentKeyPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,23 +400,10 @@ func (client *ContentKeyPoliciesClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ContentKeyPoliciesClient) updateHandleResponse(resp *http.Response) (ContentKeyPoliciesUpdateResponse, error) {
-	result := ContentKeyPoliciesUpdateResponse{RawResponse: resp}
+func (client *ContentKeyPoliciesClient) updateHandleResponse(resp *http.Response) (ContentKeyPoliciesClientUpdateResponse, error) {
+	result := ContentKeyPoliciesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContentKeyPolicy); err != nil {
-		return ContentKeyPoliciesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ContentKeyPoliciesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ContentKeyPoliciesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

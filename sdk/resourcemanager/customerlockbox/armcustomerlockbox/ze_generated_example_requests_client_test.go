@@ -32,7 +32,7 @@ func ExampleRequestsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LockboxRequestResponse.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RequestsClientGetResult)
 }
 
 // x-ms-original-file: specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_UpdateStatus.json
@@ -43,17 +43,18 @@ func ExampleRequestsClient_UpdateStatus() {
 	}
 	ctx := context.Background()
 	client := armcustomerlockbox.NewRequestsClient(cred, nil)
-	_, err = client.UpdateStatus(ctx,
+	res, err := client.UpdateStatus(ctx,
 		"<subscription-id>",
 		"<request-id>",
 		armcustomerlockbox.Approval{
 			Reason: to.StringPtr("<reason>"),
-			Status: armcustomerlockbox.StatusApprove.ToPtr(),
+			Status: armcustomerlockbox.Status("Approve").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.RequestsClientUpdateStatusResult)
 }
 
 // x-ms-original-file: specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_List_FilterByStatus.json
@@ -65,13 +66,17 @@ func ExampleRequestsClient_List() {
 	ctx := context.Background()
 	client := armcustomerlockbox.NewRequestsClient(cred, nil)
 	pager := client.List("<subscription-id>",
-		&armcustomerlockbox.RequestsListOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+		&armcustomerlockbox.RequestsClientListOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LockboxRequestResponse.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

@@ -11,7 +11,6 @@ package armmanagedservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,58 @@ import (
 // MarketplaceRegistrationDefinitionsWithoutScopeClient contains the methods for the MarketplaceRegistrationDefinitionsWithoutScope group.
 // Don't use this type directly, use NewMarketplaceRegistrationDefinitionsWithoutScopeClient() instead.
 type MarketplaceRegistrationDefinitionsWithoutScopeClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewMarketplaceRegistrationDefinitionsWithoutScopeClient creates a new instance of MarketplaceRegistrationDefinitionsWithoutScopeClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMarketplaceRegistrationDefinitionsWithoutScopeClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MarketplaceRegistrationDefinitionsWithoutScopeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MarketplaceRegistrationDefinitionsWithoutScopeClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MarketplaceRegistrationDefinitionsWithoutScopeClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get the marketplace registration definition for the marketplace identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) Get(ctx context.Context, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsWithoutScopeGetOptions) (MarketplaceRegistrationDefinitionsWithoutScopeGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// marketplaceIdentifier - The Azure Marketplace identifier. Expected formats: {publisher}.{product[-preview]}.{planName}.{version}
+// or {publisher}.{product[-preview]}.{planName} or {publisher}.{product[-preview]} or
+// {publisher}).
+// options - MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScopeClient.Get
+// method.
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) Get(ctx context.Context, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions) (MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, marketplaceIdentifier, options)
 	if err != nil {
-		return MarketplaceRegistrationDefinitionsWithoutScopeGetResponse{}, err
+		return MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MarketplaceRegistrationDefinitionsWithoutScopeGetResponse{}, err
+		return MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MarketplaceRegistrationDefinitionsWithoutScopeGetResponse{}, client.getHandleError(resp)
+		return MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getCreateRequest(ctx context.Context, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsWithoutScopeGetOptions) (*policy.Request, error) {
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getCreateRequest(ctx context.Context, marketplaceIdentifier string, options *MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions/{marketplaceIdentifier}"
 	if marketplaceIdentifier == "" {
 		return nil, errors.New("parameter marketplaceIdentifier cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{marketplaceIdentifier}", url.PathEscape(marketplaceIdentifier))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,45 +87,34 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getCreateReq
 }
 
 // getHandleResponse handles the Get response.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsWithoutScopeGetResponse, error) {
-	result := MarketplaceRegistrationDefinitionsWithoutScopeGetResponse{RawResponse: resp}
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse, error) {
+	result := MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceRegistrationDefinition); err != nil {
-		return MarketplaceRegistrationDefinitionsWithoutScopeGetResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceRegistrationDefinitionsWithoutScopeClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of the marketplace registration definitions for the marketplace identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) List(options *MarketplaceRegistrationDefinitionsWithoutScopeListOptions) *MarketplaceRegistrationDefinitionsWithoutScopeListPager {
-	return &MarketplaceRegistrationDefinitionsWithoutScopeListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScopeClient.List
+// method.
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) List(options *MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions) *MarketplaceRegistrationDefinitionsWithoutScopeClientListPager {
+	return &MarketplaceRegistrationDefinitionsWithoutScopeClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp MarketplaceRegistrationDefinitionsWithoutScopeListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MarketplaceRegistrationDefinitionList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listCreateRequest(ctx context.Context, options *MarketplaceRegistrationDefinitionsWithoutScopeListOptions) (*policy.Request, error) {
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listCreateRequest(ctx context.Context, options *MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagedServices/marketplaceRegistrationDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,23 +129,10 @@ func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listCreateRe
 }
 
 // listHandleResponse handles the List response.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsWithoutScopeListResponse, error) {
-	result := MarketplaceRegistrationDefinitionsWithoutScopeListResponse{RawResponse: resp}
+func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listHandleResponse(resp *http.Response) (MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse, error) {
+	result := MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceRegistrationDefinitionList); err != nil {
-		return MarketplaceRegistrationDefinitionsWithoutScopeListResponse{}, runtime.NewResponseError(err, resp)
+		return MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *MarketplaceRegistrationDefinitionsWithoutScopeClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

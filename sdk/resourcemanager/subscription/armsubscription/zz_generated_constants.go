@@ -9,8 +9,8 @@
 package armsubscription
 
 const (
-	module  = "armsubscription"
-	version = "v0.1.0"
+	moduleName    = "armsubscription"
+	moduleVersion = "v0.2.0"
 )
 
 // AcceptOwnership - The accept ownership state of the resource.
@@ -81,6 +81,56 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 
 // ToPtr returns a *ProvisioningState pointing to the current value.
 func (c ProvisioningState) ToPtr() *ProvisioningState {
+	return &c
+}
+
+// SpendingLimit - The subscription spending limit.
+type SpendingLimit string
+
+const (
+	SpendingLimitOn               SpendingLimit = "On"
+	SpendingLimitOff              SpendingLimit = "Off"
+	SpendingLimitCurrentPeriodOff SpendingLimit = "CurrentPeriodOff"
+)
+
+// PossibleSpendingLimitValues returns the possible values for the SpendingLimit const type.
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return []SpendingLimit{
+		SpendingLimitOn,
+		SpendingLimitOff,
+		SpendingLimitCurrentPeriodOff,
+	}
+}
+
+// ToPtr returns a *SpendingLimit pointing to the current value.
+func (c SpendingLimit) ToPtr() *SpendingLimit {
+	return &c
+}
+
+// SubscriptionState - The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
+type SubscriptionState string
+
+const (
+	SubscriptionStateEnabled  SubscriptionState = "Enabled"
+	SubscriptionStateWarned   SubscriptionState = "Warned"
+	SubscriptionStatePastDue  SubscriptionState = "PastDue"
+	SubscriptionStateDisabled SubscriptionState = "Disabled"
+	SubscriptionStateDeleted  SubscriptionState = "Deleted"
+)
+
+// PossibleSubscriptionStateValues returns the possible values for the SubscriptionState const type.
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return []SubscriptionState{
+		SubscriptionStateEnabled,
+		SubscriptionStateWarned,
+		SubscriptionStatePastDue,
+		SubscriptionStateDisabled,
+		SubscriptionStateDeleted,
+	}
+}
+
+// ToPtr returns a *SubscriptionState pointing to the current value.
+func (c SubscriptionState) ToPtr() *SubscriptionState {
 	return &c
 }
 

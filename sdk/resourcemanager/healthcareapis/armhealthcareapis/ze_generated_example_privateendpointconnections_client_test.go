@@ -27,13 +27,14 @@ func ExamplePrivateEndpointConnectionsClient_ListByService() {
 	}
 	ctx := context.Background()
 	client := armhealthcareapis.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByService(ctx,
+	res, err := client.ListByService(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientListByServiceResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceGetPrivateEndpointConnection.json
@@ -52,7 +53,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientGetResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceCreatePrivateEndpointConnection.json
@@ -71,7 +72,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 			Properties: &armhealthcareapis.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armhealthcareapis.PrivateLinkServiceConnectionState{
 					Description: to.StringPtr("<description>"),
-					Status:      armhealthcareapis.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Status:      armhealthcareapis.PrivateEndpointServiceConnectionStatus("Approved").ToPtr(),
 				},
 			},
 		},
@@ -83,7 +84,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionDescription.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceDeletePrivateEndpointConnection.json

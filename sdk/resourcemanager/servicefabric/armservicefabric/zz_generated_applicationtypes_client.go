@@ -11,7 +11,6 @@ package armservicefabric
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // ApplicationTypesClient contains the methods for the ApplicationTypes group.
 // Don't use this type directly, use NewApplicationTypesClient() instead.
 type ApplicationTypesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewApplicationTypesClient creates a new instance of ApplicationTypesClient with the specified values.
+// subscriptionID - The customer subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewApplicationTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationTypesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ApplicationTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ApplicationTypesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or update a Service Fabric application type name resource with the specified name.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationTypesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, parameters ApplicationTypeResource, options *ApplicationTypesCreateOrUpdateOptions) (ApplicationTypesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster resource.
+// applicationTypeName - The name of the application type name resource.
+// parameters - The application type name resource.
+// options - ApplicationTypesClientCreateOrUpdateOptions contains the optional parameters for the ApplicationTypesClient.CreateOrUpdate
+// method.
+func (client *ApplicationTypesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, parameters ApplicationTypeResource, options *ApplicationTypesClientCreateOrUpdateOptions) (ApplicationTypesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, applicationTypeName, parameters, options)
 	if err != nil {
-		return ApplicationTypesCreateOrUpdateResponse{}, err
+		return ApplicationTypesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationTypesCreateOrUpdateResponse{}, err
+		return ApplicationTypesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationTypesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ApplicationTypesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, parameters ApplicationTypeResource, options *ApplicationTypesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, parameters ApplicationTypeResource, options *ApplicationTypesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter applicationTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationTypeName}", url.PathEscape(applicationTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,50 +103,42 @@ func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ApplicationTypesClient) createOrUpdateHandleResponse(resp *http.Response) (ApplicationTypesCreateOrUpdateResponse, error) {
-	result := ApplicationTypesCreateOrUpdateResponse{RawResponse: resp}
+func (client *ApplicationTypesClient) createOrUpdateHandleResponse(resp *http.Response) (ApplicationTypesClientCreateOrUpdateResponse, error) {
+	result := ApplicationTypesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeResource); err != nil {
-		return ApplicationTypesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationTypesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ApplicationTypesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a Service Fabric application type name resource with the specified name.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationTypesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesBeginDeleteOptions) (ApplicationTypesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster resource.
+// applicationTypeName - The name of the application type name resource.
+// options - ApplicationTypesClientBeginDeleteOptions contains the optional parameters for the ApplicationTypesClient.BeginDelete
+// method.
+func (client *ApplicationTypesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (ApplicationTypesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, applicationTypeName, options)
 	if err != nil {
-		return ApplicationTypesDeletePollerResponse{}, err
+		return ApplicationTypesClientDeletePollerResponse{}, err
 	}
-	result := ApplicationTypesDeletePollerResponse{
+	result := ApplicationTypesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ApplicationTypesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ApplicationTypesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ApplicationTypesDeletePollerResponse{}, err
+		return ApplicationTypesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ApplicationTypesDeletePoller{
+	result.Poller = &ApplicationTypesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a Service Fabric application type name resource with the specified name.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationTypesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ApplicationTypesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, applicationTypeName, options)
 	if err != nil {
 		return nil, err
@@ -143,13 +148,13 @@ func (client *ApplicationTypesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesBeginDeleteOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -167,7 +172,7 @@ func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter applicationTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationTypeName}", url.PathEscape(applicationTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,38 +183,30 @@ func (client *ApplicationTypesClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ApplicationTypesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Get a Service Fabric application type name resource created or in the process of being created in the Service Fabric cluster resource.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationTypesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesGetOptions) (ApplicationTypesGetResponse, error) {
+// Get - Get a Service Fabric application type name resource created or in the process of being created in the Service Fabric
+// cluster resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster resource.
+// applicationTypeName - The name of the application type name resource.
+// options - ApplicationTypesClientGetOptions contains the optional parameters for the ApplicationTypesClient.Get method.
+func (client *ApplicationTypesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientGetOptions) (ApplicationTypesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, applicationTypeName, options)
 	if err != nil {
-		return ApplicationTypesGetResponse{}, err
+		return ApplicationTypesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationTypesGetResponse{}, err
+		return ApplicationTypesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationTypesGetResponse{}, client.getHandleError(resp)
+		return ApplicationTypesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesGetOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +224,7 @@ func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter applicationTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationTypeName}", url.PathEscape(applicationTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,46 +236,37 @@ func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationTypesClient) getHandleResponse(resp *http.Response) (ApplicationTypesGetResponse, error) {
-	result := ApplicationTypesGetResponse{RawResponse: resp}
+func (client *ApplicationTypesClient) getHandleResponse(resp *http.Response) (ApplicationTypesClientGetResponse, error) {
+	result := ApplicationTypesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeResource); err != nil {
-		return ApplicationTypesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationTypesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ApplicationTypesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets all application type name resources created or in the process of being created in the Service Fabric cluster resource.
-// If the operation fails it returns the *ErrorModel error type.
-func (client *ApplicationTypesClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationTypesListOptions) (ApplicationTypesListResponse, error) {
+// List - Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+// resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster resource.
+// options - ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.List method.
+func (client *ApplicationTypesClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationTypesClientListOptions) (ApplicationTypesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return ApplicationTypesListResponse{}, err
+		return ApplicationTypesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ApplicationTypesListResponse{}, err
+		return ApplicationTypesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ApplicationTypesListResponse{}, client.listHandleError(resp)
+		return ApplicationTypesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationTypesListOptions) (*policy.Request, error) {
+func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationTypesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -292,7 +280,7 @@ func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -304,23 +292,10 @@ func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplicationTypesClient) listHandleResponse(resp *http.Response) (ApplicationTypesListResponse, error) {
-	result := ApplicationTypesListResponse{RawResponse: resp}
+func (client *ApplicationTypesClient) listHandleResponse(resp *http.Response) (ApplicationTypesClientListResponse, error) {
+	result := ApplicationTypesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeResourceList); err != nil {
-		return ApplicationTypesListResponse{}, runtime.NewResponseError(err, resp)
+		return ApplicationTypesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ApplicationTypesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorModel{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

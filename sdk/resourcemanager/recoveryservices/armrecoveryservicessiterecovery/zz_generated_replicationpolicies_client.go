@@ -24,48 +24,64 @@ import (
 // ReplicationPoliciesClient contains the methods for the ReplicationPolicies group.
 // Don't use this type directly, use NewReplicationPoliciesClient() instead.
 type ReplicationPoliciesClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationPoliciesClient creates a new instance of ReplicationPoliciesClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationPoliciesClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationPoliciesClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationPoliciesClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - The operation to create a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesBeginCreateOptions) (ReplicationPoliciesCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// policyName - Replication policy name.
+// input - Create policy input.
+// options - ReplicationPoliciesClientBeginCreateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginCreate
+// method.
+func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (ReplicationPoliciesClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, policyName, input, options)
 	if err != nil {
-		return ReplicationPoliciesCreatePollerResponse{}, err
+		return ReplicationPoliciesClientCreatePollerResponse{}, err
 	}
-	result := ReplicationPoliciesCreatePollerResponse{
+	result := ReplicationPoliciesClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationPoliciesClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ReplicationPoliciesClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ReplicationPoliciesCreatePollerResponse{}, err
+		return ReplicationPoliciesClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationPoliciesCreatePoller{
+	result.Poller = &ReplicationPoliciesClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - The operation to create a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) create(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationPoliciesClient) create(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, policyName, input, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +91,13 @@ func (client *ReplicationPoliciesClient) create(ctx context.Context, policyName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -99,52 +115,43 @@ func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationPoliciesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - The operation to delete a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, policyName string, options *ReplicationPoliciesBeginDeleteOptions) (ReplicationPoliciesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// policyName - Replication policy name.
+// options - ReplicationPoliciesClientBeginDeleteOptions contains the optional parameters for the ReplicationPoliciesClient.BeginDelete
+// method.
+func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (ReplicationPoliciesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, policyName, options)
 	if err != nil {
-		return ReplicationPoliciesDeletePollerResponse{}, err
+		return ReplicationPoliciesClientDeletePollerResponse{}, err
 	}
-	result := ReplicationPoliciesDeletePollerResponse{
+	result := ReplicationPoliciesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationPoliciesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ReplicationPoliciesClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ReplicationPoliciesDeletePollerResponse{}, err
+		return ReplicationPoliciesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ReplicationPoliciesDeletePoller{
+	result.Poller = &ReplicationPoliciesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - The operation to delete a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, policyName string, options *ReplicationPoliciesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, policyName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +161,13 @@ func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, po
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context, policyName string, options *ReplicationPoliciesBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -178,47 +185,37 @@ func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ReplicationPoliciesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) Get(ctx context.Context, policyName string, options *ReplicationPoliciesGetOptions) (ReplicationPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// policyName - Replication policy name.
+// options - ReplicationPoliciesClientGetOptions contains the optional parameters for the ReplicationPoliciesClient.Get method.
+func (client *ReplicationPoliciesClient) Get(ctx context.Context, policyName string, options *ReplicationPoliciesClientGetOptions) (ReplicationPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, policyName, options)
 	if err != nil {
-		return ReplicationPoliciesGetResponse{}, err
+		return ReplicationPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationPoliciesGetResponse{}, err
+		return ReplicationPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationPoliciesGetResponse{}, client.getHandleError(resp)
+		return ReplicationPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationPoliciesClient) getCreateRequest(ctx context.Context, policyName string, options *ReplicationPoliciesGetOptions) (*policy.Request, error) {
+func (client *ReplicationPoliciesClient) getCreateRequest(ctx context.Context, policyName string, options *ReplicationPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -236,54 +233,44 @@ func (client *ReplicationPoliciesClient) getCreateRequest(ctx context.Context, p
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationPoliciesClient) getHandleResponse(resp *http.Response) (ReplicationPoliciesGetResponse, error) {
-	result := ReplicationPoliciesGetResponse{RawResponse: resp}
+func (client *ReplicationPoliciesClient) getHandleResponse(resp *http.Response) (ReplicationPoliciesClientGetResponse, error) {
+	result := ReplicationPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
-		return ReplicationPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists the replication policies for a vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) List(options *ReplicationPoliciesListOptions) *ReplicationPoliciesListPager {
-	return &ReplicationPoliciesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.List
+// method.
+func (client *ReplicationPoliciesClient) List(options *ReplicationPoliciesClientListOptions) *ReplicationPoliciesClientListPager {
+	return &ReplicationPoliciesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationPoliciesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationPoliciesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.PolicyCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationPoliciesClient) listCreateRequest(ctx context.Context, options *ReplicationPoliciesListOptions) (*policy.Request, error) {
+func (client *ReplicationPoliciesClient) listCreateRequest(ctx context.Context, options *ReplicationPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -297,61 +284,53 @@ func (client *ReplicationPoliciesClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationPoliciesClient) listHandleResponse(resp *http.Response) (ReplicationPoliciesListResponse, error) {
-	result := ReplicationPoliciesListResponse{RawResponse: resp}
+func (client *ReplicationPoliciesClient) listHandleResponse(resp *http.Response) (ReplicationPoliciesClientListResponse, error) {
+	result := ReplicationPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
-		return ReplicationPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationPoliciesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReplicationPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - The operation to update a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesBeginUpdateOptions) (ReplicationPoliciesUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// policyName - Policy Id.
+// input - Update Policy Input.
+// options - ReplicationPoliciesClientBeginUpdateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginUpdate
+// method.
+func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (ReplicationPoliciesClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, policyName, input, options)
 	if err != nil {
-		return ReplicationPoliciesUpdatePollerResponse{}, err
+		return ReplicationPoliciesClientUpdatePollerResponse{}, err
 	}
-	result := ReplicationPoliciesUpdatePollerResponse{
+	result := ReplicationPoliciesClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationPoliciesClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ReplicationPoliciesClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ReplicationPoliciesUpdatePollerResponse{}, err
+		return ReplicationPoliciesClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationPoliciesUpdatePoller{
+	result.Poller = &ReplicationPoliciesClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - The operation to update a replication policy.
-// If the operation fails it returns a generic error.
-func (client *ReplicationPoliciesClient) update(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationPoliciesClient) update(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, policyName, input, options)
 	if err != nil {
 		return nil, err
@@ -361,13 +340,13 @@ func (client *ReplicationPoliciesClient) update(ctx context.Context, policyName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicationPoliciesClient) updateCreateRequest(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReplicationPoliciesClient) updateCreateRequest(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -385,25 +364,13 @@ func (client *ReplicationPoliciesClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter policyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, input)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ReplicationPoliciesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

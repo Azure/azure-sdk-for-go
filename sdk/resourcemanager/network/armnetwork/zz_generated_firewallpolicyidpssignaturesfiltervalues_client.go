@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // FirewallPolicyIdpsSignaturesFilterValuesClient contains the methods for the FirewallPolicyIdpsSignaturesFilterValues group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesFilterValuesClient() instead.
 type FirewallPolicyIdpsSignaturesFilterValuesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFirewallPolicyIdpsSignaturesFilterValuesClient creates a new instance of FirewallPolicyIdpsSignaturesFilterValuesClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFirewallPolicyIdpsSignaturesFilterValuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FirewallPolicyIdpsSignaturesFilterValuesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FirewallPolicyIdpsSignaturesFilterValuesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FirewallPolicyIdpsSignaturesFilterValuesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Retrieves the current filter values for the signatures overrides
-// If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) List(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignatureOverridesFilterValuesQuery, options *FirewallPolicyIdpsSignaturesFilterValuesListOptions) (FirewallPolicyIdpsSignaturesFilterValuesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// firewallPolicyName - The name of the Firewall Policy.
+// options - FirewallPolicyIdpsSignaturesFilterValuesClientListOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesFilterValuesClient.List
+// method.
+func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) List(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignatureOverridesFilterValuesQuery, options *FirewallPolicyIdpsSignaturesFilterValuesClientListOptions) (FirewallPolicyIdpsSignaturesFilterValuesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesFilterValuesListResponse{}, err
+		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesFilterValuesListResponse{}, err
+		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallPolicyIdpsSignaturesFilterValuesListResponse{}, client.listHandleError(resp)
+		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignatureOverridesFilterValuesQuery, options *FirewallPolicyIdpsSignaturesFilterValuesListOptions) (*policy.Request, error) {
+func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignatureOverridesFilterValuesQuery, options *FirewallPolicyIdpsSignaturesFilterValuesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/listIdpsFilterOptions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +86,7 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +95,10 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesFilterValuesListResponse, error) {
-	result := FirewallPolicyIdpsSignaturesFilterValuesListResponse{RawResponse: resp}
+func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesFilterValuesClientListResponse, error) {
+	result := FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignatureOverridesFilterValuesResponse); err != nil {
-		return FirewallPolicyIdpsSignaturesFilterValuesListResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

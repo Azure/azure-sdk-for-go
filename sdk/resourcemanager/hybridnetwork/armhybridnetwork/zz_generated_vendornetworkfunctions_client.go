@@ -11,7 +11,6 @@ package armhybridnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,62 @@ import (
 // VendorNetworkFunctionsClient contains the methods for the VendorNetworkFunctions group.
 // Don't use this type directly, use NewVendorNetworkFunctionsClient() instead.
 type VendorNetworkFunctionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVendorNetworkFunctionsClient creates a new instance of VendorNetworkFunctionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewVendorNetworkFunctionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VendorNetworkFunctionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &VendorNetworkFunctionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &VendorNetworkFunctionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreateOrUpdate - Creates or updates a vendor network function. This operation can take up to 6 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorNetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsBeginCreateOrUpdateOptions) (VendorNetworkFunctionsCreateOrUpdatePollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a vendor network function. This operation can take up to 6 hours to complete.
+// This is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The Azure region where the network function resource was created by the customer.
+// vendorName - The name of the vendor.
+// serviceKey - The GUID for the vendor network function.
+// parameters - Parameters supplied to the create or update vendor network function operation.
+// options - VendorNetworkFunctionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorNetworkFunctionsClient.BeginCreateOrUpdate
+// method.
+func (client *VendorNetworkFunctionsClient) BeginCreateOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (VendorNetworkFunctionsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, locationName, vendorName, serviceKey, parameters, options)
 	if err != nil {
-		return VendorNetworkFunctionsCreateOrUpdatePollerResponse{}, err
+		return VendorNetworkFunctionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := VendorNetworkFunctionsCreateOrUpdatePollerResponse{
+	result := VendorNetworkFunctionsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VendorNetworkFunctionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VendorNetworkFunctionsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return VendorNetworkFunctionsCreateOrUpdatePollerResponse{}, err
+		return VendorNetworkFunctionsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VendorNetworkFunctionsCreateOrUpdatePoller{
+	result.Poller = &VendorNetworkFunctionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates or updates a vendor network function. This operation can take up to 6 hours to complete. This is expected service behavior.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorNetworkFunctionsClient) createOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// CreateOrUpdate - Creates or updates a vendor network function. This operation can take up to 6 hours to complete. This
+// is expected service behavior.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VendorNetworkFunctionsClient) createOrUpdate(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, locationName, vendorName, serviceKey, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *VendorNetworkFunctionsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx context.Context, locationName string, vendorName string, serviceKey string, parameters VendorNetworkFunction, options *VendorNetworkFunctionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions/{serviceKey}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -98,7 +113,7 @@ func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,38 +124,30 @@ func (client *VendorNetworkFunctionsClient) createOrUpdateCreateRequest(ctx cont
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VendorNetworkFunctionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified vendor network function.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorNetworkFunctionsClient) Get(ctx context.Context, locationName string, vendorName string, serviceKey string, options *VendorNetworkFunctionsGetOptions) (VendorNetworkFunctionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The Azure region where the network function resource was created by the customer.
+// vendorName - The name of the vendor.
+// serviceKey - The GUID for the vendor network function.
+// options - VendorNetworkFunctionsClientGetOptions contains the optional parameters for the VendorNetworkFunctionsClient.Get
+// method.
+func (client *VendorNetworkFunctionsClient) Get(ctx context.Context, locationName string, vendorName string, serviceKey string, options *VendorNetworkFunctionsClientGetOptions) (VendorNetworkFunctionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, vendorName, serviceKey, options)
 	if err != nil {
-		return VendorNetworkFunctionsGetResponse{}, err
+		return VendorNetworkFunctionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VendorNetworkFunctionsGetResponse{}, err
+		return VendorNetworkFunctionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VendorNetworkFunctionsGetResponse{}, client.getHandleError(resp)
+		return VendorNetworkFunctionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VendorNetworkFunctionsClient) getCreateRequest(ctx context.Context, locationName string, vendorName string, serviceKey string, options *VendorNetworkFunctionsGetOptions) (*policy.Request, error) {
+func (client *VendorNetworkFunctionsClient) getCreateRequest(ctx context.Context, locationName string, vendorName string, serviceKey string, options *VendorNetworkFunctionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions/{serviceKey}"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -158,7 +165,7 @@ func (client *VendorNetworkFunctionsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,43 +177,34 @@ func (client *VendorNetworkFunctionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *VendorNetworkFunctionsClient) getHandleResponse(resp *http.Response) (VendorNetworkFunctionsGetResponse, error) {
-	result := VendorNetworkFunctionsGetResponse{RawResponse: resp}
+func (client *VendorNetworkFunctionsClient) getHandleResponse(resp *http.Response) (VendorNetworkFunctionsClientGetResponse, error) {
+	result := VendorNetworkFunctionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorNetworkFunction); err != nil {
-		return VendorNetworkFunctionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VendorNetworkFunctionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VendorNetworkFunctionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists all the vendor network function sub resources in an Azure region, filtered by skuType, skuName, vendorProvisioningState.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorNetworkFunctionsClient) List(locationName string, vendorName string, options *VendorNetworkFunctionsListOptions) *VendorNetworkFunctionsListPager {
-	return &VendorNetworkFunctionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - The Azure region where the network function resource was created by the customer.
+// vendorName - The name of the vendor.
+// options - VendorNetworkFunctionsClientListOptions contains the optional parameters for the VendorNetworkFunctionsClient.List
+// method.
+func (client *VendorNetworkFunctionsClient) List(locationName string, vendorName string, options *VendorNetworkFunctionsClientListOptions) *VendorNetworkFunctionsClientListPager {
+	return &VendorNetworkFunctionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, locationName, vendorName, options)
 		},
-		advancer: func(ctx context.Context, resp VendorNetworkFunctionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp VendorNetworkFunctionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.VendorNetworkFunctionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VendorNetworkFunctionsClient) listCreateRequest(ctx context.Context, locationName string, vendorName string, options *VendorNetworkFunctionsListOptions) (*policy.Request, error) {
+func (client *VendorNetworkFunctionsClient) listCreateRequest(ctx context.Context, locationName string, vendorName string, options *VendorNetworkFunctionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/locations/{locationName}/vendors/{vendorName}/networkFunctions"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -220,7 +218,7 @@ func (client *VendorNetworkFunctionsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -235,23 +233,10 @@ func (client *VendorNetworkFunctionsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *VendorNetworkFunctionsClient) listHandleResponse(resp *http.Response) (VendorNetworkFunctionsListResponse, error) {
-	result := VendorNetworkFunctionsListResponse{RawResponse: resp}
+func (client *VendorNetworkFunctionsClient) listHandleResponse(resp *http.Response) (VendorNetworkFunctionsClientListResponse, error) {
+	result := VendorNetworkFunctionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorNetworkFunctionListResult); err != nil {
-		return VendorNetworkFunctionsListResponse{}, runtime.NewResponseError(err, resp)
+		return VendorNetworkFunctionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *VendorNetworkFunctionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

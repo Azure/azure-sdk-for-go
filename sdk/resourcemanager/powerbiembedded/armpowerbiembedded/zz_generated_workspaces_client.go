@@ -11,7 +11,6 @@ package armpowerbiembedded
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // WorkspacesClient contains the methods for the Workspaces group.
 // Don't use this type directly, use NewWorkspacesClient() instead.
 type WorkspacesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify a Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspacesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Retrieves all existing Power BI workspaces in the specified workspace collection.
-// If the operation fails it returns the *Error error type.
-func (client *WorkspacesClient) List(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspacesListOptions) (WorkspacesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Azure resource group
+// workspaceCollectionName - Power BI Embedded Workspace Collection name
+// options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
+func (client *WorkspacesClient) List(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) (WorkspacesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceCollectionName, options)
 	if err != nil {
-		return WorkspacesListResponse{}, err
+		return WorkspacesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspacesListResponse{}, err
+		return WorkspacesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspacesListResponse{}, client.listHandleError(resp)
+		return WorkspacesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspacesListOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/workspaceCollections/{workspaceCollectionName}/workspaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,7 +85,7 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter workspaceCollectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceCollectionName}", url.PathEscape(workspaceCollectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,23 +97,10 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (WorkspacesListResponse, error) {
-	result := WorkspacesListResponse{RawResponse: resp}
+func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (WorkspacesClientListResponse, error) {
+	result := WorkspacesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceList); err != nil {
-		return WorkspacesListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspacesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *WorkspacesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

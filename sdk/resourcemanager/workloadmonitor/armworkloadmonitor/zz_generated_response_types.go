@@ -10,62 +10,62 @@ package armworkloadmonitor
 
 import "net/http"
 
-// HealthMonitorsGetResponse contains the response from method HealthMonitors.Get.
-type HealthMonitorsGetResponse struct {
-	HealthMonitorsGetResult
+// HealthMonitorsClientGetResponse contains the response from method HealthMonitorsClient.Get.
+type HealthMonitorsClientGetResponse struct {
+	HealthMonitorsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HealthMonitorsGetResult contains the result from method HealthMonitors.Get.
-type HealthMonitorsGetResult struct {
+// HealthMonitorsClientGetResult contains the result from method HealthMonitorsClient.Get.
+type HealthMonitorsClientGetResult struct {
 	HealthMonitor
 }
 
-// HealthMonitorsGetStateChangeResponse contains the response from method HealthMonitors.GetStateChange.
-type HealthMonitorsGetStateChangeResponse struct {
-	HealthMonitorsGetStateChangeResult
+// HealthMonitorsClientGetStateChangeResponse contains the response from method HealthMonitorsClient.GetStateChange.
+type HealthMonitorsClientGetStateChangeResponse struct {
+	HealthMonitorsClientGetStateChangeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HealthMonitorsGetStateChangeResult contains the result from method HealthMonitors.GetStateChange.
-type HealthMonitorsGetStateChangeResult struct {
+// HealthMonitorsClientGetStateChangeResult contains the result from method HealthMonitorsClient.GetStateChange.
+type HealthMonitorsClientGetStateChangeResult struct {
 	HealthMonitorStateChange
 }
 
-// HealthMonitorsListResponse contains the response from method HealthMonitors.List.
-type HealthMonitorsListResponse struct {
-	HealthMonitorsListResult
+// HealthMonitorsClientListResponse contains the response from method HealthMonitorsClient.List.
+type HealthMonitorsClientListResponse struct {
+	HealthMonitorsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HealthMonitorsListResult contains the result from method HealthMonitors.List.
-type HealthMonitorsListResult struct {
+// HealthMonitorsClientListResult contains the result from method HealthMonitorsClient.List.
+type HealthMonitorsClientListResult struct {
 	HealthMonitorList
 }
 
-// HealthMonitorsListStateChangesResponse contains the response from method HealthMonitors.ListStateChanges.
-type HealthMonitorsListStateChangesResponse struct {
-	HealthMonitorsListStateChangesResult
+// HealthMonitorsClientListStateChangesResponse contains the response from method HealthMonitorsClient.ListStateChanges.
+type HealthMonitorsClientListStateChangesResponse struct {
+	HealthMonitorsClientListStateChangesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HealthMonitorsListStateChangesResult contains the result from method HealthMonitors.ListStateChanges.
-type HealthMonitorsListStateChangesResult struct {
+// HealthMonitorsClientListStateChangesResult contains the result from method HealthMonitorsClient.ListStateChanges.
+type HealthMonitorsClientListStateChangesResult struct {
 	HealthMonitorStateChangeList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationList
 }

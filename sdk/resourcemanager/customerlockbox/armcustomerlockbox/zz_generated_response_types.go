@@ -10,74 +10,74 @@ package armcustomerlockbox
 
 import "net/http"
 
-// GetTenantOptedInResponse contains the response from method Get.TenantOptedIn.
-type GetTenantOptedInResponse struct {
-	GetTenantOptedInResult
+// GetClientTenantOptedInResponse contains the response from method GetClient.TenantOptedIn.
+type GetClientTenantOptedInResponse struct {
+	GetClientTenantOptedInResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// GetTenantOptedInResult contains the result from method Get.TenantOptedIn.
-type GetTenantOptedInResult struct {
+// GetClientTenantOptedInResult contains the result from method GetClient.TenantOptedIn.
+type GetClientTenantOptedInResult struct {
 	TenantOptInResponse
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PostDisableLockboxResponse contains the response from method Post.DisableLockbox.
-type PostDisableLockboxResponse struct {
+// PostClientDisableLockboxResponse contains the response from method PostClient.DisableLockbox.
+type PostClientDisableLockboxResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PostEnableLockboxResponse contains the response from method Post.EnableLockbox.
-type PostEnableLockboxResponse struct {
+// PostClientEnableLockboxResponse contains the response from method PostClient.EnableLockbox.
+type PostClientEnableLockboxResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RequestsGetResponse contains the response from method Requests.Get.
-type RequestsGetResponse struct {
-	RequestsGetResult
+// RequestsClientGetResponse contains the response from method RequestsClient.Get.
+type RequestsClientGetResponse struct {
+	RequestsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RequestsGetResult contains the result from method Requests.Get.
-type RequestsGetResult struct {
+// RequestsClientGetResult contains the result from method RequestsClient.Get.
+type RequestsClientGetResult struct {
 	LockboxRequestResponse
 }
 
-// RequestsListResponse contains the response from method Requests.List.
-type RequestsListResponse struct {
-	RequestsListResult
+// RequestsClientListResponse contains the response from method RequestsClient.List.
+type RequestsClientListResponse struct {
+	RequestsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RequestsListResult contains the result from method Requests.List.
-type RequestsListResult struct {
+// RequestsClientListResult contains the result from method RequestsClient.List.
+type RequestsClientListResult struct {
 	RequestListResult
 }
 
-// RequestsUpdateStatusResponse contains the response from method Requests.UpdateStatus.
-type RequestsUpdateStatusResponse struct {
-	RequestsUpdateStatusResult
+// RequestsClientUpdateStatusResponse contains the response from method RequestsClient.UpdateStatus.
+type RequestsClientUpdateStatusResponse struct {
+	RequestsClientUpdateStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RequestsUpdateStatusResult contains the result from method Requests.UpdateStatus.
-type RequestsUpdateStatusResult struct {
+// RequestsClientUpdateStatusResult contains the result from method RequestsClient.UpdateStatus.
+type RequestsClientUpdateStatusResult struct {
 	Approval
 }

@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// OperationResultsGetPoller provides polling facilities until the operation reaches a terminal state.
-type OperationResultsGetPoller struct {
+// OperationResultsClientGetPoller provides polling facilities until the operation reaches a terminal state.
+type OperationResultsClientGetPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *OperationResultsGetPoller) Done() bool {
+func (p *OperationResultsClientGetPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *OperationResultsGetPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *OperationResultsGetPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *OperationResultsClientGetPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final OperationResultsGetResponse will be returned.
-func (p *OperationResultsGetPoller) FinalResponse(ctx context.Context) (OperationResultsGetResponse, error) {
-	respType := OperationResultsGetResponse{}
+// If the final GET succeeded then the final OperationResultsClientGetResponse will be returned.
+func (p *OperationResultsClientGetPoller) FinalResponse(ctx context.Context) (OperationResultsClientGetResponse, error) {
+	respType := OperationResultsClientGetResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.OperationResultsDescription)
 	if err != nil {
-		return OperationResultsGetResponse{}, err
+		return OperationResultsClientGetResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,6 +53,6 @@ func (p *OperationResultsGetPoller) FinalResponse(ctx context.Context) (Operatio
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *OperationResultsGetPoller) ResumeToken() (string, error) {
+func (p *OperationResultsClientGetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

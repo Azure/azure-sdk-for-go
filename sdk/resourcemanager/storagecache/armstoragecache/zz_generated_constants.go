@@ -9,8 +9,8 @@
 package armstoragecache
 
 const (
-	module  = "armstoragecache"
-	version = "v0.1.0"
+	moduleName    = "armstoragecache"
+	moduleVersion = "v0.2.0"
 )
 
 // CacheIdentityType - The type of identity used for the cache
@@ -86,8 +86,8 @@ func (c DomainJoinedType) ToPtr() *DomainJoinedType {
 	return &c
 }
 
-// FirmwareStatusType - True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed after firmwareUpdateDeadline
-// if not triggered earlier via the upgrade operation.
+// FirmwareStatusType - True if there is a firmware update ready to install on this Cache. The firmware will automatically
+// be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
 type FirmwareStatusType string
 
 const (
@@ -273,8 +273,8 @@ func (c ProvisioningStateType) ToPtr() *ProvisioningStateType {
 	return &c
 }
 
-// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId" is set when the SKU has requiredQuotas
-// parameter as the subscription does not belong to that
+// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId"
+// is set when the SKU has requiredQuotas parameter as the subscription does not belong to that
 // quota. "NotAvailableForSubscription" is related to capacity at the datacenter.
 type ReasonCode string
 

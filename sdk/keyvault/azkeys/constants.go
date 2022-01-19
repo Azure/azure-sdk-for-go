@@ -6,7 +6,7 @@
 
 package azkeys
 
-import generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
 // certificate can be permanently deleted by a privileged user; otherwise,

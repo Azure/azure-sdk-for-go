@@ -15,34 +15,34 @@ import (
 	"time"
 )
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PipelineTemplateDefinitionsListResponse contains the response from method PipelineTemplateDefinitions.List.
-type PipelineTemplateDefinitionsListResponse struct {
-	PipelineTemplateDefinitionsListResult
+// PipelineTemplateDefinitionsClientListResponse contains the response from method PipelineTemplateDefinitionsClient.List.
+type PipelineTemplateDefinitionsClientListResponse struct {
+	PipelineTemplateDefinitionsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelineTemplateDefinitionsListResult contains the result from method PipelineTemplateDefinitions.List.
-type PipelineTemplateDefinitionsListResult struct {
+// PipelineTemplateDefinitionsClientListResult contains the result from method PipelineTemplateDefinitionsClient.List.
+type PipelineTemplateDefinitionsClientListResult struct {
 	PipelineTemplateDefinitionListResult
 }
 
-// PipelinesCreateOrUpdatePollerResponse contains the response from method Pipelines.CreateOrUpdate.
-type PipelinesCreateOrUpdatePollerResponse struct {
+// PipelinesClientCreateOrUpdatePollerResponse contains the response from method PipelinesClient.CreateOrUpdate.
+type PipelinesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PipelinesCreateOrUpdatePoller
+	Poller *PipelinesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,8 +51,8 @@ type PipelinesCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PipelinesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PipelinesCreateOrUpdateResponse, error) {
-	respType := PipelinesCreateOrUpdateResponse{}
+func (l PipelinesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PipelinesClientCreateOrUpdateResponse, error) {
+	respType := PipelinesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Pipeline)
 	if err != nil {
 		return respType, err
@@ -61,13 +61,13 @@ func (l PipelinesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a PipelinesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PipelinesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PipelinesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PipelinesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PipelinesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PipelinesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PipelinesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PipelinesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PipelinesCreateOrUpdatePoller{
+	poller := &PipelinesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,68 +79,68 @@ func (l *PipelinesCreateOrUpdatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// PipelinesCreateOrUpdateResponse contains the response from method Pipelines.CreateOrUpdate.
-type PipelinesCreateOrUpdateResponse struct {
-	PipelinesCreateOrUpdateResult
+// PipelinesClientCreateOrUpdateResponse contains the response from method PipelinesClient.CreateOrUpdate.
+type PipelinesClientCreateOrUpdateResponse struct {
+	PipelinesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelinesCreateOrUpdateResult contains the result from method Pipelines.CreateOrUpdate.
-type PipelinesCreateOrUpdateResult struct {
+// PipelinesClientCreateOrUpdateResult contains the result from method PipelinesClient.CreateOrUpdate.
+type PipelinesClientCreateOrUpdateResult struct {
 	Pipeline
 }
 
-// PipelinesDeleteResponse contains the response from method Pipelines.Delete.
-type PipelinesDeleteResponse struct {
+// PipelinesClientDeleteResponse contains the response from method PipelinesClient.Delete.
+type PipelinesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelinesGetResponse contains the response from method Pipelines.Get.
-type PipelinesGetResponse struct {
-	PipelinesGetResult
+// PipelinesClientGetResponse contains the response from method PipelinesClient.Get.
+type PipelinesClientGetResponse struct {
+	PipelinesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelinesGetResult contains the result from method Pipelines.Get.
-type PipelinesGetResult struct {
+// PipelinesClientGetResult contains the result from method PipelinesClient.Get.
+type PipelinesClientGetResult struct {
 	Pipeline
 }
 
-// PipelinesListByResourceGroupResponse contains the response from method Pipelines.ListByResourceGroup.
-type PipelinesListByResourceGroupResponse struct {
-	PipelinesListByResourceGroupResult
+// PipelinesClientListByResourceGroupResponse contains the response from method PipelinesClient.ListByResourceGroup.
+type PipelinesClientListByResourceGroupResponse struct {
+	PipelinesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelinesListByResourceGroupResult contains the result from method Pipelines.ListByResourceGroup.
-type PipelinesListByResourceGroupResult struct {
+// PipelinesClientListByResourceGroupResult contains the result from method PipelinesClient.ListByResourceGroup.
+type PipelinesClientListByResourceGroupResult struct {
 	PipelineListResult
 }
 
-// PipelinesListBySubscriptionResponse contains the response from method Pipelines.ListBySubscription.
-type PipelinesListBySubscriptionResponse struct {
-	PipelinesListBySubscriptionResult
+// PipelinesClientListBySubscriptionResponse contains the response from method PipelinesClient.ListBySubscription.
+type PipelinesClientListBySubscriptionResponse struct {
+	PipelinesClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelinesListBySubscriptionResult contains the result from method Pipelines.ListBySubscription.
-type PipelinesListBySubscriptionResult struct {
+// PipelinesClientListBySubscriptionResult contains the result from method PipelinesClient.ListBySubscription.
+type PipelinesClientListBySubscriptionResult struct {
 	PipelineListResult
 }
 
-// PipelinesUpdateResponse contains the response from method Pipelines.Update.
-type PipelinesUpdateResponse struct {
-	PipelinesUpdateResult
+// PipelinesClientUpdateResponse contains the response from method PipelinesClient.Update.
+type PipelinesClientUpdateResponse struct {
+	PipelinesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PipelinesUpdateResult contains the result from method Pipelines.Update.
-type PipelinesUpdateResult struct {
+// PipelinesClientUpdateResult contains the result from method PipelinesClient.Update.
+type PipelinesClientUpdateResult struct {
 	Pipeline
 }

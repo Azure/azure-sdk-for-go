@@ -1,5 +1,448 @@
 # Release History
 
+## 0.2.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*MeterDetails.UnmarshalJSON` has been removed
+- Function `*EdgeOrderManagementClientListOperationsPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClientDeleteAddressByNamePoller.ResumeToken` has been removed
+- Function `*EdgeOrderManagementClientListOperationsPager.Err` has been removed
+- Function `*EdgeOrderManagementClientListOperationsPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClient.GetOrderByName` has been removed
+- Function `*EdgeOrderManagementClientUpdateOrderItemPoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClientListProductFamiliesMetadataPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClientUpdateAddressPoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClientListOrderAtResourceGroupLevelPager.PageResponse` has been removed
+- Function `NewEdgeOrderManagementClient` has been removed
+- Function `*EdgeOrderManagementClientReturnOrderItemPoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClientReturnOrderItemPoller.Done` has been removed
+- Function `*EdgeOrderManagementClientCreateOrderItemPoller.ResumeToken` has been removed
+- Function `EdgeOrderManagementClientDeleteAddressByNamePollerResponse.PollUntilDone` has been removed
+- Function `*EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager.PageResponse` has been removed
+- Function `EdgeOrderManagementClientCreateOrderItemPollerResponse.PollUntilDone` has been removed
+- Function `*EdgeOrderManagementClientUpdateAddressPoller.Poll` has been removed
+- Function `*EdgeOrderManagementClientListProductFamiliesPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClientUpdateOrderItemPoller.Poll` has been removed
+- Function `*EdgeOrderManagementClient.ListOrderItemsAtSubscriptionLevel` has been removed
+- Function `*EdgeOrderManagementClientDeleteAddressByNamePoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClientCreateAddressPoller.Poll` has been removed
+- Function `*EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClient.ListProductFamiliesMetadata` has been removed
+- Function `*EdgeOrderManagementClientUpdateOrderItemPollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClientDeleteOrderItemByNamePoller.ResumeToken` has been removed
+- Function `*EdgeOrderManagementClientListProductFamiliesMetadataPager.Err` has been removed
+- Function `*EdgeOrderManagementClientDeleteOrderItemByNamePoller.Done` has been removed
+- Function `*EdgeOrderManagementClient.ListAddressesAtSubscriptionLevel` has been removed
+- Function `*EdgeOrderManagementClient.BeginReturnOrderItem` has been removed
+- Function `*EdgeOrderManagementClient.ListOrderAtResourceGroupLevel` has been removed
+- Function `*EdgeOrderManagementClient.BeginUpdateAddress` has been removed
+- Function `*EdgeOrderManagementClient.ListOperations` has been removed
+- Function `*EdgeOrderManagementClientCreateOrderItemPoller.Poll` has been removed
+- Function `*EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClientCreateOrderItemPoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClientDeleteAddressByNamePoller.Poll` has been removed
+- Function `EdgeOrderManagementClientUpdateOrderItemPollerResponse.PollUntilDone` has been removed
+- Function `*EdgeOrderManagementClientCreateAddressPollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClient.ListOrderAtSubscriptionLevel` has been removed
+- Function `*EdgeOrderManagementClientListConfigurationsPager.NextPage` has been removed
+- Function `OrderResource.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `EdgeOrderManagementClientUpdateAddressPollerResponse.PollUntilDone` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*EdgeOrderManagementClientListConfigurationsPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClient.BeginUpdateOrderItem` has been removed
+- Function `*EdgeOrderManagementClientListProductFamiliesMetadataPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClientDeleteOrderItemByNamePoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClientListOrderAtResourceGroupLevelPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager.Err` has been removed
+- Function `*EdgeOrderManagementClientListConfigurationsPager.Err` has been removed
+- Function `*EdgeOrderManagementClientReturnOrderItemPollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClient.BeginCreateAddress` has been removed
+- Function `*EdgeOrderManagementClientCreateOrderItemPoller.Done` has been removed
+- Function `*EdgeOrderManagementClientListOrderAtSubscriptionLevelPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClient.BeginCreateOrderItem` has been removed
+- Function `*EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager.Err` has been removed
+- Function `*EdgeOrderManagementClientCreateAddressPoller.FinalResponse` has been removed
+- Function `*EdgeOrderManagementClient.ListOrderItemsAtResourceGroupLevel` has been removed
+- Function `*EdgeOrderManagementClientListProductFamiliesPager.Err` has been removed
+- Function `*EdgeOrderManagementClientDeleteAddressByNamePollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager.NextPage` has been removed
+- Function `EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse.PollUntilDone` has been removed
+- Function `*EdgeOrderManagementClientUpdateAddressPoller.Done` has been removed
+- Function `*EdgeOrderManagementClient.GetOrderItemByName` has been removed
+- Function `*EdgeOrderManagementClientCreateOrderItemPollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClient.ListConfigurations` has been removed
+- Function `EdgeOrderManagementClientReturnOrderItemPollerResponse.PollUntilDone` has been removed
+- Function `*EdgeOrderManagementClientDeleteAddressByNamePoller.Done` has been removed
+- Function `*EdgeOrderManagementClient.BeginDeleteOrderItemByName` has been removed
+- Function `*EdgeOrderManagementClientCreateAddressPoller.Done` has been removed
+- Function `*EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager.Err` has been removed
+- Function `*EdgeOrderManagementClientUpdateOrderItemPoller.Done` has been removed
+- Function `*EdgeOrderManagementClientListOrderAtResourceGroupLevelPager.Err` has been removed
+- Function `*EdgeOrderManagementClient.ListProductFamilies` has been removed
+- Function `*EdgeOrderManagementClientListProductFamiliesPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClientCreateAddressPoller.ResumeToken` has been removed
+- Function `*EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClientUpdateOrderItemPoller.ResumeToken` has been removed
+- Function `*EdgeOrderManagementClient.BeginDeleteAddressByName` has been removed
+- Function `*EdgeOrderManagementClientListOrderAtSubscriptionLevelPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager.Err` has been removed
+- Function `*EdgeOrderManagementClientReturnOrderItemPoller.ResumeToken` has been removed
+- Function `*EdgeOrderManagementClient.GetAddressByName` has been removed
+- Function `*EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager.PageResponse` has been removed
+- Function `*EdgeOrderManagementClientUpdateAddressPoller.ResumeToken` has been removed
+- Function `EdgeOrderManagementClientCreateAddressPollerResponse.PollUntilDone` has been removed
+- Function `*EdgeOrderManagementClientDeleteOrderItemByNamePoller.Poll` has been removed
+- Function `*EdgeOrderManagementClient.CancelOrderItem` has been removed
+- Function `*EdgeOrderManagementClientReturnOrderItemPoller.Poll` has been removed
+- Function `*EdgeOrderManagementClientUpdateAddressPollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager.NextPage` has been removed
+- Function `*EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse.Resume` has been removed
+- Function `*EdgeOrderManagementClient.ListAddressesAtResourceGroupLevel` has been removed
+- Function `*EdgeOrderManagementClientListOrderAtSubscriptionLevelPager.Err` has been removed
+- Struct `EdgeOrderManagementClient` has been removed
+- Struct `EdgeOrderManagementClientBeginCreateAddressOptions` has been removed
+- Struct `EdgeOrderManagementClientBeginCreateOrderItemOptions` has been removed
+- Struct `EdgeOrderManagementClientBeginDeleteAddressByNameOptions` has been removed
+- Struct `EdgeOrderManagementClientBeginDeleteOrderItemByNameOptions` has been removed
+- Struct `EdgeOrderManagementClientBeginReturnOrderItemOptions` has been removed
+- Struct `EdgeOrderManagementClientBeginUpdateAddressOptions` has been removed
+- Struct `EdgeOrderManagementClientBeginUpdateOrderItemOptions` has been removed
+- Struct `EdgeOrderManagementClientCancelOrderItemOptions` has been removed
+- Struct `EdgeOrderManagementClientCancelOrderItemResponse` has been removed
+- Struct `EdgeOrderManagementClientCreateAddressPoller` has been removed
+- Struct `EdgeOrderManagementClientCreateAddressPollerResponse` has been removed
+- Struct `EdgeOrderManagementClientCreateAddressResponse` has been removed
+- Struct `EdgeOrderManagementClientCreateAddressResult` has been removed
+- Struct `EdgeOrderManagementClientCreateOrderItemPoller` has been removed
+- Struct `EdgeOrderManagementClientCreateOrderItemPollerResponse` has been removed
+- Struct `EdgeOrderManagementClientCreateOrderItemResponse` has been removed
+- Struct `EdgeOrderManagementClientCreateOrderItemResult` has been removed
+- Struct `EdgeOrderManagementClientDeleteAddressByNamePoller` has been removed
+- Struct `EdgeOrderManagementClientDeleteAddressByNamePollerResponse` has been removed
+- Struct `EdgeOrderManagementClientDeleteAddressByNameResponse` has been removed
+- Struct `EdgeOrderManagementClientDeleteOrderItemByNamePoller` has been removed
+- Struct `EdgeOrderManagementClientDeleteOrderItemByNamePollerResponse` has been removed
+- Struct `EdgeOrderManagementClientDeleteOrderItemByNameResponse` has been removed
+- Struct `EdgeOrderManagementClientGetAddressByNameOptions` has been removed
+- Struct `EdgeOrderManagementClientGetAddressByNameResponse` has been removed
+- Struct `EdgeOrderManagementClientGetAddressByNameResult` has been removed
+- Struct `EdgeOrderManagementClientGetOrderByNameOptions` has been removed
+- Struct `EdgeOrderManagementClientGetOrderByNameResponse` has been removed
+- Struct `EdgeOrderManagementClientGetOrderByNameResult` has been removed
+- Struct `EdgeOrderManagementClientGetOrderItemByNameOptions` has been removed
+- Struct `EdgeOrderManagementClientGetOrderItemByNameResponse` has been removed
+- Struct `EdgeOrderManagementClientGetOrderItemByNameResult` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtResourceGroupLevelOptions` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtResourceGroupLevelPager` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtResourceGroupLevelResponse` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtResourceGroupLevelResult` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtSubscriptionLevelOptions` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtSubscriptionLevelPager` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtSubscriptionLevelResponse` has been removed
+- Struct `EdgeOrderManagementClientListAddressesAtSubscriptionLevelResult` has been removed
+- Struct `EdgeOrderManagementClientListConfigurationsOptions` has been removed
+- Struct `EdgeOrderManagementClientListConfigurationsPager` has been removed
+- Struct `EdgeOrderManagementClientListConfigurationsResponse` has been removed
+- Struct `EdgeOrderManagementClientListConfigurationsResult` has been removed
+- Struct `EdgeOrderManagementClientListOperationsOptions` has been removed
+- Struct `EdgeOrderManagementClientListOperationsPager` has been removed
+- Struct `EdgeOrderManagementClientListOperationsResponse` has been removed
+- Struct `EdgeOrderManagementClientListOperationsResult` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtResourceGroupLevelOptions` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtResourceGroupLevelPager` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtResourceGroupLevelResponse` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtResourceGroupLevelResult` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtSubscriptionLevelOptions` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtSubscriptionLevelPager` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtSubscriptionLevelResponse` has been removed
+- Struct `EdgeOrderManagementClientListOrderAtSubscriptionLevelResult` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelOptions` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelPager` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResponse` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelResult` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelOptions` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelPager` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResponse` has been removed
+- Struct `EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelResult` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesMetadataOptions` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesMetadataPager` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesMetadataResponse` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesMetadataResult` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesOptions` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesPager` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesResponse` has been removed
+- Struct `EdgeOrderManagementClientListProductFamiliesResult` has been removed
+- Struct `EdgeOrderManagementClientReturnOrderItemPoller` has been removed
+- Struct `EdgeOrderManagementClientReturnOrderItemPollerResponse` has been removed
+- Struct `EdgeOrderManagementClientReturnOrderItemResponse` has been removed
+- Struct `EdgeOrderManagementClientUpdateAddressPoller` has been removed
+- Struct `EdgeOrderManagementClientUpdateAddressPollerResponse` has been removed
+- Struct `EdgeOrderManagementClientUpdateAddressResponse` has been removed
+- Struct `EdgeOrderManagementClientUpdateAddressResult` has been removed
+- Struct `EdgeOrderManagementClientUpdateOrderItemPoller` has been removed
+- Struct `EdgeOrderManagementClientUpdateOrderItemPollerResponse` has been removed
+- Struct `EdgeOrderManagementClientUpdateOrderItemResponse` has been removed
+- Struct `EdgeOrderManagementClientUpdateOrderItemResult` has been removed
+- Field `CommonProperties` of struct `ProductProperties` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `ProxyResource` of struct `OrderResource` has been removed
+- Field `CommonProperties` of struct `ProductFamilyProperties` has been removed
+- Field `Resource` of struct `ProxyResource` has been removed
+- Field `TrackedResource` of struct `AddressResource` has been removed
+- Field `CommonProperties` of struct `ProductLineProperties` has been removed
+- Field `MeterDetails` of struct `PurchaseMeterDetails` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `BasicInformation` of struct `CommonProperties` has been removed
+- Field `CommonProperties` of struct `ConfigurationProperties` has been removed
+- Field `MeterDetails` of struct `Pav2MeterDetails` has been removed
+- Field `TrackedResource` of struct `OrderItemResource` has been removed
+
+### Features Added
+
+- New function `ManagementClientUpdateOrderItemPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientUpdateOrderItemResponse, error)`
+- New function `*ManagementClientDeleteAddressByNamePollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClientListOrderAtResourceGroupLevelPager.NextPage(context.Context) bool`
+- New function `*ManagementClient.ListAddressesAtResourceGroupLevel(string, *ManagementClientListAddressesAtResourceGroupLevelOptions) *ManagementClientListAddressesAtResourceGroupLevelPager`
+- New function `*ManagementClientListOrderAtSubscriptionLevelPager.NextPage(context.Context) bool`
+- New function `*ManagementClientCreateOrderItemPoller.FinalResponse(context.Context) (ManagementClientCreateOrderItemResponse, error)`
+- New function `*ManagementClientReturnOrderItemPollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClientListOperationsPager.Err() error`
+- New function `*ManagementClient.BeginUpdateOrderItem(context.Context, string, string, OrderItemUpdateParameter, *ManagementClientBeginUpdateOrderItemOptions) (ManagementClientUpdateOrderItemPollerResponse, error)`
+- New function `*ManagementClientDeleteAddressByNamePoller.Done() bool`
+- New function `*ManagementClient.ListProductFamilies(ProductFamiliesRequest, *ManagementClientListProductFamiliesOptions) *ManagementClientListProductFamiliesPager`
+- New function `*ManagementClient.BeginReturnOrderItem(context.Context, string, string, ReturnOrderItemDetails, *ManagementClientBeginReturnOrderItemOptions) (ManagementClientReturnOrderItemPollerResponse, error)`
+- New function `*ManagementClient.BeginCreateAddress(context.Context, string, string, AddressResource, *ManagementClientBeginCreateAddressOptions) (ManagementClientCreateAddressPollerResponse, error)`
+- New function `*ManagementClient.ListAddressesAtSubscriptionLevel(*ManagementClientListAddressesAtSubscriptionLevelOptions) *ManagementClientListAddressesAtSubscriptionLevelPager`
+- New function `*ManagementClientListOrderItemsAtResourceGroupLevelPager.NextPage(context.Context) bool`
+- New function `*ManagementClientUpdateAddressPollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClient.GetAddressByName(context.Context, string, string, *ManagementClientGetAddressByNameOptions) (ManagementClientGetAddressByNameResponse, error)`
+- New function `*ManagementClient.ListOrderItemsAtSubscriptionLevel(*ManagementClientListOrderItemsAtSubscriptionLevelOptions) *ManagementClientListOrderItemsAtSubscriptionLevelPager`
+- New function `*ManagementClientReturnOrderItemPoller.FinalResponse(context.Context) (ManagementClientReturnOrderItemResponse, error)`
+- New function `*ManagementClient.ListOrderItemsAtResourceGroupLevel(string, *ManagementClientListOrderItemsAtResourceGroupLevelOptions) *ManagementClientListOrderItemsAtResourceGroupLevelPager`
+- New function `*ManagementClientListOrderItemsAtSubscriptionLevelPager.NextPage(context.Context) bool`
+- New function `*ManagementClient.BeginDeleteAddressByName(context.Context, string, string, *ManagementClientBeginDeleteAddressByNameOptions) (ManagementClientDeleteAddressByNamePollerResponse, error)`
+- New function `ManagementClientUpdateAddressPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientUpdateAddressResponse, error)`
+- New function `*ManagementClient.ListOperations(*ManagementClientListOperationsOptions) *ManagementClientListOperationsPager`
+- New function `*ManagementClientListOrderAtSubscriptionLevelPager.Err() error`
+- New function `*ManagementClientListConfigurationsPager.PageResponse() ManagementClientListConfigurationsResponse`
+- New function `*ManagementClientDeleteOrderItemByNamePoller.ResumeToken() (string, error)`
+- New function `*Pav2MeterDetails.GetMeterDetails() *MeterDetails`
+- New function `*ManagementClient.ListConfigurations(ConfigurationsRequest, *ManagementClientListConfigurationsOptions) *ManagementClientListConfigurationsPager`
+- New function `*ManagementClientListProductFamiliesPager.Err() error`
+- New function `*ManagementClientListProductFamiliesPager.PageResponse() ManagementClientListProductFamiliesResponse`
+- New function `*ManagementClientCreateOrderItemPoller.ResumeToken() (string, error)`
+- New function `*ManagementClientListProductFamiliesMetadataPager.Err() error`
+- New function `ManagementClientDeleteAddressByNamePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientDeleteAddressByNameResponse, error)`
+- New function `*ManagementClientListOperationsPager.NextPage(context.Context) bool`
+- New function `*ManagementClientListOperationsPager.PageResponse() ManagementClientListOperationsResponse`
+- New function `*ManagementClientListProductFamiliesMetadataPager.NextPage(context.Context) bool`
+- New function `*ManagementClientUpdateOrderItemPollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClient.ListOrderAtSubscriptionLevel(*ManagementClientListOrderAtSubscriptionLevelOptions) *ManagementClientListOrderAtSubscriptionLevelPager`
+- New function `*ManagementClientDeleteOrderItemByNamePoller.Done() bool`
+- New function `*ManagementClientUpdateAddressPoller.FinalResponse(context.Context) (ManagementClientUpdateAddressResponse, error)`
+- New function `*ManagementClientListAddressesAtResourceGroupLevelPager.Err() error`
+- New function `*ManagementClient.BeginUpdateAddress(context.Context, string, string, AddressUpdateParameter, *ManagementClientBeginUpdateAddressOptions) (ManagementClientUpdateAddressPollerResponse, error)`
+- New function `*ManagementClientCreateAddressPollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClient.GetOrderItemByName(context.Context, string, string, *ManagementClientGetOrderItemByNameOptions) (ManagementClientGetOrderItemByNameResponse, error)`
+- New function `*ManagementClientListOrderItemsAtSubscriptionLevelPager.PageResponse() ManagementClientListOrderItemsAtSubscriptionLevelResponse`
+- New function `*ManagementClientCreateAddressPoller.Done() bool`
+- New function `*ManagementClient.BeginCreateOrderItem(context.Context, string, string, OrderItemResource, *ManagementClientBeginCreateOrderItemOptions) (ManagementClientCreateOrderItemPollerResponse, error)`
+- New function `*ManagementClientListConfigurationsPager.Err() error`
+- New function `*ManagementClientListAddressesAtSubscriptionLevelPager.Err() error`
+- New function `*ManagementClientUpdateOrderItemPoller.FinalResponse(context.Context) (ManagementClientUpdateOrderItemResponse, error)`
+- New function `*ManagementClientListOrderAtResourceGroupLevelPager.Err() error`
+- New function `*ManagementClientCreateOrderItemPoller.Done() bool`
+- New function `*ManagementClientListAddressesAtResourceGroupLevelPager.NextPage(context.Context) bool`
+- New function `ManagementClientReturnOrderItemPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientReturnOrderItemResponse, error)`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) *ManagementClient`
+- New function `*ManagementClientCreateAddressPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClientReturnOrderItemPoller.ResumeToken() (string, error)`
+- New function `*ManagementClientDeleteAddressByNamePoller.ResumeToken() (string, error)`
+- New function `*ManagementClientUpdateOrderItemPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*PurchaseMeterDetails.GetMeterDetails() *MeterDetails`
+- New function `*ManagementClient.CancelOrderItem(context.Context, string, string, CancellationReason, *ManagementClientCancelOrderItemOptions) (ManagementClientCancelOrderItemResponse, error)`
+- New function `*ManagementClientListProductFamiliesMetadataPager.PageResponse() ManagementClientListProductFamiliesMetadataResponse`
+- New function `*ManagementClientListAddressesAtSubscriptionLevelPager.NextPage(context.Context) bool`
+- New function `*ManagementClientUpdateAddressPoller.Done() bool`
+- New function `*ManagementClientReturnOrderItemPoller.Done() bool`
+- New function `*ManagementClientDeleteAddressByNamePoller.FinalResponse(context.Context) (ManagementClientDeleteAddressByNameResponse, error)`
+- New function `*ManagementClientUpdateAddressPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClientListConfigurationsPager.NextPage(context.Context) bool`
+- New function `ManagementClientCreateAddressPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientCreateAddressResponse, error)`
+- New function `*ManagementClientDeleteOrderItemByNamePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClient.ListOrderAtResourceGroupLevel(string, *ManagementClientListOrderAtResourceGroupLevelOptions) *ManagementClientListOrderAtResourceGroupLevelPager`
+- New function `*ManagementClientDeleteOrderItemByNamePollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClientUpdateOrderItemPoller.ResumeToken() (string, error)`
+- New function `*ManagementClientListOrderItemsAtSubscriptionLevelPager.Err() error`
+- New function `*ManagementClientCreateAddressPoller.FinalResponse(context.Context) (ManagementClientCreateAddressResponse, error)`
+- New function `*ManagementClientListAddressesAtSubscriptionLevelPager.PageResponse() ManagementClientListAddressesAtSubscriptionLevelResponse`
+- New function `*ManagementClientCreateOrderItemPollerResponse.Resume(context.Context, *ManagementClient, string) error`
+- New function `*ManagementClientUpdateAddressPoller.ResumeToken() (string, error)`
+- New function `*ManagementClientListAddressesAtResourceGroupLevelPager.PageResponse() ManagementClientListAddressesAtResourceGroupLevelResponse`
+- New function `*ManagementClientReturnOrderItemPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClientListOrderAtSubscriptionLevelPager.PageResponse() ManagementClientListOrderAtSubscriptionLevelResponse`
+- New function `*ManagementClientCreateOrderItemPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClientDeleteAddressByNamePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*ManagementClientListProductFamiliesPager.NextPage(context.Context) bool`
+- New function `ManagementClientCreateOrderItemPollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientCreateOrderItemResponse, error)`
+- New function `*ManagementClientListOrderItemsAtResourceGroupLevelPager.PageResponse() ManagementClientListOrderItemsAtResourceGroupLevelResponse`
+- New function `*ManagementClient.ListProductFamiliesMetadata(*ManagementClientListProductFamiliesMetadataOptions) *ManagementClientListProductFamiliesMetadataPager`
+- New function `*ManagementClient.BeginDeleteOrderItemByName(context.Context, string, string, *ManagementClientBeginDeleteOrderItemByNameOptions) (ManagementClientDeleteOrderItemByNamePollerResponse, error)`
+- New function `*ManagementClientListOrderAtResourceGroupLevelPager.PageResponse() ManagementClientListOrderAtResourceGroupLevelResponse`
+- New function `*ManagementClientDeleteOrderItemByNamePoller.FinalResponse(context.Context) (ManagementClientDeleteOrderItemByNameResponse, error)`
+- New function `*ManagementClient.GetOrderByName(context.Context, string, string, string, *ManagementClientGetOrderByNameOptions) (ManagementClientGetOrderByNameResponse, error)`
+- New function `*ManagementClientListOrderItemsAtResourceGroupLevelPager.Err() error`
+- New function `*ManagementClientCreateAddressPoller.ResumeToken() (string, error)`
+- New function `*ManagementClientUpdateOrderItemPoller.Done() bool`
+- New function `ManagementClientDeleteOrderItemByNamePollerResponse.PollUntilDone(context.Context, time.Duration) (ManagementClientDeleteOrderItemByNameResponse, error)`
+- New struct `ManagementClient`
+- New struct `ManagementClientBeginCreateAddressOptions`
+- New struct `ManagementClientBeginCreateOrderItemOptions`
+- New struct `ManagementClientBeginDeleteAddressByNameOptions`
+- New struct `ManagementClientBeginDeleteOrderItemByNameOptions`
+- New struct `ManagementClientBeginReturnOrderItemOptions`
+- New struct `ManagementClientBeginUpdateAddressOptions`
+- New struct `ManagementClientBeginUpdateOrderItemOptions`
+- New struct `ManagementClientCancelOrderItemOptions`
+- New struct `ManagementClientCancelOrderItemResponse`
+- New struct `ManagementClientCreateAddressPoller`
+- New struct `ManagementClientCreateAddressPollerResponse`
+- New struct `ManagementClientCreateAddressResponse`
+- New struct `ManagementClientCreateAddressResult`
+- New struct `ManagementClientCreateOrderItemPoller`
+- New struct `ManagementClientCreateOrderItemPollerResponse`
+- New struct `ManagementClientCreateOrderItemResponse`
+- New struct `ManagementClientCreateOrderItemResult`
+- New struct `ManagementClientDeleteAddressByNamePoller`
+- New struct `ManagementClientDeleteAddressByNamePollerResponse`
+- New struct `ManagementClientDeleteAddressByNameResponse`
+- New struct `ManagementClientDeleteOrderItemByNamePoller`
+- New struct `ManagementClientDeleteOrderItemByNamePollerResponse`
+- New struct `ManagementClientDeleteOrderItemByNameResponse`
+- New struct `ManagementClientGetAddressByNameOptions`
+- New struct `ManagementClientGetAddressByNameResponse`
+- New struct `ManagementClientGetAddressByNameResult`
+- New struct `ManagementClientGetOrderByNameOptions`
+- New struct `ManagementClientGetOrderByNameResponse`
+- New struct `ManagementClientGetOrderByNameResult`
+- New struct `ManagementClientGetOrderItemByNameOptions`
+- New struct `ManagementClientGetOrderItemByNameResponse`
+- New struct `ManagementClientGetOrderItemByNameResult`
+- New struct `ManagementClientListAddressesAtResourceGroupLevelOptions`
+- New struct `ManagementClientListAddressesAtResourceGroupLevelPager`
+- New struct `ManagementClientListAddressesAtResourceGroupLevelResponse`
+- New struct `ManagementClientListAddressesAtResourceGroupLevelResult`
+- New struct `ManagementClientListAddressesAtSubscriptionLevelOptions`
+- New struct `ManagementClientListAddressesAtSubscriptionLevelPager`
+- New struct `ManagementClientListAddressesAtSubscriptionLevelResponse`
+- New struct `ManagementClientListAddressesAtSubscriptionLevelResult`
+- New struct `ManagementClientListConfigurationsOptions`
+- New struct `ManagementClientListConfigurationsPager`
+- New struct `ManagementClientListConfigurationsResponse`
+- New struct `ManagementClientListConfigurationsResult`
+- New struct `ManagementClientListOperationsOptions`
+- New struct `ManagementClientListOperationsPager`
+- New struct `ManagementClientListOperationsResponse`
+- New struct `ManagementClientListOperationsResult`
+- New struct `ManagementClientListOrderAtResourceGroupLevelOptions`
+- New struct `ManagementClientListOrderAtResourceGroupLevelPager`
+- New struct `ManagementClientListOrderAtResourceGroupLevelResponse`
+- New struct `ManagementClientListOrderAtResourceGroupLevelResult`
+- New struct `ManagementClientListOrderAtSubscriptionLevelOptions`
+- New struct `ManagementClientListOrderAtSubscriptionLevelPager`
+- New struct `ManagementClientListOrderAtSubscriptionLevelResponse`
+- New struct `ManagementClientListOrderAtSubscriptionLevelResult`
+- New struct `ManagementClientListOrderItemsAtResourceGroupLevelOptions`
+- New struct `ManagementClientListOrderItemsAtResourceGroupLevelPager`
+- New struct `ManagementClientListOrderItemsAtResourceGroupLevelResponse`
+- New struct `ManagementClientListOrderItemsAtResourceGroupLevelResult`
+- New struct `ManagementClientListOrderItemsAtSubscriptionLevelOptions`
+- New struct `ManagementClientListOrderItemsAtSubscriptionLevelPager`
+- New struct `ManagementClientListOrderItemsAtSubscriptionLevelResponse`
+- New struct `ManagementClientListOrderItemsAtSubscriptionLevelResult`
+- New struct `ManagementClientListProductFamiliesMetadataOptions`
+- New struct `ManagementClientListProductFamiliesMetadataPager`
+- New struct `ManagementClientListProductFamiliesMetadataResponse`
+- New struct `ManagementClientListProductFamiliesMetadataResult`
+- New struct `ManagementClientListProductFamiliesOptions`
+- New struct `ManagementClientListProductFamiliesPager`
+- New struct `ManagementClientListProductFamiliesResponse`
+- New struct `ManagementClientListProductFamiliesResult`
+- New struct `ManagementClientReturnOrderItemPoller`
+- New struct `ManagementClientReturnOrderItemPollerResponse`
+- New struct `ManagementClientReturnOrderItemResponse`
+- New struct `ManagementClientUpdateAddressPoller`
+- New struct `ManagementClientUpdateAddressPollerResponse`
+- New struct `ManagementClientUpdateAddressResponse`
+- New struct `ManagementClientUpdateAddressResult`
+- New struct `ManagementClientUpdateOrderItemPoller`
+- New struct `ManagementClientUpdateOrderItemPollerResponse`
+- New struct `ManagementClientUpdateOrderItemResponse`
+- New struct `ManagementClientUpdateOrderItemResult`
+- New field `BillingType` in struct `Pav2MeterDetails`
+- New field `ChargingType` in struct `Pav2MeterDetails`
+- New field `Multiplier` in struct `Pav2MeterDetails`
+- New field `ImageInformation` in struct `ProductLineProperties`
+- New field `AvailabilityInformation` in struct `ProductLineProperties`
+- New field `CostInformation` in struct `ProductLineProperties`
+- New field `Description` in struct `ProductLineProperties`
+- New field `DisplayName` in struct `ProductLineProperties`
+- New field `FilterableProperties` in struct `ProductLineProperties`
+- New field `HierarchyInformation` in struct `ProductLineProperties`
+- New field `DisplayName` in struct `ProductProperties`
+- New field `FilterableProperties` in struct `ProductProperties`
+- New field `HierarchyInformation` in struct `ProductProperties`
+- New field `ImageInformation` in struct `ProductProperties`
+- New field `AvailabilityInformation` in struct `ProductProperties`
+- New field `CostInformation` in struct `ProductProperties`
+- New field `Description` in struct `ProductProperties`
+- New field `BillingType` in struct `PurchaseMeterDetails`
+- New field `ChargingType` in struct `PurchaseMeterDetails`
+- New field `Multiplier` in struct `PurchaseMeterDetails`
+- New field `CostInformation` in struct `ProductFamilyProperties`
+- New field `Description` in struct `ProductFamilyProperties`
+- New field `DisplayName` in struct `ProductFamilyProperties`
+- New field `FilterableProperties` in struct `ProductFamilyProperties`
+- New field `AvailabilityInformation` in struct `ProductFamilyProperties`
+- New field `HierarchyInformation` in struct `ProductFamilyProperties`
+- New field `ImageInformation` in struct `ProductFamilyProperties`
+- New field `Name` in struct `OrderItemResource`
+- New field `Type` in struct `OrderItemResource`
+- New field `Location` in struct `OrderItemResource`
+- New field `Tags` in struct `OrderItemResource`
+- New field `ID` in struct `OrderItemResource`
+- New field `ID` in struct `ProxyResource`
+- New field `Name` in struct `ProxyResource`
+- New field `Type` in struct `ProxyResource`
+- New field `Location` in struct `AddressResource`
+- New field `Tags` in struct `AddressResource`
+- New field `ID` in struct `AddressResource`
+- New field `Name` in struct `AddressResource`
+- New field `Type` in struct `AddressResource`
+- New field `Error` in struct `ErrorResponse`
+- New field `ID` in struct `OrderResource`
+- New field `Name` in struct `OrderResource`
+- New field `Type` in struct `OrderResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Type` in struct `TrackedResource`
+- New field `CostInformation` in struct `ConfigurationProperties`
+- New field `FilterableProperties` in struct `ConfigurationProperties`
+- New field `DisplayName` in struct `ConfigurationProperties`
+- New field `HierarchyInformation` in struct `ConfigurationProperties`
+- New field `ImageInformation` in struct `ConfigurationProperties`
+- New field `AvailabilityInformation` in struct `ConfigurationProperties`
+- New field `Description` in struct `ConfigurationProperties`
+- New field `DisplayName` in struct `CommonProperties`
+- New field `HierarchyInformation` in struct `CommonProperties`
+- New field `ImageInformation` in struct `CommonProperties`
+- New field `AvailabilityInformation` in struct `CommonProperties`
+- New field `CostInformation` in struct `CommonProperties`
+- New field `Description` in struct `CommonProperties`
+
+
 ## 0.1.0 (2021-12-07)
 
 - Initial preview release.

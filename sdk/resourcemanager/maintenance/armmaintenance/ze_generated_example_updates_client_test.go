@@ -24,7 +24,7 @@ func ExampleUpdatesClient_ListParent() {
 	}
 	ctx := context.Background()
 	client := armmaintenance.NewUpdatesClient("<subscription-id>", cred, nil)
-	_, err = client.ListParent(ctx,
+	res, err := client.ListParent(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
 		"<resource-parent-type>",
@@ -35,6 +35,7 @@ func ExampleUpdatesClient_ListParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.UpdatesClientListParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/Updates_List.json
@@ -45,7 +46,7 @@ func ExampleUpdatesClient_List() {
 	}
 	ctx := context.Background()
 	client := armmaintenance.NewUpdatesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
 		"<resource-type>",
@@ -54,4 +55,5 @@ func ExampleUpdatesClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.UpdatesClientListResult)
 }

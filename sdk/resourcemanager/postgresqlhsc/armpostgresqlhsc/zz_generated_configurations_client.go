@@ -11,7 +11,6 @@ package armpostgresqlhsc
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
 type ConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets information about single server group configuration.
-// If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, options *ConfigurationsGetOptions) (ConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// configurationName - The name of the server group configuration.
+// options - ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
+func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, options *ConfigurationsClientGetOptions) (ConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverGroupName, configurationName, options)
 	if err != nil {
-		return ConfigurationsGetResponse{}, err
+		return ConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ConfigurationsGetResponse{}, err
+		return ConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationsGetResponse{}, client.getHandleError(resp)
+		return ConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, options *ConfigurationsGetOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, options *ConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,35 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsGetResponse, error) {
-	result := ConfigurationsGetResponse{RawResponse: resp}
+func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
+	result := ConfigurationsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupConfiguration); err != nil {
-		return ConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServer - List all the configurations of a server in server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsListByServerOptions) *ConfigurationsListByServerPager {
-	return &ConfigurationsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// serverName - The name of the server.
+// options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer
+// method.
+func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *ConfigurationsClientListByServerPager {
+	return &ConfigurationsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ConfigurationsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ConfigurationsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsListByServerOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/servers/{serverName}/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -144,7 +147,7 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,43 +159,34 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Response) (ConfigurationsListByServerResponse, error) {
-	result := ConfigurationsListByServerResponse{RawResponse: resp}
+func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Response) (ConfigurationsClientListByServerResponse, error) {
+	result := ConfigurationsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerConfigurationListResult); err != nil {
-		return ConfigurationsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientListByServerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerHandleError handles the ListByServer error response.
-func (client *ConfigurationsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByServerGroup - List all the configurations of a server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) ListByServerGroup(resourceGroupName string, serverGroupName string, options *ConfigurationsListByServerGroupOptions) *ConfigurationsListByServerGroupPager {
-	return &ConfigurationsListByServerGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// options - ConfigurationsClientListByServerGroupOptions contains the optional parameters for the ConfigurationsClient.ListByServerGroup
+// method.
+func (client *ConfigurationsClient) ListByServerGroup(resourceGroupName string, serverGroupName string, options *ConfigurationsClientListByServerGroupOptions) *ConfigurationsClientListByServerGroupPager {
+	return &ConfigurationsClientListByServerGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerGroupCreateRequest(ctx, resourceGroupName, serverGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ConfigurationsListByServerGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ConfigurationsClientListByServerGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServerGroupConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listByServerGroupCreateRequest creates the ListByServerGroup request.
-func (client *ConfigurationsClient) listByServerGroupCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ConfigurationsListByServerGroupOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) listByServerGroupCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, options *ConfigurationsClientListByServerGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,7 +200,7 @@ func (client *ConfigurationsClient) listByServerGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter serverGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverGroupName}", url.PathEscape(serverGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,50 +212,43 @@ func (client *ConfigurationsClient) listByServerGroupCreateRequest(ctx context.C
 }
 
 // listByServerGroupHandleResponse handles the ListByServerGroup response.
-func (client *ConfigurationsClient) listByServerGroupHandleResponse(resp *http.Response) (ConfigurationsListByServerGroupResponse, error) {
-	result := ConfigurationsListByServerGroupResponse{RawResponse: resp}
+func (client *ConfigurationsClient) listByServerGroupHandleResponse(resp *http.Response) (ConfigurationsClientListByServerGroupResponse, error) {
+	result := ConfigurationsClientListByServerGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerGroupConfigurationListResult); err != nil {
-		return ConfigurationsListByServerGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationsClientListByServerGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerGroupHandleError handles the ListByServerGroup error response.
-func (client *ConfigurationsClient) listByServerGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates configuration of server role groups in a server group
-// If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsBeginUpdateOptions) (ConfigurationsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverGroupName - The name of the server group.
+// configurationName - The name of the server group configuration.
+// parameters - The required parameters for updating a server group configuration.
+// options - ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate
+// method.
+func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsClientBeginUpdateOptions) (ConfigurationsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serverGroupName, configurationName, parameters, options)
 	if err != nil {
-		return ConfigurationsUpdatePollerResponse{}, err
+		return ConfigurationsClientUpdatePollerResponse{}, err
 	}
-	result := ConfigurationsUpdatePollerResponse{
+	result := ConfigurationsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ConfigurationsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ConfigurationsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ConfigurationsUpdatePollerResponse{}, err
+		return ConfigurationsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ConfigurationsUpdatePoller{
+	result.Poller = &ConfigurationsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates configuration of server role groups in a server group
-// If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverGroupName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -271,13 +258,13 @@ func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql/serverGroupsv2/{serverGroupName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -295,7 +282,7 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -304,17 +291,4 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ConfigurationsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -45,7 +45,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FirewallRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FirewallRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/FirewallRuleDelete.json
@@ -86,7 +86,7 @@ func ExampleFirewallRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FirewallRule.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.FirewallRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/FirewallRuleListByServerGroup.json
@@ -97,11 +97,12 @@ func ExampleFirewallRulesClient_ListByServerGroup() {
 	}
 	ctx := context.Background()
 	client := armpostgresqlhsc.NewFirewallRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServerGroup(ctx,
+	res, err := client.ListByServerGroup(ctx,
 		"<resource-group-name>",
 		"<server-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.FirewallRulesClientListByServerGroupResult)
 }

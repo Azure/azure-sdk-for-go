@@ -14,13 +14,13 @@ import (
 	"net/http"
 )
 
-// HSMSecurityDomainDownloadPoller provides polling facilities until the operation reaches a terminal state.
-type HSMSecurityDomainDownloadPoller struct {
+// HSMSecurityDomainClientDownloadPoller provides polling facilities until the operation reaches a terminal state.
+type HSMSecurityDomainClientDownloadPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *HSMSecurityDomainDownloadPoller) Done() bool {
+func (p *HSMSecurityDomainClientDownloadPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -34,18 +34,18 @@ func (p *HSMSecurityDomainDownloadPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *HSMSecurityDomainDownloadPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *HSMSecurityDomainClientDownloadPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final HSMSecurityDomainDownloadResponse will be returned.
-func (p *HSMSecurityDomainDownloadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainDownloadResponse, error) {
-	respType := HSMSecurityDomainDownloadResponse{}
+// If the final GET succeeded then the final HSMSecurityDomainClientDownloadResponse will be returned.
+func (p *HSMSecurityDomainClientDownloadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainClientDownloadResponse, error) {
+	respType := HSMSecurityDomainClientDownloadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainObject)
 	if err != nil {
-		return HSMSecurityDomainDownloadResponse{}, err
+		return HSMSecurityDomainClientDownloadResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -53,17 +53,17 @@ func (p *HSMSecurityDomainDownloadPoller) FinalResponse(ctx context.Context) (HS
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *HSMSecurityDomainDownloadPoller) ResumeToken() (string, error) {
+func (p *HSMSecurityDomainClientDownloadPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-// HSMSecurityDomainUploadPoller provides polling facilities until the operation reaches a terminal state.
-type HSMSecurityDomainUploadPoller struct {
+// HSMSecurityDomainClientUploadPoller provides polling facilities until the operation reaches a terminal state.
+type HSMSecurityDomainClientUploadPoller struct {
 	pt *azcore.Poller
 }
 
 // Done returns true if the LRO has reached a terminal state.
-func (p *HSMSecurityDomainUploadPoller) Done() bool {
+func (p *HSMSecurityDomainClientUploadPoller) Done() bool {
 	return p.pt.Done()
 }
 
@@ -77,18 +77,18 @@ func (p *HSMSecurityDomainUploadPoller) Done() bool {
 // If Poll fails, the poller's state is unmodified and the error is returned.
 // Calling Poll on an LRO that has reached a terminal state will return the final
 // HTTP response or error.
-func (p *HSMSecurityDomainUploadPoller) Poll(ctx context.Context) (*http.Response, error) {
+func (p *HSMSecurityDomainClientUploadPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx)
 }
 
 // FinalResponse performs a final GET to the service and returns the final response
 // for the polling operation. If there is an error performing the final GET then an error is returned.
-// If the final GET succeeded then the final HSMSecurityDomainUploadResponse will be returned.
-func (p *HSMSecurityDomainUploadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainUploadResponse, error) {
-	respType := HSMSecurityDomainUploadResponse{}
+// If the final GET succeeded then the final HSMSecurityDomainClientUploadResponse will be returned.
+func (p *HSMSecurityDomainClientUploadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainClientUploadResponse, error) {
+	respType := HSMSecurityDomainClientUploadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainOperationStatus)
 	if err != nil {
-		return HSMSecurityDomainUploadResponse{}, err
+		return HSMSecurityDomainClientUploadResponse{}, err
 	}
 	respType.RawResponse = resp
 	return respType, nil
@@ -96,6 +96,6 @@ func (p *HSMSecurityDomainUploadPoller) FinalResponse(ctx context.Context) (HSMS
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
-func (p *HSMSecurityDomainUploadPoller) ResumeToken() (string, error) {
+func (p *HSMSecurityDomainClientUploadPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

@@ -33,7 +33,7 @@ func ExampleQuotaRequestStatusClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("QuotaRequestDetails.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.QuotaRequestStatusClientGetResult)
 }
 
 // x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getQuotaRequestsHistory.json
@@ -47,16 +47,20 @@ func ExampleQuotaRequestStatusClient_List() {
 	pager := client.List("<subscription-id>",
 		"<provider-id>",
 		"<location>",
-		&armreservations.QuotaRequestStatusListOptions{Filter: nil,
+		&armreservations.QuotaRequestStatusClientListOptions{Filter: nil,
 			Top:       nil,
 			Skiptoken: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("QuotaRequestDetails.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

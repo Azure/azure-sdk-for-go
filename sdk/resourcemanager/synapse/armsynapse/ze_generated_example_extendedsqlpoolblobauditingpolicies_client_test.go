@@ -29,12 +29,12 @@ func ExampleExtendedSQLPoolBlobAuditingPoliciesClient_Get() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		armsynapse.Enum11Default,
+		armsynapse.Enum11("default"),
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExtendedSQLPoolBlobAuditingPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ExtendedSQLPoolBlobAuditingPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolAzureMonitorAuditingCreateMin.json
@@ -49,7 +49,7 @@ func ExampleExtendedSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
-		armsynapse.Enum11Default,
+		armsynapse.Enum11("default"),
 		armsynapse.ExtendedSQLPoolBlobAuditingPolicy{
 			Properties: &armsynapse.ExtendedSQLPoolBlobAuditingPolicyProperties{
 				IsAzureMonitorTargetEnabled: to.BoolPtr(true),
@@ -60,27 +60,5 @@ func ExampleExtendedSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ExtendedSQLPoolBlobAuditingPolicy.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolExtendedAuditingSettingsList.json
-func ExampleExtendedSQLPoolBlobAuditingPoliciesClient_ListBySQLPool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
-	pager := client.ListBySQLPool("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ExtendedSQLPoolBlobAuditingPolicy.ID: %s\n", *v.ID)
-		}
-	}
+	log.Printf("Response result: %#v\n", res.ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateResult)
 }

@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// JobsListByResourceGroupPager provides operations for iterating over paged responses.
-type JobsListByResourceGroupPager struct {
+// JobsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type JobsClientListByResourceGroupPager struct {
 	client    *JobsClient
-	current   JobsListByResourceGroupResponse
+	current   JobsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, JobsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, JobsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *JobsListByResourceGroupPager) Err() error {
+func (p *JobsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *JobsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *JobsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *JobsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *JobsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current JobsListByResourceGroupResponse page.
-func (p *JobsListByResourceGroupPager) PageResponse() JobsListByResourceGroupResponse {
+// PageResponse returns the current JobsClientListByResourceGroupResponse page.
+func (p *JobsClientListByResourceGroupPager) PageResponse() JobsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// JobsListBySubscriptionPager provides operations for iterating over paged responses.
-type JobsListBySubscriptionPager struct {
+// JobsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type JobsClientListBySubscriptionPager struct {
 	client    *JobsClient
-	current   JobsListBySubscriptionResponse
+	current   JobsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, JobsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, JobsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *JobsListBySubscriptionPager) Err() error {
+func (p *JobsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *JobsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *JobsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *JobsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,7 +119,7 @@ func (p *JobsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current JobsListBySubscriptionResponse page.
-func (p *JobsListBySubscriptionPager) PageResponse() JobsListBySubscriptionResponse {
+// PageResponse returns the current JobsClientListBySubscriptionResponse page.
+func (p *JobsClientListBySubscriptionPager) PageResponse() JobsClientListBySubscriptionResponse {
 	return p.current
 }

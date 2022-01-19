@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/AzureIaasVm/GetBackupStatus.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/AzureIaasVm/GetBackupStatus.json
 func ExampleBackupStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,14 +25,15 @@ func ExampleBackupStatusClient_Get() {
 	}
 	ctx := context.Background()
 	client := armrecoveryservicesbackup.NewBackupStatusClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<azure-region>",
 		armrecoveryservicesbackup.BackupStatusRequest{
 			ResourceID:   to.StringPtr("<resource-id>"),
-			ResourceType: armrecoveryservicesbackup.DataSourceTypeVM.ToPtr(),
+			ResourceType: armrecoveryservicesbackup.DataSourceType("VM").ToPtr(),
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.BackupStatusClientGetResult)
 }

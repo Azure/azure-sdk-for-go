@@ -140,14 +140,15 @@ type CertificateResponse struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// DpsCertificateCreateOrUpdateOptions contains the optional parameters for the DpsCertificate.CreateOrUpdate method.
-type DpsCertificateCreateOrUpdateOptions struct {
+// DpsCertificateClientCreateOrUpdateOptions contains the optional parameters for the DpsCertificateClient.CreateOrUpdate
+// method.
+type DpsCertificateClientCreateOrUpdateOptions struct {
 	// ETag of the certificate. This is required to update an existing certificate, and ignored while creating a brand new certificate.
 	IfMatch *string
 }
 
-// DpsCertificateDeleteOptions contains the optional parameters for the DpsCertificate.Delete method.
-type DpsCertificateDeleteOptions struct {
+// DpsCertificateClientDeleteOptions contains the optional parameters for the DpsCertificateClient.Delete method.
+type DpsCertificateClientDeleteOptions struct {
 	// Time the certificate is created.
 	CertificateCreated *time.Time
 	// Indicates if the certificate contains a private key.
@@ -166,8 +167,9 @@ type DpsCertificateDeleteOptions struct {
 	CertificateRawBytes []byte
 }
 
-// DpsCertificateGenerateVerificationCodeOptions contains the optional parameters for the DpsCertificate.GenerateVerificationCode method.
-type DpsCertificateGenerateVerificationCodeOptions struct {
+// DpsCertificateClientGenerateVerificationCodeOptions contains the optional parameters for the DpsCertificateClient.GenerateVerificationCode
+// method.
+type DpsCertificateClientGenerateVerificationCodeOptions struct {
 	// Certificate creation time.
 	CertificateCreated *time.Time
 	// Indicates if the certificate contains private key.
@@ -186,19 +188,20 @@ type DpsCertificateGenerateVerificationCodeOptions struct {
 	CertificateRawBytes []byte
 }
 
-// DpsCertificateGetOptions contains the optional parameters for the DpsCertificate.Get method.
-type DpsCertificateGetOptions struct {
+// DpsCertificateClientGetOptions contains the optional parameters for the DpsCertificateClient.Get method.
+type DpsCertificateClientGetOptions struct {
 	// ETag of the certificate.
 	IfMatch *string
 }
 
-// DpsCertificateListOptions contains the optional parameters for the DpsCertificate.List method.
-type DpsCertificateListOptions struct {
+// DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.List method.
+type DpsCertificateClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DpsCertificateVerifyCertificateOptions contains the optional parameters for the DpsCertificate.VerifyCertificate method.
-type DpsCertificateVerifyCertificateOptions struct {
+// DpsCertificateClientVerifyCertificateOptions contains the optional parameters for the DpsCertificateClient.VerifyCertificate
+// method.
+type DpsCertificateClientVerifyCertificateOptions struct {
 	// Certificate creation time.
 	CertificateCreated *time.Time
 	// Indicates if the certificate contains private key.
@@ -218,9 +221,7 @@ type DpsCertificateVerifyCertificateOptions struct {
 }
 
 // ErrorDetails - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDetails struct {
-	raw string
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
@@ -232,12 +233,6 @@ type ErrorDetails struct {
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// Error implements the error interface for type ErrorDetails.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDetails) Error() string {
-	return e.raw
 }
 
 // ErrorMesssage - Error response containing message and code.
@@ -303,8 +298,8 @@ type IPFilterRule struct {
 	Target *IPFilterTargetType `json:"target,omitempty"`
 }
 
-// IotDpsPropertiesDescription - the service specific properties of a provisioning service, including keys, linked iot hubs, current state, and system generated
-// properties such as hostname and idScope
+// IotDpsPropertiesDescription - the service specific properties of a provisioning service, including keys, linked iot hubs,
+// current state, and system generated properties such as hostname and idScope
 type IotDpsPropertiesDescription struct {
 	// Allocation policy to be used by this provisioning service.
 	AllocationPolicy *AllocationPolicy `json:"allocationPolicy,omitempty"`
@@ -357,91 +352,100 @@ func (i IotDpsPropertiesDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IotDpsResourceBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResource.BeginCreateOrUpdate method.
-type IotDpsResourceBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResource.BeginCreateOrUpdatePrivateEndpointConnection
+// IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
 // method.
-type IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions struct {
+type IotDpsResourceClientBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceBeginDeleteOptions contains the optional parameters for the IotDpsResource.BeginDelete method.
-type IotDpsResourceBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotDpsResourceBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResource.BeginDeletePrivateEndpointConnection
+// IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection
 // method.
-type IotDpsResourceBeginDeletePrivateEndpointConnectionOptions struct {
+type IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceBeginUpdateOptions contains the optional parameters for the IotDpsResource.BeginUpdate method.
-type IotDpsResourceBeginUpdateOptions struct {
+// IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete method.
+type IotDpsResourceClientBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the IotDpsResource.CheckProvisioningServiceNameAvailability
+// IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 // method.
-type IotDpsResourceCheckProvisioningServiceNameAvailabilityOptions struct {
+type IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetOperationResultOptions contains the optional parameters for the IotDpsResource.GetOperationResult method.
-type IotDpsResourceGetOperationResultOptions struct {
+// IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate method.
+type IotDpsResourceClientBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetOptions contains the optional parameters for the IotDpsResource.Get method.
-type IotDpsResourceGetOptions struct {
+// IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the IotDpsResourceClient.CheckProvisioningServiceNameAvailability
+// method.
+type IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetPrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResource.GetPrivateEndpointConnection method.
-type IotDpsResourceGetPrivateEndpointConnectionOptions struct {
+// IotDpsResourceClientGetOperationResultOptions contains the optional parameters for the IotDpsResourceClient.GetOperationResult
+// method.
+type IotDpsResourceClientGetOperationResultOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResource.GetPrivateLinkResources method.
-type IotDpsResourceGetPrivateLinkResourcesOptions struct {
+// IotDpsResourceClientGetOptions contains the optional parameters for the IotDpsResourceClient.Get method.
+type IotDpsResourceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListByResourceGroupOptions contains the optional parameters for the IotDpsResource.ListByResourceGroup method.
-type IotDpsResourceListByResourceGroupOptions struct {
+// IotDpsResourceClientGetPrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.GetPrivateEndpointConnection
+// method.
+type IotDpsResourceClientGetPrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListBySubscriptionOptions contains the optional parameters for the IotDpsResource.ListBySubscription method.
-type IotDpsResourceListBySubscriptionOptions struct {
+// IotDpsResourceClientGetPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.GetPrivateLinkResources
+// method.
+type IotDpsResourceClientGetPrivateLinkResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListKeysForKeyNameOptions contains the optional parameters for the IotDpsResource.ListKeysForKeyName method.
-type IotDpsResourceListKeysForKeyNameOptions struct {
+// IotDpsResourceClientListByResourceGroupOptions contains the optional parameters for the IotDpsResourceClient.ListByResourceGroup
+// method.
+type IotDpsResourceClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListKeysOptions contains the optional parameters for the IotDpsResource.ListKeys method.
-type IotDpsResourceListKeysOptions struct {
+// IotDpsResourceClientListBySubscriptionOptions contains the optional parameters for the IotDpsResourceClient.ListBySubscription
+// method.
+type IotDpsResourceClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResource.ListPrivateEndpointConnections method.
-type IotDpsResourceListPrivateEndpointConnectionsOptions struct {
+// IotDpsResourceClientListKeysForKeyNameOptions contains the optional parameters for the IotDpsResourceClient.ListKeysForKeyName
+// method.
+type IotDpsResourceClientListKeysForKeyNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResource.ListPrivateLinkResources method.
-type IotDpsResourceListPrivateLinkResourcesOptions struct {
+// IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.ListKeys method.
+type IotDpsResourceClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListValidSKUsOptions contains the optional parameters for the IotDpsResource.ListValidSKUs method.
-type IotDpsResourceListValidSKUsOptions struct {
+// IotDpsResourceClientListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateEndpointConnections
+// method.
+type IotDpsResourceClientListPrivateEndpointConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
+// method.
+type IotDpsResourceClientListPrivateLinkResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.ListValidSKUs method.
+type IotDpsResourceClientListValidSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -537,8 +541,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult - Result of the request to list provisioning service operations. It contains a list of operations and a URL link to get the next
-// set of results.
+// OperationListResult - Result of the request to list provisioning service operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -555,8 +559,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -617,24 +621,43 @@ type PrivateLinkServiceConnectionState struct {
 
 // ProvisioningServiceDescription - The description of the provisioning service.
 type ProvisioningServiceDescription struct {
-	Resource
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Service specific properties for a provisioning service
 	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
 
 	// REQUIRED; Sku info for a provisioning Service.
 	SKU *IotDpsSKUInfo `json:"sku,omitempty"`
 
-	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
+	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal
+	// ETag convention.
 	Etag *string `json:"etag,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ProvisioningServiceDescription.
 func (p ProvisioningServiceDescription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
 	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "sku", p.SKU)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -676,16 +699,12 @@ type Resource struct {
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "tags", r.Tags)
 	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
 }
 
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription - Description of the shared access key.
@@ -720,7 +739,8 @@ func (s SharedAccessSignatureAuthorizationRuleListResult) MarshalJSON() ([]byte,
 	return json.Marshal(objectMap)
 }
 
-// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a Provisioning Service instance.
+// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a Provisioning
+// Service instance.
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`

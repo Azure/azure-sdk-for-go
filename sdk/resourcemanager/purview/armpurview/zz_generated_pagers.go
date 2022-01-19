@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// AccountsListByResourceGroupPager provides operations for iterating over paged responses.
-type AccountsListByResourceGroupPager struct {
+// AccountsClientListByResourceGroupPager provides operations for iterating over paged responses.
+type AccountsClientListByResourceGroupPager struct {
 	client    *AccountsClient
-	current   AccountsListByResourceGroupResponse
+	current   AccountsClientListByResourceGroupResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AccountsListByResourceGroupResponse) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListByResourceGroupResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AccountsListByResourceGroupPager) Err() error {
+func (p *AccountsClientListByResourceGroupPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AccountsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+func (p *AccountsClientListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *AccountsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByResourceGroupHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByResourceGroupHandleResponse(resp)
@@ -65,28 +65,28 @@ func (p *AccountsListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AccountsListByResourceGroupResponse page.
-func (p *AccountsListByResourceGroupPager) PageResponse() AccountsListByResourceGroupResponse {
+// PageResponse returns the current AccountsClientListByResourceGroupResponse page.
+func (p *AccountsClientListByResourceGroupPager) PageResponse() AccountsClientListByResourceGroupResponse {
 	return p.current
 }
 
-// AccountsListBySubscriptionPager provides operations for iterating over paged responses.
-type AccountsListBySubscriptionPager struct {
+// AccountsClientListBySubscriptionPager provides operations for iterating over paged responses.
+type AccountsClientListBySubscriptionPager struct {
 	client    *AccountsClient
-	current   AccountsListBySubscriptionResponse
+	current   AccountsClientListBySubscriptionResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, AccountsListBySubscriptionResponse) (*policy.Request, error)
+	advancer  func(context.Context, AccountsClientListBySubscriptionResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *AccountsListBySubscriptionPager) Err() error {
+func (p *AccountsClientListBySubscriptionPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+func (p *AccountsClientListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -107,7 +107,7 @@ func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listBySubscriptionHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listBySubscriptionHandleResponse(resp)
@@ -119,28 +119,28 @@ func (p *AccountsListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current AccountsListBySubscriptionResponse page.
-func (p *AccountsListBySubscriptionPager) PageResponse() AccountsListBySubscriptionResponse {
+// PageResponse returns the current AccountsClientListBySubscriptionResponse page.
+func (p *AccountsClientListBySubscriptionPager) PageResponse() AccountsClientListBySubscriptionResponse {
 	return p.current
 }
 
-// OperationsListPager provides operations for iterating over paged responses.
-type OperationsListPager struct {
+// OperationsClientListPager provides operations for iterating over paged responses.
+type OperationsClientListPager struct {
 	client    *OperationsClient
-	current   OperationsListResponse
+	current   OperationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, OperationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *OperationsListPager) Err() error {
+func (p *OperationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+func (p *OperationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -161,7 +161,7 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -173,28 +173,28 @@ func (p *OperationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current OperationsListResponse page.
-func (p *OperationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsClientListResponse page.
+func (p *OperationsClientListPager) PageResponse() OperationsClientListResponse {
 	return p.current
 }
 
-// PrivateEndpointConnectionsListByAccountPager provides operations for iterating over paged responses.
-type PrivateEndpointConnectionsListByAccountPager struct {
+// PrivateEndpointConnectionsClientListByAccountPager provides operations for iterating over paged responses.
+type PrivateEndpointConnectionsClientListByAccountPager struct {
 	client    *PrivateEndpointConnectionsClient
-	current   PrivateEndpointConnectionsListByAccountResponse
+	current   PrivateEndpointConnectionsClientListByAccountResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateEndpointConnectionsListByAccountResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateEndpointConnectionsClientListByAccountResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateEndpointConnectionsListByAccountPager) Err() error {
+func (p *PrivateEndpointConnectionsClientListByAccountPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateEndpointConnectionsListByAccountPager) NextPage(ctx context.Context) bool {
+func (p *PrivateEndpointConnectionsClientListByAccountPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -215,7 +215,7 @@ func (p *PrivateEndpointConnectionsListByAccountPager) NextPage(ctx context.Cont
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByAccountHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByAccountHandleResponse(resp)
@@ -227,28 +227,28 @@ func (p *PrivateEndpointConnectionsListByAccountPager) NextPage(ctx context.Cont
 	return true
 }
 
-// PageResponse returns the current PrivateEndpointConnectionsListByAccountResponse page.
-func (p *PrivateEndpointConnectionsListByAccountPager) PageResponse() PrivateEndpointConnectionsListByAccountResponse {
+// PageResponse returns the current PrivateEndpointConnectionsClientListByAccountResponse page.
+func (p *PrivateEndpointConnectionsClientListByAccountPager) PageResponse() PrivateEndpointConnectionsClientListByAccountResponse {
 	return p.current
 }
 
-// PrivateLinkResourcesListByAccountPager provides operations for iterating over paged responses.
-type PrivateLinkResourcesListByAccountPager struct {
+// PrivateLinkResourcesClientListByAccountPager provides operations for iterating over paged responses.
+type PrivateLinkResourcesClientListByAccountPager struct {
 	client    *PrivateLinkResourcesClient
-	current   PrivateLinkResourcesListByAccountResponse
+	current   PrivateLinkResourcesClientListByAccountResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, PrivateLinkResourcesListByAccountResponse) (*policy.Request, error)
+	advancer  func(context.Context, PrivateLinkResourcesClientListByAccountResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *PrivateLinkResourcesListByAccountPager) Err() error {
+func (p *PrivateLinkResourcesClientListByAccountPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *PrivateLinkResourcesListByAccountPager) NextPage(ctx context.Context) bool {
+func (p *PrivateLinkResourcesClientListByAccountPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -269,7 +269,7 @@ func (p *PrivateLinkResourcesListByAccountPager) NextPage(ctx context.Context) b
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listByAccountHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listByAccountHandleResponse(resp)
@@ -281,7 +281,7 @@ func (p *PrivateLinkResourcesListByAccountPager) NextPage(ctx context.Context) b
 	return true
 }
 
-// PageResponse returns the current PrivateLinkResourcesListByAccountResponse page.
-func (p *PrivateLinkResourcesListByAccountPager) PageResponse() PrivateLinkResourcesListByAccountResponse {
+// PageResponse returns the current PrivateLinkResourcesClientListByAccountResponse page.
+func (p *PrivateLinkResourcesClientListByAccountPager) PageResponse() PrivateLinkResourcesClientListByAccountResponse {
 	return p.current
 }

@@ -106,27 +106,27 @@ func (a *AgreementProperties) UnmarshalJSON(data []byte) error {
 
 // AgreementTerms - Terms properties for provided Publisher/Offer/Plan tuple
 type AgreementTerms struct {
-	Resource
 	// Represents the properties of the resource.
 	Properties *AgreementProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error response indicates Microsoft.MarketplaceOrdering service is not able to process the incoming request. The reason is provided in
-// the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates Microsoft.MarketplaceOrdering service is not able to process the incoming request.
+// The reason is provided in the error message.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
 // ErrorResponseError - The details of the error.
@@ -138,33 +138,34 @@ type ErrorResponseError struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// MarketplaceAgreementsCancelOptions contains the optional parameters for the MarketplaceAgreements.Cancel method.
-type MarketplaceAgreementsCancelOptions struct {
+// MarketplaceAgreementsClientCancelOptions contains the optional parameters for the MarketplaceAgreementsClient.Cancel method.
+type MarketplaceAgreementsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceAgreementsCreateOptions contains the optional parameters for the MarketplaceAgreements.Create method.
-type MarketplaceAgreementsCreateOptions struct {
+// MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create method.
+type MarketplaceAgreementsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceAgreementsGetAgreementOptions contains the optional parameters for the MarketplaceAgreements.GetAgreement method.
-type MarketplaceAgreementsGetAgreementOptions struct {
+// MarketplaceAgreementsClientGetAgreementOptions contains the optional parameters for the MarketplaceAgreementsClient.GetAgreement
+// method.
+type MarketplaceAgreementsClientGetAgreementOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceAgreementsGetOptions contains the optional parameters for the MarketplaceAgreements.Get method.
-type MarketplaceAgreementsGetOptions struct {
+// MarketplaceAgreementsClientGetOptions contains the optional parameters for the MarketplaceAgreementsClient.Get method.
+type MarketplaceAgreementsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceAgreementsListOptions contains the optional parameters for the MarketplaceAgreements.List method.
-type MarketplaceAgreementsListOptions struct {
+// MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List method.
+type MarketplaceAgreementsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MarketplaceAgreementsSignOptions contains the optional parameters for the MarketplaceAgreements.Sign method.
-type MarketplaceAgreementsSignOptions struct {
+// MarketplaceAgreementsClientSignOptions contains the optional parameters for the MarketplaceAgreementsClient.Sign method.
+type MarketplaceAgreementsClientSignOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -192,8 +193,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list MarketplaceOrdering operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list MarketplaceOrdering operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// List of Microsoft.MarketplaceOrdering operations supported by the Microsoft.MarketplaceOrdering resource provider.
 	Value []*Operation `json:"value,omitempty"`
@@ -210,8 +211,8 @@ func (o OperationListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -38,11 +38,11 @@ func ExamplePrivateEndpointConnectionClient_CreateOrUpdate() {
 				},
 			},
 		},
-		&armdatafactory.PrivateEndpointConnectionCreateOrUpdateOptions{IfMatch: nil})
+		&armdatafactory.PrivateEndpointConnectionClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GetPrivateEndpointConnection.json
@@ -57,11 +57,11 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 		"<resource-group-name>",
 		"<factory-name>",
 		"<private-endpoint-connection-name>",
-		&armdatafactory.PrivateEndpointConnectionGetOptions{IfNoneMatch: nil})
+		&armdatafactory.PrivateEndpointConnectionClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PrivateEndpointConnectionResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateEndpointConnectionClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DeletePrivateEndpointConnection.json

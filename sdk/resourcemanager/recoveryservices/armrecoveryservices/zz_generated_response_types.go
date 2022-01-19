@@ -15,160 +15,160 @@ import (
 	"time"
 )
 
-// OperationsGetOperationResultResponse contains the response from method Operations.GetOperationResult.
-type OperationsGetOperationResultResponse struct {
-	OperationsGetOperationResultResult
+// ClientCheckNameAvailabilityResponse contains the response from method Client.CheckNameAvailability.
+type ClientCheckNameAvailabilityResponse struct {
+	ClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsGetOperationResultResult contains the result from method Operations.GetOperationResult.
-type OperationsGetOperationResultResult struct {
-	Vault
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	ClientDiscoveryResponse
-}
-
-// OperationsOperationStatusGetResponse contains the response from method Operations.OperationStatusGet.
-type OperationsOperationStatusGetResponse struct {
-	OperationsOperationStatusGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsOperationStatusGetResult contains the result from method Operations.OperationStatusGet.
-type OperationsOperationStatusGetResult struct {
-	OperationResource
-}
-
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
-	PrivateLinkResource
-}
-
-// PrivateLinkResourcesListResponse contains the response from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResponse struct {
-	PrivateLinkResourcesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListResult contains the result from method PrivateLinkResources.List.
-type PrivateLinkResourcesListResult struct {
-	PrivateLinkResources
-}
-
-// RecoveryServicesCheckNameAvailabilityResponse contains the response from method RecoveryServices.CheckNameAvailability.
-type RecoveryServicesCheckNameAvailabilityResponse struct {
-	RecoveryServicesCheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecoveryServicesCheckNameAvailabilityResult contains the result from method RecoveryServices.CheckNameAvailability.
-type RecoveryServicesCheckNameAvailabilityResult struct {
+// ClientCheckNameAvailabilityResult contains the result from method Client.CheckNameAvailability.
+type ClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// RegisteredIdentitiesDeleteResponse contains the response from method RegisteredIdentities.Delete.
-type RegisteredIdentitiesDeleteResponse struct {
+// OperationsClientGetOperationResultResponse contains the response from method OperationsClient.GetOperationResult.
+type OperationsClientGetOperationResultResponse struct {
+	OperationsClientGetOperationResultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationUsagesListResponse contains the response from method ReplicationUsages.List.
-type ReplicationUsagesListResponse struct {
-	ReplicationUsagesListResult
+// OperationsClientGetOperationResultResult contains the result from method OperationsClient.GetOperationResult.
+type OperationsClientGetOperationResultResult struct {
+	Vault
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ReplicationUsagesListResult contains the result from method ReplicationUsages.List.
-type ReplicationUsagesListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	ClientDiscoveryResponse
+}
+
+// OperationsClientOperationStatusGetResponse contains the response from method OperationsClient.OperationStatusGet.
+type OperationsClientOperationStatusGetResponse struct {
+	OperationsClientOperationStatusGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientOperationStatusGetResult contains the result from method OperationsClient.OperationStatusGet.
+type OperationsClientOperationStatusGetResult struct {
+	OperationResource
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResourcesClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesClientGetResult contains the result from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResult struct {
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResponse struct {
+	PrivateLinkResourcesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateLinkResourcesClientListResult contains the result from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResult struct {
+	PrivateLinkResources
+}
+
+// RegisteredIdentitiesClientDeleteResponse contains the response from method RegisteredIdentitiesClient.Delete.
+type RegisteredIdentitiesClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReplicationUsagesClientListResponse contains the response from method ReplicationUsagesClient.List.
+type ReplicationUsagesClientListResponse struct {
+	ReplicationUsagesClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReplicationUsagesClientListResult contains the result from method ReplicationUsagesClient.List.
+type ReplicationUsagesClientListResult struct {
 	ReplicationUsageList
 }
 
-// UsagesListByVaultsResponse contains the response from method Usages.ListByVaults.
-type UsagesListByVaultsResponse struct {
-	UsagesListByVaultsResult
+// UsagesClientListByVaultsResponse contains the response from method UsagesClient.ListByVaults.
+type UsagesClientListByVaultsResponse struct {
+	UsagesClientListByVaultsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UsagesListByVaultsResult contains the result from method Usages.ListByVaults.
-type UsagesListByVaultsResult struct {
+// UsagesClientListByVaultsResult contains the result from method UsagesClient.ListByVaults.
+type UsagesClientListByVaultsResult struct {
 	VaultUsageList
 }
 
-// VaultCertificatesCreateResponse contains the response from method VaultCertificates.Create.
-type VaultCertificatesCreateResponse struct {
-	VaultCertificatesCreateResult
+// VaultCertificatesClientCreateResponse contains the response from method VaultCertificatesClient.Create.
+type VaultCertificatesClientCreateResponse struct {
+	VaultCertificatesClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultCertificatesCreateResult contains the result from method VaultCertificates.Create.
-type VaultCertificatesCreateResult struct {
+// VaultCertificatesClientCreateResult contains the result from method VaultCertificatesClient.Create.
+type VaultCertificatesClientCreateResult struct {
 	VaultCertificateResponse
 }
 
-// VaultExtendedInfoCreateOrUpdateResponse contains the response from method VaultExtendedInfo.CreateOrUpdate.
-type VaultExtendedInfoCreateOrUpdateResponse struct {
-	VaultExtendedInfoCreateOrUpdateResult
+// VaultExtendedInfoClientCreateOrUpdateResponse contains the response from method VaultExtendedInfoClient.CreateOrUpdate.
+type VaultExtendedInfoClientCreateOrUpdateResponse struct {
+	VaultExtendedInfoClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultExtendedInfoCreateOrUpdateResult contains the result from method VaultExtendedInfo.CreateOrUpdate.
-type VaultExtendedInfoCreateOrUpdateResult struct {
+// VaultExtendedInfoClientCreateOrUpdateResult contains the result from method VaultExtendedInfoClient.CreateOrUpdate.
+type VaultExtendedInfoClientCreateOrUpdateResult struct {
 	VaultExtendedInfoResource
 }
 
-// VaultExtendedInfoGetResponse contains the response from method VaultExtendedInfo.Get.
-type VaultExtendedInfoGetResponse struct {
-	VaultExtendedInfoGetResult
+// VaultExtendedInfoClientGetResponse contains the response from method VaultExtendedInfoClient.Get.
+type VaultExtendedInfoClientGetResponse struct {
+	VaultExtendedInfoClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultExtendedInfoGetResult contains the result from method VaultExtendedInfo.Get.
-type VaultExtendedInfoGetResult struct {
+// VaultExtendedInfoClientGetResult contains the result from method VaultExtendedInfoClient.Get.
+type VaultExtendedInfoClientGetResult struct {
 	VaultExtendedInfoResource
 }
 
-// VaultExtendedInfoUpdateResponse contains the response from method VaultExtendedInfo.Update.
-type VaultExtendedInfoUpdateResponse struct {
-	VaultExtendedInfoUpdateResult
+// VaultExtendedInfoClientUpdateResponse contains the response from method VaultExtendedInfoClient.Update.
+type VaultExtendedInfoClientUpdateResponse struct {
+	VaultExtendedInfoClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultExtendedInfoUpdateResult contains the result from method VaultExtendedInfo.Update.
-type VaultExtendedInfoUpdateResult struct {
+// VaultExtendedInfoClientUpdateResult contains the result from method VaultExtendedInfoClient.Update.
+type VaultExtendedInfoClientUpdateResult struct {
 	VaultExtendedInfoResource
 }
 
-// VaultsCreateOrUpdatePollerResponse contains the response from method Vaults.CreateOrUpdate.
-type VaultsCreateOrUpdatePollerResponse struct {
+// VaultsClientCreateOrUpdatePollerResponse contains the response from method VaultsClient.CreateOrUpdate.
+type VaultsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VaultsCreateOrUpdatePoller
+	Poller *VaultsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -177,8 +177,8 @@ type VaultsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsCreateOrUpdateResponse, error) {
-	respType := VaultsCreateOrUpdateResponse{}
+func (l VaultsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsClientCreateOrUpdateResponse, error) {
+	respType := VaultsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)
 	if err != nil {
 		return respType, err
@@ -187,13 +187,13 @@ func (l VaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// Resume rehydrates a VaultsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *VaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a VaultsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *VaultsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VaultsCreateOrUpdatePoller{
+	poller := &VaultsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -205,64 +205,64 @@ func (l *VaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client 
 	return nil
 }
 
-// VaultsCreateOrUpdateResponse contains the response from method Vaults.CreateOrUpdate.
-type VaultsCreateOrUpdateResponse struct {
-	VaultsCreateOrUpdateResult
+// VaultsClientCreateOrUpdateResponse contains the response from method VaultsClient.CreateOrUpdate.
+type VaultsClientCreateOrUpdateResponse struct {
+	VaultsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsCreateOrUpdateResult contains the result from method Vaults.CreateOrUpdate.
-type VaultsCreateOrUpdateResult struct {
+// VaultsClientCreateOrUpdateResult contains the result from method VaultsClient.CreateOrUpdate.
+type VaultsClientCreateOrUpdateResult struct {
 	Vault
 }
 
-// VaultsDeleteResponse contains the response from method Vaults.Delete.
-type VaultsDeleteResponse struct {
+// VaultsClientDeleteResponse contains the response from method VaultsClient.Delete.
+type VaultsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsGetResponse contains the response from method Vaults.Get.
-type VaultsGetResponse struct {
-	VaultsGetResult
+// VaultsClientGetResponse contains the response from method VaultsClient.Get.
+type VaultsClientGetResponse struct {
+	VaultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsGetResult contains the result from method Vaults.Get.
-type VaultsGetResult struct {
+// VaultsClientGetResult contains the result from method VaultsClient.Get.
+type VaultsClientGetResult struct {
 	Vault
 }
 
-// VaultsListByResourceGroupResponse contains the response from method Vaults.ListByResourceGroup.
-type VaultsListByResourceGroupResponse struct {
-	VaultsListByResourceGroupResult
+// VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.ListByResourceGroup.
+type VaultsClientListByResourceGroupResponse struct {
+	VaultsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsListByResourceGroupResult contains the result from method Vaults.ListByResourceGroup.
-type VaultsListByResourceGroupResult struct {
+// VaultsClientListByResourceGroupResult contains the result from method VaultsClient.ListByResourceGroup.
+type VaultsClientListByResourceGroupResult struct {
 	VaultList
 }
 
-// VaultsListBySubscriptionIDResponse contains the response from method Vaults.ListBySubscriptionID.
-type VaultsListBySubscriptionIDResponse struct {
-	VaultsListBySubscriptionIDResult
+// VaultsClientListBySubscriptionIDResponse contains the response from method VaultsClient.ListBySubscriptionID.
+type VaultsClientListBySubscriptionIDResponse struct {
+	VaultsClientListBySubscriptionIDResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsListBySubscriptionIDResult contains the result from method Vaults.ListBySubscriptionID.
-type VaultsListBySubscriptionIDResult struct {
+// VaultsClientListBySubscriptionIDResult contains the result from method VaultsClient.ListBySubscriptionID.
+type VaultsClientListBySubscriptionIDResult struct {
 	VaultList
 }
 
-// VaultsUpdatePollerResponse contains the response from method Vaults.Update.
-type VaultsUpdatePollerResponse struct {
+// VaultsClientUpdatePollerResponse contains the response from method VaultsClient.Update.
+type VaultsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *VaultsUpdatePoller
+	Poller *VaultsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -271,8 +271,8 @@ type VaultsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l VaultsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsUpdateResponse, error) {
-	respType := VaultsUpdateResponse{}
+func (l VaultsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (VaultsClientUpdateResponse, error) {
+	respType := VaultsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Vault)
 	if err != nil {
 		return respType, err
@@ -281,13 +281,13 @@ func (l VaultsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time
 	return respType, nil
 }
 
-// Resume rehydrates a VaultsUpdatePollerResponse from the provided client and resume token.
-func (l *VaultsUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a VaultsClientUpdatePollerResponse from the provided client and resume token.
+func (l *VaultsClientUpdatePollerResponse) Resume(ctx context.Context, client *VaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("VaultsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &VaultsUpdatePoller{
+	poller := &VaultsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -299,14 +299,14 @@ func (l *VaultsUpdatePollerResponse) Resume(ctx context.Context, client *VaultsC
 	return nil
 }
 
-// VaultsUpdateResponse contains the response from method Vaults.Update.
-type VaultsUpdateResponse struct {
-	VaultsUpdateResult
+// VaultsClientUpdateResponse contains the response from method VaultsClient.Update.
+type VaultsClientUpdateResponse struct {
+	VaultsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VaultsUpdateResult contains the result from method Vaults.Update.
-type VaultsUpdateResult struct {
+// VaultsClientUpdateResult contains the result from method VaultsClient.Update.
+type VaultsClientUpdateResult struct {
 	Vault
 }

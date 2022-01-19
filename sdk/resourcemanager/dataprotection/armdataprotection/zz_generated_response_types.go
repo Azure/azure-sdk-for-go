@@ -15,10 +15,10 @@ import (
 	"time"
 )
 
-// BackupInstancesAdhocBackupPollerResponse contains the response from method BackupInstances.AdhocBackup.
-type BackupInstancesAdhocBackupPollerResponse struct {
+// BackupInstancesClientAdhocBackupPollerResponse contains the response from method BackupInstancesClient.AdhocBackup.
+type BackupInstancesClientAdhocBackupPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesAdhocBackupPoller
+	Poller *BackupInstancesClientAdhocBackupPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -27,8 +27,8 @@ type BackupInstancesAdhocBackupPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesAdhocBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesAdhocBackupResponse, error) {
-	respType := BackupInstancesAdhocBackupResponse{}
+func (l BackupInstancesClientAdhocBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientAdhocBackupResponse, error) {
+	respType := BackupInstancesClientAdhocBackupResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationJobExtendedInfo)
 	if err != nil {
 		return respType, err
@@ -37,13 +37,13 @@ func (l BackupInstancesAdhocBackupPollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesAdhocBackupPollerResponse from the provided client and resume token.
-func (l *BackupInstancesAdhocBackupPollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.AdhocBackup", token, client.pl, client.adhocBackupHandleError)
+// Resume rehydrates a BackupInstancesClientAdhocBackupPollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientAdhocBackupPollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.AdhocBackup", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesAdhocBackupPoller{
+	poller := &BackupInstancesClientAdhocBackupPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -55,22 +55,22 @@ func (l *BackupInstancesAdhocBackupPollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// BackupInstancesAdhocBackupResponse contains the response from method BackupInstances.AdhocBackup.
-type BackupInstancesAdhocBackupResponse struct {
-	BackupInstancesAdhocBackupResult
+// BackupInstancesClientAdhocBackupResponse contains the response from method BackupInstancesClient.AdhocBackup.
+type BackupInstancesClientAdhocBackupResponse struct {
+	BackupInstancesClientAdhocBackupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesAdhocBackupResult contains the result from method BackupInstances.AdhocBackup.
-type BackupInstancesAdhocBackupResult struct {
+// BackupInstancesClientAdhocBackupResult contains the result from method BackupInstancesClient.AdhocBackup.
+type BackupInstancesClientAdhocBackupResult struct {
 	OperationJobExtendedInfo
 }
 
-// BackupInstancesCreateOrUpdatePollerResponse contains the response from method BackupInstances.CreateOrUpdate.
-type BackupInstancesCreateOrUpdatePollerResponse struct {
+// BackupInstancesClientCreateOrUpdatePollerResponse contains the response from method BackupInstancesClient.CreateOrUpdate.
+type BackupInstancesClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesCreateOrUpdatePoller
+	Poller *BackupInstancesClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -79,8 +79,8 @@ type BackupInstancesCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesCreateOrUpdateResponse, error) {
-	respType := BackupInstancesCreateOrUpdateResponse{}
+func (l BackupInstancesClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientCreateOrUpdateResponse, error) {
+	respType := BackupInstancesClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BackupInstanceResource)
 	if err != nil {
 		return respType, err
@@ -89,13 +89,13 @@ func (l BackupInstancesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *BackupInstancesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a BackupInstancesClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesCreateOrUpdatePoller{
+	poller := &BackupInstancesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -107,22 +107,22 @@ func (l *BackupInstancesCreateOrUpdatePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// BackupInstancesCreateOrUpdateResponse contains the response from method BackupInstances.CreateOrUpdate.
-type BackupInstancesCreateOrUpdateResponse struct {
-	BackupInstancesCreateOrUpdateResult
+// BackupInstancesClientCreateOrUpdateResponse contains the response from method BackupInstancesClient.CreateOrUpdate.
+type BackupInstancesClientCreateOrUpdateResponse struct {
+	BackupInstancesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesCreateOrUpdateResult contains the result from method BackupInstances.CreateOrUpdate.
-type BackupInstancesCreateOrUpdateResult struct {
+// BackupInstancesClientCreateOrUpdateResult contains the result from method BackupInstancesClient.CreateOrUpdate.
+type BackupInstancesClientCreateOrUpdateResult struct {
 	BackupInstanceResource
 }
 
-// BackupInstancesDeletePollerResponse contains the response from method BackupInstances.Delete.
-type BackupInstancesDeletePollerResponse struct {
+// BackupInstancesClientDeletePollerResponse contains the response from method BackupInstancesClient.Delete.
+type BackupInstancesClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesDeletePoller
+	Poller *BackupInstancesClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -131,8 +131,8 @@ type BackupInstancesDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesDeleteResponse, error) {
-	respType := BackupInstancesDeleteResponse{}
+func (l BackupInstancesClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientDeleteResponse, error) {
+	respType := BackupInstancesClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -141,13 +141,13 @@ func (l BackupInstancesDeletePollerResponse) PollUntilDone(ctx context.Context, 
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesDeletePollerResponse from the provided client and resume token.
-func (l *BackupInstancesDeletePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a BackupInstancesClientDeletePollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientDeletePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesDeletePoller{
+	poller := &BackupInstancesClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -159,40 +159,40 @@ func (l *BackupInstancesDeletePollerResponse) Resume(ctx context.Context, client
 	return nil
 }
 
-// BackupInstancesDeleteResponse contains the response from method BackupInstances.Delete.
-type BackupInstancesDeleteResponse struct {
+// BackupInstancesClientDeleteResponse contains the response from method BackupInstancesClient.Delete.
+type BackupInstancesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesGetResponse contains the response from method BackupInstances.Get.
-type BackupInstancesGetResponse struct {
-	BackupInstancesGetResult
+// BackupInstancesClientGetResponse contains the response from method BackupInstancesClient.Get.
+type BackupInstancesClientGetResponse struct {
+	BackupInstancesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesGetResult contains the result from method BackupInstances.Get.
-type BackupInstancesGetResult struct {
+// BackupInstancesClientGetResult contains the result from method BackupInstancesClient.Get.
+type BackupInstancesClientGetResult struct {
 	BackupInstanceResource
 }
 
-// BackupInstancesListResponse contains the response from method BackupInstances.List.
-type BackupInstancesListResponse struct {
-	BackupInstancesListResult
+// BackupInstancesClientListResponse contains the response from method BackupInstancesClient.List.
+type BackupInstancesClientListResponse struct {
+	BackupInstancesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesListResult contains the result from method BackupInstances.List.
-type BackupInstancesListResult struct {
+// BackupInstancesClientListResult contains the result from method BackupInstancesClient.List.
+type BackupInstancesClientListResult struct {
 	BackupInstanceResourceList
 }
 
-// BackupInstancesTriggerRehydratePollerResponse contains the response from method BackupInstances.TriggerRehydrate.
-type BackupInstancesTriggerRehydratePollerResponse struct {
+// BackupInstancesClientTriggerRehydratePollerResponse contains the response from method BackupInstancesClient.TriggerRehydrate.
+type BackupInstancesClientTriggerRehydratePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesTriggerRehydratePoller
+	Poller *BackupInstancesClientTriggerRehydratePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -201,8 +201,8 @@ type BackupInstancesTriggerRehydratePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesTriggerRehydratePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesTriggerRehydrateResponse, error) {
-	respType := BackupInstancesTriggerRehydrateResponse{}
+func (l BackupInstancesClientTriggerRehydratePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientTriggerRehydrateResponse, error) {
+	respType := BackupInstancesClientTriggerRehydrateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -211,13 +211,13 @@ func (l BackupInstancesTriggerRehydratePollerResponse) PollUntilDone(ctx context
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesTriggerRehydratePollerResponse from the provided client and resume token.
-func (l *BackupInstancesTriggerRehydratePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.TriggerRehydrate", token, client.pl, client.triggerRehydrateHandleError)
+// Resume rehydrates a BackupInstancesClientTriggerRehydratePollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientTriggerRehydratePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.TriggerRehydrate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesTriggerRehydratePoller{
+	poller := &BackupInstancesClientTriggerRehydratePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -229,16 +229,16 @@ func (l *BackupInstancesTriggerRehydratePollerResponse) Resume(ctx context.Conte
 	return nil
 }
 
-// BackupInstancesTriggerRehydrateResponse contains the response from method BackupInstances.TriggerRehydrate.
-type BackupInstancesTriggerRehydrateResponse struct {
+// BackupInstancesClientTriggerRehydrateResponse contains the response from method BackupInstancesClient.TriggerRehydrate.
+type BackupInstancesClientTriggerRehydrateResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesTriggerRestorePollerResponse contains the response from method BackupInstances.TriggerRestore.
-type BackupInstancesTriggerRestorePollerResponse struct {
+// BackupInstancesClientTriggerRestorePollerResponse contains the response from method BackupInstancesClient.TriggerRestore.
+type BackupInstancesClientTriggerRestorePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesTriggerRestorePoller
+	Poller *BackupInstancesClientTriggerRestorePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -247,8 +247,8 @@ type BackupInstancesTriggerRestorePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesTriggerRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesTriggerRestoreResponse, error) {
-	respType := BackupInstancesTriggerRestoreResponse{}
+func (l BackupInstancesClientTriggerRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientTriggerRestoreResponse, error) {
+	respType := BackupInstancesClientTriggerRestoreResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationJobExtendedInfo)
 	if err != nil {
 		return respType, err
@@ -257,13 +257,13 @@ func (l BackupInstancesTriggerRestorePollerResponse) PollUntilDone(ctx context.C
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesTriggerRestorePollerResponse from the provided client and resume token.
-func (l *BackupInstancesTriggerRestorePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.TriggerRestore", token, client.pl, client.triggerRestoreHandleError)
+// Resume rehydrates a BackupInstancesClientTriggerRestorePollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientTriggerRestorePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.TriggerRestore", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesTriggerRestorePoller{
+	poller := &BackupInstancesClientTriggerRestorePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -275,22 +275,22 @@ func (l *BackupInstancesTriggerRestorePollerResponse) Resume(ctx context.Context
 	return nil
 }
 
-// BackupInstancesTriggerRestoreResponse contains the response from method BackupInstances.TriggerRestore.
-type BackupInstancesTriggerRestoreResponse struct {
-	BackupInstancesTriggerRestoreResult
+// BackupInstancesClientTriggerRestoreResponse contains the response from method BackupInstancesClient.TriggerRestore.
+type BackupInstancesClientTriggerRestoreResponse struct {
+	BackupInstancesClientTriggerRestoreResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesTriggerRestoreResult contains the result from method BackupInstances.TriggerRestore.
-type BackupInstancesTriggerRestoreResult struct {
+// BackupInstancesClientTriggerRestoreResult contains the result from method BackupInstancesClient.TriggerRestore.
+type BackupInstancesClientTriggerRestoreResult struct {
 	OperationJobExtendedInfo
 }
 
-// BackupInstancesValidateForBackupPollerResponse contains the response from method BackupInstances.ValidateForBackup.
-type BackupInstancesValidateForBackupPollerResponse struct {
+// BackupInstancesClientValidateForBackupPollerResponse contains the response from method BackupInstancesClient.ValidateForBackup.
+type BackupInstancesClientValidateForBackupPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesValidateForBackupPoller
+	Poller *BackupInstancesClientValidateForBackupPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -299,8 +299,8 @@ type BackupInstancesValidateForBackupPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesValidateForBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesValidateForBackupResponse, error) {
-	respType := BackupInstancesValidateForBackupResponse{}
+func (l BackupInstancesClientValidateForBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientValidateForBackupResponse, error) {
+	respType := BackupInstancesClientValidateForBackupResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationJobExtendedInfo)
 	if err != nil {
 		return respType, err
@@ -309,13 +309,13 @@ func (l BackupInstancesValidateForBackupPollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesValidateForBackupPollerResponse from the provided client and resume token.
-func (l *BackupInstancesValidateForBackupPollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.ValidateForBackup", token, client.pl, client.validateForBackupHandleError)
+// Resume rehydrates a BackupInstancesClientValidateForBackupPollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientValidateForBackupPollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.ValidateForBackup", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesValidateForBackupPoller{
+	poller := &BackupInstancesClientValidateForBackupPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -327,22 +327,22 @@ func (l *BackupInstancesValidateForBackupPollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// BackupInstancesValidateForBackupResponse contains the response from method BackupInstances.ValidateForBackup.
-type BackupInstancesValidateForBackupResponse struct {
-	BackupInstancesValidateForBackupResult
+// BackupInstancesClientValidateForBackupResponse contains the response from method BackupInstancesClient.ValidateForBackup.
+type BackupInstancesClientValidateForBackupResponse struct {
+	BackupInstancesClientValidateForBackupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesValidateForBackupResult contains the result from method BackupInstances.ValidateForBackup.
-type BackupInstancesValidateForBackupResult struct {
+// BackupInstancesClientValidateForBackupResult contains the result from method BackupInstancesClient.ValidateForBackup.
+type BackupInstancesClientValidateForBackupResult struct {
 	OperationJobExtendedInfo
 }
 
-// BackupInstancesValidateForRestorePollerResponse contains the response from method BackupInstances.ValidateForRestore.
-type BackupInstancesValidateForRestorePollerResponse struct {
+// BackupInstancesClientValidateForRestorePollerResponse contains the response from method BackupInstancesClient.ValidateForRestore.
+type BackupInstancesClientValidateForRestorePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupInstancesValidateForRestorePoller
+	Poller *BackupInstancesClientValidateForRestorePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -351,8 +351,8 @@ type BackupInstancesValidateForRestorePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupInstancesValidateForRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesValidateForRestoreResponse, error) {
-	respType := BackupInstancesValidateForRestoreResponse{}
+func (l BackupInstancesClientValidateForRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupInstancesClientValidateForRestoreResponse, error) {
+	respType := BackupInstancesClientValidateForRestoreResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OperationJobExtendedInfo)
 	if err != nil {
 		return respType, err
@@ -361,13 +361,13 @@ func (l BackupInstancesValidateForRestorePollerResponse) PollUntilDone(ctx conte
 	return respType, nil
 }
 
-// Resume rehydrates a BackupInstancesValidateForRestorePollerResponse from the provided client and resume token.
-func (l *BackupInstancesValidateForRestorePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.ValidateForRestore", token, client.pl, client.validateForRestoreHandleError)
+// Resume rehydrates a BackupInstancesClientValidateForRestorePollerResponse from the provided client and resume token.
+func (l *BackupInstancesClientValidateForRestorePollerResponse) Resume(ctx context.Context, client *BackupInstancesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupInstancesClient.ValidateForRestore", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupInstancesValidateForRestorePoller{
+	poller := &BackupInstancesClientValidateForRestorePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -379,69 +379,69 @@ func (l *BackupInstancesValidateForRestorePollerResponse) Resume(ctx context.Con
 	return nil
 }
 
-// BackupInstancesValidateForRestoreResponse contains the response from method BackupInstances.ValidateForRestore.
-type BackupInstancesValidateForRestoreResponse struct {
-	BackupInstancesValidateForRestoreResult
+// BackupInstancesClientValidateForRestoreResponse contains the response from method BackupInstancesClient.ValidateForRestore.
+type BackupInstancesClientValidateForRestoreResponse struct {
+	BackupInstancesClientValidateForRestoreResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupInstancesValidateForRestoreResult contains the result from method BackupInstances.ValidateForRestore.
-type BackupInstancesValidateForRestoreResult struct {
+// BackupInstancesClientValidateForRestoreResult contains the result from method BackupInstancesClient.ValidateForRestore.
+type BackupInstancesClientValidateForRestoreResult struct {
 	OperationJobExtendedInfo
 }
 
-// BackupPoliciesCreateOrUpdateResponse contains the response from method BackupPolicies.CreateOrUpdate.
-type BackupPoliciesCreateOrUpdateResponse struct {
-	BackupPoliciesCreateOrUpdateResult
+// BackupPoliciesClientCreateOrUpdateResponse contains the response from method BackupPoliciesClient.CreateOrUpdate.
+type BackupPoliciesClientCreateOrUpdateResponse struct {
+	BackupPoliciesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupPoliciesCreateOrUpdateResult contains the result from method BackupPolicies.CreateOrUpdate.
-type BackupPoliciesCreateOrUpdateResult struct {
+// BackupPoliciesClientCreateOrUpdateResult contains the result from method BackupPoliciesClient.CreateOrUpdate.
+type BackupPoliciesClientCreateOrUpdateResult struct {
 	BaseBackupPolicyResource
 }
 
-// BackupPoliciesDeleteResponse contains the response from method BackupPolicies.Delete.
-type BackupPoliciesDeleteResponse struct {
+// BackupPoliciesClientDeleteResponse contains the response from method BackupPoliciesClient.Delete.
+type BackupPoliciesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupPoliciesGetResponse contains the response from method BackupPolicies.Get.
-type BackupPoliciesGetResponse struct {
-	BackupPoliciesGetResult
+// BackupPoliciesClientGetResponse contains the response from method BackupPoliciesClient.Get.
+type BackupPoliciesClientGetResponse struct {
+	BackupPoliciesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupPoliciesGetResult contains the result from method BackupPolicies.Get.
-type BackupPoliciesGetResult struct {
+// BackupPoliciesClientGetResult contains the result from method BackupPoliciesClient.Get.
+type BackupPoliciesClientGetResult struct {
 	BaseBackupPolicyResource
 }
 
-// BackupPoliciesListResponse contains the response from method BackupPolicies.List.
-type BackupPoliciesListResponse struct {
-	BackupPoliciesListResult
+// BackupPoliciesClientListResponse contains the response from method BackupPoliciesClient.List.
+type BackupPoliciesClientListResponse struct {
+	BackupPoliciesClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupPoliciesListResult contains the result from method BackupPolicies.List.
-type BackupPoliciesListResult struct {
+// BackupPoliciesClientListResult contains the result from method BackupPoliciesClient.List.
+type BackupPoliciesClientListResult struct {
 	BaseBackupPolicyResourceList
 }
 
-// BackupVaultOperationResultsGetResponse contains the response from method BackupVaultOperationResults.Get.
-type BackupVaultOperationResultsGetResponse struct {
-	BackupVaultOperationResultsGetResult
+// BackupVaultOperationResultsClientGetResponse contains the response from method BackupVaultOperationResultsClient.Get.
+type BackupVaultOperationResultsClientGetResponse struct {
+	BackupVaultOperationResultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultOperationResultsGetResult contains the result from method BackupVaultOperationResults.Get.
-type BackupVaultOperationResultsGetResult struct {
+// BackupVaultOperationResultsClientGetResult contains the result from method BackupVaultOperationResultsClient.Get.
+type BackupVaultOperationResultsClientGetResult struct {
 	BackupVaultResource
 	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
 	AzureAsyncOperation *string
@@ -453,22 +453,22 @@ type BackupVaultOperationResultsGetResult struct {
 	RetryAfter *int32
 }
 
-// BackupVaultsCheckNameAvailabilityResponse contains the response from method BackupVaults.CheckNameAvailability.
-type BackupVaultsCheckNameAvailabilityResponse struct {
-	BackupVaultsCheckNameAvailabilityResult
+// BackupVaultsClientCheckNameAvailabilityResponse contains the response from method BackupVaultsClient.CheckNameAvailability.
+type BackupVaultsClientCheckNameAvailabilityResponse struct {
+	BackupVaultsClientCheckNameAvailabilityResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsCheckNameAvailabilityResult contains the result from method BackupVaults.CheckNameAvailability.
-type BackupVaultsCheckNameAvailabilityResult struct {
+// BackupVaultsClientCheckNameAvailabilityResult contains the result from method BackupVaultsClient.CheckNameAvailability.
+type BackupVaultsClientCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// BackupVaultsCreateOrUpdatePollerResponse contains the response from method BackupVaults.CreateOrUpdate.
-type BackupVaultsCreateOrUpdatePollerResponse struct {
+// BackupVaultsClientCreateOrUpdatePollerResponse contains the response from method BackupVaultsClient.CreateOrUpdate.
+type BackupVaultsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupVaultsCreateOrUpdatePoller
+	Poller *BackupVaultsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -477,8 +477,8 @@ type BackupVaultsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupVaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupVaultsCreateOrUpdateResponse, error) {
-	respType := BackupVaultsCreateOrUpdateResponse{}
+func (l BackupVaultsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupVaultsClientCreateOrUpdateResponse, error) {
+	respType := BackupVaultsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BackupVaultResource)
 	if err != nil {
 		return respType, err
@@ -487,13 +487,13 @@ func (l BackupVaultsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// Resume rehydrates a BackupVaultsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *BackupVaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *BackupVaultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupVaultsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a BackupVaultsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *BackupVaultsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *BackupVaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupVaultsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupVaultsCreateOrUpdatePoller{
+	poller := &BackupVaultsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -505,64 +505,64 @@ func (l *BackupVaultsCreateOrUpdatePollerResponse) Resume(ctx context.Context, c
 	return nil
 }
 
-// BackupVaultsCreateOrUpdateResponse contains the response from method BackupVaults.CreateOrUpdate.
-type BackupVaultsCreateOrUpdateResponse struct {
-	BackupVaultsCreateOrUpdateResult
+// BackupVaultsClientCreateOrUpdateResponse contains the response from method BackupVaultsClient.CreateOrUpdate.
+type BackupVaultsClientCreateOrUpdateResponse struct {
+	BackupVaultsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsCreateOrUpdateResult contains the result from method BackupVaults.CreateOrUpdate.
-type BackupVaultsCreateOrUpdateResult struct {
+// BackupVaultsClientCreateOrUpdateResult contains the result from method BackupVaultsClient.CreateOrUpdate.
+type BackupVaultsClientCreateOrUpdateResult struct {
 	BackupVaultResource
 }
 
-// BackupVaultsDeleteResponse contains the response from method BackupVaults.Delete.
-type BackupVaultsDeleteResponse struct {
+// BackupVaultsClientDeleteResponse contains the response from method BackupVaultsClient.Delete.
+type BackupVaultsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsGetInResourceGroupResponse contains the response from method BackupVaults.GetInResourceGroup.
-type BackupVaultsGetInResourceGroupResponse struct {
-	BackupVaultsGetInResourceGroupResult
+// BackupVaultsClientGetInResourceGroupResponse contains the response from method BackupVaultsClient.GetInResourceGroup.
+type BackupVaultsClientGetInResourceGroupResponse struct {
+	BackupVaultsClientGetInResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsGetInResourceGroupResult contains the result from method BackupVaults.GetInResourceGroup.
-type BackupVaultsGetInResourceGroupResult struct {
+// BackupVaultsClientGetInResourceGroupResult contains the result from method BackupVaultsClient.GetInResourceGroup.
+type BackupVaultsClientGetInResourceGroupResult struct {
 	BackupVaultResourceList
 }
 
-// BackupVaultsGetInSubscriptionResponse contains the response from method BackupVaults.GetInSubscription.
-type BackupVaultsGetInSubscriptionResponse struct {
-	BackupVaultsGetInSubscriptionResult
+// BackupVaultsClientGetInSubscriptionResponse contains the response from method BackupVaultsClient.GetInSubscription.
+type BackupVaultsClientGetInSubscriptionResponse struct {
+	BackupVaultsClientGetInSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsGetInSubscriptionResult contains the result from method BackupVaults.GetInSubscription.
-type BackupVaultsGetInSubscriptionResult struct {
+// BackupVaultsClientGetInSubscriptionResult contains the result from method BackupVaultsClient.GetInSubscription.
+type BackupVaultsClientGetInSubscriptionResult struct {
 	BackupVaultResourceList
 }
 
-// BackupVaultsGetResponse contains the response from method BackupVaults.Get.
-type BackupVaultsGetResponse struct {
-	BackupVaultsGetResult
+// BackupVaultsClientGetResponse contains the response from method BackupVaultsClient.Get.
+type BackupVaultsClientGetResponse struct {
+	BackupVaultsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsGetResult contains the result from method BackupVaults.Get.
-type BackupVaultsGetResult struct {
+// BackupVaultsClientGetResult contains the result from method BackupVaultsClient.Get.
+type BackupVaultsClientGetResult struct {
 	BackupVaultResource
 }
 
-// BackupVaultsUpdatePollerResponse contains the response from method BackupVaults.Update.
-type BackupVaultsUpdatePollerResponse struct {
+// BackupVaultsClientUpdatePollerResponse contains the response from method BackupVaultsClient.Update.
+type BackupVaultsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *BackupVaultsUpdatePoller
+	Poller *BackupVaultsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -571,8 +571,8 @@ type BackupVaultsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BackupVaultsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupVaultsUpdateResponse, error) {
-	respType := BackupVaultsUpdateResponse{}
+func (l BackupVaultsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BackupVaultsClientUpdateResponse, error) {
+	respType := BackupVaultsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BackupVaultResource)
 	if err != nil {
 		return respType, err
@@ -581,13 +581,13 @@ func (l BackupVaultsUpdatePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a BackupVaultsUpdatePollerResponse from the provided client and resume token.
-func (l *BackupVaultsUpdatePollerResponse) Resume(ctx context.Context, client *BackupVaultsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BackupVaultsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a BackupVaultsClientUpdatePollerResponse from the provided client and resume token.
+func (l *BackupVaultsClientUpdatePollerResponse) Resume(ctx context.Context, client *BackupVaultsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("BackupVaultsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &BackupVaultsUpdatePoller{
+	poller := &BackupVaultsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -599,68 +599,44 @@ func (l *BackupVaultsUpdatePollerResponse) Resume(ctx context.Context, client *B
 	return nil
 }
 
-// BackupVaultsUpdateResponse contains the response from method BackupVaults.Update.
-type BackupVaultsUpdateResponse struct {
-	BackupVaultsUpdateResult
+// BackupVaultsClientUpdateResponse contains the response from method BackupVaultsClient.Update.
+type BackupVaultsClientUpdateResponse struct {
+	BackupVaultsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// BackupVaultsUpdateResult contains the result from method BackupVaults.Update.
-type BackupVaultsUpdateResult struct {
+// BackupVaultsClientUpdateResult contains the result from method BackupVaultsClient.Update.
+type BackupVaultsClientUpdateResult struct {
 	BackupVaultResource
 }
 
-// DataProtectionCheckFeatureSupportResponse contains the response from method DataProtection.CheckFeatureSupport.
-type DataProtectionCheckFeatureSupportResponse struct {
-	DataProtectionCheckFeatureSupportResult
+// ClientCheckFeatureSupportResponse contains the response from method Client.CheckFeatureSupport.
+type ClientCheckFeatureSupportResponse struct {
+	ClientCheckFeatureSupportResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DataProtectionCheckFeatureSupportResult contains the result from method DataProtection.CheckFeatureSupport.
-type DataProtectionCheckFeatureSupportResult struct {
+// ClientCheckFeatureSupportResult contains the result from method Client.CheckFeatureSupport.
+type ClientCheckFeatureSupportResult struct {
 	FeatureValidationResponseBaseClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataProtectionCheckFeatureSupportResult.
-func (d *DataProtectionCheckFeatureSupportResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientCheckFeatureSupportResult.
+func (c *ClientCheckFeatureSupportResult) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalFeatureValidationResponseBaseClassification(data)
 	if err != nil {
 		return err
 	}
-	d.FeatureValidationResponseBaseClassification = res
+	c.FeatureValidationResponseBaseClassification = res
 	return nil
 }
 
-// DataProtectionOperationsListResponse contains the response from method DataProtectionOperations.List.
-type DataProtectionOperationsListResponse struct {
-	DataProtectionOperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataProtectionOperationsListResult contains the result from method DataProtectionOperations.List.
-type DataProtectionOperationsListResult struct {
-	ClientDiscoveryResponse
-}
-
-// ExportJobsOperationResultGetResponse contains the response from method ExportJobsOperationResult.Get.
-type ExportJobsOperationResultGetResponse struct {
-	ExportJobsOperationResultGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ExportJobsOperationResultGetResult contains the result from method ExportJobsOperationResult.Get.
-type ExportJobsOperationResultGetResult struct {
-	ExportJobsResult
-}
-
-// ExportJobsTriggerPollerResponse contains the response from method ExportJobs.Trigger.
-type ExportJobsTriggerPollerResponse struct {
+// ExportJobsClientTriggerPollerResponse contains the response from method ExportJobsClient.Trigger.
+type ExportJobsClientTriggerPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExportJobsTriggerPoller
+	Poller *ExportJobsClientTriggerPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -669,8 +645,8 @@ type ExportJobsTriggerPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExportJobsTriggerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExportJobsTriggerResponse, error) {
-	respType := ExportJobsTriggerResponse{}
+func (l ExportJobsClientTriggerPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExportJobsClientTriggerResponse, error) {
+	respType := ExportJobsClientTriggerResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -679,13 +655,13 @@ func (l ExportJobsTriggerPollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a ExportJobsTriggerPollerResponse from the provided client and resume token.
-func (l *ExportJobsTriggerPollerResponse) Resume(ctx context.Context, client *ExportJobsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExportJobsClient.Trigger", token, client.pl, client.triggerHandleError)
+// Resume rehydrates a ExportJobsClientTriggerPollerResponse from the provided client and resume token.
+func (l *ExportJobsClientTriggerPollerResponse) Resume(ctx context.Context, client *ExportJobsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExportJobsClient.Trigger", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExportJobsTriggerPoller{
+	poller := &ExportJobsClientTriggerPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -697,45 +673,57 @@ func (l *ExportJobsTriggerPollerResponse) Resume(ctx context.Context, client *Ex
 	return nil
 }
 
-// ExportJobsTriggerResponse contains the response from method ExportJobs.Trigger.
-type ExportJobsTriggerResponse struct {
+// ExportJobsClientTriggerResponse contains the response from method ExportJobsClient.Trigger.
+type ExportJobsClientTriggerResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResponse contains the response from method Jobs.Get.
-type JobsGetResponse struct {
-	JobsGetResult
+// ExportJobsOperationResultClientGetResponse contains the response from method ExportJobsOperationResultClient.Get.
+type ExportJobsOperationResultClientGetResponse struct {
+	ExportJobsOperationResultClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsGetResult contains the result from method Jobs.Get.
-type JobsGetResult struct {
+// ExportJobsOperationResultClientGetResult contains the result from method ExportJobsOperationResultClient.Get.
+type ExportJobsOperationResultClientGetResult struct {
+	ExportJobsResult
+}
+
+// JobsClientGetResponse contains the response from method JobsClient.Get.
+type JobsClientGetResponse struct {
+	JobsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// JobsClientGetResult contains the result from method JobsClient.Get.
+type JobsClientGetResult struct {
 	AzureBackupJobResource
 }
 
-// JobsListResponse contains the response from method Jobs.List.
-type JobsListResponse struct {
-	JobsListResult
+// JobsClientListResponse contains the response from method JobsClient.List.
+type JobsClientListResponse struct {
+	JobsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobsListResult contains the result from method Jobs.List.
-type JobsListResult struct {
+// JobsClientListResult contains the result from method JobsClient.List.
+type JobsClientListResult struct {
 	AzureBackupJobResourceList
 }
 
-// OperationResultGetResponse contains the response from method OperationResult.Get.
-type OperationResultGetResponse struct {
-	OperationResultGetResult
+// OperationResultClientGetResponse contains the response from method OperationResultClient.Get.
+type OperationResultClientGetResponse struct {
+	OperationResultClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationResultGetResult contains the result from method OperationResult.Get.
-type OperationResultGetResult struct {
+// OperationResultClientGetResult contains the result from method OperationResultClient.Get.
+type OperationResultClientGetResult struct {
 	OperationJobExtendedInfo
 	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
 	AzureAsyncOperation *string
@@ -747,260 +735,272 @@ type OperationResultGetResult struct {
 	RetryAfter *int32
 }
 
-// OperationStatusGetResponse contains the response from method OperationStatus.Get.
-type OperationStatusGetResponse struct {
-	OperationStatusGetResult
+// OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
+type OperationStatusClientGetResponse struct {
+	OperationStatusClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationStatusGetResult contains the result from method OperationStatus.Get.
-type OperationStatusGetResult struct {
+// OperationStatusClientGetResult contains the result from method OperationStatusClient.Get.
+type OperationStatusClientGetResult struct {
 	OperationResource
 }
 
-// RecoveryPointsGetResponse contains the response from method RecoveryPoints.Get.
-type RecoveryPointsGetResponse struct {
-	RecoveryPointsGetResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecoveryPointsGetResult contains the result from method RecoveryPoints.Get.
-type RecoveryPointsGetResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	ClientDiscoveryResponse
+}
+
+// RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.
+type RecoveryPointsClientGetResponse struct {
+	RecoveryPointsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RecoveryPointsClientGetResult contains the result from method RecoveryPointsClient.Get.
+type RecoveryPointsClientGetResult struct {
 	AzureBackupRecoveryPointResource
 }
 
-// RecoveryPointsListResponse contains the response from method RecoveryPoints.List.
-type RecoveryPointsListResponse struct {
-	RecoveryPointsListResult
+// RecoveryPointsClientListResponse contains the response from method RecoveryPointsClient.List.
+type RecoveryPointsClientListResponse struct {
+	RecoveryPointsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecoveryPointsListResult contains the result from method RecoveryPoints.List.
-type RecoveryPointsListResult struct {
+// RecoveryPointsClientListResult contains the result from method RecoveryPointsClient.List.
+type RecoveryPointsClientListResult struct {
 	AzureBackupRecoveryPointResourceList
 }
 
-// ResourceGuardsDeleteResponse contains the response from method ResourceGuards.Delete.
-type ResourceGuardsDeleteResponse struct {
+// ResourceGuardsClientDeleteResponse contains the response from method ResourceGuardsClient.Delete.
+type ResourceGuardsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetBackupSecurityPINRequestsObjectsResponse contains the response from method ResourceGuards.GetBackupSecurityPINRequestsObjects.
-type ResourceGuardsGetBackupSecurityPINRequestsObjectsResponse struct {
-	ResourceGuardsGetBackupSecurityPINRequestsObjectsResult
+// ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetBackupSecurityPINRequestsObjects.
+type ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse struct {
+	ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetBackupSecurityPINRequestsObjectsResult contains the result from method ResourceGuards.GetBackupSecurityPINRequestsObjects.
-type ResourceGuardsGetBackupSecurityPINRequestsObjectsResult struct {
+// ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResult contains the result from method ResourceGuardsClient.GetBackupSecurityPINRequestsObjects.
+type ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResult struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsGetDefaultBackupSecurityPINRequestsObjectResponse contains the response from method ResourceGuards.GetDefaultBackupSecurityPINRequestsObject.
-type ResourceGuardsGetDefaultBackupSecurityPINRequestsObjectResponse struct {
-	ResourceGuardsGetDefaultBackupSecurityPINRequestsObjectResult
+// ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse contains the response from method ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject.
+type ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse struct {
+	ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDefaultBackupSecurityPINRequestsObjectResult contains the result from method ResourceGuards.GetDefaultBackupSecurityPINRequestsObject.
-type ResourceGuardsGetDefaultBackupSecurityPINRequestsObjectResult struct {
+// ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResult contains the result from method ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject.
+type ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResult struct {
 	DppBaseResource
 }
 
-// ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectResponse contains the response from method ResourceGuards.GetDefaultDeleteProtectedItemRequestsObject.
-type ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectResponse struct {
-	ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectResult
+// ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse contains the response from method ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject.
+type ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse struct {
+	ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectResult contains the result from method ResourceGuards.GetDefaultDeleteProtectedItemRequestsObject.
-type ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectResult struct {
+// ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResult contains the result from method ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject.
+type ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResult struct {
 	DppBaseResource
 }
 
-// ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectResponse contains the response from method ResourceGuards.GetDefaultDeleteResourceGuardProxyRequestsObject.
-type ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectResponse struct {
-	ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectResult
+// ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse contains the response from method ResourceGuardsClient.GetDefaultDeleteResourceGuardProxyRequestsObject.
+type ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse struct {
+	ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectResult contains the result from method ResourceGuards.GetDefaultDeleteResourceGuardProxyRequestsObject.
-type ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectResult struct {
+// ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResult contains the result from method ResourceGuardsClient.GetDefaultDeleteResourceGuardProxyRequestsObject.
+type ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResult struct {
 	DppBaseResource
 }
 
-// ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectResponse contains the response from method ResourceGuards.GetDefaultDisableSoftDeleteRequestsObject.
-type ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectResponse struct {
-	ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectResult
+// ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse contains the response from method ResourceGuardsClient.GetDefaultDisableSoftDeleteRequestsObject.
+type ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse struct {
+	ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectResult contains the result from method ResourceGuards.GetDefaultDisableSoftDeleteRequestsObject.
-type ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectResult struct {
+// ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResult contains the result from method ResourceGuardsClient.GetDefaultDisableSoftDeleteRequestsObject.
+type ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResult struct {
 	DppBaseResource
 }
 
-// ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectResponse contains the response from method ResourceGuards.GetDefaultUpdateProtectedItemRequestsObject.
-type ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectResponse struct {
-	ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectResult
+// ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse contains the response from method ResourceGuardsClient.GetDefaultUpdateProtectedItemRequestsObject.
+type ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse struct {
+	ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectResult contains the result from method ResourceGuards.GetDefaultUpdateProtectedItemRequestsObject.
-type ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectResult struct {
+// ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResult contains the result from method ResourceGuardsClient.GetDefaultUpdateProtectedItemRequestsObject.
+type ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResult struct {
 	DppBaseResource
 }
 
-// ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectResponse contains the response from method ResourceGuards.GetDefaultUpdateProtectionPolicyRequestsObject.
-type ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectResponse struct {
-	ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectResult
+// ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse contains the response from method ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject.
+type ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse struct {
+	ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectResult contains the result from method ResourceGuards.GetDefaultUpdateProtectionPolicyRequestsObject.
-type ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectResult struct {
+// ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResult contains the result from method ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject.
+type ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResult struct {
 	DppBaseResource
 }
 
-// ResourceGuardsGetDeleteProtectedItemRequestsObjectsResponse contains the response from method ResourceGuards.GetDeleteProtectedItemRequestsObjects.
-type ResourceGuardsGetDeleteProtectedItemRequestsObjectsResponse struct {
-	ResourceGuardsGetDeleteProtectedItemRequestsObjectsResult
+// ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetDeleteProtectedItemRequestsObjects.
+type ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse struct {
+	ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDeleteProtectedItemRequestsObjectsResult contains the result from method ResourceGuards.GetDeleteProtectedItemRequestsObjects.
-type ResourceGuardsGetDeleteProtectedItemRequestsObjectsResult struct {
+// ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResult contains the result from method ResourceGuardsClient.GetDeleteProtectedItemRequestsObjects.
+type ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResult struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsResponse contains the response from method ResourceGuards.GetDeleteResourceGuardProxyRequestsObjects.
-type ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsResponse struct {
-	ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsResult
+// ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetDeleteResourceGuardProxyRequestsObjects.
+type ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse struct {
+	ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsResult contains the result from method ResourceGuards.GetDeleteResourceGuardProxyRequestsObjects.
-type ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsResult struct {
+// ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResult contains the result from method ResourceGuardsClient.GetDeleteResourceGuardProxyRequestsObjects.
+type ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResult struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsGetDisableSoftDeleteRequestsObjectsResponse contains the response from method ResourceGuards.GetDisableSoftDeleteRequestsObjects.
-type ResourceGuardsGetDisableSoftDeleteRequestsObjectsResponse struct {
-	ResourceGuardsGetDisableSoftDeleteRequestsObjectsResult
+// ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetDisableSoftDeleteRequestsObjects.
+type ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse struct {
+	ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetDisableSoftDeleteRequestsObjectsResult contains the result from method ResourceGuards.GetDisableSoftDeleteRequestsObjects.
-type ResourceGuardsGetDisableSoftDeleteRequestsObjectsResult struct {
+// ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResult contains the result from method ResourceGuardsClient.GetDisableSoftDeleteRequestsObjects.
+type ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResult struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsGetResourcesInResourceGroupResponse contains the response from method ResourceGuards.GetResourcesInResourceGroup.
-type ResourceGuardsGetResourcesInResourceGroupResponse struct {
-	ResourceGuardsGetResourcesInResourceGroupResult
+// ResourceGuardsClientGetResourcesInResourceGroupResponse contains the response from method ResourceGuardsClient.GetResourcesInResourceGroup.
+type ResourceGuardsClientGetResourcesInResourceGroupResponse struct {
+	ResourceGuardsClientGetResourcesInResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetResourcesInResourceGroupResult contains the result from method ResourceGuards.GetResourcesInResourceGroup.
-type ResourceGuardsGetResourcesInResourceGroupResult struct {
+// ResourceGuardsClientGetResourcesInResourceGroupResult contains the result from method ResourceGuardsClient.GetResourcesInResourceGroup.
+type ResourceGuardsClientGetResourcesInResourceGroupResult struct {
 	ResourceGuardResourceList
 }
 
-// ResourceGuardsGetResourcesInSubscriptionResponse contains the response from method ResourceGuards.GetResourcesInSubscription.
-type ResourceGuardsGetResourcesInSubscriptionResponse struct {
-	ResourceGuardsGetResourcesInSubscriptionResult
+// ResourceGuardsClientGetResourcesInSubscriptionResponse contains the response from method ResourceGuardsClient.GetResourcesInSubscription.
+type ResourceGuardsClientGetResourcesInSubscriptionResponse struct {
+	ResourceGuardsClientGetResourcesInSubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetResourcesInSubscriptionResult contains the result from method ResourceGuards.GetResourcesInSubscription.
-type ResourceGuardsGetResourcesInSubscriptionResult struct {
+// ResourceGuardsClientGetResourcesInSubscriptionResult contains the result from method ResourceGuardsClient.GetResourcesInSubscription.
+type ResourceGuardsClientGetResourcesInSubscriptionResult struct {
 	ResourceGuardResourceList
 }
 
-// ResourceGuardsGetResponse contains the response from method ResourceGuards.Get.
-type ResourceGuardsGetResponse struct {
-	ResourceGuardsGetResult
+// ResourceGuardsClientGetResponse contains the response from method ResourceGuardsClient.Get.
+type ResourceGuardsClientGetResponse struct {
+	ResourceGuardsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetResult contains the result from method ResourceGuards.Get.
-type ResourceGuardsGetResult struct {
+// ResourceGuardsClientGetResult contains the result from method ResourceGuardsClient.Get.
+type ResourceGuardsClientGetResult struct {
 	ResourceGuardResource
 }
 
-// ResourceGuardsGetUpdateProtectedItemRequestsObjectsResponse contains the response from method ResourceGuards.GetUpdateProtectedItemRequestsObjects.
-type ResourceGuardsGetUpdateProtectedItemRequestsObjectsResponse struct {
-	ResourceGuardsGetUpdateProtectedItemRequestsObjectsResult
+// ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetUpdateProtectedItemRequestsObjects.
+type ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse struct {
+	ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetUpdateProtectedItemRequestsObjectsResult contains the result from method ResourceGuards.GetUpdateProtectedItemRequestsObjects.
-type ResourceGuardsGetUpdateProtectedItemRequestsObjectsResult struct {
+// ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResult contains the result from method ResourceGuardsClient.GetUpdateProtectedItemRequestsObjects.
+type ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResult struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsResponse contains the response from method ResourceGuards.GetUpdateProtectionPolicyRequestsObjects.
-type ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsResponse struct {
-	ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsResult
+// ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetUpdateProtectionPolicyRequestsObjects.
+type ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse struct {
+	ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsResult contains the result from method ResourceGuards.GetUpdateProtectionPolicyRequestsObjects.
-type ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsResult struct {
+// ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResult contains the result from method ResourceGuardsClient.GetUpdateProtectionPolicyRequestsObjects.
+type ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResult struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsPatchResponse contains the response from method ResourceGuards.Patch.
-type ResourceGuardsPatchResponse struct {
-	ResourceGuardsPatchResult
+// ResourceGuardsClientPatchResponse contains the response from method ResourceGuardsClient.Patch.
+type ResourceGuardsClientPatchResponse struct {
+	ResourceGuardsClientPatchResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsPatchResult contains the result from method ResourceGuards.Patch.
-type ResourceGuardsPatchResult struct {
+// ResourceGuardsClientPatchResult contains the result from method ResourceGuardsClient.Patch.
+type ResourceGuardsClientPatchResult struct {
 	ResourceGuardResource
 }
 
-// ResourceGuardsPutResponse contains the response from method ResourceGuards.Put.
-type ResourceGuardsPutResponse struct {
-	ResourceGuardsPutResult
+// ResourceGuardsClientPutResponse contains the response from method ResourceGuardsClient.Put.
+type ResourceGuardsClientPutResponse struct {
+	ResourceGuardsClientPutResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ResourceGuardsPutResult contains the result from method ResourceGuards.Put.
-type ResourceGuardsPutResult struct {
+// ResourceGuardsClientPutResult contains the result from method ResourceGuardsClient.Put.
+type ResourceGuardsClientPutResult struct {
 	ResourceGuardResource
 }
 
-// RestorableTimeRangesFindResponse contains the response from method RestorableTimeRanges.Find.
-type RestorableTimeRangesFindResponse struct {
-	RestorableTimeRangesFindResult
+// RestorableTimeRangesClientFindResponse contains the response from method RestorableTimeRangesClient.Find.
+type RestorableTimeRangesClientFindResponse struct {
+	RestorableTimeRangesClientFindResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RestorableTimeRangesFindResult contains the result from method RestorableTimeRanges.Find.
-type RestorableTimeRangesFindResult struct {
+// RestorableTimeRangesClientFindResult contains the result from method RestorableTimeRangesClient.Find.
+type RestorableTimeRangesClientFindResult struct {
 	AzureBackupFindRestorableTimeRangesResponseResource
 }

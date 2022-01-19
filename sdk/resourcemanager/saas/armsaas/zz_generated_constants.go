@@ -9,8 +9,8 @@
 package armsaas
 
 const (
-	module  = "armsaas"
-	version = "v0.1.0"
+	moduleName    = "armsaas"
+	moduleVersion = "v0.2.0"
 )
 
 // PaymentChannelType - The Payment channel for the SaasSubscription.

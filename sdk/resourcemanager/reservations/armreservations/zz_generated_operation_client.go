@@ -10,7 +10,6 @@ package armreservations
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -22,40 +21,47 @@ import (
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
 type OperationClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewOperationClient creates a new instance of OperationClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OperationClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &OperationClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &OperationClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - List all the operations.
-// If the operation fails it returns the *Error error type.
-func (client *OperationClient) List(options *OperationListOptions) *OperationListPager {
-	return &OperationListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - OperationClientListOptions contains the optional parameters for the OperationClient.List method.
+func (client *OperationClient) List(options *OperationClientListOptions) *OperationClientListPager {
+	return &OperationClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp OperationListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp OperationClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationClient) listCreateRequest(ctx context.Context, options *OperationListOptions) (*policy.Request, error) {
+func (client *OperationClient) listCreateRequest(ctx context.Context, options *OperationClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -67,23 +73,10 @@ func (client *OperationClient) listCreateRequest(ctx context.Context, options *O
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationClient) listHandleResponse(resp *http.Response) (OperationListResponse, error) {
-	result := OperationListResponse{RawResponse: resp}
+func (client *OperationClient) listHandleResponse(resp *http.Response) (OperationClientListResponse, error) {
+	result := OperationClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationList); err != nil {
-		return OperationListResponse{}, runtime.NewResponseError(err, resp)
+		return OperationClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OperationClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

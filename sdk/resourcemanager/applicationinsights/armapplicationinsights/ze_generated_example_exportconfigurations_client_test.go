@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
@@ -24,13 +25,14 @@ func ExampleExportConfigurationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportConfigurationsClientListResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ExportConfigurationsPost.json
@@ -41,14 +43,25 @@ func ExampleExportConfigurationsClient_Create() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.Create(ctx,
+	res, err := client.Create(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armapplicationinsights.ApplicationInsightsComponentExportRequest{},
+		armapplicationinsights.ComponentExportRequest{
+			DestinationAccountID:             to.StringPtr("<destination-account-id>"),
+			DestinationAddress:               to.StringPtr("<destination-address>"),
+			DestinationStorageLocationID:     to.StringPtr("<destination-storage-location-id>"),
+			DestinationStorageSubscriptionID: to.StringPtr("<destination-storage-subscription-id>"),
+			DestinationType:                  to.StringPtr("<destination-type>"),
+			IsEnabled:                        to.StringPtr("<is-enabled>"),
+			NotificationQueueEnabled:         to.StringPtr("<notification-queue-enabled>"),
+			NotificationQueueURI:             to.StringPtr("<notification-queue-uri>"),
+			RecordTypes:                      to.StringPtr("<record-types>"),
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportConfigurationsClientCreateResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ExportConfigurationDelete.json
@@ -59,7 +72,7 @@ func ExampleExportConfigurationsClient_Delete() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.Delete(ctx,
+	res, err := client.Delete(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<export-id>",
@@ -67,6 +80,7 @@ func ExampleExportConfigurationsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportConfigurationsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ExportConfigurationGet.json
@@ -77,7 +91,7 @@ func ExampleExportConfigurationsClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<export-id>",
@@ -85,6 +99,7 @@ func ExampleExportConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/ExportConfigurationUpdate.json
@@ -95,13 +110,24 @@ func ExampleExportConfigurationsClient_Update() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
 		"<export-id>",
-		armapplicationinsights.ApplicationInsightsComponentExportRequest{},
+		armapplicationinsights.ComponentExportRequest{
+			DestinationAccountID:             to.StringPtr("<destination-account-id>"),
+			DestinationAddress:               to.StringPtr("<destination-address>"),
+			DestinationStorageLocationID:     to.StringPtr("<destination-storage-location-id>"),
+			DestinationStorageSubscriptionID: to.StringPtr("<destination-storage-subscription-id>"),
+			DestinationType:                  to.StringPtr("<destination-type>"),
+			IsEnabled:                        to.StringPtr("<is-enabled>"),
+			NotificationQueueEnabled:         to.StringPtr("<notification-queue-enabled>"),
+			NotificationQueueURI:             to.StringPtr("<notification-queue-uri>"),
+			RecordTypes:                      to.StringPtr("<record-types>"),
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ExportConfigurationsClientUpdateResult)
 }

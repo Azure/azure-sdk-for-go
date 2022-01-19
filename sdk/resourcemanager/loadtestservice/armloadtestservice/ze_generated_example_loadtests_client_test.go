@@ -14,6 +14,7 @@ import (
 
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice"
 )
@@ -27,12 +28,16 @@ func ExampleLoadTestsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LoadTestResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -47,12 +52,16 @@ func ExampleLoadTestsClient_ListByResourceGroup() {
 	client := armloadtestservice.NewLoadTestsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LoadTestResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -72,7 +81,7 @@ func ExampleLoadTestsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LoadTestResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LoadTestsClientGetResult)
 }
 
 // x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_CreateOrUpdate.json
@@ -86,12 +95,20 @@ func ExampleLoadTestsClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<load-test-name>",
-		armloadtestservice.LoadTestResource{},
+		armloadtestservice.LoadTestResource{
+			Location: to.StringPtr("<location>"),
+			Tags: map[string]*string{
+				"Team": to.StringPtr("Dev Exp"),
+			},
+			Properties: &armloadtestservice.LoadTestProperties{
+				Description: to.StringPtr("<description>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LoadTestResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LoadTestsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_Update.json
@@ -105,12 +122,20 @@ func ExampleLoadTestsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<load-test-name>",
-		armloadtestservice.LoadTestResourcePatchRequestBody{},
+		armloadtestservice.LoadTestResourcePatchRequestBody{
+			Properties: &armloadtestservice.LoadTestResourcePatchRequestBodyProperties{
+				Description: to.StringPtr("<description>"),
+			},
+			Tags: map[string]interface{}{
+				"Division": "LT",
+				"Team":     "Dev Exp",
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LoadTestResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LoadTestsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/preview/2021-12-01-preview/examples/LoadTests_Delete.json

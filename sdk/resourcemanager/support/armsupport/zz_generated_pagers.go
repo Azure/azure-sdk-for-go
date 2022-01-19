@@ -16,23 +16,23 @@ import (
 	"reflect"
 )
 
-// CommunicationsListPager provides operations for iterating over paged responses.
-type CommunicationsListPager struct {
+// CommunicationsClientListPager provides operations for iterating over paged responses.
+type CommunicationsClientListPager struct {
 	client    *CommunicationsClient
-	current   CommunicationsListResponse
+	current   CommunicationsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, CommunicationsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, CommunicationsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *CommunicationsListPager) Err() error {
+func (p *CommunicationsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *CommunicationsListPager) NextPage(ctx context.Context) bool {
+func (p *CommunicationsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
@@ -53,7 +53,7 @@ func (p *CommunicationsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -65,32 +65,32 @@ func (p *CommunicationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current CommunicationsListResponse page.
-func (p *CommunicationsListPager) PageResponse() CommunicationsListResponse {
+// PageResponse returns the current CommunicationsClientListResponse page.
+func (p *CommunicationsClientListPager) PageResponse() CommunicationsClientListResponse {
 	return p.current
 }
 
-// SupportTicketsListPager provides operations for iterating over paged responses.
-type SupportTicketsListPager struct {
-	client    *SupportTicketsClient
-	current   SupportTicketsListResponse
+// TicketsClientListPager provides operations for iterating over paged responses.
+type TicketsClientListPager struct {
+	client    *TicketsClient
+	current   TicketsClientListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
-	advancer  func(context.Context, SupportTicketsListResponse) (*policy.Request, error)
+	advancer  func(context.Context, TicketsClientListResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
-func (p *SupportTicketsListPager) Err() error {
+func (p *TicketsClientListPager) Err() error {
 	return p.err
 }
 
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
-func (p *SupportTicketsListPager) NextPage(ctx context.Context) bool {
+func (p *TicketsClientListPager) NextPage(ctx context.Context) bool {
 	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.SupportTicketsListResult.NextLink == nil || len(*p.current.SupportTicketsListResult.NextLink) == 0 {
+		if p.current.TicketsListResult.NextLink == nil || len(*p.current.TicketsListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -107,7 +107,7 @@ func (p *SupportTicketsListPager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		p.err = p.client.listHandleError(resp)
+		p.err = runtime.NewResponseError(resp)
 		return false
 	}
 	result, err := p.client.listHandleResponse(resp)
@@ -119,7 +119,7 @@ func (p *SupportTicketsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-// PageResponse returns the current SupportTicketsListResponse page.
-func (p *SupportTicketsListPager) PageResponse() SupportTicketsListResponse {
+// PageResponse returns the current TicketsClientListResponse page.
+func (p *TicketsClientListPager) PageResponse() TicketsClientListResponse {
 	return p.current
 }

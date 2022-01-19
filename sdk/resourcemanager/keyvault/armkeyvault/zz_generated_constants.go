@@ -9,8 +9,8 @@
 package armkeyvault
 
 const (
-	module  = "armkeyvault"
-	version = "v0.2.1"
+	moduleName    = "armkeyvault"
+	moduleVersion = "v0.3.0"
 )
 
 type AccessPolicyUpdateKind string
@@ -125,8 +125,8 @@ func (c CreateMode) ToPtr() *CreateMode {
 	return &c
 }
 
-// DeletionRecoveryLevel - The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then the object can be permanently
-// deleted by a privileged user; otherwise, only the system can purge the
+// DeletionRecoveryLevel - The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then
+// the object can be permanently deleted by a privileged user; otherwise, only the system can purge the
 // object at the end of the retention interval.
 type DeletionRecoveryLevel string
 
@@ -209,6 +209,7 @@ const (
 	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
 	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
 	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
+	JSONWebKeyOperationRelease   JSONWebKeyOperation = "release"
 	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
 	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
 	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
@@ -221,6 +222,7 @@ func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 		JSONWebKeyOperationDecrypt,
 		JSONWebKeyOperationEncrypt,
 		JSONWebKeyOperationImport,
+		JSONWebKeyOperationRelease,
 		JSONWebKeyOperationSign,
 		JSONWebKeyOperationUnwrapKey,
 		JSONWebKeyOperationVerify,
@@ -261,25 +263,27 @@ func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
 type KeyPermissions string
 
 const (
-	KeyPermissionsAll       KeyPermissions = "all"
-	KeyPermissionsBackup    KeyPermissions = "backup"
-	KeyPermissionsCreate    KeyPermissions = "create"
-	KeyPermissionsDecrypt   KeyPermissions = "decrypt"
-	KeyPermissionsDelete    KeyPermissions = "delete"
-	KeyPermissionsEncrypt   KeyPermissions = "encrypt"
-	KeyPermissionsGet       KeyPermissions = "get"
-	KeyPermissionsImport    KeyPermissions = "import"
-	KeyPermissionsList      KeyPermissions = "list"
-	KeyPermissionsPurge     KeyPermissions = "purge"
-	KeyPermissionsRecover   KeyPermissions = "recover"
-	KeyPermissionsRelease   KeyPermissions = "release"
-	KeyPermissionsRestore   KeyPermissions = "restore"
-	KeyPermissionsRotate    KeyPermissions = "rotate"
-	KeyPermissionsSign      KeyPermissions = "sign"
-	KeyPermissionsUnwrapKey KeyPermissions = "unwrapKey"
-	KeyPermissionsUpdate    KeyPermissions = "update"
-	KeyPermissionsVerify    KeyPermissions = "verify"
-	KeyPermissionsWrapKey   KeyPermissions = "wrapKey"
+	KeyPermissionsAll               KeyPermissions = "all"
+	KeyPermissionsBackup            KeyPermissions = "backup"
+	KeyPermissionsCreate            KeyPermissions = "create"
+	KeyPermissionsDecrypt           KeyPermissions = "decrypt"
+	KeyPermissionsDelete            KeyPermissions = "delete"
+	KeyPermissionsEncrypt           KeyPermissions = "encrypt"
+	KeyPermissionsGet               KeyPermissions = "get"
+	KeyPermissionsGetrotationpolicy KeyPermissions = "getrotationpolicy"
+	KeyPermissionsImport            KeyPermissions = "import"
+	KeyPermissionsList              KeyPermissions = "list"
+	KeyPermissionsPurge             KeyPermissions = "purge"
+	KeyPermissionsRecover           KeyPermissions = "recover"
+	KeyPermissionsRelease           KeyPermissions = "release"
+	KeyPermissionsRestore           KeyPermissions = "restore"
+	KeyPermissionsRotate            KeyPermissions = "rotate"
+	KeyPermissionsSetrotationpolicy KeyPermissions = "setrotationpolicy"
+	KeyPermissionsSign              KeyPermissions = "sign"
+	KeyPermissionsUnwrapKey         KeyPermissions = "unwrapKey"
+	KeyPermissionsUpdate            KeyPermissions = "update"
+	KeyPermissionsVerify            KeyPermissions = "verify"
+	KeyPermissionsWrapKey           KeyPermissions = "wrapKey"
 )
 
 // PossibleKeyPermissionsValues returns the possible values for the KeyPermissions const type.
@@ -292,6 +296,7 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 		KeyPermissionsDelete,
 		KeyPermissionsEncrypt,
 		KeyPermissionsGet,
+		KeyPermissionsGetrotationpolicy,
 		KeyPermissionsImport,
 		KeyPermissionsList,
 		KeyPermissionsPurge,
@@ -299,6 +304,7 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 		KeyPermissionsRelease,
 		KeyPermissionsRestore,
 		KeyPermissionsRotate,
+		KeyPermissionsSetrotationpolicy,
 		KeyPermissionsSign,
 		KeyPermissionsUnwrapKey,
 		KeyPermissionsUpdate,
@@ -373,8 +379,8 @@ func (c ManagedHsmSKUName) ToPtr() *ManagedHsmSKUName {
 	return &c
 }
 
-// NetworkRuleAction - The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property has
-// been evaluated.
+// NetworkRuleAction - The default action when no rule from ipRules and from virtualNetworkRules match. This is only used
+// after the bypass property has been evaluated.
 type NetworkRuleAction string
 
 const (
@@ -395,7 +401,8 @@ func (c NetworkRuleAction) ToPtr() *NetworkRuleAction {
 	return &c
 }
 
-// NetworkRuleBypassOptions - Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If not specified the default is 'AzureServices'.
+// NetworkRuleBypassOptions - Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If not specified
+// the default is 'AzureServices'.
 type NetworkRuleBypassOptions string
 
 const (

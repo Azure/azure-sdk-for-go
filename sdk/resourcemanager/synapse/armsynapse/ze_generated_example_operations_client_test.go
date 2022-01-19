@@ -25,7 +25,7 @@ func ExampleOperationsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewOperationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armsynapse.CheckNameAvailabilityRequest{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -34,6 +34,7 @@ func ExampleOperationsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OperationsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetAvailableOperations.json
@@ -44,11 +45,12 @@ func ExampleOperationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armsynapse.NewOperationsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.OperationsClientListResult)
 }
 
 // x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetLocationHeader.json
@@ -85,5 +87,5 @@ func ExampleOperationsClient_GetAzureAsyncHeaderResult() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.OperationsClientGetAzureAsyncHeaderResultResult)
 }

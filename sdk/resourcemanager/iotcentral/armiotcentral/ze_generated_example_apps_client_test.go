@@ -34,7 +34,7 @@ func ExampleAppsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("App.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AppsClientGetResult)
 }
 
 // x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CreateOrUpdate.json
@@ -48,7 +48,20 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armiotcentral.App{},
+		armiotcentral.App{
+			Location: to.StringPtr("<location>"),
+			Identity: &armiotcentral.SystemAssignedServiceIdentity{
+				Type: armiotcentral.SystemAssignedServiceIdentityType("SystemAssigned").ToPtr(),
+			},
+			Properties: &armiotcentral.AppProperties{
+				DisplayName: to.StringPtr("<display-name>"),
+				Subdomain:   to.StringPtr("<subdomain>"),
+				Template:    to.StringPtr("<template>"),
+			},
+			SKU: &armiotcentral.AppSKUInfo{
+				Name: armiotcentral.AppSKU("ST2").ToPtr(),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -57,7 +70,7 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("App.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AppsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Update.json
@@ -71,7 +84,14 @@ func ExampleAppsClient_BeginUpdate() {
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<resource-name>",
-		armiotcentral.AppPatch{},
+		armiotcentral.AppPatch{
+			Identity: &armiotcentral.SystemAssignedServiceIdentity{
+				Type: armiotcentral.SystemAssignedServiceIdentityType("SystemAssigned").ToPtr(),
+			},
+			Properties: &armiotcentral.AppProperties{
+				DisplayName: to.StringPtr("<display-name>"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
@@ -80,7 +100,7 @@ func ExampleAppsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("App.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.AppsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Delete.json
@@ -113,12 +133,16 @@ func ExampleAppsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armiotcentral.NewAppsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("App.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -133,12 +157,16 @@ func ExampleAppsClient_ListByResourceGroup() {
 	client := armiotcentral.NewAppsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("App.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -151,7 +179,7 @@ func ExampleAppsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armiotcentral.NewAppsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		armiotcentral.OperationInputs{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -160,6 +188,7 @@ func ExampleAppsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AppsClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CheckSubdomainAvailability.json
@@ -170,7 +199,7 @@ func ExampleAppsClient_CheckSubdomainAvailability() {
 	}
 	ctx := context.Background()
 	client := armiotcentral.NewAppsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckSubdomainAvailability(ctx,
+	res, err := client.CheckSubdomainAvailability(ctx,
 		armiotcentral.OperationInputs{
 			Name: to.StringPtr("<name>"),
 			Type: to.StringPtr("<type>"),
@@ -179,6 +208,7 @@ func ExampleAppsClient_CheckSubdomainAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.AppsClientCheckSubdomainAvailabilityResult)
 }
 
 // x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Templates.json
@@ -190,9 +220,16 @@ func ExampleAppsClient_ListTemplates() {
 	ctx := context.Background()
 	client := armiotcentral.NewAppsClient("<subscription-id>", cred, nil)
 	pager := client.ListTemplates(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

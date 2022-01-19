@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // IPFirewallRulesClient contains the methods for the IPFirewallRules group.
 // Don't use this type directly, use NewIPFirewallRulesClient() instead.
 type IPFirewallRulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIPFirewallRulesClient creates a new instance of IPFirewallRulesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewIPFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IPFirewallRulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &IPFirewallRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &IPFirewallRulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates a firewall rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, ipFirewallRuleInfo IPFirewallRuleInfo, options *IPFirewallRulesBeginCreateOrUpdateOptions) (IPFirewallRulesCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleName - The IP firewall rule name
+// ipFirewallRuleInfo - IP firewall rule properties
+// options - IPFirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the IPFirewallRulesClient.BeginCreateOrUpdate
+// method.
+func (client *IPFirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, ipFirewallRuleInfo IPFirewallRuleInfo, options *IPFirewallRulesClientBeginCreateOrUpdateOptions) (IPFirewallRulesClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, ruleName, ipFirewallRuleInfo, options)
 	if err != nil {
-		return IPFirewallRulesCreateOrUpdatePollerResponse{}, err
+		return IPFirewallRulesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := IPFirewallRulesCreateOrUpdatePollerResponse{
+	result := IPFirewallRulesClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IPFirewallRulesClient.CreateOrUpdate", "location", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("IPFirewallRulesClient.CreateOrUpdate", "location", resp, client.pl)
 	if err != nil {
-		return IPFirewallRulesCreateOrUpdatePollerResponse{}, err
+		return IPFirewallRulesClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &IPFirewallRulesCreateOrUpdatePoller{
+	result.Poller = &IPFirewallRulesClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a firewall rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, ipFirewallRuleInfo IPFirewallRuleInfo, options *IPFirewallRulesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IPFirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, ipFirewallRuleInfo IPFirewallRuleInfo, options *IPFirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, ruleName, ipFirewallRuleInfo, options)
 	if err != nil {
 		return nil, err
@@ -73,14 +86,14 @@ func (client *IPFirewallRulesClient) createOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IPFirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, ipFirewallRuleInfo IPFirewallRuleInfo, options *IPFirewallRulesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IPFirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, ipFirewallRuleInfo IPFirewallRuleInfo, options *IPFirewallRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +111,7 @@ func (client *IPFirewallRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,42 +122,34 @@ func (client *IPFirewallRulesClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, ipFirewallRuleInfo)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IPFirewallRulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a firewall rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesBeginDeleteOptions) (IPFirewallRulesDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleName - The IP firewall rule name
+// options - IPFirewallRulesClientBeginDeleteOptions contains the optional parameters for the IPFirewallRulesClient.BeginDelete
+// method.
+func (client *IPFirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesClientBeginDeleteOptions) (IPFirewallRulesClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, ruleName, options)
 	if err != nil {
-		return IPFirewallRulesDeletePollerResponse{}, err
+		return IPFirewallRulesClientDeletePollerResponse{}, err
 	}
-	result := IPFirewallRulesDeletePollerResponse{
+	result := IPFirewallRulesClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IPFirewallRulesClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("IPFirewallRulesClient.Delete", "location", resp, client.pl)
 	if err != nil {
-		return IPFirewallRulesDeletePollerResponse{}, err
+		return IPFirewallRulesClientDeletePollerResponse{}, err
 	}
-	result.Poller = &IPFirewallRulesDeletePoller{
+	result.Poller = &IPFirewallRulesClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a firewall rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IPFirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, ruleName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *IPFirewallRulesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IPFirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesBeginDeleteOptions) (*policy.Request, error) {
+func (client *IPFirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +183,7 @@ func (client *IPFirewallRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,38 +194,29 @@ func (client *IPFirewallRulesClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IPFirewallRulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a firewall rule
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesGetOptions) (IPFirewallRulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// ruleName - The IP firewall rule name
+// options - IPFirewallRulesClientGetOptions contains the optional parameters for the IPFirewallRulesClient.Get method.
+func (client *IPFirewallRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesClientGetOptions) (IPFirewallRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, ruleName, options)
 	if err != nil {
-		return IPFirewallRulesGetResponse{}, err
+		return IPFirewallRulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IPFirewallRulesGetResponse{}, err
+		return IPFirewallRulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IPFirewallRulesGetResponse{}, client.getHandleError(resp)
+		return IPFirewallRulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IPFirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesGetOptions) (*policy.Request, error) {
+func (client *IPFirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *IPFirewallRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,7 +234,7 @@ func (client *IPFirewallRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter ruleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,43 +246,34 @@ func (client *IPFirewallRulesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *IPFirewallRulesClient) getHandleResponse(resp *http.Response) (IPFirewallRulesGetResponse, error) {
-	result := IPFirewallRulesGetResponse{RawResponse: resp}
+func (client *IPFirewallRulesClient) getHandleResponse(resp *http.Response) (IPFirewallRulesClientGetResponse, error) {
+	result := IPFirewallRulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPFirewallRuleInfo); err != nil {
-		return IPFirewallRulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return IPFirewallRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IPFirewallRulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByWorkspace - Returns a list of firewall rules
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *IPFirewallRulesListByWorkspaceOptions) *IPFirewallRulesListByWorkspacePager {
-	return &IPFirewallRulesListByWorkspacePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// options - IPFirewallRulesClientListByWorkspaceOptions contains the optional parameters for the IPFirewallRulesClient.ListByWorkspace
+// method.
+func (client *IPFirewallRulesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *IPFirewallRulesClientListByWorkspaceOptions) *IPFirewallRulesClientListByWorkspacePager {
+	return &IPFirewallRulesClientListByWorkspacePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
 		},
-		advancer: func(ctx context.Context, resp IPFirewallRulesListByWorkspaceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp IPFirewallRulesClientListByWorkspaceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.IPFirewallRuleInfoListResult.NextLink)
 		},
 	}
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *IPFirewallRulesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IPFirewallRulesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *IPFirewallRulesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IPFirewallRulesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,7 +287,7 @@ func (client *IPFirewallRulesClient) listByWorkspaceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,50 +299,42 @@ func (client *IPFirewallRulesClient) listByWorkspaceCreateRequest(ctx context.Co
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *IPFirewallRulesClient) listByWorkspaceHandleResponse(resp *http.Response) (IPFirewallRulesListByWorkspaceResponse, error) {
-	result := IPFirewallRulesListByWorkspaceResponse{RawResponse: resp}
+func (client *IPFirewallRulesClient) listByWorkspaceHandleResponse(resp *http.Response) (IPFirewallRulesClientListByWorkspaceResponse, error) {
+	result := IPFirewallRulesClientListByWorkspaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPFirewallRuleInfoListResult); err != nil {
-		return IPFirewallRulesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return IPFirewallRulesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *IPFirewallRulesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginReplaceAll - Replaces firewall rules
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) BeginReplaceAll(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest, options *IPFirewallRulesBeginReplaceAllOptions) (IPFirewallRulesReplaceAllPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// request - Replace all IP firewall rules request
+// options - IPFirewallRulesClientBeginReplaceAllOptions contains the optional parameters for the IPFirewallRulesClient.BeginReplaceAll
+// method.
+func (client *IPFirewallRulesClient) BeginReplaceAll(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest, options *IPFirewallRulesClientBeginReplaceAllOptions) (IPFirewallRulesClientReplaceAllPollerResponse, error) {
 	resp, err := client.replaceAll(ctx, resourceGroupName, workspaceName, request, options)
 	if err != nil {
-		return IPFirewallRulesReplaceAllPollerResponse{}, err
+		return IPFirewallRulesClientReplaceAllPollerResponse{}, err
 	}
-	result := IPFirewallRulesReplaceAllPollerResponse{
+	result := IPFirewallRulesClientReplaceAllPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("IPFirewallRulesClient.ReplaceAll", "location", resp, client.pl, client.replaceAllHandleError)
+	pt, err := armruntime.NewPoller("IPFirewallRulesClient.ReplaceAll", "location", resp, client.pl)
 	if err != nil {
-		return IPFirewallRulesReplaceAllPollerResponse{}, err
+		return IPFirewallRulesClientReplaceAllPollerResponse{}, err
 	}
-	result.Poller = &IPFirewallRulesReplaceAllPoller{
+	result.Poller = &IPFirewallRulesClientReplaceAllPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // ReplaceAll - Replaces firewall rules
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IPFirewallRulesClient) replaceAll(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest, options *IPFirewallRulesBeginReplaceAllOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IPFirewallRulesClient) replaceAll(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest, options *IPFirewallRulesClientBeginReplaceAllOptions) (*http.Response, error) {
 	req, err := client.replaceAllCreateRequest(ctx, resourceGroupName, workspaceName, request, options)
 	if err != nil {
 		return nil, err
@@ -365,13 +344,13 @@ func (client *IPFirewallRulesClient) replaceAll(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.replaceAllHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // replaceAllCreateRequest creates the ReplaceAll request.
-func (client *IPFirewallRulesClient) replaceAllCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest, options *IPFirewallRulesBeginReplaceAllOptions) (*policy.Request, error) {
+func (client *IPFirewallRulesClient) replaceAllCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest, options *IPFirewallRulesClientBeginReplaceAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/replaceAllIpFirewallRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -385,7 +364,7 @@ func (client *IPFirewallRulesClient) replaceAllCreateRequest(ctx context.Context
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -394,17 +373,4 @@ func (client *IPFirewallRulesClient) replaceAllCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, request)
-}
-
-// replaceAllHandleError handles the ReplaceAll error response.
-func (client *IPFirewallRulesClient) replaceAllHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

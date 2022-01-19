@@ -37,11 +37,11 @@ func ExampleRecordSetsClient_Update() {
 				},
 			},
 		},
-		&armdns.RecordSetsUpdateOptions{IfMatch: nil})
+		&armdns.RecordSetsClientUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecordSet.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RecordSetsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordset.json
@@ -69,13 +69,13 @@ func ExampleRecordSetsClient_CreateOrUpdate() {
 				},
 			},
 		},
-		&armdns.RecordSetsCreateOrUpdateOptions{IfMatch: nil,
+		&armdns.RecordSetsClientCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
 		})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecordSet.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RecordSetsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
@@ -91,7 +91,7 @@ func ExampleRecordSetsClient_Delete() {
 		"<zone-name>",
 		"<relative-record-set-name>",
 		armdns.RecordTypeA,
-		&armdns.RecordSetsDeleteOptions{IfMatch: nil})
+		&armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -114,7 +114,7 @@ func ExampleRecordSetsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecordSet.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.RecordSetsClientGetResult)
 }
 
 // x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListARecordset.json
@@ -128,61 +128,19 @@ func ExampleRecordSetsClient_ListByType() {
 	pager := client.ListByType("<resource-group-name>",
 		"<zone-name>",
 		armdns.RecordTypeA,
-		&armdns.RecordSetsListByTypeOptions{Top: nil,
+		&armdns.RecordSetsClientListByTypeOptions{Top: nil,
 			Recordsetnamesuffix: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecordSet.ID: %s\n", *v.ID)
-		}
-	}
-}
-
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListRecordSetsByZone.json
-func ExampleRecordSetsClient_ListByDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
-	pager := client.ListByDNSZone("<resource-group-name>",
-		"<zone-name>",
-		&armdns.RecordSetsListByDNSZoneOptions{Top: nil,
-			Recordsetnamesuffix: nil,
-		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
+		if !nextResult {
+			break
 		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecordSet.ID: %s\n", *v.ID)
-		}
-	}
-}
-
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListRecordSetsByZone.json
-func ExampleRecordSetsClient_ListAllByDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
-	pager := client.ListAllByDNSZone("<resource-group-name>",
-		"<zone-name>",
-		&armdns.RecordSetsListAllByDNSZoneOptions{Top: nil,
-			RecordSetNameSuffix: nil,
-		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecordSet.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

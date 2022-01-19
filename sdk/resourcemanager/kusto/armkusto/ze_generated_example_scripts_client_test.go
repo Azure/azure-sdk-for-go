@@ -27,7 +27,7 @@ func ExampleScriptsClient_ListByDatabase() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewScriptsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByDatabase(ctx,
+	res, err := client.ListByDatabase(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -35,6 +35,7 @@ func ExampleScriptsClient_ListByDatabase() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ScriptsClientListByDatabaseResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoScriptsGet.json
@@ -54,7 +55,7 @@ func ExampleScriptsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Script.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptsClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoScriptsCreateOrUpdate.json
@@ -86,7 +87,7 @@ func ExampleScriptsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Script.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoScriptsUpdate.json
@@ -118,7 +119,7 @@ func ExampleScriptsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Script.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoScriptsDelete.json
@@ -152,7 +153,7 @@ func ExampleScriptsClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewScriptsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<database-name>",
@@ -164,4 +165,5 @@ func ExampleScriptsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ScriptsClientCheckNameAvailabilityResult)
 }

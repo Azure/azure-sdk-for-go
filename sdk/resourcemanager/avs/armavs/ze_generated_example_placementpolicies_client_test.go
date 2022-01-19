@@ -31,12 +31,16 @@ func ExamplePlacementPoliciesClient_List() {
 		"<private-cloud-name>",
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("PlacementPolicy.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -58,7 +62,7 @@ func ExamplePlacementPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PlacementPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PlacementPoliciesClientGetResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PlacementPolicies_CreateOrUpdate.json
@@ -76,10 +80,8 @@ func ExamplePlacementPoliciesClient_BeginCreateOrUpdate() {
 		"<placement-policy-name>",
 		armavs.PlacementPolicy{
 			Properties: &armavs.VMHostPlacementPolicyProperties{
-				PlacementPolicyProperties: armavs.PlacementPolicyProperties{
-					Type: armavs.PlacementPolicyTypeVMHost.ToPtr(),
-				},
-				AffinityType: armavs.AffinityTypeAntiAffinity.ToPtr(),
+				Type:         armavs.PlacementPolicyType("VmHost").ToPtr(),
+				AffinityType: armavs.AffinityType("AntiAffinity").ToPtr(),
 				HostMembers: []*string{
 					to.StringPtr("fakehost22.nyc1.kubernetes.center"),
 					to.StringPtr("fakehost23.nyc1.kubernetes.center"),
@@ -97,7 +99,7 @@ func ExamplePlacementPoliciesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PlacementPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PlacementPoliciesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PlacementPolicies_Update.json
@@ -119,7 +121,7 @@ func ExamplePlacementPoliciesClient_BeginUpdate() {
 					to.StringPtr("fakehost22.nyc1.kubernetes.center"),
 					to.StringPtr("fakehost23.nyc1.kubernetes.center"),
 					to.StringPtr("fakehost24.nyc1.kubernetes.center")},
-				State: armavs.PlacementPolicyStateDisabled.ToPtr(),
+				State: armavs.PlacementPolicyState("Disabled").ToPtr(),
 				VMMembers: []*string{
 					to.StringPtr("/subscriptions/{subscription-id}/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/clusters/cluster1/virtualMachines/vm-128"),
 					to.StringPtr("/subscriptions/{subscription-id}/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/clusters/cluster1/virtualMachines/vm-256")},
@@ -133,7 +135,7 @@ func ExamplePlacementPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("PlacementPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PlacementPoliciesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PlacementPolicies_Delete.json

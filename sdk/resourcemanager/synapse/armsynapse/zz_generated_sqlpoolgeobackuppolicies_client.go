@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // SQLPoolGeoBackupPoliciesClient contains the methods for the SQLPoolGeoBackupPolicies group.
 // Don't use this type directly, use NewSQLPoolGeoBackupPoliciesClient() instead.
 type SQLPoolGeoBackupPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolGeoBackupPoliciesClient creates a new instance of SQLPoolGeoBackupPoliciesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolGeoBackupPoliciesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolGeoBackupPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolGeoBackupPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Updates a SQL Pool geo backup policy.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolGeoBackupPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *SQLPoolGeoBackupPoliciesCreateOrUpdateOptions) (SQLPoolGeoBackupPoliciesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// geoBackupPolicyName - The name of the geo backup policy.
+// parameters - The required parameters for creating or updating the geo backup policy.
+// options - SQLPoolGeoBackupPoliciesClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolGeoBackupPoliciesClient.CreateOrUpdate
+// method.
+func (client *SQLPoolGeoBackupPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *SQLPoolGeoBackupPoliciesClientCreateOrUpdateOptions) (SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, parameters, options)
 	if err != nil {
-		return SQLPoolGeoBackupPoliciesCreateOrUpdateResponse{}, err
+		return SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolGeoBackupPoliciesCreateOrUpdateResponse{}, err
+		return SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SQLPoolGeoBackupPoliciesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *SQLPoolGeoBackupPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *SQLPoolGeoBackupPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx co
 		return nil, errors.New("parameter geoBackupPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{geoBackupPolicyName}", url.PathEscape(string(geoBackupPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +108,39 @@ func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolGeoBackupPoliciesCreateOrUpdateResponse, error) {
-	result := SQLPoolGeoBackupPoliciesCreateOrUpdateResponse{RawResponse: resp}
+func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse, error) {
+	result := SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicy); err != nil {
-		return SQLPoolGeoBackupPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolGeoBackupPoliciesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLPoolGeoBackupPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the specified SQL pool geo backup policy
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolGeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, options *SQLPoolGeoBackupPoliciesGetOptions) (SQLPoolGeoBackupPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// geoBackupPolicyName - The name of the geo backup policy.
+// options - SQLPoolGeoBackupPoliciesClientGetOptions contains the optional parameters for the SQLPoolGeoBackupPoliciesClient.Get
+// method.
+func (client *SQLPoolGeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, options *SQLPoolGeoBackupPoliciesClientGetOptions) (SQLPoolGeoBackupPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, options)
 	if err != nil {
-		return SQLPoolGeoBackupPoliciesGetResponse{}, err
+		return SQLPoolGeoBackupPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolGeoBackupPoliciesGetResponse{}, err
+		return SQLPoolGeoBackupPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolGeoBackupPoliciesGetResponse{}, client.getHandleError(resp)
+		return SQLPoolGeoBackupPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolGeoBackupPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, options *SQLPoolGeoBackupPoliciesGetOptions) (*policy.Request, error) {
+func (client *SQLPoolGeoBackupPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, geoBackupPolicyName GeoBackupPolicyName, options *SQLPoolGeoBackupPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +162,7 @@ func (client *SQLPoolGeoBackupPoliciesClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter geoBackupPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{geoBackupPolicyName}", url.PathEscape(string(geoBackupPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,46 +174,38 @@ func (client *SQLPoolGeoBackupPoliciesClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolGeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolGeoBackupPoliciesGetResponse, error) {
-	result := SQLPoolGeoBackupPoliciesGetResponse{RawResponse: resp}
+func (client *SQLPoolGeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (SQLPoolGeoBackupPoliciesClientGetResponse, error) {
+	result := SQLPoolGeoBackupPoliciesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicy); err != nil {
-		return SQLPoolGeoBackupPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolGeoBackupPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolGeoBackupPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get list of SQL pool geo backup policies
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolGeoBackupPoliciesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolGeoBackupPoliciesListOptions) (SQLPoolGeoBackupPoliciesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolGeoBackupPoliciesClientListOptions contains the optional parameters for the SQLPoolGeoBackupPoliciesClient.List
+// method.
+func (client *SQLPoolGeoBackupPoliciesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolGeoBackupPoliciesClientListOptions) (SQLPoolGeoBackupPoliciesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 	if err != nil {
-		return SQLPoolGeoBackupPoliciesListResponse{}, err
+		return SQLPoolGeoBackupPoliciesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolGeoBackupPoliciesListResponse{}, err
+		return SQLPoolGeoBackupPoliciesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolGeoBackupPoliciesListResponse{}, client.listHandleError(resp)
+		return SQLPoolGeoBackupPoliciesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolGeoBackupPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolGeoBackupPoliciesListOptions) (*policy.Request, error) {
+func (client *SQLPoolGeoBackupPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolGeoBackupPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,7 +223,7 @@ func (client *SQLPoolGeoBackupPoliciesClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -236,23 +235,10 @@ func (client *SQLPoolGeoBackupPoliciesClient) listCreateRequest(ctx context.Cont
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolGeoBackupPoliciesClient) listHandleResponse(resp *http.Response) (SQLPoolGeoBackupPoliciesListResponse, error) {
-	result := SQLPoolGeoBackupPoliciesListResponse{RawResponse: resp}
+func (client *SQLPoolGeoBackupPoliciesClient) listHandleResponse(resp *http.Response) (SQLPoolGeoBackupPoliciesClientListResponse, error) {
+	result := SQLPoolGeoBackupPoliciesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoBackupPolicyListResult); err != nil {
-		return SQLPoolGeoBackupPoliciesListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolGeoBackupPoliciesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolGeoBackupPoliciesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

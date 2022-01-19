@@ -13,7 +13,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -123,7 +122,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	perRetryPolicy := countingPolicy{}
 	opts := &arm.ClientOptions{
 		DisableRPRegistration: true,
-		ClientOptions: azcore.ClientOptions{
+		ClientOptions: policy.ClientOptions{
 			PerCallPolicies:  []policy.Policy{&perCallPolicy},
 			PerRetryPolicies: []policy.Policy{&perRetryPolicy},
 			Retry:            policy.RetryOptions{RetryDelay: time.Microsecond},

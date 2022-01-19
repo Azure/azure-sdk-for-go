@@ -11,7 +11,6 @@ package armapplicationinsights
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // MyWorkbooksClient contains the methods for the MyWorkbooks group.
 // Don't use this type directly, use NewMyWorkbooksClient() instead.
 type MyWorkbooksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMyWorkbooksClient creates a new instance of MyWorkbooksClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMyWorkbooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MyWorkbooksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MyWorkbooksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MyWorkbooksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create a new private workbook.
-// If the operation fails it returns the *MyWorkbookError error type.
-func (client *MyWorkbooksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksCreateOrUpdateOptions) (MyWorkbooksCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workbookProperties - Properties that need to be specified to create a new private workbook.
+// options - MyWorkbooksClientCreateOrUpdateOptions contains the optional parameters for the MyWorkbooksClient.CreateOrUpdate
+// method.
+func (client *MyWorkbooksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksClientCreateOrUpdateOptions) (MyWorkbooksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, workbookProperties, options)
 	if err != nil {
-		return MyWorkbooksCreateOrUpdateResponse{}, err
+		return MyWorkbooksClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MyWorkbooksCreateOrUpdateResponse{}, err
+		return MyWorkbooksClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return MyWorkbooksCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return MyWorkbooksClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MyWorkbooksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MyWorkbooksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -75,7 +87,7 @@ func (client *MyWorkbooksClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +102,36 @@ func (client *MyWorkbooksClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MyWorkbooksClient) createOrUpdateHandleResponse(resp *http.Response) (MyWorkbooksCreateOrUpdateResponse, error) {
-	result := MyWorkbooksCreateOrUpdateResponse{RawResponse: resp}
+func (client *MyWorkbooksClient) createOrUpdateHandleResponse(resp *http.Response) (MyWorkbooksClientCreateOrUpdateResponse, error) {
+	result := MyWorkbooksClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbook); err != nil {
-		return MyWorkbooksCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MyWorkbooksClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *MyWorkbooksClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MyWorkbookError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a private workbook.
-// If the operation fails it returns the *MyWorkbookError error type.
-func (client *MyWorkbooksClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksDeleteOptions) (MyWorkbooksDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - MyWorkbooksClientDeleteOptions contains the optional parameters for the MyWorkbooksClient.Delete method.
+func (client *MyWorkbooksClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksClientDeleteOptions) (MyWorkbooksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return MyWorkbooksDeleteResponse{}, err
+		return MyWorkbooksClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MyWorkbooksDeleteResponse{}, err
+		return MyWorkbooksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return MyWorkbooksDeleteResponse{}, client.deleteHandleError(resp)
+		return MyWorkbooksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return MyWorkbooksDeleteResponse{RawResponse: resp}, nil
+	return MyWorkbooksClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MyWorkbooksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksDeleteOptions) (*policy.Request, error) {
+func (client *MyWorkbooksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,7 +145,7 @@ func (client *MyWorkbooksClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,38 +156,28 @@ func (client *MyWorkbooksClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *MyWorkbooksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MyWorkbookError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a single private workbook by its resourceName.
-// If the operation fails it returns the *MyWorkbookError error type.
-func (client *MyWorkbooksClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksGetOptions) (MyWorkbooksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - MyWorkbooksClientGetOptions contains the optional parameters for the MyWorkbooksClient.Get method.
+func (client *MyWorkbooksClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksClientGetOptions) (MyWorkbooksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return MyWorkbooksGetResponse{}, err
+		return MyWorkbooksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MyWorkbooksGetResponse{}, err
+		return MyWorkbooksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MyWorkbooksGetResponse{}, client.getHandleError(resp)
+		return MyWorkbooksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MyWorkbooksClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksGetOptions) (*policy.Request, error) {
+func (client *MyWorkbooksClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *MyWorkbooksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -199,7 +191,7 @@ func (client *MyWorkbooksClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -211,43 +203,34 @@ func (client *MyWorkbooksClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *MyWorkbooksClient) getHandleResponse(resp *http.Response) (MyWorkbooksGetResponse, error) {
-	result := MyWorkbooksGetResponse{RawResponse: resp}
+func (client *MyWorkbooksClient) getHandleResponse(resp *http.Response) (MyWorkbooksClientGetResponse, error) {
+	result := MyWorkbooksClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbook); err != nil {
-		return MyWorkbooksGetResponse{}, runtime.NewResponseError(err, resp)
+		return MyWorkbooksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *MyWorkbooksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MyWorkbookError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - Get all private workbooks defined within a specified resource group and category.
-// If the operation fails it returns the *MyWorkbookError error type.
-func (client *MyWorkbooksClient) ListByResourceGroup(resourceGroupName string, category CategoryType, options *MyWorkbooksListByResourceGroupOptions) *MyWorkbooksListByResourceGroupPager {
-	return &MyWorkbooksListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// category - Category of workbook to return.
+// options - MyWorkbooksClientListByResourceGroupOptions contains the optional parameters for the MyWorkbooksClient.ListByResourceGroup
+// method.
+func (client *MyWorkbooksClient) ListByResourceGroup(resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) *MyWorkbooksClientListByResourceGroupPager {
+	return &MyWorkbooksClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, category, options)
 		},
-		advancer: func(ctx context.Context, resp MyWorkbooksListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MyWorkbooksClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MyWorkbooksListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MyWorkbooksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, category CategoryType, options *MyWorkbooksListByResourceGroupOptions) (*policy.Request, error) {
+func (client *MyWorkbooksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -257,7 +240,7 @@ func (client *MyWorkbooksClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -279,49 +262,39 @@ func (client *MyWorkbooksClient) listByResourceGroupCreateRequest(ctx context.Co
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MyWorkbooksClient) listByResourceGroupHandleResponse(resp *http.Response) (MyWorkbooksListByResourceGroupResponse, error) {
-	result := MyWorkbooksListByResourceGroupResponse{RawResponse: resp}
+func (client *MyWorkbooksClient) listByResourceGroupHandleResponse(resp *http.Response) (MyWorkbooksClientListByResourceGroupResponse, error) {
+	result := MyWorkbooksClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbooksListResult); err != nil {
-		return MyWorkbooksListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return MyWorkbooksClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *MyWorkbooksClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MyWorkbookError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - Get all private workbooks defined within a specified subscription and category.
-// If the operation fails it returns the *MyWorkbookError error type.
-func (client *MyWorkbooksClient) ListBySubscription(category CategoryType, options *MyWorkbooksListBySubscriptionOptions) *MyWorkbooksListBySubscriptionPager {
-	return &MyWorkbooksListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// category - Category of workbook to return.
+// options - MyWorkbooksClientListBySubscriptionOptions contains the optional parameters for the MyWorkbooksClient.ListBySubscription
+// method.
+func (client *MyWorkbooksClient) ListBySubscription(category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) *MyWorkbooksClientListBySubscriptionPager {
+	return &MyWorkbooksClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, category, options)
 		},
-		advancer: func(ctx context.Context, resp MyWorkbooksListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp MyWorkbooksClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.MyWorkbooksListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *MyWorkbooksClient) listBySubscriptionCreateRequest(ctx context.Context, category CategoryType, options *MyWorkbooksListBySubscriptionOptions) (*policy.Request, error) {
+func (client *MyWorkbooksClient) listBySubscriptionCreateRequest(ctx context.Context, category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/myWorkbooks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -340,46 +313,37 @@ func (client *MyWorkbooksClient) listBySubscriptionCreateRequest(ctx context.Con
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *MyWorkbooksClient) listBySubscriptionHandleResponse(resp *http.Response) (MyWorkbooksListBySubscriptionResponse, error) {
-	result := MyWorkbooksListBySubscriptionResponse{RawResponse: resp}
+func (client *MyWorkbooksClient) listBySubscriptionHandleResponse(resp *http.Response) (MyWorkbooksClientListBySubscriptionResponse, error) {
+	result := MyWorkbooksClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbooksListResult); err != nil {
-		return MyWorkbooksListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return MyWorkbooksClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *MyWorkbooksClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MyWorkbookError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates a private workbook that has already been added.
-// If the operation fails it returns the *MyWorkbookError error type.
-func (client *MyWorkbooksClient) Update(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksUpdateOptions) (MyWorkbooksUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workbookProperties - Properties that need to be specified to create a new private workbook.
+// options - MyWorkbooksClientUpdateOptions contains the optional parameters for the MyWorkbooksClient.Update method.
+func (client *MyWorkbooksClient) Update(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksClientUpdateOptions) (MyWorkbooksClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, workbookProperties, options)
 	if err != nil {
-		return MyWorkbooksUpdateResponse{}, err
+		return MyWorkbooksClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MyWorkbooksUpdateResponse{}, err
+		return MyWorkbooksClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return MyWorkbooksUpdateResponse{}, client.updateHandleError(resp)
+		return MyWorkbooksClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MyWorkbooksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksUpdateOptions) (*policy.Request, error) {
+func (client *MyWorkbooksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties MyWorkbook, options *MyWorkbooksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -393,7 +357,7 @@ func (client *MyWorkbooksClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -408,23 +372,10 @@ func (client *MyWorkbooksClient) updateCreateRequest(ctx context.Context, resour
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MyWorkbooksClient) updateHandleResponse(resp *http.Response) (MyWorkbooksUpdateResponse, error) {
-	result := MyWorkbooksUpdateResponse{RawResponse: resp}
+func (client *MyWorkbooksClient) updateHandleResponse(resp *http.Response) (MyWorkbooksClientUpdateResponse, error) {
+	result := MyWorkbooksClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MyWorkbook); err != nil {
-		return MyWorkbooksUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return MyWorkbooksClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *MyWorkbooksClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MyWorkbookError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

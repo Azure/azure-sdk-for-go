@@ -20,17 +20,16 @@ import (
 )
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasV2/SaasDelete.json
-func ExampleSaaSClient_BeginDelete() {
+func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaaSClient(cred, nil)
+	client := armsaas.NewClient(cred, nil)
 	poller, err := client.BeginDelete(ctx,
 		"<resource-id>",
 		armsaas.DeleteOptions{
-			Feedback:        to.StringPtr("<feedback>"),
 			ReasonCode:      to.Float32Ptr(0),
 			UnsubscribeOnly: to.BoolPtr(true),
 		},
@@ -45,34 +44,34 @@ func ExampleSaaSClient_BeginDelete() {
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasV2/SaasGet.json
-func ExampleSaaSClient_GetResource() {
+func ExampleClient_GetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaaSClient(cred, nil)
+	client := armsaas.NewClient(cred, nil)
 	res, err := client.GetResource(ctx,
 		"<resource-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResourceResult)
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasV2/SaasPatch.json
-func ExampleSaaSClient_BeginUpdateResource() {
+func ExampleClient_BeginUpdateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaaSClient(cred, nil)
+	client := armsaas.NewClient(cred, nil)
 	poller, err := client.BeginUpdateResource(ctx,
 		"<resource-id>",
-		armsaas.SaasResourceCreation{
-			Properties: &armsaas.SaasCreationProperties{
+		armsaas.ResourceCreation{
+			Properties: &armsaas.CreationProperties{
 				SKUID: to.StringPtr("<skuid>"),
 			},
 			Tags: map[string]*string{},
@@ -85,25 +84,25 @@ func ExampleSaaSClient_BeginUpdateResource() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUpdateResourceResult)
 }
 
 // x-ms-original-file: specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasV2/SaasPut.json
-func ExampleSaaSClient_BeginCreateResource() {
+func ExampleClient_BeginCreateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armsaas.NewSaaSClient(cred, nil)
+	client := armsaas.NewClient(cred, nil)
 	poller, err := client.BeginCreateResource(ctx,
-		armsaas.SaasResourceCreation{
-			Properties: &armsaas.SaasCreationProperties{
+		armsaas.ResourceCreation{
+			Properties: &armsaas.CreationProperties{
 				OfferID: to.StringPtr("<offer-id>"),
 				PaymentChannelMetadata: map[string]*string{
 					"AzureSubscriptionId": to.StringPtr("155af98a-3205-47e7-883b-a2ab9db9f88d"),
 				},
-				PaymentChannelType: armsaas.PaymentChannelTypeSubscriptionDelegated.ToPtr(),
+				PaymentChannelType: armsaas.PaymentChannelType("SubscriptionDelegated").ToPtr(),
 				PublisherID:        to.StringPtr("<publisher-id>"),
 				SaasResourceName:   to.StringPtr("<saas-resource-name>"),
 				SKUID:              to.StringPtr("<skuid>"),
@@ -118,5 +117,5 @@ func ExampleSaaSClient_BeginCreateResource() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("SaasResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientCreateResourceResult)
 }

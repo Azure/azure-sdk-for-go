@@ -9,8 +9,8 @@
 package armblockchain
 
 const (
-	module  = "armblockchain"
-	version = "v0.1.0"
+	moduleName    = "armblockchain"
+	moduleVersion = "v0.2.0"
 )
 
 // BlockchainMemberProvisioningState - Gets or sets the blockchain member provision state.

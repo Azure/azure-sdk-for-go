@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
@@ -52,6 +53,7 @@ type Flags struct {
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
 	GoVersion           string
+	RPs                 string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -61,6 +63,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("go-version", "1.16", "Go version")
+	flagSet.String("rps", "", "Specify RP list to refresh, seperated by ','")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -71,6 +74,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 		GoVersion:           flags.GetString(flagSet, "go-version"),
+		RPs:                 flags.GetString(flagSet, "rps"),
 	}
 }
 
@@ -96,11 +100,6 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		SpecRepoURL:    c.flags.SwaggerRepo,
 	}
 
-	rps, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
-	if err != nil {
-		return fmt.Errorf("failed to get all rps: %+v", err)
-	}
-
 	if !c.flags.SkipCreateBranch {
 		log.Printf("Create new branch for release")
 		releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, "refresh", "all", "package", time.Now().Unix())
@@ -109,20 +108,33 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		}
 	}
 
-	for _, rp := range rps {
-		namespaces, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rp.Name()))
+	var rpNames []string
+	if c.flags.RPs == "" {
+		rps, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager"))
+		if err != nil {
+			return fmt.Errorf("failed to get all rps: %+v", err)
+		}
+		for _, rp := range rps {
+			rpNames = append(rpNames, rp.Name())
+		}
+	} else {
+		rpNames = strings.Split(c.flags.RPs, ",")
+	}
+
+	for _, rpName := range rpNames {
+		namespaces, err := ioutil.ReadDir(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName))
 		if err != nil {
 			continue
 		}
 
 		for _, namespace := range namespaces {
-			log.Printf("Release generation for rp: %s, namespace: %s", rp.Name(), namespace.Name())
-			specRpName, err := common.GetSpecRpName(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rp.Name(), namespace.Name()))
+			log.Printf("Release generation for rp: %s, namespace: %s", rpName, namespace.Name())
+			specRpName, err := common.GetSpecRpName(path.Join(generateCtx.SDKPath, "sdk", "resourcemanager", rpName, namespace.Name()))
 			if err != nil {
 				continue
 			}
 			result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
-				RPName:              rp.Name(),
+				RPName:              rpName,
 				NamespaceName:       namespace.Name(),
 				SpecficPackageTitle: "",
 				SpecficVersion:      "",
@@ -141,7 +153,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 			if !c.flags.SkipCreateBranch {
 				log.Printf("Include the packages that is about to release in this release and do release commit...")
 				// append a time in long to avoid collision of branch names
-				if err := sdkRepo.AddReleaseCommit(rp.Name(), namespace.Name(), generateCtx.SpecCommitHash, result.Version); err != nil {
+				if err := sdkRepo.AddReleaseCommit(rpName, namespace.Name(), generateCtx.SpecCommitHash, result.Version); err != nil {
 					return fmt.Errorf("failed to add release package or do release commit: %+v", err)
 				}
 			}

@@ -29,12 +29,16 @@ func ExampleMonitorsClient_ListMonitoredResources() {
 	pager := client.ListMonitoredResources("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MonitoredResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -48,12 +52,16 @@ func ExampleMonitorsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armlogz.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LogzMonitorResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -68,12 +76,16 @@ func ExampleMonitorsClient_ListByResourceGroup() {
 	client := armlogz.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LogzMonitorResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -93,7 +105,7 @@ func ExampleMonitorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogzMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientGetResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_Create.json
@@ -107,7 +119,7 @@ func ExampleMonitorsClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armlogz.MonitorsBeginCreateOptions{Body: nil})
+		&armlogz.MonitorsClientBeginCreateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -115,7 +127,7 @@ func ExampleMonitorsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogzMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientCreateResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_Update.json
@@ -129,11 +141,11 @@ func ExampleMonitorsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armlogz.MonitorsUpdateOptions{Body: nil})
+		&armlogz.MonitorsClientUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogzMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/Monitors_Delete.json
@@ -167,10 +179,17 @@ func ExampleMonitorsClient_ListUserRoles() {
 	client := armlogz.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.ListUserRoles("<resource-group-name>",
 		"<monitor-name>",
-		&armlogz.MonitorsListUserRolesOptions{Body: nil})
-	for pager.NextPage(ctx) {
+		&armlogz.MonitorsClientListUserRolesOptions{Body: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

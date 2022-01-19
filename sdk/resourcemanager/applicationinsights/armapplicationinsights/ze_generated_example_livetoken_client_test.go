@@ -24,10 +24,11 @@ func ExampleLiveTokenClient_Get() {
 	}
 	ctx := context.Background()
 	client := armapplicationinsights.NewLiveTokenClient(cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-uri>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LiveTokenClientGetResult)
 }

@@ -12,7 +12,9 @@ func NewResponseError(inner error, resp *http.Response) error {
 	return ResponseError{inner, resp}
 }
 
-// ResponseError conforms to the azcore.HTTPResponse
+// ResponseError conforms to the older azcore.HTTPResponse
+// NOTE: after breaking changes have been incorporated we'll move
+// to the newer azcore.HTTPResponseError
 type ResponseError struct {
 	inner error
 	resp  *http.Response

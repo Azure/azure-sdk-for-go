@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// ArcSettingsCreateResponse contains the response from method ArcSettings.Create.
-type ArcSettingsCreateResponse struct {
-	ArcSettingsCreateResult
+// ArcSettingsClientCreateResponse contains the response from method ArcSettingsClient.Create.
+type ArcSettingsClientCreateResponse struct {
+	ArcSettingsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArcSettingsCreateResult contains the result from method ArcSettings.Create.
-type ArcSettingsCreateResult struct {
+// ArcSettingsClientCreateResult contains the result from method ArcSettingsClient.Create.
+type ArcSettingsClientCreateResult struct {
 	ArcSetting
 }
 
-// ArcSettingsDeletePollerResponse contains the response from method ArcSettings.Delete.
-type ArcSettingsDeletePollerResponse struct {
+// ArcSettingsClientDeletePollerResponse contains the response from method ArcSettingsClient.Delete.
+type ArcSettingsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ArcSettingsDeletePoller
+	Poller *ArcSettingsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type ArcSettingsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ArcSettingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ArcSettingsDeleteResponse, error) {
-	respType := ArcSettingsDeleteResponse{}
+func (l ArcSettingsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ArcSettingsClientDeleteResponse, error) {
+	respType := ArcSettingsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l ArcSettingsDeletePollerResponse) PollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// Resume rehydrates a ArcSettingsDeletePollerResponse from the provided client and resume token.
-func (l *ArcSettingsDeletePollerResponse) Resume(ctx context.Context, client *ArcSettingsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ArcSettingsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ArcSettingsClientDeletePollerResponse from the provided client and resume token.
+func (l *ArcSettingsClientDeletePollerResponse) Resume(ctx context.Context, client *ArcSettingsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ArcSettingsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ArcSettingsDeletePoller{
+	poller := &ArcSettingsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,106 +67,106 @@ func (l *ArcSettingsDeletePollerResponse) Resume(ctx context.Context, client *Ar
 	return nil
 }
 
-// ArcSettingsDeleteResponse contains the response from method ArcSettings.Delete.
-type ArcSettingsDeleteResponse struct {
+// ArcSettingsClientDeleteResponse contains the response from method ArcSettingsClient.Delete.
+type ArcSettingsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArcSettingsGetResponse contains the response from method ArcSettings.Get.
-type ArcSettingsGetResponse struct {
-	ArcSettingsGetResult
+// ArcSettingsClientGetResponse contains the response from method ArcSettingsClient.Get.
+type ArcSettingsClientGetResponse struct {
+	ArcSettingsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArcSettingsGetResult contains the result from method ArcSettings.Get.
-type ArcSettingsGetResult struct {
+// ArcSettingsClientGetResult contains the result from method ArcSettingsClient.Get.
+type ArcSettingsClientGetResult struct {
 	ArcSetting
 }
 
-// ArcSettingsListByClusterResponse contains the response from method ArcSettings.ListByCluster.
-type ArcSettingsListByClusterResponse struct {
-	ArcSettingsListByClusterResult
+// ArcSettingsClientListByClusterResponse contains the response from method ArcSettingsClient.ListByCluster.
+type ArcSettingsClientListByClusterResponse struct {
+	ArcSettingsClientListByClusterResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ArcSettingsListByClusterResult contains the result from method ArcSettings.ListByCluster.
-type ArcSettingsListByClusterResult struct {
+// ArcSettingsClientListByClusterResult contains the result from method ArcSettingsClient.ListByCluster.
+type ArcSettingsClientListByClusterResult struct {
 	ArcSettingList
 }
 
-// ClustersCreateResponse contains the response from method Clusters.Create.
-type ClustersCreateResponse struct {
-	ClustersCreateResult
+// ClustersClientCreateResponse contains the response from method ClustersClient.Create.
+type ClustersClientCreateResponse struct {
+	ClustersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersCreateResult contains the result from method Clusters.Create.
-type ClustersCreateResult struct {
+// ClustersClientCreateResult contains the result from method ClustersClient.Create.
+type ClustersClientCreateResult struct {
 	Cluster
 }
 
-// ClustersDeleteResponse contains the response from method Clusters.Delete.
-type ClustersDeleteResponse struct {
+// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+type ClustersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersGetResponse contains the response from method Clusters.Get.
-type ClustersGetResponse struct {
-	ClustersGetResult
+// ClustersClientGetResponse contains the response from method ClustersClient.Get.
+type ClustersClientGetResponse struct {
+	ClustersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersGetResult contains the result from method Clusters.Get.
-type ClustersGetResult struct {
+// ClustersClientGetResult contains the result from method ClustersClient.Get.
+type ClustersClientGetResult struct {
 	Cluster
 }
 
-// ClustersListByResourceGroupResponse contains the response from method Clusters.ListByResourceGroup.
-type ClustersListByResourceGroupResponse struct {
-	ClustersListByResourceGroupResult
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+type ClustersClientListByResourceGroupResponse struct {
+	ClustersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListByResourceGroupResult contains the result from method Clusters.ListByResourceGroup.
-type ClustersListByResourceGroupResult struct {
+// ClustersClientListByResourceGroupResult contains the result from method ClustersClient.ListByResourceGroup.
+type ClustersClientListByResourceGroupResult struct {
 	ClusterList
 }
 
-// ClustersListBySubscriptionResponse contains the response from method Clusters.ListBySubscription.
-type ClustersListBySubscriptionResponse struct {
-	ClustersListBySubscriptionResult
+// ClustersClientListBySubscriptionResponse contains the response from method ClustersClient.ListBySubscription.
+type ClustersClientListBySubscriptionResponse struct {
+	ClustersClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersListBySubscriptionResult contains the result from method Clusters.ListBySubscription.
-type ClustersListBySubscriptionResult struct {
+// ClustersClientListBySubscriptionResult contains the result from method ClustersClient.ListBySubscription.
+type ClustersClientListBySubscriptionResult struct {
 	ClusterList
 }
 
-// ClustersUpdateResponse contains the response from method Clusters.Update.
-type ClustersUpdateResponse struct {
-	ClustersUpdateResult
+// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+type ClustersClientUpdateResponse struct {
+	ClustersClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ClustersUpdateResult contains the result from method Clusters.Update.
-type ClustersUpdateResult struct {
+// ClustersClientUpdateResult contains the result from method ClustersClient.Update.
+type ClustersClientUpdateResult struct {
 	Cluster
 }
 
-// ExtensionsCreatePollerResponse contains the response from method Extensions.Create.
-type ExtensionsCreatePollerResponse struct {
+// ExtensionsClientCreatePollerResponse contains the response from method ExtensionsClient.Create.
+type ExtensionsClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExtensionsCreatePoller
+	Poller *ExtensionsClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -175,8 +175,8 @@ type ExtensionsCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExtensionsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsCreateResponse, error) {
-	respType := ExtensionsCreateResponse{}
+func (l ExtensionsClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsClientCreateResponse, error) {
+	respType := ExtensionsClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Extension)
 	if err != nil {
 		return respType, err
@@ -185,13 +185,13 @@ func (l ExtensionsCreatePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a ExtensionsCreatePollerResponse from the provided client and resume token.
-func (l *ExtensionsCreatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a ExtensionsClientCreatePollerResponse from the provided client and resume token.
+func (l *ExtensionsClientCreatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExtensionsCreatePoller{
+	poller := &ExtensionsClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -203,22 +203,22 @@ func (l *ExtensionsCreatePollerResponse) Resume(ctx context.Context, client *Ext
 	return nil
 }
 
-// ExtensionsCreateResponse contains the response from method Extensions.Create.
-type ExtensionsCreateResponse struct {
-	ExtensionsCreateResult
+// ExtensionsClientCreateResponse contains the response from method ExtensionsClient.Create.
+type ExtensionsClientCreateResponse struct {
+	ExtensionsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsCreateResult contains the result from method Extensions.Create.
-type ExtensionsCreateResult struct {
+// ExtensionsClientCreateResult contains the result from method ExtensionsClient.Create.
+type ExtensionsClientCreateResult struct {
 	Extension
 }
 
-// ExtensionsDeletePollerResponse contains the response from method Extensions.Delete.
-type ExtensionsDeletePollerResponse struct {
+// ExtensionsClientDeletePollerResponse contains the response from method ExtensionsClient.Delete.
+type ExtensionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExtensionsDeletePoller
+	Poller *ExtensionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -227,8 +227,8 @@ type ExtensionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExtensionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsDeleteResponse, error) {
-	respType := ExtensionsDeleteResponse{}
+func (l ExtensionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsClientDeleteResponse, error) {
+	respType := ExtensionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -237,13 +237,13 @@ func (l ExtensionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a ExtensionsDeletePollerResponse from the provided client and resume token.
-func (l *ExtensionsDeletePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a ExtensionsClientDeletePollerResponse from the provided client and resume token.
+func (l *ExtensionsClientDeletePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExtensionsDeletePoller{
+	poller := &ExtensionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -255,40 +255,40 @@ func (l *ExtensionsDeletePollerResponse) Resume(ctx context.Context, client *Ext
 	return nil
 }
 
-// ExtensionsDeleteResponse contains the response from method Extensions.Delete.
-type ExtensionsDeleteResponse struct {
+// ExtensionsClientDeleteResponse contains the response from method ExtensionsClient.Delete.
+type ExtensionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResponse contains the response from method Extensions.Get.
-type ExtensionsGetResponse struct {
-	ExtensionsGetResult
+// ExtensionsClientGetResponse contains the response from method ExtensionsClient.Get.
+type ExtensionsClientGetResponse struct {
+	ExtensionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsGetResult contains the result from method Extensions.Get.
-type ExtensionsGetResult struct {
+// ExtensionsClientGetResult contains the result from method ExtensionsClient.Get.
+type ExtensionsClientGetResult struct {
 	Extension
 }
 
-// ExtensionsListByArcSettingResponse contains the response from method Extensions.ListByArcSetting.
-type ExtensionsListByArcSettingResponse struct {
-	ExtensionsListByArcSettingResult
+// ExtensionsClientListByArcSettingResponse contains the response from method ExtensionsClient.ListByArcSetting.
+type ExtensionsClientListByArcSettingResponse struct {
+	ExtensionsClientListByArcSettingResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsListByArcSettingResult contains the result from method Extensions.ListByArcSetting.
-type ExtensionsListByArcSettingResult struct {
+// ExtensionsClientListByArcSettingResult contains the result from method ExtensionsClient.ListByArcSetting.
+type ExtensionsClientListByArcSettingResult struct {
 	ExtensionList
 }
 
-// ExtensionsUpdatePollerResponse contains the response from method Extensions.Update.
-type ExtensionsUpdatePollerResponse struct {
+// ExtensionsClientUpdatePollerResponse contains the response from method ExtensionsClient.Update.
+type ExtensionsClientUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *ExtensionsUpdatePoller
+	Poller *ExtensionsClientUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -297,8 +297,8 @@ type ExtensionsUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ExtensionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsUpdateResponse, error) {
-	respType := ExtensionsUpdateResponse{}
+func (l ExtensionsClientUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ExtensionsClientUpdateResponse, error) {
+	respType := ExtensionsClientUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Extension)
 	if err != nil {
 		return respType, err
@@ -307,13 +307,13 @@ func (l ExtensionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq 
 	return respType, nil
 }
 
-// Resume rehydrates a ExtensionsUpdatePollerResponse from the provided client and resume token.
-func (l *ExtensionsUpdatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Update", token, client.pl, client.updateHandleError)
+// Resume rehydrates a ExtensionsClientUpdatePollerResponse from the provided client and resume token.
+func (l *ExtensionsClientUpdatePollerResponse) Resume(ctx context.Context, client *ExtensionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ExtensionsClient.Update", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &ExtensionsUpdatePoller{
+	poller := &ExtensionsClientUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -325,26 +325,26 @@ func (l *ExtensionsUpdatePollerResponse) Resume(ctx context.Context, client *Ext
 	return nil
 }
 
-// ExtensionsUpdateResponse contains the response from method Extensions.Update.
-type ExtensionsUpdateResponse struct {
-	ExtensionsUpdateResult
+// ExtensionsClientUpdateResponse contains the response from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResponse struct {
+	ExtensionsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ExtensionsUpdateResult contains the result from method Extensions.Update.
-type ExtensionsUpdateResult struct {
+// ExtensionsClientUpdateResult contains the result from method ExtensionsClient.Update.
+type ExtensionsClientUpdateResult struct {
 	Extension
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

@@ -28,12 +28,16 @@ func ExampleScriptCmdletsClient_List() {
 		"<private-cloud-name>",
 		"<script-package-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ScriptCmdlet.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -55,5 +59,5 @@ func ExampleScriptCmdletsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ScriptCmdlet.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScriptCmdletsClientGetResult)
 }

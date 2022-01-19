@@ -11,7 +11,6 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,43 +24,52 @@ import (
 // AvailableBalancesClient contains the methods for the AvailableBalances group.
 // Don't use this type directly, use NewAvailableBalancesClient() instead.
 type AvailableBalancesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAvailableBalancesClient creates a new instance of AvailableBalancesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAvailableBalancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AvailableBalancesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AvailableBalancesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AvailableBalancesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// Get - The available credit balance for a billing profile. This is the balance that can be used for pay now to settle due or past due invoices. The operation
-// is supported only for billing accounts with
+// Get - The available credit balance for a billing profile. This is the balance that can be used for pay now to settle due
+// or past due invoices. The operation is supported only for billing accounts with
 // agreement type Microsoft Customer Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AvailableBalancesClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesGetOptions) (AvailableBalancesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// options - AvailableBalancesClientGetOptions contains the optional parameters for the AvailableBalancesClient.Get method.
+func (client *AvailableBalancesClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetOptions) (AvailableBalancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, options)
 	if err != nil {
-		return AvailableBalancesGetResponse{}, err
+		return AvailableBalancesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AvailableBalancesGetResponse{}, err
+		return AvailableBalancesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AvailableBalancesGetResponse{}, client.getHandleError(resp)
+		return AvailableBalancesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AvailableBalancesClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesGetOptions) (*policy.Request, error) {
+func (client *AvailableBalancesClient) getCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *AvailableBalancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/availableBalance/default"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -71,7 +79,7 @@ func (client *AvailableBalancesClient) getCreateRequest(ctx context.Context, bil
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,23 +91,10 @@ func (client *AvailableBalancesClient) getCreateRequest(ctx context.Context, bil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AvailableBalancesClient) getHandleResponse(resp *http.Response) (AvailableBalancesGetResponse, error) {
-	result := AvailableBalancesGetResponse{RawResponse: resp}
+func (client *AvailableBalancesClient) getHandleResponse(resp *http.Response) (AvailableBalancesClientGetResponse, error) {
+	result := AvailableBalancesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableBalance); err != nil {
-		return AvailableBalancesGetResponse{}, runtime.NewResponseError(err, resp)
+		return AvailableBalancesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *AvailableBalancesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

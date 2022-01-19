@@ -24,11 +24,12 @@ func ExamplePrivateLinkResourcesClient_ListByCluster() {
 	}
 	ctx := context.Background()
 	client := armredisenterprise.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByCluster(ctx,
+	res, err := client.ListByCluster(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateLinkResourcesClientListByClusterResult)
 }

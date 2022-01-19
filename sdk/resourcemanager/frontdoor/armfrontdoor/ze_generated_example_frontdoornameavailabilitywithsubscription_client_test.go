@@ -18,14 +18,14 @@ import (
 )
 
 // x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/CheckFrontdoorNameAvailabilityWithSubscription.json
-func ExampleFrontDoorNameAvailabilityWithSubscriptionClient_Check() {
+func ExampleNameAvailabilityWithSubscriptionClient_Check() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontDoorNameAvailabilityWithSubscriptionClient("<subscription-id>", cred, nil)
-	_, err = client.Check(ctx,
+	client := armfrontdoor.NewNameAvailabilityWithSubscriptionClient("<subscription-id>", cred, nil)
+	res, err := client.Check(ctx,
 		armfrontdoor.CheckNameAvailabilityInput{
 			Name: to.StringPtr("<name>"),
 			Type: armfrontdoor.ResourceTypeMicrosoftNetworkFrontDoorsFrontendEndpoints.ToPtr(),
@@ -34,4 +34,5 @@ func ExampleFrontDoorNameAvailabilityWithSubscriptionClient_Check() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.NameAvailabilityWithSubscriptionClientCheckResult)
 }

@@ -9,8 +9,8 @@
 package armpostgresqlflexibleservers
 
 const (
-	module  = "armpostgresqlflexibleservers"
-	version = "v0.2.1"
+	moduleName    = "armpostgresqlflexibleservers"
+	moduleVersion = "v0.3.0"
 )
 
 // ConfigurationDataType - Data type of the configuration.
@@ -196,6 +196,27 @@ func PossibleOperationOriginValues() []OperationOrigin {
 
 // ToPtr returns a *OperationOrigin pointing to the current value.
 func (c OperationOrigin) ToPtr() *OperationOrigin {
+	return &c
+}
+
+// Reason - The name availability reason.
+type Reason string
+
+const (
+	ReasonAlreadyExists Reason = "AlreadyExists"
+	ReasonInvalid       Reason = "Invalid"
+)
+
+// PossibleReasonValues returns the possible values for the Reason const type.
+func PossibleReasonValues() []Reason {
+	return []Reason{
+		ReasonAlreadyExists,
+		ReasonInvalid,
+	}
+}
+
+// ToPtr returns a *Reason pointing to the current value.
+func (c Reason) ToPtr() *Reason {
 	return &c
 }
 

@@ -26,13 +26,17 @@ func ExampleCustomizationPoliciesClient_List() {
 	client := armvmwarecloudsimple.NewCustomizationPoliciesClient("<subscription-id>", cred, nil)
 	pager := client.List("<region-id>",
 		"<pc-name>",
-		&armvmwarecloudsimple.CustomizationPoliciesListOptions{Filter: nil})
-	for pager.NextPage(ctx) {
+		&armvmwarecloudsimple.CustomizationPoliciesClientListOptions{Filter: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("CustomizationPolicy.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -53,5 +57,5 @@ func ExampleCustomizationPoliciesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("CustomizationPolicy.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.CustomizationPoliciesClientGetResult)
 }

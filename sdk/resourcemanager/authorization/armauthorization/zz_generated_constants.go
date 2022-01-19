@@ -9,8 +9,8 @@
 package armauthorization
 
 const (
-	module  = "armauthorization"
-	version = "v0.2.1"
+	moduleName    = "armauthorization"
+	moduleVersion = "v0.3.0"
 )
 
 // AccessRecommendationType - The feature- generated recommendation shown to the reviewer.
@@ -169,7 +169,8 @@ func (c AccessReviewRecurrenceRangeType) ToPtr() *AccessReviewRecurrenceRangeTyp
 	return &c
 }
 
-// AccessReviewResult - The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny
+// AccessReviewResult - The decision on the approval step. This value is initially set to NotReviewed. Approvers can take
+// action of Approve/Deny
 type AccessReviewResult string
 
 const (
@@ -217,8 +218,8 @@ func (c AccessReviewReviewerType) ToPtr() *AccessReviewReviewerType {
 	return &c
 }
 
-// AccessReviewScheduleDefinitionReviewersType - This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly
-// assigned. However, in some cases, the reviewers may not be assigned and instead be chosen
+// AccessReviewScheduleDefinitionReviewersType - This field specifies the type of reviewers for a review. Usually for a review,
+// reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen
 // dynamically. For example managers review or self review.
 type AccessReviewScheduleDefinitionReviewersType string
 

@@ -30,6 +30,12 @@ func IsNonRetriable(err error) bool {
 	return errors.As(err, &nonRetriable)
 }
 
+type ErrNonRetriable struct {
+	Message string
+}
+
+func (e ErrNonRetriable) Error() string { return e.Message }
+
 // Error Conditions
 const (
 	// Service Bus Errors
@@ -164,22 +170,6 @@ func isRetryableAMQPError(ctxForLogging context.Context, err error) bool {
 	return false
 }
 
-func isPermanentNetError(err error) bool {
-	var netErr net.Error
-
-	if errors.As(err, &netErr) {
-		temp := netErr.Temporary()
-		timeout := netErr.Timeout()
-		return !temp && !timeout
-	}
-
-	return false
-}
-
-func isEOF(err error) bool {
-	return errors.Is(err, io.EOF)
-}
-
 func shouldRecreateLink(err error) bool {
 	if err == nil {
 		return false
@@ -199,13 +189,62 @@ func shouldRecreateConnection(ctxForLogging context.Context, err error) bool {
 
 	shouldRecreate := isPermanentNetError(err) ||
 		isRetryableAMQPError(ctxForLogging, err) ||
-		isEOF(err) ||
+		errors.Is(err, io.EOF) ||
 		// these are distinct from a detach and probably indicate something
 		// wrong with the connection itself, rather than just the link
 		errors.Is(err, amqp.ErrSessionClosed) ||
 		errors.Is(err, amqp.ErrLinkClosed)
 
 	return shouldRecreate
+}
+
+type recoveryKind string
+
+const RecoveryKindNone recoveryKind = ""
+const RecoveryKindFatal recoveryKind = "fatal"
+const RecoveryKindLink recoveryKind = "link"
+const RecoveryKindConn recoveryKind = "connection"
+
+type ServiceBusError struct {
+	inner        error
+	RecoveryKind recoveryKind
+}
+
+func (sbe *ServiceBusError) String() string {
+	return sbe.inner.Error()
+}
+
+func (sbe *ServiceBusError) AsError() error {
+	return sbe.inner
+}
+
+// ToSBE wraps the passed in 'err' with a proper error with one of either:
+// - `fatalServiceBusError` if no recovery is possible.
+// - `serviceBusError` if the error is recoverable. The `recoveryKind` field contains the
+//   type of recovery needed.
+func ToSBE(loggingCtx context.Context, err error) *ServiceBusError {
+	if err == nil {
+		return nil
+	}
+
+	sbe := &ServiceBusError{
+		inner:        err,
+		RecoveryKind: GetRecoveryKind(loggingCtx, err),
+	}
+
+	return sbe
+}
+
+func isPermanentNetError(err error) bool {
+	var netErr net.Error
+
+	if errors.As(err, &netErr) {
+		temp := netErr.Temporary()
+		timeout := netErr.Timeout()
+		return !temp && !timeout
+	}
+
+	return false
 }
 
 func IsCancelError(err error) bool {
@@ -229,17 +268,84 @@ func IsDrainingError(err error) bool {
 	return strings.Contains(err.Error(), "link is currently draining")
 }
 
-// IsSessionLockedError checks to see if this is the "you tried to get a session that was already locked"
-// error.
-func IsSessionLockedError(err error) bool {
-	var amqpError *amqp.Error
+var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]recoveryKind{
+	// no recovery needed, these are temporary errors.
+	amqp.ErrorCondition("com.microsoft:server-busy"):         RecoveryKindNone,
+	amqp.ErrorCondition("com.microsoft:timeout"):             RecoveryKindNone,
+	amqp.ErrorCondition("com.microsoft:operation-cancelled"): RecoveryKindNone,
 
-	if !errors.As(err, &amqpError) {
-		return false
+	// Link recovery needed
+	amqp.ErrorDetachForced: RecoveryKindLink, // "amqp:link:detach-forced"
+
+	// Connection recovery needed
+	amqp.ErrorConnectionForced: RecoveryKindConn, // "amqp:connection:forced"
+
+	// No recovery possible - this operation is non retriable.
+	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal,
+	amqp.ErrorUnauthorizedAccess:                                  RecoveryKindFatal, // creds are bad
+	amqp.ErrorNotFound:                                            RecoveryKindFatal,
+	amqp.ErrorNotAllowed:                                          RecoveryKindFatal,
+	amqp.ErrorInternalError:                                       RecoveryKindFatal, // "amqp:internal-error"
+	amqp.ErrorCondition("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
+	amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
+	amqp.ErrorCondition("com.microsoft:message-lock-lost"):        RecoveryKindFatal,
+}
+
+func GetRecoveryKind(ctxForLogging context.Context, err error) recoveryKind {
+	if IsCancelError(err) {
+		return RecoveryKindFatal
 	}
 
-	// Example:
-	//{Condition: com.microsoft:session-cannot-be-locked, Description: The requested session 'session-1' cannot be accepted. It may be locked by another receiver.
+	var netErr net.Error
 
-	return amqpError.Condition == "com.microsoft:session-cannot-be-locked"
+	if errors.As(err, &netErr) {
+		// ie, just retry
+		return RecoveryKindNone
+	}
+
+	// this is a carryover from another library. I haven't seen this in the wild.
+	if errors.Is(err, io.EOF) {
+		return RecoveryKindConn
+	}
+
+	var errNonRetriable *ErrNonRetriable
+
+	if errors.As(err, &errNonRetriable) {
+		return RecoveryKindFatal
+	}
+
+	var de *amqp.DetachError
+
+	// check the "special" AMQP errors that aren't condition-based.
+	if errors.Is(err, amqp.ErrSessionClosed) ||
+		errors.Is(err, amqp.ErrLinkClosed) ||
+		errors.As(err, &de) {
+		return RecoveryKindLink
+	}
+
+	if errors.Is(err, amqp.ErrConnClosed) {
+		return RecoveryKindConn
+	}
+
+	if IsDrainingError(err) {
+		// temporary, operation should just be retryable since drain will
+		// eventually complete.
+		return RecoveryKindNone
+	}
+
+	// then it's _probably_ an actual *amqp.Error, in which case we bucket it by
+	// the 'condition'.
+	var amqpError *amqp.Error
+
+	if errors.As(err, &amqpError) {
+		recoveryKind, ok := amqpConditionsToRecoveryKind[amqpError.Condition]
+
+		if ok {
+			return recoveryKind
+		}
+	}
+
+	// this is some error type we've never seen.
+	tab.For(ctxForLogging).Fatal(fmt.Sprintf("No recovery possible with error: %#v", err))
+	return RecoveryKindFatal
 }

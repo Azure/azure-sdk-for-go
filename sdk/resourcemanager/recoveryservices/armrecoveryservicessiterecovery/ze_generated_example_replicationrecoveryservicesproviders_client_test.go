@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
 func ExampleReplicationRecoveryServicesProvidersClient_ListByReplicationFabrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,17 +31,21 @@ func ExampleReplicationRecoveryServicesProvidersClient_ListByReplicationFabrics(
 		"<subscription-id>", cred, nil)
 	pager := client.ListByReplicationFabrics("<fabric-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecoveryServicesProvider.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_Get.json
 func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,10 +62,10 @@ func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryServicesProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryServicesProvidersClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_Create.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,10 +105,10 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryServicesProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryServicesProvidersClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_Purge.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_Purge.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +131,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,10 +152,10 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("RecoveryServicesProvider.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationRecoveryServicesProvidersClientRefreshProviderResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_Delete.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +178,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationRecoveryServicesProviders_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationRecoveryServicesProviders_List.json
 func ExampleReplicationRecoveryServicesProvidersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,12 +189,16 @@ func ExampleReplicationRecoveryServicesProvidersClient_List() {
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecoveryServicesProvider.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

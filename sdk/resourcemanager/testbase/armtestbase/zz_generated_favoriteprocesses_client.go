@@ -11,7 +11,6 @@ package armtestbase
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,59 @@ import (
 // FavoriteProcessesClient contains the methods for the FavoriteProcesses group.
 // Don't use this type directly, use NewFavoriteProcessesClient() instead.
 type FavoriteProcessesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFavoriteProcessesClient creates a new instance of FavoriteProcessesClient with the specified values.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFavoriteProcessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FavoriteProcessesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FavoriteProcessesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FavoriteProcessesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create or replace a favorite process for a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FavoriteProcessesClient) Create(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, parameters FavoriteProcessResource, options *FavoriteProcessesCreateOptions) (FavoriteProcessesCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// favoriteProcessResourceName - The resource name of a favorite process in a package. If the process name contains characters
+// that are not allowed in Azure Resource Name, we use 'actualProcessName' in request body to submit the
+// name.
+// parameters - Parameters supplied to create a favorite process in a package.
+// options - FavoriteProcessesClientCreateOptions contains the optional parameters for the FavoriteProcessesClient.Create
+// method.
+func (client *FavoriteProcessesClient) Create(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, parameters FavoriteProcessResource, options *FavoriteProcessesClientCreateOptions) (FavoriteProcessesClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, favoriteProcessResourceName, parameters, options)
 	if err != nil {
-		return FavoriteProcessesCreateResponse{}, err
+		return FavoriteProcessesClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoriteProcessesCreateResponse{}, err
+		return FavoriteProcessesClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoriteProcessesCreateResponse{}, client.createHandleError(resp)
+		return FavoriteProcessesClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *FavoriteProcessesClient) createCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, parameters FavoriteProcessResource, options *FavoriteProcessesCreateOptions) (*policy.Request, error) {
+func (client *FavoriteProcessesClient) createCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, parameters FavoriteProcessResource, options *FavoriteProcessesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/favoriteProcesses/{favoriteProcessResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +98,7 @@ func (client *FavoriteProcessesClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter favoriteProcessResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteProcessResourceName}", url.PathEscape(favoriteProcessResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +110,41 @@ func (client *FavoriteProcessesClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *FavoriteProcessesClient) createHandleResponse(resp *http.Response) (FavoriteProcessesCreateResponse, error) {
-	result := FavoriteProcessesCreateResponse{RawResponse: resp}
+func (client *FavoriteProcessesClient) createHandleResponse(resp *http.Response) (FavoriteProcessesClientCreateResponse, error) {
+	result := FavoriteProcessesClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FavoriteProcessResource); err != nil {
-		return FavoriteProcessesCreateResponse{}, runtime.NewResponseError(err, resp)
+		return FavoriteProcessesClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *FavoriteProcessesClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a favorite process for a specific package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FavoriteProcessesClient) Delete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesDeleteOptions) (FavoriteProcessesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// favoriteProcessResourceName - The resource name of a favorite process in a package. If the process name contains characters
+// that are not allowed in Azure Resource Name, we use 'actualProcessName' in request body to submit the
+// name.
+// options - FavoriteProcessesClientDeleteOptions contains the optional parameters for the FavoriteProcessesClient.Delete
+// method.
+func (client *FavoriteProcessesClient) Delete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesClientDeleteOptions) (FavoriteProcessesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, favoriteProcessResourceName, options)
 	if err != nil {
-		return FavoriteProcessesDeleteResponse{}, err
+		return FavoriteProcessesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoriteProcessesDeleteResponse{}, err
+		return FavoriteProcessesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return FavoriteProcessesDeleteResponse{}, client.deleteHandleError(resp)
+		return FavoriteProcessesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FavoriteProcessesDeleteResponse{RawResponse: resp}, nil
+	return FavoriteProcessesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FavoriteProcessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesDeleteOptions) (*policy.Request, error) {
+func (client *FavoriteProcessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/favoriteProcesses/{favoriteProcessResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +166,7 @@ func (client *FavoriteProcessesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter favoriteProcessResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteProcessResourceName}", url.PathEscape(favoriteProcessResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +177,32 @@ func (client *FavoriteProcessesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FavoriteProcessesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a favorite process for a Test Base Package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FavoriteProcessesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesGetOptions) (FavoriteProcessesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// favoriteProcessResourceName - The resource name of a favorite process in a package. If the process name contains characters
+// that are not allowed in Azure Resource Name, we use 'actualProcessName' in request body to submit the
+// name.
+// options - FavoriteProcessesClientGetOptions contains the optional parameters for the FavoriteProcessesClient.Get method.
+func (client *FavoriteProcessesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesClientGetOptions) (FavoriteProcessesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, favoriteProcessResourceName, options)
 	if err != nil {
-		return FavoriteProcessesGetResponse{}, err
+		return FavoriteProcessesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FavoriteProcessesGetResponse{}, err
+		return FavoriteProcessesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FavoriteProcessesGetResponse{}, client.getHandleError(resp)
+		return FavoriteProcessesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FavoriteProcessesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesGetOptions) (*policy.Request, error) {
+func (client *FavoriteProcessesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, favoriteProcessResourceName string, options *FavoriteProcessesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/favoriteProcesses/{favoriteProcessResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +224,7 @@ func (client *FavoriteProcessesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter favoriteProcessResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{favoriteProcessResourceName}", url.PathEscape(favoriteProcessResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,43 +236,34 @@ func (client *FavoriteProcessesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *FavoriteProcessesClient) getHandleResponse(resp *http.Response) (FavoriteProcessesGetResponse, error) {
-	result := FavoriteProcessesGetResponse{RawResponse: resp}
+func (client *FavoriteProcessesClient) getHandleResponse(resp *http.Response) (FavoriteProcessesClientGetResponse, error) {
+	result := FavoriteProcessesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FavoriteProcessResource); err != nil {
-		return FavoriteProcessesGetResponse{}, runtime.NewResponseError(err, resp)
+		return FavoriteProcessesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FavoriteProcessesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the favorite processes for a specific package.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *FavoriteProcessesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesListOptions) *FavoriteProcessesListPager {
-	return &FavoriteProcessesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// options - FavoriteProcessesClientListOptions contains the optional parameters for the FavoriteProcessesClient.List method.
+func (client *FavoriteProcessesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) *FavoriteProcessesClientListPager {
+	return &FavoriteProcessesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 		},
-		advancer: func(ctx context.Context, resp FavoriteProcessesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp FavoriteProcessesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.FavoriteProcessListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *FavoriteProcessesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesListOptions) (*policy.Request, error) {
+func (client *FavoriteProcessesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *FavoriteProcessesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/favoriteProcesses"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,7 +281,7 @@ func (client *FavoriteProcessesClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter packageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -297,23 +293,10 @@ func (client *FavoriteProcessesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *FavoriteProcessesClient) listHandleResponse(resp *http.Response) (FavoriteProcessesListResponse, error) {
-	result := FavoriteProcessesListResponse{RawResponse: resp}
+func (client *FavoriteProcessesClient) listHandleResponse(resp *http.Response) (FavoriteProcessesClientListResponse, error) {
+	result := FavoriteProcessesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FavoriteProcessListResult); err != nil {
-		return FavoriteProcessesListResponse{}, runtime.NewResponseError(err, resp)
+		return FavoriteProcessesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *FavoriteProcessesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

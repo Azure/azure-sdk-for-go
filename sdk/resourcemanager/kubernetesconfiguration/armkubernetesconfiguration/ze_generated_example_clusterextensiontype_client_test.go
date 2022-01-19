@@ -24,14 +24,15 @@ func ExampleClusterExtensionTypeClient_Get() {
 	}
 	ctx := context.Background()
 	client := armkubernetesconfiguration.NewClusterExtensionTypeClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftContainerService,
-		armkubernetesconfiguration.Enum1ManagedClusters,
+		armkubernetesconfiguration.Enum0("Microsoft.ContainerService"),
+		armkubernetesconfiguration.Enum1("managedClusters"),
 		"<cluster-name>",
 		"<extension-type-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClusterExtensionTypeClientGetResult)
 }

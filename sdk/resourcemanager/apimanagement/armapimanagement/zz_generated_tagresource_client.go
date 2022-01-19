@@ -11,7 +11,6 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,39 +25,52 @@ import (
 // TagResourceClient contains the methods for the TagResource group.
 // Don't use this type directly, use NewTagResourceClient() instead.
 type TagResourceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTagResourceClient creates a new instance of TagResourceClient with the specified values.
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTagResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TagResourceClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TagResourceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TagResourceClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // ListByService - Lists a collection of resources associated with tags.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TagResourceClient) ListByService(resourceGroupName string, serviceName string, options *TagResourceListByServiceOptions) *TagResourceListByServicePager {
-	return &TagResourceListByServicePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - TagResourceClientListByServiceOptions contains the optional parameters for the TagResourceClient.ListByService
+// method.
+func (client *TagResourceClient) ListByService(resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) *TagResourceClientListByServicePager {
+	return &TagResourceClientListByServicePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp TagResourceListByServiceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TagResourceClientListByServiceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagResourceCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TagResourceListByServiceOptions) (*policy.Request, error) {
+func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TagResourceClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tagResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -72,7 +84,7 @@ func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,23 +105,10 @@ func (client *TagResourceClient) listByServiceCreateRequest(ctx context.Context,
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *TagResourceClient) listByServiceHandleResponse(resp *http.Response) (TagResourceListByServiceResponse, error) {
-	result := TagResourceListByServiceResponse{RawResponse: resp}
+func (client *TagResourceClient) listByServiceHandleResponse(resp *http.Response) (TagResourceClientListByServiceResponse, error) {
+	result := TagResourceClientListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return TagResourceListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return TagResourceClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *TagResourceClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

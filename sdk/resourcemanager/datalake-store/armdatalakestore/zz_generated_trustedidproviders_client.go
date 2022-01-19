@@ -24,43 +24,59 @@ import (
 // TrustedIDProvidersClient contains the methods for the TrustedIDProviders group.
 // Don't use this type directly, use NewTrustedIDProvidersClient() instead.
 type TrustedIDProvidersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTrustedIDProvidersClient creates a new instance of TrustedIDProvidersClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTrustedIDProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TrustedIDProvidersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TrustedIDProvidersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TrustedIDProvidersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdate - Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the specified name will
-// be replaced with this new provider
-// If the operation fails it returns a generic error.
-func (client *TrustedIDProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters CreateOrUpdateTrustedIDProviderParameters, options *TrustedIDProvidersCreateOrUpdateOptions) (TrustedIDProvidersCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates or updates the specified trusted identity provider. During update, the trusted identity provider
+// with the specified name will be replaced with this new provider
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// trustedIDProviderName - The name of the trusted identity provider. This is used for differentiation of providers in the
+// account.
+// parameters - Parameters supplied to create or replace the trusted identity provider.
+// options - TrustedIDProvidersClientCreateOrUpdateOptions contains the optional parameters for the TrustedIDProvidersClient.CreateOrUpdate
+// method.
+func (client *TrustedIDProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters CreateOrUpdateTrustedIDProviderParameters, options *TrustedIDProvidersClientCreateOrUpdateOptions) (TrustedIDProvidersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, trustedIDProviderName, parameters, options)
 	if err != nil {
-		return TrustedIDProvidersCreateOrUpdateResponse{}, err
+		return TrustedIDProvidersClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TrustedIDProvidersCreateOrUpdateResponse{}, err
+		return TrustedIDProvidersClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TrustedIDProvidersCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return TrustedIDProvidersClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TrustedIDProvidersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters CreateOrUpdateTrustedIDProviderParameters, options *TrustedIDProvidersCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TrustedIDProvidersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters CreateOrUpdateTrustedIDProviderParameters, options *TrustedIDProvidersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders/{trustedIdProviderName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +94,7 @@ func (client *TrustedIDProvidersClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter trustedIDProviderName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trustedIdProviderName}", url.PathEscape(trustedIDProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,45 +106,38 @@ func (client *TrustedIDProvidersClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TrustedIDProvidersClient) createOrUpdateHandleResponse(resp *http.Response) (TrustedIDProvidersCreateOrUpdateResponse, error) {
-	result := TrustedIDProvidersCreateOrUpdateResponse{RawResponse: resp}
+func (client *TrustedIDProvidersClient) createOrUpdateHandleResponse(resp *http.Response) (TrustedIDProvidersClientCreateOrUpdateResponse, error) {
+	result := TrustedIDProvidersClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProvider); err != nil {
-		return TrustedIDProvidersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TrustedIDProvidersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TrustedIDProvidersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes the specified trusted identity provider from the specified Data Lake Store account
-// If the operation fails it returns a generic error.
-func (client *TrustedIDProvidersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersDeleteOptions) (TrustedIDProvidersDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// trustedIDProviderName - The name of the trusted identity provider to delete.
+// options - TrustedIDProvidersClientDeleteOptions contains the optional parameters for the TrustedIDProvidersClient.Delete
+// method.
+func (client *TrustedIDProvidersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersClientDeleteOptions) (TrustedIDProvidersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, trustedIDProviderName, options)
 	if err != nil {
-		return TrustedIDProvidersDeleteResponse{}, err
+		return TrustedIDProvidersClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TrustedIDProvidersDeleteResponse{}, err
+		return TrustedIDProvidersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TrustedIDProvidersDeleteResponse{}, client.deleteHandleError(resp)
+		return TrustedIDProvidersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TrustedIDProvidersDeleteResponse{RawResponse: resp}, nil
+	return TrustedIDProvidersClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TrustedIDProvidersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersDeleteOptions) (*policy.Request, error) {
+func (client *TrustedIDProvidersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders/{trustedIdProviderName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,7 +155,7 @@ func (client *TrustedIDProvidersClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter trustedIDProviderName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trustedIdProviderName}", url.PathEscape(trustedIDProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,37 +165,29 @@ func (client *TrustedIDProvidersClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TrustedIDProvidersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the specified Data Lake Store trusted identity provider.
-// If the operation fails it returns a generic error.
-func (client *TrustedIDProvidersClient) Get(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersGetOptions) (TrustedIDProvidersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// trustedIDProviderName - The name of the trusted identity provider to retrieve.
+// options - TrustedIDProvidersClientGetOptions contains the optional parameters for the TrustedIDProvidersClient.Get method.
+func (client *TrustedIDProvidersClient) Get(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersClientGetOptions) (TrustedIDProvidersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, trustedIDProviderName, options)
 	if err != nil {
-		return TrustedIDProvidersGetResponse{}, err
+		return TrustedIDProvidersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TrustedIDProvidersGetResponse{}, err
+		return TrustedIDProvidersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TrustedIDProvidersGetResponse{}, client.getHandleError(resp)
+		return TrustedIDProvidersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TrustedIDProvidersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersGetOptions) (*policy.Request, error) {
+func (client *TrustedIDProvidersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders/{trustedIdProviderName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -204,7 +205,7 @@ func (client *TrustedIDProvidersClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter trustedIDProviderName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trustedIdProviderName}", url.PathEscape(trustedIDProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,42 +217,34 @@ func (client *TrustedIDProvidersClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *TrustedIDProvidersClient) getHandleResponse(resp *http.Response) (TrustedIDProvidersGetResponse, error) {
-	result := TrustedIDProvidersGetResponse{RawResponse: resp}
+func (client *TrustedIDProvidersClient) getHandleResponse(resp *http.Response) (TrustedIDProvidersClientGetResponse, error) {
+	result := TrustedIDProvidersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProvider); err != nil {
-		return TrustedIDProvidersGetResponse{}, runtime.NewResponseError(err, resp)
+		return TrustedIDProvidersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TrustedIDProvidersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByAccount - Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
-// If the operation fails it returns a generic error.
-func (client *TrustedIDProvidersClient) ListByAccount(resourceGroupName string, accountName string, options *TrustedIDProvidersListByAccountOptions) *TrustedIDProvidersListByAccountPager {
-	return &TrustedIDProvidersListByAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// options - TrustedIDProvidersClientListByAccountOptions contains the optional parameters for the TrustedIDProvidersClient.ListByAccount
+// method.
+func (client *TrustedIDProvidersClient) ListByAccount(resourceGroupName string, accountName string, options *TrustedIDProvidersClientListByAccountOptions) *TrustedIDProvidersClientListByAccountPager {
+	return &TrustedIDProvidersClientListByAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp TrustedIDProvidersListByAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TrustedIDProvidersClientListByAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TrustedIDProviderListResult.NextLink)
 		},
 	}
 }
 
 // listByAccountCreateRequest creates the ListByAccount request.
-func (client *TrustedIDProvidersClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TrustedIDProvidersListByAccountOptions) (*policy.Request, error) {
+func (client *TrustedIDProvidersClient) listByAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TrustedIDProvidersClientListByAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +258,7 @@ func (client *TrustedIDProvidersClient) listByAccountCreateRequest(ctx context.C
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,45 +270,39 @@ func (client *TrustedIDProvidersClient) listByAccountCreateRequest(ctx context.C
 }
 
 // listByAccountHandleResponse handles the ListByAccount response.
-func (client *TrustedIDProvidersClient) listByAccountHandleResponse(resp *http.Response) (TrustedIDProvidersListByAccountResponse, error) {
-	result := TrustedIDProvidersListByAccountResponse{RawResponse: resp}
+func (client *TrustedIDProvidersClient) listByAccountHandleResponse(resp *http.Response) (TrustedIDProvidersClientListByAccountResponse, error) {
+	result := TrustedIDProvidersClientListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProviderListResult); err != nil {
-		return TrustedIDProvidersListByAccountResponse{}, runtime.NewResponseError(err, resp)
+		return TrustedIDProvidersClientListByAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAccountHandleError handles the ListByAccount error response.
-func (client *TrustedIDProvidersClient) listByAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates the specified trusted identity provider.
-// If the operation fails it returns a generic error.
-func (client *TrustedIDProvidersClient) Update(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersUpdateOptions) (TrustedIDProvidersUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the Azure resource group.
+// accountName - The name of the Data Lake Store account.
+// trustedIDProviderName - The name of the trusted identity provider. This is used for differentiation of providers in the
+// account.
+// options - TrustedIDProvidersClientUpdateOptions contains the optional parameters for the TrustedIDProvidersClient.Update
+// method.
+func (client *TrustedIDProvidersClient) Update(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersClientUpdateOptions) (TrustedIDProvidersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, trustedIDProviderName, options)
 	if err != nil {
-		return TrustedIDProvidersUpdateResponse{}, err
+		return TrustedIDProvidersClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TrustedIDProvidersUpdateResponse{}, err
+		return TrustedIDProvidersClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TrustedIDProvidersUpdateResponse{}, client.updateHandleError(resp)
+		return TrustedIDProvidersClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TrustedIDProvidersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersUpdateOptions) (*policy.Request, error) {
+func (client *TrustedIDProvidersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, options *TrustedIDProvidersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders/{trustedIdProviderName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -333,7 +320,7 @@ func (client *TrustedIDProvidersClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter trustedIDProviderName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{trustedIdProviderName}", url.PathEscape(trustedIDProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -348,22 +335,10 @@ func (client *TrustedIDProvidersClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TrustedIDProvidersClient) updateHandleResponse(resp *http.Response) (TrustedIDProvidersUpdateResponse, error) {
-	result := TrustedIDProvidersUpdateResponse{RawResponse: resp}
+func (client *TrustedIDProvidersClient) updateHandleResponse(resp *http.Response) (TrustedIDProvidersClientUpdateResponse, error) {
+	result := TrustedIDProvidersClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedIDProvider); err != nil {
-		return TrustedIDProvidersUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TrustedIDProvidersClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TrustedIDProvidersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

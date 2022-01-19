@@ -11,7 +11,6 @@ package armpeering
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,45 +24,56 @@ import (
 // LegacyPeeringsClient contains the methods for the LegacyPeerings group.
 // Don't use this type directly, use NewLegacyPeeringsClient() instead.
 type LegacyPeeringsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLegacyPeeringsClient creates a new instance of LegacyPeeringsClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LegacyPeeringsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LegacyPeeringsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LegacyPeeringsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LegacyPeeringsClient) List(peeringLocation string, kind Enum1, options *LegacyPeeringsListOptions) *LegacyPeeringsListPager {
-	return &LegacyPeeringsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// peeringLocation - The location of the peering.
+// kind - The kind of the peering.
+// options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.List method.
+func (client *LegacyPeeringsClient) List(peeringLocation string, kind Enum1, options *LegacyPeeringsClientListOptions) *LegacyPeeringsClientListPager {
+	return &LegacyPeeringsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, peeringLocation, kind, options)
 		},
-		advancer: func(ctx context.Context, resp LegacyPeeringsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PeeringListResult.NextLink)
+		advancer: func(ctx context.Context, resp LegacyPeeringsClientListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind Enum1, options *LegacyPeeringsListOptions) (*policy.Request, error) {
+func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind Enum1, options *LegacyPeeringsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,23 +87,10 @@ func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeri
 }
 
 // listHandleResponse handles the List response.
-func (client *LegacyPeeringsClient) listHandleResponse(resp *http.Response) (LegacyPeeringsListResponse, error) {
-	result := LegacyPeeringsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PeeringListResult); err != nil {
-		return LegacyPeeringsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *LegacyPeeringsClient) listHandleResponse(resp *http.Response) (LegacyPeeringsClientListResponse, error) {
+	result := LegacyPeeringsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return LegacyPeeringsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LegacyPeeringsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

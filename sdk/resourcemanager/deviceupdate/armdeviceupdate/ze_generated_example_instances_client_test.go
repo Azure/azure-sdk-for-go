@@ -30,12 +30,16 @@ func ExampleInstancesClient_ListByAccount() {
 	pager := client.ListByAccount("<resource-group-name>",
 		"<account-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Instance.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleInstancesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Instance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InstancesClientGetResult)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/Instances/Instances_Head.json
@@ -89,16 +93,31 @@ func ExampleInstancesClient_BeginCreate() {
 		"<resource-group-name>",
 		"<account-name>",
 		"<instance-name>",
-		armdeviceupdate.Instance{},
+		armdeviceupdate.Instance{
+			Location: to.StringPtr("<location>"),
+			Properties: &armdeviceupdate.InstanceProperties{
+				DiagnosticStorageProperties: &armdeviceupdate.DiagnosticStorageProperties{
+					AuthenticationType: armdeviceupdate.AuthenticationType("KeyBased").ToPtr(),
+					ConnectionString:   to.StringPtr("<connection-string>"),
+					ResourceID:         to.StringPtr("<resource-id>"),
+				},
+				EnableDiagnostics: to.BoolPtr(false),
+				IotHubs: []*armdeviceupdate.IotHubSettings{
+					{
+						EventHubConnectionString: to.StringPtr("<event-hub-connection-string>"),
+						IoTHubConnectionString:   to.StringPtr("<io-thub-connection-string>"),
+						ResourceID:               to.StringPtr("<resource-id>"),
+					}},
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Instance.ID: %s\n", *res.ID)
 }
 
 // x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/Instances/Instances_Delete.json
@@ -144,5 +163,5 @@ func ExampleInstancesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Instance.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InstancesClientUpdateResult)
 }

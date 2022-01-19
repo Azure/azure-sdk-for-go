@@ -1,14 +1,1142 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*DomainTopicsClient.ListByDomain` parameter(s) have been changed from `(string, string, *DomainTopicsListByDomainOptions)` to `(string, string, *DomainTopicsClientListByDomainOptions)`
+- Function `*DomainTopicsClient.ListByDomain` return value(s) have been changed from `(*DomainTopicsListByDomainPager)` to `(*DomainTopicsClientListByDomainPager)`
+- Function `*TopicsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, TopicUpdateParameters, *TopicsBeginUpdateOptions)` to `(context.Context, string, string, TopicUpdateParameters, *TopicsClientBeginUpdateOptions)`
+- Function `*TopicsClient.BeginUpdate` return value(s) have been changed from `(TopicsUpdatePollerResponse, error)` to `(TopicsClientUpdatePollerResponse, error)`
+- Function `*EventSubscriptionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, EventSubscription, *EventSubscriptionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, EventSubscription, *EventSubscriptionsClientBeginCreateOrUpdateOptions)`
+- Function `*EventSubscriptionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(EventSubscriptionsCreateOrUpdatePollerResponse, error)` to `(EventSubscriptionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*TopicsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *TopicsGetOptions)` to `(context.Context, string, string, *TopicsClientGetOptions)`
+- Function `*TopicsClient.Get` return value(s) have been changed from `(TopicsGetResponse, error)` to `(TopicsClientGetResponse, error)`
+- Function `*SystemTopicEventSubscriptionsClient.ListBySystemTopic` parameter(s) have been changed from `(string, string, *SystemTopicEventSubscriptionsListBySystemTopicOptions)` to `(string, string, *SystemTopicEventSubscriptionsClientListBySystemTopicOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.ListBySystemTopic` return value(s) have been changed from `(*SystemTopicEventSubscriptionsListBySystemTopicPager)` to `(*SystemTopicEventSubscriptionsClientListBySystemTopicPager)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, Enum18, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, Enum18, string, string, *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsGetResponse, error)` to `(PrivateEndpointConnectionsClientGetResponse, error)`
+- Function `*EventSubscriptionsClient.GetDeliveryAttributes` parameter(s) have been changed from `(context.Context, string, string, *EventSubscriptionsGetDeliveryAttributesOptions)` to `(context.Context, string, string, *EventSubscriptionsClientGetDeliveryAttributesOptions)`
+- Function `*EventSubscriptionsClient.GetDeliveryAttributes` return value(s) have been changed from `(EventSubscriptionsGetDeliveryAttributesResponse, error)` to `(EventSubscriptionsClientGetDeliveryAttributesResponse, error)`
+- Function `*SystemTopicsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *SystemTopicsListByResourceGroupOptions)` to `(string, *SystemTopicsClientListByResourceGroupOptions)`
+- Function `*SystemTopicsClient.ListByResourceGroup` return value(s) have been changed from `(*SystemTopicsListByResourceGroupPager)` to `(*SystemTopicsClientListByResourceGroupPager)`
+- Function `*SystemTopicEventSubscriptionsClient.GetFullURL` parameter(s) have been changed from `(context.Context, string, string, string, *SystemTopicEventSubscriptionsGetFullURLOptions)` to `(context.Context, string, string, string, *SystemTopicEventSubscriptionsClientGetFullURLOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.GetFullURL` return value(s) have been changed from `(SystemTopicEventSubscriptionsGetFullURLResponse, error)` to `(SystemTopicEventSubscriptionsClientGetFullURLResponse, error)`
+- Function `*EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType` parameter(s) have been changed from `(string, string, string, *EventSubscriptionsListRegionalByResourceGroupForTopicTypeOptions)` to `(string, string, string, *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions)`
+- Function `*EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType` return value(s) have been changed from `(*EventSubscriptionsListRegionalByResourceGroupForTopicTypePager)` to `(*EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, Enum19, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginUpdateOptions)` to `(context.Context, string, Enum19, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` return value(s) have been changed from `(PrivateEndpointConnectionsUpdatePollerResponse, error)` to `(PrivateEndpointConnectionsClientUpdatePollerResponse, error)`
+- Function `*SystemTopicsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, SystemTopic, *SystemTopicsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, SystemTopic, *SystemTopicsClientBeginCreateOrUpdateOptions)`
+- Function `*SystemTopicsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SystemTopicsCreateOrUpdatePollerResponse, error)` to `(SystemTopicsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DomainsClient.ListBySubscription` parameter(s) have been changed from `(*DomainsListBySubscriptionOptions)` to `(*DomainsClientListBySubscriptionOptions)`
+- Function `*DomainsClient.ListBySubscription` return value(s) have been changed from `(*DomainsListBySubscriptionPager)` to `(*DomainsClientListBySubscriptionPager)`
+- Function `*DomainTopicsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *DomainTopicsGetOptions)` to `(context.Context, string, string, string, *DomainTopicsClientGetOptions)`
+- Function `*DomainTopicsClient.Get` return value(s) have been changed from `(DomainTopicsGetResponse, error)` to `(DomainTopicsClientGetResponse, error)`
+- Function `*EventSubscriptionsClient.ListGlobalByResourceGroup` parameter(s) have been changed from `(string, *EventSubscriptionsListGlobalByResourceGroupOptions)` to `(string, *EventSubscriptionsClientListGlobalByResourceGroupOptions)`
+- Function `*EventSubscriptionsClient.ListGlobalByResourceGroup` return value(s) have been changed from `(*EventSubscriptionsListGlobalByResourceGroupPager)` to `(*EventSubscriptionsClientListGlobalByResourceGroupPager)`
+- Function `*DomainTopicsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *DomainTopicsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, *DomainTopicsClientBeginCreateOrUpdateOptions)`
+- Function `*DomainTopicsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DomainTopicsCreateOrUpdatePollerResponse, error)` to `(DomainTopicsClientCreateOrUpdatePollerResponse, error)`
+- Function `*SystemTopicEventSubscriptionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, EventSubscriptionUpdateParameters, *SystemTopicEventSubscriptionsBeginUpdateOptions)` to `(context.Context, string, string, string, EventSubscriptionUpdateParameters, *SystemTopicEventSubscriptionsClientBeginUpdateOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.BeginUpdate` return value(s) have been changed from `(SystemTopicEventSubscriptionsUpdatePollerResponse, error)` to `(SystemTopicEventSubscriptionsClientUpdatePollerResponse, error)`
+- Function `*TopicsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *TopicsListByResourceGroupOptions)` to `(string, *TopicsClientListByResourceGroupOptions)`
+- Function `*TopicsClient.ListByResourceGroup` return value(s) have been changed from `(*TopicsListByResourceGroupPager)` to `(*TopicsClientListByResourceGroupPager)`
+- Function `*SystemTopicsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, SystemTopicUpdateParameters, *SystemTopicsBeginUpdateOptions)` to `(context.Context, string, string, SystemTopicUpdateParameters, *SystemTopicsClientBeginUpdateOptions)`
+- Function `*SystemTopicsClient.BeginUpdate` return value(s) have been changed from `(SystemTopicsUpdatePollerResponse, error)` to `(SystemTopicsClientUpdatePollerResponse, error)`
+- Function `*EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType` parameter(s) have been changed from `(string, string, *EventSubscriptionsListGlobalByResourceGroupForTopicTypeOptions)` to `(string, string, *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions)`
+- Function `*EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType` return value(s) have been changed from `(*EventSubscriptionsListGlobalByResourceGroupForTopicTypePager)` to `(*EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager)`
+- Function `*EventSubscriptionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *EventSubscriptionsBeginDeleteOptions)` to `(context.Context, string, string, *EventSubscriptionsClientBeginDeleteOptions)`
+- Function `*EventSubscriptionsClient.BeginDelete` return value(s) have been changed from `(EventSubscriptionsDeletePollerResponse, error)` to `(EventSubscriptionsClientDeletePollerResponse, error)`
+- Function `*DomainTopicsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *DomainTopicsBeginDeleteOptions)` to `(context.Context, string, string, string, *DomainTopicsClientBeginDeleteOptions)`
+- Function `*DomainTopicsClient.BeginDelete` return value(s) have been changed from `(DomainTopicsDeletePollerResponse, error)` to `(DomainTopicsClientDeletePollerResponse, error)`
+- Function `*TopicTypesClient.List` parameter(s) have been changed from `(context.Context, *TopicTypesListOptions)` to `(context.Context, *TopicTypesClientListOptions)`
+- Function `*TopicTypesClient.List` return value(s) have been changed from `(TopicTypesListResponse, error)` to `(TopicTypesClientListResponse, error)`
+- Function `*TopicTypesClient.Get` parameter(s) have been changed from `(context.Context, string, *TopicTypesGetOptions)` to `(context.Context, string, *TopicTypesClientGetOptions)`
+- Function `*TopicTypesClient.Get` return value(s) have been changed from `(TopicTypesGetResponse, error)` to `(TopicTypesClientGetResponse, error)`
+- Function `*DomainsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Domain, *DomainsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Domain, *DomainsClientBeginCreateOrUpdateOptions)`
+- Function `*DomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(DomainsCreateOrUpdatePollerResponse, error)` to `(DomainsClientCreateOrUpdatePollerResponse, error)`
+- Function `*TopicsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Topic, *TopicsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Topic, *TopicsClientBeginCreateOrUpdateOptions)`
+- Function `*TopicsClient.BeginCreateOrUpdate` return value(s) have been changed from `(TopicsCreateOrUpdatePollerResponse, error)` to `(TopicsClientCreateOrUpdatePollerResponse, error)`
+- Function `*DomainsClient.RegenerateKey` parameter(s) have been changed from `(context.Context, string, string, DomainRegenerateKeyRequest, *DomainsRegenerateKeyOptions)` to `(context.Context, string, string, DomainRegenerateKeyRequest, *DomainsClientRegenerateKeyOptions)`
+- Function `*DomainsClient.RegenerateKey` return value(s) have been changed from `(DomainsRegenerateKeyResponse, error)` to `(DomainsClientRegenerateKeyResponse, error)`
+- Function `*EventSubscriptionsClient.ListGlobalBySubscription` parameter(s) have been changed from `(*EventSubscriptionsListGlobalBySubscriptionOptions)` to `(*EventSubscriptionsClientListGlobalBySubscriptionOptions)`
+- Function `*EventSubscriptionsClient.ListGlobalBySubscription` return value(s) have been changed from `(*EventSubscriptionsListGlobalBySubscriptionPager)` to `(*EventSubscriptionsClientListGlobalBySubscriptionPager)`
+- Function `*TopicsClient.BeginRegenerateKey` parameter(s) have been changed from `(context.Context, string, string, TopicRegenerateKeyRequest, *TopicsBeginRegenerateKeyOptions)` to `(context.Context, string, string, TopicRegenerateKeyRequest, *TopicsClientBeginRegenerateKeyOptions)`
+- Function `*TopicsClient.BeginRegenerateKey` return value(s) have been changed from `(TopicsRegenerateKeyPollerResponse, error)` to `(TopicsClientRegenerateKeyPollerResponse, error)`
+- Function `*EventSubscriptionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *EventSubscriptionsGetOptions)` to `(context.Context, string, string, *EventSubscriptionsClientGetOptions)`
+- Function `*EventSubscriptionsClient.Get` return value(s) have been changed from `(EventSubscriptionsGetResponse, error)` to `(EventSubscriptionsClientGetResponse, error)`
+- Function `*DomainsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, DomainUpdateParameters, *DomainsBeginUpdateOptions)` to `(context.Context, string, string, DomainUpdateParameters, *DomainsClientBeginUpdateOptions)`
+- Function `*DomainsClient.BeginUpdate` return value(s) have been changed from `(DomainsUpdatePollerResponse, error)` to `(DomainsClientUpdatePollerResponse, error)`
+- Function `*DomainsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *DomainsBeginDeleteOptions)` to `(context.Context, string, string, *DomainsClientBeginDeleteOptions)`
+- Function `*DomainsClient.BeginDelete` return value(s) have been changed from `(DomainsDeletePollerResponse, error)` to `(DomainsClientDeletePollerResponse, error)`
+- Function `*SystemTopicEventSubscriptionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, EventSubscription, *SystemTopicEventSubscriptionsBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, EventSubscription, *SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(SystemTopicEventSubscriptionsCreateOrUpdatePollerResponse, error)` to `(SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse, error)`
+- Function `*TopicsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *TopicsBeginDeleteOptions)` to `(context.Context, string, string, *TopicsClientBeginDeleteOptions)`
+- Function `*TopicsClient.BeginDelete` return value(s) have been changed from `(TopicsDeletePollerResponse, error)` to `(TopicsClientDeletePollerResponse, error)`
+- Function `*DomainsClient.ListSharedAccessKeys` parameter(s) have been changed from `(context.Context, string, string, *DomainsListSharedAccessKeysOptions)` to `(context.Context, string, string, *DomainsClientListSharedAccessKeysOptions)`
+- Function `*DomainsClient.ListSharedAccessKeys` return value(s) have been changed from `(DomainsListSharedAccessKeysResponse, error)` to `(DomainsClientListSharedAccessKeysResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, Enum20, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, Enum20, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(PrivateEndpointConnectionsDeletePollerResponse, error)` to `(PrivateEndpointConnectionsClientDeletePollerResponse, error)`
+- Function `*ExtensionTopicsClient.Get` parameter(s) have been changed from `(context.Context, string, *ExtensionTopicsGetOptions)` to `(context.Context, string, *ExtensionTopicsClientGetOptions)`
+- Function `*ExtensionTopicsClient.Get` return value(s) have been changed from `(ExtensionTopicsGetResponse, error)` to `(ExtensionTopicsClientGetResponse, error)`
+- Function `*TopicTypesClient.ListEventTypes` parameter(s) have been changed from `(context.Context, string, *TopicTypesListEventTypesOptions)` to `(context.Context, string, *TopicTypesClientListEventTypesOptions)`
+- Function `*TopicTypesClient.ListEventTypes` return value(s) have been changed from `(TopicTypesListEventTypesResponse, error)` to `(TopicTypesClientListEventTypesResponse, error)`
+- Function `*TopicsClient.ListEventTypes` parameter(s) have been changed from `(context.Context, string, string, string, string, *TopicsListEventTypesOptions)` to `(context.Context, string, string, string, string, *TopicsClientListEventTypesOptions)`
+- Function `*TopicsClient.ListEventTypes` return value(s) have been changed from `(TopicsListEventTypesResponse, error)` to `(TopicsClientListEventTypesResponse, error)`
+- Function `*TopicsClient.ListBySubscription` parameter(s) have been changed from `(*TopicsListBySubscriptionOptions)` to `(*TopicsClientListBySubscriptionOptions)`
+- Function `*TopicsClient.ListBySubscription` return value(s) have been changed from `(*TopicsListBySubscriptionPager)` to `(*TopicsClientListBySubscriptionPager)`
+- Function `*TopicsClient.ListSharedAccessKeys` parameter(s) have been changed from `(context.Context, string, string, *TopicsListSharedAccessKeysOptions)` to `(context.Context, string, string, *TopicsClientListSharedAccessKeysOptions)`
+- Function `*TopicsClient.ListSharedAccessKeys` return value(s) have been changed from `(TopicsListSharedAccessKeysResponse, error)` to `(TopicsClientListSharedAccessKeysResponse, error)`
+- Function `*SystemTopicEventSubscriptionsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, *SystemTopicEventSubscriptionsGetOptions)` to `(context.Context, string, string, string, *SystemTopicEventSubscriptionsClientGetOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.Get` return value(s) have been changed from `(SystemTopicEventSubscriptionsGetResponse, error)` to `(SystemTopicEventSubscriptionsClientGetResponse, error)`
+- Function `*EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType` parameter(s) have been changed from `(string, *EventSubscriptionsListGlobalBySubscriptionForTopicTypeOptions)` to `(string, *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions)`
+- Function `*EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType` return value(s) have been changed from `(*EventSubscriptionsListGlobalBySubscriptionForTopicTypePager)` to `(*EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager)`
+- Function `*DomainsClient.ListByResourceGroup` parameter(s) have been changed from `(string, *DomainsListByResourceGroupOptions)` to `(string, *DomainsClientListByResourceGroupOptions)`
+- Function `*DomainsClient.ListByResourceGroup` return value(s) have been changed from `(*DomainsListByResourceGroupPager)` to `(*DomainsClientListByResourceGroupPager)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *PrivateLinkResourcesGetOptions)` to `(context.Context, string, string, string, string, *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesGetResponse, error)` to `(PrivateLinkResourcesClientGetResponse, error)`
+- Function `*EventSubscriptionsClient.ListByResource` parameter(s) have been changed from `(string, string, string, string, *EventSubscriptionsListByResourceOptions)` to `(string, string, string, string, *EventSubscriptionsClientListByResourceOptions)`
+- Function `*EventSubscriptionsClient.ListByResource` return value(s) have been changed from `(*EventSubscriptionsListByResourcePager)` to `(*EventSubscriptionsClientListByResourcePager)`
+- Function `*EventSubscriptionsClient.ListByDomainTopic` parameter(s) have been changed from `(string, string, string, *EventSubscriptionsListByDomainTopicOptions)` to `(string, string, string, *EventSubscriptionsClientListByDomainTopicOptions)`
+- Function `*EventSubscriptionsClient.ListByDomainTopic` return value(s) have been changed from `(*EventSubscriptionsListByDomainTopicPager)` to `(*EventSubscriptionsClientListByDomainTopicPager)`
+- Function `*EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType` parameter(s) have been changed from `(string, string, *EventSubscriptionsListRegionalBySubscriptionForTopicTypeOptions)` to `(string, string, *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions)`
+- Function `*EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType` return value(s) have been changed from `(*EventSubscriptionsListRegionalBySubscriptionForTopicTypePager)` to `(*EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager)`
+- Function `*SystemTopicEventSubscriptionsClient.GetDeliveryAttributes` parameter(s) have been changed from `(context.Context, string, string, string, *SystemTopicEventSubscriptionsGetDeliveryAttributesOptions)` to `(context.Context, string, string, string, *SystemTopicEventSubscriptionsClientGetDeliveryAttributesOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.GetDeliveryAttributes` return value(s) have been changed from `(SystemTopicEventSubscriptionsGetDeliveryAttributesResponse, error)` to `(SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error)`
+- Function `*PrivateLinkResourcesClient.ListByResource` parameter(s) have been changed from `(string, string, string, *PrivateLinkResourcesListByResourceOptions)` to `(string, string, string, *PrivateLinkResourcesClientListByResourceOptions)`
+- Function `*PrivateLinkResourcesClient.ListByResource` return value(s) have been changed from `(*PrivateLinkResourcesListByResourcePager)` to `(*PrivateLinkResourcesClientListByResourcePager)`
+- Function `*EventSubscriptionsClient.ListRegionalByResourceGroup` parameter(s) have been changed from `(string, string, *EventSubscriptionsListRegionalByResourceGroupOptions)` to `(string, string, *EventSubscriptionsClientListRegionalByResourceGroupOptions)`
+- Function `*EventSubscriptionsClient.ListRegionalByResourceGroup` return value(s) have been changed from `(*EventSubscriptionsListRegionalByResourceGroupPager)` to `(*EventSubscriptionsClientListRegionalByResourceGroupPager)`
+- Function `*SystemTopicsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *SystemTopicsGetOptions)` to `(context.Context, string, string, *SystemTopicsClientGetOptions)`
+- Function `*SystemTopicsClient.Get` return value(s) have been changed from `(SystemTopicsGetResponse, error)` to `(SystemTopicsClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(context.Context, *OperationsListOptions)` to `(context.Context, *OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(OperationsListResponse, error)` to `(OperationsClientListResponse, error)`
+- Function `*EventSubscriptionsClient.ListRegionalBySubscription` parameter(s) have been changed from `(string, *EventSubscriptionsListRegionalBySubscriptionOptions)` to `(string, *EventSubscriptionsClientListRegionalBySubscriptionOptions)`
+- Function `*EventSubscriptionsClient.ListRegionalBySubscription` return value(s) have been changed from `(*EventSubscriptionsListRegionalBySubscriptionPager)` to `(*EventSubscriptionsClientListRegionalBySubscriptionPager)`
+- Function `*PrivateEndpointConnectionsClient.ListByResource` parameter(s) have been changed from `(string, Enum21, string, *PrivateEndpointConnectionsListByResourceOptions)` to `(string, Enum21, string, *PrivateEndpointConnectionsClientListByResourceOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByResource` return value(s) have been changed from `(*PrivateEndpointConnectionsListByResourcePager)` to `(*PrivateEndpointConnectionsClientListByResourcePager)`
+- Function `*SystemTopicEventSubscriptionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, string, *SystemTopicEventSubscriptionsBeginDeleteOptions)` to `(context.Context, string, string, string, *SystemTopicEventSubscriptionsClientBeginDeleteOptions)`
+- Function `*SystemTopicEventSubscriptionsClient.BeginDelete` return value(s) have been changed from `(SystemTopicEventSubscriptionsDeletePollerResponse, error)` to `(SystemTopicEventSubscriptionsClientDeletePollerResponse, error)`
+- Function `*EventSubscriptionsClient.GetFullURL` parameter(s) have been changed from `(context.Context, string, string, *EventSubscriptionsGetFullURLOptions)` to `(context.Context, string, string, *EventSubscriptionsClientGetFullURLOptions)`
+- Function `*EventSubscriptionsClient.GetFullURL` return value(s) have been changed from `(EventSubscriptionsGetFullURLResponse, error)` to `(EventSubscriptionsClientGetFullURLResponse, error)`
+- Function `*SystemTopicsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, string, *SystemTopicsBeginDeleteOptions)` to `(context.Context, string, string, *SystemTopicsClientBeginDeleteOptions)`
+- Function `*SystemTopicsClient.BeginDelete` return value(s) have been changed from `(SystemTopicsDeletePollerResponse, error)` to `(SystemTopicsClientDeletePollerResponse, error)`
+- Function `*DomainsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *DomainsGetOptions)` to `(context.Context, string, string, *DomainsClientGetOptions)`
+- Function `*DomainsClient.Get` return value(s) have been changed from `(DomainsGetResponse, error)` to `(DomainsClientGetResponse, error)`
+- Function `*EventSubscriptionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, EventSubscriptionUpdateParameters, *EventSubscriptionsBeginUpdateOptions)` to `(context.Context, string, string, EventSubscriptionUpdateParameters, *EventSubscriptionsClientBeginUpdateOptions)`
+- Function `*EventSubscriptionsClient.BeginUpdate` return value(s) have been changed from `(EventSubscriptionsUpdatePollerResponse, error)` to `(EventSubscriptionsClientUpdatePollerResponse, error)`
+- Function `*SystemTopicsClient.ListBySubscription` parameter(s) have been changed from `(*SystemTopicsListBySubscriptionOptions)` to `(*SystemTopicsClientListBySubscriptionOptions)`
+- Function `*SystemTopicsClient.ListBySubscription` return value(s) have been changed from `(*SystemTopicsListBySubscriptionPager)` to `(*SystemTopicsClientListBySubscriptionPager)`
+- Function `*PrivateEndpointConnectionsListByResourcePager.NextPage` has been removed
+- Function `*EventSubscriptionsListGlobalBySubscriptionPager.Err` has been removed
+- Function `*TopicsListBySubscriptionPager.Err` has been removed
+- Function `*TopicsRegenerateKeyPoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListGlobalByResourceGroupForTopicTypePager.PageResponse` has been removed
+- Function `PrivateEndpointConnection.MarshalJSON` has been removed
+- Function `SystemTopicEventSubscriptionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*EventSubscriptionsListByResourcePager.NextPage` has been removed
+- Function `*DomainsUpdatePoller.FinalResponse` has been removed
+- Function `*DomainsDeletePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsDeletePollerResponse.Resume` has been removed
+- Function `*DomainsCreateOrUpdatePoller.Done` has been removed
+- Function `*AdvancedFilter.UnmarshalJSON` has been removed
+- Function `*EventSubscriptionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*SystemTopicsCreateOrUpdatePoller.Poll` has been removed
+- Function `DomainTopic.MarshalJSON` has been removed
+- Function `*SystemTopicsCreateOrUpdatePoller.Done` has been removed
+- Function `*EventSubscriptionsListRegionalBySubscriptionPager.NextPage` has been removed
+- Function `*EventSubscriptionsUpdatePoller.Poll` has been removed
+- Function `*EventSubscriptionsListGlobalByResourceGroupPager.Err` has been removed
+- Function `*SystemTopicEventSubscriptionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DomainTopicsListByDomainPager.PageResponse` has been removed
+- Function `*TopicsUpdatePollerResponse.Resume` has been removed
+- Function `*DomainsListBySubscriptionPager.PageResponse` has been removed
+- Function `*SystemTopicEventSubscriptionsDeletePoller.ResumeToken` has been removed
+- Function `*SystemTopicEventSubscriptionsListBySystemTopicPager.Err` has been removed
+- Function `*SystemTopicEventSubscriptionsUpdatePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListByResourcePager.PageResponse` has been removed
+- Function `*TopicsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*DomainTopicsCreateOrUpdatePoller.Poll` has been removed
+- Function `*TopicsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.ResumeToken` has been removed
+- Function `*EventSubscriptionsListByDomainTopicPager.Err` has been removed
+- Function `*PrivateLinkResourcesListByResourcePager.Err` has been removed
+- Function `*DomainsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionsListRegionalByResourceGroupPager.NextPage` has been removed
+- Function `*DomainTopicsCreateOrUpdatePoller.Done` has been removed
+- Function `*EventSubscriptionsUpdatePoller.Done` has been removed
+- Function `TopicsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DeadLetterDestination.UnmarshalJSON` has been removed
+- Function `*SystemTopicsDeletePoller.FinalResponse` has been removed
+- Function `*SystemTopicEventSubscriptionsListBySystemTopicPager.NextPage` has been removed
+- Function `*SystemTopicsUpdatePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionsUpdatePoller.ResumeToken` has been removed
+- Function `*EventSubscriptionsListRegionalByResourceGroupForTopicTypePager.PageResponse` has been removed
+- Function `*SystemTopicsListBySubscriptionPager.NextPage` has been removed
+- Function `DomainsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*InputSchemaMapping.UnmarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Poll` has been removed
+- Function `*DomainsListByResourceGroupPager.PageResponse` has been removed
+- Function `SystemTopicsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.Poll` has been removed
+- Function `*SystemTopicsUpdatePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListGlobalBySubscriptionForTopicTypePager.Err` has been removed
+- Function `*EventSubscriptionsUpdatePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionsListGlobalBySubscriptionPager.NextPage` has been removed
+- Function `*DomainTopicsDeletePoller.Done` has been removed
+- Function `*SystemTopicEventSubscriptionsDeletePoller.Done` has been removed
+- Function `*TopicsRegenerateKeyPoller.FinalResponse` has been removed
+- Function `*SystemTopicEventSubscriptionsCreateOrUpdatePoller.Poll` has been removed
+- Function `*DomainTopicsDeletePoller.Poll` has been removed
+- Function `*EventSubscriptionsDeletePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListRegionalByResourceGroupForTopicTypePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByResourcePager.Err` has been removed
+- Function `*DomainsListBySubscriptionPager.Err` has been removed
+- Function `*DomainsUpdatePoller.Poll` has been removed
+- Function `SystemTopicsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*TopicsCreateOrUpdatePoller.Done` has been removed
+- Function `EventType.MarshalJSON` has been removed
+- Function `*DomainsDeletePoller.ResumeToken` has been removed
+- Function `*SystemTopicEventSubscriptionsUpdatePoller.ResumeToken` has been removed
+- Function `*DomainsDeletePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionsDeletePoller.Poll` has been removed
+- Function `*SystemTopicsDeletePoller.Poll` has been removed
+- Function `*EventSubscriptionsListByResourcePager.Err` has been removed
+- Function `*SystemTopicEventSubscriptionsDeletePollerResponse.Resume` has been removed
+- Function `*TopicsListByResourceGroupPager.PageResponse` has been removed
+- Function `*EventSubscriptionsListGlobalByResourceGroupForTopicTypePager.Err` has been removed
+- Function `TopicTypeInfo.MarshalJSON` has been removed
+- Function `*EventSubscriptionsDeletePoller.ResumeToken` has been removed
+- Function `*TopicsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PrivateEndpointConnectionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `TopicsRegenerateKeyPollerResponse.PollUntilDone` has been removed
+- Function `*SystemTopicsListByResourceGroupPager.Err` has been removed
+- Function `ExtensionTopic.MarshalJSON` has been removed
+- Function `SystemTopicEventSubscriptionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EventSubscriptionsListRegionalBySubscriptionForTopicTypePager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.ResumeToken` has been removed
+- Function `*EventSubscriptionsListByDomainTopicPager.NextPage` has been removed
+- Function `*TopicsRegenerateKeyPollerResponse.Resume` has been removed
+- Function `*SystemTopicsListByResourceGroupPager.PageResponse` has been removed
+- Function `DomainTopicsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SystemTopicsDeletePoller.Done` has been removed
+- Function `*DomainsDeletePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListGlobalByResourceGroupPager.NextPage` has been removed
+- Function `*PrivateEndpointConnectionsListByResourcePager.PageResponse` has been removed
+- Function `EventSubscriptionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `PrivateEndpointConnectionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DomainTopicsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DomainsUpdatePoller.ResumeToken` has been removed
+- Function `*TopicsRegenerateKeyPoller.Poll` has been removed
+- Function `*TopicsRegenerateKeyPoller.ResumeToken` has been removed
+- Function `*DomainsListBySubscriptionPager.NextPage` has been removed
+- Function `*SystemTopicEventSubscriptionsUpdatePoller.Poll` has been removed
+- Function `*DeliveryAttributeMapping.UnmarshalJSON` has been removed
+- Function `*SystemTopicEventSubscriptionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*DomainTopicsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*TopicsDeletePoller.Done` has been removed
+- Function `*EventSubscriptionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*TopicsDeletePoller.Poll` has been removed
+- Function `*TopicsCreateOrUpdatePoller.Poll` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListByDomainTopicPager.PageResponse` has been removed
+- Function `*EventSubscriptionsCreateOrUpdatePoller.Done` has been removed
+- Function `*EventSubscriptionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SystemTopicEventSubscriptionsUpdatePoller.Done` has been removed
+- Function `SystemTopicsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*SystemTopicEventSubscriptionsListBySystemTopicPager.PageResponse` has been removed
+- Function `*DomainTopicsDeletePollerResponse.Resume` has been removed
+- Function `*SystemTopicEventSubscriptionsCreateOrUpdatePoller.Done` has been removed
+- Function `*EventSubscriptionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionDestination.UnmarshalJSON` has been removed
+- Function `*TopicsListBySubscriptionPager.NextPage` has been removed
+- Function `*EventSubscriptionsListRegionalByResourceGroupPager.Err` has been removed
+- Function `*DomainTopicsDeletePoller.FinalResponse` has been removed
+- Function `*TopicsUpdatePoller.Done` has been removed
+- Function `*TopicsDeletePoller.ResumeToken` has been removed
+- Function `SystemTopicEventSubscriptionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*EventSubscriptionsUpdatePoller.FinalResponse` has been removed
+- Function `*DomainTopicsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PrivateLinkResourcesListByResourcePager.NextPage` has been removed
+- Function `*EventSubscriptionsListRegionalBySubscriptionForTopicTypePager.PageResponse` has been removed
+- Function `*DomainsCreateOrUpdatePoller.Poll` has been removed
+- Function `DomainsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*DomainsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `*EventSubscriptionsDeletePoller.Done` has been removed
+- Function `*EventSubscriptionsListRegionalBySubscriptionForTopicTypePager.Err` has been removed
+- Function `*DomainsUpdatePollerResponse.Resume` has been removed
+- Function `TopicsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `EventSubscriptionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*DomainsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*SystemTopicsListByResourceGroupPager.NextPage` has been removed
+- Function `*EventSubscriptionsListGlobalByResourceGroupForTopicTypePager.NextPage` has been removed
+- Function `*EventSubscriptionsListRegionalBySubscriptionPager.Err` has been removed
+- Function `EventSubscriptionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*TopicsUpdatePoller.Poll` has been removed
+- Function `*TopicsUpdatePoller.ResumeToken` has been removed
+- Function `*SystemTopicsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*TopicsDeletePollerResponse.Resume` has been removed
+- Function `*SystemTopicEventSubscriptionsUpdatePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionsListRegionalBySubscriptionPager.PageResponse` has been removed
+- Function `*EventSubscriptionsListRegionalByResourceGroupPager.PageResponse` has been removed
+- Function `*DomainTopicsDeletePoller.ResumeToken` has been removed
+- Function `*EventSubscriptionsListGlobalBySubscriptionPager.PageResponse` has been removed
+- Function `*DomainsListByResourceGroupPager.Err` has been removed
+- Function `*SystemTopicsUpdatePoller.Poll` has been removed
+- Function `*SystemTopicsUpdatePoller.ResumeToken` has been removed
+- Function `*DomainsUpdatePoller.Done` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePollerResponse.Resume` has been removed
+- Function `*SystemTopicsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*EventSubscriptionsListRegionalByResourceGroupForTopicTypePager.Err` has been removed
+- Function `*TopicsListByResourceGroupPager.Err` has been removed
+- Function `TopicsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*SystemTopicsListBySubscriptionPager.PageResponse` has been removed
+- Function `*SystemTopicsDeletePoller.ResumeToken` has been removed
+- Function `DomainTopicsDeletePollerResponse.PollUntilDone` has been removed
+- Function `EventSubscription.MarshalJSON` has been removed
+- Function `*DomainTopicsListByDomainPager.Err` has been removed
+- Function `*SystemTopicEventSubscriptionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `*PrivateEndpointConnectionsUpdatePoller.Done` has been removed
+- Function `*PrivateLinkResourcesListByResourcePager.PageResponse` has been removed
+- Function `*SystemTopicsUpdatePoller.Done` has been removed
+- Function `*SystemTopicsListBySubscriptionPager.Err` has been removed
+- Function `*PrivateEndpointConnectionsDeletePoller.Done` has been removed
+- Function `*TopicsListByResourceGroupPager.NextPage` has been removed
+- Function `*EventSubscriptionsListGlobalByResourceGroupPager.PageResponse` has been removed
+- Function `*SystemTopicEventSubscriptionsDeletePoller.Poll` has been removed
+- Function `*DomainsDeletePoller.Done` has been removed
+- Function `*EventSubscriptionsDeletePollerResponse.Resume` has been removed
+- Function `*TopicsDeletePoller.FinalResponse` has been removed
+- Function `*DomainTopicsListByDomainPager.NextPage` has been removed
+- Function `*SystemTopicEventSubscriptionsDeletePoller.FinalResponse` has been removed
+- Function `*EventSubscriptionsListGlobalBySubscriptionForTopicTypePager.NextPage` has been removed
+- Function `*SystemTopicsDeletePollerResponse.Resume` has been removed
+- Function `*TopicsUpdatePoller.FinalResponse` has been removed
+- Function `*DomainsListByResourceGroupPager.NextPage` has been removed
+- Function `DomainsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EventSubscriptionsListGlobalBySubscriptionForTopicTypePager.PageResponse` has been removed
+- Function `*TopicsListBySubscriptionPager.PageResponse` has been removed
+- Function `*SystemTopicsCreateOrUpdatePoller.ResumeToken` has been removed
+- Struct `DomainTopicsBeginCreateOrUpdateOptions` has been removed
+- Struct `DomainTopicsBeginDeleteOptions` has been removed
+- Struct `DomainTopicsCreateOrUpdatePoller` has been removed
+- Struct `DomainTopicsCreateOrUpdatePollerResponse` has been removed
+- Struct `DomainTopicsCreateOrUpdateResponse` has been removed
+- Struct `DomainTopicsCreateOrUpdateResult` has been removed
+- Struct `DomainTopicsDeletePoller` has been removed
+- Struct `DomainTopicsDeletePollerResponse` has been removed
+- Struct `DomainTopicsDeleteResponse` has been removed
+- Struct `DomainTopicsGetOptions` has been removed
+- Struct `DomainTopicsGetResponse` has been removed
+- Struct `DomainTopicsGetResult` has been removed
+- Struct `DomainTopicsListByDomainOptions` has been removed
+- Struct `DomainTopicsListByDomainPager` has been removed
+- Struct `DomainTopicsListByDomainResponse` has been removed
+- Struct `DomainTopicsListByDomainResult` has been removed
+- Struct `DomainsBeginCreateOrUpdateOptions` has been removed
+- Struct `DomainsBeginDeleteOptions` has been removed
+- Struct `DomainsBeginUpdateOptions` has been removed
+- Struct `DomainsCreateOrUpdatePoller` has been removed
+- Struct `DomainsCreateOrUpdatePollerResponse` has been removed
+- Struct `DomainsCreateOrUpdateResponse` has been removed
+- Struct `DomainsCreateOrUpdateResult` has been removed
+- Struct `DomainsDeletePoller` has been removed
+- Struct `DomainsDeletePollerResponse` has been removed
+- Struct `DomainsDeleteResponse` has been removed
+- Struct `DomainsGetOptions` has been removed
+- Struct `DomainsGetResponse` has been removed
+- Struct `DomainsGetResult` has been removed
+- Struct `DomainsListByResourceGroupOptions` has been removed
+- Struct `DomainsListByResourceGroupPager` has been removed
+- Struct `DomainsListByResourceGroupResponse` has been removed
+- Struct `DomainsListByResourceGroupResult` has been removed
+- Struct `DomainsListBySubscriptionOptions` has been removed
+- Struct `DomainsListBySubscriptionPager` has been removed
+- Struct `DomainsListBySubscriptionResponse` has been removed
+- Struct `DomainsListBySubscriptionResult` has been removed
+- Struct `DomainsListSharedAccessKeysOptions` has been removed
+- Struct `DomainsListSharedAccessKeysResponse` has been removed
+- Struct `DomainsListSharedAccessKeysResult` has been removed
+- Struct `DomainsRegenerateKeyOptions` has been removed
+- Struct `DomainsRegenerateKeyResponse` has been removed
+- Struct `DomainsRegenerateKeyResult` has been removed
+- Struct `DomainsUpdatePoller` has been removed
+- Struct `DomainsUpdatePollerResponse` has been removed
+- Struct `DomainsUpdateResponse` has been removed
+- Struct `DomainsUpdateResult` has been removed
+- Struct `EventSubscriptionsBeginCreateOrUpdateOptions` has been removed
+- Struct `EventSubscriptionsBeginDeleteOptions` has been removed
+- Struct `EventSubscriptionsBeginUpdateOptions` has been removed
+- Struct `EventSubscriptionsCreateOrUpdatePoller` has been removed
+- Struct `EventSubscriptionsCreateOrUpdatePollerResponse` has been removed
+- Struct `EventSubscriptionsCreateOrUpdateResponse` has been removed
+- Struct `EventSubscriptionsCreateOrUpdateResult` has been removed
+- Struct `EventSubscriptionsDeletePoller` has been removed
+- Struct `EventSubscriptionsDeletePollerResponse` has been removed
+- Struct `EventSubscriptionsDeleteResponse` has been removed
+- Struct `EventSubscriptionsGetDeliveryAttributesOptions` has been removed
+- Struct `EventSubscriptionsGetDeliveryAttributesResponse` has been removed
+- Struct `EventSubscriptionsGetDeliveryAttributesResult` has been removed
+- Struct `EventSubscriptionsGetFullURLOptions` has been removed
+- Struct `EventSubscriptionsGetFullURLResponse` has been removed
+- Struct `EventSubscriptionsGetFullURLResult` has been removed
+- Struct `EventSubscriptionsGetOptions` has been removed
+- Struct `EventSubscriptionsGetResponse` has been removed
+- Struct `EventSubscriptionsGetResult` has been removed
+- Struct `EventSubscriptionsListByDomainTopicOptions` has been removed
+- Struct `EventSubscriptionsListByDomainTopicPager` has been removed
+- Struct `EventSubscriptionsListByDomainTopicResponse` has been removed
+- Struct `EventSubscriptionsListByDomainTopicResult` has been removed
+- Struct `EventSubscriptionsListByResourceOptions` has been removed
+- Struct `EventSubscriptionsListByResourcePager` has been removed
+- Struct `EventSubscriptionsListByResourceResponse` has been removed
+- Struct `EventSubscriptionsListByResourceResult` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupForTopicTypeOptions` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupForTopicTypePager` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupForTopicTypeResponse` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupForTopicTypeResult` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupOptions` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupPager` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupResponse` has been removed
+- Struct `EventSubscriptionsListGlobalByResourceGroupResult` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionForTopicTypeOptions` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionForTopicTypePager` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionForTopicTypeResponse` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionForTopicTypeResult` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionOptions` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionPager` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionResponse` has been removed
+- Struct `EventSubscriptionsListGlobalBySubscriptionResult` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupForTopicTypeOptions` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupForTopicTypePager` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupForTopicTypeResponse` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupForTopicTypeResult` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupOptions` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupPager` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupResponse` has been removed
+- Struct `EventSubscriptionsListRegionalByResourceGroupResult` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionForTopicTypeOptions` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionForTopicTypePager` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionForTopicTypeResponse` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionForTopicTypeResult` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionOptions` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionPager` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionResponse` has been removed
+- Struct `EventSubscriptionsListRegionalBySubscriptionResult` has been removed
+- Struct `EventSubscriptionsUpdatePoller` has been removed
+- Struct `EventSubscriptionsUpdatePollerResponse` has been removed
+- Struct `EventSubscriptionsUpdateResponse` has been removed
+- Struct `EventSubscriptionsUpdateResult` has been removed
+- Struct `ExtensionTopicsGetOptions` has been removed
+- Struct `ExtensionTopicsGetResponse` has been removed
+- Struct `ExtensionTopicsGetResult` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResultEnvelope` has been removed
+- Struct `PrivateEndpointConnectionsBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsBeginUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsDeletePoller` has been removed
+- Struct `PrivateEndpointConnectionsDeletePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsGetResult` has been removed
+- Struct `PrivateEndpointConnectionsListByResourceOptions` has been removed
+- Struct `PrivateEndpointConnectionsListByResourcePager` has been removed
+- Struct `PrivateEndpointConnectionsListByResourceResponse` has been removed
+- Struct `PrivateEndpointConnectionsListByResourceResult` has been removed
+- Struct `PrivateEndpointConnectionsUpdatePoller` has been removed
+- Struct `PrivateEndpointConnectionsUpdatePollerResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsUpdateResult` has been removed
+- Struct `PrivateLinkResourcesGetOptions` has been removed
+- Struct `PrivateLinkResourcesGetResponse` has been removed
+- Struct `PrivateLinkResourcesGetResult` has been removed
+- Struct `PrivateLinkResourcesListByResourceOptions` has been removed
+- Struct `PrivateLinkResourcesListByResourcePager` has been removed
+- Struct `PrivateLinkResourcesListByResourceResponse` has been removed
+- Struct `PrivateLinkResourcesListByResourceResult` has been removed
+- Struct `SystemTopicEventSubscriptionsBeginCreateOrUpdateOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsBeginDeleteOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsBeginUpdateOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsCreateOrUpdatePoller` has been removed
+- Struct `SystemTopicEventSubscriptionsCreateOrUpdatePollerResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsCreateOrUpdateResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsCreateOrUpdateResult` has been removed
+- Struct `SystemTopicEventSubscriptionsDeletePoller` has been removed
+- Struct `SystemTopicEventSubscriptionsDeletePollerResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsDeleteResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsGetDeliveryAttributesOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsGetDeliveryAttributesResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsGetDeliveryAttributesResult` has been removed
+- Struct `SystemTopicEventSubscriptionsGetFullURLOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsGetFullURLResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsGetFullURLResult` has been removed
+- Struct `SystemTopicEventSubscriptionsGetOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsGetResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsGetResult` has been removed
+- Struct `SystemTopicEventSubscriptionsListBySystemTopicOptions` has been removed
+- Struct `SystemTopicEventSubscriptionsListBySystemTopicPager` has been removed
+- Struct `SystemTopicEventSubscriptionsListBySystemTopicResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsListBySystemTopicResult` has been removed
+- Struct `SystemTopicEventSubscriptionsUpdatePoller` has been removed
+- Struct `SystemTopicEventSubscriptionsUpdatePollerResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsUpdateResponse` has been removed
+- Struct `SystemTopicEventSubscriptionsUpdateResult` has been removed
+- Struct `SystemTopicsBeginCreateOrUpdateOptions` has been removed
+- Struct `SystemTopicsBeginDeleteOptions` has been removed
+- Struct `SystemTopicsBeginUpdateOptions` has been removed
+- Struct `SystemTopicsCreateOrUpdatePoller` has been removed
+- Struct `SystemTopicsCreateOrUpdatePollerResponse` has been removed
+- Struct `SystemTopicsCreateOrUpdateResponse` has been removed
+- Struct `SystemTopicsCreateOrUpdateResult` has been removed
+- Struct `SystemTopicsDeletePoller` has been removed
+- Struct `SystemTopicsDeletePollerResponse` has been removed
+- Struct `SystemTopicsDeleteResponse` has been removed
+- Struct `SystemTopicsGetOptions` has been removed
+- Struct `SystemTopicsGetResponse` has been removed
+- Struct `SystemTopicsGetResult` has been removed
+- Struct `SystemTopicsListByResourceGroupOptions` has been removed
+- Struct `SystemTopicsListByResourceGroupPager` has been removed
+- Struct `SystemTopicsListByResourceGroupResponse` has been removed
+- Struct `SystemTopicsListByResourceGroupResult` has been removed
+- Struct `SystemTopicsListBySubscriptionOptions` has been removed
+- Struct `SystemTopicsListBySubscriptionPager` has been removed
+- Struct `SystemTopicsListBySubscriptionResponse` has been removed
+- Struct `SystemTopicsListBySubscriptionResult` has been removed
+- Struct `SystemTopicsUpdatePoller` has been removed
+- Struct `SystemTopicsUpdatePollerResponse` has been removed
+- Struct `SystemTopicsUpdateResponse` has been removed
+- Struct `SystemTopicsUpdateResult` has been removed
+- Struct `TopicTypesGetOptions` has been removed
+- Struct `TopicTypesGetResponse` has been removed
+- Struct `TopicTypesGetResult` has been removed
+- Struct `TopicTypesListEventTypesOptions` has been removed
+- Struct `TopicTypesListEventTypesResponse` has been removed
+- Struct `TopicTypesListEventTypesResult` has been removed
+- Struct `TopicTypesListOptions` has been removed
+- Struct `TopicTypesListResponse` has been removed
+- Struct `TopicTypesListResultEnvelope` has been removed
+- Struct `TopicsBeginCreateOrUpdateOptions` has been removed
+- Struct `TopicsBeginDeleteOptions` has been removed
+- Struct `TopicsBeginRegenerateKeyOptions` has been removed
+- Struct `TopicsBeginUpdateOptions` has been removed
+- Struct `TopicsCreateOrUpdatePoller` has been removed
+- Struct `TopicsCreateOrUpdatePollerResponse` has been removed
+- Struct `TopicsCreateOrUpdateResponse` has been removed
+- Struct `TopicsCreateOrUpdateResult` has been removed
+- Struct `TopicsDeletePoller` has been removed
+- Struct `TopicsDeletePollerResponse` has been removed
+- Struct `TopicsDeleteResponse` has been removed
+- Struct `TopicsGetOptions` has been removed
+- Struct `TopicsGetResponse` has been removed
+- Struct `TopicsGetResult` has been removed
+- Struct `TopicsListByResourceGroupOptions` has been removed
+- Struct `TopicsListByResourceGroupPager` has been removed
+- Struct `TopicsListByResourceGroupResponse` has been removed
+- Struct `TopicsListByResourceGroupResult` has been removed
+- Struct `TopicsListBySubscriptionOptions` has been removed
+- Struct `TopicsListBySubscriptionPager` has been removed
+- Struct `TopicsListBySubscriptionResponse` has been removed
+- Struct `TopicsListBySubscriptionResult` has been removed
+- Struct `TopicsListEventTypesOptions` has been removed
+- Struct `TopicsListEventTypesResponse` has been removed
+- Struct `TopicsListEventTypesResult` has been removed
+- Struct `TopicsListSharedAccessKeysOptions` has been removed
+- Struct `TopicsListSharedAccessKeysResponse` has been removed
+- Struct `TopicsListSharedAccessKeysResult` has been removed
+- Struct `TopicsRegenerateKeyPoller` has been removed
+- Struct `TopicsRegenerateKeyPollerResponse` has been removed
+- Struct `TopicsRegenerateKeyResponse` has been removed
+- Struct `TopicsRegenerateKeyResult` has been removed
+- Struct `TopicsUpdatePoller` has been removed
+- Struct `TopicsUpdatePollerResponse` has been removed
+- Struct `TopicsUpdateResponse` has been removed
+- Struct `TopicsUpdateResult` has been removed
+- Field `EventSubscriptionDestination` of struct `ServiceBusTopicEventSubscriptionDestination` has been removed
+- Field `Resource` of struct `EventType` has been removed
+- Field `DeliveryAttributeMapping` of struct `StaticDeliveryAttributeMapping` has been removed
+- Field `Resource` of struct `ExtensionTopic` has been removed
+- Field `EventSubscriptionDestination` of struct `HybridConnectionEventSubscriptionDestination` has been removed
+- Field `Resource` of struct `TrackedResource` has been removed
+- Field `AdvancedFilter` of struct `BoolEqualsAdvancedFilter` has been removed
+- Field `AdvancedFilter` of struct `NumberInAdvancedFilter` has been removed
+- Field `AdvancedFilter` of struct `StringBeginsWithAdvancedFilter` has been removed
+- Field `AdvancedFilter` of struct `StringContainsAdvancedFilter` has been removed
+- Field `TrackedResource` of struct `Domain` has been removed
+- Field `AdvancedFilter` of struct `NumberGreaterThanAdvancedFilter` has been removed
+- Field `Resource` of struct `PrivateEndpointConnection` has been removed
+- Field `TrackedResource` of struct `SystemTopic` has been removed
+- Field `Resource` of struct `DomainTopic` has been removed
+- Field `EventSubscriptionDestination` of struct `AzureFunctionEventSubscriptionDestination` has been removed
+- Field `AdvancedFilter` of struct `StringNotInAdvancedFilter` has been removed
+- Field `Resource` of struct `EventSubscription` has been removed
+- Field `AdvancedFilter` of struct `NumberLessThanAdvancedFilter` has been removed
+- Field `AdvancedFilter` of struct `StringEndsWithAdvancedFilter` has been removed
+- Field `EventSubscriptionDestination` of struct `ServiceBusQueueEventSubscriptionDestination` has been removed
+- Field `EventSubscriptionDestination` of struct `EventHubEventSubscriptionDestination` has been removed
+- Field `Resource` of struct `TopicTypeInfo` has been removed
+- Field `TrackedResource` of struct `Topic` has been removed
+- Field `EventSubscriptionDestination` of struct `WebHookEventSubscriptionDestination` has been removed
+- Field `DeliveryAttributeMapping` of struct `DynamicDeliveryAttributeMapping` has been removed
+- Field `DeadLetterDestination` of struct `StorageBlobDeadLetterDestination` has been removed
+- Field `AdvancedFilter` of struct `NumberNotInAdvancedFilter` has been removed
+- Field `AdvancedFilter` of struct `NumberGreaterThanOrEqualsAdvancedFilter` has been removed
+- Field `InputSchemaMapping` of struct `JSONInputSchemaMapping` has been removed
+- Field `EventSubscriptionDestination` of struct `StorageQueueEventSubscriptionDestination` has been removed
+- Field `AdvancedFilter` of struct `NumberLessThanOrEqualsAdvancedFilter` has been removed
+- Field `AdvancedFilter` of struct `StringInAdvancedFilter` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `AdvancedFilterOperatorTypeNumberNotInRange`
+- New const `AdvancedFilterOperatorTypeStringNotContains`
+- New const `AdvancedFilterOperatorTypeNumberInRange`
+- New const `AdvancedFilterOperatorTypeStringNotEndsWith`
+- New const `AdvancedFilterOperatorTypeStringNotBeginsWith`
+- New const `AdvancedFilterOperatorTypeIsNullOrUndefined`
+- New const `AdvancedFilterOperatorTypeIsNotNull`
+- New function `*DomainsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DomainsClient, string) error`
+- New function `*SystemTopicEventSubscriptionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (SystemTopicEventSubscriptionsClientCreateOrUpdateResponse, error)`
+- New function `*SystemTopicsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `DomainsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DomainsClientCreateOrUpdateResponse, error)`
+- New function `*SystemTopicEventSubscriptionsClientListBySystemTopicPager.Err() error`
+- New function `*DomainTopicsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager.NextPage(context.Context) bool`
+- New function `*AzureFunctionEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*EventSubscriptionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventHubEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*EventSubscriptionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventSubscriptionsClientListGlobalByResourceGroupPager.Err() error`
+- New function `*TopicsClientDeletePoller.FinalResponse(context.Context) (TopicsClientDeleteResponse, error)`
+- New function `*NumberNotInRangeAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `NumberNotInRangeAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `EventSubscriptionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (EventSubscriptionsClientCreateOrUpdateResponse, error)`
+- New function `*DomainsClientListBySubscriptionPager.PageResponse() DomainsClientListBySubscriptionResponse`
+- New function `*EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager.PageResponse() EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse`
+- New function `*EventSubscriptionsClientListRegionalBySubscriptionPager.Err() error`
+- New function `*IsNotNullAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*BoolEqualsAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `IsNullOrUndefinedAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `*NumberLessThanAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*SystemTopicsClientCreateOrUpdatePoller.Done() bool`
+- New function `*TopicsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager.NextPage(context.Context) bool`
+- New function `*EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager.PageResponse() EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse`
+- New function `*NumberGreaterThanOrEqualsAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*IsNotNullAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `SystemTopicsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SystemTopicsClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `SystemTopicsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SystemTopicsClientDeleteResponse, error)`
+- New function `*SystemTopicsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DomainTopicsClientDeletePoller.FinalResponse(context.Context) (DomainTopicsClientDeleteResponse, error)`
+- New function `*TopicsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `DomainTopicsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DomainTopicsClientDeleteResponse, error)`
+- New function `*DomainsClientListByResourceGroupPager.PageResponse() DomainsClientListByResourceGroupResponse`
+- New function `*StringInAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*PrivateEndpointConnectionsClientUpdatePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager.Err() error`
+- New function `*SystemTopicsClientDeletePoller.FinalResponse(context.Context) (SystemTopicsClientDeleteResponse, error)`
+- New function `*NumberGreaterThanAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*DomainsClientCreateOrUpdatePoller.Done() bool`
+- New function `*TopicsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*NumberInRangeAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `*StringNotEndsWithAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*SystemTopicsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventSubscriptionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *EventSubscriptionsClient, string) error`
+- New function `*DomainsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*SystemTopicsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*NumberNotInAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager.PageResponse() EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse`
+- New function `*NumberInAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*TopicsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `NumberInRangeAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `*TopicsClientRegenerateKeyPoller.Done() bool`
+- New function `DomainsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DomainsClientUpdateResponse, error)`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientUpdateResponse, error)`
+- New function `*SystemTopicsClientUpdatePollerResponse.Resume(context.Context, *SystemTopicsClient, string) error`
+- New function `*TopicsClientRegenerateKeyPoller.ResumeToken() (string, error)`
+- New function `*HybridConnectionEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*EventSubscriptionsClientListRegionalBySubscriptionPager.PageResponse() EventSubscriptionsClientListRegionalBySubscriptionResponse`
+- New function `EventSubscriptionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (EventSubscriptionsClientDeleteResponse, error)`
+- New function `*StorageQueueEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager.Err() error`
+- New function `*DomainsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DomainsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DomainsClientUpdatePollerResponse.Resume(context.Context, *DomainsClient, string) error`
+- New function `PrivateEndpointConnectionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientUpdateResponse, error)`
+- New function `*EventSubscriptionsClientListByDomainTopicPager.PageResponse() EventSubscriptionsClientListByDomainTopicResponse`
+- New function `*ServiceBusTopicEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*EventSubscriptionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*EventSubscriptionsClientDeletePoller.FinalResponse(context.Context) (EventSubscriptionsClientDeleteResponse, error)`
+- New function `EventSubscriptionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (EventSubscriptionsClientUpdateResponse, error)`
+- New function `*EventSubscriptionsClientListRegionalByResourceGroupPager.PageResponse() EventSubscriptionsClientListRegionalByResourceGroupResponse`
+- New function `*EventSubscriptionsClientCreateOrUpdatePoller.FinalResponse(context.Context) (EventSubscriptionsClientCreateOrUpdateResponse, error)`
+- New function `*IsNullOrUndefinedAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*SystemTopicsClientDeletePoller.Done() bool`
+- New function `*DomainsClientDeletePollerResponse.Resume(context.Context, *DomainsClient, string) error`
+- New function `*TopicsClientRegenerateKeyPollerResponse.Resume(context.Context, *TopicsClient, string) error`
+- New function `*SystemTopicsClientCreateOrUpdatePoller.FinalResponse(context.Context) (SystemTopicsClientCreateOrUpdateResponse, error)`
+- New function `*SystemTopicsClientListBySubscriptionPager.Err() error`
+- New function `*EventSubscriptionsClientUpdatePollerResponse.Resume(context.Context, *EventSubscriptionsClient, string) error`
+- New function `*EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager.Err() error`
+- New function `*JSONInputSchemaMapping.GetInputSchemaMapping() *InputSchemaMapping`
+- New function `*SystemTopicEventSubscriptionsClientDeletePollerResponse.Resume(context.Context, *SystemTopicEventSubscriptionsClient, string) error`
+- New function `*TopicsClientUpdatePoller.FinalResponse(context.Context) (TopicsClientUpdateResponse, error)`
+- New function `*DomainsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*StringNotInAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*NumberNotInRangeAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*TopicsClientListByResourceGroupPager.PageResponse() TopicsClientListByResourceGroupResponse`
+- New function `*TopicsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SystemTopicEventSubscriptionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*SystemTopicsClientDeletePollerResponse.Resume(context.Context, *SystemTopicsClient, string) error`
+- New function `TopicsClientRegenerateKeyPollerResponse.PollUntilDone(context.Context, time.Duration) (TopicsClientRegenerateKeyResponse, error)`
+- New function `*TopicsClientDeletePollerResponse.Resume(context.Context, *TopicsClient, string) error`
+- New function `*NumberInRangeAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*StringContainsAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*PrivateEndpointConnectionsClientListByResourcePager.NextPage(context.Context) bool`
+- New function `*EventSubscriptionsClientCreateOrUpdatePoller.Done() bool`
+- New function `*TopicsClientCreateOrUpdatePoller.Done() bool`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*EventSubscriptionsClientListRegionalByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*SystemTopicEventSubscriptionsClientListBySystemTopicPager.NextPage(context.Context) bool`
+- New function `*DomainsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*DomainsClientListByResourceGroupPager.Err() error`
+- New function `*DomainTopicsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DomainTopicsClientListByDomainPager.Err() error`
+- New function `*SystemTopicsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `StringNotContainsAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `IsNotNullAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `*StringNotBeginsWithAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*DomainsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*StringNotEndsWithAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `*EventSubscriptionsClientListByResourcePager.NextPage(context.Context) bool`
+- New function `*EventSubscriptionsClientListGlobalBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateLinkResourcesClientListByResourcePager.NextPage(context.Context) bool`
+- New function `*DomainsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse.Resume(context.Context, *SystemTopicEventSubscriptionsClient, string) error`
+- New function `StringNotBeginsWithAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `*SystemTopicsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SystemTopicsClientUpdatePoller.FinalResponse(context.Context) (SystemTopicsClientUpdateResponse, error)`
+- New function `*DomainTopicsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DomainTopicsClientCreateOrUpdateResponse, error)`
+- New function `*DomainTopicsClientListByDomainPager.NextPage(context.Context) bool`
+- New function `*TopicsClientCreateOrUpdatePoller.FinalResponse(context.Context) (TopicsClientCreateOrUpdateResponse, error)`
+- New function `*DomainTopicsClientListByDomainPager.PageResponse() DomainTopicsClientListByDomainResponse`
+- New function `*SystemTopicEventSubscriptionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New function `*StringBeginsWithAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*EventSubscriptionsClientListByDomainTopicPager.NextPage(context.Context) bool`
+- New function `*TopicsClientListBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.Done() bool`
+- New function `*EventSubscriptionsClientListRegionalBySubscriptionPager.NextPage(context.Context) bool`
+- New function `*TopicsClientListBySubscriptionPager.PageResponse() TopicsClientListBySubscriptionResponse`
+- New function `*StringNotContainsAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `TopicsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (TopicsClientDeleteResponse, error)`
+- New function `*NumberLessThanOrEqualsAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*SystemTopicEventSubscriptionsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DomainsClientCreateOrUpdatePoller.FinalResponse(context.Context) (DomainsClientCreateOrUpdateResponse, error)`
+- New function `*DomainsClientUpdatePoller.FinalResponse(context.Context) (DomainsClientUpdateResponse, error)`
+- New function `*TopicsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*DomainsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DomainTopicsClientDeletePoller.Done() bool`
+- New function `*DomainsClientListBySubscriptionPager.Err() error`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.FinalResponse(context.Context) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*SystemTopicEventSubscriptionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*SystemTopicEventSubscriptionsClientUpdatePoller.Done() bool`
+- New function `*SystemTopicEventSubscriptionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*TopicsClientRegenerateKeyPoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventSubscriptionsClientListGlobalByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*TopicsClientDeletePoller.Done() bool`
+- New function `TopicsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TopicsClientUpdateResponse, error)`
+- New function `*ServiceBusQueueEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*SystemTopicEventSubscriptionsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `SystemTopicEventSubscriptionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (SystemTopicEventSubscriptionsClientDeleteResponse, error)`
+- New function `*DomainTopicsClientDeletePollerResponse.Resume(context.Context, *DomainTopicsClient, string) error`
+- New function `SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SystemTopicEventSubscriptionsClientCreateOrUpdateResponse, error)`
+- New function `*StorageBlobDeadLetterDestination.GetDeadLetterDestination() *DeadLetterDestination`
+- New function `SystemTopicEventSubscriptionsClientUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SystemTopicEventSubscriptionsClientUpdateResponse, error)`
+- New function `*SystemTopicsClientCreateOrUpdatePollerResponse.Resume(context.Context, *SystemTopicsClient, string) error`
+- New function `*PrivateEndpointConnectionsClientListByResourcePager.PageResponse() PrivateEndpointConnectionsClientListByResourceResponse`
+- New function `*EventSubscriptionsClientUpdatePoller.Done() bool`
+- New function `*EventSubscriptionsClientListGlobalBySubscriptionPager.Err() error`
+- New function `*WebHookEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `StringNotEndsWithAdvancedFilter.MarshalJSON() ([]byte, error)`
+- New function `*EventSubscriptionsClientUpdatePoller.FinalResponse(context.Context) (EventSubscriptionsClientUpdateResponse, error)`
+- New function `*SystemTopicsClientListBySubscriptionPager.PageResponse() SystemTopicsClientListBySubscriptionResponse`
+- New function `*PrivateEndpointConnectionsClientUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `SystemTopicsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (SystemTopicsClientCreateOrUpdateResponse, error)`
+- New function `*TopicsClientListByResourceGroupPager.Err() error`
+- New function `*SystemTopicEventSubscriptionsClientUpdatePollerResponse.Resume(context.Context, *SystemTopicEventSubscriptionsClient, string) error`
+- New function `*DomainsClientDeletePoller.Done() bool`
+- New function `*EventSubscriptionsClientListGlobalBySubscriptionPager.PageResponse() EventSubscriptionsClientListGlobalBySubscriptionResponse`
+- New function `*TopicsClientUpdatePoller.Done() bool`
+- New function `*SystemTopicEventSubscriptionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*DomainTopicsClientDeletePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*EventSubscriptionsClientListByResourcePager.Err() error`
+- New function `*DomainsClientDeletePoller.FinalResponse(context.Context) (DomainsClientDeleteResponse, error)`
+- New function `DomainTopicsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (DomainTopicsClientCreateOrUpdateResponse, error)`
+- New function `PrivateEndpointConnectionsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error)`
+- New function `*StringNotContainsAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `*PrivateEndpointConnectionsClientListByResourcePager.Err() error`
+- New function `*SystemTopicEventSubscriptionsClientDeletePoller.Done() bool`
+- New function `*IsNullOrUndefinedAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `*StaticDeliveryAttributeMapping.GetDeliveryAttributeMapping() *DeliveryAttributeMapping`
+- New function `*SystemTopicsClientListByResourceGroupPager.PageResponse() SystemTopicsClientListByResourceGroupResponse`
+- New function `*TopicsClientListBySubscriptionPager.Err() error`
+- New function `*DomainTopicsClientCreateOrUpdatePollerResponse.Resume(context.Context, *DomainTopicsClient, string) error`
+- New function `*SystemTopicsClientUpdatePoller.Done() bool`
+- New function `*EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager.PageResponse() EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse`
+- New function `TopicsClientCreateOrUpdatePollerResponse.PollUntilDone(context.Context, time.Duration) (TopicsClientCreateOrUpdateResponse, error)`
+- New function `*StringNotBeginsWithAdvancedFilter.UnmarshalJSON([]byte) error`
+- New function `*SystemTopicEventSubscriptionsClientDeletePoller.FinalResponse(context.Context) (SystemTopicEventSubscriptionsClientDeleteResponse, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePoller.Done() bool`
+- New function `*EventSubscriptionsClientListByDomainTopicPager.Err() error`
+- New function `*EventSubscriptionsClientDeletePollerResponse.Resume(context.Context, *EventSubscriptionsClient, string) error`
+- New function `*EventSubscriptionsClientCreateOrUpdatePoller.Poll(context.Context) (*http.Response, error)`
+- New function `*SystemTopicsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `DomainsClientDeletePollerResponse.PollUntilDone(context.Context, time.Duration) (DomainsClientDeleteResponse, error)`
+- New function `*SystemTopicEventSubscriptionsClientListBySystemTopicPager.PageResponse() SystemTopicEventSubscriptionsClientListBySystemTopicResponse`
+- New function `*TopicsClientRegenerateKeyPoller.FinalResponse(context.Context) (TopicsClientRegenerateKeyResponse, error)`
+- New function `*EventSubscriptionsClientDeletePoller.Done() bool`
+- New function `*EventSubscriptionsClientListByResourcePager.PageResponse() EventSubscriptionsClientListByResourceResponse`
+- New function `*StringEndsWithAdvancedFilter.GetAdvancedFilter() *AdvancedFilter`
+- New function `*DomainTopicsClientCreateOrUpdatePoller.Done() bool`
+- New function `*EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager.Err() error`
+- New function `*SystemTopicsClientListByResourceGroupPager.Err() error`
+- New function `*EventSubscriptionsClientListRegionalByResourceGroupPager.Err() error`
+- New function `*SystemTopicEventSubscriptionsClientUpdatePoller.FinalResponse(context.Context) (SystemTopicEventSubscriptionsClientUpdateResponse, error)`
+- New function `*PrivateLinkResourcesClientListByResourcePager.Err() error`
+- New function `*EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager.NextPage(context.Context) bool`
+- New function `*EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager.NextPage(context.Context) bool`
+- New function `*DomainTopicsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*PrivateEndpointConnectionsClientDeletePollerResponse.Resume(context.Context, *PrivateEndpointConnectionsClient, string) error`
+- New function `*PrivateLinkResourcesClientListByResourcePager.PageResponse() PrivateLinkResourcesClientListByResourceResponse`
+- New function `*SystemTopicsClientListByResourceGroupPager.NextPage(context.Context) bool`
+- New function `*DomainsClientUpdatePoller.Done() bool`
+- New function `*EventSubscriptionsClientListGlobalByResourceGroupPager.PageResponse() EventSubscriptionsClientListGlobalByResourceGroupResponse`
+- New function `*DynamicDeliveryAttributeMapping.GetDeliveryAttributeMapping() *DeliveryAttributeMapping`
+- New function `*TopicsClientUpdatePoller.ResumeToken() (string, error)`
+- New function `*TopicsClientUpdatePollerResponse.Resume(context.Context, *TopicsClient, string) error`
+- New function `*EventSubscriptionsClientDeletePoller.ResumeToken() (string, error)`
+- New function `*TopicsClientCreateOrUpdatePollerResponse.Resume(context.Context, *TopicsClient, string) error`
+- New function `*EventSubscriptionsClientCreateOrUpdatePoller.ResumeToken() (string, error)`
+- New struct `DomainTopicsClientBeginCreateOrUpdateOptions`
+- New struct `DomainTopicsClientBeginDeleteOptions`
+- New struct `DomainTopicsClientCreateOrUpdatePoller`
+- New struct `DomainTopicsClientCreateOrUpdatePollerResponse`
+- New struct `DomainTopicsClientCreateOrUpdateResponse`
+- New struct `DomainTopicsClientCreateOrUpdateResult`
+- New struct `DomainTopicsClientDeletePoller`
+- New struct `DomainTopicsClientDeletePollerResponse`
+- New struct `DomainTopicsClientDeleteResponse`
+- New struct `DomainTopicsClientGetOptions`
+- New struct `DomainTopicsClientGetResponse`
+- New struct `DomainTopicsClientGetResult`
+- New struct `DomainTopicsClientListByDomainOptions`
+- New struct `DomainTopicsClientListByDomainPager`
+- New struct `DomainTopicsClientListByDomainResponse`
+- New struct `DomainTopicsClientListByDomainResult`
+- New struct `DomainsClientBeginCreateOrUpdateOptions`
+- New struct `DomainsClientBeginDeleteOptions`
+- New struct `DomainsClientBeginUpdateOptions`
+- New struct `DomainsClientCreateOrUpdatePoller`
+- New struct `DomainsClientCreateOrUpdatePollerResponse`
+- New struct `DomainsClientCreateOrUpdateResponse`
+- New struct `DomainsClientCreateOrUpdateResult`
+- New struct `DomainsClientDeletePoller`
+- New struct `DomainsClientDeletePollerResponse`
+- New struct `DomainsClientDeleteResponse`
+- New struct `DomainsClientGetOptions`
+- New struct `DomainsClientGetResponse`
+- New struct `DomainsClientGetResult`
+- New struct `DomainsClientListByResourceGroupOptions`
+- New struct `DomainsClientListByResourceGroupPager`
+- New struct `DomainsClientListByResourceGroupResponse`
+- New struct `DomainsClientListByResourceGroupResult`
+- New struct `DomainsClientListBySubscriptionOptions`
+- New struct `DomainsClientListBySubscriptionPager`
+- New struct `DomainsClientListBySubscriptionResponse`
+- New struct `DomainsClientListBySubscriptionResult`
+- New struct `DomainsClientListSharedAccessKeysOptions`
+- New struct `DomainsClientListSharedAccessKeysResponse`
+- New struct `DomainsClientListSharedAccessKeysResult`
+- New struct `DomainsClientRegenerateKeyOptions`
+- New struct `DomainsClientRegenerateKeyResponse`
+- New struct `DomainsClientRegenerateKeyResult`
+- New struct `DomainsClientUpdatePoller`
+- New struct `DomainsClientUpdatePollerResponse`
+- New struct `DomainsClientUpdateResponse`
+- New struct `DomainsClientUpdateResult`
+- New struct `EventSubscriptionsClientBeginCreateOrUpdateOptions`
+- New struct `EventSubscriptionsClientBeginDeleteOptions`
+- New struct `EventSubscriptionsClientBeginUpdateOptions`
+- New struct `EventSubscriptionsClientCreateOrUpdatePoller`
+- New struct `EventSubscriptionsClientCreateOrUpdatePollerResponse`
+- New struct `EventSubscriptionsClientCreateOrUpdateResponse`
+- New struct `EventSubscriptionsClientCreateOrUpdateResult`
+- New struct `EventSubscriptionsClientDeletePoller`
+- New struct `EventSubscriptionsClientDeletePollerResponse`
+- New struct `EventSubscriptionsClientDeleteResponse`
+- New struct `EventSubscriptionsClientGetDeliveryAttributesOptions`
+- New struct `EventSubscriptionsClientGetDeliveryAttributesResponse`
+- New struct `EventSubscriptionsClientGetDeliveryAttributesResult`
+- New struct `EventSubscriptionsClientGetFullURLOptions`
+- New struct `EventSubscriptionsClientGetFullURLResponse`
+- New struct `EventSubscriptionsClientGetFullURLResult`
+- New struct `EventSubscriptionsClientGetOptions`
+- New struct `EventSubscriptionsClientGetResponse`
+- New struct `EventSubscriptionsClientGetResult`
+- New struct `EventSubscriptionsClientListByDomainTopicOptions`
+- New struct `EventSubscriptionsClientListByDomainTopicPager`
+- New struct `EventSubscriptionsClientListByDomainTopicResponse`
+- New struct `EventSubscriptionsClientListByDomainTopicResult`
+- New struct `EventSubscriptionsClientListByResourceOptions`
+- New struct `EventSubscriptionsClientListByResourcePager`
+- New struct `EventSubscriptionsClientListByResourceResponse`
+- New struct `EventSubscriptionsClientListByResourceResult`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupForTopicTypePager`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResult`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupOptions`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupPager`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupResponse`
+- New struct `EventSubscriptionsClientListGlobalByResourceGroupResult`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionForTopicTypePager`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResult`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionOptions`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionPager`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionResponse`
+- New struct `EventSubscriptionsClientListGlobalBySubscriptionResult`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupForTopicTypePager`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResult`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupOptions`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupPager`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupResponse`
+- New struct `EventSubscriptionsClientListRegionalByResourceGroupResult`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionForTopicTypePager`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResult`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionOptions`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionPager`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionResponse`
+- New struct `EventSubscriptionsClientListRegionalBySubscriptionResult`
+- New struct `EventSubscriptionsClientUpdatePoller`
+- New struct `EventSubscriptionsClientUpdatePollerResponse`
+- New struct `EventSubscriptionsClientUpdateResponse`
+- New struct `EventSubscriptionsClientUpdateResult`
+- New struct `ExtensionTopicsClientGetOptions`
+- New struct `ExtensionTopicsClientGetResponse`
+- New struct `ExtensionTopicsClientGetResult`
+- New struct `IsNotNullAdvancedFilter`
+- New struct `IsNullOrUndefinedAdvancedFilter`
+- New struct `NumberInRangeAdvancedFilter`
+- New struct `NumberNotInRangeAdvancedFilter`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientBeginUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientDeletePoller`
+- New struct `PrivateEndpointConnectionsClientDeletePollerResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientGetResult`
+- New struct `PrivateEndpointConnectionsClientListByResourceOptions`
+- New struct `PrivateEndpointConnectionsClientListByResourcePager`
+- New struct `PrivateEndpointConnectionsClientListByResourceResponse`
+- New struct `PrivateEndpointConnectionsClientListByResourceResult`
+- New struct `PrivateEndpointConnectionsClientUpdatePoller`
+- New struct `PrivateEndpointConnectionsClientUpdatePollerResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientUpdateResult`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientGetResult`
+- New struct `PrivateLinkResourcesClientListByResourceOptions`
+- New struct `PrivateLinkResourcesClientListByResourcePager`
+- New struct `PrivateLinkResourcesClientListByResourceResponse`
+- New struct `PrivateLinkResourcesClientListByResourceResult`
+- New struct `StringNotBeginsWithAdvancedFilter`
+- New struct `StringNotContainsAdvancedFilter`
+- New struct `StringNotEndsWithAdvancedFilter`
+- New struct `SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions`
+- New struct `SystemTopicEventSubscriptionsClientBeginDeleteOptions`
+- New struct `SystemTopicEventSubscriptionsClientBeginUpdateOptions`
+- New struct `SystemTopicEventSubscriptionsClientCreateOrUpdatePoller`
+- New struct `SystemTopicEventSubscriptionsClientCreateOrUpdatePollerResponse`
+- New struct `SystemTopicEventSubscriptionsClientCreateOrUpdateResponse`
+- New struct `SystemTopicEventSubscriptionsClientCreateOrUpdateResult`
+- New struct `SystemTopicEventSubscriptionsClientDeletePoller`
+- New struct `SystemTopicEventSubscriptionsClientDeletePollerResponse`
+- New struct `SystemTopicEventSubscriptionsClientDeleteResponse`
+- New struct `SystemTopicEventSubscriptionsClientGetDeliveryAttributesOptions`
+- New struct `SystemTopicEventSubscriptionsClientGetDeliveryAttributesResponse`
+- New struct `SystemTopicEventSubscriptionsClientGetDeliveryAttributesResult`
+- New struct `SystemTopicEventSubscriptionsClientGetFullURLOptions`
+- New struct `SystemTopicEventSubscriptionsClientGetFullURLResponse`
+- New struct `SystemTopicEventSubscriptionsClientGetFullURLResult`
+- New struct `SystemTopicEventSubscriptionsClientGetOptions`
+- New struct `SystemTopicEventSubscriptionsClientGetResponse`
+- New struct `SystemTopicEventSubscriptionsClientGetResult`
+- New struct `SystemTopicEventSubscriptionsClientListBySystemTopicOptions`
+- New struct `SystemTopicEventSubscriptionsClientListBySystemTopicPager`
+- New struct `SystemTopicEventSubscriptionsClientListBySystemTopicResponse`
+- New struct `SystemTopicEventSubscriptionsClientListBySystemTopicResult`
+- New struct `SystemTopicEventSubscriptionsClientUpdatePoller`
+- New struct `SystemTopicEventSubscriptionsClientUpdatePollerResponse`
+- New struct `SystemTopicEventSubscriptionsClientUpdateResponse`
+- New struct `SystemTopicEventSubscriptionsClientUpdateResult`
+- New struct `SystemTopicsClientBeginCreateOrUpdateOptions`
+- New struct `SystemTopicsClientBeginDeleteOptions`
+- New struct `SystemTopicsClientBeginUpdateOptions`
+- New struct `SystemTopicsClientCreateOrUpdatePoller`
+- New struct `SystemTopicsClientCreateOrUpdatePollerResponse`
+- New struct `SystemTopicsClientCreateOrUpdateResponse`
+- New struct `SystemTopicsClientCreateOrUpdateResult`
+- New struct `SystemTopicsClientDeletePoller`
+- New struct `SystemTopicsClientDeletePollerResponse`
+- New struct `SystemTopicsClientDeleteResponse`
+- New struct `SystemTopicsClientGetOptions`
+- New struct `SystemTopicsClientGetResponse`
+- New struct `SystemTopicsClientGetResult`
+- New struct `SystemTopicsClientListByResourceGroupOptions`
+- New struct `SystemTopicsClientListByResourceGroupPager`
+- New struct `SystemTopicsClientListByResourceGroupResponse`
+- New struct `SystemTopicsClientListByResourceGroupResult`
+- New struct `SystemTopicsClientListBySubscriptionOptions`
+- New struct `SystemTopicsClientListBySubscriptionPager`
+- New struct `SystemTopicsClientListBySubscriptionResponse`
+- New struct `SystemTopicsClientListBySubscriptionResult`
+- New struct `SystemTopicsClientUpdatePoller`
+- New struct `SystemTopicsClientUpdatePollerResponse`
+- New struct `SystemTopicsClientUpdateResponse`
+- New struct `SystemTopicsClientUpdateResult`
+- New struct `TopicTypesClientGetOptions`
+- New struct `TopicTypesClientGetResponse`
+- New struct `TopicTypesClientGetResult`
+- New struct `TopicTypesClientListEventTypesOptions`
+- New struct `TopicTypesClientListEventTypesResponse`
+- New struct `TopicTypesClientListEventTypesResult`
+- New struct `TopicTypesClientListOptions`
+- New struct `TopicTypesClientListResponse`
+- New struct `TopicTypesClientListResult`
+- New struct `TopicsClientBeginCreateOrUpdateOptions`
+- New struct `TopicsClientBeginDeleteOptions`
+- New struct `TopicsClientBeginRegenerateKeyOptions`
+- New struct `TopicsClientBeginUpdateOptions`
+- New struct `TopicsClientCreateOrUpdatePoller`
+- New struct `TopicsClientCreateOrUpdatePollerResponse`
+- New struct `TopicsClientCreateOrUpdateResponse`
+- New struct `TopicsClientCreateOrUpdateResult`
+- New struct `TopicsClientDeletePoller`
+- New struct `TopicsClientDeletePollerResponse`
+- New struct `TopicsClientDeleteResponse`
+- New struct `TopicsClientGetOptions`
+- New struct `TopicsClientGetResponse`
+- New struct `TopicsClientGetResult`
+- New struct `TopicsClientListByResourceGroupOptions`
+- New struct `TopicsClientListByResourceGroupPager`
+- New struct `TopicsClientListByResourceGroupResponse`
+- New struct `TopicsClientListByResourceGroupResult`
+- New struct `TopicsClientListBySubscriptionOptions`
+- New struct `TopicsClientListBySubscriptionPager`
+- New struct `TopicsClientListBySubscriptionResponse`
+- New struct `TopicsClientListBySubscriptionResult`
+- New struct `TopicsClientListEventTypesOptions`
+- New struct `TopicsClientListEventTypesResponse`
+- New struct `TopicsClientListEventTypesResult`
+- New struct `TopicsClientListSharedAccessKeysOptions`
+- New struct `TopicsClientListSharedAccessKeysResponse`
+- New struct `TopicsClientListSharedAccessKeysResult`
+- New struct `TopicsClientRegenerateKeyPoller`
+- New struct `TopicsClientRegenerateKeyPollerResponse`
+- New struct `TopicsClientRegenerateKeyResponse`
+- New struct `TopicsClientRegenerateKeyResult`
+- New struct `TopicsClientUpdatePoller`
+- New struct `TopicsClientUpdatePollerResponse`
+- New struct `TopicsClientUpdateResponse`
+- New struct `TopicsClientUpdateResult`
+- New field `OperatorType` in struct `StringNotInAdvancedFilter`
+- New field `Key` in struct `StringNotInAdvancedFilter`
+- New field `EndpointType` in struct `WebHookEventSubscriptionDestination`
+- New field `Key` in struct `NumberLessThanAdvancedFilter`
+- New field `OperatorType` in struct `NumberLessThanAdvancedFilter`
+- New field `Type` in struct `DynamicDeliveryAttributeMapping`
+- New field `Name` in struct `DynamicDeliveryAttributeMapping`
+- New field `OperatorType` in struct `StringInAdvancedFilter`
+- New field `Key` in struct `StringInAdvancedFilter`
+- New field `EndpointType` in struct `EventHubEventSubscriptionDestination`
+- New field `Type` in struct `DomainTopic`
+- New field `ID` in struct `DomainTopic`
+- New field `Name` in struct `DomainTopic`
+- New field `ID` in struct `EventSubscription`
+- New field `Name` in struct `EventSubscription`
+- New field `Type` in struct `EventSubscription`
+- New field `EndpointType` in struct `ServiceBusTopicEventSubscriptionDestination`
+- New field `ID` in struct `EventType`
+- New field `Name` in struct `EventType`
+- New field `Type` in struct `EventType`
+- New field `OperatorType` in struct `NumberLessThanOrEqualsAdvancedFilter`
+- New field `Key` in struct `NumberLessThanOrEqualsAdvancedFilter`
+- New field `Name` in struct `SystemTopic`
+- New field `Type` in struct `SystemTopic`
+- New field `Location` in struct `SystemTopic`
+- New field `Tags` in struct `SystemTopic`
+- New field `ID` in struct `SystemTopic`
+- New field `Name` in struct `PrivateEndpointConnection`
+- New field `Type` in struct `PrivateEndpointConnection`
+- New field `ID` in struct `PrivateEndpointConnection`
+- New field `OperatorType` in struct `NumberInAdvancedFilter`
+- New field `Key` in struct `NumberInAdvancedFilter`
+- New field `Key` in struct `NumberNotInAdvancedFilter`
+- New field `OperatorType` in struct `NumberNotInAdvancedFilter`
+- New field `OperatorType` in struct `StringContainsAdvancedFilter`
+- New field `Key` in struct `StringContainsAdvancedFilter`
+- New field `Type` in struct `TrackedResource`
+- New field `ID` in struct `TrackedResource`
+- New field `Name` in struct `TrackedResource`
+- New field `Key` in struct `BoolEqualsAdvancedFilter`
+- New field `OperatorType` in struct `BoolEqualsAdvancedFilter`
+- New field `ID` in struct `Domain`
+- New field `Name` in struct `Domain`
+- New field `Type` in struct `Domain`
+- New field `Location` in struct `Domain`
+- New field `Tags` in struct `Domain`
+- New field `Key` in struct `StringEndsWithAdvancedFilter`
+- New field `OperatorType` in struct `StringEndsWithAdvancedFilter`
+- New field `Key` in struct `StringBeginsWithAdvancedFilter`
+- New field `OperatorType` in struct `StringBeginsWithAdvancedFilter`
+- New field `Type` in struct `StaticDeliveryAttributeMapping`
+- New field `Name` in struct `StaticDeliveryAttributeMapping`
+- New field `Type` in struct `TopicTypeInfo`
+- New field `ID` in struct `TopicTypeInfo`
+- New field `Name` in struct `TopicTypeInfo`
+- New field `EndpointType` in struct `StorageBlobDeadLetterDestination`
+- New field `EndpointType` in struct `ServiceBusQueueEventSubscriptionDestination`
+- New field `ID` in struct `ExtensionTopic`
+- New field `Name` in struct `ExtensionTopic`
+- New field `Type` in struct `ExtensionTopic`
+- New field `OperatorType` in struct `NumberGreaterThanAdvancedFilter`
+- New field `Key` in struct `NumberGreaterThanAdvancedFilter`
+- New field `InputSchemaMappingType` in struct `JSONInputSchemaMapping`
+- New field `EndpointType` in struct `AzureFunctionEventSubscriptionDestination`
+- New field `Tags` in struct `Topic`
+- New field `ID` in struct `Topic`
+- New field `Name` in struct `Topic`
+- New field `Type` in struct `Topic`
+- New field `Location` in struct `Topic`
+- New field `OperatorType` in struct `NumberGreaterThanOrEqualsAdvancedFilter`
+- New field `Key` in struct `NumberGreaterThanOrEqualsAdvancedFilter`
+- New field `EndpointType` in struct `HybridConnectionEventSubscriptionDestination`
+- New field `EndpointType` in struct `StorageQueueEventSubscriptionDestination`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

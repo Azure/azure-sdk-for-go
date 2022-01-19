@@ -18,24 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 )
 
-// x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/ApiKeys_List.json
-func ExampleMonitorsClient_ListAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdatadog.NewMonitorsClient("<subscription-id>", cred, nil)
-	pager := client.ListAPIKeys("<resource-group-name>",
-		"<monitor-name>",
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-	}
-}
-
 // x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/ApiKeys_GetDefaultKey.json
 func ExampleMonitorsClient_GetDefaultKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -44,13 +26,14 @@ func ExampleMonitorsClient_GetDefaultKey() {
 	}
 	ctx := context.Background()
 	client := armdatadog.NewMonitorsClient("<subscription-id>", cred, nil)
-	_, err = client.GetDefaultKey(ctx,
+	res, err := client.GetDefaultKey(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MonitorsClientGetDefaultKeyResult)
 }
 
 // x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/ApiKeys_SetDefaultKey.json
@@ -64,7 +47,7 @@ func ExampleMonitorsClient_SetDefaultKey() {
 	_, err = client.SetDefaultKey(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armdatadog.MonitorsSetDefaultKeyOptions{Body: nil})
+		&armdatadog.MonitorsClientSetDefaultKeyOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -81,9 +64,16 @@ func ExampleMonitorsClient_ListHosts() {
 	pager := client.ListHosts("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		if !nextResult {
+			break
+		}
+		for _, v := range pager.PageResponse().Value {
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -99,12 +89,16 @@ func ExampleMonitorsClient_ListLinkedResources() {
 	pager := client.ListLinkedResources("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("LinkedResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -120,12 +114,16 @@ func ExampleMonitorsClient_ListMonitoredResources() {
 	pager := client.ListMonitoredResources("<resource-group-name>",
 		"<monitor-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("MonitoredResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -139,12 +137,16 @@ func ExampleMonitorsClient_List() {
 	ctx := context.Background()
 	client := armdatadog.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.List(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DatadogMonitorResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -159,12 +161,16 @@ func ExampleMonitorsClient_ListByResourceGroup() {
 	client := armdatadog.NewMonitorsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("DatadogMonitorResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -184,7 +190,7 @@ func ExampleMonitorsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatadogMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientGetResult)
 }
 
 // x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Create.json
@@ -198,7 +204,7 @@ func ExampleMonitorsClient_BeginCreate() {
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armdatadog.MonitorsBeginCreateOptions{Body: nil})
+		&armdatadog.MonitorsClientBeginCreateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -206,7 +212,7 @@ func ExampleMonitorsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatadogMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Update.json
@@ -220,7 +226,7 @@ func ExampleMonitorsClient_BeginUpdate() {
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
-		&armdatadog.MonitorsBeginUpdateOptions{Body: nil})
+		&armdatadog.MonitorsClientBeginUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -228,7 +234,7 @@ func ExampleMonitorsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("DatadogMonitorResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.MonitorsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Delete.json
@@ -260,11 +266,12 @@ func ExampleMonitorsClient_RefreshSetPasswordLink() {
 	}
 	ctx := context.Background()
 	client := armdatadog.NewMonitorsClient("<subscription-id>", cred, nil)
-	_, err = client.RefreshSetPasswordLink(ctx,
+	res, err := client.RefreshSetPasswordLink(ctx,
 		"<resource-group-name>",
 		"<monitor-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.MonitorsClientRefreshSetPasswordLinkResult)
 }

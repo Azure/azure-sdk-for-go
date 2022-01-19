@@ -9,12 +9,12 @@
 package armaad
 
 const (
-	module  = "armaad"
-	version = "v0.1.0"
+	moduleName    = "armaad"
+	moduleVersion = "v0.2.0"
 )
 
-// Category - Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log categories for a resource,
-// first perform a GET diagnostic settings operation.
+// Category - Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic
+// Log categories for a resource, first perform a GET diagnostic settings operation.
 type Category string
 
 const (

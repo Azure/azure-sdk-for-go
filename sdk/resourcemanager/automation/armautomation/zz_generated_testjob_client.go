@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // TestJobClient contains the methods for the TestJob group.
 // Don't use this type directly, use NewTestJobClient() instead.
 type TestJobClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTestJobClient creates a new instance of TestJobClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTestJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TestJobClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TestJobClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TestJobClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a test job of the runbook.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters, options *TestJobCreateOptions) (TestJobCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The parameters supplied to the create test job operation.
+// parameters - The parameters supplied to the create test job operation.
+// options - TestJobClientCreateOptions contains the optional parameters for the TestJobClient.Create method.
+func (client *TestJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters, options *TestJobClientCreateOptions) (TestJobClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, parameters, options)
 	if err != nil {
-		return TestJobCreateResponse{}, err
+		return TestJobClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestJobCreateResponse{}, err
+		return TestJobClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return TestJobCreateResponse{}, client.createHandleError(resp)
+		return TestJobClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters, options *TestJobCreateOptions) (*policy.Request, error) {
+func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters, options *TestJobClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,46 +103,37 @@ func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGr
 }
 
 // createHandleResponse handles the Create response.
-func (client *TestJobClient) createHandleResponse(resp *http.Response) (TestJobCreateResponse, error) {
-	result := TestJobCreateResponse{RawResponse: resp}
+func (client *TestJobClient) createHandleResponse(resp *http.Response) (TestJobClientCreateResponse, error) {
+	result := TestJobClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
-		return TestJobCreateResponse{}, runtime.NewResponseError(err, resp)
+		return TestJobClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *TestJobClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the test job for the specified runbook.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobGetOptions) (TestJobGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - TestJobClientGetOptions contains the optional parameters for the TestJobClient.Get method.
+func (client *TestJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientGetOptions) (TestJobClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return TestJobGetResponse{}, err
+		return TestJobClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestJobGetResponse{}, err
+		return TestJobClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestJobGetResponse{}, client.getHandleError(resp)
+		return TestJobClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobGetOptions) (*policy.Request, error) {
+func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,7 +151,7 @@ func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,46 +163,37 @@ func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestJobClient) getHandleResponse(resp *http.Response) (TestJobGetResponse, error) {
-	result := TestJobGetResponse{RawResponse: resp}
+func (client *TestJobClient) getHandleResponse(resp *http.Response) (TestJobClientGetResponse, error) {
+	result := TestJobClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
-		return TestJobGetResponse{}, runtime.NewResponseError(err, resp)
+		return TestJobClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TestJobClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Resume - Resume the test job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestJobClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobResumeOptions) (TestJobResumeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - TestJobClientResumeOptions contains the optional parameters for the TestJobClient.Resume method.
+func (client *TestJobClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientResumeOptions) (TestJobClientResumeResponse, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return TestJobResumeResponse{}, err
+		return TestJobClientResumeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestJobResumeResponse{}, err
+		return TestJobClientResumeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestJobResumeResponse{}, client.resumeHandleError(resp)
+		return TestJobClientResumeResponse{}, runtime.NewResponseError(resp)
 	}
-	return TestJobResumeResponse{RawResponse: resp}, nil
+	return TestJobClientResumeResponse{RawResponse: resp}, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *TestJobClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobResumeOptions) (*policy.Request, error) {
+func (client *TestJobClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/resume"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -216,7 +211,7 @@ func (client *TestJobClient) resumeCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,38 +222,29 @@ func (client *TestJobClient) resumeCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// resumeHandleError handles the Resume error response.
-func (client *TestJobClient) resumeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Stop - Stop the test job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestJobClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStopOptions) (TestJobStopResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - TestJobClientStopOptions contains the optional parameters for the TestJobClient.Stop method.
+func (client *TestJobClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientStopOptions) (TestJobClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return TestJobStopResponse{}, err
+		return TestJobClientStopResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestJobStopResponse{}, err
+		return TestJobClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestJobStopResponse{}, client.stopHandleError(resp)
+		return TestJobClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return TestJobStopResponse{RawResponse: resp}, nil
+	return TestJobClientStopResponse{RawResponse: resp}, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *TestJobClient) stopCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStopOptions) (*policy.Request, error) {
+func (client *TestJobClient) stopCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -276,7 +262,7 @@ func (client *TestJobClient) stopCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,38 +273,29 @@ func (client *TestJobClient) stopCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *TestJobClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Suspend - Suspend the test job.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TestJobClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobSuspendOptions) (TestJobSuspendResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// runbookName - The runbook name.
+// options - TestJobClientSuspendOptions contains the optional parameters for the TestJobClient.Suspend method.
+func (client *TestJobClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientSuspendOptions) (TestJobClientSuspendResponse, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 	if err != nil {
-		return TestJobSuspendResponse{}, err
+		return TestJobClientSuspendResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestJobSuspendResponse{}, err
+		return TestJobClientSuspendResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestJobSuspendResponse{}, client.suspendHandleError(resp)
+		return TestJobClientSuspendResponse{}, runtime.NewResponseError(resp)
 	}
-	return TestJobSuspendResponse{RawResponse: resp}, nil
+	return TestJobClientSuspendResponse{RawResponse: resp}, nil
 }
 
 // suspendCreateRequest creates the Suspend request.
-func (client *TestJobClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobSuspendOptions) (*policy.Request, error) {
+func (client *TestJobClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobClientSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/suspend"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -336,7 +313,7 @@ func (client *TestJobClient) suspendCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,17 +322,4 @@ func (client *TestJobClient) suspendCreateRequest(ctx context.Context, resourceG
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// suspendHandleError handles the Suspend error response.
-func (client *TestJobClient) suspendHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

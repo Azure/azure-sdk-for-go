@@ -25,7 +25,7 @@ func ExampleIntegrationRuntimeNodesClient_Get() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
-	_, err = client.Get(ctx,
+	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -34,6 +34,7 @@ func ExampleIntegrationRuntimeNodesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeNodesClientGetResult)
 }
 
 // x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Delete.json
@@ -63,7 +64,7 @@ func ExampleIntegrationRuntimeNodesClient_Update() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
+	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<integration-runtime-name>",
@@ -75,23 +76,5 @@ func ExampleIntegrationRuntimeNodesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_GetIpAddress.json
-func ExampleIntegrationRuntimeNodesClient_GetIPAddress() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdatafactory.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
-	_, err = client.GetIPAddress(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		"<node-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.IntegrationRuntimeNodesClientUpdateResult)
 }

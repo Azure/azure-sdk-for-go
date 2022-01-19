@@ -24,44 +24,60 @@ import (
 // ReplicationAlertSettingsClient contains the methods for the ReplicationAlertSettings group.
 // Don't use this type directly, use NewReplicationAlertSettingsClient() instead.
 type ReplicationAlertSettingsClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationAlertSettingsClient creates a new instance of ReplicationAlertSettingsClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationAlertSettingsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationAlertSettingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationAlertSettingsClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationAlertSettingsClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create or update an email notification(alert) configuration.
-// If the operation fails it returns a generic error.
-func (client *ReplicationAlertSettingsClient) Create(ctx context.Context, alertSettingName string, request ConfigureAlertRequest, options *ReplicationAlertSettingsCreateOptions) (ReplicationAlertSettingsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertSettingName - The name of the email notification(alert) configuration.
+// request - The input to configure the email notification(alert).
+// options - ReplicationAlertSettingsClientCreateOptions contains the optional parameters for the ReplicationAlertSettingsClient.Create
+// method.
+func (client *ReplicationAlertSettingsClient) Create(ctx context.Context, alertSettingName string, request ConfigureAlertRequest, options *ReplicationAlertSettingsClientCreateOptions) (ReplicationAlertSettingsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, alertSettingName, request, options)
 	if err != nil {
-		return ReplicationAlertSettingsCreateResponse{}, err
+		return ReplicationAlertSettingsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationAlertSettingsCreateResponse{}, err
+		return ReplicationAlertSettingsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationAlertSettingsCreateResponse{}, client.createHandleError(resp)
+		return ReplicationAlertSettingsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationAlertSettingsClient) createCreateRequest(ctx context.Context, alertSettingName string, request ConfigureAlertRequest, options *ReplicationAlertSettingsCreateOptions) (*policy.Request, error) {
+func (client *ReplicationAlertSettingsClient) createCreateRequest(ctx context.Context, alertSettingName string, request ConfigureAlertRequest, options *ReplicationAlertSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -79,57 +95,48 @@ func (client *ReplicationAlertSettingsClient) createCreateRequest(ctx context.Co
 		return nil, errors.New("parameter alertSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertSettingName}", url.PathEscape(alertSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // createHandleResponse handles the Create response.
-func (client *ReplicationAlertSettingsClient) createHandleResponse(resp *http.Response) (ReplicationAlertSettingsCreateResponse, error) {
-	result := ReplicationAlertSettingsCreateResponse{RawResponse: resp}
+func (client *ReplicationAlertSettingsClient) createHandleResponse(resp *http.Response) (ReplicationAlertSettingsClientCreateResponse, error) {
+	result := ReplicationAlertSettingsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return ReplicationAlertSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationAlertSettingsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationAlertSettingsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of the specified email notification(alert) configuration.
-// If the operation fails it returns a generic error.
-func (client *ReplicationAlertSettingsClient) Get(ctx context.Context, alertSettingName string, options *ReplicationAlertSettingsGetOptions) (ReplicationAlertSettingsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// alertSettingName - The name of the email notification configuration.
+// options - ReplicationAlertSettingsClientGetOptions contains the optional parameters for the ReplicationAlertSettingsClient.Get
+// method.
+func (client *ReplicationAlertSettingsClient) Get(ctx context.Context, alertSettingName string, options *ReplicationAlertSettingsClientGetOptions) (ReplicationAlertSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, alertSettingName, options)
 	if err != nil {
-		return ReplicationAlertSettingsGetResponse{}, err
+		return ReplicationAlertSettingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationAlertSettingsGetResponse{}, err
+		return ReplicationAlertSettingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationAlertSettingsGetResponse{}, client.getHandleError(resp)
+		return ReplicationAlertSettingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationAlertSettingsClient) getCreateRequest(ctx context.Context, alertSettingName string, options *ReplicationAlertSettingsGetOptions) (*policy.Request, error) {
+func (client *ReplicationAlertSettingsClient) getCreateRequest(ctx context.Context, alertSettingName string, options *ReplicationAlertSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -147,54 +154,44 @@ func (client *ReplicationAlertSettingsClient) getCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter alertSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertSettingName}", url.PathEscape(alertSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationAlertSettingsClient) getHandleResponse(resp *http.Response) (ReplicationAlertSettingsGetResponse, error) {
-	result := ReplicationAlertSettingsGetResponse{RawResponse: resp}
+func (client *ReplicationAlertSettingsClient) getHandleResponse(resp *http.Response) (ReplicationAlertSettingsClientGetResponse, error) {
+	result := ReplicationAlertSettingsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return ReplicationAlertSettingsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationAlertSettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationAlertSettingsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets the list of email notification(alert) configurations for the vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationAlertSettingsClient) List(options *ReplicationAlertSettingsListOptions) *ReplicationAlertSettingsListPager {
-	return &ReplicationAlertSettingsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationAlertSettingsClientListOptions contains the optional parameters for the ReplicationAlertSettingsClient.List
+// method.
+func (client *ReplicationAlertSettingsClient) List(options *ReplicationAlertSettingsClientListOptions) *ReplicationAlertSettingsClientListPager {
+	return &ReplicationAlertSettingsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationAlertSettingsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationAlertSettingsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AlertCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationAlertSettingsClient) listCreateRequest(ctx context.Context, options *ReplicationAlertSettingsListOptions) (*policy.Request, error) {
+func (client *ReplicationAlertSettingsClient) listCreateRequest(ctx context.Context, options *ReplicationAlertSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -208,34 +205,22 @@ func (client *ReplicationAlertSettingsClient) listCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationAlertSettingsClient) listHandleResponse(resp *http.Response) (ReplicationAlertSettingsListResponse, error) {
-	result := ReplicationAlertSettingsListResponse{RawResponse: resp}
+func (client *ReplicationAlertSettingsClient) listHandleResponse(resp *http.Response) (ReplicationAlertSettingsClientListResponse, error) {
+	result := ReplicationAlertSettingsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertCollection); err != nil {
-		return ReplicationAlertSettingsListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationAlertSettingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ReplicationAlertSettingsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

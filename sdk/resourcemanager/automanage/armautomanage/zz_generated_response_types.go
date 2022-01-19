@@ -8,247 +8,262 @@
 
 package armautomanage
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
+import "net/http"
 
-// AccountsCreateOrUpdateResponse contains the response from method Accounts.CreateOrUpdate.
-type AccountsCreateOrUpdateResponse struct {
-	AccountsCreateOrUpdateResult
+// BestPracticesClientGetResponse contains the response from method BestPracticesClient.Get.
+type BestPracticesClientGetResponse struct {
+	BestPracticesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsCreateOrUpdateResult contains the result from method Accounts.CreateOrUpdate.
-type AccountsCreateOrUpdateResult struct {
-	Account
+// BestPracticesClientGetResult contains the result from method BestPracticesClient.Get.
+type BestPracticesClientGetResult struct {
+	BestPractice
 }
 
-// AccountsDeleteResponse contains the response from method Accounts.Delete.
-type AccountsDeleteResponse struct {
+// BestPracticesClientListByTenantResponse contains the response from method BestPracticesClient.ListByTenant.
+type BestPracticesClientListByTenantResponse struct {
+	BestPracticesClientListByTenantResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResponse contains the response from method Accounts.Get.
-type AccountsGetResponse struct {
-	AccountsGetResult
+// BestPracticesClientListByTenantResult contains the result from method BestPracticesClient.ListByTenant.
+type BestPracticesClientListByTenantResult struct {
+	BestPracticeList
+}
+
+// BestPracticesVersionsClientGetResponse contains the response from method BestPracticesVersionsClient.Get.
+type BestPracticesVersionsClientGetResponse struct {
+	BestPracticesVersionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsGetResult contains the result from method Accounts.Get.
-type AccountsGetResult struct {
-	Account
+// BestPracticesVersionsClientGetResult contains the result from method BestPracticesVersionsClient.Get.
+type BestPracticesVersionsClientGetResult struct {
+	BestPractice
 }
 
-// AccountsListByResourceGroupResponse contains the response from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResponse struct {
-	AccountsListByResourceGroupResult
+// BestPracticesVersionsClientListByTenantResponse contains the response from method BestPracticesVersionsClient.ListByTenant.
+type BestPracticesVersionsClientListByTenantResponse struct {
+	BestPracticesVersionsClientListByTenantResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListByResourceGroupResult contains the result from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResult struct {
-	AccountList
+// BestPracticesVersionsClientListByTenantResult contains the result from method BestPracticesVersionsClient.ListByTenant.
+type BestPracticesVersionsClientListByTenantResult struct {
+	BestPracticeList
 }
 
-// AccountsListBySubscriptionResponse contains the response from method Accounts.ListBySubscription.
-type AccountsListBySubscriptionResponse struct {
-	AccountsListBySubscriptionResult
+// ConfigurationProfileAssignmentsClientCreateOrUpdateResponse contains the response from method ConfigurationProfileAssignmentsClient.CreateOrUpdate.
+type ConfigurationProfileAssignmentsClientCreateOrUpdateResponse struct {
+	ConfigurationProfileAssignmentsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AccountsListBySubscriptionResult contains the result from method Accounts.ListBySubscription.
-type AccountsListBySubscriptionResult struct {
-	AccountList
-}
-
-// AccountsUpdateResponse contains the response from method Accounts.Update.
-type AccountsUpdateResponse struct {
-	AccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AccountsUpdateResult contains the result from method Accounts.Update.
-type AccountsUpdateResult struct {
-	Account
-}
-
-// ConfigurationProfileAssignmentsCreateOrUpdatePollerResponse contains the response from method ConfigurationProfileAssignments.CreateOrUpdate.
-type ConfigurationProfileAssignmentsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ConfigurationProfileAssignmentsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ConfigurationProfileAssignmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigurationProfileAssignmentsCreateOrUpdateResponse, error) {
-	respType := ConfigurationProfileAssignmentsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfigurationProfileAssignment)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ConfigurationProfileAssignmentsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ConfigurationProfileAssignmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ConfigurationProfileAssignmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ConfigurationProfileAssignmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ConfigurationProfileAssignmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ConfigurationProfileAssignmentsCreateOrUpdateResponse contains the response from method ConfigurationProfileAssignments.CreateOrUpdate.
-type ConfigurationProfileAssignmentsCreateOrUpdateResponse struct {
-	ConfigurationProfileAssignmentsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationProfileAssignmentsCreateOrUpdateResult contains the result from method ConfigurationProfileAssignments.CreateOrUpdate.
-type ConfigurationProfileAssignmentsCreateOrUpdateResult struct {
+// ConfigurationProfileAssignmentsClientCreateOrUpdateResult contains the result from method ConfigurationProfileAssignmentsClient.CreateOrUpdate.
+type ConfigurationProfileAssignmentsClientCreateOrUpdateResult struct {
 	ConfigurationProfileAssignment
 }
 
-// ConfigurationProfileAssignmentsDeleteResponse contains the response from method ConfigurationProfileAssignments.Delete.
-type ConfigurationProfileAssignmentsDeleteResponse struct {
+// ConfigurationProfileAssignmentsClientDeleteResponse contains the response from method ConfigurationProfileAssignmentsClient.Delete.
+type ConfigurationProfileAssignmentsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfileAssignmentsGetResponse contains the response from method ConfigurationProfileAssignments.Get.
-type ConfigurationProfileAssignmentsGetResponse struct {
-	ConfigurationProfileAssignmentsGetResult
+// ConfigurationProfileAssignmentsClientGetResponse contains the response from method ConfigurationProfileAssignmentsClient.Get.
+type ConfigurationProfileAssignmentsClientGetResponse struct {
+	ConfigurationProfileAssignmentsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfileAssignmentsGetResult contains the result from method ConfigurationProfileAssignments.Get.
-type ConfigurationProfileAssignmentsGetResult struct {
+// ConfigurationProfileAssignmentsClientGetResult contains the result from method ConfigurationProfileAssignmentsClient.Get.
+type ConfigurationProfileAssignmentsClientGetResult struct {
 	ConfigurationProfileAssignment
 }
 
-// ConfigurationProfileAssignmentsListBySubscriptionResponse contains the response from method ConfigurationProfileAssignments.ListBySubscription.
-type ConfigurationProfileAssignmentsListBySubscriptionResponse struct {
-	ConfigurationProfileAssignmentsListBySubscriptionResult
+// ConfigurationProfileAssignmentsClientListBySubscriptionResponse contains the response from method ConfigurationProfileAssignmentsClient.ListBySubscription.
+type ConfigurationProfileAssignmentsClientListBySubscriptionResponse struct {
+	ConfigurationProfileAssignmentsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfileAssignmentsListBySubscriptionResult contains the result from method ConfigurationProfileAssignments.ListBySubscription.
-type ConfigurationProfileAssignmentsListBySubscriptionResult struct {
+// ConfigurationProfileAssignmentsClientListBySubscriptionResult contains the result from method ConfigurationProfileAssignmentsClient.ListBySubscription.
+type ConfigurationProfileAssignmentsClientListBySubscriptionResult struct {
 	ConfigurationProfileAssignmentList
 }
 
-// ConfigurationProfileAssignmentsListResponse contains the response from method ConfigurationProfileAssignments.List.
-type ConfigurationProfileAssignmentsListResponse struct {
-	ConfigurationProfileAssignmentsListResult
+// ConfigurationProfileAssignmentsClientListResponse contains the response from method ConfigurationProfileAssignmentsClient.List.
+type ConfigurationProfileAssignmentsClientListResponse struct {
+	ConfigurationProfileAssignmentsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfileAssignmentsListResult contains the result from method ConfigurationProfileAssignments.List.
-type ConfigurationProfileAssignmentsListResult struct {
+// ConfigurationProfileAssignmentsClientListResult contains the result from method ConfigurationProfileAssignmentsClient.List.
+type ConfigurationProfileAssignmentsClientListResult struct {
 	ConfigurationProfileAssignmentList
 }
 
-// ConfigurationProfilePreferencesCreateOrUpdateResponse contains the response from method ConfigurationProfilePreferences.CreateOrUpdate.
-type ConfigurationProfilePreferencesCreateOrUpdateResponse struct {
-	ConfigurationProfilePreferencesCreateOrUpdateResult
+// ConfigurationProfilesClientCreateOrUpdateResponse contains the response from method ConfigurationProfilesClient.CreateOrUpdate.
+type ConfigurationProfilesClientCreateOrUpdateResponse struct {
+	ConfigurationProfilesClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfilePreferencesCreateOrUpdateResult contains the result from method ConfigurationProfilePreferences.CreateOrUpdate.
-type ConfigurationProfilePreferencesCreateOrUpdateResult struct {
-	ConfigurationProfilePreference
+// ConfigurationProfilesClientCreateOrUpdateResult contains the result from method ConfigurationProfilesClient.CreateOrUpdate.
+type ConfigurationProfilesClientCreateOrUpdateResult struct {
+	ConfigurationProfile
 }
 
-// ConfigurationProfilePreferencesDeleteResponse contains the response from method ConfigurationProfilePreferences.Delete.
-type ConfigurationProfilePreferencesDeleteResponse struct {
+// ConfigurationProfilesClientDeleteResponse contains the response from method ConfigurationProfilesClient.Delete.
+type ConfigurationProfilesClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfilePreferencesGetResponse contains the response from method ConfigurationProfilePreferences.Get.
-type ConfigurationProfilePreferencesGetResponse struct {
-	ConfigurationProfilePreferencesGetResult
+// ConfigurationProfilesClientGetResponse contains the response from method ConfigurationProfilesClient.Get.
+type ConfigurationProfilesClientGetResponse struct {
+	ConfigurationProfilesClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfilePreferencesGetResult contains the result from method ConfigurationProfilePreferences.Get.
-type ConfigurationProfilePreferencesGetResult struct {
-	ConfigurationProfilePreference
+// ConfigurationProfilesClientGetResult contains the result from method ConfigurationProfilesClient.Get.
+type ConfigurationProfilesClientGetResult struct {
+	ConfigurationProfile
 }
 
-// ConfigurationProfilePreferencesListByResourceGroupResponse contains the response from method ConfigurationProfilePreferences.ListByResourceGroup.
-type ConfigurationProfilePreferencesListByResourceGroupResponse struct {
-	ConfigurationProfilePreferencesListByResourceGroupResult
+// ConfigurationProfilesClientListByResourceGroupResponse contains the response from method ConfigurationProfilesClient.ListByResourceGroup.
+type ConfigurationProfilesClientListByResourceGroupResponse struct {
+	ConfigurationProfilesClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfilePreferencesListByResourceGroupResult contains the result from method ConfigurationProfilePreferences.ListByResourceGroup.
-type ConfigurationProfilePreferencesListByResourceGroupResult struct {
-	ConfigurationProfilePreferenceList
+// ConfigurationProfilesClientListByResourceGroupResult contains the result from method ConfigurationProfilesClient.ListByResourceGroup.
+type ConfigurationProfilesClientListByResourceGroupResult struct {
+	ConfigurationProfileList
 }
 
-// ConfigurationProfilePreferencesListBySubscriptionResponse contains the response from method ConfigurationProfilePreferences.ListBySubscription.
-type ConfigurationProfilePreferencesListBySubscriptionResponse struct {
-	ConfigurationProfilePreferencesListBySubscriptionResult
+// ConfigurationProfilesClientListBySubscriptionResponse contains the response from method ConfigurationProfilesClient.ListBySubscription.
+type ConfigurationProfilesClientListBySubscriptionResponse struct {
+	ConfigurationProfilesClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfilePreferencesListBySubscriptionResult contains the result from method ConfigurationProfilePreferences.ListBySubscription.
-type ConfigurationProfilePreferencesListBySubscriptionResult struct {
-	ConfigurationProfilePreferenceList
+// ConfigurationProfilesClientListBySubscriptionResult contains the result from method ConfigurationProfilesClient.ListBySubscription.
+type ConfigurationProfilesClientListBySubscriptionResult struct {
+	ConfigurationProfileList
 }
 
-// ConfigurationProfilePreferencesUpdateResponse contains the response from method ConfigurationProfilePreferences.Update.
-type ConfigurationProfilePreferencesUpdateResponse struct {
-	ConfigurationProfilePreferencesUpdateResult
+// ConfigurationProfilesClientUpdateResponse contains the response from method ConfigurationProfilesClient.Update.
+type ConfigurationProfilesClientUpdateResponse struct {
+	ConfigurationProfilesClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConfigurationProfilePreferencesUpdateResult contains the result from method ConfigurationProfilePreferences.Update.
-type ConfigurationProfilePreferencesUpdateResult struct {
-	ConfigurationProfilePreference
+// ConfigurationProfilesClientUpdateResult contains the result from method ConfigurationProfilesClient.Update.
+type ConfigurationProfilesClientUpdateResult struct {
+	ConfigurationProfile
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// ConfigurationProfilesVersionsClientCreateOrUpdateResponse contains the response from method ConfigurationProfilesVersionsClient.CreateOrUpdate.
+type ConfigurationProfilesVersionsClientCreateOrUpdateResponse struct {
+	ConfigurationProfilesVersionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationList
+// ConfigurationProfilesVersionsClientCreateOrUpdateResult contains the result from method ConfigurationProfilesVersionsClient.CreateOrUpdate.
+type ConfigurationProfilesVersionsClientCreateOrUpdateResult struct {
+	ConfigurationProfile
+}
+
+// ConfigurationProfilesVersionsClientDeleteResponse contains the response from method ConfigurationProfilesVersionsClient.Delete.
+type ConfigurationProfilesVersionsClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConfigurationProfilesVersionsClientGetResponse contains the response from method ConfigurationProfilesVersionsClient.Get.
+type ConfigurationProfilesVersionsClientGetResponse struct {
+	ConfigurationProfilesVersionsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConfigurationProfilesVersionsClientGetResult contains the result from method ConfigurationProfilesVersionsClient.Get.
+type ConfigurationProfilesVersionsClientGetResult struct {
+	ConfigurationProfile
+}
+
+// ConfigurationProfilesVersionsClientListChildResourcesResponse contains the response from method ConfigurationProfilesVersionsClient.ListChildResources.
+type ConfigurationProfilesVersionsClientListChildResourcesResponse struct {
+	ConfigurationProfilesVersionsClientListChildResourcesResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConfigurationProfilesVersionsClientListChildResourcesResult contains the result from method ConfigurationProfilesVersionsClient.ListChildResources.
+type ConfigurationProfilesVersionsClientListChildResourcesResult struct {
+	ConfigurationProfileList
+}
+
+// ConfigurationProfilesVersionsClientUpdateResponse contains the response from method ConfigurationProfilesVersionsClient.Update.
+type ConfigurationProfilesVersionsClientUpdateResponse struct {
+	ConfigurationProfilesVersionsClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConfigurationProfilesVersionsClientUpdateResult contains the result from method ConfigurationProfilesVersionsClient.Update.
+type ConfigurationProfilesVersionsClientUpdateResult struct {
+	ConfigurationProfile
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
+	OperationListResult
+}
+
+// ReportsClientGetResponse contains the response from method ReportsClient.Get.
+type ReportsClientGetResponse struct {
+	ReportsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientGetResult contains the result from method ReportsClient.Get.
+type ReportsClientGetResult struct {
+	Report
+}
+
+// ReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method ReportsClient.ListByConfigurationProfileAssignments.
+type ReportsClientListByConfigurationProfileAssignmentsResponse struct {
+	ReportsClientListByConfigurationProfileAssignmentsResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ReportsClientListByConfigurationProfileAssignmentsResult contains the result from method ReportsClient.ListByConfigurationProfileAssignments.
+type ReportsClientListByConfigurationProfileAssignmentsResult struct {
+	ReportList
 }

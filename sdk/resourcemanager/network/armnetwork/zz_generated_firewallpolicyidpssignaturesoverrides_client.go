@@ -11,7 +11,6 @@ package armnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,55 @@ import (
 // FirewallPolicyIdpsSignaturesOverridesClient contains the methods for the FirewallPolicyIdpsSignaturesOverrides group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesOverridesClient() instead.
 type FirewallPolicyIdpsSignaturesOverridesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFirewallPolicyIdpsSignaturesOverridesClient creates a new instance of FirewallPolicyIdpsSignaturesOverridesClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewFirewallPolicyIdpsSignaturesOverridesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FirewallPolicyIdpsSignaturesOverridesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &FirewallPolicyIdpsSignaturesOverridesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &FirewallPolicyIdpsSignaturesOverridesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns all signatures overrides for a specific policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesGetOptions) (FirewallPolicyIdpsSignaturesOverridesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// firewallPolicyName - The name of the Firewall Policy.
+// options - FirewallPolicyIdpsSignaturesOverridesClientGetOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesOverridesClient.Get
+// method.
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesClientGetOptions) (FirewallPolicyIdpsSignaturesOverridesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesGetResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesGetResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallPolicyIdpsSignaturesOverridesGetResponse{}, client.getHandleError(resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesGetOptions) (*policy.Request, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +86,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) getCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -83,46 +95,37 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) getCreateRequest(ctx 
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) getHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesGetResponse, error) {
-	result := FirewallPolicyIdpsSignaturesOverridesGetResponse{RawResponse: resp}
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) getHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientGetResponse, error) {
+	result := FirewallPolicyIdpsSignaturesOverridesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverrides); err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesGetResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Returns all signatures overrides objects for a specific policy as a list containing a single value.
-// If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) List(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesListOptions) (FirewallPolicyIdpsSignaturesOverridesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// firewallPolicyName - The name of the Firewall Policy.
+// options - FirewallPolicyIdpsSignaturesOverridesClientListOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesOverridesClient.List
+// method.
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) List(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesClientListOptions) (FirewallPolicyIdpsSignaturesOverridesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesListResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesListResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallPolicyIdpsSignaturesOverridesListResponse{}, client.listHandleError(resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesListOptions) (*policy.Request, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyIdpsSignaturesOverridesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -136,7 +139,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) listCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,46 +148,38 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesListResponse, error) {
-	result := FirewallPolicyIdpsSignaturesOverridesListResponse{RawResponse: resp}
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientListResponse, error) {
+	result := FirewallPolicyIdpsSignaturesOverridesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverridesList); err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesListResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Patch - Will update the status of policy's signature overrides for IDPS
-// If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) Patch(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesPatchOptions) (FirewallPolicyIdpsSignaturesOverridesPatchResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// firewallPolicyName - The name of the Firewall Policy.
+// parameters - Will contain all properties of the object to put
+// options - FirewallPolicyIdpsSignaturesOverridesClientPatchOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesOverridesClient.Patch
+// method.
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) Patch(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesClientPatchOptions) (FirewallPolicyIdpsSignaturesOverridesClientPatchResponse, error) {
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesPatchResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesPatchResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallPolicyIdpsSignaturesOverridesPatchResponse{}, client.patchHandleError(resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.patchHandleResponse(resp)
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesPatchOptions) (*policy.Request, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -198,7 +193,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,46 +202,38 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ct
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesPatchResponse, error) {
-	result := FirewallPolicyIdpsSignaturesOverridesPatchResponse{RawResponse: resp}
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientPatchResponse, error) {
+	result := FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverrides); err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesPatchResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
 	}
 	return result, nil
 }
 
-// patchHandleError handles the Patch error response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Put - Will override/create a new signature overrides for the policy's IDPS
-// If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) Put(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesPutOptions) (FirewallPolicyIdpsSignaturesOverridesPutResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// firewallPolicyName - The name of the Firewall Policy.
+// parameters - Will contain all properties of the object to put
+// options - FirewallPolicyIdpsSignaturesOverridesClientPutOptions contains the optional parameters for the FirewallPolicyIdpsSignaturesOverridesClient.Put
+// method.
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) Put(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesClientPutOptions) (FirewallPolicyIdpsSignaturesOverridesClientPutResponse, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, firewallPolicyName, parameters, options)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesPutResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesPutResponse{}, err
+		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FirewallPolicyIdpsSignaturesOverridesPutResponse{}, client.putHandleError(resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.putHandleResponse(resp)
 }
 
 // putCreateRequest creates the Put request.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesPutOptions) (*policy.Request, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, options *FirewallPolicyIdpsSignaturesOverridesClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +247,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -269,23 +256,10 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx 
 }
 
 // putHandleResponse handles the Put response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) putHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesPutResponse, error) {
-	result := FirewallPolicyIdpsSignaturesOverridesPutResponse{RawResponse: resp}
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) putHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientPutResponse, error) {
+	result := FirewallPolicyIdpsSignaturesOverridesClientPutResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverrides); err != nil {
-		return FirewallPolicyIdpsSignaturesOverridesPutResponse{}, runtime.NewResponseError(err, resp)
+		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
 	}
 	return result, nil
-}
-
-// putHandleError handles the Put error response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) putHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

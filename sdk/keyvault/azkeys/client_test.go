@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
@@ -101,9 +102,7 @@ func TestCreateKeyRSATags(t *testing.T) {
 func TestClient_CreateKeyOKP(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType != HSMTEST {
-				t.Skip("Only works on HSM")
-			}
+			t.Skip("OKP is not available in 7.3-preview, this will be added in 7.4")
 			stop := startTest(t)
 			defer stop()
 
@@ -324,13 +323,13 @@ func TestBackupKey(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = client.GetKey(ctx, key, nil)
-			var httpErr azcore.HTTPResponse
+			var httpErr *azcore.ResponseError
 			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
 
 			time.Sleep(30 * delay())
 			// Poll this operation manually
@@ -626,6 +625,7 @@ func TestGetDeletedKey(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -656,6 +656,7 @@ func TestRotateKey(t *testing.T) {
 }
 
 func TestGetKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)
@@ -703,26 +704,31 @@ func TestReleaseKey(t *testing.T) {
 			if recording.GetRecordMode() == recording.PlaybackMode {
 				t.Skip("Skipping test in playback")
 			}
-			_, err = http.DefaultClient.Do(req)
-			require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
-			// require.Equal(t, resp.StatusCode, http.StatusOK)
-			// defer resp.Body.Close()
 
-			// type targetResponse struct {
-			// 	Token string `json:"token"`
-			// }
+			// Issue when deploying HSM as well
+			if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
+				_, err = http.DefaultClient.Do(req)
+				require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
+				// require.Equal(t, resp.StatusCode, http.StatusOK)
+				// defer resp.Body.Close()
 
-			// var tR targetResponse
-			// err = json.NewDecoder(resp.Body).Decode(&tR)
-			// require.NoError(t, err)
+				// type targetResponse struct {
+				// 	Token string `json:"token"`
+				// }
 
-			_, err = client.ReleaseKey(ctx, key, "target", nil)
-			require.Error(t, err)
+				// var tR targetResponse
+				// err = json.NewDecoder(resp.Body).Decode(&tR)
+				// require.NoError(t, err)
+
+				_, err = client.ReleaseKey(ctx, key, "target", nil)
+				require.Error(t, err)
+			}
 		})
 	}
 }
 
 func TestUpdateKeyRotationPolicy(t *testing.T) {
+	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)

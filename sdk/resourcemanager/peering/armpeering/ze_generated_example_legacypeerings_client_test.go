@@ -25,14 +25,18 @@ func ExampleLegacyPeeringsClient_List() {
 	ctx := context.Background()
 	client := armpeering.NewLegacyPeeringsClient("<subscription-id>", cred, nil)
 	pager := client.List("<peering-location>",
-		armpeering.Enum1Exchange,
+		armpeering.Enum1("Exchange"),
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Peering.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

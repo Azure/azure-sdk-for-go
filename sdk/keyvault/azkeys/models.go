@@ -48,13 +48,11 @@ func (k KeyAttributes) toGenerated() *generated.KeyAttributes {
 	return &generated.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
 		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
-		Attributes: generated.Attributes{
-			Enabled:   k.Enabled,
-			Expires:   k.Expires,
-			NotBefore: k.NotBefore,
-			Created:   k.Created,
-			Updated:   k.Updated,
-		},
+		Enabled:         k.Enabled,
+		Expires:         k.Expires,
+		NotBefore:       k.NotBefore,
+		Created:         k.Created,
+		Updated:         k.Updated,
 	}
 }
 
@@ -291,7 +289,22 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		KeyItem:            *keyItemFromGenerated(&i.KeyItem),
+		KeyItem: KeyItem{
+			Attributes: &KeyAttributes{
+				Attributes: Attributes{
+					Enabled:   i.Attributes.Enabled,
+					Expires:   i.Attributes.Expires,
+					NotBefore: i.Attributes.NotBefore,
+					Created:   i.Attributes.Created,
+					Updated:   i.Attributes.Updated,
+				},
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+			},
+			KID:     i.Kid,
+			Tags:    convertGeneratedMap(i.Tags),
+			Managed: i.Managed,
+		},
 	}
 }
 

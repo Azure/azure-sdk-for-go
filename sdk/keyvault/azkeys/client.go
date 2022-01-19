@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -58,9 +59,9 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
-	conn := generated.NewConnection(genOptions)
+	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return Client{
-		kvClient: generated.NewKeyVaultClient(conn),
+		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultUrl,
 	}, nil
 }
@@ -664,9 +665,9 @@ func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error)
 		return resp.RawResponse, nil
 	}
 
-	var httpResponseErr azcore.HTTPResponse
+	var httpResponseErr *azcore.ResponseError
 	if errors.As(err, &httpResponseErr) {
-		if httpResponseErr.RawResponse().StatusCode == http.StatusNotFound {
+		if httpResponseErr.StatusCode == http.StatusNotFound {
 			// This is the expected result
 			return s.deleteResponse.RawResponse, nil
 		}
@@ -721,9 +722,9 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 	}
 
 	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return DeleteKeyPollerResponse{}, err
 		}
 	}
@@ -826,9 +827,9 @@ func (b *beginRecoverPoller) Done() bool {
 func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetKey(ctx, b.vaultUrl, b.keyName, "", nil)
 	b.lastResponse = resp
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		return httpErr.RawResponse(), err
+		return httpErr.RawResponse, err
 	}
 	return resp.RawResponse, nil
 }
@@ -906,9 +907,9 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	}
 
 	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, "", nil)
-	var httpErr azcore.HTTPResponse
+	var httpErr *azcore.ResponseError
 	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+		if httpErr.StatusCode != http.StatusNotFound {
 			return RecoverDeletedKeyPollerResponse{}, err
 		}
 	}

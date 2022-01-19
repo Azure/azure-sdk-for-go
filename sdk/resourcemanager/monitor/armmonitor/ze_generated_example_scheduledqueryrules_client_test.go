@@ -29,34 +29,30 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<rule-name>",
 		armmonitor.LogSearchRuleResource{
-			TrackedEntityResource: armmonitor.TrackedEntityResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.LogSearchRule{
 				Description: to.StringPtr("<description>"),
 				Action: &armmonitor.AlertingAction{
-					Action: armmonitor.Action{
-						ODataType: to.StringPtr("<odata-type>"),
-					},
+					ODataType: to.StringPtr("<odata-type>"),
 					AznsAction: &armmonitor.AzNsActionGroup{
 						ActionGroup:          []*string{},
 						CustomWebhookPayload: to.StringPtr("<custom-webhook-payload>"),
 						EmailSubject:         to.StringPtr("<email-subject>"),
 					},
-					Severity: armmonitor.AlertSeverityOne.ToPtr(),
+					Severity: armmonitor.AlertSeverity("1").ToPtr(),
 					Trigger: &armmonitor.TriggerCondition{
 						MetricTrigger: &armmonitor.LogMetricTrigger{
 							MetricColumn:      to.StringPtr("<metric-column>"),
-							MetricTriggerType: armmonitor.MetricTriggerTypeConsecutive.ToPtr(),
+							MetricTriggerType: armmonitor.MetricTriggerType("Consecutive").ToPtr(),
 							Threshold:         to.Float64Ptr(5),
-							ThresholdOperator: armmonitor.ConditionalOperatorGreaterThan.ToPtr(),
+							ThresholdOperator: armmonitor.ConditionalOperator("GreaterThan").ToPtr(),
 						},
 						Threshold:         to.Float64Ptr(3),
-						ThresholdOperator: armmonitor.ConditionalOperatorGreaterThan.ToPtr(),
+						ThresholdOperator: armmonitor.ConditionalOperator("GreaterThan").ToPtr(),
 					},
 				},
-				Enabled: armmonitor.EnabledTrue.ToPtr(),
+				Enabled: armmonitor.Enabled("true").ToPtr(),
 				Schedule: &armmonitor.Schedule{
 					FrequencyInMinutes:  to.Int32Ptr(15),
 					TimeWindowInMinutes: to.Int32Ptr(15),
@@ -64,7 +60,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate() {
 				Source: &armmonitor.Source{
 					DataSourceID: to.StringPtr("<data-source-id>"),
 					Query:        to.StringPtr("<query>"),
-					QueryType:    armmonitor.QueryTypeResultCount.ToPtr(),
+					QueryType:    armmonitor.QueryType("ResultCount").ToPtr(),
 				},
 			},
 		},
@@ -72,7 +68,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogSearchRuleResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/getScheduledQueryRules.json
@@ -90,7 +86,7 @@ func ExampleScheduledQueryRulesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogSearchRuleResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/patchScheduledQueryRules.json
@@ -106,14 +102,14 @@ func ExampleScheduledQueryRulesClient_Update() {
 		"<rule-name>",
 		armmonitor.LogSearchRuleResourcePatch{
 			Properties: &armmonitor.LogSearchRulePatch{
-				Enabled: armmonitor.EnabledTrue.ToPtr(),
+				Enabled: armmonitor.Enabled("true").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("LogSearchRuleResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/deleteScheduledQueryRules.json
@@ -141,11 +137,12 @@ func ExampleScheduledQueryRulesClient_ListBySubscription() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
-		&armmonitor.ScheduledQueryRulesListBySubscriptionOptions{Filter: nil})
+	res, err := client.ListBySubscription(ctx,
+		&armmonitor.ScheduledQueryRulesClientListBySubscriptionOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientListBySubscriptionResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
@@ -156,10 +153,11 @@ func ExampleScheduledQueryRulesClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewScheduledQueryRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
-		&armmonitor.ScheduledQueryRulesListByResourceGroupOptions{Filter: nil})
+		&armmonitor.ScheduledQueryRulesClientListByResourceGroupOptions{Filter: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ScheduledQueryRulesClientListByResourceGroupResult)
 }

@@ -11,7 +11,6 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // DesktopsClient contains the methods for the Desktops group.
 // Don't use this type directly, use NewDesktopsClient() instead.
 type DesktopsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDesktopsClient creates a new instance of DesktopsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDesktopsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DesktopsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DesktopsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DesktopsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get a desktop.
-// If the operation fails it returns the *CloudError error type.
-func (client *DesktopsClient) Get(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsGetOptions) (DesktopsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// desktopName - The name of the desktop within the specified desktop group
+// options - DesktopsClientGetOptions contains the optional parameters for the DesktopsClient.Get method.
+func (client *DesktopsClient) Get(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsClientGetOptions) (DesktopsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGroupName, desktopName, options)
 	if err != nil {
-		return DesktopsGetResponse{}, err
+		return DesktopsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DesktopsGetResponse{}, err
+		return DesktopsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DesktopsGetResponse{}, client.getHandleError(resp)
+		return DesktopsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DesktopsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsGetOptions) (*policy.Request, error) {
+func (client *DesktopsClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/desktops/{desktopName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +89,7 @@ func (client *DesktopsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter desktopName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{desktopName}", url.PathEscape(desktopName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,43 +101,33 @@ func (client *DesktopsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DesktopsClient) getHandleResponse(resp *http.Response) (DesktopsGetResponse, error) {
-	result := DesktopsGetResponse{RawResponse: resp}
+func (client *DesktopsClient) getHandleResponse(resp *http.Response) (DesktopsClientGetResponse, error) {
+	result := DesktopsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Desktop); err != nil {
-		return DesktopsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DesktopsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DesktopsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List desktops.
-// If the operation fails it returns the *CloudError error type.
-func (client *DesktopsClient) List(resourceGroupName string, applicationGroupName string, options *DesktopsListOptions) *DesktopsListPager {
-	return &DesktopsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// options - DesktopsClientListOptions contains the optional parameters for the DesktopsClient.List method.
+func (client *DesktopsClient) List(resourceGroupName string, applicationGroupName string, options *DesktopsClientListOptions) *DesktopsClientListPager {
+	return &DesktopsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DesktopsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DesktopsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DesktopList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DesktopsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *DesktopsListOptions) (*policy.Request, error) {
+func (client *DesktopsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *DesktopsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/desktops"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +141,7 @@ func (client *DesktopsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,46 +153,37 @@ func (client *DesktopsClient) listCreateRequest(ctx context.Context, resourceGro
 }
 
 // listHandleResponse handles the List response.
-func (client *DesktopsClient) listHandleResponse(resp *http.Response) (DesktopsListResponse, error) {
-	result := DesktopsListResponse{RawResponse: resp}
+func (client *DesktopsClient) listHandleResponse(resp *http.Response) (DesktopsClientListResponse, error) {
+	result := DesktopsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DesktopList); err != nil {
-		return DesktopsListResponse{}, runtime.NewResponseError(err, resp)
+		return DesktopsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DesktopsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update a desktop.
-// If the operation fails it returns the *CloudError error type.
-func (client *DesktopsClient) Update(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsUpdateOptions) (DesktopsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// desktopName - The name of the desktop within the specified desktop group
+// options - DesktopsClientUpdateOptions contains the optional parameters for the DesktopsClient.Update method.
+func (client *DesktopsClient) Update(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsClientUpdateOptions) (DesktopsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationGroupName, desktopName, options)
 	if err != nil {
-		return DesktopsUpdateResponse{}, err
+		return DesktopsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DesktopsUpdateResponse{}, err
+		return DesktopsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DesktopsUpdateResponse{}, client.updateHandleError(resp)
+		return DesktopsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DesktopsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsUpdateOptions) (*policy.Request, error) {
+func (client *DesktopsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, desktopName string, options *DesktopsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/desktops/{desktopName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,7 +201,7 @@ func (client *DesktopsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter desktopName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{desktopName}", url.PathEscape(desktopName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -224,23 +216,10 @@ func (client *DesktopsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DesktopsClient) updateHandleResponse(resp *http.Response) (DesktopsUpdateResponse, error) {
-	result := DesktopsUpdateResponse{RawResponse: resp}
+func (client *DesktopsClient) updateHandleResponse(resp *http.Response) (DesktopsClientUpdateResponse, error) {
+	result := DesktopsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Desktop); err != nil {
-		return DesktopsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DesktopsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DesktopsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

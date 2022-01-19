@@ -11,7 +11,6 @@ package armsynapse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // SQLPoolTransparentDataEncryptionsClient contains the methods for the SQLPoolTransparentDataEncryptions group.
 // Don't use this type directly, use NewSQLPoolTransparentDataEncryptionsClient() instead.
 type SQLPoolTransparentDataEncryptionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLPoolTransparentDataEncryptionsClient creates a new instance of SQLPoolTransparentDataEncryptionsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLPoolTransparentDataEncryptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLPoolTransparentDataEncryptionsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLPoolTransparentDataEncryptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLPoolTransparentDataEncryptionsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a Sql pool's transparent data encryption configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, parameters TransparentDataEncryption, options *SQLPoolTransparentDataEncryptionsCreateOrUpdateOptions) (SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// transparentDataEncryptionName - The name of the transparent data encryption configuration.
+// parameters - The required parameters for creating or updating transparent data encryption.
+// options - SQLPoolTransparentDataEncryptionsClientCreateOrUpdateOptions contains the optional parameters for the SQLPoolTransparentDataEncryptionsClient.CreateOrUpdate
+// method.
+func (client *SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, parameters TransparentDataEncryption, options *SQLPoolTransparentDataEncryptionsClientCreateOrUpdateOptions) (SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, parameters, options)
 	if err != nil {
-		return SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse{}, err
+		return SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse{}, err
+		return SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, parameters TransparentDataEncryption, options *SQLPoolTransparentDataEncryptionsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, parameters TransparentDataEncryption, options *SQLPoolTransparentDataEncryptionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateCreateReque
 		return nil, errors.New("parameter transparentDataEncryptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transparentDataEncryptionName}", url.PathEscape(string(transparentDataEncryptionName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +108,39 @@ func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateCreateReque
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse, error) {
-	result := SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse{RawResponse: resp}
+func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateHandleResponse(resp *http.Response) (SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse, error) {
+	result := SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransparentDataEncryption); err != nil {
-		return SQLPoolTransparentDataEncryptionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolTransparentDataEncryptionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLPoolTransparentDataEncryptionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a SQL pool's transparent data encryption configuration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, options *SQLPoolTransparentDataEncryptionsGetOptions) (SQLPoolTransparentDataEncryptionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// transparentDataEncryptionName - The name of the transparent data encryption configuration.
+// options - SQLPoolTransparentDataEncryptionsClientGetOptions contains the optional parameters for the SQLPoolTransparentDataEncryptionsClient.Get
+// method.
+func (client *SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, options *SQLPoolTransparentDataEncryptionsClientGetOptions) (SQLPoolTransparentDataEncryptionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, options)
 	if err != nil {
-		return SQLPoolTransparentDataEncryptionsGetResponse{}, err
+		return SQLPoolTransparentDataEncryptionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLPoolTransparentDataEncryptionsGetResponse{}, err
+		return SQLPoolTransparentDataEncryptionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLPoolTransparentDataEncryptionsGetResponse{}, client.getHandleError(resp)
+		return SQLPoolTransparentDataEncryptionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLPoolTransparentDataEncryptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, options *SQLPoolTransparentDataEncryptionsGetOptions) (*policy.Request, error) {
+func (client *SQLPoolTransparentDataEncryptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, transparentDataEncryptionName TransparentDataEncryptionName, options *SQLPoolTransparentDataEncryptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +162,7 @@ func (client *SQLPoolTransparentDataEncryptionsClient) getCreateRequest(ctx cont
 		return nil, errors.New("parameter transparentDataEncryptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{transparentDataEncryptionName}", url.PathEscape(string(transparentDataEncryptionName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,43 +174,35 @@ func (client *SQLPoolTransparentDataEncryptionsClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLPoolTransparentDataEncryptionsClient) getHandleResponse(resp *http.Response) (SQLPoolTransparentDataEncryptionsGetResponse, error) {
-	result := SQLPoolTransparentDataEncryptionsGetResponse{RawResponse: resp}
+func (client *SQLPoolTransparentDataEncryptionsClient) getHandleResponse(resp *http.Response) (SQLPoolTransparentDataEncryptionsClientGetResponse, error) {
+	result := SQLPoolTransparentDataEncryptionsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransparentDataEncryption); err != nil {
-		return SQLPoolTransparentDataEncryptionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolTransparentDataEncryptionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLPoolTransparentDataEncryptionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Get list of SQL pool's transparent data encryption configurations.
-// If the operation fails it returns a generic error.
-func (client *SQLPoolTransparentDataEncryptionsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolTransparentDataEncryptionsListOptions) *SQLPoolTransparentDataEncryptionsListPager {
-	return &SQLPoolTransparentDataEncryptionsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// sqlPoolName - SQL pool name
+// options - SQLPoolTransparentDataEncryptionsClientListOptions contains the optional parameters for the SQLPoolTransparentDataEncryptionsClient.List
+// method.
+func (client *SQLPoolTransparentDataEncryptionsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolTransparentDataEncryptionsClientListOptions) *SQLPoolTransparentDataEncryptionsClientListPager {
+	return &SQLPoolTransparentDataEncryptionsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp SQLPoolTransparentDataEncryptionsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp SQLPoolTransparentDataEncryptionsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TransparentDataEncryptionListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLPoolTransparentDataEncryptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolTransparentDataEncryptionsListOptions) (*policy.Request, error) {
+func (client *SQLPoolTransparentDataEncryptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolTransparentDataEncryptionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -221,7 +220,7 @@ func (client *SQLPoolTransparentDataEncryptionsClient) listCreateRequest(ctx con
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,22 +232,10 @@ func (client *SQLPoolTransparentDataEncryptionsClient) listCreateRequest(ctx con
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLPoolTransparentDataEncryptionsClient) listHandleResponse(resp *http.Response) (SQLPoolTransparentDataEncryptionsListResponse, error) {
-	result := SQLPoolTransparentDataEncryptionsListResponse{RawResponse: resp}
+func (client *SQLPoolTransparentDataEncryptionsClient) listHandleResponse(resp *http.Response) (SQLPoolTransparentDataEncryptionsClientListResponse, error) {
+	result := SQLPoolTransparentDataEncryptionsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransparentDataEncryptionListResult); err != nil {
-		return SQLPoolTransparentDataEncryptionsListResponse{}, runtime.NewResponseError(err, resp)
+		return SQLPoolTransparentDataEncryptionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *SQLPoolTransparentDataEncryptionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

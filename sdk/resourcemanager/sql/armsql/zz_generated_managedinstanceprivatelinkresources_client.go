@@ -24,42 +24,56 @@ import (
 // ManagedInstancePrivateLinkResourcesClient contains the methods for the ManagedInstancePrivateLinkResources group.
 // Don't use this type directly, use NewManagedInstancePrivateLinkResourcesClient() instead.
 type ManagedInstancePrivateLinkResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedInstancePrivateLinkResourcesClient creates a new instance of ManagedInstancePrivateLinkResourcesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedInstancePrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstancePrivateLinkResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedInstancePrivateLinkResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedInstancePrivateLinkResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets a private link resource for SQL server.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstancePrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, groupName string, options *ManagedInstancePrivateLinkResourcesGetOptions) (ManagedInstancePrivateLinkResourcesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// groupName - The name of the private link resource.
+// options - ManagedInstancePrivateLinkResourcesClientGetOptions contains the optional parameters for the ManagedInstancePrivateLinkResourcesClient.Get
+// method.
+func (client *ManagedInstancePrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, groupName string, options *ManagedInstancePrivateLinkResourcesClientGetOptions) (ManagedInstancePrivateLinkResourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, groupName, options)
 	if err != nil {
-		return ManagedInstancePrivateLinkResourcesGetResponse{}, err
+		return ManagedInstancePrivateLinkResourcesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedInstancePrivateLinkResourcesGetResponse{}, err
+		return ManagedInstancePrivateLinkResourcesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedInstancePrivateLinkResourcesGetResponse{}, client.getHandleError(resp)
+		return ManagedInstancePrivateLinkResourcesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, groupName string, options *ManagedInstancePrivateLinkResourcesGetOptions) (*policy.Request, error) {
+func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, groupName string, options *ManagedInstancePrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources/{groupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +91,7 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -89,42 +103,35 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx co
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesGetResponse, error) {
-	result := ManagedInstancePrivateLinkResourcesGetResponse{RawResponse: resp}
+func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesClientGetResponse, error) {
+	result := ManagedInstancePrivateLinkResourcesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateLink); err != nil {
-		return ManagedInstancePrivateLinkResourcesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedInstancePrivateLinkResourcesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedInstancePrivateLinkResourcesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByManagedInstance - Gets the private link resources for SQL server.
-// If the operation fails it returns a generic error.
-func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesListByManagedInstanceOptions) *ManagedInstancePrivateLinkResourcesListByManagedInstancePager {
-	return &ManagedInstancePrivateLinkResourcesListByManagedInstancePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions contains the optional parameters for the
+// ManagedInstancePrivateLinkResourcesClient.ListByManagedInstance method.
+func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager {
+	return &ManagedInstancePrivateLinkResourcesClientListByManagedInstancePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstancePrivateLinkListResult.NextLink)
 		},
 	}
 }
 
 // listByManagedInstanceCreateRequest creates the ListByManagedInstance request.
-func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesListByManagedInstanceOptions) (*policy.Request, error) {
+func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -138,7 +145,7 @@ func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -150,22 +157,10 @@ func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCr
 }
 
 // listByManagedInstanceHandleResponse handles the ListByManagedInstance response.
-func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse, error) {
-	result := ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse{RawResponse: resp}
+func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse, error) {
+	result := ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstancePrivateLinkListResult); err != nil {
-		return ManagedInstancePrivateLinkResourcesListByManagedInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByManagedInstanceHandleError handles the ListByManagedInstance error response.
-func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

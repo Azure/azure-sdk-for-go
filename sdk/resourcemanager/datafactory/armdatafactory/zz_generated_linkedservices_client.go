@@ -11,7 +11,6 @@ package armdatafactory
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // LinkedServicesClient contains the methods for the LinkedServices group.
 // Don't use this type directly, use NewLinkedServicesClient() instead.
 type LinkedServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLinkedServicesClient creates a new instance of LinkedServicesClient with the specified values.
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedServicesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LinkedServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LinkedServicesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates a linked service.
-// If the operation fails it returns the *CloudError error type.
-func (client *LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesCreateOrUpdateOptions) (LinkedServicesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// linkedServiceName - The linked service name.
+// linkedService - Linked service resource definition.
+// options - LinkedServicesClientCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.CreateOrUpdate
+// method.
+func (client *LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesClientCreateOrUpdateOptions) (LinkedServicesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, linkedService, options)
 	if err != nil {
-		return LinkedServicesCreateOrUpdateResponse{}, err
+		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServicesCreateOrUpdateResponse{}, err
+		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LinkedServicesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return LinkedServicesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,7 +91,7 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter linkedServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkedServiceName}", url.PathEscape(linkedServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,46 +106,37 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LinkedServicesClient) createOrUpdateHandleResponse(resp *http.Response) (LinkedServicesCreateOrUpdateResponse, error) {
-	result := LinkedServicesCreateOrUpdateResponse{RawResponse: resp}
+func (client *LinkedServicesClient) createOrUpdateHandleResponse(resp *http.Response) (LinkedServicesClientCreateOrUpdateResponse, error) {
+	result := LinkedServicesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceResource); err != nil {
-		return LinkedServicesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LinkedServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a linked service.
-// If the operation fails it returns the *CloudError error type.
-func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesDeleteOptions) (LinkedServicesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// linkedServiceName - The linked service name.
+// options - LinkedServicesClientDeleteOptions contains the optional parameters for the LinkedServicesClient.Delete method.
+func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientDeleteOptions) (LinkedServicesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, options)
 	if err != nil {
-		return LinkedServicesDeleteResponse{}, err
+		return LinkedServicesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServicesDeleteResponse{}, err
+		return LinkedServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return LinkedServicesDeleteResponse{}, client.deleteHandleError(resp)
+		return LinkedServicesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return LinkedServicesDeleteResponse{RawResponse: resp}, nil
+	return LinkedServicesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesDeleteOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,7 +154,7 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter linkedServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkedServiceName}", url.PathEscape(linkedServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,38 +165,29 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LinkedServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a linked service.
-// If the operation fails it returns the *CloudError error type.
-func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesGetOptions) (LinkedServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// linkedServiceName - The linked service name.
+// options - LinkedServicesClientGetOptions contains the optional parameters for the LinkedServicesClient.Get method.
+func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (LinkedServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, options)
 	if err != nil {
-		return LinkedServicesGetResponse{}, err
+		return LinkedServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LinkedServicesGetResponse{}, err
+		return LinkedServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotModified) {
-		return LinkedServicesGetResponse{}, client.getHandleError(resp)
+		return LinkedServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesGetOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -210,7 +205,7 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter linkedServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkedServiceName}", url.PathEscape(linkedServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -225,43 +220,34 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (LinkedServicesGetResponse, error) {
-	result := LinkedServicesGetResponse{RawResponse: resp}
+func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (LinkedServicesClientGetResponse, error) {
+	result := LinkedServicesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceResource); err != nil {
-		return LinkedServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return LinkedServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LinkedServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByFactory - Lists linked services.
-// If the operation fails it returns the *CloudError error type.
-func (client *LinkedServicesClient) ListByFactory(resourceGroupName string, factoryName string, options *LinkedServicesListByFactoryOptions) *LinkedServicesListByFactoryPager {
-	return &LinkedServicesListByFactoryPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// factoryName - The factory name.
+// options - LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.ListByFactory
+// method.
+func (client *LinkedServicesClient) ListByFactory(resourceGroupName string, factoryName string, options *LinkedServicesClientListByFactoryOptions) *LinkedServicesClientListByFactoryPager {
+	return &LinkedServicesClientListByFactoryPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp LinkedServicesListByFactoryResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LinkedServicesClientListByFactoryResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LinkedServiceListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *LinkedServicesListByFactoryOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *LinkedServicesClientListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,7 +261,7 @@ func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,23 +273,10 @@ func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Conte
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *LinkedServicesClient) listByFactoryHandleResponse(resp *http.Response) (LinkedServicesListByFactoryResponse, error) {
-	result := LinkedServicesListByFactoryResponse{RawResponse: resp}
+func (client *LinkedServicesClient) listByFactoryHandleResponse(resp *http.Response) (LinkedServicesClientListByFactoryResponse, error) {
+	result := LinkedServicesClientListByFactoryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedServiceListResponse); err != nil {
-		return LinkedServicesListByFactoryResponse{}, runtime.NewResponseError(err, resp)
+		return LinkedServicesClientListByFactoryResponse{}, err
 	}
 	return result, nil
-}
-
-// listByFactoryHandleError handles the ListByFactory error response.
-func (client *LinkedServicesClient) listByFactoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

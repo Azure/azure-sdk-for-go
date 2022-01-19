@@ -36,7 +36,7 @@ func ExampleInvitationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Invitation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InvitationsClientGetResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Invitations_Create.json
@@ -62,7 +62,7 @@ func ExampleInvitationsClient_Create() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Invitation.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.InvitationsClientCreateResult)
 }
 
 // x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Invitations_Delete.json
@@ -95,16 +95,20 @@ func ExampleInvitationsClient_ListByShare() {
 	pager := client.ListByShare("<resource-group-name>",
 		"<account-name>",
 		"<share-name>",
-		&armdatashare.InvitationsListByShareOptions{SkipToken: nil,
+		&armdatashare.InvitationsClientListByShareOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Invitation.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

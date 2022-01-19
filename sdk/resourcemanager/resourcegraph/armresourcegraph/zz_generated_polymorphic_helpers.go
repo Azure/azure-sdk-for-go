@@ -48,22 +48,3 @@ func unmarshalFacetClassificationArray(rawMsg json.RawMessage) ([]FacetClassific
 	}
 	return fArray, nil
 }
-
-func unmarshalFacetClassificationMap(rawMsg json.RawMessage) (map[string]FacetClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]FacetClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalFacetClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}

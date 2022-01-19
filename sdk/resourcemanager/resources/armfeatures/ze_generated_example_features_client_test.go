@@ -17,52 +17,60 @@ import (
 )
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/listSubscriptionFeatures.json
-func ExampleFeaturesClient_ListAll() {
+func ExampleClient_ListAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfeatures.NewFeaturesClient("<subscription-id>", cred, nil)
+	client := armfeatures.NewClient("<subscription-id>", cred, nil)
 	pager := client.ListAll(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("FeatureResult.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/listProviderFeatures.json
-func ExampleFeaturesClient_List() {
+func ExampleClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfeatures.NewFeaturesClient("<subscription-id>", cred, nil)
+	client := armfeatures.NewClient("<subscription-id>", cred, nil)
 	pager := client.List("<resource-provider-namespace>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("FeatureResult.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/getFeature.json
-func ExampleFeaturesClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfeatures.NewFeaturesClient("<subscription-id>", cred, nil)
+	client := armfeatures.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Get(ctx,
 		"<resource-provider-namespace>",
 		"<feature-name>",
@@ -70,17 +78,17 @@ func ExampleFeaturesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FeatureResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/registerFeature.json
-func ExampleFeaturesClient_Register() {
+func ExampleClient_Register() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfeatures.NewFeaturesClient("<subscription-id>", cred, nil)
+	client := armfeatures.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Register(ctx,
 		"<resource-provider-namespace>",
 		"<feature-name>",
@@ -88,17 +96,17 @@ func ExampleFeaturesClient_Register() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FeatureResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientRegisterResult)
 }
 
 // x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/unregisterFeature.json
-func ExampleFeaturesClient_Unregister() {
+func ExampleClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfeatures.NewFeaturesClient("<subscription-id>", cred, nil)
+	client := armfeatures.NewClient("<subscription-id>", cred, nil)
 	res, err := client.Unregister(ctx,
 		"<resource-provider-namespace>",
 		"<feature-name>",
@@ -106,5 +114,5 @@ func ExampleFeaturesClient_Unregister() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("FeatureResult.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientUnregisterResult)
 }

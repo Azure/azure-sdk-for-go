@@ -37,7 +37,7 @@ func ExampleConfigurationAssignmentsClient_GetParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientGetParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_CreateOrUpdateParent.json
@@ -65,7 +65,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientCreateOrUpdateParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_DeleteParent.json
@@ -88,7 +88,7 @@ func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientDeleteParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_Get.json
@@ -109,7 +109,7 @@ func ExampleConfigurationAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientGetResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_CreateOrUpdate.json
@@ -135,7 +135,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_Delete.json
@@ -156,7 +156,7 @@ func ExampleConfigurationAssignmentsClient_Delete() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ConfigurationAssignment.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientDeleteResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_ListParent.json
@@ -167,7 +167,7 @@ func ExampleConfigurationAssignmentsClient_ListParent() {
 	}
 	ctx := context.Background()
 	client := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.ListParent(ctx,
+	res, err := client.ListParent(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
 		"<resource-parent-type>",
@@ -178,6 +178,7 @@ func ExampleConfigurationAssignmentsClient_ListParent() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientListParentResult)
 }
 
 // x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_List.json
@@ -188,7 +189,7 @@ func ExampleConfigurationAssignmentsClient_List() {
 	}
 	ctx := context.Background()
 	client := armmaintenance.NewConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<provider-name>",
 		"<resource-type>",
@@ -197,4 +198,5 @@ func ExampleConfigurationAssignmentsClient_List() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationAssignmentsClientListResult)
 }

@@ -24,42 +24,56 @@ import (
 // ManagedDatabaseQueriesClient contains the methods for the ManagedDatabaseQueries group.
 // Don't use this type directly, use NewManagedDatabaseQueriesClient() instead.
 type ManagedDatabaseQueriesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedDatabaseQueriesClient creates a new instance of ManagedDatabaseQueriesClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseQueriesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagedDatabaseQueriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagedDatabaseQueriesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get query by query id.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseQueriesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesGetOptions) (ManagedDatabaseQueriesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// options - ManagedDatabaseQueriesClientGetOptions contains the optional parameters for the ManagedDatabaseQueriesClient.Get
+// method.
+func (client *ManagedDatabaseQueriesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientGetOptions) (ManagedDatabaseQueriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
 	if err != nil {
-		return ManagedDatabaseQueriesGetResponse{}, err
+		return ManagedDatabaseQueriesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabaseQueriesGetResponse{}, err
+		return ManagedDatabaseQueriesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedDatabaseQueriesGetResponse{}, client.getHandleError(resp)
+		return ManagedDatabaseQueriesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesGetOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,7 +95,7 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -93,42 +107,36 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseQueriesGetResponse, error) {
-	result := ManagedDatabaseQueriesGetResponse{RawResponse: resp}
+func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseQueriesClientGetResponse, error) {
+	result := ManagedDatabaseQueriesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQuery); err != nil {
-		return ManagedDatabaseQueriesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseQueriesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedDatabaseQueriesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByQuery - Get query execution statistics by query id.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseQueriesClient) ListByQuery(resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesListByQueryOptions) *ManagedDatabaseQueriesListByQueryPager {
-	return &ManagedDatabaseQueriesListByQueryPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// options - ManagedDatabaseQueriesClientListByQueryOptions contains the optional parameters for the ManagedDatabaseQueriesClient.ListByQuery
+// method.
+func (client *ManagedDatabaseQueriesClient) ListByQuery(resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientListByQueryOptions) *ManagedDatabaseQueriesClientListByQueryPager {
+	return &ManagedDatabaseQueriesClientListByQueryPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByQueryCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedDatabaseQueriesListByQueryResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagedDatabaseQueriesClientListByQueryResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedInstanceQueryStatistics.NextLink)
 		},
 	}
 }
 
 // listByQueryCreateRequest creates the ListByQuery request.
-func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesListByQueryOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientListByQueryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}/statistics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -150,7 +158,7 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,22 +179,10 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 }
 
 // listByQueryHandleResponse handles the ListByQuery response.
-func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *http.Response) (ManagedDatabaseQueriesListByQueryResponse, error) {
-	result := ManagedDatabaseQueriesListByQueryResponse{RawResponse: resp}
+func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *http.Response) (ManagedDatabaseQueriesClientListByQueryResponse, error) {
+	result := ManagedDatabaseQueriesClientListByQueryResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQueryStatistics); err != nil {
-		return ManagedDatabaseQueriesListByQueryResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseQueriesClientListByQueryResponse{}, err
 	}
 	return result, nil
-}
-
-// listByQueryHandleError handles the ListByQuery error response.
-func (client *ManagedDatabaseQueriesClient) listByQueryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

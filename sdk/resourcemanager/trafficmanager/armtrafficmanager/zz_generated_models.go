@@ -25,17 +25,9 @@ type CheckTrafficManagerRelativeDNSNameAvailabilityParameters struct {
 }
 
 // CloudError - An error returned by the Azure Resource Manager
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// The content of the error.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - The content of an error returned by the Azure Resource Manager
@@ -65,17 +57,17 @@ func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
 
 // DNSConfig - Class containing DNS settings in a Traffic Manager profile.
 type DNSConfig struct {
-	// The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by Azure Traffic Manager to form
-	// the fully-qualified domain name (FQDN) of the
+	// The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by
+	// Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the
 	// profile.
 	RelativeName *string `json:"relativeName,omitempty"`
 
-	// The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic
-	// Manager profile.
+	// The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses
+	// provided by this Traffic Manager profile.
 	TTL *int64 `json:"ttl,omitempty"`
 
-	// READ-ONLY; The fully-qualified domain name (FQDN) of the Traffic Manager profile. This is formed from the concatenation of the RelativeName with the
-	// DNS domain used by Azure Traffic Manager.
+	// READ-ONLY; The fully-qualified domain name (FQDN) of the Traffic Manager profile. This is formed from the concatenation
+	// of the RelativeName with the DNS domain used by Azure Traffic Manager.
 	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
 }
 
@@ -87,16 +79,26 @@ type DeleteOperationResult struct {
 
 // Endpoint - Class representing a Traffic Manager endpoint.
 type Endpoint struct {
-	ProxyResource
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
 	// The properties of the Traffic Manager endpoint.
 	Properties *EndpointProperties `json:"properties,omitempty"`
+
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Endpoint.
 func (e Endpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	e.ProxyResource.marshalInternal(objectMap)
+	populate(objectMap, "id", e.ID)
+	populate(objectMap, "name", e.Name)
 	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -111,37 +113,39 @@ type EndpointProperties struct {
 	// The monitoring status of the endpoint.
 	EndpointMonitorStatus *EndpointMonitorStatus `json:"endpointMonitorStatus,omitempty"`
 
-	// The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the traffic routing method.
+	// The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the traffic
+	// routing method.
 	EndpointStatus *EndpointStatus `json:"endpointStatus,omitempty"`
 
-	// The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please consult Traffic Manager Geographic documentation
-	// for a full list of accepted values.
+	// The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please consult
+	// Traffic Manager Geographic documentation for a full list of accepted values.
 	GeoMapping []*string `json:"geoMapping,omitempty"`
 
-	// The minimum number of endpoints that must be available in the child profile in order for the parent profile to be considered available. Only applicable
-	// to endpoint of type 'NestedEndpoints'.
+	// The minimum number of endpoints that must be available in the child profile in order for the parent profile to be considered
+	// available. Only applicable to endpoint of type 'NestedEndpoints'.
 	MinChildEndpoints *int64 `json:"minChildEndpoints,omitempty"`
 
-	// The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order for the parent profile to be considered
-	// available. Only applicable to endpoint of type
+	// The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order for the parent
+	// profile to be considered available. Only applicable to endpoint of type
 	// 'NestedEndpoints'.
 	MinChildEndpointsIPv4 *int64 `json:"minChildEndpointsIPv4,omitempty"`
 
-	// The minimum number of IPv6 (DNS record type AAAA) endpoints that must be available in the child profile in order for the parent profile to be considered
-	// available. Only applicable to endpoint of type
+	// The minimum number of IPv6 (DNS record type AAAA) endpoints that must be available in the child profile in order for the
+	// parent profile to be considered available. Only applicable to endpoint of type
 	// 'NestedEndpoints'.
 	MinChildEndpointsIPv6 *int64 `json:"minChildEndpointsIPv6,omitempty"`
 
-	// The priority of this endpoint when using the 'Priority' traffic routing method. Possible values are from 1 to 1000, lower values represent higher priority.
-	// This is an optional parameter. If specified,
+	// The priority of this endpoint when using the 'Priority' traffic routing method. Possible values are from 1 to 1000, lower
+	// values represent higher priority. This is an optional parameter. If specified,
 	// it must be specified on all endpoints, and no two endpoints can share the same priority value.
 	Priority *int64 `json:"priority,omitempty"`
 
-	// The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when using the 'Subnet' traffic routing method. An empty list will match
-	// all ranges not covered by other endpoints.
+	// The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when using the 'Subnet' traffic routing
+	// method. An empty list will match all ranges not covered by other endpoints.
 	Subnets []*EndpointPropertiesSubnetsItem `json:"subnets,omitempty"`
 
-	// The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses to direct traffic to this endpoint.
+	// The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses to direct
+	// traffic to this endpoint.
 	Target *string `json:"target,omitempty"`
 
 	// The Azure Resource URI of the of the endpoint. Not applicable to endpoints of type 'ExternalEndpoints'.
@@ -191,35 +195,60 @@ type EndpointPropertiesSubnetsItem struct {
 	Scope *int32 `json:"scope,omitempty"`
 }
 
-// EndpointsCreateOrUpdateOptions contains the optional parameters for the Endpoints.CreateOrUpdate method.
-type EndpointsCreateOrUpdateOptions struct {
+// EndpointsClientCreateOrUpdateOptions contains the optional parameters for the EndpointsClient.CreateOrUpdate method.
+type EndpointsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EndpointsDeleteOptions contains the optional parameters for the Endpoints.Delete method.
-type EndpointsDeleteOptions struct {
+// EndpointsClientDeleteOptions contains the optional parameters for the EndpointsClient.Delete method.
+type EndpointsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EndpointsGetOptions contains the optional parameters for the Endpoints.Get method.
-type EndpointsGetOptions struct {
+// EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
+type EndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EndpointsUpdateOptions contains the optional parameters for the Endpoints.Update method.
-type EndpointsUpdateOptions struct {
+// EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
+type EndpointsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GeographicHierarchiesGetDefaultOptions contains the optional parameters for the GeographicHierarchies.GetDefault method.
-type GeographicHierarchiesGetDefaultOptions struct {
+// GeographicHierarchiesClientGetDefaultOptions contains the optional parameters for the GeographicHierarchiesClient.GetDefault
+// method.
+type GeographicHierarchiesClientGetDefaultOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GeographicHierarchyProperties - Class representing the properties of the Geographic hierarchy used with the Geographic traffic routing method.
+// GeographicHierarchy - Class representing the Geographic hierarchy used with the Geographic traffic routing method.
+type GeographicHierarchy struct {
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
+	// The properties of the Geographic Hierarchy resource.
+	Properties *GeographicHierarchyProperties `json:"properties,omitempty"`
+
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
+}
+
+// GeographicHierarchyProperties - Class representing the properties of the Geographic hierarchy used with the Geographic
+// traffic routing method.
 type GeographicHierarchyProperties struct {
 	// The region at the root of the hierarchy from all the regions in the hierarchy can be retrieved.
 	GeographicHierarchy *Region `json:"geographicHierarchy,omitempty"`
+}
+
+// HeatMapClientGetOptions contains the optional parameters for the HeatMapClient.Get method.
+type HeatMapClientGetOptions struct {
+	// The bottom right latitude,longitude pair of the rectangular viewport to query for.
+	BotRight []float64
+	// The top left latitude,longitude pair of the rectangular viewport to query for.
+	TopLeft []float64
 }
 
 // HeatMapEndpoint - Class which is a sparse representation of a Traffic Manager endpoint.
@@ -231,27 +260,19 @@ type HeatMapEndpoint struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// HeatMapGetOptions contains the optional parameters for the HeatMap.Get method.
-type HeatMapGetOptions struct {
-	// The bottom right latitude,longitude pair of the rectangular viewport to query for.
-	BotRight []float64
-	// The top left latitude,longitude pair of the rectangular viewport to query for.
-	TopLeft []float64
-}
-
 // HeatMapModel - Class representing a Traffic Manager HeatMap.
 type HeatMapModel struct {
-	ProxyResource
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
 	// The properties of the Traffic Manager HeatMap.
 	Properties *HeatMapProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type HeatMapModel.
-func (h HeatMapModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
 }
 
 // HeatMapProperties - Class representing a Traffic Manager HeatMap properties.
@@ -316,7 +337,8 @@ type MonitorConfig struct {
 	// List of expected status code ranges.
 	ExpectedStatusCodeRanges []*MonitorConfigExpectedStatusCodeRangesItem `json:"expectedStatusCodeRanges,omitempty"`
 
-	// The monitor interval for endpoints in this profile. This is the interval at which Traffic Manager will check the health of each endpoint in this profile.
+	// The monitor interval for endpoints in this profile. This is the interval at which Traffic Manager will check the health
+	// of each endpoint in this profile.
 	IntervalInSeconds *int64 `json:"intervalInSeconds,omitempty"`
 
 	// The path relative to the endpoint domain name used to probe for endpoint health.
@@ -331,11 +353,12 @@ type MonitorConfig struct {
 	// The protocol (HTTP, HTTPS or TCP) used to probe for endpoint health.
 	Protocol *MonitorProtocol `json:"protocol,omitempty"`
 
-	// The monitor timeout for endpoints in this profile. This is the time that Traffic Manager allows endpoints in this profile to response to the health check.
+	// The monitor timeout for endpoints in this profile. This is the time that Traffic Manager allows endpoints in this profile
+	// to response to the health check.
 	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
 
-	// The number of consecutive failed health check that Traffic Manager tolerates before declaring an endpoint in this profile Degraded after the next failed
-	// health check.
+	// The number of consecutive failed health check that Traffic Manager tolerates before declaring an endpoint in this profile
+	// Degraded after the next failed health check.
 	ToleratedNumberOfFailures *int64 `json:"toleratedNumberOfFailures,omitempty"`
 }
 
@@ -372,18 +395,54 @@ type MonitorConfigExpectedStatusCodeRangesItem struct {
 	Min *int32 `json:"min,omitempty"`
 }
 
+// NameAvailability - Class representing a Traffic Manager Name Availability response.
+type NameAvailability struct {
+	// Descriptive message that explains why the name is not available, when applicable.
+	Message *string `json:"message,omitempty"`
+
+	// The relative name.
+	Name *string `json:"name,omitempty"`
+
+	// Describes whether the relative name is available or not.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+
+	// The reason why the name is not available, when applicable.
+	Reason *string `json:"reason,omitempty"`
+
+	// Traffic Manager profile resource type.
+	Type *string `json:"type,omitempty"`
+}
+
 // Profile - Class representing a Traffic Manager profile.
 type Profile struct {
-	TrackedResource
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
 	// The properties of the Traffic Manager profile.
 	Properties *ProfileProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Profile.
 func (p Profile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "tags", p.Tags)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -423,8 +482,8 @@ type ProfileProperties struct {
 	// The traffic routing method of the Traffic Manager profile.
 	TrafficRoutingMethod *TrafficRoutingMethod `json:"trafficRoutingMethod,omitempty"`
 
-	// Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase
-	// the cost of the Traffic Manage profile.
+	// Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'.
+	// Enabling this feature will increase the cost of the Traffic Manage profile.
 	TrafficViewEnrollmentStatus *TrafficViewEnrollmentStatus `json:"trafficViewEnrollmentStatus,omitempty"`
 }
 
@@ -442,49 +501,53 @@ func (p ProfileProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the Profiles.CheckTrafficManagerRelativeDNSNameAvailability
+// ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability
 // method.
-type ProfilesCheckTrafficManagerRelativeDNSNameAvailabilityOptions struct {
+type ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesCreateOrUpdateOptions contains the optional parameters for the Profiles.CreateOrUpdate method.
-type ProfilesCreateOrUpdateOptions struct {
+// ProfilesClientCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.CreateOrUpdate method.
+type ProfilesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesDeleteOptions contains the optional parameters for the Profiles.Delete method.
-type ProfilesDeleteOptions struct {
+// ProfilesClientDeleteOptions contains the optional parameters for the ProfilesClient.Delete method.
+type ProfilesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesGetOptions contains the optional parameters for the Profiles.Get method.
-type ProfilesGetOptions struct {
+// ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
+type ProfilesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesListByResourceGroupOptions contains the optional parameters for the Profiles.ListByResourceGroup method.
-type ProfilesListByResourceGroupOptions struct {
+// ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.ListByResourceGroup method.
+type ProfilesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesListBySubscriptionOptions contains the optional parameters for the Profiles.ListBySubscription method.
-type ProfilesListBySubscriptionOptions struct {
+// ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.ListBySubscription method.
+type ProfilesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesUpdateOptions contains the optional parameters for the Profiles.Update method.
-type ProfilesUpdateOptions struct {
+// ProfilesClientUpdateOptions contains the optional parameters for the ProfilesClient.Update method.
+type ProfilesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location and tags
+// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
+// and tags
 type ProxyResource struct {
-	Resource
-}
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
 }
 
 // QueryExperience - Class representing a Traffic Manager HeatMap query experience properties.
@@ -532,40 +595,33 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+
 	// The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
 
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
+	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
 }
 
 // TrafficFlow - Class representing a Traffic Manager HeatMap traffic flow properties.
@@ -593,67 +649,35 @@ func (t TrafficFlow) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrafficManagerGeographicHierarchy - Class representing the Geographic hierarchy used with the Geographic traffic routing method.
-type TrafficManagerGeographicHierarchy struct {
-	ProxyResource
-	// The properties of the Geographic Hierarchy resource.
-	Properties *GeographicHierarchyProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrafficManagerGeographicHierarchy.
-func (t TrafficManagerGeographicHierarchy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TrafficManagerNameAvailability - Class representing a Traffic Manager Name Availability response.
-type TrafficManagerNameAvailability struct {
-	// Descriptive message that explains why the name is not available, when applicable.
-	Message *string `json:"message,omitempty"`
-
-	// The relative name.
-	Name *string `json:"name,omitempty"`
-
-	// Describes whether the relative name is available or not.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-
-	// The reason why the name is not available, when applicable.
-	Reason *string `json:"reason,omitempty"`
-
-	// Traffic Manager profile resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// TrafficManagerUserMetricsKeysCreateOrUpdateOptions contains the optional parameters for the TrafficManagerUserMetricsKeys.CreateOrUpdate method.
-type TrafficManagerUserMetricsKeysCreateOrUpdateOptions struct {
+// UserMetricsKeysClientCreateOrUpdateOptions contains the optional parameters for the UserMetricsKeysClient.CreateOrUpdate
+// method.
+type UserMetricsKeysClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TrafficManagerUserMetricsKeysDeleteOptions contains the optional parameters for the TrafficManagerUserMetricsKeys.Delete method.
-type TrafficManagerUserMetricsKeysDeleteOptions struct {
+// UserMetricsKeysClientDeleteOptions contains the optional parameters for the UserMetricsKeysClient.Delete method.
+type UserMetricsKeysClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TrafficManagerUserMetricsKeysGetOptions contains the optional parameters for the TrafficManagerUserMetricsKeys.Get method.
-type TrafficManagerUserMetricsKeysGetOptions struct {
+// UserMetricsKeysClientGetOptions contains the optional parameters for the UserMetricsKeysClient.Get method.
+type UserMetricsKeysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // UserMetricsModel - Class representing Traffic Manager User Metrics.
 type UserMetricsModel struct {
-	ProxyResource
+	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+
+	// The name of the resource
+	Name *string `json:"name,omitempty"`
+
 	// The properties of the Traffic Manager User Metrics.
 	Properties *UserMetricsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type UserMetricsModel.
-func (u UserMetricsModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
+	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+	Type *string `json:"type,omitempty"`
 }
 
 // UserMetricsProperties - Class representing a Traffic Manager Real User Metrics key response.

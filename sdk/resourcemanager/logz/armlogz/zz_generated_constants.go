@@ -9,8 +9,8 @@
 package armlogz
 
 const (
-	module  = "armlogz"
-	version = "v0.1.0"
+	moduleName    = "armlogz"
+	moduleVersion = "v0.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -78,8 +78,8 @@ func (c ManagedIdentityTypes) ToPtr() *ManagedIdentityTypes {
 	return &c
 }
 
-// MarketplaceSubscriptionStatus - Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource will
-// go in Suspended state.
+// MarketplaceSubscriptionStatus - Flag specifying the Marketplace Subscription Status of the resource. If payment is not
+// made in time, the resource will go in Suspended state.
 type MarketplaceSubscriptionStatus string
 
 const (

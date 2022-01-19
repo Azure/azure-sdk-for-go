@@ -10,7 +10,6 @@ package armmonitor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -23,44 +22,52 @@ import (
 // MetricNamespacesClient contains the methods for the MetricNamespaces group.
 // Don't use this type directly, use NewMetricNamespacesClient() instead.
 type MetricNamespacesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewMetricNamespacesClient creates a new instance of MetricNamespacesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MetricNamespacesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &MetricNamespacesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &MetricNamespacesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // List - Lists the metric namespaces for the resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *MetricNamespacesClient) List(ctx context.Context, resourceURI string, options *MetricNamespacesListOptions) (MetricNamespacesListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The identifier of the resource.
+// options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.List method.
+func (client *MetricNamespacesClient) List(ctx context.Context, resourceURI string, options *MetricNamespacesClientListOptions) (MetricNamespacesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return MetricNamespacesListResponse{}, err
+		return MetricNamespacesClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MetricNamespacesListResponse{}, err
+		return MetricNamespacesClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MetricNamespacesListResponse{}, client.listHandleError(resp)
+		return MetricNamespacesClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricNamespacesListOptions) (*policy.Request, error) {
+func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricNamespacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -75,23 +82,10 @@ func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client *MetricNamespacesClient) listHandleResponse(resp *http.Response) (MetricNamespacesListResponse, error) {
-	result := MetricNamespacesListResponse{RawResponse: resp}
+func (client *MetricNamespacesClient) listHandleResponse(resp *http.Response) (MetricNamespacesClientListResponse, error) {
+	result := MetricNamespacesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricNamespaceCollection); err != nil {
-		return MetricNamespacesListResponse{}, runtime.NewResponseError(err, resp)
+		return MetricNamespacesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *MetricNamespacesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

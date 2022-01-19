@@ -9,8 +9,8 @@
 package armcontainerinstance
 
 const (
-	module  = "armcontainerinstance"
-	version = "v0.1.0"
+	moduleName    = "armcontainerinstance"
+	moduleVersion = "v0.2.0"
 )
 
 // ContainerGroupIPAddressType - Specifies if the IP is exposed to the public internet or private VNET.
@@ -144,6 +144,33 @@ func (c ContainerNetworkProtocol) ToPtr() *ContainerNetworkProtocol {
 	return &c
 }
 
+// DNSNameLabelReusePolicy - The value representing the security enum.
+type DNSNameLabelReusePolicy string
+
+const (
+	DNSNameLabelReusePolicyNoreuse            DNSNameLabelReusePolicy = "Noreuse"
+	DNSNameLabelReusePolicyResourceGroupReuse DNSNameLabelReusePolicy = "ResourceGroupReuse"
+	DNSNameLabelReusePolicySubscriptionReuse  DNSNameLabelReusePolicy = "SubscriptionReuse"
+	DNSNameLabelReusePolicyTenantReuse        DNSNameLabelReusePolicy = "TenantReuse"
+	DNSNameLabelReusePolicyUnsecure           DNSNameLabelReusePolicy = "Unsecure"
+)
+
+// PossibleDNSNameLabelReusePolicyValues returns the possible values for the DNSNameLabelReusePolicy const type.
+func PossibleDNSNameLabelReusePolicyValues() []DNSNameLabelReusePolicy {
+	return []DNSNameLabelReusePolicy{
+		DNSNameLabelReusePolicyNoreuse,
+		DNSNameLabelReusePolicyResourceGroupReuse,
+		DNSNameLabelReusePolicySubscriptionReuse,
+		DNSNameLabelReusePolicyTenantReuse,
+		DNSNameLabelReusePolicyUnsecure,
+	}
+}
+
+// ToPtr returns a *DNSNameLabelReusePolicy pointing to the current value.
+func (c DNSNameLabelReusePolicy) ToPtr() *DNSNameLabelReusePolicy {
+	return &c
+}
+
 // GpuSKU - The SKU of the GPU resource.
 type GpuSKU string
 
@@ -209,8 +236,8 @@ func (c OperatingSystemTypes) ToPtr() *OperatingSystemTypes {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-// identity and a set of user assigned identities. The type 'None' will
+// ResourceIdentityType - The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes
+// both an implicitly created identity and a set of user assigned identities. The type 'None' will
 // remove any identities from the container group.
 type ResourceIdentityType string
 

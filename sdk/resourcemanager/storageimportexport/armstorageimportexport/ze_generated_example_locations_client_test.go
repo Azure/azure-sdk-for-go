@@ -24,11 +24,12 @@ func ExampleLocationsClient_List() {
 	}
 	ctx := context.Background()
 	client := armstorageimportexport.NewLocationsClient(nil, cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.LocationsClientListResult)
 }
 
 // x-ms-original-file: specification/storageimportexport/resource-manager/Microsoft.ImportExport/preview/2021-01-01/examples/GetLocation.json
@@ -45,5 +46,5 @@ func ExampleLocationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Location.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.LocationsClientGetResult)
 }

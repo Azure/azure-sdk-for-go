@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // AssetsClient contains the methods for the Assets group.
 // Don't use this type directly, use NewAssetsClient() instead.
 type AssetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAssetsClient creates a new instance of AssetsClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAssetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AssetsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AssetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AssetsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an Asset in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsCreateOrUpdateOptions) (AssetsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// parameters - The request parameters
+// options - AssetsClientCreateOrUpdateOptions contains the optional parameters for the AssetsClient.CreateOrUpdate method.
+func (client *AssetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsClientCreateOrUpdateOptions) (AssetsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, assetName, parameters, options)
 	if err != nil {
-		return AssetsCreateOrUpdateResponse{}, err
+		return AssetsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsCreateOrUpdateResponse{}, err
+		return AssetsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return AssetsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AssetsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,7 +91,7 @@ func (client *AssetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,46 +103,37 @@ func (client *AssetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AssetsClient) createOrUpdateHandleResponse(resp *http.Response) (AssetsCreateOrUpdateResponse, error) {
-	result := AssetsCreateOrUpdateResponse{RawResponse: resp}
+func (client *AssetsClient) createOrUpdateHandleResponse(resp *http.Response) (AssetsClientCreateOrUpdateResponse, error) {
+	result := AssetsClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Asset); err != nil {
-		return AssetsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AssetsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an Asset in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsDeleteOptions) (AssetsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// options - AssetsClientDeleteOptions contains the optional parameters for the AssetsClient.Delete method.
+func (client *AssetsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientDeleteOptions) (AssetsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
 	if err != nil {
-		return AssetsDeleteResponse{}, err
+		return AssetsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsDeleteResponse{}, err
+		return AssetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AssetsDeleteResponse{}, client.deleteHandleError(resp)
+		return AssetsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AssetsDeleteResponse{RawResponse: resp}, nil
+	return AssetsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsDeleteOptions) (*policy.Request, error) {
+func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,7 +151,7 @@ func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,38 +162,29 @@ func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AssetsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the details of an Asset in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsGetOptions) (AssetsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// options - AssetsClientGetOptions contains the optional parameters for the AssetsClient.Get method.
+func (client *AssetsClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientGetOptions) (AssetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
 	if err != nil {
-		return AssetsGetResponse{}, err
+		return AssetsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsGetResponse{}, err
+		return AssetsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetsGetResponse{}, client.getHandleError(resp)
+		return AssetsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsGetOptions) (*policy.Request, error) {
+func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,7 +202,7 @@ func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,46 +214,38 @@ func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssetsClient) getHandleResponse(resp *http.Response) (AssetsGetResponse, error) {
-	result := AssetsGetResponse{RawResponse: resp}
+func (client *AssetsClient) getHandleResponse(resp *http.Response) (AssetsClientGetResponse, error) {
+	result := AssetsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Asset); err != nil {
-		return AssetsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AssetsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetEncryptionKey - Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) GetEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsGetEncryptionKeyOptions) (AssetsGetEncryptionKeyResponse, error) {
+// GetEncryptionKey - Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services
+// API
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// options - AssetsClientGetEncryptionKeyOptions contains the optional parameters for the AssetsClient.GetEncryptionKey method.
+func (client *AssetsClient) GetEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientGetEncryptionKeyOptions) (AssetsClientGetEncryptionKeyResponse, error) {
 	req, err := client.getEncryptionKeyCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
 	if err != nil {
-		return AssetsGetEncryptionKeyResponse{}, err
+		return AssetsClientGetEncryptionKeyResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsGetEncryptionKeyResponse{}, err
+		return AssetsClientGetEncryptionKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetsGetEncryptionKeyResponse{}, client.getEncryptionKeyHandleError(resp)
+		return AssetsClientGetEncryptionKeyResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEncryptionKeyHandleResponse(resp)
 }
 
 // getEncryptionKeyCreateRequest creates the GetEncryptionKey request.
-func (client *AssetsClient) getEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsGetEncryptionKeyOptions) (*policy.Request, error) {
+func (client *AssetsClient) getEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientGetEncryptionKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/getEncryptionKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -277,7 +263,7 @@ func (client *AssetsClient) getEncryptionKeyCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,43 +275,33 @@ func (client *AssetsClient) getEncryptionKeyCreateRequest(ctx context.Context, r
 }
 
 // getEncryptionKeyHandleResponse handles the GetEncryptionKey response.
-func (client *AssetsClient) getEncryptionKeyHandleResponse(resp *http.Response) (AssetsGetEncryptionKeyResponse, error) {
-	result := AssetsGetEncryptionKeyResponse{RawResponse: resp}
+func (client *AssetsClient) getEncryptionKeyHandleResponse(resp *http.Response) (AssetsClientGetEncryptionKeyResponse, error) {
+	result := AssetsClientGetEncryptionKeyResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageEncryptedAssetDecryptionData); err != nil {
-		return AssetsGetEncryptionKeyResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientGetEncryptionKeyResponse{}, err
 	}
 	return result, nil
 }
 
-// getEncryptionKeyHandleError handles the GetEncryptionKey error response.
-func (client *AssetsClient) getEncryptionKeyHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List Assets in the Media Services account with optional filtering and ordering
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) List(resourceGroupName string, accountName string, options *AssetsListOptions) *AssetsListPager {
-	return &AssetsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// options - AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
+func (client *AssetsClient) List(resourceGroupName string, accountName string, options *AssetsClientListOptions) *AssetsClientListPager {
+	return &AssetsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		advancer: func(ctx context.Context, resp AssetsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AssetsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssetCollection.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AssetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AssetsListOptions) (*policy.Request, error) {
+func (client *AssetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AssetsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,7 +315,7 @@ func (client *AssetsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,47 +336,39 @@ func (client *AssetsClient) listCreateRequest(ctx context.Context, resourceGroup
 }
 
 // listHandleResponse handles the List response.
-func (client *AssetsClient) listHandleResponse(resp *http.Response) (AssetsListResponse, error) {
-	result := AssetsListResponse{RawResponse: resp}
+func (client *AssetsClient) listHandleResponse(resp *http.Response) (AssetsClientListResponse, error) {
+	result := AssetsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetCollection); err != nil {
-		return AssetsListResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AssetsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListContainerSas - Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The signatures are derived
-// from the storage account keys.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) ListContainerSas(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters ListContainerSasInput, options *AssetsListContainerSasOptions) (AssetsListContainerSasResponse, error) {
+// ListContainerSas - Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset
+// content. The signatures are derived from the storage account keys.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// parameters - The request parameters
+// options - AssetsClientListContainerSasOptions contains the optional parameters for the AssetsClient.ListContainerSas method.
+func (client *AssetsClient) ListContainerSas(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters ListContainerSasInput, options *AssetsClientListContainerSasOptions) (AssetsClientListContainerSasResponse, error) {
 	req, err := client.listContainerSasCreateRequest(ctx, resourceGroupName, accountName, assetName, parameters, options)
 	if err != nil {
-		return AssetsListContainerSasResponse{}, err
+		return AssetsClientListContainerSasResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsListContainerSasResponse{}, err
+		return AssetsClientListContainerSasResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetsListContainerSasResponse{}, client.listContainerSasHandleError(resp)
+		return AssetsClientListContainerSasResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContainerSasHandleResponse(resp)
 }
 
 // listContainerSasCreateRequest creates the ListContainerSas request.
-func (client *AssetsClient) listContainerSasCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters ListContainerSasInput, options *AssetsListContainerSasOptions) (*policy.Request, error) {
+func (client *AssetsClient) listContainerSasCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters ListContainerSasInput, options *AssetsClientListContainerSasOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/listContainerSas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -418,7 +386,7 @@ func (client *AssetsClient) listContainerSasCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -430,46 +398,38 @@ func (client *AssetsClient) listContainerSasCreateRequest(ctx context.Context, r
 }
 
 // listContainerSasHandleResponse handles the ListContainerSas response.
-func (client *AssetsClient) listContainerSasHandleResponse(resp *http.Response) (AssetsListContainerSasResponse, error) {
-	result := AssetsListContainerSasResponse{RawResponse: resp}
+func (client *AssetsClient) listContainerSasHandleResponse(resp *http.Response) (AssetsClientListContainerSasResponse, error) {
+	result := AssetsClientListContainerSasResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetContainerSas); err != nil {
-		return AssetsListContainerSasResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientListContainerSasResponse{}, err
 	}
 	return result, nil
 }
 
-// listContainerSasHandleError handles the ListContainerSas error response.
-func (client *AssetsClient) listContainerSasHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListStreamingLocators - Lists Streaming Locators which are associated with this asset.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) ListStreamingLocators(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsListStreamingLocatorsOptions) (AssetsListStreamingLocatorsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// options - AssetsClientListStreamingLocatorsOptions contains the optional parameters for the AssetsClient.ListStreamingLocators
+// method.
+func (client *AssetsClient) ListStreamingLocators(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientListStreamingLocatorsOptions) (AssetsClientListStreamingLocatorsResponse, error) {
 	req, err := client.listStreamingLocatorsCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
 	if err != nil {
-		return AssetsListStreamingLocatorsResponse{}, err
+		return AssetsClientListStreamingLocatorsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsListStreamingLocatorsResponse{}, err
+		return AssetsClientListStreamingLocatorsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetsListStreamingLocatorsResponse{}, client.listStreamingLocatorsHandleError(resp)
+		return AssetsClientListStreamingLocatorsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listStreamingLocatorsHandleResponse(resp)
 }
 
 // listStreamingLocatorsCreateRequest creates the ListStreamingLocators request.
-func (client *AssetsClient) listStreamingLocatorsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsListStreamingLocatorsOptions) (*policy.Request, error) {
+func (client *AssetsClient) listStreamingLocatorsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetsClientListStreamingLocatorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/listStreamingLocators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -487,7 +447,7 @@ func (client *AssetsClient) listStreamingLocatorsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -499,46 +459,38 @@ func (client *AssetsClient) listStreamingLocatorsCreateRequest(ctx context.Conte
 }
 
 // listStreamingLocatorsHandleResponse handles the ListStreamingLocators response.
-func (client *AssetsClient) listStreamingLocatorsHandleResponse(resp *http.Response) (AssetsListStreamingLocatorsResponse, error) {
-	result := AssetsListStreamingLocatorsResponse{RawResponse: resp}
+func (client *AssetsClient) listStreamingLocatorsHandleResponse(resp *http.Response) (AssetsClientListStreamingLocatorsResponse, error) {
+	result := AssetsClientListStreamingLocatorsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListStreamingLocatorsResponse); err != nil {
-		return AssetsListStreamingLocatorsResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientListStreamingLocatorsResponse{}, err
 	}
 	return result, nil
 }
 
-// listStreamingLocatorsHandleError handles the ListStreamingLocators error response.
-func (client *AssetsClient) listStreamingLocatorsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing Asset in the Media Services account
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetsClient) Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsUpdateOptions) (AssetsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// parameters - The request parameters
+// options - AssetsClientUpdateOptions contains the optional parameters for the AssetsClient.Update method.
+func (client *AssetsClient) Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsClientUpdateOptions) (AssetsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, assetName, parameters, options)
 	if err != nil {
-		return AssetsUpdateResponse{}, err
+		return AssetsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetsUpdateResponse{}, err
+		return AssetsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetsUpdateResponse{}, client.updateHandleError(resp)
+		return AssetsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsUpdateOptions) (*policy.Request, error) {
+func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset, options *AssetsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -556,7 +508,7 @@ func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -568,23 +520,10 @@ func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AssetsClient) updateHandleResponse(resp *http.Response) (AssetsUpdateResponse, error) {
-	result := AssetsUpdateResponse{RawResponse: resp}
+func (client *AssetsClient) updateHandleResponse(resp *http.Response) (AssetsClientUpdateResponse, error) {
+	result := AssetsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Asset); err != nil {
-		return AssetsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AssetsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *AssetsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

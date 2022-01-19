@@ -11,7 +11,6 @@ package armblueprint
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,41 +24,53 @@ import (
 // PublishedArtifactsClient contains the methods for the PublishedArtifacts group.
 // Don't use this type directly, use NewPublishedArtifactsClient() instead.
 type PublishedArtifactsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPublishedArtifactsClient creates a new instance of PublishedArtifactsClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewPublishedArtifactsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PublishedArtifactsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &PublishedArtifactsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &PublishedArtifactsClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Get an artifact for a published blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *PublishedArtifactsClient) Get(ctx context.Context, resourceScope string, blueprintName string, versionID string, artifactName string, options *PublishedArtifactsGetOptions) (PublishedArtifactsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// versionID - Version of the published blueprint definition.
+// artifactName - Name of the blueprint artifact.
+// options - PublishedArtifactsClientGetOptions contains the optional parameters for the PublishedArtifactsClient.Get method.
+func (client *PublishedArtifactsClient) Get(ctx context.Context, resourceScope string, blueprintName string, versionID string, artifactName string, options *PublishedArtifactsClientGetOptions) (PublishedArtifactsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceScope, blueprintName, versionID, artifactName, options)
 	if err != nil {
-		return PublishedArtifactsGetResponse{}, err
+		return PublishedArtifactsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublishedArtifactsGetResponse{}, err
+		return PublishedArtifactsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PublishedArtifactsGetResponse{}, client.getHandleError(resp)
+		return PublishedArtifactsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PublishedArtifactsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, artifactName string, options *PublishedArtifactsGetOptions) (*policy.Request, error) {
+func (client *PublishedArtifactsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, artifactName string, options *PublishedArtifactsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts/{artifactName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -74,7 +85,7 @@ func (client *PublishedArtifactsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter artifactName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{artifactName}", url.PathEscape(artifactName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,43 +97,35 @@ func (client *PublishedArtifactsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *PublishedArtifactsClient) getHandleResponse(resp *http.Response) (PublishedArtifactsGetResponse, error) {
-	result := PublishedArtifactsGetResponse{RawResponse: resp}
+func (client *PublishedArtifactsClient) getHandleResponse(resp *http.Response) (PublishedArtifactsClientGetResponse, error) {
+	result := PublishedArtifactsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return PublishedArtifactsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PublishedArtifactsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PublishedArtifactsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List artifacts for a version of a published blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *PublishedArtifactsClient) List(resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsListOptions) *PublishedArtifactsListPager {
-	return &PublishedArtifactsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// versionID - Version of the published blueprint definition.
+// options - PublishedArtifactsClientListOptions contains the optional parameters for the PublishedArtifactsClient.List method.
+func (client *PublishedArtifactsClient) List(resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsClientListOptions) *PublishedArtifactsClientListPager {
+	return &PublishedArtifactsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceScope, blueprintName, versionID, options)
 		},
-		advancer: func(ctx context.Context, resp PublishedArtifactsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp PublishedArtifactsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ArtifactList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PublishedArtifactsClient) listCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsListOptions) (*policy.Request, error) {
+func (client *PublishedArtifactsClient) listCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedArtifactsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -133,7 +136,7 @@ func (client *PublishedArtifactsClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter versionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionId}", url.PathEscape(versionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -145,23 +148,10 @@ func (client *PublishedArtifactsClient) listCreateRequest(ctx context.Context, r
 }
 
 // listHandleResponse handles the List response.
-func (client *PublishedArtifactsClient) listHandleResponse(resp *http.Response) (PublishedArtifactsListResponse, error) {
-	result := PublishedArtifactsListResponse{RawResponse: resp}
+func (client *PublishedArtifactsClient) listHandleResponse(resp *http.Response) (PublishedArtifactsClientListResponse, error) {
+	result := PublishedArtifactsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactList); err != nil {
-		return PublishedArtifactsListResponse{}, runtime.NewResponseError(err, resp)
+		return PublishedArtifactsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PublishedArtifactsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -11,7 +11,6 @@ package armquantum
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // WorkspaceClient contains the methods for the Workspace group.
 // Don't use this type directly, use NewWorkspaceClient() instead.
 type WorkspaceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceClient creates a new instance of WorkspaceClient with the specified values.
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkspaceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkspaceClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CheckNameAvailability - Check the availability of the resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceClient) CheckNameAvailability(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceCheckNameAvailabilityOptions) (WorkspaceCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// locationName - Location.
+// checkNameAvailabilityParameters - The name and type of the resource.
+// options - WorkspaceClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceClient.CheckNameAvailability
+// method.
+func (client *WorkspaceClient) CheckNameAvailability(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceClientCheckNameAvailabilityOptions) (WorkspaceClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, locationName, checkNameAvailabilityParameters, options)
 	if err != nil {
-		return WorkspaceCheckNameAvailabilityResponse{}, err
+		return WorkspaceClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceCheckNameAvailabilityResponse{}, err
+		return WorkspaceClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return WorkspaceClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Quantum/locations/{locationName}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,7 +81,7 @@ func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,23 +93,10 @@ func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *WorkspaceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WorkspaceCheckNameAvailabilityResponse, error) {
-	result := WorkspaceCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *WorkspaceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WorkspaceClientCheckNameAvailabilityResponse, error) {
+	result := WorkspaceClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return WorkspaceCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *WorkspaceClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

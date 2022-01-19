@@ -9,8 +9,8 @@
 package armdatabricks
 
 const (
-	module  = "armdatabricks"
-	version = "v0.2.1"
+	moduleName    = "armdatabricks"
+	moduleVersion = "v0.3.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -240,7 +240,8 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// PublicNetworkAccess - The network access type for accessing workspace. Set value to disabled to access workspace only via private link.
+// PublicNetworkAccess - The network access type for accessing workspace. Set value to disabled to access workspace only via
+// private link.
 type PublicNetworkAccess string
 
 const (
@@ -261,8 +262,8 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// RequiredNsgRules - Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint. Supported
-// values are 'AllRules' and 'NoAzureDatabricksRules'.
+// RequiredNsgRules - Gets or sets a value indicating whether data plane (clusters) to control plane communication happen
+// over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
 // 'NoAzureServiceRules' value is for internal use only.
 type RequiredNsgRules string
 

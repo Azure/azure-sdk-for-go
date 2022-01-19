@@ -25,7 +25,7 @@ func NewConnection(endpoint string, options *azcore.ClientOptions) *Connection {
 	if options != nil {
 		cp = *options
 	}
-	return &Connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, nil, &cp)}
+	return &Connection{u: endpoint, p: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &cp)}
 }
 
 // Endpoint returns the connection's endpoint.

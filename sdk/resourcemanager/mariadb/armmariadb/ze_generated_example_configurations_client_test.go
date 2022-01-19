@@ -45,7 +45,7 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Configuration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ConfigurationGet.json
@@ -64,7 +64,7 @@ func ExampleConfigurationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Configuration.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientGetResult)
 }
 
 // x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ConfigurationListByServer.json
@@ -75,11 +75,12 @@ func ExampleConfigurationsClient_ListByServer() {
 	}
 	ctx := context.Background()
 	client := armmariadb.NewConfigurationsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByServer(ctx,
+	res, err := client.ListByServer(ctx,
 		"<resource-group-name>",
 		"<server-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ConfigurationsClientListByServerResult)
 }

@@ -19,14 +19,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
-func ExampleRecoveryServicesBackupClient_GetOperationStatus() {
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+func ExampleClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewRecoveryServicesBackupClient("<subscription-id>", cred, nil)
+	client := armrecoveryservicesbackup.NewClient("<subscription-id>", cred, nil)
 	res, err := client.GetOperationStatus(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
@@ -35,22 +35,22 @@ func ExampleRecoveryServicesBackupClient_GetOperationStatus() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("OperationStatus.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClientGetOperationStatusResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/BackupDataMove/PrepareDataMove_Post.json
-func ExampleRecoveryServicesBackupClient_BeginBMSPrepareDataMove() {
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/PrepareDataMove_Post.json
+func ExampleClient_BeginBMSPrepareDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewRecoveryServicesBackupClient("<subscription-id>", cred, nil)
+	client := armrecoveryservicesbackup.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginBMSPrepareDataMove(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		armrecoveryservicesbackup.PrepareDataMoveRequest{
-			DataMoveLevel:    armrecoveryservicesbackup.DataMoveLevelVault.ToPtr(),
+			DataMoveLevel:    armrecoveryservicesbackup.DataMoveLevel("Vault").ToPtr(),
 			TargetRegion:     to.StringPtr("<target-region>"),
 			TargetResourceID: to.StringPtr("<target-resource-id>"),
 		},
@@ -64,20 +64,20 @@ func ExampleRecoveryServicesBackupClient_BeginBMSPrepareDataMove() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/BackupDataMove/TriggerDataMove_Post.json
-func ExampleRecoveryServicesBackupClient_BeginBMSTriggerDataMove() {
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/BackupDataMove/TriggerDataMove_Post.json
+func ExampleClient_BeginBMSTriggerDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewRecoveryServicesBackupClient("<subscription-id>", cred, nil)
+	client := armrecoveryservicesbackup.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginBMSTriggerDataMove(ctx,
 		"<vault-name>",
 		"<resource-group-name>",
 		armrecoveryservicesbackup.TriggerDataMoveRequest{
 			CorrelationID:    to.StringPtr("<correlation-id>"),
-			DataMoveLevel:    armrecoveryservicesbackup.DataMoveLevelVault.ToPtr(),
+			DataMoveLevel:    armrecoveryservicesbackup.DataMoveLevel("Vault").ToPtr(),
 			SourceRegion:     to.StringPtr("<source-region>"),
 			SourceResourceID: to.StringPtr("<source-resource-id>"),
 		},
@@ -91,14 +91,14 @@ func ExampleRecoveryServicesBackupClient_BeginBMSTriggerDataMove() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/TriggerRecoveryPointMove_Post.json
-func ExampleRecoveryServicesBackupClient_BeginMoveRecoveryPoint() {
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/TriggerRecoveryPointMove_Post.json
+func ExampleClient_BeginMoveRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armrecoveryservicesbackup.NewRecoveryServicesBackupClient("<subscription-id>", cred, nil)
+	client := armrecoveryservicesbackup.NewClient("<subscription-id>", cred, nil)
 	poller, err := client.BeginMoveRecoveryPoint(ctx,
 		"<vault-name>",
 		"<resource-group-name>",

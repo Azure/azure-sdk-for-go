@@ -34,7 +34,7 @@ func ExampleClustersClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientGetResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersCreateOrUpdate.json
@@ -49,11 +49,9 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<cluster-name>",
 		armkusto.Cluster{
-			TrackedResource: armkusto.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.StringPtr("<location>"),
 			Identity: &armkusto.Identity{
-				Type: armkusto.IdentityTypeSystemAssigned.ToPtr(),
+				Type: armkusto.IdentityType("SystemAssigned").ToPtr(),
 			},
 			Properties: &armkusto.ClusterProperties{
 				AllowedIPRangeList: []*string{
@@ -62,15 +60,15 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 				EnableDoubleEncryption: to.BoolPtr(false),
 				EnablePurge:            to.BoolPtr(true),
 				EnableStreamingIngest:  to.BoolPtr(true),
-				PublicNetworkAccess:    armkusto.PublicNetworkAccessEnabled.ToPtr(),
+				PublicNetworkAccess:    armkusto.PublicNetworkAccess("Enabled").ToPtr(),
 			},
 			SKU: &armkusto.AzureSKU{
-				Name:     armkusto.AzureSKUNameStandardL8S.ToPtr(),
+				Name:     armkusto.AzureSKUName("Standard_L8s").ToPtr(),
 				Capacity: to.Int32Ptr(2),
-				Tier:     armkusto.AzureSKUTierStandard.ToPtr(),
+				Tier:     armkusto.AzureSKUTier("Standard").ToPtr(),
 			},
 		},
-		&armkusto.ClustersBeginCreateOrUpdateOptions{IfMatch: nil,
+		&armkusto.ClustersClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
 		})
 	if err != nil {
@@ -80,7 +78,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersUpdate.json
@@ -97,7 +95,7 @@ func ExampleClustersClient_BeginUpdate() {
 		armkusto.ClusterUpdate{
 			Location: to.StringPtr("<location>"),
 		},
-		&armkusto.ClustersBeginUpdateOptions{IfMatch: to.StringPtr("<if-match>")})
+		&armkusto.ClustersClientBeginUpdateOptions{IfMatch: to.StringPtr("<if-match>")})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -105,7 +103,7 @@ func ExampleClustersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Cluster.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ClustersClientUpdateResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersDelete.json
@@ -179,13 +177,14 @@ func ExampleClustersClient_ListFollowerDatabases() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListFollowerDatabases(ctx,
+	res, err := client.ListFollowerDatabases(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClustersClientListFollowerDatabasesResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterDetachFollowerDatabases.json
@@ -228,10 +227,11 @@ func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClustersClientDiagnoseVirtualNetworkResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersListByResourceGroup.json
@@ -242,12 +242,13 @@ func ExampleClustersClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClustersClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersList.json
@@ -258,26 +259,12 @@ func ExampleClustersClient_List() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersListSkus.json
-func ExampleClustersClient_ListSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUs(ctx,
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.ClustersClientListResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersCheckNameAvailability.json
@@ -288,7 +275,7 @@ func ExampleClustersClient_CheckNameAvailability() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	res, err := client.CheckNameAvailability(ctx,
 		"<location>",
 		armkusto.ClusterCheckNameRequest{
 			Name: to.StringPtr("<name>"),
@@ -298,23 +285,7 @@ func ExampleClustersClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersListResourceSkus.json
-func ExampleClustersClient_ListSKUsByResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListSKUsByResource(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.ClustersClientCheckNameAvailabilityResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoOutboundNetworkDependenciesList.json
@@ -328,12 +299,16 @@ func ExampleClustersClient_ListOutboundNetworkDependenciesEndpoints() {
 	pager := client.ListOutboundNetworkDependenciesEndpoints("<resource-group-name>",
 		"<cluster-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("OutboundNetworkDependenciesEndpoint.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -346,13 +321,14 @@ func ExampleClustersClient_ListLanguageExtensions() {
 	}
 	ctx := context.Background()
 	client := armkusto.NewClustersClient("<subscription-id>", cred, nil)
-	_, err = client.ListLanguageExtensions(ctx,
+	res, err := client.ListLanguageExtensions(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ClustersClientListLanguageExtensionsResult)
 }
 
 // x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterAddLanguageExtensions.json
@@ -369,10 +345,10 @@ func ExampleClustersClient_BeginAddLanguageExtensions() {
 		armkusto.LanguageExtensionsList{
 			Value: []*armkusto.LanguageExtension{
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionNamePYTHON.ToPtr(),
+					LanguageExtensionName: armkusto.LanguageExtensionName("PYTHON").ToPtr(),
 				},
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionNameR.ToPtr(),
+					LanguageExtensionName: armkusto.LanguageExtensionName("R").ToPtr(),
 				}},
 		},
 		nil)
@@ -399,10 +375,10 @@ func ExampleClustersClient_BeginRemoveLanguageExtensions() {
 		armkusto.LanguageExtensionsList{
 			Value: []*armkusto.LanguageExtension{
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionNamePYTHON.ToPtr(),
+					LanguageExtensionName: armkusto.LanguageExtensionName("PYTHON").ToPtr(),
 				},
 				{
-					LanguageExtensionName: armkusto.LanguageExtensionNameR.ToPtr(),
+					LanguageExtensionName: armkusto.LanguageExtensionName("R").ToPtr(),
 				}},
 		},
 		nil)

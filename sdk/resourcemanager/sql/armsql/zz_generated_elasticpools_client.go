@@ -25,46 +25,61 @@ import (
 // ElasticPoolsClient contains the methods for the ElasticPools group.
 // Don't use this type directly, use NewElasticPoolsClient() instead.
 type ElasticPoolsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewElasticPoolsClient creates a new instance of ElasticPoolsClient with the specified values.
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewElasticPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ElasticPoolsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ElasticPoolsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ElasticPoolsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateOrUpdate - Creates or updates an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsBeginCreateOrUpdateOptions) (ElasticPoolsCreateOrUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool.
+// parameters - The elastic pool parameters.
+// options - ElasticPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticPoolsClient.BeginCreateOrUpdate
+// method.
+func (client *ElasticPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsClientBeginCreateOrUpdateOptions) (ElasticPoolsClientCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, elasticPoolName, parameters, options)
 	if err != nil {
-		return ElasticPoolsCreateOrUpdatePollerResponse{}, err
+		return ElasticPoolsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result := ElasticPoolsCreateOrUpdatePollerResponse{
+	result := ElasticPoolsClientCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ElasticPoolsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ElasticPoolsClient.CreateOrUpdate", "", resp, client.pl)
 	if err != nil {
-		return ElasticPoolsCreateOrUpdatePollerResponse{}, err
+		return ElasticPoolsClientCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &ElasticPoolsCreateOrUpdatePoller{
+	result.Poller = &ElasticPoolsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *ElasticPoolsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,7 +113,7 @@ func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,41 +124,35 @@ func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ElasticPoolsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsBeginDeleteOptions) (ElasticPoolsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool.
+// options - ElasticPoolsClientBeginDeleteOptions contains the optional parameters for the ElasticPoolsClient.BeginDelete
+// method.
+func (client *ElasticPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginDeleteOptions) (ElasticPoolsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
-		return ElasticPoolsDeletePollerResponse{}, err
+		return ElasticPoolsClientDeletePollerResponse{}, err
 	}
-	result := ElasticPoolsDeletePollerResponse{
+	result := ElasticPoolsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ElasticPoolsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ElasticPoolsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ElasticPoolsDeletePollerResponse{}, err
+		return ElasticPoolsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ElasticPoolsDeletePoller{
+	result.Poller = &ElasticPoolsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
 		return nil, err
@@ -153,13 +162,13 @@ func (client *ElasticPoolsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ElasticPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -177,7 +186,7 @@ func (client *ElasticPoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -187,41 +196,35 @@ func (client *ElasticPoolsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ElasticPoolsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginFailover - Failovers an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsBeginFailoverOptions) (ElasticPoolsFailoverPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool to failover.
+// options - ElasticPoolsClientBeginFailoverOptions contains the optional parameters for the ElasticPoolsClient.BeginFailover
+// method.
+func (client *ElasticPoolsClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginFailoverOptions) (ElasticPoolsClientFailoverPollerResponse, error) {
 	resp, err := client.failover(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
-		return ElasticPoolsFailoverPollerResponse{}, err
+		return ElasticPoolsClientFailoverPollerResponse{}, err
 	}
-	result := ElasticPoolsFailoverPollerResponse{
+	result := ElasticPoolsClientFailoverPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ElasticPoolsClient.Failover", "", resp, client.pl, client.failoverHandleError)
+	pt, err := armruntime.NewPoller("ElasticPoolsClient.Failover", "", resp, client.pl)
 	if err != nil {
-		return ElasticPoolsFailoverPollerResponse{}, err
+		return ElasticPoolsClientFailoverPollerResponse{}, err
 	}
-	result.Poller = &ElasticPoolsFailoverPoller{
+	result.Poller = &ElasticPoolsClientFailoverPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Failover - Failovers an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) failover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsBeginFailoverOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticPoolsClient) failover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
 		return nil, err
@@ -231,13 +234,13 @@ func (client *ElasticPoolsClient) failover(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.failoverHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsBeginFailoverOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -255,7 +258,7 @@ func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,37 +268,30 @@ func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// failoverHandleError handles the Failover error response.
-func (client *ElasticPoolsClient) failoverHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) Get(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsGetOptions) (ElasticPoolsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool.
+// options - ElasticPoolsClientGetOptions contains the optional parameters for the ElasticPoolsClient.Get method.
+func (client *ElasticPoolsClient) Get(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientGetOptions) (ElasticPoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
-		return ElasticPoolsGetResponse{}, err
+		return ElasticPoolsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ElasticPoolsGetResponse{}, err
+		return ElasticPoolsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ElasticPoolsGetResponse{}, client.getHandleError(resp)
+		return ElasticPoolsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ElasticPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsGetOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -313,7 +309,7 @@ func (client *ElasticPoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -325,42 +321,35 @@ func (client *ElasticPoolsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ElasticPoolsClient) getHandleResponse(resp *http.Response) (ElasticPoolsGetResponse, error) {
-	result := ElasticPoolsGetResponse{RawResponse: resp}
+func (client *ElasticPoolsClient) getHandleResponse(resp *http.Response) (ElasticPoolsClientGetResponse, error) {
+	result := ElasticPoolsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPool); err != nil {
-		return ElasticPoolsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ElasticPoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ElasticPoolsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByServer - Gets all elastic pools in a server.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) ListByServer(resourceGroupName string, serverName string, options *ElasticPoolsListByServerOptions) *ElasticPoolsListByServerPager {
-	return &ElasticPoolsListByServerPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ElasticPoolsClientListByServerOptions contains the optional parameters for the ElasticPoolsClient.ListByServer
+// method.
+func (client *ElasticPoolsClient) ListByServer(resourceGroupName string, serverName string, options *ElasticPoolsClientListByServerOptions) *ElasticPoolsClientListByServerPager {
+	return &ElasticPoolsClientListByServerPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ElasticPoolsListByServerResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ElasticPoolsClientListByServerResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ElasticPoolListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ElasticPoolsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ElasticPoolsListByServerOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ElasticPoolsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -374,7 +363,7 @@ func (client *ElasticPoolsClient) listByServerCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -389,45 +378,39 @@ func (client *ElasticPoolsClient) listByServerCreateRequest(ctx context.Context,
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ElasticPoolsClient) listByServerHandleResponse(resp *http.Response) (ElasticPoolsListByServerResponse, error) {
-	result := ElasticPoolsListByServerResponse{RawResponse: resp}
+func (client *ElasticPoolsClient) listByServerHandleResponse(resp *http.Response) (ElasticPoolsClientListByServerResponse, error) {
+	result := ElasticPoolsClientListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticPoolListResult); err != nil {
-		return ElasticPoolsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ElasticPoolsClientListByServerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServerHandleError handles the ListByServer error response.
-func (client *ElasticPoolsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListMetricDefinitions - Returns elastic pool metric definitions.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsListMetricDefinitionsOptions) (ElasticPoolsListMetricDefinitionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool.
+// options - ElasticPoolsClientListMetricDefinitionsOptions contains the optional parameters for the ElasticPoolsClient.ListMetricDefinitions
+// method.
+func (client *ElasticPoolsClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientListMetricDefinitionsOptions) (ElasticPoolsClientListMetricDefinitionsResponse, error) {
 	req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
-		return ElasticPoolsListMetricDefinitionsResponse{}, err
+		return ElasticPoolsClientListMetricDefinitionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ElasticPoolsListMetricDefinitionsResponse{}, err
+		return ElasticPoolsClientListMetricDefinitionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ElasticPoolsListMetricDefinitionsResponse{}, client.listMetricDefinitionsHandleError(resp)
+		return ElasticPoolsClientListMetricDefinitionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricDefinitionsHandleResponse(resp)
 }
 
 // listMetricDefinitionsCreateRequest creates the ListMetricDefinitions request.
-func (client *ElasticPoolsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsListMetricDefinitionsOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientListMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/metricDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -445,7 +428,7 @@ func (client *ElasticPoolsClient) listMetricDefinitionsCreateRequest(ctx context
 		return nil, errors.New("parameter elasticPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticPoolName}", url.PathEscape(elasticPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -457,45 +440,40 @@ func (client *ElasticPoolsClient) listMetricDefinitionsCreateRequest(ctx context
 }
 
 // listMetricDefinitionsHandleResponse handles the ListMetricDefinitions response.
-func (client *ElasticPoolsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (ElasticPoolsListMetricDefinitionsResponse, error) {
-	result := ElasticPoolsListMetricDefinitionsResponse{RawResponse: resp}
+func (client *ElasticPoolsClient) listMetricDefinitionsHandleResponse(resp *http.Response) (ElasticPoolsClientListMetricDefinitionsResponse, error) {
+	result := ElasticPoolsClientListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionListResult); err != nil {
-		return ElasticPoolsListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
+		return ElasticPoolsClientListMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listMetricDefinitionsHandleError handles the ListMetricDefinitions error response.
-func (client *ElasticPoolsClient) listMetricDefinitionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListMetrics - Returns elastic pool metrics.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) ListMetrics(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsListMetricsOptions) (ElasticPoolsListMetricsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool.
+// filter - An OData filter expression that describes a subset of metrics to return.
+// options - ElasticPoolsClientListMetricsOptions contains the optional parameters for the ElasticPoolsClient.ListMetrics
+// method.
+func (client *ElasticPoolsClient) ListMetrics(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsClientListMetricsOptions) (ElasticPoolsClientListMetricsResponse, error) {
 	req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, filter, options)
 	if err != nil {
-		return ElasticPoolsListMetricsResponse{}, err
+		return ElasticPoolsClientListMetricsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ElasticPoolsListMetricsResponse{}, err
+		return ElasticPoolsClientListMetricsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ElasticPoolsListMetricsResponse{}, client.listMetricsHandleError(resp)
+		return ElasticPoolsClientListMetricsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *ElasticPoolsClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsListMetricsOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -513,7 +491,7 @@ func (client *ElasticPoolsClient) listMetricsCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter elasticPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticPoolName}", url.PathEscape(elasticPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -526,49 +504,44 @@ func (client *ElasticPoolsClient) listMetricsCreateRequest(ctx context.Context, 
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *ElasticPoolsClient) listMetricsHandleResponse(resp *http.Response) (ElasticPoolsListMetricsResponse, error) {
-	result := ElasticPoolsListMetricsResponse{RawResponse: resp}
+func (client *ElasticPoolsClient) listMetricsHandleResponse(resp *http.Response) (ElasticPoolsClientListMetricsResponse, error) {
+	result := ElasticPoolsClientListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return ElasticPoolsListMetricsResponse{}, runtime.NewResponseError(err, resp)
+		return ElasticPoolsClientListMetricsResponse{}, err
 	}
 	return result, nil
 }
 
-// listMetricsHandleError handles the ListMetrics error response.
-func (client *ElasticPoolsClient) listMetricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsBeginUpdateOptions) (ElasticPoolsUpdatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// elasticPoolName - The name of the elastic pool.
+// parameters - The elastic pool update parameters.
+// options - ElasticPoolsClientBeginUpdateOptions contains the optional parameters for the ElasticPoolsClient.BeginUpdate
+// method.
+func (client *ElasticPoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsClientBeginUpdateOptions) (ElasticPoolsClientUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, serverName, elasticPoolName, parameters, options)
 	if err != nil {
-		return ElasticPoolsUpdatePollerResponse{}, err
+		return ElasticPoolsClientUpdatePollerResponse{}, err
 	}
-	result := ElasticPoolsUpdatePollerResponse{
+	result := ElasticPoolsClientUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ElasticPoolsClient.Update", "", resp, client.pl, client.updateHandleError)
+	pt, err := armruntime.NewPoller("ElasticPoolsClient.Update", "", resp, client.pl)
 	if err != nil {
-		return ElasticPoolsUpdatePollerResponse{}, err
+		return ElasticPoolsClientUpdatePollerResponse{}, err
 	}
-	result.Poller = &ElasticPoolsUpdatePoller{
+	result.Poller = &ElasticPoolsClientUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an elastic pool.
-// If the operation fails it returns a generic error.
-func (client *ElasticPoolsClient) update(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ElasticPoolsClient) update(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -578,13 +551,13 @@ func (client *ElasticPoolsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ElasticPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsBeginUpdateOptions) (*policy.Request, error) {
+func (client *ElasticPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -602,7 +575,7 @@ func (client *ElasticPoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -611,16 +584,4 @@ func (client *ElasticPoolsClient) updateCreateRequest(ctx context.Context, resou
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ElasticPoolsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

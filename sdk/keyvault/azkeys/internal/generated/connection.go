@@ -26,7 +26,7 @@ func NewConnection(options *azcore.ClientOptions) *Connection {
 		cp = *options
 	}
 	client := &Connection{
-		p: runtime.NewPipeline(module, version, nil, nil, &cp),
+		p: runtime.NewPipeline(ModuleName, ModuleVersion, runtime.PipelineOptions{}, &cp),
 	}
 	return client
 }

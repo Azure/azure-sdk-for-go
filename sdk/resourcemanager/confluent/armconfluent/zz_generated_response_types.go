@@ -15,34 +15,34 @@ import (
 	"time"
 )
 
-// MarketplaceAgreementsCreateResponse contains the response from method MarketplaceAgreements.Create.
-type MarketplaceAgreementsCreateResponse struct {
-	MarketplaceAgreementsCreateResult
+// MarketplaceAgreementsClientCreateResponse contains the response from method MarketplaceAgreementsClient.Create.
+type MarketplaceAgreementsClientCreateResponse struct {
+	MarketplaceAgreementsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsCreateResult contains the result from method MarketplaceAgreements.Create.
-type MarketplaceAgreementsCreateResult struct {
-	ConfluentAgreementResource
+// MarketplaceAgreementsClientCreateResult contains the result from method MarketplaceAgreementsClient.Create.
+type MarketplaceAgreementsClientCreateResult struct {
+	AgreementResource
 }
 
-// MarketplaceAgreementsListResponse contains the response from method MarketplaceAgreements.List.
-type MarketplaceAgreementsListResponse struct {
-	MarketplaceAgreementsListResult
+// MarketplaceAgreementsClientListResponse contains the response from method MarketplaceAgreementsClient.List.
+type MarketplaceAgreementsClientListResponse struct {
+	MarketplaceAgreementsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// MarketplaceAgreementsListResult contains the result from method MarketplaceAgreements.List.
-type MarketplaceAgreementsListResult struct {
-	ConfluentAgreementResourceListResponse
+// MarketplaceAgreementsClientListResult contains the result from method MarketplaceAgreementsClient.List.
+type MarketplaceAgreementsClientListResult struct {
+	AgreementResourceListResponse
 }
 
-// OrganizationCreatePollerResponse contains the response from method Organization.Create.
-type OrganizationCreatePollerResponse struct {
+// OrganizationClientCreatePollerResponse contains the response from method OrganizationClient.Create.
+type OrganizationClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *OrganizationCreatePoller
+	Poller *OrganizationClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -51,8 +51,8 @@ type OrganizationCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l OrganizationCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OrganizationCreateResponse, error) {
-	respType := OrganizationCreateResponse{}
+func (l OrganizationClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OrganizationClientCreateResponse, error) {
+	respType := OrganizationClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OrganizationResource)
 	if err != nil {
 		return respType, err
@@ -61,13 +61,13 @@ func (l OrganizationCreatePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a OrganizationCreatePollerResponse from the provided client and resume token.
-func (l *OrganizationCreatePollerResponse) Resume(ctx context.Context, client *OrganizationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("OrganizationClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a OrganizationClientCreatePollerResponse from the provided client and resume token.
+func (l *OrganizationClientCreatePollerResponse) Resume(ctx context.Context, client *OrganizationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OrganizationClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &OrganizationCreatePoller{
+	poller := &OrganizationClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -79,22 +79,22 @@ func (l *OrganizationCreatePollerResponse) Resume(ctx context.Context, client *O
 	return nil
 }
 
-// OrganizationCreateResponse contains the response from method Organization.Create.
-type OrganizationCreateResponse struct {
-	OrganizationCreateResult
+// OrganizationClientCreateResponse contains the response from method OrganizationClient.Create.
+type OrganizationClientCreateResponse struct {
+	OrganizationClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationCreateResult contains the result from method Organization.Create.
-type OrganizationCreateResult struct {
+// OrganizationClientCreateResult contains the result from method OrganizationClient.Create.
+type OrganizationClientCreateResult struct {
 	OrganizationResource
 }
 
-// OrganizationDeletePollerResponse contains the response from method Organization.Delete.
-type OrganizationDeletePollerResponse struct {
+// OrganizationClientDeletePollerResponse contains the response from method OrganizationClient.Delete.
+type OrganizationClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *OrganizationDeletePoller
+	Poller *OrganizationClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -103,8 +103,8 @@ type OrganizationDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l OrganizationDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OrganizationDeleteResponse, error) {
-	respType := OrganizationDeleteResponse{}
+func (l OrganizationClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OrganizationClientDeleteResponse, error) {
+	respType := OrganizationClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -113,13 +113,13 @@ func (l OrganizationDeletePollerResponse) PollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// Resume rehydrates a OrganizationDeletePollerResponse from the provided client and resume token.
-func (l *OrganizationDeletePollerResponse) Resume(ctx context.Context, client *OrganizationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("OrganizationClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a OrganizationClientDeletePollerResponse from the provided client and resume token.
+func (l *OrganizationClientDeletePollerResponse) Resume(ctx context.Context, client *OrganizationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OrganizationClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &OrganizationDeletePoller{
+	poller := &OrganizationClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -131,80 +131,80 @@ func (l *OrganizationDeletePollerResponse) Resume(ctx context.Context, client *O
 	return nil
 }
 
-// OrganizationDeleteResponse contains the response from method Organization.Delete.
-type OrganizationDeleteResponse struct {
+// OrganizationClientDeleteResponse contains the response from method OrganizationClient.Delete.
+type OrganizationClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationGetResponse contains the response from method Organization.Get.
-type OrganizationGetResponse struct {
-	OrganizationGetResult
+// OrganizationClientGetResponse contains the response from method OrganizationClient.Get.
+type OrganizationClientGetResponse struct {
+	OrganizationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationGetResult contains the result from method Organization.Get.
-type OrganizationGetResult struct {
+// OrganizationClientGetResult contains the result from method OrganizationClient.Get.
+type OrganizationClientGetResult struct {
 	OrganizationResource
 }
 
-// OrganizationListByResourceGroupResponse contains the response from method Organization.ListByResourceGroup.
-type OrganizationListByResourceGroupResponse struct {
-	OrganizationListByResourceGroupResult
+// OrganizationClientListByResourceGroupResponse contains the response from method OrganizationClient.ListByResourceGroup.
+type OrganizationClientListByResourceGroupResponse struct {
+	OrganizationClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationListByResourceGroupResult contains the result from method Organization.ListByResourceGroup.
-type OrganizationListByResourceGroupResult struct {
+// OrganizationClientListByResourceGroupResult contains the result from method OrganizationClient.ListByResourceGroup.
+type OrganizationClientListByResourceGroupResult struct {
 	OrganizationResourceListResult
 }
 
-// OrganizationListBySubscriptionResponse contains the response from method Organization.ListBySubscription.
-type OrganizationListBySubscriptionResponse struct {
-	OrganizationListBySubscriptionResult
+// OrganizationClientListBySubscriptionResponse contains the response from method OrganizationClient.ListBySubscription.
+type OrganizationClientListBySubscriptionResponse struct {
+	OrganizationClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationListBySubscriptionResult contains the result from method Organization.ListBySubscription.
-type OrganizationListBySubscriptionResult struct {
+// OrganizationClientListBySubscriptionResult contains the result from method OrganizationClient.ListBySubscription.
+type OrganizationClientListBySubscriptionResult struct {
 	OrganizationResourceListResult
 }
 
-// OrganizationOperationsListResponse contains the response from method OrganizationOperations.List.
-type OrganizationOperationsListResponse struct {
-	OrganizationOperationsListResult
+// OrganizationClientUpdateResponse contains the response from method OrganizationClient.Update.
+type OrganizationClientUpdateResponse struct {
+	OrganizationClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationOperationsListResult contains the result from method OrganizationOperations.List.
-type OrganizationOperationsListResult struct {
+// OrganizationClientUpdateResult contains the result from method OrganizationClient.Update.
+type OrganizationClientUpdateResult struct {
+	OrganizationResource
+}
+
+// OrganizationOperationsClientListResponse contains the response from method OrganizationOperationsClient.List.
+type OrganizationOperationsClientListResponse struct {
+	OrganizationOperationsClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OrganizationOperationsClientListResult contains the result from method OrganizationOperationsClient.List.
+type OrganizationOperationsClientListResult struct {
 	OperationListResult
 }
 
-// OrganizationUpdateResponse contains the response from method Organization.Update.
-type OrganizationUpdateResponse struct {
-	OrganizationUpdateResult
+// ValidationsClientValidateOrganizationResponse contains the response from method ValidationsClient.ValidateOrganization.
+type ValidationsClientValidateOrganizationResponse struct {
+	ValidationsClientValidateOrganizationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OrganizationUpdateResult contains the result from method Organization.Update.
-type OrganizationUpdateResult struct {
-	OrganizationResource
-}
-
-// ValidationsValidateOrganizationResponse contains the response from method Validations.ValidateOrganization.
-type ValidationsValidateOrganizationResponse struct {
-	ValidationsValidateOrganizationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ValidationsValidateOrganizationResult contains the result from method Validations.ValidateOrganization.
-type ValidationsValidateOrganizationResult struct {
+// ValidationsClientValidateOrganizationResult contains the result from method ValidationsClient.ValidateOrganization.
+type ValidationsClientValidateOrganizationResult struct {
 	OrganizationResource
 }

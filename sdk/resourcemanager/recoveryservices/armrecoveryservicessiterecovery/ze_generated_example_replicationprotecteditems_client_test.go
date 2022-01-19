@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 )
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
 func ExampleReplicationProtectedItemsClient_ListByReplicationProtectionContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,17 +32,21 @@ func ExampleReplicationProtectedItemsClient_ListByReplicationProtectionContainer
 	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
 		"<protection-container-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReplicationProtectedItem.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_Get.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_Get.json
 func ExampleReplicationProtectedItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,10 +64,10 @@ func ExampleReplicationProtectedItemsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_Create.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_Create.json
 func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,9 +86,7 @@ func ExampleReplicationProtectedItemsClient_BeginCreate() {
 				PolicyID:          to.StringPtr("<policy-id>"),
 				ProtectableItemID: to.StringPtr("<protectable-item-id>"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureEnableProtectionInput{
-					EnableProtectionProviderSpecificInput: armrecoveryservicessiterecovery.EnableProtectionProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -96,10 +98,10 @@ func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientCreateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_Purge.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_Purge.json
 func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +125,7 @@ func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_Update.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_Update.json
 func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,11 +141,9 @@ func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 		"<replicated-protected-item-name>",
 		armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInputProperties{
-				LicenseType: armrecoveryservicessiterecovery.LicenseTypeWindowsServer.ToPtr(),
+				LicenseType: armrecoveryservicessiterecovery.LicenseType("WindowsServer").ToPtr(),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureUpdateReplicationProtectedItemInput{
-					UpdateReplicationProtectedItemProviderInput: armrecoveryservicessiterecovery.UpdateReplicationProtectedItemProviderInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 				RecoveryAzureVMName:            to.StringPtr("<recovery-azure-vmname>"),
 				RecoveryAzureVMSize:            to.StringPtr("<recovery-azure-vmsize>"),
@@ -170,10 +170,10 @@ func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_AddDisks.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_AddDisks.json
 func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,9 +190,7 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 		armrecoveryservicessiterecovery.AddDisksInput{
 			Properties: &armrecoveryservicessiterecovery.AddDisksInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AAddDisksInput{
-					AddDisksProviderSpecificInput: armrecoveryservicessiterecovery.AddDisksProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 					VMDisks: []*armrecoveryservicessiterecovery.A2AVMDiskInputDetails{
 						{
 							DiskURI:                             to.StringPtr("<disk-uri>"),
@@ -210,10 +208,10 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientAddDisksResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
 func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,9 +228,7 @@ func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 		armrecoveryservicessiterecovery.ApplyRecoveryPointInput{
 			Properties: &armrecoveryservicessiterecovery.ApplyRecoveryPointInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureApplyRecoveryPointInput{
-					ApplyRecoveryPointProviderSpecificInput: armrecoveryservicessiterecovery.ApplyRecoveryPointProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 				RecoveryPointID: to.StringPtr("<recovery-point-id>"),
 			},
@@ -245,10 +241,10 @@ func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientApplyRecoveryPointResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_FailoverCancel.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_FailoverCancel.json
 func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,10 +266,10 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientFailoverCancelResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_FailoverCommit.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_FailoverCommit.json
 func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,10 +291,10 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientFailoverCommitResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_PlannedFailover.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_PlannedFailover.json
 func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,9 +312,7 @@ func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 			Properties: &armrecoveryservicessiterecovery.PlannedFailoverInputProperties{
 				FailoverDirection: to.StringPtr("<failover-direction>"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzurePlannedFailoverProviderInput{
-					PlannedFailoverProviderSpecificFailoverInput: armrecoveryservicessiterecovery.PlannedFailoverProviderSpecificFailoverInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -330,10 +324,10 @@ func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientPlannedFailoverResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_Delete.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_Delete.json
 func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +358,7 @@ func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	}
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_RemoveDisks.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_RemoveDisks.json
 func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,9 +375,7 @@ func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 		armrecoveryservicessiterecovery.RemoveDisksInput{
 			Properties: &armrecoveryservicessiterecovery.RemoveDisksInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2ARemoveDisksInput{
-					RemoveDisksProviderSpecificInput: armrecoveryservicessiterecovery.RemoveDisksProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 					VMDisksUris: []*string{
 						to.StringPtr("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")},
 				},
@@ -397,10 +389,10 @@ func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientRemoveDisksResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_RepairReplication.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_RepairReplication.json
 func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,10 +414,10 @@ func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientRepairReplicationResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_Reprotect.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_Reprotect.json
 func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,9 +435,7 @@ func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 			Properties: &armrecoveryservicessiterecovery.ReverseReplicationInputProperties{
 				FailoverDirection: to.StringPtr("<failover-direction>"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReprotectInput{
-					ReverseReplicationProviderSpecificInput: armrecoveryservicessiterecovery.ReverseReplicationProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -457,10 +447,10 @@ func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientReprotectResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
 func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,10 +480,46 @@ func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientResolveHealthErrorsResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_TestFailover.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_SwitchProvider.json
+func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client := armrecoveryservicessiterecovery.NewReplicationProtectedItemsClient("<resource-name>",
+		"<resource-group-name>",
+		"<subscription-id>", cred, nil)
+	poller, err := client.BeginSwitchProvider(ctx,
+		"<fabric-name>",
+		"<protection-container-name>",
+		"<replicated-protected-item-name>",
+		armrecoveryservicessiterecovery.SwitchProviderInput{
+			Properties: &armrecoveryservicessiterecovery.SwitchProviderInputProperties{
+				ProviderSpecificDetails: &armrecoveryservicessiterecovery.InMageAzureV2SwitchProviderInput{
+					InstanceType:      to.StringPtr("<instance-type>"),
+					TargetApplianceID: to.StringPtr("<target-appliance-id>"),
+					TargetFabricID:    to.StringPtr("<target-fabric-id>"),
+					TargetVaultID:     to.StringPtr("<target-vault-id>"),
+				},
+				TargetInstanceType: to.StringPtr("<target-instance-type>"),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientSwitchProviderResult)
+}
+
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_TestFailover.json
 func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,9 +539,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 				NetworkID:         to.StringPtr("<network-id>"),
 				NetworkType:       to.StringPtr("<network-type>"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureTestFailoverInput{
-					TestFailoverProviderSpecificInput: armrecoveryservicessiterecovery.TestFailoverProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 			},
 		},
@@ -527,10 +551,10 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientTestFailoverResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
 func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -557,10 +581,10 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientTestFailoverCleanupResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_UnplannedFailover.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_UnplannedFailover.json
 func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -578,9 +602,7 @@ func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 			Properties: &armrecoveryservicessiterecovery.UnplannedFailoverInputProperties{
 				FailoverDirection: to.StringPtr("<failover-direction>"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureUnplannedFailoverInput{
-					UnplannedFailoverProviderSpecificInput: armrecoveryservicessiterecovery.UnplannedFailoverProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType: to.StringPtr("<instance-type>"),
 				},
 				SourceSiteOperations: to.StringPtr("<source-site-operations>"),
 			},
@@ -593,10 +615,10 @@ func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientUnplannedFailoverResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_UpdateAppliance.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_UpdateAppliance.json
 func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -613,9 +635,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 		armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.InMageRcmUpdateApplianceForReplicationProtectedItemInput{
-					UpdateApplianceForReplicationProtectedItemProviderSpecificInput: armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemProviderSpecificInput{
-						InstanceType: to.StringPtr("<instance-type>"),
-					},
+					InstanceType:   to.StringPtr("<instance-type>"),
 					RunAsAccountID: to.StringPtr("<run-as-account-id>"),
 				},
 				TargetApplianceID: to.StringPtr("<target-appliance-id>"),
@@ -629,10 +649,10 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientUpdateApplianceResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
 func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -659,10 +679,10 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ReplicationProtectedItem.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ReplicationProtectedItemsClientUpdateMobilityServiceResult)
 }
 
-// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/ReplicationProtectedItems_List.json
+// x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2021-11-01/examples/ReplicationProtectedItems_List.json
 func ExampleReplicationProtectedItemsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -672,15 +692,19 @@ func ExampleReplicationProtectedItemsClient_List() {
 	client := armrecoveryservicessiterecovery.NewReplicationProtectedItemsClient("<resource-name>",
 		"<resource-group-name>",
 		"<subscription-id>", cred, nil)
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectedItemsListOptions{SkipToken: nil,
+	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListOptions{SkipToken: nil,
 		Filter: nil,
 	})
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReplicationProtectedItem.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

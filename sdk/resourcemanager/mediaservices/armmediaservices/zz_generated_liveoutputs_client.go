@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // LiveOutputsClient contains the methods for the LiveOutputs group.
 // Don't use this type directly, use NewLiveOutputsClient() instead.
 type LiveOutputsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLiveOutputsClient creates a new instance of LiveOutputsClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LiveOutputsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &LiveOutputsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &LiveOutputsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Creates a new live output.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LiveOutputsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsBeginCreateOptions) (LiveOutputsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// liveEventName - The name of the live event, maximum length is 32.
+// liveOutputName - The name of the live output.
+// parameters - Live Output properties needed for creation.
+// options - LiveOutputsClientBeginCreateOptions contains the optional parameters for the LiveOutputsClient.BeginCreate method.
+func (client *LiveOutputsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (LiveOutputsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, parameters, options)
 	if err != nil {
-		return LiveOutputsCreatePollerResponse{}, err
+		return LiveOutputsClientCreatePollerResponse{}, err
 	}
-	result := LiveOutputsCreatePollerResponse{
+	result := LiveOutputsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LiveOutputsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("LiveOutputsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return LiveOutputsCreatePollerResponse{}, err
+		return LiveOutputsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &LiveOutputsCreatePoller{
+	result.Poller = &LiveOutputsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new live output.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LiveOutputsClient) create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LiveOutputsClient) create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *LiveOutputsClient) create(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *LiveOutputsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsBeginCreateOptions) (*policy.Request, error) {
+func (client *LiveOutputsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +115,7 @@ func (client *LiveOutputsClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter liveOutputName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveOutputName}", url.PathEscape(liveOutputName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,42 +126,34 @@ func (client *LiveOutputsClient) createCreateRequest(ctx context.Context, resour
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *LiveOutputsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LiveOutputsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsBeginDeleteOptions) (LiveOutputsDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// liveEventName - The name of the live event, maximum length is 32.
+// liveOutputName - The name of the live output.
+// options - LiveOutputsClientBeginDeleteOptions contains the optional parameters for the LiveOutputsClient.BeginDelete method.
+func (client *LiveOutputsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (LiveOutputsClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
 	if err != nil {
-		return LiveOutputsDeletePollerResponse{}, err
+		return LiveOutputsClientDeletePollerResponse{}, err
 	}
-	result := LiveOutputsDeletePollerResponse{
+	result := LiveOutputsClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("LiveOutputsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("LiveOutputsClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return LiveOutputsDeletePollerResponse{}, err
+		return LiveOutputsClientDeletePollerResponse{}, err
 	}
-	result.Poller = &LiveOutputsDeletePoller{
+	result.Poller = &LiveOutputsClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LiveOutputsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *LiveOutputsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +163,13 @@ func (client *LiveOutputsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LiveOutputsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsBeginDeleteOptions) (*policy.Request, error) {
+func (client *LiveOutputsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -186,7 +191,7 @@ func (client *LiveOutputsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter liveOutputName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveOutputName}", url.PathEscape(liveOutputName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,38 +202,30 @@ func (client *LiveOutputsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LiveOutputsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a live output.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LiveOutputsClient) Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsGetOptions) (LiveOutputsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// liveEventName - The name of the live event, maximum length is 32.
+// liveOutputName - The name of the live output.
+// options - LiveOutputsClientGetOptions contains the optional parameters for the LiveOutputsClient.Get method.
+func (client *LiveOutputsClient) Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientGetOptions) (LiveOutputsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
 	if err != nil {
-		return LiveOutputsGetResponse{}, err
+		return LiveOutputsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LiveOutputsGetResponse{}, err
+		return LiveOutputsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LiveOutputsGetResponse{}, client.getHandleError(resp)
+		return LiveOutputsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsGetOptions) (*policy.Request, error) {
+func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,7 +247,7 @@ func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter liveOutputName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveOutputName}", url.PathEscape(liveOutputName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,43 +259,34 @@ func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOutputsGetResponse, error) {
-	result := LiveOutputsGetResponse{RawResponse: resp}
+func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOutputsClientGetResponse, error) {
+	result := LiveOutputsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveOutput); err != nil {
-		return LiveOutputsGetResponse{}, runtime.NewResponseError(err, resp)
+		return LiveOutputsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LiveOutputsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists the live outputs of a live event.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LiveOutputsClient) List(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsListOptions) *LiveOutputsListPager {
-	return &LiveOutputsListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// liveEventName - The name of the live event, maximum length is 32.
+// options - LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
+func (client *LiveOutputsClient) List(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) *LiveOutputsClientListPager {
+	return &LiveOutputsClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 		},
-		advancer: func(ctx context.Context, resp LiveOutputsListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp LiveOutputsClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.LiveOutputListResult.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsListOptions) (*policy.Request, error) {
+func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -316,7 +304,7 @@ func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter liveEventName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -328,23 +316,10 @@ func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resource
 }
 
 // listHandleResponse handles the List response.
-func (client *LiveOutputsClient) listHandleResponse(resp *http.Response) (LiveOutputsListResponse, error) {
-	result := LiveOutputsListResponse{RawResponse: resp}
+func (client *LiveOutputsClient) listHandleResponse(resp *http.Response) (LiveOutputsClientListResponse, error) {
+	result := LiveOutputsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LiveOutputListResult); err != nil {
-		return LiveOutputsListResponse{}, runtime.NewResponseError(err, resp)
+		return LiveOutputsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LiveOutputsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

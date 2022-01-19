@@ -28,44 +28,6 @@ func unmarshalApplicationScopedVolumeCreationParametersClassification(rawMsg jso
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalApplicationScopedVolumeCreationParametersClassificationArray(rawMsg json.RawMessage) ([]ApplicationScopedVolumeCreationParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ApplicationScopedVolumeCreationParametersClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalApplicationScopedVolumeCreationParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalApplicationScopedVolumeCreationParametersClassificationMap(rawMsg json.RawMessage) (map[string]ApplicationScopedVolumeCreationParametersClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ApplicationScopedVolumeCreationParametersClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalApplicationScopedVolumeCreationParametersClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalAutoScalingMechanismClassification(rawMsg json.RawMessage) (AutoScalingMechanismClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -82,44 +44,6 @@ func unmarshalAutoScalingMechanismClassification(rawMsg json.RawMessage) (AutoSc
 		b = &AutoScalingMechanism{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalAutoScalingMechanismClassificationArray(rawMsg json.RawMessage) ([]AutoScalingMechanismClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AutoScalingMechanismClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAutoScalingMechanismClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAutoScalingMechanismClassificationMap(rawMsg json.RawMessage) (map[string]AutoScalingMechanismClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AutoScalingMechanismClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAutoScalingMechanismClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalAutoScalingMetricClassification(rawMsg json.RawMessage) (AutoScalingMetricClassification, error) {
@@ -140,44 +64,6 @@ func unmarshalAutoScalingMetricClassification(rawMsg json.RawMessage) (AutoScali
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAutoScalingMetricClassificationArray(rawMsg json.RawMessage) ([]AutoScalingMetricClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AutoScalingMetricClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAutoScalingMetricClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAutoScalingMetricClassificationMap(rawMsg json.RawMessage) (map[string]AutoScalingMetricClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AutoScalingMetricClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAutoScalingMetricClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalAutoScalingTriggerClassification(rawMsg json.RawMessage) (AutoScalingTriggerClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -194,44 +80,6 @@ func unmarshalAutoScalingTriggerClassification(rawMsg json.RawMessage) (AutoScal
 		b = &AutoScalingTrigger{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalAutoScalingTriggerClassificationArray(rawMsg json.RawMessage) ([]AutoScalingTriggerClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AutoScalingTriggerClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAutoScalingTriggerClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAutoScalingTriggerClassificationMap(rawMsg json.RawMessage) (map[string]AutoScalingTriggerClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AutoScalingTriggerClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAutoScalingTriggerClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }
 
 func unmarshalDiagnosticsSinkPropertiesClassification(rawMsg json.RawMessage) (DiagnosticsSinkPropertiesClassification, error) {
@@ -271,83 +119,6 @@ func unmarshalDiagnosticsSinkPropertiesClassificationArray(rawMsg json.RawMessag
 	return fArray, nil
 }
 
-func unmarshalDiagnosticsSinkPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]DiagnosticsSinkPropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DiagnosticsSinkPropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDiagnosticsSinkPropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
-func unmarshalNetworkResourcePropertiesBaseClassification(rawMsg json.RawMessage) (NetworkResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b NetworkResourcePropertiesBaseClassification
-	switch m["kind"] {
-	case string(NetworkKindLocal):
-		b = &LocalNetworkResourceProperties{}
-	case "NetworkResourceProperties":
-		b = &NetworkResourceProperties{}
-	default:
-		b = &NetworkResourcePropertiesBase{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalNetworkResourcePropertiesBaseClassificationArray(rawMsg json.RawMessage) ([]NetworkResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]NetworkResourcePropertiesBaseClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalNetworkResourcePropertiesBaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalNetworkResourcePropertiesBaseClassificationMap(rawMsg json.RawMessage) (map[string]NetworkResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]NetworkResourcePropertiesBaseClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalNetworkResourcePropertiesBaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalNetworkResourcePropertiesClassification(rawMsg json.RawMessage) (NetworkResourcePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -366,102 +137,6 @@ func unmarshalNetworkResourcePropertiesClassification(rawMsg json.RawMessage) (N
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalNetworkResourcePropertiesClassificationArray(rawMsg json.RawMessage) ([]NetworkResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]NetworkResourcePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalNetworkResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalNetworkResourcePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]NetworkResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]NetworkResourcePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalNetworkResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
-func unmarshalSecretResourcePropertiesBaseClassification(rawMsg json.RawMessage) (SecretResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b SecretResourcePropertiesBaseClassification
-	switch m["kind"] {
-	case "SecretResourceProperties":
-		b = &SecretResourceProperties{}
-	case string(SecretKindInlinedValue):
-		b = &InlinedValueSecretResourceProperties{}
-	default:
-		b = &SecretResourcePropertiesBase{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalSecretResourcePropertiesBaseClassificationArray(rawMsg json.RawMessage) ([]SecretResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]SecretResourcePropertiesBaseClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalSecretResourcePropertiesBaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalSecretResourcePropertiesBaseClassificationMap(rawMsg json.RawMessage) (map[string]SecretResourcePropertiesBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]SecretResourcePropertiesBaseClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalSecretResourcePropertiesBaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalSecretResourcePropertiesClassification(rawMsg json.RawMessage) (SecretResourcePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -478,42 +153,4 @@ func unmarshalSecretResourcePropertiesClassification(rawMsg json.RawMessage) (Se
 		b = &SecretResourceProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalSecretResourcePropertiesClassificationArray(rawMsg json.RawMessage) ([]SecretResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]SecretResourcePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalSecretResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalSecretResourcePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]SecretResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]SecretResourcePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalSecretResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

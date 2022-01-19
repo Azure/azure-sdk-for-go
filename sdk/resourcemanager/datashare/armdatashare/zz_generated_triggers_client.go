@@ -11,7 +11,6 @@ package armdatashare
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,60 @@ import (
 // TriggersClient contains the methods for the Triggers group.
 // Don't use this type directly, use NewTriggersClient() instead.
 type TriggersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTriggersClient creates a new instance of TriggersClient with the specified values.
+// subscriptionID - The subscription identifier
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TriggersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &TriggersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &TriggersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Create a Trigger
-// If the operation fails it returns the *DataShareError error type.
-func (client *TriggersClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersBeginCreateOptions) (TriggersCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the share subscription which will hold the data set sink.
+// triggerName - The name of the trigger.
+// trigger - Trigger details.
+// options - TriggersClientBeginCreateOptions contains the optional parameters for the TriggersClient.BeginCreate method.
+func (client *TriggersClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersClientBeginCreateOptions) (TriggersClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, trigger, options)
 	if err != nil {
-		return TriggersCreatePollerResponse{}, err
+		return TriggersClientCreatePollerResponse{}, err
 	}
-	result := TriggersCreatePollerResponse{
+	result := TriggersClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TriggersClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("TriggersClient.Create", "", resp, client.pl)
 	if err != nil {
-		return TriggersCreatePollerResponse{}, err
+		return TriggersClientCreatePollerResponse{}, err
 	}
-	result.Poller = &TriggersCreatePoller{
+	result.Poller = &TriggersClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Create a Trigger
-// If the operation fails it returns the *DataShareError error type.
-func (client *TriggersClient) create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TriggersClient) create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, trigger, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *TriggersClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *TriggersClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersBeginCreateOptions) (*policy.Request, error) {
+func (client *TriggersClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +115,7 @@ func (client *TriggersClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,42 +126,34 @@ func (client *TriggersClient) createCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, trigger)
 }
 
-// createHandleError handles the Create error response.
-func (client *TriggersClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a Trigger in a shareSubscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *TriggersClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersBeginDeleteOptions) (TriggersDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the shareSubscription.
+// triggerName - The name of the trigger.
+// options - TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
+func (client *TriggersClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientBeginDeleteOptions) (TriggersClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, options)
 	if err != nil {
-		return TriggersDeletePollerResponse{}, err
+		return TriggersClientDeletePollerResponse{}, err
 	}
-	result := TriggersDeletePollerResponse{
+	result := TriggersClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("TriggersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("TriggersClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return TriggersDeletePollerResponse{}, err
+		return TriggersClientDeletePollerResponse{}, err
 	}
-	result.Poller = &TriggersDeletePoller{
+	result.Poller = &TriggersClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a Trigger in a shareSubscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +163,13 @@ func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersBeginDeleteOptions) (*policy.Request, error) {
+func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -186,7 +191,7 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -197,38 +202,30 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TriggersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a Trigger in a shareSubscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersGetOptions) (TriggersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the shareSubscription.
+// triggerName - The name of the trigger.
+// options - TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
+func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientGetOptions) (TriggersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, options)
 	if err != nil {
-		return TriggersGetResponse{}, err
+		return TriggersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TriggersGetResponse{}, err
+		return TriggersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TriggersGetResponse{}, client.getHandleError(resp)
+		return TriggersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersGetOptions) (*policy.Request, error) {
+func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,7 +247,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,43 +259,35 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersGetResponse, error) {
-	result := TriggersGetResponse{RawResponse: resp}
+func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersClientGetResponse, error) {
+	result := TriggersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return TriggersGetResponse{}, runtime.NewResponseError(err, resp)
+		return TriggersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TriggersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByShareSubscription - List Triggers in a share subscription
-// If the operation fails it returns the *DataShareError error type.
-func (client *TriggersClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersListByShareSubscriptionOptions) *TriggersListByShareSubscriptionPager {
-	return &TriggersListByShareSubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The resource group name.
+// accountName - The name of the share account.
+// shareSubscriptionName - The name of the share subscription.
+// options - TriggersClientListByShareSubscriptionOptions contains the optional parameters for the TriggersClient.ListByShareSubscription
+// method.
+func (client *TriggersClient) ListByShareSubscription(resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersClientListByShareSubscriptionOptions) *TriggersClientListByShareSubscriptionPager {
+	return &TriggersClientListByShareSubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByShareSubscriptionCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, options)
 		},
-		advancer: func(ctx context.Context, resp TriggersListByShareSubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp TriggersClientListByShareSubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.TriggerList.NextLink)
 		},
 	}
 }
 
 // listByShareSubscriptionCreateRequest creates the ListByShareSubscription request.
-func (client *TriggersClient) listByShareSubscriptionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersListByShareSubscriptionOptions) (*policy.Request, error) {
+func (client *TriggersClient) listByShareSubscriptionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersClientListByShareSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/triggers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -316,7 +305,7 @@ func (client *TriggersClient) listByShareSubscriptionCreateRequest(ctx context.C
 		return nil, errors.New("parameter shareSubscriptionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{shareSubscriptionName}", url.PathEscape(shareSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -331,23 +320,10 @@ func (client *TriggersClient) listByShareSubscriptionCreateRequest(ctx context.C
 }
 
 // listByShareSubscriptionHandleResponse handles the ListByShareSubscription response.
-func (client *TriggersClient) listByShareSubscriptionHandleResponse(resp *http.Response) (TriggersListByShareSubscriptionResponse, error) {
-	result := TriggersListByShareSubscriptionResponse{RawResponse: resp}
+func (client *TriggersClient) listByShareSubscriptionHandleResponse(resp *http.Response) (TriggersClientListByShareSubscriptionResponse, error) {
+	result := TriggersClientListByShareSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerList); err != nil {
-		return TriggersListByShareSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return TriggersClientListByShareSubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listByShareSubscriptionHandleError handles the ListByShareSubscription error response.
-func (client *TriggersClient) listByShareSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := DataShareError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

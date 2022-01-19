@@ -11,7 +11,6 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,62 @@ import (
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
 type EndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EndpointsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginPurgeContent - Removes a content from Front Door.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsBeginPurgeContentOptions) (EndpointsPurgeContentPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// frontDoorName - Name of the Front Door which is globally unique.
+// contentFilePaths - The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png' which removes
+// a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
+// files in the directory.
+// options - EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent
+// method.
+func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (EndpointsClientPurgeContentPollerResponse, error) {
 	resp, err := client.purgeContent(ctx, resourceGroupName, frontDoorName, contentFilePaths, options)
 	if err != nil {
-		return EndpointsPurgeContentPollerResponse{}, err
+		return EndpointsClientPurgeContentPollerResponse{}, err
 	}
-	result := EndpointsPurgeContentPollerResponse{
+	result := EndpointsClientPurgeContentPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("EndpointsClient.PurgeContent", "azure-async-operation", resp, client.pl, client.purgeContentHandleError)
+	pt, err := armruntime.NewPoller("EndpointsClient.PurgeContent", "azure-async-operation", resp, client.pl)
 	if err != nil {
-		return EndpointsPurgeContentPollerResponse{}, err
+		return EndpointsClientPurgeContentPollerResponse{}, err
 	}
-	result.Poller = &EndpointsPurgeContentPoller{
+	result.Poller = &EndpointsClientPurgeContentPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // PurgeContent - Removes a content from Front Door.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsBeginPurgeContentOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, frontDoorName, contentFilePaths, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.purgeContentHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // purgeContentCreateRequest creates the PurgeContent request.
-func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsBeginPurgeContentOptions) (*policy.Request, error) {
+func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/purge"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,7 +109,7 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter frontDoorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{frontDoorName}", url.PathEscape(frontDoorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,17 +118,4 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, contentFilePaths)
-}
-
-// purgeContentHandleError handles the PurgeContent error response.
-func (client *EndpointsClient) purgeContentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

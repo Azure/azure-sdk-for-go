@@ -11,7 +11,6 @@ package armapplicationinsights
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,56 @@ import (
 // WorkItemConfigurationsClient contains the methods for the WorkItemConfigurations group.
 // Don't use this type directly, use NewWorkItemConfigurationsClient() instead.
 type WorkItemConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkItemConfigurationsClient creates a new instance of WorkItemConfigurationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewWorkItemConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkItemConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &WorkItemConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &WorkItemConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a work item configuration for an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *WorkItemConfigurationsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsCreateOptions) (WorkItemConfigurationsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workItemConfigurationProperties - Properties that need to be specified to create a work item configuration of a Application
+// Insights component.
+// options - WorkItemConfigurationsClientCreateOptions contains the optional parameters for the WorkItemConfigurationsClient.Create
+// method.
+func (client *WorkItemConfigurationsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsClientCreateOptions) (WorkItemConfigurationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, workItemConfigurationProperties, options)
 	if err != nil {
-		return WorkItemConfigurationsCreateResponse{}, err
+		return WorkItemConfigurationsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkItemConfigurationsCreateResponse{}, err
+		return WorkItemConfigurationsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkItemConfigurationsCreateResponse{}, client.createHandleError(resp)
+		return WorkItemConfigurationsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsCreateOptions) (*policy.Request, error) {
+func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,7 +87,7 @@ func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -86,45 +99,39 @@ func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Cont
 }
 
 // createHandleResponse handles the Create response.
-func (client *WorkItemConfigurationsClient) createHandleResponse(resp *http.Response) (WorkItemConfigurationsCreateResponse, error) {
-	result := WorkItemConfigurationsCreateResponse{RawResponse: resp}
+func (client *WorkItemConfigurationsClient) createHandleResponse(resp *http.Response) (WorkItemConfigurationsClientCreateResponse, error) {
+	result := WorkItemConfigurationsClientCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
-		return WorkItemConfigurationsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return WorkItemConfigurationsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *WorkItemConfigurationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Delete a work item configuration of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *WorkItemConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsDeleteOptions) (WorkItemConfigurationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workItemConfigID - The unique work item configuration Id. This can be either friendly name of connector as defined in connector
+// configuration
+// options - WorkItemConfigurationsClientDeleteOptions contains the optional parameters for the WorkItemConfigurationsClient.Delete
+// method.
+func (client *WorkItemConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsClientDeleteOptions) (WorkItemConfigurationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, workItemConfigID, options)
 	if err != nil {
-		return WorkItemConfigurationsDeleteResponse{}, err
+		return WorkItemConfigurationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkItemConfigurationsDeleteResponse{}, err
+		return WorkItemConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkItemConfigurationsDeleteResponse{}, client.deleteHandleError(resp)
+		return WorkItemConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WorkItemConfigurationsDeleteResponse{RawResponse: resp}, nil
+	return WorkItemConfigurationsClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkItemConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsDeleteOptions) (*policy.Request, error) {
+func (client *WorkItemConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -142,7 +149,7 @@ func (client *WorkItemConfigurationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter workItemConfigID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workItemConfigId}", url.PathEscape(workItemConfigID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,37 +159,29 @@ func (client *WorkItemConfigurationsClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WorkItemConfigurationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetDefault - Gets default work item configurations that exist for the application
-// If the operation fails it returns a generic error.
-func (client *WorkItemConfigurationsClient) GetDefault(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsGetDefaultOptions) (WorkItemConfigurationsGetDefaultResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - WorkItemConfigurationsClientGetDefaultOptions contains the optional parameters for the WorkItemConfigurationsClient.GetDefault
+// method.
+func (client *WorkItemConfigurationsClient) GetDefault(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientGetDefaultOptions) (WorkItemConfigurationsClientGetDefaultResponse, error) {
 	req, err := client.getDefaultCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return WorkItemConfigurationsGetDefaultResponse{}, err
+		return WorkItemConfigurationsClientGetDefaultResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkItemConfigurationsGetDefaultResponse{}, err
+		return WorkItemConfigurationsClientGetDefaultResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkItemConfigurationsGetDefaultResponse{}, client.getDefaultHandleError(resp)
+		return WorkItemConfigurationsClientGetDefaultResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getDefaultHandleResponse(resp)
 }
 
 // getDefaultCreateRequest creates the GetDefault request.
-func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsGetDefaultOptions) (*policy.Request, error) {
+func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientGetDefaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/DefaultWorkItemConfig"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -196,7 +195,7 @@ func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,45 +207,39 @@ func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.
 }
 
 // getDefaultHandleResponse handles the GetDefault response.
-func (client *WorkItemConfigurationsClient) getDefaultHandleResponse(resp *http.Response) (WorkItemConfigurationsGetDefaultResponse, error) {
-	result := WorkItemConfigurationsGetDefaultResponse{RawResponse: resp}
+func (client *WorkItemConfigurationsClient) getDefaultHandleResponse(resp *http.Response) (WorkItemConfigurationsClientGetDefaultResponse, error) {
+	result := WorkItemConfigurationsClientGetDefaultResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
-		return WorkItemConfigurationsGetDefaultResponse{}, runtime.NewResponseError(err, resp)
+		return WorkItemConfigurationsClientGetDefaultResponse{}, err
 	}
 	return result, nil
 }
 
-// getDefaultHandleError handles the GetDefault error response.
-func (client *WorkItemConfigurationsClient) getDefaultHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetItem - Gets specified work item configuration for an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *WorkItemConfigurationsClient) GetItem(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsGetItemOptions) (WorkItemConfigurationsGetItemResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workItemConfigID - The unique work item configuration Id. This can be either friendly name of connector as defined in connector
+// configuration
+// options - WorkItemConfigurationsClientGetItemOptions contains the optional parameters for the WorkItemConfigurationsClient.GetItem
+// method.
+func (client *WorkItemConfigurationsClient) GetItem(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsClientGetItemOptions) (WorkItemConfigurationsClientGetItemResponse, error) {
 	req, err := client.getItemCreateRequest(ctx, resourceGroupName, resourceName, workItemConfigID, options)
 	if err != nil {
-		return WorkItemConfigurationsGetItemResponse{}, err
+		return WorkItemConfigurationsClientGetItemResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkItemConfigurationsGetItemResponse{}, err
+		return WorkItemConfigurationsClientGetItemResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkItemConfigurationsGetItemResponse{}, client.getItemHandleError(resp)
+		return WorkItemConfigurationsClientGetItemResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getItemHandleResponse(resp)
 }
 
 // getItemCreateRequest creates the GetItem request.
-func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsGetItemOptions) (*policy.Request, error) {
+func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, options *WorkItemConfigurationsClientGetItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -264,7 +257,7 @@ func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Con
 		return nil, errors.New("parameter workItemConfigID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workItemConfigId}", url.PathEscape(workItemConfigID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -276,45 +269,37 @@ func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Con
 }
 
 // getItemHandleResponse handles the GetItem response.
-func (client *WorkItemConfigurationsClient) getItemHandleResponse(resp *http.Response) (WorkItemConfigurationsGetItemResponse, error) {
-	result := WorkItemConfigurationsGetItemResponse{RawResponse: resp}
+func (client *WorkItemConfigurationsClient) getItemHandleResponse(resp *http.Response) (WorkItemConfigurationsClientGetItemResponse, error) {
+	result := WorkItemConfigurationsClientGetItemResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
-		return WorkItemConfigurationsGetItemResponse{}, runtime.NewResponseError(err, resp)
+		return WorkItemConfigurationsClientGetItemResponse{}, err
 	}
 	return result, nil
 }
 
-// getItemHandleError handles the GetItem error response.
-func (client *WorkItemConfigurationsClient) getItemHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets the list work item configurations that exist for the application
-// If the operation fails it returns the *WorkItemConfigurationError error type.
-func (client *WorkItemConfigurationsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsListOptions) (WorkItemConfigurationsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - WorkItemConfigurationsClientListOptions contains the optional parameters for the WorkItemConfigurationsClient.List
+// method.
+func (client *WorkItemConfigurationsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientListOptions) (WorkItemConfigurationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return WorkItemConfigurationsListResponse{}, err
+		return WorkItemConfigurationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkItemConfigurationsListResponse{}, err
+		return WorkItemConfigurationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkItemConfigurationsListResponse{}, client.listHandleError(resp)
+		return WorkItemConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsListOptions) (*policy.Request, error) {
+func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *WorkItemConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -328,7 +313,7 @@ func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -340,46 +325,41 @@ func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkItemConfigurationsClient) listHandleResponse(resp *http.Response) (WorkItemConfigurationsListResponse, error) {
-	result := WorkItemConfigurationsListResponse{RawResponse: resp}
+func (client *WorkItemConfigurationsClient) listHandleResponse(resp *http.Response) (WorkItemConfigurationsClientListResponse, error) {
+	result := WorkItemConfigurationsClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfigurationsListResult); err != nil {
-		return WorkItemConfigurationsListResponse{}, runtime.NewResponseError(err, resp)
+		return WorkItemConfigurationsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *WorkItemConfigurationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := WorkItemConfigurationError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateItem - Update a work item configuration for an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *WorkItemConfigurationsClient) UpdateItem(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsUpdateItemOptions) (WorkItemConfigurationsUpdateItemResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// workItemConfigID - The unique work item configuration Id. This can be either friendly name of connector as defined in connector
+// configuration
+// workItemConfigurationProperties - Properties that need to be specified to update a work item configuration for this Application
+// Insights component.
+// options - WorkItemConfigurationsClientUpdateItemOptions contains the optional parameters for the WorkItemConfigurationsClient.UpdateItem
+// method.
+func (client *WorkItemConfigurationsClient) UpdateItem(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsClientUpdateItemOptions) (WorkItemConfigurationsClientUpdateItemResponse, error) {
 	req, err := client.updateItemCreateRequest(ctx, resourceGroupName, resourceName, workItemConfigID, workItemConfigurationProperties, options)
 	if err != nil {
-		return WorkItemConfigurationsUpdateItemResponse{}, err
+		return WorkItemConfigurationsClientUpdateItemResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkItemConfigurationsUpdateItemResponse{}, err
+		return WorkItemConfigurationsClientUpdateItemResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkItemConfigurationsUpdateItemResponse{}, client.updateItemHandleError(resp)
+		return WorkItemConfigurationsClientUpdateItemResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateItemHandleResponse(resp)
 }
 
 // updateItemCreateRequest creates the UpdateItem request.
-func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsUpdateItemOptions) (*policy.Request, error) {
+func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, workItemConfigurationProperties WorkItemCreateConfiguration, options *WorkItemConfigurationsClientUpdateItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -397,7 +377,7 @@ func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.
 		return nil, errors.New("parameter workItemConfigID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workItemConfigId}", url.PathEscape(workItemConfigID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -409,22 +389,10 @@ func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.
 }
 
 // updateItemHandleResponse handles the UpdateItem response.
-func (client *WorkItemConfigurationsClient) updateItemHandleResponse(resp *http.Response) (WorkItemConfigurationsUpdateItemResponse, error) {
-	result := WorkItemConfigurationsUpdateItemResponse{RawResponse: resp}
+func (client *WorkItemConfigurationsClient) updateItemHandleResponse(resp *http.Response) (WorkItemConfigurationsClientUpdateItemResponse, error) {
+	result := WorkItemConfigurationsClientUpdateItemResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
-		return WorkItemConfigurationsUpdateItemResponse{}, runtime.NewResponseError(err, resp)
+		return WorkItemConfigurationsClientUpdateItemResponse{}, err
 	}
 	return result, nil
-}
-
-// updateItemHandleError handles the UpdateItem error response.
-func (client *WorkItemConfigurationsClient) updateItemHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

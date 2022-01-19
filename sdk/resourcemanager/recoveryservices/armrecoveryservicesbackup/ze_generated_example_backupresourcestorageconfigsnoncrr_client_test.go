@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/BackupStorageConfig_Get.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/BackupStorageConfig_Get.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,10 +31,10 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupResourceConfigResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupResourceStorageConfigsNonCRRClientGetResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/BackupStorageConfig_Put.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/BackupStorageConfig_Put.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,18 +47,18 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 		"<resource-group-name>",
 		armrecoveryservicesbackup.BackupResourceConfigResource{
 			Properties: &armrecoveryservicesbackup.BackupResourceConfig{
-				StorageType:      armrecoveryservicesbackup.StorageTypeLocallyRedundant.ToPtr(),
-				StorageTypeState: armrecoveryservicesbackup.StorageTypeStateUnlocked.ToPtr(),
+				StorageType:      armrecoveryservicesbackup.StorageType("LocallyRedundant").ToPtr(),
+				StorageTypeState: armrecoveryservicesbackup.StorageTypeState("Unlocked").ToPtr(),
 			},
 		},
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("BackupResourceConfigResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.BackupResourceStorageConfigsNonCRRClientUpdateResult)
 }
 
-// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/Common/BackupStorageConfig_Patch.json
+// x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-10-01/examples/Common/BackupStorageConfig_Patch.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,8 +71,8 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Patch() {
 		"<resource-group-name>",
 		armrecoveryservicesbackup.BackupResourceConfigResource{
 			Properties: &armrecoveryservicesbackup.BackupResourceConfig{
-				StorageType:      armrecoveryservicesbackup.StorageTypeLocallyRedundant.ToPtr(),
-				StorageTypeState: armrecoveryservicesbackup.StorageTypeStateUnlocked.ToPtr(),
+				StorageType:      armrecoveryservicesbackup.StorageType("LocallyRedundant").ToPtr(),
+				StorageTypeState: armrecoveryservicesbackup.StorageTypeState("Unlocked").ToPtr(),
 			},
 		},
 		nil)

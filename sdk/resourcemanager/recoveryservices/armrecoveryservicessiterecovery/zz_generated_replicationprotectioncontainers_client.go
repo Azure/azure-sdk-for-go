@@ -24,48 +24,65 @@ import (
 // ReplicationProtectionContainersClient contains the methods for the ReplicationProtectionContainers group.
 // Don't use this type directly, use NewReplicationProtectionContainersClient() instead.
 type ReplicationProtectionContainersClient struct {
-	ep                string
-	pl                runtime.Pipeline
+	host              string
 	resourceName      string
 	resourceGroupName string
 	subscriptionID    string
+	pl                runtime.Pipeline
 }
 
 // NewReplicationProtectionContainersClient creates a new instance of ReplicationProtectionContainersClient with the specified values.
+// resourceName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewReplicationProtectionContainersClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ReplicationProtectionContainersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ReplicationProtectionContainersClient{resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ReplicationProtectionContainersClient{
+		resourceName:      resourceName,
+		resourceGroupName: resourceGroupName,
+		subscriptionID:    subscriptionID,
+		host:              string(cp.Endpoint),
+		pl:                armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreate - Operation to create a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersBeginCreateOptions) (ReplicationProtectionContainersCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Unique fabric ARM name.
+// protectionContainerName - Unique protection container ARM name.
+// creationInput - Creation input.
+// options - ReplicationProtectionContainersClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginCreate
+// method.
+func (client *ReplicationProtectionContainersClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersClientBeginCreateOptions) (ReplicationProtectionContainersClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, fabricName, protectionContainerName, creationInput, options)
 	if err != nil {
-		return ReplicationProtectionContainersCreatePollerResponse{}, err
+		return ReplicationProtectionContainersClientCreatePollerResponse{}, err
 	}
-	result := ReplicationProtectionContainersCreatePollerResponse{
+	result := ReplicationProtectionContainersClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainersCreatePollerResponse{}, err
+		return ReplicationProtectionContainersClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainersCreatePoller{
+	result.Poller = &ReplicationProtectionContainersClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Operation to create a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) create(ctx context.Context, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainersClient) create(ctx context.Context, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, creationInput, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +92,13 @@ func (client *ReplicationProtectionContainersClient) create(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationProtectionContainersClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -103,52 +120,44 @@ func (client *ReplicationProtectionContainersClient) createCreateRequest(ctx con
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, creationInput)
 }
 
-// createHandleError handles the Create error response.
-func (client *ReplicationProtectionContainersClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Operation to remove a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersBeginDeleteOptions) (ReplicationProtectionContainersDeletePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Unique fabric ARM name.
+// protectionContainerName - Unique protection container ARM name.
+// options - ReplicationProtectionContainersClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginDelete
+// method.
+func (client *ReplicationProtectionContainersClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientBeginDeleteOptions) (ReplicationProtectionContainersClientDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, options)
 	if err != nil {
-		return ReplicationProtectionContainersDeletePollerResponse{}, err
+		return ReplicationProtectionContainersClientDeletePollerResponse{}, err
 	}
-	result := ReplicationProtectionContainersDeletePollerResponse{
+	result := ReplicationProtectionContainersClientDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.Delete", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainersDeletePollerResponse{}, err
+		return ReplicationProtectionContainersClientDeletePollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainersDeletePoller{
+	result.Poller = &ReplicationProtectionContainersClientDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Operation to remove a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainersClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +167,13 @@ func (client *ReplicationProtectionContainersClient) deleteOperation(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationProtectionContainersClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/remove"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -186,51 +195,44 @@ func (client *ReplicationProtectionContainersClient) deleteCreateRequest(ctx con
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ReplicationProtectionContainersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDiscoverProtectableItem - The operation to a add a protectable item to a protection container(Add physical server).
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) BeginDiscoverProtectableItem(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersBeginDiscoverProtectableItemOptions) (ReplicationProtectionContainersDiscoverProtectableItemPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - The name of the fabric.
+// protectionContainerName - The name of the protection container.
+// discoverProtectableItemRequest - The request object to add a protectable item.
+// options - ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions contains the optional parameters for
+// the ReplicationProtectionContainersClient.BeginDiscoverProtectableItem method.
+func (client *ReplicationProtectionContainersClient) BeginDiscoverProtectableItem(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions) (ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse, error) {
 	resp, err := client.discoverProtectableItem(ctx, fabricName, protectionContainerName, discoverProtectableItemRequest, options)
 	if err != nil {
-		return ReplicationProtectionContainersDiscoverProtectableItemPollerResponse{}, err
+		return ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse{}, err
 	}
-	result := ReplicationProtectionContainersDiscoverProtectableItemPollerResponse{
+	result := ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.DiscoverProtectableItem", "", resp, client.pl, client.discoverProtectableItemHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.DiscoverProtectableItem", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainersDiscoverProtectableItemPollerResponse{}, err
+		return ReplicationProtectionContainersClientDiscoverProtectableItemPollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainersDiscoverProtectableItemPoller{
+	result.Poller = &ReplicationProtectionContainersClientDiscoverProtectableItemPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DiscoverProtectableItem - The operation to a add a protectable item to a protection container(Add physical server).
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) discoverProtectableItem(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersBeginDiscoverProtectableItemOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainersClient) discoverProtectableItem(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions) (*http.Response, error) {
 	req, err := client.discoverProtectableItemCreateRequest(ctx, fabricName, protectionContainerName, discoverProtectableItemRequest, options)
 	if err != nil {
 		return nil, err
@@ -240,13 +242,13 @@ func (client *ReplicationProtectionContainersClient) discoverProtectableItem(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.discoverProtectableItemHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // discoverProtectableItemCreateRequest creates the DiscoverProtectableItem request.
-func (client *ReplicationProtectionContainersClient) discoverProtectableItemCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersBeginDiscoverProtectableItemOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) discoverProtectableItemCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/discoverProtectableItem"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -268,48 +270,40 @@ func (client *ReplicationProtectionContainersClient) discoverProtectableItemCrea
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, discoverProtectableItemRequest)
 }
 
-// discoverProtectableItemHandleError handles the DiscoverProtectableItem error response.
-func (client *ReplicationProtectionContainersClient) discoverProtectableItemHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of a protection container.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) Get(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersGetOptions) (ReplicationProtectionContainersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// protectionContainerName - Protection container name.
+// options - ReplicationProtectionContainersClientGetOptions contains the optional parameters for the ReplicationProtectionContainersClient.Get
+// method.
+func (client *ReplicationProtectionContainersClient) Get(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientGetOptions) (ReplicationProtectionContainersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, options)
 	if err != nil {
-		return ReplicationProtectionContainersGetResponse{}, err
+		return ReplicationProtectionContainersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReplicationProtectionContainersGetResponse{}, err
+		return ReplicationProtectionContainersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReplicationProtectionContainersGetResponse{}, client.getHandleError(resp)
+		return ReplicationProtectionContainersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationProtectionContainersClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersGetOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -331,54 +325,44 @@ func (client *ReplicationProtectionContainersClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationProtectionContainersClient) getHandleResponse(resp *http.Response) (ReplicationProtectionContainersGetResponse, error) {
-	result := ReplicationProtectionContainersGetResponse{RawResponse: resp}
+func (client *ReplicationProtectionContainersClient) getHandleResponse(resp *http.Response) (ReplicationProtectionContainersClientGetResponse, error) {
+	result := ReplicationProtectionContainersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainer); err != nil {
-		return ReplicationProtectionContainersGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionContainersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReplicationProtectionContainersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Lists the protection containers in a vault.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) List(options *ReplicationProtectionContainersListOptions) *ReplicationProtectionContainersListPager {
-	return &ReplicationProtectionContainersListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ReplicationProtectionContainersClientListOptions contains the optional parameters for the ReplicationProtectionContainersClient.List
+// method.
+func (client *ReplicationProtectionContainersClient) List(options *ReplicationProtectionContainersClientListOptions) *ReplicationProtectionContainersClientListPager {
+	return &ReplicationProtectionContainersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectionContainersListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationProtectionContainersClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectionContainerCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationProtectionContainersClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionContainersListOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionContainersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainers"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -392,54 +376,45 @@ func (client *ReplicationProtectionContainersClient) listCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationProtectionContainersClient) listHandleResponse(resp *http.Response) (ReplicationProtectionContainersListResponse, error) {
-	result := ReplicationProtectionContainersListResponse{RawResponse: resp}
+func (client *ReplicationProtectionContainersClient) listHandleResponse(resp *http.Response) (ReplicationProtectionContainersClientListResponse, error) {
+	result := ReplicationProtectionContainersClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerCollection); err != nil {
-		return ReplicationProtectionContainersListResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionContainersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReplicationProtectionContainersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByReplicationFabrics - Lists the protection containers in the specified fabric.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) ListByReplicationFabrics(fabricName string, options *ReplicationProtectionContainersListByReplicationFabricsOptions) *ReplicationProtectionContainersListByReplicationFabricsPager {
-	return &ReplicationProtectionContainersListByReplicationFabricsPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Fabric name.
+// options - ReplicationProtectionContainersClientListByReplicationFabricsOptions contains the optional parameters for the
+// ReplicationProtectionContainersClient.ListByReplicationFabrics method.
+func (client *ReplicationProtectionContainersClient) ListByReplicationFabrics(fabricName string, options *ReplicationProtectionContainersClientListByReplicationFabricsOptions) *ReplicationProtectionContainersClientListByReplicationFabricsPager {
+	return &ReplicationProtectionContainersClientListByReplicationFabricsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByReplicationFabricsCreateRequest(ctx, fabricName, options)
 		},
-		advancer: func(ctx context.Context, resp ReplicationProtectionContainersListByReplicationFabricsResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ReplicationProtectionContainersClientListByReplicationFabricsResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectionContainerCollection.NextLink)
 		},
 	}
 }
 
 // listByReplicationFabricsCreateRequest creates the ListByReplicationFabrics request.
-func (client *ReplicationProtectionContainersClient) listByReplicationFabricsCreateRequest(ctx context.Context, fabricName string, options *ReplicationProtectionContainersListByReplicationFabricsOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) listByReplicationFabricsCreateRequest(ctx context.Context, fabricName string, options *ReplicationProtectionContainersClientListByReplicationFabricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -457,61 +432,54 @@ func (client *ReplicationProtectionContainersClient) listByReplicationFabricsCre
 		return nil, errors.New("parameter fabricName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByReplicationFabricsHandleResponse handles the ListByReplicationFabrics response.
-func (client *ReplicationProtectionContainersClient) listByReplicationFabricsHandleResponse(resp *http.Response) (ReplicationProtectionContainersListByReplicationFabricsResponse, error) {
-	result := ReplicationProtectionContainersListByReplicationFabricsResponse{RawResponse: resp}
+func (client *ReplicationProtectionContainersClient) listByReplicationFabricsHandleResponse(resp *http.Response) (ReplicationProtectionContainersClientListByReplicationFabricsResponse, error) {
+	result := ReplicationProtectionContainersClientListByReplicationFabricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerCollection); err != nil {
-		return ReplicationProtectionContainersListByReplicationFabricsResponse{}, runtime.NewResponseError(err, resp)
+		return ReplicationProtectionContainersClientListByReplicationFabricsResponse{}, err
 	}
 	return result, nil
 }
 
-// listByReplicationFabricsHandleError handles the ListByReplicationFabrics error response.
-func (client *ReplicationProtectionContainersClient) listByReplicationFabricsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginSwitchProtection - Operation to switch protection from one container to another or one replication provider to another.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) BeginSwitchProtection(ctx context.Context, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersBeginSwitchProtectionOptions) (ReplicationProtectionContainersSwitchProtectionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// fabricName - Unique fabric name.
+// protectionContainerName - Protection container name.
+// switchInput - Switch protection input.
+// options - ReplicationProtectionContainersClientBeginSwitchProtectionOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginSwitchProtection
+// method.
+func (client *ReplicationProtectionContainersClient) BeginSwitchProtection(ctx context.Context, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (ReplicationProtectionContainersClientSwitchProtectionPollerResponse, error) {
 	resp, err := client.switchProtection(ctx, fabricName, protectionContainerName, switchInput, options)
 	if err != nil {
-		return ReplicationProtectionContainersSwitchProtectionPollerResponse{}, err
+		return ReplicationProtectionContainersClientSwitchProtectionPollerResponse{}, err
 	}
-	result := ReplicationProtectionContainersSwitchProtectionPollerResponse{
+	result := ReplicationProtectionContainersClientSwitchProtectionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.SwitchProtection", "", resp, client.pl, client.switchProtectionHandleError)
+	pt, err := armruntime.NewPoller("ReplicationProtectionContainersClient.SwitchProtection", "", resp, client.pl)
 	if err != nil {
-		return ReplicationProtectionContainersSwitchProtectionPollerResponse{}, err
+		return ReplicationProtectionContainersClientSwitchProtectionPollerResponse{}, err
 	}
-	result.Poller = &ReplicationProtectionContainersSwitchProtectionPoller{
+	result.Poller = &ReplicationProtectionContainersClientSwitchProtectionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // SwitchProtection - Operation to switch protection from one container to another or one replication provider to another.
-// If the operation fails it returns a generic error.
-func (client *ReplicationProtectionContainersClient) switchProtection(ctx context.Context, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersBeginSwitchProtectionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationProtectionContainersClient) switchProtection(ctx context.Context, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*http.Response, error) {
 	req, err := client.switchProtectionCreateRequest(ctx, fabricName, protectionContainerName, switchInput, options)
 	if err != nil {
 		return nil, err
@@ -521,13 +489,13 @@ func (client *ReplicationProtectionContainersClient) switchProtection(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.switchProtectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // switchProtectionCreateRequest creates the SwitchProtection request.
-func (client *ReplicationProtectionContainersClient) switchProtectionCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersBeginSwitchProtectionOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainersClient) switchProtectionCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchprotection"
 	if client.resourceName == "" {
 		return nil, errors.New("parameter client.resourceName cannot be empty")
@@ -549,25 +517,13 @@ func (client *ReplicationProtectionContainersClient) switchProtectionCreateReque
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, switchInput)
-}
-
-// switchProtectionHandleError handles the SwitchProtection error response.
-func (client *ReplicationProtectionContainersClient) switchProtectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

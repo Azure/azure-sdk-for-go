@@ -10,122 +10,122 @@ package armazuredata
 
 import "net/http"
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// SQLServerRegistrationsCreateOrUpdateResponse contains the response from method SQLServerRegistrations.CreateOrUpdate.
-type SQLServerRegistrationsCreateOrUpdateResponse struct {
-	SQLServerRegistrationsCreateOrUpdateResult
+// SQLServerRegistrationsClientCreateOrUpdateResponse contains the response from method SQLServerRegistrationsClient.CreateOrUpdate.
+type SQLServerRegistrationsClientCreateOrUpdateResponse struct {
+	SQLServerRegistrationsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerRegistrationsCreateOrUpdateResult contains the result from method SQLServerRegistrations.CreateOrUpdate.
-type SQLServerRegistrationsCreateOrUpdateResult struct {
+// SQLServerRegistrationsClientCreateOrUpdateResult contains the result from method SQLServerRegistrationsClient.CreateOrUpdate.
+type SQLServerRegistrationsClientCreateOrUpdateResult struct {
 	SQLServerRegistration
 }
 
-// SQLServerRegistrationsDeleteResponse contains the response from method SQLServerRegistrations.Delete.
-type SQLServerRegistrationsDeleteResponse struct {
+// SQLServerRegistrationsClientDeleteResponse contains the response from method SQLServerRegistrationsClient.Delete.
+type SQLServerRegistrationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerRegistrationsGetResponse contains the response from method SQLServerRegistrations.Get.
-type SQLServerRegistrationsGetResponse struct {
-	SQLServerRegistrationsGetResult
+// SQLServerRegistrationsClientGetResponse contains the response from method SQLServerRegistrationsClient.Get.
+type SQLServerRegistrationsClientGetResponse struct {
+	SQLServerRegistrationsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerRegistrationsGetResult contains the result from method SQLServerRegistrations.Get.
-type SQLServerRegistrationsGetResult struct {
+// SQLServerRegistrationsClientGetResult contains the result from method SQLServerRegistrationsClient.Get.
+type SQLServerRegistrationsClientGetResult struct {
 	SQLServerRegistration
 }
 
-// SQLServerRegistrationsListByResourceGroupResponse contains the response from method SQLServerRegistrations.ListByResourceGroup.
-type SQLServerRegistrationsListByResourceGroupResponse struct {
-	SQLServerRegistrationsListByResourceGroupResult
+// SQLServerRegistrationsClientListByResourceGroupResponse contains the response from method SQLServerRegistrationsClient.ListByResourceGroup.
+type SQLServerRegistrationsClientListByResourceGroupResponse struct {
+	SQLServerRegistrationsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerRegistrationsListByResourceGroupResult contains the result from method SQLServerRegistrations.ListByResourceGroup.
-type SQLServerRegistrationsListByResourceGroupResult struct {
+// SQLServerRegistrationsClientListByResourceGroupResult contains the result from method SQLServerRegistrationsClient.ListByResourceGroup.
+type SQLServerRegistrationsClientListByResourceGroupResult struct {
 	SQLServerRegistrationListResult
 }
 
-// SQLServerRegistrationsListResponse contains the response from method SQLServerRegistrations.List.
-type SQLServerRegistrationsListResponse struct {
-	SQLServerRegistrationsListResult
+// SQLServerRegistrationsClientListResponse contains the response from method SQLServerRegistrationsClient.List.
+type SQLServerRegistrationsClientListResponse struct {
+	SQLServerRegistrationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerRegistrationsListResult contains the result from method SQLServerRegistrations.List.
-type SQLServerRegistrationsListResult struct {
+// SQLServerRegistrationsClientListResult contains the result from method SQLServerRegistrationsClient.List.
+type SQLServerRegistrationsClientListResult struct {
 	SQLServerRegistrationListResult
 }
 
-// SQLServerRegistrationsUpdateResponse contains the response from method SQLServerRegistrations.Update.
-type SQLServerRegistrationsUpdateResponse struct {
-	SQLServerRegistrationsUpdateResult
+// SQLServerRegistrationsClientUpdateResponse contains the response from method SQLServerRegistrationsClient.Update.
+type SQLServerRegistrationsClientUpdateResponse struct {
+	SQLServerRegistrationsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServerRegistrationsUpdateResult contains the result from method SQLServerRegistrations.Update.
-type SQLServerRegistrationsUpdateResult struct {
+// SQLServerRegistrationsClientUpdateResult contains the result from method SQLServerRegistrationsClient.Update.
+type SQLServerRegistrationsClientUpdateResult struct {
 	SQLServerRegistration
 }
 
-// SQLServersCreateOrUpdateResponse contains the response from method SQLServers.CreateOrUpdate.
-type SQLServersCreateOrUpdateResponse struct {
-	SQLServersCreateOrUpdateResult
+// SQLServersClientCreateOrUpdateResponse contains the response from method SQLServersClient.CreateOrUpdate.
+type SQLServersClientCreateOrUpdateResponse struct {
+	SQLServersClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServersCreateOrUpdateResult contains the result from method SQLServers.CreateOrUpdate.
-type SQLServersCreateOrUpdateResult struct {
+// SQLServersClientCreateOrUpdateResult contains the result from method SQLServersClient.CreateOrUpdate.
+type SQLServersClientCreateOrUpdateResult struct {
 	SQLServer
 }
 
-// SQLServersDeleteResponse contains the response from method SQLServers.Delete.
-type SQLServersDeleteResponse struct {
+// SQLServersClientDeleteResponse contains the response from method SQLServersClient.Delete.
+type SQLServersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServersGetResponse contains the response from method SQLServers.Get.
-type SQLServersGetResponse struct {
-	SQLServersGetResult
+// SQLServersClientGetResponse contains the response from method SQLServersClient.Get.
+type SQLServersClientGetResponse struct {
+	SQLServersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServersGetResult contains the result from method SQLServers.Get.
-type SQLServersGetResult struct {
+// SQLServersClientGetResult contains the result from method SQLServersClient.Get.
+type SQLServersClientGetResult struct {
 	SQLServer
 }
 
-// SQLServersListByResourceGroupResponse contains the response from method SQLServers.ListByResourceGroup.
-type SQLServersListByResourceGroupResponse struct {
-	SQLServersListByResourceGroupResult
+// SQLServersClientListByResourceGroupResponse contains the response from method SQLServersClient.ListByResourceGroup.
+type SQLServersClientListByResourceGroupResponse struct {
+	SQLServersClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SQLServersListByResourceGroupResult contains the result from method SQLServers.ListByResourceGroup.
-type SQLServersListByResourceGroupResult struct {
+// SQLServersClientListByResourceGroupResult contains the result from method SQLServersClient.ListByResourceGroup.
+type SQLServersClientListByResourceGroupResult struct {
 	SQLServerListResult
 }

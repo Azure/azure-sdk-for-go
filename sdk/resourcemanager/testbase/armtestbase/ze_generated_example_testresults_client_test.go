@@ -28,14 +28,18 @@ func ExampleTestResultsClient_List() {
 	pager := client.List("<resource-group-name>",
 		"<test-base-account-name>",
 		"<package-name>",
-		armtestbase.OsUpdateTypeSecurityUpdate,
-		&armtestbase.TestResultsListOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
+		armtestbase.OsUpdateType("SecurityUpdate"),
+		&armtestbase.TestResultsClientListOptions{Filter: to.StringPtr("<filter>")})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("TestResultResource.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -57,7 +61,7 @@ func ExampleTestResultsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TestResultResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.TestResultsClientGetResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGetDownloadURL.json
@@ -68,7 +72,7 @@ func ExampleTestResultsClient_GetDownloadURL() {
 	}
 	ctx := context.Background()
 	client := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
-	_, err = client.GetDownloadURL(ctx,
+	res, err := client.GetDownloadURL(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
 		"<package-name>",
@@ -77,6 +81,7 @@ func ExampleTestResultsClient_GetDownloadURL() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TestResultsClientGetDownloadURLResult)
 }
 
 // x-ms-original-file: specification/testbase/resource-manager/Microsoft.TestBase/preview/2020-12-16-preview/examples/TestResultGetVideoDownloadURL.json
@@ -87,7 +92,7 @@ func ExampleTestResultsClient_GetVideoDownloadURL() {
 	}
 	ctx := context.Background()
 	client := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
-	_, err = client.GetVideoDownloadURL(ctx,
+	res, err := client.GetVideoDownloadURL(ctx,
 		"<resource-group-name>",
 		"<test-base-account-name>",
 		"<package-name>",
@@ -96,4 +101,5 @@ func ExampleTestResultsClient_GetVideoDownloadURL() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.TestResultsClientGetVideoDownloadURLResult)
 }

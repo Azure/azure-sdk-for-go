@@ -11,7 +11,6 @@ package armresourcehealth
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,47 +24,55 @@ import (
 // EmergingIssuesClient contains the methods for the EmergingIssues group.
 // Don't use this type directly, use NewEmergingIssuesClient() instead.
 type EmergingIssuesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEmergingIssuesClient creates a new instance of EmergingIssuesClient with the specified values.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewEmergingIssuesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EmergingIssuesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &EmergingIssuesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &EmergingIssuesClient{
+		host: string(cp.Endpoint),
+		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Gets Azure services' emerging issues.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EmergingIssuesClient) Get(ctx context.Context, issueName Enum0, options *EmergingIssuesGetOptions) (EmergingIssuesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// issueName - The name of the emerging issue.
+// options - EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
+func (client *EmergingIssuesClient) Get(ctx context.Context, issueName Enum0, options *EmergingIssuesClientGetOptions) (EmergingIssuesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, issueName, options)
 	if err != nil {
-		return EmergingIssuesGetResponse{}, err
+		return EmergingIssuesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EmergingIssuesGetResponse{}, err
+		return EmergingIssuesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EmergingIssuesGetResponse{}, client.getHandleError(resp)
+		return EmergingIssuesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueName Enum0, options *EmergingIssuesGetOptions) (*policy.Request, error) {
+func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueName Enum0, options *EmergingIssuesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/emergingIssues/{issueName}"
 	if issueName == "" {
 		return nil, errors.New("parameter issueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape(string(issueName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -77,45 +84,33 @@ func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueN
 }
 
 // getHandleResponse handles the Get response.
-func (client *EmergingIssuesClient) getHandleResponse(resp *http.Response) (EmergingIssuesGetResponse, error) {
-	result := EmergingIssuesGetResponse{RawResponse: resp}
+func (client *EmergingIssuesClient) getHandleResponse(resp *http.Response) (EmergingIssuesClientGetResponse, error) {
+	result := EmergingIssuesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmergingIssuesGetResult); err != nil {
-		return EmergingIssuesGetResponse{}, runtime.NewResponseError(err, resp)
+		return EmergingIssuesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *EmergingIssuesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Lists Azure services' emerging issues.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EmergingIssuesClient) List(options *EmergingIssuesListOptions) *EmergingIssuesListPager {
-	return &EmergingIssuesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.List method.
+func (client *EmergingIssuesClient) List(options *EmergingIssuesClientListOptions) *EmergingIssuesClientListPager {
+	return &EmergingIssuesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp EmergingIssuesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp EmergingIssuesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.EmergingIssueListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, options *EmergingIssuesListOptions) (*policy.Request, error) {
+func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, options *EmergingIssuesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/emergingIssues"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,23 +122,10 @@ func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, optio
 }
 
 // listHandleResponse handles the List response.
-func (client *EmergingIssuesClient) listHandleResponse(resp *http.Response) (EmergingIssuesListResponse, error) {
-	result := EmergingIssuesListResponse{RawResponse: resp}
+func (client *EmergingIssuesClient) listHandleResponse(resp *http.Response) (EmergingIssuesClientListResponse, error) {
+	result := EmergingIssuesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EmergingIssueListResult); err != nil {
-		return EmergingIssuesListResponse{}, runtime.NewResponseError(err, resp)
+		return EmergingIssuesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *EmergingIssuesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

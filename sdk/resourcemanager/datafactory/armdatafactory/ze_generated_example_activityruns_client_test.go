@@ -27,7 +27,7 @@ func ExampleActivityRunsClient_QueryByPipelineRun() {
 	}
 	ctx := context.Background()
 	client := armdatafactory.NewActivityRunsClient("<subscription-id>", cred, nil)
-	_, err = client.QueryByPipelineRun(ctx,
+	res, err := client.QueryByPipelineRun(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		"<run-id>",
@@ -39,4 +39,5 @@ func ExampleActivityRunsClient_QueryByPipelineRun() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ActivityRunsClientQueryByPipelineRunResult)
 }

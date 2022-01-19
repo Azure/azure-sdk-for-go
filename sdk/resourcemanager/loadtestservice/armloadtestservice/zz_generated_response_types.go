@@ -15,22 +15,22 @@ import (
 	"time"
 )
 
-// LoadTestsCreateOrUpdateResponse contains the response from method LoadTests.CreateOrUpdate.
-type LoadTestsCreateOrUpdateResponse struct {
-	LoadTestsCreateOrUpdateResult
+// LoadTestsClientCreateOrUpdateResponse contains the response from method LoadTestsClient.CreateOrUpdate.
+type LoadTestsClientCreateOrUpdateResponse struct {
+	LoadTestsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoadTestsCreateOrUpdateResult contains the result from method LoadTests.CreateOrUpdate.
-type LoadTestsCreateOrUpdateResult struct {
+// LoadTestsClientCreateOrUpdateResult contains the result from method LoadTestsClient.CreateOrUpdate.
+type LoadTestsClientCreateOrUpdateResult struct {
 	LoadTestResource
 }
 
-// LoadTestsDeletePollerResponse contains the response from method LoadTests.Delete.
-type LoadTestsDeletePollerResponse struct {
+// LoadTestsClientDeletePollerResponse contains the response from method LoadTestsClient.Delete.
+type LoadTestsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *LoadTestsDeletePoller
+	Poller *LoadTestsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -39,8 +39,8 @@ type LoadTestsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l LoadTestsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LoadTestsDeleteResponse, error) {
-	respType := LoadTestsDeleteResponse{}
+func (l LoadTestsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LoadTestsClientDeleteResponse, error) {
+	respType := LoadTestsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -49,13 +49,13 @@ func (l LoadTestsDeletePollerResponse) PollUntilDone(ctx context.Context, freq t
 	return respType, nil
 }
 
-// Resume rehydrates a LoadTestsDeletePollerResponse from the provided client and resume token.
-func (l *LoadTestsDeletePollerResponse) Resume(ctx context.Context, client *LoadTestsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("LoadTestsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a LoadTestsClientDeletePollerResponse from the provided client and resume token.
+func (l *LoadTestsClientDeletePollerResponse) Resume(ctx context.Context, client *LoadTestsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LoadTestsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &LoadTestsDeletePoller{
+	poller := &LoadTestsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -67,68 +67,68 @@ func (l *LoadTestsDeletePollerResponse) Resume(ctx context.Context, client *Load
 	return nil
 }
 
-// LoadTestsDeleteResponse contains the response from method LoadTests.Delete.
-type LoadTestsDeleteResponse struct {
+// LoadTestsClientDeleteResponse contains the response from method LoadTestsClient.Delete.
+type LoadTestsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoadTestsGetResponse contains the response from method LoadTests.Get.
-type LoadTestsGetResponse struct {
-	LoadTestsGetResult
+// LoadTestsClientGetResponse contains the response from method LoadTestsClient.Get.
+type LoadTestsClientGetResponse struct {
+	LoadTestsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoadTestsGetResult contains the result from method LoadTests.Get.
-type LoadTestsGetResult struct {
+// LoadTestsClientGetResult contains the result from method LoadTestsClient.Get.
+type LoadTestsClientGetResult struct {
 	LoadTestResource
 }
 
-// LoadTestsListByResourceGroupResponse contains the response from method LoadTests.ListByResourceGroup.
-type LoadTestsListByResourceGroupResponse struct {
-	LoadTestsListByResourceGroupResult
+// LoadTestsClientListByResourceGroupResponse contains the response from method LoadTestsClient.ListByResourceGroup.
+type LoadTestsClientListByResourceGroupResponse struct {
+	LoadTestsClientListByResourceGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoadTestsListByResourceGroupResult contains the result from method LoadTests.ListByResourceGroup.
-type LoadTestsListByResourceGroupResult struct {
+// LoadTestsClientListByResourceGroupResult contains the result from method LoadTestsClient.ListByResourceGroup.
+type LoadTestsClientListByResourceGroupResult struct {
 	LoadTestResourcePageList
 }
 
-// LoadTestsListBySubscriptionResponse contains the response from method LoadTests.ListBySubscription.
-type LoadTestsListBySubscriptionResponse struct {
-	LoadTestsListBySubscriptionResult
+// LoadTestsClientListBySubscriptionResponse contains the response from method LoadTestsClient.ListBySubscription.
+type LoadTestsClientListBySubscriptionResponse struct {
+	LoadTestsClientListBySubscriptionResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoadTestsListBySubscriptionResult contains the result from method LoadTests.ListBySubscription.
-type LoadTestsListBySubscriptionResult struct {
+// LoadTestsClientListBySubscriptionResult contains the result from method LoadTestsClient.ListBySubscription.
+type LoadTestsClientListBySubscriptionResult struct {
 	LoadTestResourcePageList
 }
 
-// LoadTestsUpdateResponse contains the response from method LoadTests.Update.
-type LoadTestsUpdateResponse struct {
-	LoadTestsUpdateResult
+// LoadTestsClientUpdateResponse contains the response from method LoadTestsClient.Update.
+type LoadTestsClientUpdateResponse struct {
+	LoadTestsClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LoadTestsUpdateResult contains the result from method LoadTests.Update.
-type LoadTestsUpdateResult struct {
+// LoadTestsClientUpdateResult contains the result from method LoadTestsClient.Update.
+type LoadTestsClientUpdateResult struct {
 	LoadTestResource
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }

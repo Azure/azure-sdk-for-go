@@ -11,7 +11,6 @@ package armautomation
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // DscNodeClient contains the methods for the DscNode group.
 // Don't use this type directly, use NewDscNodeClient() instead.
 type DscNodeClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDscNodeClient creates a new instance of DscNodeClient with the specified values.
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewDscNodeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscNodeClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &DscNodeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &DscNodeClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Delete - Delete the dsc node identified by node id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DscNodeClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeDeleteOptions) (DscNodeDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// nodeID - The node id.
+// options - DscNodeClientDeleteOptions contains the optional parameters for the DscNodeClient.Delete method.
+func (client *DscNodeClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeClientDeleteOptions) (DscNodeClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
 	if err != nil {
-		return DscNodeDeleteResponse{}, err
+		return DscNodeClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DscNodeDeleteResponse{}, err
+		return DscNodeClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DscNodeDeleteResponse{}, client.deleteHandleError(resp)
+		return DscNodeClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return DscNodeDeleteResponse{RawResponse: resp}, nil
+	return DscNodeClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeDeleteOptions) (*policy.Request, error) {
+func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +91,7 @@ func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -90,38 +102,29 @@ func (client *DscNodeClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DscNodeClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve the dsc node identified by node id.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DscNodeClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeGetOptions) (DscNodeGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// nodeID - The node id.
+// options - DscNodeClientGetOptions contains the optional parameters for the DscNodeClient.Get method.
+func (client *DscNodeClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeClientGetOptions) (DscNodeClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
 	if err != nil {
-		return DscNodeGetResponse{}, err
+		return DscNodeClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DscNodeGetResponse{}, err
+		return DscNodeClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DscNodeGetResponse{}, client.getHandleError(resp)
+		return DscNodeClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DscNodeClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeGetOptions) (*policy.Request, error) {
+func (client *DscNodeClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *DscNodeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -139,7 +142,7 @@ func (client *DscNodeClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,43 +154,34 @@ func (client *DscNodeClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *DscNodeClient) getHandleResponse(resp *http.Response) (DscNodeGetResponse, error) {
-	result := DscNodeGetResponse{RawResponse: resp}
+func (client *DscNodeClient) getHandleResponse(resp *http.Response) (DscNodeClientGetResponse, error) {
+	result := DscNodeClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNode); err != nil {
-		return DscNodeGetResponse{}, runtime.NewResponseError(err, resp)
+		return DscNodeClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DscNodeClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByAutomationAccount - Retrieve a list of dsc nodes.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DscNodeClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscNodeListByAutomationAccountOptions) *DscNodeListByAutomationAccountPager {
-	return &DscNodeListByAutomationAccountPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// options - DscNodeClientListByAutomationAccountOptions contains the optional parameters for the DscNodeClient.ListByAutomationAccount
+// method.
+func (client *DscNodeClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscNodeClientListByAutomationAccountOptions) *DscNodeClientListByAutomationAccountPager {
+	return &DscNodeClientListByAutomationAccountPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp DscNodeListByAutomationAccountResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp DscNodeClientListByAutomationAccountResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscNodeListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *DscNodeClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *DscNodeListByAutomationAccountOptions) (*policy.Request, error) {
+func (client *DscNodeClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *DscNodeClientListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -201,7 +195,7 @@ func (client *DscNodeClient) listByAutomationAccountCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -225,46 +219,38 @@ func (client *DscNodeClient) listByAutomationAccountCreateRequest(ctx context.Co
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *DscNodeClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscNodeListByAutomationAccountResponse, error) {
-	result := DscNodeListByAutomationAccountResponse{RawResponse: resp}
+func (client *DscNodeClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscNodeClientListByAutomationAccountResponse, error) {
+	result := DscNodeClientListByAutomationAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeListResult); err != nil {
-		return DscNodeListByAutomationAccountResponse{}, runtime.NewResponseError(err, resp)
+		return DscNodeClientListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *DscNodeClient) listByAutomationAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update the dsc node.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DscNodeClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters, options *DscNodeUpdateOptions) (DscNodeUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of an Azure Resource group.
+// automationAccountName - The name of the automation account.
+// nodeID - Parameters supplied to the update dsc node.
+// dscNodeUpdateParameters - Parameters supplied to the update dsc node.
+// options - DscNodeClientUpdateOptions contains the optional parameters for the DscNodeClient.Update method.
+func (client *DscNodeClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters, options *DscNodeClientUpdateOptions) (DscNodeClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, dscNodeUpdateParameters, options)
 	if err != nil {
-		return DscNodeUpdateResponse{}, err
+		return DscNodeClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DscNodeUpdateResponse{}, err
+		return DscNodeClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DscNodeUpdateResponse{}, client.updateHandleError(resp)
+		return DscNodeClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DscNodeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters, options *DscNodeUpdateOptions) (*policy.Request, error) {
+func (client *DscNodeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters, options *DscNodeClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -282,7 +268,7 @@ func (client *DscNodeClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -294,23 +280,10 @@ func (client *DscNodeClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DscNodeClient) updateHandleResponse(resp *http.Response) (DscNodeUpdateResponse, error) {
-	result := DscNodeUpdateResponse{RawResponse: resp}
+func (client *DscNodeClient) updateHandleResponse(resp *http.Response) (DscNodeClientUpdateResponse, error) {
+	result := DscNodeClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNode); err != nil {
-		return DscNodeUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DscNodeClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DscNodeClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

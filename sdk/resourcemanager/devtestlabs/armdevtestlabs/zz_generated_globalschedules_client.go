@@ -11,7 +11,6 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -26,42 +25,55 @@ import (
 // GlobalSchedulesClient contains the methods for the GlobalSchedules group.
 // Don't use this type directly, use NewGlobalSchedulesClient() instead.
 type GlobalSchedulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewGlobalSchedulesClient creates a new instance of GlobalSchedulesClient with the specified values.
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewGlobalSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GlobalSchedulesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &GlobalSchedulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &GlobalSchedulesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Create or replace an existing schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, schedule Schedule, options *GlobalSchedulesCreateOrUpdateOptions) (GlobalSchedulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the schedule.
+// schedule - A schedule.
+// options - GlobalSchedulesClientCreateOrUpdateOptions contains the optional parameters for the GlobalSchedulesClient.CreateOrUpdate
+// method.
+func (client *GlobalSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, schedule Schedule, options *GlobalSchedulesClientCreateOrUpdateOptions) (GlobalSchedulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, schedule, options)
 	if err != nil {
-		return GlobalSchedulesCreateOrUpdateResponse{}, err
+		return GlobalSchedulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GlobalSchedulesCreateOrUpdateResponse{}, err
+		return GlobalSchedulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return GlobalSchedulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return GlobalSchedulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GlobalSchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, schedule Schedule, options *GlobalSchedulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, schedule Schedule, options *GlobalSchedulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -75,7 +87,7 @@ func (client *GlobalSchedulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,46 +99,36 @@ func (client *GlobalSchedulesClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GlobalSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (GlobalSchedulesCreateOrUpdateResponse, error) {
-	result := GlobalSchedulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *GlobalSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (GlobalSchedulesClientCreateOrUpdateResponse, error) {
+	result := GlobalSchedulesClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return GlobalSchedulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalSchedulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *GlobalSchedulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) Delete(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesDeleteOptions) (GlobalSchedulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the schedule.
+// options - GlobalSchedulesClientDeleteOptions contains the optional parameters for the GlobalSchedulesClient.Delete method.
+func (client *GlobalSchedulesClient) Delete(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientDeleteOptions) (GlobalSchedulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return GlobalSchedulesDeleteResponse{}, err
+		return GlobalSchedulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GlobalSchedulesDeleteResponse{}, err
+		return GlobalSchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return GlobalSchedulesDeleteResponse{}, client.deleteHandleError(resp)
+		return GlobalSchedulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return GlobalSchedulesDeleteResponse{RawResponse: resp}, nil
+	return GlobalSchedulesClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GlobalSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesDeleteOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,7 +142,7 @@ func (client *GlobalSchedulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,42 +153,33 @@ func (client *GlobalSchedulesClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *GlobalSchedulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginExecute - Execute a schedule. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesBeginExecuteOptions) (GlobalSchedulesExecutePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the schedule.
+// options - GlobalSchedulesClientBeginExecuteOptions contains the optional parameters for the GlobalSchedulesClient.BeginExecute
+// method.
+func (client *GlobalSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientBeginExecuteOptions) (GlobalSchedulesClientExecutePollerResponse, error) {
 	resp, err := client.execute(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return GlobalSchedulesExecutePollerResponse{}, err
+		return GlobalSchedulesClientExecutePollerResponse{}, err
 	}
-	result := GlobalSchedulesExecutePollerResponse{
+	result := GlobalSchedulesClientExecutePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("GlobalSchedulesClient.Execute", "", resp, client.pl, client.executeHandleError)
+	pt, err := armruntime.NewPoller("GlobalSchedulesClient.Execute", "", resp, client.pl)
 	if err != nil {
-		return GlobalSchedulesExecutePollerResponse{}, err
+		return GlobalSchedulesClientExecutePollerResponse{}, err
 	}
-	result.Poller = &GlobalSchedulesExecutePoller{
+	result.Poller = &GlobalSchedulesClientExecutePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) execute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesBeginExecuteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GlobalSchedulesClient) execute(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientBeginExecuteOptions) (*http.Response, error) {
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
@@ -196,13 +189,13 @@ func (client *GlobalSchedulesClient) execute(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.executeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *GlobalSchedulesClient) executeCreateRequest(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesBeginExecuteOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) executeCreateRequest(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules/{name}/execute"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -216,7 +209,7 @@ func (client *GlobalSchedulesClient) executeCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,38 +220,28 @@ func (client *GlobalSchedulesClient) executeCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// executeHandleError handles the Execute error response.
-func (client *GlobalSchedulesClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) Get(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesGetOptions) (GlobalSchedulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the schedule.
+// options - GlobalSchedulesClientGetOptions contains the optional parameters for the GlobalSchedulesClient.Get method.
+func (client *GlobalSchedulesClient) Get(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientGetOptions) (GlobalSchedulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return GlobalSchedulesGetResponse{}, err
+		return GlobalSchedulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GlobalSchedulesGetResponse{}, err
+		return GlobalSchedulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GlobalSchedulesGetResponse{}, client.getHandleError(resp)
+		return GlobalSchedulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GlobalSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesGetOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *GlobalSchedulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -272,7 +255,7 @@ func (client *GlobalSchedulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,43 +270,33 @@ func (client *GlobalSchedulesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *GlobalSchedulesClient) getHandleResponse(resp *http.Response) (GlobalSchedulesGetResponse, error) {
-	result := GlobalSchedulesGetResponse{RawResponse: resp}
+func (client *GlobalSchedulesClient) getHandleResponse(resp *http.Response) (GlobalSchedulesClientGetResponse, error) {
+	result := GlobalSchedulesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return GlobalSchedulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalSchedulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *GlobalSchedulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByResourceGroup - List schedules in a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) ListByResourceGroup(resourceGroupName string, options *GlobalSchedulesListByResourceGroupOptions) *GlobalSchedulesListByResourceGroupPager {
-	return &GlobalSchedulesListByResourceGroupPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// options - GlobalSchedulesClientListByResourceGroupOptions contains the optional parameters for the GlobalSchedulesClient.ListByResourceGroup
+// method.
+func (client *GlobalSchedulesClient) ListByResourceGroup(resourceGroupName string, options *GlobalSchedulesClientListByResourceGroupOptions) *GlobalSchedulesClientListByResourceGroupPager {
+	return &GlobalSchedulesClientListByResourceGroupPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp GlobalSchedulesListByResourceGroupResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp GlobalSchedulesClientListByResourceGroupResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleList.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *GlobalSchedulesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *GlobalSchedulesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *GlobalSchedulesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -333,7 +306,7 @@ func (client *GlobalSchedulesClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,49 +330,38 @@ func (client *GlobalSchedulesClient) listByResourceGroupCreateRequest(ctx contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *GlobalSchedulesClient) listByResourceGroupHandleResponse(resp *http.Response) (GlobalSchedulesListByResourceGroupResponse, error) {
-	result := GlobalSchedulesListByResourceGroupResponse{RawResponse: resp}
+func (client *GlobalSchedulesClient) listByResourceGroupHandleResponse(resp *http.Response) (GlobalSchedulesClientListByResourceGroupResponse, error) {
+	result := GlobalSchedulesClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleList); err != nil {
-		return GlobalSchedulesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalSchedulesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *GlobalSchedulesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBySubscription - List schedules in a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) ListBySubscription(options *GlobalSchedulesListBySubscriptionOptions) *GlobalSchedulesListBySubscriptionPager {
-	return &GlobalSchedulesListBySubscriptionPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - GlobalSchedulesClientListBySubscriptionOptions contains the optional parameters for the GlobalSchedulesClient.ListBySubscription
+// method.
+func (client *GlobalSchedulesClient) ListBySubscription(options *GlobalSchedulesClientListBySubscriptionOptions) *GlobalSchedulesClientListBySubscriptionPager {
+	return &GlobalSchedulesClientListBySubscriptionPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp GlobalSchedulesListBySubscriptionResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp GlobalSchedulesClientListBySubscriptionResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *GlobalSchedulesClient) listBySubscriptionCreateRequest(ctx context.Context, options *GlobalSchedulesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) listBySubscriptionCreateRequest(ctx context.Context, options *GlobalSchedulesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevTestLab/schedules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,50 +385,42 @@ func (client *GlobalSchedulesClient) listBySubscriptionCreateRequest(ctx context
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *GlobalSchedulesClient) listBySubscriptionHandleResponse(resp *http.Response) (GlobalSchedulesListBySubscriptionResponse, error) {
-	result := GlobalSchedulesListBySubscriptionResponse{RawResponse: resp}
+func (client *GlobalSchedulesClient) listBySubscriptionHandleResponse(resp *http.Response) (GlobalSchedulesClientListBySubscriptionResponse, error) {
+	result := GlobalSchedulesClientListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleList); err != nil {
-		return GlobalSchedulesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalSchedulesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *GlobalSchedulesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRetarget - Updates a schedule's target resource Id. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) BeginRetarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesBeginRetargetOptions) (GlobalSchedulesRetargetPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the schedule.
+// retargetScheduleProperties - Properties for retargeting a virtual machine schedule.
+// options - GlobalSchedulesClientBeginRetargetOptions contains the optional parameters for the GlobalSchedulesClient.BeginRetarget
+// method.
+func (client *GlobalSchedulesClient) BeginRetarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesClientBeginRetargetOptions) (GlobalSchedulesClientRetargetPollerResponse, error) {
 	resp, err := client.retarget(ctx, resourceGroupName, name, retargetScheduleProperties, options)
 	if err != nil {
-		return GlobalSchedulesRetargetPollerResponse{}, err
+		return GlobalSchedulesClientRetargetPollerResponse{}, err
 	}
-	result := GlobalSchedulesRetargetPollerResponse{
+	result := GlobalSchedulesClientRetargetPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("GlobalSchedulesClient.Retarget", "", resp, client.pl, client.retargetHandleError)
+	pt, err := armruntime.NewPoller("GlobalSchedulesClient.Retarget", "", resp, client.pl)
 	if err != nil {
-		return GlobalSchedulesRetargetPollerResponse{}, err
+		return GlobalSchedulesClientRetargetPollerResponse{}, err
 	}
-	result.Poller = &GlobalSchedulesRetargetPoller{
+	result.Poller = &GlobalSchedulesClientRetargetPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // Retarget - Updates a schedule's target resource Id. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) retarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesBeginRetargetOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GlobalSchedulesClient) retarget(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesClientBeginRetargetOptions) (*http.Response, error) {
 	req, err := client.retargetCreateRequest(ctx, resourceGroupName, name, retargetScheduleProperties, options)
 	if err != nil {
 		return nil, err
@@ -476,13 +430,13 @@ func (client *GlobalSchedulesClient) retarget(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.retargetHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // retargetCreateRequest creates the Retarget request.
-func (client *GlobalSchedulesClient) retargetCreateRequest(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesBeginRetargetOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) retargetCreateRequest(ctx context.Context, resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, options *GlobalSchedulesClientBeginRetargetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules/{name}/retarget"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -496,7 +450,7 @@ func (client *GlobalSchedulesClient) retargetCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -507,38 +461,29 @@ func (client *GlobalSchedulesClient) retargetCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, retargetScheduleProperties)
 }
 
-// retargetHandleError handles the Retarget error response.
-func (client *GlobalSchedulesClient) retargetHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of schedules. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *GlobalSchedulesClient) Update(ctx context.Context, resourceGroupName string, name string, schedule ScheduleFragment, options *GlobalSchedulesUpdateOptions) (GlobalSchedulesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// name - The name of the schedule.
+// schedule - A schedule.
+// options - GlobalSchedulesClientUpdateOptions contains the optional parameters for the GlobalSchedulesClient.Update method.
+func (client *GlobalSchedulesClient) Update(ctx context.Context, resourceGroupName string, name string, schedule ScheduleFragment, options *GlobalSchedulesClientUpdateOptions) (GlobalSchedulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, schedule, options)
 	if err != nil {
-		return GlobalSchedulesUpdateResponse{}, err
+		return GlobalSchedulesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GlobalSchedulesUpdateResponse{}, err
+		return GlobalSchedulesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GlobalSchedulesUpdateResponse{}, client.updateHandleError(resp)
+		return GlobalSchedulesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *GlobalSchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, schedule ScheduleFragment, options *GlobalSchedulesUpdateOptions) (*policy.Request, error) {
+func (client *GlobalSchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, schedule ScheduleFragment, options *GlobalSchedulesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -552,7 +497,7 @@ func (client *GlobalSchedulesClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -564,23 +509,10 @@ func (client *GlobalSchedulesClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *GlobalSchedulesClient) updateHandleResponse(resp *http.Response) (GlobalSchedulesUpdateResponse, error) {
-	result := GlobalSchedulesUpdateResponse{RawResponse: resp}
+func (client *GlobalSchedulesClient) updateHandleResponse(resp *http.Response) (GlobalSchedulesClientUpdateResponse, error) {
+	result := GlobalSchedulesClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return GlobalSchedulesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return GlobalSchedulesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *GlobalSchedulesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

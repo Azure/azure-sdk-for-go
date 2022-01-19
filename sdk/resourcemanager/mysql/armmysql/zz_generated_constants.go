@@ -9,8 +9,8 @@
 package armmysql
 
 const (
-	module  = "armmysql"
-	version = "v0.2.1"
+	moduleName    = "armmysql"
+	moduleVersion = "v0.3.0"
 )
 
 // CreateMode - The mode to create a new server.
@@ -59,8 +59,8 @@ func (c GeoRedundantBackup) ToPtr() *GeoRedundantBackup {
 	return &c
 }
 
-// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the
-// resource.
+// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+// Directory principal for the resource.
 type IdentityType string
 
 const (
@@ -79,8 +79,8 @@ func (c IdentityType) ToPtr() *IdentityType {
 	return &c
 }
 
-// InfrastructureEncryption - Add a second layer of encryption for your data using new encryption algorithm which gives additional data protection. Value
-// is optional but if passed in, must be 'Disabled' or 'Enabled'.
+// InfrastructureEncryption - Add a second layer of encryption for your data using new encryption algorithm which gives additional
+// data protection. Value is optional but if passed in, must be 'Disabled' or 'Enabled'.
 type InfrastructureEncryption string
 
 const (
@@ -222,7 +222,8 @@ func (c PrivateLinkServiceConnectionStateStatus) ToPtr() *PrivateLinkServiceConn
 	return &c
 }
 
-// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed
+// in, must be 'Enabled' or 'Disabled'
 type PublicNetworkAccessEnum string
 
 const (

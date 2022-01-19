@@ -25,12 +25,13 @@ func ExamplePrivateStoreCollectionClient_List() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreCollectionClient(cred, nil)
-	_, err = client.List(ctx,
+	res, err := client.List(ctx,
 		"<private-store-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreCollectionClientListResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/GetPrivateStoreCollection.json
@@ -48,7 +49,7 @@ func ExamplePrivateStoreCollectionClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Collection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreCollectionClientGetResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/CreatePrivateStoreCollection.json
@@ -62,7 +63,7 @@ func ExamplePrivateStoreCollectionClient_CreateOrUpdate() {
 	res, err := client.CreateOrUpdate(ctx,
 		"<private-store-id>",
 		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionCreateOrUpdateOptions{Payload: &armmarketplace.Collection{
+		&armmarketplace.PrivateStoreCollectionClientCreateOrUpdateOptions{Payload: &armmarketplace.Collection{
 			Properties: &armmarketplace.CollectionProperties{
 				AllSubscriptions: to.BoolPtr(false),
 				Claim:            to.StringPtr("<claim>"),
@@ -76,7 +77,7 @@ func ExamplePrivateStoreCollectionClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Collection.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PrivateStoreCollectionClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/DeletePrivateStoreCollection.json
@@ -107,7 +108,7 @@ func ExamplePrivateStoreCollectionClient_Post() {
 	_, err = client.Post(ctx,
 		"<private-store-id>",
 		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionPostOptions{Payload: nil})
+		&armmarketplace.PrivateStoreCollectionClientPostOptions{Payload: nil})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -121,10 +122,10 @@ func ExamplePrivateStoreCollectionClient_TransferOffers() {
 	}
 	ctx := context.Background()
 	client := armmarketplace.NewPrivateStoreCollectionClient(cred, nil)
-	_, err = client.TransferOffers(ctx,
+	res, err := client.TransferOffers(ctx,
 		"<private-store-id>",
 		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionTransferOffersOptions{Payload: &armmarketplace.TransferOffersProperties{
+		&armmarketplace.PrivateStoreCollectionClientTransferOffersOptions{Payload: &armmarketplace.TransferOffersProperties{
 			Properties: &armmarketplace.TransferOffersDetails{
 				OfferIDsList: []*string{
 					to.StringPtr("marketplacetestthirdparty.md-test-third-party-2"),
@@ -139,4 +140,5 @@ func ExamplePrivateStoreCollectionClient_TransferOffers() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.PrivateStoreCollectionClientTransferOffersResult)
 }

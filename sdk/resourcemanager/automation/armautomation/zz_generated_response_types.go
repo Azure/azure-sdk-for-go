@@ -15,340 +15,340 @@ import (
 	"time"
 )
 
-// ActivityGetResponse contains the response from method Activity.Get.
-type ActivityGetResponse struct {
-	ActivityGetResult
+// AccountClientCreateOrUpdateResponse contains the response from method AccountClient.CreateOrUpdate.
+type AccountClientCreateOrUpdateResponse struct {
+	AccountClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActivityGetResult contains the result from method Activity.Get.
-type ActivityGetResult struct {
+// AccountClientCreateOrUpdateResult contains the result from method AccountClient.CreateOrUpdate.
+type AccountClientCreateOrUpdateResult struct {
+	Account
+}
+
+// AccountClientDeleteResponse contains the response from method AccountClient.Delete.
+type AccountClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccountClientGetResponse contains the response from method AccountClient.Get.
+type AccountClientGetResponse struct {
+	AccountClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccountClientGetResult contains the result from method AccountClient.Get.
+type AccountClientGetResult struct {
+	Account
+}
+
+// AccountClientListByResourceGroupResponse contains the response from method AccountClient.ListByResourceGroup.
+type AccountClientListByResourceGroupResponse struct {
+	AccountClientListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccountClientListByResourceGroupResult contains the result from method AccountClient.ListByResourceGroup.
+type AccountClientListByResourceGroupResult struct {
+	AccountListResult
+}
+
+// AccountClientListResponse contains the response from method AccountClient.List.
+type AccountClientListResponse struct {
+	AccountClientListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccountClientListResult contains the result from method AccountClient.List.
+type AccountClientListResult struct {
+	AccountListResult
+}
+
+// AccountClientUpdateResponse contains the response from method AccountClient.Update.
+type AccountClientUpdateResponse struct {
+	AccountClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccountClientUpdateResult contains the result from method AccountClient.Update.
+type AccountClientUpdateResult struct {
+	Account
+}
+
+// ActivityClientGetResponse contains the response from method ActivityClient.Get.
+type ActivityClientGetResponse struct {
+	ActivityClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ActivityClientGetResult contains the result from method ActivityClient.Get.
+type ActivityClientGetResult struct {
 	Activity
 }
 
-// ActivityListByModuleResponse contains the response from method Activity.ListByModule.
-type ActivityListByModuleResponse struct {
-	ActivityListByModuleResult
+// ActivityClientListByModuleResponse contains the response from method ActivityClient.ListByModule.
+type ActivityClientListByModuleResponse struct {
+	ActivityClientListByModuleResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ActivityListByModuleResult contains the result from method Activity.ListByModule.
-type ActivityListByModuleResult struct {
+// ActivityClientListByModuleResult contains the result from method ActivityClient.ListByModule.
+type ActivityClientListByModuleResult struct {
 	ActivityListResult
 }
 
-// AgentRegistrationInformationGetResponse contains the response from method AgentRegistrationInformation.Get.
-type AgentRegistrationInformationGetResponse struct {
-	AgentRegistrationInformationGetResult
+// AgentRegistrationInformationClientGetResponse contains the response from method AgentRegistrationInformationClient.Get.
+type AgentRegistrationInformationClientGetResponse struct {
+	AgentRegistrationInformationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentRegistrationInformationGetResult contains the result from method AgentRegistrationInformation.Get.
-type AgentRegistrationInformationGetResult struct {
+// AgentRegistrationInformationClientGetResult contains the result from method AgentRegistrationInformationClient.Get.
+type AgentRegistrationInformationClientGetResult struct {
 	AgentRegistration
 }
 
-// AgentRegistrationInformationRegenerateKeyResponse contains the response from method AgentRegistrationInformation.RegenerateKey.
-type AgentRegistrationInformationRegenerateKeyResponse struct {
-	AgentRegistrationInformationRegenerateKeyResult
+// AgentRegistrationInformationClientRegenerateKeyResponse contains the response from method AgentRegistrationInformationClient.RegenerateKey.
+type AgentRegistrationInformationClientRegenerateKeyResponse struct {
+	AgentRegistrationInformationClientRegenerateKeyResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AgentRegistrationInformationRegenerateKeyResult contains the result from method AgentRegistrationInformation.RegenerateKey.
-type AgentRegistrationInformationRegenerateKeyResult struct {
+// AgentRegistrationInformationClientRegenerateKeyResult contains the result from method AgentRegistrationInformationClient.RegenerateKey.
+type AgentRegistrationInformationClientRegenerateKeyResult struct {
 	AgentRegistration
 }
 
-// AutomationAccountCreateOrUpdateResponse contains the response from method AutomationAccount.CreateOrUpdate.
-type AutomationAccountCreateOrUpdateResponse struct {
-	AutomationAccountCreateOrUpdateResult
+// CertificateClientCreateOrUpdateResponse contains the response from method CertificateClient.CreateOrUpdate.
+type CertificateClientCreateOrUpdateResponse struct {
+	CertificateClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// AutomationAccountCreateOrUpdateResult contains the result from method AutomationAccount.CreateOrUpdate.
-type AutomationAccountCreateOrUpdateResult struct {
-	AutomationAccount
-}
-
-// AutomationAccountDeleteResponse contains the response from method AutomationAccount.Delete.
-type AutomationAccountDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationAccountGetResponse contains the response from method AutomationAccount.Get.
-type AutomationAccountGetResponse struct {
-	AutomationAccountGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationAccountGetResult contains the result from method AutomationAccount.Get.
-type AutomationAccountGetResult struct {
-	AutomationAccount
-}
-
-// AutomationAccountListByResourceGroupResponse contains the response from method AutomationAccount.ListByResourceGroup.
-type AutomationAccountListByResourceGroupResponse struct {
-	AutomationAccountListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationAccountListByResourceGroupResult contains the result from method AutomationAccount.ListByResourceGroup.
-type AutomationAccountListByResourceGroupResult struct {
-	AutomationAccountListResult
-}
-
-// AutomationAccountListResponse contains the response from method AutomationAccount.List.
-type AutomationAccountListResponse struct {
-	AutomationAccountListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationAccountListResultEnvelope contains the result from method AutomationAccount.List.
-type AutomationAccountListResultEnvelope struct {
-	AutomationAccountListResult
-}
-
-// AutomationAccountUpdateResponse contains the response from method AutomationAccount.Update.
-type AutomationAccountUpdateResponse struct {
-	AutomationAccountUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationAccountUpdateResult contains the result from method AutomationAccount.Update.
-type AutomationAccountUpdateResult struct {
-	AutomationAccount
-}
-
-// AutomationClientConvertGraphRunbookContentResponse contains the response from method AutomationClient.ConvertGraphRunbookContent.
-type AutomationClientConvertGraphRunbookContentResponse struct {
-	AutomationClientConvertGraphRunbookContentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationClientConvertGraphRunbookContentResult contains the result from method AutomationClient.ConvertGraphRunbookContent.
-type AutomationClientConvertGraphRunbookContentResult struct {
-	GraphicalRunbookContent
-}
-
-// CertificateCreateOrUpdateResponse contains the response from method Certificate.CreateOrUpdate.
-type CertificateCreateOrUpdateResponse struct {
-	CertificateCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CertificateCreateOrUpdateResult contains the result from method Certificate.CreateOrUpdate.
-type CertificateCreateOrUpdateResult struct {
+// CertificateClientCreateOrUpdateResult contains the result from method CertificateClient.CreateOrUpdate.
+type CertificateClientCreateOrUpdateResult struct {
 	Certificate
 }
 
-// CertificateDeleteResponse contains the response from method Certificate.Delete.
-type CertificateDeleteResponse struct {
+// CertificateClientDeleteResponse contains the response from method CertificateClient.Delete.
+type CertificateClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateGetResponse contains the response from method Certificate.Get.
-type CertificateGetResponse struct {
-	CertificateGetResult
+// CertificateClientGetResponse contains the response from method CertificateClient.Get.
+type CertificateClientGetResponse struct {
+	CertificateClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateGetResult contains the result from method Certificate.Get.
-type CertificateGetResult struct {
+// CertificateClientGetResult contains the result from method CertificateClient.Get.
+type CertificateClientGetResult struct {
 	Certificate
 }
 
-// CertificateListByAutomationAccountResponse contains the response from method Certificate.ListByAutomationAccount.
-type CertificateListByAutomationAccountResponse struct {
-	CertificateListByAutomationAccountResult
+// CertificateClientListByAutomationAccountResponse contains the response from method CertificateClient.ListByAutomationAccount.
+type CertificateClientListByAutomationAccountResponse struct {
+	CertificateClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateListByAutomationAccountResult contains the result from method Certificate.ListByAutomationAccount.
-type CertificateListByAutomationAccountResult struct {
+// CertificateClientListByAutomationAccountResult contains the result from method CertificateClient.ListByAutomationAccount.
+type CertificateClientListByAutomationAccountResult struct {
 	CertificateListResult
 }
 
-// CertificateUpdateResponse contains the response from method Certificate.Update.
-type CertificateUpdateResponse struct {
-	CertificateUpdateResult
+// CertificateClientUpdateResponse contains the response from method CertificateClient.Update.
+type CertificateClientUpdateResponse struct {
+	CertificateClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CertificateUpdateResult contains the result from method Certificate.Update.
-type CertificateUpdateResult struct {
+// CertificateClientUpdateResult contains the result from method CertificateClient.Update.
+type CertificateClientUpdateResult struct {
 	Certificate
 }
 
-// ConnectionCreateOrUpdateResponse contains the response from method Connection.CreateOrUpdate.
-type ConnectionCreateOrUpdateResponse struct {
-	ConnectionCreateOrUpdateResult
+// ClientConvertGraphRunbookContentResponse contains the response from method Client.ConvertGraphRunbookContent.
+type ClientConvertGraphRunbookContentResponse struct {
+	ClientConvertGraphRunbookContentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectionCreateOrUpdateResult contains the result from method Connection.CreateOrUpdate.
-type ConnectionCreateOrUpdateResult struct {
+// ClientConvertGraphRunbookContentResult contains the result from method Client.ConvertGraphRunbookContent.
+type ClientConvertGraphRunbookContentResult struct {
+	GraphicalRunbookContent
+}
+
+// ConnectionClientCreateOrUpdateResponse contains the response from method ConnectionClient.CreateOrUpdate.
+type ConnectionClientCreateOrUpdateResponse struct {
+	ConnectionClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConnectionClientCreateOrUpdateResult contains the result from method ConnectionClient.CreateOrUpdate.
+type ConnectionClientCreateOrUpdateResult struct {
 	Connection
 }
 
-// ConnectionDeleteResponse contains the response from method Connection.Delete.
-type ConnectionDeleteResponse struct {
+// ConnectionClientDeleteResponse contains the response from method ConnectionClient.Delete.
+type ConnectionClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectionGetResponse contains the response from method Connection.Get.
-type ConnectionGetResponse struct {
-	ConnectionGetResult
+// ConnectionClientGetResponse contains the response from method ConnectionClient.Get.
+type ConnectionClientGetResponse struct {
+	ConnectionClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectionGetResult contains the result from method Connection.Get.
-type ConnectionGetResult struct {
+// ConnectionClientGetResult contains the result from method ConnectionClient.Get.
+type ConnectionClientGetResult struct {
 	Connection
 }
 
-// ConnectionListByAutomationAccountResponse contains the response from method Connection.ListByAutomationAccount.
-type ConnectionListByAutomationAccountResponse struct {
-	ConnectionListByAutomationAccountResult
+// ConnectionClientListByAutomationAccountResponse contains the response from method ConnectionClient.ListByAutomationAccount.
+type ConnectionClientListByAutomationAccountResponse struct {
+	ConnectionClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectionListByAutomationAccountResult contains the result from method Connection.ListByAutomationAccount.
-type ConnectionListByAutomationAccountResult struct {
+// ConnectionClientListByAutomationAccountResult contains the result from method ConnectionClient.ListByAutomationAccount.
+type ConnectionClientListByAutomationAccountResult struct {
 	ConnectionListResult
 }
 
-// ConnectionTypeCreateOrUpdateResponse contains the response from method ConnectionType.CreateOrUpdate.
-type ConnectionTypeCreateOrUpdateResponse struct {
-	ConnectionTypeCreateOrUpdateResult
+// ConnectionClientUpdateResponse contains the response from method ConnectionClient.Update.
+type ConnectionClientUpdateResponse struct {
+	ConnectionClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ConnectionTypeCreateOrUpdateResult contains the result from method ConnectionType.CreateOrUpdate.
-type ConnectionTypeCreateOrUpdateResult struct {
-	ConnectionType
-}
-
-// ConnectionTypeDeleteResponse contains the response from method ConnectionType.Delete.
-type ConnectionTypeDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionTypeGetResponse contains the response from method ConnectionType.Get.
-type ConnectionTypeGetResponse struct {
-	ConnectionTypeGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionTypeGetResult contains the result from method ConnectionType.Get.
-type ConnectionTypeGetResult struct {
-	ConnectionType
-}
-
-// ConnectionTypeListByAutomationAccountResponse contains the response from method ConnectionType.ListByAutomationAccount.
-type ConnectionTypeListByAutomationAccountResponse struct {
-	ConnectionTypeListByAutomationAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionTypeListByAutomationAccountResult contains the result from method ConnectionType.ListByAutomationAccount.
-type ConnectionTypeListByAutomationAccountResult struct {
-	ConnectionTypeListResult
-}
-
-// ConnectionUpdateResponse contains the response from method Connection.Update.
-type ConnectionUpdateResponse struct {
-	ConnectionUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectionUpdateResult contains the result from method Connection.Update.
-type ConnectionUpdateResult struct {
+// ConnectionClientUpdateResult contains the result from method ConnectionClient.Update.
+type ConnectionClientUpdateResult struct {
 	Connection
 }
 
-// CredentialCreateOrUpdateResponse contains the response from method Credential.CreateOrUpdate.
-type CredentialCreateOrUpdateResponse struct {
-	CredentialCreateOrUpdateResult
+// ConnectionTypeClientCreateOrUpdateResponse contains the response from method ConnectionTypeClient.CreateOrUpdate.
+type ConnectionTypeClientCreateOrUpdateResponse struct {
+	ConnectionTypeClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CredentialCreateOrUpdateResult contains the result from method Credential.CreateOrUpdate.
-type CredentialCreateOrUpdateResult struct {
+// ConnectionTypeClientCreateOrUpdateResult contains the result from method ConnectionTypeClient.CreateOrUpdate.
+type ConnectionTypeClientCreateOrUpdateResult struct {
+	ConnectionType
+}
+
+// ConnectionTypeClientDeleteResponse contains the response from method ConnectionTypeClient.Delete.
+type ConnectionTypeClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConnectionTypeClientGetResponse contains the response from method ConnectionTypeClient.Get.
+type ConnectionTypeClientGetResponse struct {
+	ConnectionTypeClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConnectionTypeClientGetResult contains the result from method ConnectionTypeClient.Get.
+type ConnectionTypeClientGetResult struct {
+	ConnectionType
+}
+
+// ConnectionTypeClientListByAutomationAccountResponse contains the response from method ConnectionTypeClient.ListByAutomationAccount.
+type ConnectionTypeClientListByAutomationAccountResponse struct {
+	ConnectionTypeClientListByAutomationAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ConnectionTypeClientListByAutomationAccountResult contains the result from method ConnectionTypeClient.ListByAutomationAccount.
+type ConnectionTypeClientListByAutomationAccountResult struct {
+	ConnectionTypeListResult
+}
+
+// CredentialClientCreateOrUpdateResponse contains the response from method CredentialClient.CreateOrUpdate.
+type CredentialClientCreateOrUpdateResponse struct {
+	CredentialClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CredentialClientCreateOrUpdateResult contains the result from method CredentialClient.CreateOrUpdate.
+type CredentialClientCreateOrUpdateResult struct {
 	Credential
 }
 
-// CredentialDeleteResponse contains the response from method Credential.Delete.
-type CredentialDeleteResponse struct {
+// CredentialClientDeleteResponse contains the response from method CredentialClient.Delete.
+type CredentialClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CredentialGetResponse contains the response from method Credential.Get.
-type CredentialGetResponse struct {
-	CredentialGetResult
+// CredentialClientGetResponse contains the response from method CredentialClient.Get.
+type CredentialClientGetResponse struct {
+	CredentialClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CredentialGetResult contains the result from method Credential.Get.
-type CredentialGetResult struct {
+// CredentialClientGetResult contains the result from method CredentialClient.Get.
+type CredentialClientGetResult struct {
 	Credential
 }
 
-// CredentialListByAutomationAccountResponse contains the response from method Credential.ListByAutomationAccount.
-type CredentialListByAutomationAccountResponse struct {
-	CredentialListByAutomationAccountResult
+// CredentialClientListByAutomationAccountResponse contains the response from method CredentialClient.ListByAutomationAccount.
+type CredentialClientListByAutomationAccountResponse struct {
+	CredentialClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CredentialListByAutomationAccountResult contains the result from method Credential.ListByAutomationAccount.
-type CredentialListByAutomationAccountResult struct {
+// CredentialClientListByAutomationAccountResult contains the result from method CredentialClient.ListByAutomationAccount.
+type CredentialClientListByAutomationAccountResult struct {
 	CredentialListResult
 }
 
-// CredentialUpdateResponse contains the response from method Credential.Update.
-type CredentialUpdateResponse struct {
-	CredentialUpdateResult
+// CredentialClientUpdateResponse contains the response from method CredentialClient.Update.
+type CredentialClientUpdateResponse struct {
+	CredentialClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// CredentialUpdateResult contains the result from method Credential.Update.
-type CredentialUpdateResult struct {
+// CredentialClientUpdateResult contains the result from method CredentialClient.Update.
+type CredentialClientUpdateResult struct {
 	Credential
 }
 
-// DscCompilationJobCreatePollerResponse contains the response from method DscCompilationJob.Create.
-type DscCompilationJobCreatePollerResponse struct {
+// DscCompilationJobClientCreatePollerResponse contains the response from method DscCompilationJobClient.Create.
+type DscCompilationJobClientCreatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DscCompilationJobCreatePoller
+	Poller *DscCompilationJobClientCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -357,8 +357,8 @@ type DscCompilationJobCreatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DscCompilationJobCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DscCompilationJobCreateResponse, error) {
-	respType := DscCompilationJobCreateResponse{}
+func (l DscCompilationJobClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DscCompilationJobClientCreateResponse, error) {
+	respType := DscCompilationJobClientCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DscCompilationJob)
 	if err != nil {
 		return respType, err
@@ -367,13 +367,13 @@ func (l DscCompilationJobCreatePollerResponse) PollUntilDone(ctx context.Context
 	return respType, nil
 }
 
-// Resume rehydrates a DscCompilationJobCreatePollerResponse from the provided client and resume token.
-func (l *DscCompilationJobCreatePollerResponse) Resume(ctx context.Context, client *DscCompilationJobClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DscCompilationJobClient.Create", token, client.pl, client.createHandleError)
+// Resume rehydrates a DscCompilationJobClientCreatePollerResponse from the provided client and resume token.
+func (l *DscCompilationJobClientCreatePollerResponse) Resume(ctx context.Context, client *DscCompilationJobClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DscCompilationJobClient.Create", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DscCompilationJobCreatePoller{
+	poller := &DscCompilationJobClientCreatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -385,160 +385,202 @@ func (l *DscCompilationJobCreatePollerResponse) Resume(ctx context.Context, clie
 	return nil
 }
 
-// DscCompilationJobCreateResponse contains the response from method DscCompilationJob.Create.
-type DscCompilationJobCreateResponse struct {
-	DscCompilationJobCreateResult
+// DscCompilationJobClientCreateResponse contains the response from method DscCompilationJobClient.Create.
+type DscCompilationJobClientCreateResponse struct {
+	DscCompilationJobClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscCompilationJobCreateResult contains the result from method DscCompilationJob.Create.
-type DscCompilationJobCreateResult struct {
+// DscCompilationJobClientCreateResult contains the result from method DscCompilationJobClient.Create.
+type DscCompilationJobClientCreateResult struct {
 	DscCompilationJob
 }
 
-// DscCompilationJobGetResponse contains the response from method DscCompilationJob.Get.
-type DscCompilationJobGetResponse struct {
-	DscCompilationJobGetResult
+// DscCompilationJobClientGetResponse contains the response from method DscCompilationJobClient.Get.
+type DscCompilationJobClientGetResponse struct {
+	DscCompilationJobClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscCompilationJobGetResult contains the result from method DscCompilationJob.Get.
-type DscCompilationJobGetResult struct {
+// DscCompilationJobClientGetResult contains the result from method DscCompilationJobClient.Get.
+type DscCompilationJobClientGetResult struct {
 	DscCompilationJob
 }
 
-// DscCompilationJobGetStreamResponse contains the response from method DscCompilationJob.GetStream.
-type DscCompilationJobGetStreamResponse struct {
-	DscCompilationJobGetStreamResult
+// DscCompilationJobClientGetStreamResponse contains the response from method DscCompilationJobClient.GetStream.
+type DscCompilationJobClientGetStreamResponse struct {
+	DscCompilationJobClientGetStreamResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscCompilationJobGetStreamResult contains the result from method DscCompilationJob.GetStream.
-type DscCompilationJobGetStreamResult struct {
+// DscCompilationJobClientGetStreamResult contains the result from method DscCompilationJobClient.GetStream.
+type DscCompilationJobClientGetStreamResult struct {
 	JobStream
 }
 
-// DscCompilationJobListByAutomationAccountResponse contains the response from method DscCompilationJob.ListByAutomationAccount.
-type DscCompilationJobListByAutomationAccountResponse struct {
-	DscCompilationJobListByAutomationAccountResult
+// DscCompilationJobClientListByAutomationAccountResponse contains the response from method DscCompilationJobClient.ListByAutomationAccount.
+type DscCompilationJobClientListByAutomationAccountResponse struct {
+	DscCompilationJobClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscCompilationJobListByAutomationAccountResult contains the result from method DscCompilationJob.ListByAutomationAccount.
-type DscCompilationJobListByAutomationAccountResult struct {
+// DscCompilationJobClientListByAutomationAccountResult contains the result from method DscCompilationJobClient.ListByAutomationAccount.
+type DscCompilationJobClientListByAutomationAccountResult struct {
 	DscCompilationJobListResult
 }
 
-// DscCompilationJobStreamListByJobResponse contains the response from method DscCompilationJobStream.ListByJob.
-type DscCompilationJobStreamListByJobResponse struct {
-	DscCompilationJobStreamListByJobResult
+// DscCompilationJobStreamClientListByJobResponse contains the response from method DscCompilationJobStreamClient.ListByJob.
+type DscCompilationJobStreamClientListByJobResponse struct {
+	DscCompilationJobStreamClientListByJobResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscCompilationJobStreamListByJobResult contains the result from method DscCompilationJobStream.ListByJob.
-type DscCompilationJobStreamListByJobResult struct {
+// DscCompilationJobStreamClientListByJobResult contains the result from method DscCompilationJobStreamClient.ListByJob.
+type DscCompilationJobStreamClientListByJobResult struct {
 	JobStreamListResult
 }
 
-// DscConfigurationCreateOrUpdateResponse contains the response from method DscConfiguration.CreateOrUpdate.
-type DscConfigurationCreateOrUpdateResponse struct {
-	DscConfigurationCreateOrUpdateResult
+// DscConfigurationClientCreateOrUpdateWithJSONResponse contains the response from method DscConfigurationClient.CreateOrUpdateWithJSON.
+type DscConfigurationClientCreateOrUpdateWithJSONResponse struct {
+	DscConfigurationClientCreateOrUpdateWithJSONResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationCreateOrUpdateResult contains the result from method DscConfiguration.CreateOrUpdate.
-type DscConfigurationCreateOrUpdateResult struct {
+// DscConfigurationClientCreateOrUpdateWithJSONResult contains the result from method DscConfigurationClient.CreateOrUpdateWithJSON.
+type DscConfigurationClientCreateOrUpdateWithJSONResult struct {
 	DscConfiguration
 }
 
-// DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse contains the response from method DscConfiguration.CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters.
-type DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse struct {
-	DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResult
+// DscConfigurationClientCreateOrUpdateWithTextResponse contains the response from method DscConfigurationClient.CreateOrUpdateWithText.
+type DscConfigurationClientCreateOrUpdateWithTextResponse struct {
+	DscConfigurationClientCreateOrUpdateWithTextResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResult contains the result from method DscConfiguration.CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters.
-type DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResult struct {
+// DscConfigurationClientCreateOrUpdateWithTextResult contains the result from method DscConfigurationClient.CreateOrUpdateWithText.
+type DscConfigurationClientCreateOrUpdateWithTextResult struct {
 	DscConfiguration
 }
 
-// DscConfigurationDeleteResponse contains the response from method DscConfiguration.Delete.
-type DscConfigurationDeleteResponse struct {
+// DscConfigurationClientDeleteResponse contains the response from method DscConfigurationClient.Delete.
+type DscConfigurationClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationGetContentResponse contains the response from method DscConfiguration.GetContent.
-type DscConfigurationGetContentResponse struct {
-	DscConfigurationGetContentResult
+// DscConfigurationClientGetContentResponse contains the response from method DscConfigurationClient.GetContent.
+type DscConfigurationClientGetContentResponse struct {
+	DscConfigurationClientGetContentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationGetContentResult contains the result from method DscConfiguration.GetContent.
-type DscConfigurationGetContentResult struct {
+// DscConfigurationClientGetContentResult contains the result from method DscConfigurationClient.GetContent.
+type DscConfigurationClientGetContentResult struct {
 	Value *string
 }
 
-// DscConfigurationGetResponse contains the response from method DscConfiguration.Get.
-type DscConfigurationGetResponse struct {
-	DscConfigurationGetResult
+// DscConfigurationClientGetResponse contains the response from method DscConfigurationClient.Get.
+type DscConfigurationClientGetResponse struct {
+	DscConfigurationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationGetResult contains the result from method DscConfiguration.Get.
-type DscConfigurationGetResult struct {
+// DscConfigurationClientGetResult contains the result from method DscConfigurationClient.Get.
+type DscConfigurationClientGetResult struct {
 	DscConfiguration
 }
 
-// DscConfigurationListByAutomationAccountResponse contains the response from method DscConfiguration.ListByAutomationAccount.
-type DscConfigurationListByAutomationAccountResponse struct {
-	DscConfigurationListByAutomationAccountResult
+// DscConfigurationClientListByAutomationAccountResponse contains the response from method DscConfigurationClient.ListByAutomationAccount.
+type DscConfigurationClientListByAutomationAccountResponse struct {
+	DscConfigurationClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationListByAutomationAccountResult contains the result from method DscConfiguration.ListByAutomationAccount.
-type DscConfigurationListByAutomationAccountResult struct {
+// DscConfigurationClientListByAutomationAccountResult contains the result from method DscConfigurationClient.ListByAutomationAccount.
+type DscConfigurationClientListByAutomationAccountResult struct {
 	DscConfigurationListResult
 }
 
-// DscConfigurationUpdateResponse contains the response from method DscConfiguration.Update.
-type DscConfigurationUpdateResponse struct {
-	DscConfigurationUpdateResult
+// DscConfigurationClientUpdateWithJSONResponse contains the response from method DscConfigurationClient.UpdateWithJSON.
+type DscConfigurationClientUpdateWithJSONResponse struct {
+	DscConfigurationClientUpdateWithJSONResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationUpdateResult contains the result from method DscConfiguration.Update.
-type DscConfigurationUpdateResult struct {
+// DscConfigurationClientUpdateWithJSONResult contains the result from method DscConfigurationClient.UpdateWithJSON.
+type DscConfigurationClientUpdateWithJSONResult struct {
 	DscConfiguration
 }
 
-// DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse contains the response from method DscConfiguration.UpdateWithDscConfigurationUpdateParameters.
-type DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse struct {
-	DscConfigurationUpdateWithDscConfigurationUpdateParametersResult
+// DscConfigurationClientUpdateWithTextResponse contains the response from method DscConfigurationClient.UpdateWithText.
+type DscConfigurationClientUpdateWithTextResponse struct {
+	DscConfigurationClientUpdateWithTextResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscConfigurationUpdateWithDscConfigurationUpdateParametersResult contains the result from method DscConfiguration.UpdateWithDscConfigurationUpdateParameters.
-type DscConfigurationUpdateWithDscConfigurationUpdateParametersResult struct {
+// DscConfigurationClientUpdateWithTextResult contains the result from method DscConfigurationClient.UpdateWithText.
+type DscConfigurationClientUpdateWithTextResult struct {
 	DscConfiguration
 }
 
-// DscNodeConfigurationCreateOrUpdatePollerResponse contains the response from method DscNodeConfiguration.CreateOrUpdate.
-type DscNodeConfigurationCreateOrUpdatePollerResponse struct {
+// DscNodeClientDeleteResponse contains the response from method DscNodeClient.Delete.
+type DscNodeClientDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DscNodeClientGetResponse contains the response from method DscNodeClient.Get.
+type DscNodeClientGetResponse struct {
+	DscNodeClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DscNodeClientGetResult contains the result from method DscNodeClient.Get.
+type DscNodeClientGetResult struct {
+	DscNode
+}
+
+// DscNodeClientListByAutomationAccountResponse contains the response from method DscNodeClient.ListByAutomationAccount.
+type DscNodeClientListByAutomationAccountResponse struct {
+	DscNodeClientListByAutomationAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DscNodeClientListByAutomationAccountResult contains the result from method DscNodeClient.ListByAutomationAccount.
+type DscNodeClientListByAutomationAccountResult struct {
+	DscNodeListResult
+}
+
+// DscNodeClientUpdateResponse contains the response from method DscNodeClient.Update.
+type DscNodeClientUpdateResponse struct {
+	DscNodeClientUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DscNodeClientUpdateResult contains the result from method DscNodeClient.Update.
+type DscNodeClientUpdateResult struct {
+	DscNode
+}
+
+// DscNodeConfigurationClientCreateOrUpdatePollerResponse contains the response from method DscNodeConfigurationClient.CreateOrUpdate.
+type DscNodeConfigurationClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *DscNodeConfigurationCreateOrUpdatePoller
+	Poller *DscNodeConfigurationClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -547,8 +589,8 @@ type DscNodeConfigurationCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l DscNodeConfigurationCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DscNodeConfigurationCreateOrUpdateResponse, error) {
-	respType := DscNodeConfigurationCreateOrUpdateResponse{}
+func (l DscNodeConfigurationClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DscNodeConfigurationClientCreateOrUpdateResponse, error) {
+	respType := DscNodeConfigurationClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DscNodeConfiguration)
 	if err != nil {
 		return respType, err
@@ -557,13 +599,13 @@ func (l DscNodeConfigurationCreateOrUpdatePollerResponse) PollUntilDone(ctx cont
 	return respType, nil
 }
 
-// Resume rehydrates a DscNodeConfigurationCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *DscNodeConfigurationCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DscNodeConfigurationClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("DscNodeConfigurationClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a DscNodeConfigurationClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *DscNodeConfigurationClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DscNodeConfigurationClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DscNodeConfigurationClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &DscNodeConfigurationCreateOrUpdatePoller{
+	poller := &DscNodeConfigurationClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -575,515 +617,473 @@ func (l *DscNodeConfigurationCreateOrUpdatePollerResponse) Resume(ctx context.Co
 	return nil
 }
 
-// DscNodeConfigurationCreateOrUpdateResponse contains the response from method DscNodeConfiguration.CreateOrUpdate.
-type DscNodeConfigurationCreateOrUpdateResponse struct {
-	DscNodeConfigurationCreateOrUpdateResult
+// DscNodeConfigurationClientCreateOrUpdateResponse contains the response from method DscNodeConfigurationClient.CreateOrUpdate.
+type DscNodeConfigurationClientCreateOrUpdateResponse struct {
+	DscNodeConfigurationClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscNodeConfigurationCreateOrUpdateResult contains the result from method DscNodeConfiguration.CreateOrUpdate.
-type DscNodeConfigurationCreateOrUpdateResult struct {
+// DscNodeConfigurationClientCreateOrUpdateResult contains the result from method DscNodeConfigurationClient.CreateOrUpdate.
+type DscNodeConfigurationClientCreateOrUpdateResult struct {
 	DscNodeConfiguration
 }
 
-// DscNodeConfigurationDeleteResponse contains the response from method DscNodeConfiguration.Delete.
-type DscNodeConfigurationDeleteResponse struct {
+// DscNodeConfigurationClientDeleteResponse contains the response from method DscNodeConfigurationClient.Delete.
+type DscNodeConfigurationClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscNodeConfigurationGetResponse contains the response from method DscNodeConfiguration.Get.
-type DscNodeConfigurationGetResponse struct {
-	DscNodeConfigurationGetResult
+// DscNodeConfigurationClientGetResponse contains the response from method DscNodeConfigurationClient.Get.
+type DscNodeConfigurationClientGetResponse struct {
+	DscNodeConfigurationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscNodeConfigurationGetResult contains the result from method DscNodeConfiguration.Get.
-type DscNodeConfigurationGetResult struct {
+// DscNodeConfigurationClientGetResult contains the result from method DscNodeConfigurationClient.Get.
+type DscNodeConfigurationClientGetResult struct {
 	DscNodeConfiguration
 }
 
-// DscNodeConfigurationListByAutomationAccountResponse contains the response from method DscNodeConfiguration.ListByAutomationAccount.
-type DscNodeConfigurationListByAutomationAccountResponse struct {
-	DscNodeConfigurationListByAutomationAccountResult
+// DscNodeConfigurationClientListByAutomationAccountResponse contains the response from method DscNodeConfigurationClient.ListByAutomationAccount.
+type DscNodeConfigurationClientListByAutomationAccountResponse struct {
+	DscNodeConfigurationClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscNodeConfigurationListByAutomationAccountResult contains the result from method DscNodeConfiguration.ListByAutomationAccount.
-type DscNodeConfigurationListByAutomationAccountResult struct {
+// DscNodeConfigurationClientListByAutomationAccountResult contains the result from method DscNodeConfigurationClient.ListByAutomationAccount.
+type DscNodeConfigurationClientListByAutomationAccountResult struct {
 	DscNodeConfigurationListResult
 }
 
-// DscNodeDeleteResponse contains the response from method DscNode.Delete.
-type DscNodeDeleteResponse struct {
+// FieldsClientListByTypeResponse contains the response from method FieldsClient.ListByType.
+type FieldsClientListByTypeResponse struct {
+	FieldsClientListByTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// DscNodeGetResponse contains the response from method DscNode.Get.
-type DscNodeGetResponse struct {
-	DscNodeGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DscNodeGetResult contains the result from method DscNode.Get.
-type DscNodeGetResult struct {
-	DscNode
-}
-
-// DscNodeListByAutomationAccountResponse contains the response from method DscNode.ListByAutomationAccount.
-type DscNodeListByAutomationAccountResponse struct {
-	DscNodeListByAutomationAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DscNodeListByAutomationAccountResult contains the result from method DscNode.ListByAutomationAccount.
-type DscNodeListByAutomationAccountResult struct {
-	DscNodeListResult
-}
-
-// DscNodeUpdateResponse contains the response from method DscNode.Update.
-type DscNodeUpdateResponse struct {
-	DscNodeUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DscNodeUpdateResult contains the result from method DscNode.Update.
-type DscNodeUpdateResult struct {
-	DscNode
-}
-
-// FieldsListByTypeResponse contains the response from method Fields.ListByType.
-type FieldsListByTypeResponse struct {
-	FieldsListByTypeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FieldsListByTypeResult contains the result from method Fields.ListByType.
-type FieldsListByTypeResult struct {
+// FieldsClientListByTypeResult contains the result from method FieldsClient.ListByType.
+type FieldsClientListByTypeResult struct {
 	TypeFieldListResult
 }
 
-// HybridRunbookWorkerGroupCreateResponse contains the response from method HybridRunbookWorkerGroup.Create.
-type HybridRunbookWorkerGroupCreateResponse struct {
-	HybridRunbookWorkerGroupCreateResult
+// HybridRunbookWorkerGroupClientCreateResponse contains the response from method HybridRunbookWorkerGroupClient.Create.
+type HybridRunbookWorkerGroupClientCreateResponse struct {
+	HybridRunbookWorkerGroupClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkerGroupCreateResult contains the result from method HybridRunbookWorkerGroup.Create.
-type HybridRunbookWorkerGroupCreateResult struct {
+// HybridRunbookWorkerGroupClientCreateResult contains the result from method HybridRunbookWorkerGroupClient.Create.
+type HybridRunbookWorkerGroupClientCreateResult struct {
 	HybridRunbookWorkerGroup
 }
 
-// HybridRunbookWorkerGroupDeleteResponse contains the response from method HybridRunbookWorkerGroup.Delete.
-type HybridRunbookWorkerGroupDeleteResponse struct {
+// HybridRunbookWorkerGroupClientDeleteResponse contains the response from method HybridRunbookWorkerGroupClient.Delete.
+type HybridRunbookWorkerGroupClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkerGroupGetResponse contains the response from method HybridRunbookWorkerGroup.Get.
-type HybridRunbookWorkerGroupGetResponse struct {
-	HybridRunbookWorkerGroupGetResult
+// HybridRunbookWorkerGroupClientGetResponse contains the response from method HybridRunbookWorkerGroupClient.Get.
+type HybridRunbookWorkerGroupClientGetResponse struct {
+	HybridRunbookWorkerGroupClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkerGroupGetResult contains the result from method HybridRunbookWorkerGroup.Get.
-type HybridRunbookWorkerGroupGetResult struct {
+// HybridRunbookWorkerGroupClientGetResult contains the result from method HybridRunbookWorkerGroupClient.Get.
+type HybridRunbookWorkerGroupClientGetResult struct {
 	HybridRunbookWorkerGroup
 }
 
-// HybridRunbookWorkerGroupListByAutomationAccountResponse contains the response from method HybridRunbookWorkerGroup.ListByAutomationAccount.
-type HybridRunbookWorkerGroupListByAutomationAccountResponse struct {
-	HybridRunbookWorkerGroupListByAutomationAccountResult
+// HybridRunbookWorkerGroupClientListByAutomationAccountResponse contains the response from method HybridRunbookWorkerGroupClient.ListByAutomationAccount.
+type HybridRunbookWorkerGroupClientListByAutomationAccountResponse struct {
+	HybridRunbookWorkerGroupClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkerGroupListByAutomationAccountResult contains the result from method HybridRunbookWorkerGroup.ListByAutomationAccount.
-type HybridRunbookWorkerGroupListByAutomationAccountResult struct {
+// HybridRunbookWorkerGroupClientListByAutomationAccountResult contains the result from method HybridRunbookWorkerGroupClient.ListByAutomationAccount.
+type HybridRunbookWorkerGroupClientListByAutomationAccountResult struct {
 	HybridRunbookWorkerGroupsListResult
 }
 
-// HybridRunbookWorkerGroupUpdateResponse contains the response from method HybridRunbookWorkerGroup.Update.
-type HybridRunbookWorkerGroupUpdateResponse struct {
-	HybridRunbookWorkerGroupUpdateResult
+// HybridRunbookWorkerGroupClientUpdateResponse contains the response from method HybridRunbookWorkerGroupClient.Update.
+type HybridRunbookWorkerGroupClientUpdateResponse struct {
+	HybridRunbookWorkerGroupClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkerGroupUpdateResult contains the result from method HybridRunbookWorkerGroup.Update.
-type HybridRunbookWorkerGroupUpdateResult struct {
+// HybridRunbookWorkerGroupClientUpdateResult contains the result from method HybridRunbookWorkerGroupClient.Update.
+type HybridRunbookWorkerGroupClientUpdateResult struct {
 	HybridRunbookWorkerGroup
 }
 
-// HybridRunbookWorkersCreateResponse contains the response from method HybridRunbookWorkers.Create.
-type HybridRunbookWorkersCreateResponse struct {
-	HybridRunbookWorkersCreateResult
+// HybridRunbookWorkersClientCreateResponse contains the response from method HybridRunbookWorkersClient.Create.
+type HybridRunbookWorkersClientCreateResponse struct {
+	HybridRunbookWorkersClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkersCreateResult contains the result from method HybridRunbookWorkers.Create.
-type HybridRunbookWorkersCreateResult struct {
+// HybridRunbookWorkersClientCreateResult contains the result from method HybridRunbookWorkersClient.Create.
+type HybridRunbookWorkersClientCreateResult struct {
 	HybridRunbookWorker
 }
 
-// HybridRunbookWorkersDeleteResponse contains the response from method HybridRunbookWorkers.Delete.
-type HybridRunbookWorkersDeleteResponse struct {
+// HybridRunbookWorkersClientDeleteResponse contains the response from method HybridRunbookWorkersClient.Delete.
+type HybridRunbookWorkersClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkersGetResponse contains the response from method HybridRunbookWorkers.Get.
-type HybridRunbookWorkersGetResponse struct {
-	HybridRunbookWorkersGetResult
+// HybridRunbookWorkersClientGetResponse contains the response from method HybridRunbookWorkersClient.Get.
+type HybridRunbookWorkersClientGetResponse struct {
+	HybridRunbookWorkersClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkersGetResult contains the result from method HybridRunbookWorkers.Get.
-type HybridRunbookWorkersGetResult struct {
+// HybridRunbookWorkersClientGetResult contains the result from method HybridRunbookWorkersClient.Get.
+type HybridRunbookWorkersClientGetResult struct {
 	HybridRunbookWorker
 }
 
-// HybridRunbookWorkersListByHybridRunbookWorkerGroupResponse contains the response from method HybridRunbookWorkers.ListByHybridRunbookWorkerGroup.
-type HybridRunbookWorkersListByHybridRunbookWorkerGroupResponse struct {
-	HybridRunbookWorkersListByHybridRunbookWorkerGroupResult
+// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse contains the response from method HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup.
+type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse struct {
+	HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// HybridRunbookWorkersListByHybridRunbookWorkerGroupResult contains the result from method HybridRunbookWorkers.ListByHybridRunbookWorkerGroup.
-type HybridRunbookWorkersListByHybridRunbookWorkerGroupResult struct {
+// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResult contains the result from method HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup.
+type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResult struct {
 	HybridRunbookWorkersListResult
 }
 
-// HybridRunbookWorkersMoveResponse contains the response from method HybridRunbookWorkers.Move.
-type HybridRunbookWorkersMoveResponse struct {
+// HybridRunbookWorkersClientMoveResponse contains the response from method HybridRunbookWorkersClient.Move.
+type HybridRunbookWorkersClientMoveResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCreateResponse contains the response from method Job.Create.
-type JobCreateResponse struct {
-	JobCreateResult
+// JobClientCreateResponse contains the response from method JobClient.Create.
+type JobClientCreateResponse struct {
+	JobClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobCreateResult contains the result from method Job.Create.
-type JobCreateResult struct {
+// JobClientCreateResult contains the result from method JobClient.Create.
+type JobClientCreateResult struct {
 	Job
 }
 
-// JobGetOutputResponse contains the response from method Job.GetOutput.
-type JobGetOutputResponse struct {
-	JobGetOutputResult
+// JobClientGetOutputResponse contains the response from method JobClient.GetOutput.
+type JobClientGetOutputResponse struct {
+	JobClientGetOutputResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobGetOutputResult contains the result from method Job.GetOutput.
-type JobGetOutputResult struct {
+// JobClientGetOutputResult contains the result from method JobClient.GetOutput.
+type JobClientGetOutputResult struct {
 	Value *string
 }
 
-// JobGetResponse contains the response from method Job.Get.
-type JobGetResponse struct {
-	JobGetResult
+// JobClientGetResponse contains the response from method JobClient.Get.
+type JobClientGetResponse struct {
+	JobClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobGetResult contains the result from method Job.Get.
-type JobGetResult struct {
+// JobClientGetResult contains the result from method JobClient.Get.
+type JobClientGetResult struct {
 	Job
 }
 
-// JobGetRunbookContentResponse contains the response from method Job.GetRunbookContent.
-type JobGetRunbookContentResponse struct {
-	JobGetRunbookContentResult
+// JobClientGetRunbookContentResponse contains the response from method JobClient.GetRunbookContent.
+type JobClientGetRunbookContentResponse struct {
+	JobClientGetRunbookContentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobGetRunbookContentResult contains the result from method Job.GetRunbookContent.
-type JobGetRunbookContentResult struct {
+// JobClientGetRunbookContentResult contains the result from method JobClient.GetRunbookContent.
+type JobClientGetRunbookContentResult struct {
 	Value *string
 }
 
-// JobListByAutomationAccountResponse contains the response from method Job.ListByAutomationAccount.
-type JobListByAutomationAccountResponse struct {
-	JobListByAutomationAccountResult
+// JobClientListByAutomationAccountResponse contains the response from method JobClient.ListByAutomationAccount.
+type JobClientListByAutomationAccountResponse struct {
+	JobClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobListByAutomationAccountResult contains the result from method Job.ListByAutomationAccount.
-type JobListByAutomationAccountResult struct {
+// JobClientListByAutomationAccountResult contains the result from method JobClient.ListByAutomationAccount.
+type JobClientListByAutomationAccountResult struct {
 	JobListResultV2
 }
 
-// JobResumeResponse contains the response from method Job.Resume.
-type JobResumeResponse struct {
+// JobClientResumeResponse contains the response from method JobClient.Resume.
+type JobClientResumeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobScheduleCreateResponse contains the response from method JobSchedule.Create.
-type JobScheduleCreateResponse struct {
-	JobScheduleCreateResult
+// JobClientStopResponse contains the response from method JobClient.Stop.
+type JobClientStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobScheduleCreateResult contains the result from method JobSchedule.Create.
-type JobScheduleCreateResult struct {
+// JobClientSuspendResponse contains the response from method JobClient.Suspend.
+type JobClientSuspendResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// JobScheduleClientCreateResponse contains the response from method JobScheduleClient.Create.
+type JobScheduleClientCreateResponse struct {
+	JobScheduleClientCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// JobScheduleClientCreateResult contains the result from method JobScheduleClient.Create.
+type JobScheduleClientCreateResult struct {
 	JobSchedule
 }
 
-// JobScheduleDeleteResponse contains the response from method JobSchedule.Delete.
-type JobScheduleDeleteResponse struct {
+// JobScheduleClientDeleteResponse contains the response from method JobScheduleClient.Delete.
+type JobScheduleClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobScheduleGetResponse contains the response from method JobSchedule.Get.
-type JobScheduleGetResponse struct {
-	JobScheduleGetResult
+// JobScheduleClientGetResponse contains the response from method JobScheduleClient.Get.
+type JobScheduleClientGetResponse struct {
+	JobScheduleClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobScheduleGetResult contains the result from method JobSchedule.Get.
-type JobScheduleGetResult struct {
+// JobScheduleClientGetResult contains the result from method JobScheduleClient.Get.
+type JobScheduleClientGetResult struct {
 	JobSchedule
 }
 
-// JobScheduleListByAutomationAccountResponse contains the response from method JobSchedule.ListByAutomationAccount.
-type JobScheduleListByAutomationAccountResponse struct {
-	JobScheduleListByAutomationAccountResult
+// JobScheduleClientListByAutomationAccountResponse contains the response from method JobScheduleClient.ListByAutomationAccount.
+type JobScheduleClientListByAutomationAccountResponse struct {
+	JobScheduleClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobScheduleListByAutomationAccountResult contains the result from method JobSchedule.ListByAutomationAccount.
-type JobScheduleListByAutomationAccountResult struct {
+// JobScheduleClientListByAutomationAccountResult contains the result from method JobScheduleClient.ListByAutomationAccount.
+type JobScheduleClientListByAutomationAccountResult struct {
 	JobScheduleListResult
 }
 
-// JobStopResponse contains the response from method Job.Stop.
-type JobStopResponse struct {
+// JobStreamClientGetResponse contains the response from method JobStreamClient.Get.
+type JobStreamClientGetResponse struct {
+	JobStreamClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobStreamGetResponse contains the response from method JobStream.Get.
-type JobStreamGetResponse struct {
-	JobStreamGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JobStreamGetResult contains the result from method JobStream.Get.
-type JobStreamGetResult struct {
+// JobStreamClientGetResult contains the result from method JobStreamClient.Get.
+type JobStreamClientGetResult struct {
 	JobStream
 }
 
-// JobStreamListByJobResponse contains the response from method JobStream.ListByJob.
-type JobStreamListByJobResponse struct {
-	JobStreamListByJobResult
+// JobStreamClientListByJobResponse contains the response from method JobStreamClient.ListByJob.
+type JobStreamClientListByJobResponse struct {
+	JobStreamClientListByJobResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// JobStreamListByJobResult contains the result from method JobStream.ListByJob.
-type JobStreamListByJobResult struct {
+// JobStreamClientListByJobResult contains the result from method JobStreamClient.ListByJob.
+type JobStreamClientListByJobResult struct {
 	JobStreamListResult
 }
 
-// JobSuspendResponse contains the response from method Job.Suspend.
-type JobSuspendResponse struct {
+// KeysClientListByAutomationAccountResponse contains the response from method KeysClient.ListByAutomationAccount.
+type KeysClientListByAutomationAccountResponse struct {
+	KeysClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeysListByAutomationAccountResponse contains the response from method Keys.ListByAutomationAccount.
-type KeysListByAutomationAccountResponse struct {
-	KeysListByAutomationAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeysListByAutomationAccountResult contains the result from method Keys.ListByAutomationAccount.
-type KeysListByAutomationAccountResult struct {
+// KeysClientListByAutomationAccountResult contains the result from method KeysClient.ListByAutomationAccount.
+type KeysClientListByAutomationAccountResult struct {
 	KeyListResult
 }
 
-// LinkedWorkspaceGetResponse contains the response from method LinkedWorkspace.Get.
-type LinkedWorkspaceGetResponse struct {
-	LinkedWorkspaceGetResult
+// LinkedWorkspaceClientGetResponse contains the response from method LinkedWorkspaceClient.Get.
+type LinkedWorkspaceClientGetResponse struct {
+	LinkedWorkspaceClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// LinkedWorkspaceGetResult contains the result from method LinkedWorkspace.Get.
-type LinkedWorkspaceGetResult struct {
+// LinkedWorkspaceClientGetResult contains the result from method LinkedWorkspaceClient.Get.
+type LinkedWorkspaceClientGetResult struct {
 	LinkedWorkspace
 }
 
-// ModuleCreateOrUpdateResponse contains the response from method Module.CreateOrUpdate.
-type ModuleCreateOrUpdateResponse struct {
-	ModuleCreateOrUpdateResult
+// ModuleClientCreateOrUpdateResponse contains the response from method ModuleClient.CreateOrUpdate.
+type ModuleClientCreateOrUpdateResponse struct {
+	ModuleClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ModuleCreateOrUpdateResult contains the result from method Module.CreateOrUpdate.
-type ModuleCreateOrUpdateResult struct {
+// ModuleClientCreateOrUpdateResult contains the result from method ModuleClient.CreateOrUpdate.
+type ModuleClientCreateOrUpdateResult struct {
 	Module
 }
 
-// ModuleDeleteResponse contains the response from method Module.Delete.
-type ModuleDeleteResponse struct {
+// ModuleClientDeleteResponse contains the response from method ModuleClient.Delete.
+type ModuleClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ModuleGetResponse contains the response from method Module.Get.
-type ModuleGetResponse struct {
-	ModuleGetResult
+// ModuleClientGetResponse contains the response from method ModuleClient.Get.
+type ModuleClientGetResponse struct {
+	ModuleClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ModuleGetResult contains the result from method Module.Get.
-type ModuleGetResult struct {
+// ModuleClientGetResult contains the result from method ModuleClient.Get.
+type ModuleClientGetResult struct {
 	Module
 }
 
-// ModuleListByAutomationAccountResponse contains the response from method Module.ListByAutomationAccount.
-type ModuleListByAutomationAccountResponse struct {
-	ModuleListByAutomationAccountResult
+// ModuleClientListByAutomationAccountResponse contains the response from method ModuleClient.ListByAutomationAccount.
+type ModuleClientListByAutomationAccountResponse struct {
+	ModuleClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ModuleListByAutomationAccountResult contains the result from method Module.ListByAutomationAccount.
-type ModuleListByAutomationAccountResult struct {
+// ModuleClientListByAutomationAccountResult contains the result from method ModuleClient.ListByAutomationAccount.
+type ModuleClientListByAutomationAccountResult struct {
 	ModuleListResult
 }
 
-// ModuleUpdateResponse contains the response from method Module.Update.
-type ModuleUpdateResponse struct {
-	ModuleUpdateResult
+// ModuleClientUpdateResponse contains the response from method ModuleClient.Update.
+type ModuleClientUpdateResponse struct {
+	ModuleClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ModuleUpdateResult contains the result from method Module.Update.
-type ModuleUpdateResult struct {
+// ModuleClientUpdateResult contains the result from method ModuleClient.Update.
+type ModuleClientUpdateResult struct {
 	Module
 }
 
-// NodeCountInformationGetResponse contains the response from method NodeCountInformation.Get.
-type NodeCountInformationGetResponse struct {
-	NodeCountInformationGetResult
+// NodeCountInformationClientGetResponse contains the response from method NodeCountInformationClient.Get.
+type NodeCountInformationClientGetResponse struct {
+	NodeCountInformationClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NodeCountInformationGetResult contains the result from method NodeCountInformation.Get.
-type NodeCountInformationGetResult struct {
+// NodeCountInformationClientGetResult contains the result from method NodeCountInformationClient.Get.
+type NodeCountInformationClientGetResult struct {
 	NodeCounts
 }
 
-// NodeReportsGetContentResponse contains the response from method NodeReports.GetContent.
-type NodeReportsGetContentResponse struct {
-	NodeReportsGetContentResult
+// NodeReportsClientGetContentResponse contains the response from method NodeReportsClient.GetContent.
+type NodeReportsClientGetContentResponse struct {
+	NodeReportsClientGetContentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NodeReportsGetContentResult contains the result from method NodeReports.GetContent.
-type NodeReportsGetContentResult struct {
+// NodeReportsClientGetContentResult contains the result from method NodeReportsClient.GetContent.
+type NodeReportsClientGetContentResult struct {
 	// Any object
 	Object map[string]interface{}
 }
 
-// NodeReportsGetResponse contains the response from method NodeReports.Get.
-type NodeReportsGetResponse struct {
-	NodeReportsGetResult
+// NodeReportsClientGetResponse contains the response from method NodeReportsClient.Get.
+type NodeReportsClientGetResponse struct {
+	NodeReportsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NodeReportsGetResult contains the result from method NodeReports.Get.
-type NodeReportsGetResult struct {
+// NodeReportsClientGetResult contains the result from method NodeReportsClient.Get.
+type NodeReportsClientGetResult struct {
 	DscNodeReport
 }
 
-// NodeReportsListByNodeResponse contains the response from method NodeReports.ListByNode.
-type NodeReportsListByNodeResponse struct {
-	NodeReportsListByNodeResult
+// NodeReportsClientListByNodeResponse contains the response from method NodeReportsClient.ListByNode.
+type NodeReportsClientListByNodeResponse struct {
+	NodeReportsClientListByNodeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// NodeReportsListByNodeResult contains the result from method NodeReports.ListByNode.
-type NodeReportsListByNodeResult struct {
+// NodeReportsClientListByNodeResult contains the result from method NodeReportsClient.ListByNode.
+type NodeReportsClientListByNodeResult struct {
 	DscNodeReportListResult
 }
 
-// ObjectDataTypesListFieldsByModuleAndTypeResponse contains the response from method ObjectDataTypes.ListFieldsByModuleAndType.
-type ObjectDataTypesListFieldsByModuleAndTypeResponse struct {
-	ObjectDataTypesListFieldsByModuleAndTypeResult
+// ObjectDataTypesClientListFieldsByModuleAndTypeResponse contains the response from method ObjectDataTypesClient.ListFieldsByModuleAndType.
+type ObjectDataTypesClientListFieldsByModuleAndTypeResponse struct {
+	ObjectDataTypesClientListFieldsByModuleAndTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ObjectDataTypesListFieldsByModuleAndTypeResult contains the result from method ObjectDataTypes.ListFieldsByModuleAndType.
-type ObjectDataTypesListFieldsByModuleAndTypeResult struct {
+// ObjectDataTypesClientListFieldsByModuleAndTypeResult contains the result from method ObjectDataTypesClient.ListFieldsByModuleAndType.
+type ObjectDataTypesClientListFieldsByModuleAndTypeResult struct {
 	TypeFieldListResult
 }
 
-// ObjectDataTypesListFieldsByTypeResponse contains the response from method ObjectDataTypes.ListFieldsByType.
-type ObjectDataTypesListFieldsByTypeResponse struct {
-	ObjectDataTypesListFieldsByTypeResult
+// ObjectDataTypesClientListFieldsByTypeResponse contains the response from method ObjectDataTypesClient.ListFieldsByType.
+type ObjectDataTypesClientListFieldsByTypeResponse struct {
+	ObjectDataTypesClientListFieldsByTypeResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ObjectDataTypesListFieldsByTypeResult contains the result from method ObjectDataTypes.ListFieldsByType.
-type ObjectDataTypesListFieldsByTypeResult struct {
+// ObjectDataTypesClientListFieldsByTypeResult contains the result from method ObjectDataTypesClient.ListFieldsByType.
+type ObjectDataTypesClientListFieldsByTypeResult struct {
 	TypeFieldListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResult contains the result from method OperationsClient.List.
+type OperationsClientListResult struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
+// PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCreateOrUpdatePoller
+	Poller *PrivateEndpointConnectionsClientCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1092,8 +1092,8 @@ type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsCreateOrUpdateResponse{}
+func (l PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error) {
+	respType := PrivateEndpointConnectionsClientCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
 	if err != nil {
 		return respType, err
@@ -1102,13 +1102,13 @@ func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ct
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsCreateOrUpdatePoller{
+	poller := &PrivateEndpointConnectionsClientCreateOrUpdatePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1120,22 +1120,22 @@ func (l *PrivateEndpointConnectionsCreateOrUpdatePollerResponse) Resume(ctx cont
 	return nil
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnectionsClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateResult contains the result from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
+// PrivateEndpointConnectionsClientDeletePollerResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeletePollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
+	Poller *PrivateEndpointConnectionsClientDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1144,8 +1144,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
+func (l PrivateEndpointConnectionsClientDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsClientDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsClientDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1154,13 +1154,13 @@ func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx contex
 	return respType, nil
 }
 
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+// Resume rehydrates a PrivateEndpointConnectionsClientDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsClientDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
+	poller := &PrivateEndpointConnectionsClientDeletePoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1172,230 +1172,154 @@ func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Cont
 	return nil
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnectionsClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResult contains the result from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResult struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListByAutomationAccountResponse contains the response from method PrivateEndpointConnections.ListByAutomationAccount.
-type PrivateEndpointConnectionsListByAutomationAccountResponse struct {
-	PrivateEndpointConnectionsListByAutomationAccountResult
+// PrivateEndpointConnectionsClientListByAutomationAccountResponse contains the response from method PrivateEndpointConnectionsClient.ListByAutomationAccount.
+type PrivateEndpointConnectionsClientListByAutomationAccountResponse struct {
+	PrivateEndpointConnectionsClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateEndpointConnectionsListByAutomationAccountResult contains the result from method PrivateEndpointConnections.ListByAutomationAccount.
-type PrivateEndpointConnectionsListByAutomationAccountResult struct {
+// PrivateEndpointConnectionsClientListByAutomationAccountResult contains the result from method PrivateEndpointConnectionsClient.ListByAutomationAccount.
+type PrivateEndpointConnectionsClientListByAutomationAccountResult struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesAutomationResponse contains the response from method PrivateLinkResources.Automation.
-type PrivateLinkResourcesAutomationResponse struct {
-	PrivateLinkResourcesAutomationResult
+// PrivateLinkResourcesClientAutomationResponse contains the response from method PrivateLinkResourcesClient.Automation.
+type PrivateLinkResourcesClientAutomationResponse struct {
+	PrivateLinkResourcesClientAutomationResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// PrivateLinkResourcesAutomationResult contains the result from method PrivateLinkResources.Automation.
-type PrivateLinkResourcesAutomationResult struct {
+// PrivateLinkResourcesClientAutomationResult contains the result from method PrivateLinkResourcesClient.Automation.
+type PrivateLinkResourcesClientAutomationResult struct {
 	PrivateLinkResourceListResult
 }
 
-// Python2PackageCreateOrUpdateResponse contains the response from method Python2Package.CreateOrUpdate.
-type Python2PackageCreateOrUpdateResponse struct {
-	Python2PackageCreateOrUpdateResult
+// Python2PackageClientCreateOrUpdateResponse contains the response from method Python2PackageClient.CreateOrUpdate.
+type Python2PackageClientCreateOrUpdateResponse struct {
+	Python2PackageClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// Python2PackageCreateOrUpdateResult contains the result from method Python2Package.CreateOrUpdate.
-type Python2PackageCreateOrUpdateResult struct {
+// Python2PackageClientCreateOrUpdateResult contains the result from method Python2PackageClient.CreateOrUpdate.
+type Python2PackageClientCreateOrUpdateResult struct {
 	Module
 }
 
-// Python2PackageDeleteResponse contains the response from method Python2Package.Delete.
-type Python2PackageDeleteResponse struct {
+// Python2PackageClientDeleteResponse contains the response from method Python2PackageClient.Delete.
+type Python2PackageClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// Python2PackageGetResponse contains the response from method Python2Package.Get.
-type Python2PackageGetResponse struct {
-	Python2PackageGetResult
+// Python2PackageClientGetResponse contains the response from method Python2PackageClient.Get.
+type Python2PackageClientGetResponse struct {
+	Python2PackageClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// Python2PackageGetResult contains the result from method Python2Package.Get.
-type Python2PackageGetResult struct {
+// Python2PackageClientGetResult contains the result from method Python2PackageClient.Get.
+type Python2PackageClientGetResult struct {
 	Module
 }
 
-// Python2PackageListByAutomationAccountResponse contains the response from method Python2Package.ListByAutomationAccount.
-type Python2PackageListByAutomationAccountResponse struct {
-	Python2PackageListByAutomationAccountResult
+// Python2PackageClientListByAutomationAccountResponse contains the response from method Python2PackageClient.ListByAutomationAccount.
+type Python2PackageClientListByAutomationAccountResponse struct {
+	Python2PackageClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// Python2PackageListByAutomationAccountResult contains the result from method Python2Package.ListByAutomationAccount.
-type Python2PackageListByAutomationAccountResult struct {
+// Python2PackageClientListByAutomationAccountResult contains the result from method Python2PackageClient.ListByAutomationAccount.
+type Python2PackageClientListByAutomationAccountResult struct {
 	ModuleListResult
 }
 
-// Python2PackageUpdateResponse contains the response from method Python2Package.Update.
-type Python2PackageUpdateResponse struct {
-	Python2PackageUpdateResult
+// Python2PackageClientUpdateResponse contains the response from method Python2PackageClient.Update.
+type Python2PackageClientUpdateResponse struct {
+	Python2PackageClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// Python2PackageUpdateResult contains the result from method Python2Package.Update.
-type Python2PackageUpdateResult struct {
+// Python2PackageClientUpdateResult contains the result from method Python2PackageClient.Update.
+type Python2PackageClientUpdateResult struct {
 	Module
 }
 
-// RunbookCreateOrUpdateResponse contains the response from method Runbook.CreateOrUpdate.
-type RunbookCreateOrUpdateResponse struct {
-	RunbookCreateOrUpdateResult
+// RunbookClientCreateOrUpdateResponse contains the response from method RunbookClient.CreateOrUpdate.
+type RunbookClientCreateOrUpdateResponse struct {
+	RunbookClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookCreateOrUpdateResult contains the result from method Runbook.CreateOrUpdate.
-type RunbookCreateOrUpdateResult struct {
+// RunbookClientCreateOrUpdateResult contains the result from method RunbookClient.CreateOrUpdate.
+type RunbookClientCreateOrUpdateResult struct {
 	Runbook
 }
 
-// RunbookDeleteResponse contains the response from method Runbook.Delete.
-type RunbookDeleteResponse struct {
+// RunbookClientDeleteResponse contains the response from method RunbookClient.Delete.
+type RunbookClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookDraftGetContentResponse contains the response from method RunbookDraft.GetContent.
-type RunbookDraftGetContentResponse struct {
+// RunbookClientGetContentResponse contains the response from method RunbookClient.GetContent.
+type RunbookClientGetContentResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookDraftGetResponse contains the response from method RunbookDraft.Get.
-type RunbookDraftGetResponse struct {
-	RunbookDraftGetResult
+// RunbookClientGetResponse contains the response from method RunbookClient.Get.
+type RunbookClientGetResponse struct {
+	RunbookClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookDraftGetResult contains the result from method RunbookDraft.Get.
-type RunbookDraftGetResult struct {
-	RunbookDraft
-}
-
-// RunbookDraftReplaceContentPollerResponse contains the response from method RunbookDraft.ReplaceContent.
-type RunbookDraftReplaceContentPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *RunbookDraftReplaceContentPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RunbookDraftReplaceContentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RunbookDraftReplaceContentResponse, error) {
-	respType := RunbookDraftReplaceContentResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a RunbookDraftReplaceContentPollerResponse from the provided client and resume token.
-func (l *RunbookDraftReplaceContentPollerResponse) Resume(ctx context.Context, client *RunbookDraftClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RunbookDraftClient.ReplaceContent", token, client.pl, client.replaceContentHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &RunbookDraftReplaceContentPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// RunbookDraftReplaceContentResponse contains the response from method RunbookDraft.ReplaceContent.
-type RunbookDraftReplaceContentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RunbookDraftUndoEditResponse contains the response from method RunbookDraft.UndoEdit.
-type RunbookDraftUndoEditResponse struct {
-	RunbookDraftUndoEditResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RunbookDraftUndoEditResultEnvelope contains the result from method RunbookDraft.UndoEdit.
-type RunbookDraftUndoEditResultEnvelope struct {
-	RunbookDraftUndoEditResult
-}
-
-// RunbookGetContentResponse contains the response from method Runbook.GetContent.
-type RunbookGetContentResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RunbookGetResponse contains the response from method Runbook.Get.
-type RunbookGetResponse struct {
-	RunbookGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RunbookGetResult contains the result from method Runbook.Get.
-type RunbookGetResult struct {
+// RunbookClientGetResult contains the result from method RunbookClient.Get.
+type RunbookClientGetResult struct {
 	Runbook
 }
 
-// RunbookListByAutomationAccountResponse contains the response from method Runbook.ListByAutomationAccount.
-type RunbookListByAutomationAccountResponse struct {
-	RunbookListByAutomationAccountResult
+// RunbookClientListByAutomationAccountResponse contains the response from method RunbookClient.ListByAutomationAccount.
+type RunbookClientListByAutomationAccountResponse struct {
+	RunbookClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookListByAutomationAccountResult contains the result from method Runbook.ListByAutomationAccount.
-type RunbookListByAutomationAccountResult struct {
+// RunbookClientListByAutomationAccountResult contains the result from method RunbookClient.ListByAutomationAccount.
+type RunbookClientListByAutomationAccountResult struct {
 	RunbookListResult
 }
 
-// RunbookPublishPollerResponse contains the response from method Runbook.Publish.
-type RunbookPublishPollerResponse struct {
+// RunbookClientPublishPollerResponse contains the response from method RunbookClient.Publish.
+type RunbookClientPublishPollerResponse struct {
 	// Poller contains an initialized poller.
-	Poller *RunbookPublishPoller
+	Poller *RunbookClientPublishPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1404,8 +1328,8 @@ type RunbookPublishPollerResponse struct {
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
 // freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 // A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RunbookPublishPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RunbookPublishResponse, error) {
-	respType := RunbookPublishResponse{}
+func (l RunbookClientPublishPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RunbookClientPublishResponse, error) {
+	respType := RunbookClientPublishResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
 	if err != nil {
 		return respType, err
@@ -1414,13 +1338,13 @@ func (l RunbookPublishPollerResponse) PollUntilDone(ctx context.Context, freq ti
 	return respType, nil
 }
 
-// Resume rehydrates a RunbookPublishPollerResponse from the provided client and resume token.
-func (l *RunbookPublishPollerResponse) Resume(ctx context.Context, client *RunbookClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RunbookClient.Publish", token, client.pl, client.publishHandleError)
+// Resume rehydrates a RunbookClientPublishPollerResponse from the provided client and resume token.
+func (l *RunbookClientPublishPollerResponse) Resume(ctx context.Context, client *RunbookClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RunbookClient.Publish", token, client.pl)
 	if err != nil {
 		return err
 	}
-	poller := &RunbookPublishPoller{
+	poller := &RunbookClientPublishPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1432,554 +1356,630 @@ func (l *RunbookPublishPollerResponse) Resume(ctx context.Context, client *Runbo
 	return nil
 }
 
-// RunbookPublishResponse contains the response from method Runbook.Publish.
-type RunbookPublishResponse struct {
+// RunbookClientPublishResponse contains the response from method RunbookClient.Publish.
+type RunbookClientPublishResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookUpdateResponse contains the response from method Runbook.Update.
-type RunbookUpdateResponse struct {
-	RunbookUpdateResult
+// RunbookClientUpdateResponse contains the response from method RunbookClient.Update.
+type RunbookClientUpdateResponse struct {
+	RunbookClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RunbookUpdateResult contains the result from method Runbook.Update.
-type RunbookUpdateResult struct {
+// RunbookClientUpdateResult contains the result from method RunbookClient.Update.
+type RunbookClientUpdateResult struct {
 	Runbook
 }
 
-// ScheduleCreateOrUpdateResponse contains the response from method Schedule.CreateOrUpdate.
-type ScheduleCreateOrUpdateResponse struct {
-	ScheduleCreateOrUpdateResult
+// RunbookDraftClientGetContentResponse contains the response from method RunbookDraftClient.GetContent.
+type RunbookDraftClientGetContentResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ScheduleCreateOrUpdateResult contains the result from method Schedule.CreateOrUpdate.
-type ScheduleCreateOrUpdateResult struct {
+// RunbookDraftClientGetResponse contains the response from method RunbookDraftClient.Get.
+type RunbookDraftClientGetResponse struct {
+	RunbookDraftClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RunbookDraftClientGetResult contains the result from method RunbookDraftClient.Get.
+type RunbookDraftClientGetResult struct {
+	RunbookDraft
+}
+
+// RunbookDraftClientReplaceContentPollerResponse contains the response from method RunbookDraftClient.ReplaceContent.
+type RunbookDraftClientReplaceContentPollerResponse struct {
+	// Poller contains an initialized poller.
+	Poller *RunbookDraftClientReplaceContentPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
+func (l RunbookDraftClientReplaceContentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RunbookDraftClientReplaceContentResponse, error) {
+	respType := RunbookDraftClientReplaceContentResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RunbookDraftClientReplaceContentPollerResponse from the provided client and resume token.
+func (l *RunbookDraftClientReplaceContentPollerResponse) Resume(ctx context.Context, client *RunbookDraftClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RunbookDraftClient.ReplaceContent", token, client.pl)
+	if err != nil {
+		return err
+	}
+	poller := &RunbookDraftClientReplaceContentPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
+// RunbookDraftClientReplaceContentResponse contains the response from method RunbookDraftClient.ReplaceContent.
+type RunbookDraftClientReplaceContentResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RunbookDraftClientUndoEditResponse contains the response from method RunbookDraftClient.UndoEdit.
+type RunbookDraftClientUndoEditResponse struct {
+	RunbookDraftClientUndoEditResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RunbookDraftClientUndoEditResult contains the result from method RunbookDraftClient.UndoEdit.
+type RunbookDraftClientUndoEditResult struct {
+	RunbookDraftUndoEditResult
+}
+
+// ScheduleClientCreateOrUpdateResponse contains the response from method ScheduleClient.CreateOrUpdate.
+type ScheduleClientCreateOrUpdateResponse struct {
+	ScheduleClientCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ScheduleClientCreateOrUpdateResult contains the result from method ScheduleClient.CreateOrUpdate.
+type ScheduleClientCreateOrUpdateResult struct {
 	Schedule
 }
 
-// ScheduleDeleteResponse contains the response from method Schedule.Delete.
-type ScheduleDeleteResponse struct {
+// ScheduleClientDeleteResponse contains the response from method ScheduleClient.Delete.
+type ScheduleClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ScheduleGetResponse contains the response from method Schedule.Get.
-type ScheduleGetResponse struct {
-	ScheduleGetResult
+// ScheduleClientGetResponse contains the response from method ScheduleClient.Get.
+type ScheduleClientGetResponse struct {
+	ScheduleClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ScheduleGetResult contains the result from method Schedule.Get.
-type ScheduleGetResult struct {
+// ScheduleClientGetResult contains the result from method ScheduleClient.Get.
+type ScheduleClientGetResult struct {
 	Schedule
 }
 
-// ScheduleListByAutomationAccountResponse contains the response from method Schedule.ListByAutomationAccount.
-type ScheduleListByAutomationAccountResponse struct {
-	ScheduleListByAutomationAccountResult
+// ScheduleClientListByAutomationAccountResponse contains the response from method ScheduleClient.ListByAutomationAccount.
+type ScheduleClientListByAutomationAccountResponse struct {
+	ScheduleClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ScheduleListByAutomationAccountResult contains the result from method Schedule.ListByAutomationAccount.
-type ScheduleListByAutomationAccountResult struct {
+// ScheduleClientListByAutomationAccountResult contains the result from method ScheduleClient.ListByAutomationAccount.
+type ScheduleClientListByAutomationAccountResult struct {
 	ScheduleListResult
 }
 
-// ScheduleUpdateResponse contains the response from method Schedule.Update.
-type ScheduleUpdateResponse struct {
-	ScheduleUpdateResult
+// ScheduleClientUpdateResponse contains the response from method ScheduleClient.Update.
+type ScheduleClientUpdateResponse struct {
+	ScheduleClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ScheduleUpdateResult contains the result from method Schedule.Update.
-type ScheduleUpdateResult struct {
+// ScheduleClientUpdateResult contains the result from method ScheduleClient.Update.
+type ScheduleClientUpdateResult struct {
 	Schedule
 }
 
-// SoftwareUpdateConfigurationMachineRunsGetByIDResponse contains the response from method SoftwareUpdateConfigurationMachineRuns.GetByID.
-type SoftwareUpdateConfigurationMachineRunsGetByIDResponse struct {
-	SoftwareUpdateConfigurationMachineRunsGetByIDResult
+// SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse contains the response from method SoftwareUpdateConfigurationMachineRunsClient.GetByID.
+type SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse struct {
+	SoftwareUpdateConfigurationMachineRunsClientGetByIDResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationMachineRunsGetByIDResult contains the result from method SoftwareUpdateConfigurationMachineRuns.GetByID.
-type SoftwareUpdateConfigurationMachineRunsGetByIDResult struct {
+// SoftwareUpdateConfigurationMachineRunsClientGetByIDResult contains the result from method SoftwareUpdateConfigurationMachineRunsClient.GetByID.
+type SoftwareUpdateConfigurationMachineRunsClientGetByIDResult struct {
 	SoftwareUpdateConfigurationMachineRun
 }
 
-// SoftwareUpdateConfigurationMachineRunsListResponse contains the response from method SoftwareUpdateConfigurationMachineRuns.List.
-type SoftwareUpdateConfigurationMachineRunsListResponse struct {
-	SoftwareUpdateConfigurationMachineRunsListResult
+// SoftwareUpdateConfigurationMachineRunsClientListResponse contains the response from method SoftwareUpdateConfigurationMachineRunsClient.List.
+type SoftwareUpdateConfigurationMachineRunsClientListResponse struct {
+	SoftwareUpdateConfigurationMachineRunsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationMachineRunsListResult contains the result from method SoftwareUpdateConfigurationMachineRuns.List.
-type SoftwareUpdateConfigurationMachineRunsListResult struct {
+// SoftwareUpdateConfigurationMachineRunsClientListResult contains the result from method SoftwareUpdateConfigurationMachineRunsClient.List.
+type SoftwareUpdateConfigurationMachineRunsClientListResult struct {
 	SoftwareUpdateConfigurationMachineRunListResult
 }
 
-// SoftwareUpdateConfigurationRunsGetByIDResponse contains the response from method SoftwareUpdateConfigurationRuns.GetByID.
-type SoftwareUpdateConfigurationRunsGetByIDResponse struct {
-	SoftwareUpdateConfigurationRunsGetByIDResult
+// SoftwareUpdateConfigurationRunsClientGetByIDResponse contains the response from method SoftwareUpdateConfigurationRunsClient.GetByID.
+type SoftwareUpdateConfigurationRunsClientGetByIDResponse struct {
+	SoftwareUpdateConfigurationRunsClientGetByIDResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationRunsGetByIDResult contains the result from method SoftwareUpdateConfigurationRuns.GetByID.
-type SoftwareUpdateConfigurationRunsGetByIDResult struct {
+// SoftwareUpdateConfigurationRunsClientGetByIDResult contains the result from method SoftwareUpdateConfigurationRunsClient.GetByID.
+type SoftwareUpdateConfigurationRunsClientGetByIDResult struct {
 	SoftwareUpdateConfigurationRun
 }
 
-// SoftwareUpdateConfigurationRunsListResponse contains the response from method SoftwareUpdateConfigurationRuns.List.
-type SoftwareUpdateConfigurationRunsListResponse struct {
-	SoftwareUpdateConfigurationRunsListResult
+// SoftwareUpdateConfigurationRunsClientListResponse contains the response from method SoftwareUpdateConfigurationRunsClient.List.
+type SoftwareUpdateConfigurationRunsClientListResponse struct {
+	SoftwareUpdateConfigurationRunsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationRunsListResult contains the result from method SoftwareUpdateConfigurationRuns.List.
-type SoftwareUpdateConfigurationRunsListResult struct {
+// SoftwareUpdateConfigurationRunsClientListResult contains the result from method SoftwareUpdateConfigurationRunsClient.List.
+type SoftwareUpdateConfigurationRunsClientListResult struct {
 	SoftwareUpdateConfigurationRunListResult
 }
 
-// SoftwareUpdateConfigurationsCreateResponse contains the response from method SoftwareUpdateConfigurations.Create.
-type SoftwareUpdateConfigurationsCreateResponse struct {
-	SoftwareUpdateConfigurationsCreateResult
+// SoftwareUpdateConfigurationsClientCreateResponse contains the response from method SoftwareUpdateConfigurationsClient.Create.
+type SoftwareUpdateConfigurationsClientCreateResponse struct {
+	SoftwareUpdateConfigurationsClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationsCreateResult contains the result from method SoftwareUpdateConfigurations.Create.
-type SoftwareUpdateConfigurationsCreateResult struct {
+// SoftwareUpdateConfigurationsClientCreateResult contains the result from method SoftwareUpdateConfigurationsClient.Create.
+type SoftwareUpdateConfigurationsClientCreateResult struct {
 	SoftwareUpdateConfiguration
 }
 
-// SoftwareUpdateConfigurationsDeleteResponse contains the response from method SoftwareUpdateConfigurations.Delete.
-type SoftwareUpdateConfigurationsDeleteResponse struct {
+// SoftwareUpdateConfigurationsClientDeleteResponse contains the response from method SoftwareUpdateConfigurationsClient.Delete.
+type SoftwareUpdateConfigurationsClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationsGetByNameResponse contains the response from method SoftwareUpdateConfigurations.GetByName.
-type SoftwareUpdateConfigurationsGetByNameResponse struct {
-	SoftwareUpdateConfigurationsGetByNameResult
+// SoftwareUpdateConfigurationsClientGetByNameResponse contains the response from method SoftwareUpdateConfigurationsClient.GetByName.
+type SoftwareUpdateConfigurationsClientGetByNameResponse struct {
+	SoftwareUpdateConfigurationsClientGetByNameResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationsGetByNameResult contains the result from method SoftwareUpdateConfigurations.GetByName.
-type SoftwareUpdateConfigurationsGetByNameResult struct {
+// SoftwareUpdateConfigurationsClientGetByNameResult contains the result from method SoftwareUpdateConfigurationsClient.GetByName.
+type SoftwareUpdateConfigurationsClientGetByNameResult struct {
 	SoftwareUpdateConfiguration
 }
 
-// SoftwareUpdateConfigurationsListResponse contains the response from method SoftwareUpdateConfigurations.List.
-type SoftwareUpdateConfigurationsListResponse struct {
-	SoftwareUpdateConfigurationsListResult
+// SoftwareUpdateConfigurationsClientListResponse contains the response from method SoftwareUpdateConfigurationsClient.List.
+type SoftwareUpdateConfigurationsClientListResponse struct {
+	SoftwareUpdateConfigurationsClientListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SoftwareUpdateConfigurationsListResult contains the result from method SoftwareUpdateConfigurations.List.
-type SoftwareUpdateConfigurationsListResult struct {
+// SoftwareUpdateConfigurationsClientListResult contains the result from method SoftwareUpdateConfigurationsClient.List.
+type SoftwareUpdateConfigurationsClientListResult struct {
 	SoftwareUpdateConfigurationListResult
 }
 
-// SourceControlCreateOrUpdateResponse contains the response from method SourceControl.CreateOrUpdate.
-type SourceControlCreateOrUpdateResponse struct {
-	SourceControlCreateOrUpdateResult
+// SourceControlClientCreateOrUpdateResponse contains the response from method SourceControlClient.CreateOrUpdate.
+type SourceControlClientCreateOrUpdateResponse struct {
+	SourceControlClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlCreateOrUpdateResult contains the result from method SourceControl.CreateOrUpdate.
-type SourceControlCreateOrUpdateResult struct {
+// SourceControlClientCreateOrUpdateResult contains the result from method SourceControlClient.CreateOrUpdate.
+type SourceControlClientCreateOrUpdateResult struct {
 	SourceControl
 }
 
-// SourceControlDeleteResponse contains the response from method SourceControl.Delete.
-type SourceControlDeleteResponse struct {
+// SourceControlClientDeleteResponse contains the response from method SourceControlClient.Delete.
+type SourceControlClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlGetResponse contains the response from method SourceControl.Get.
-type SourceControlGetResponse struct {
-	SourceControlGetResult
+// SourceControlClientGetResponse contains the response from method SourceControlClient.Get.
+type SourceControlClientGetResponse struct {
+	SourceControlClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlGetResult contains the result from method SourceControl.Get.
-type SourceControlGetResult struct {
+// SourceControlClientGetResult contains the result from method SourceControlClient.Get.
+type SourceControlClientGetResult struct {
 	SourceControl
 }
 
-// SourceControlListByAutomationAccountResponse contains the response from method SourceControl.ListByAutomationAccount.
-type SourceControlListByAutomationAccountResponse struct {
-	SourceControlListByAutomationAccountResult
+// SourceControlClientListByAutomationAccountResponse contains the response from method SourceControlClient.ListByAutomationAccount.
+type SourceControlClientListByAutomationAccountResponse struct {
+	SourceControlClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlListByAutomationAccountResult contains the result from method SourceControl.ListByAutomationAccount.
-type SourceControlListByAutomationAccountResult struct {
+// SourceControlClientListByAutomationAccountResult contains the result from method SourceControlClient.ListByAutomationAccount.
+type SourceControlClientListByAutomationAccountResult struct {
 	SourceControlListResult
 }
 
-// SourceControlSyncJobCreateResponse contains the response from method SourceControlSyncJob.Create.
-type SourceControlSyncJobCreateResponse struct {
-	SourceControlSyncJobCreateResult
+// SourceControlClientUpdateResponse contains the response from method SourceControlClient.Update.
+type SourceControlClientUpdateResponse struct {
+	SourceControlClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// SourceControlSyncJobCreateResult contains the result from method SourceControlSyncJob.Create.
-type SourceControlSyncJobCreateResult struct {
-	SourceControlSyncJob
-}
-
-// SourceControlSyncJobGetResponse contains the response from method SourceControlSyncJob.Get.
-type SourceControlSyncJobGetResponse struct {
-	SourceControlSyncJobGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlSyncJobGetResult contains the result from method SourceControlSyncJob.Get.
-type SourceControlSyncJobGetResult struct {
-	SourceControlSyncJobByID
-}
-
-// SourceControlSyncJobListByAutomationAccountResponse contains the response from method SourceControlSyncJob.ListByAutomationAccount.
-type SourceControlSyncJobListByAutomationAccountResponse struct {
-	SourceControlSyncJobListByAutomationAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlSyncJobListByAutomationAccountResult contains the result from method SourceControlSyncJob.ListByAutomationAccount.
-type SourceControlSyncJobListByAutomationAccountResult struct {
-	SourceControlSyncJobListResult
-}
-
-// SourceControlSyncJobStreamsGetResponse contains the response from method SourceControlSyncJobStreams.Get.
-type SourceControlSyncJobStreamsGetResponse struct {
-	SourceControlSyncJobStreamsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlSyncJobStreamsGetResult contains the result from method SourceControlSyncJobStreams.Get.
-type SourceControlSyncJobStreamsGetResult struct {
-	SourceControlSyncJobStreamByID
-}
-
-// SourceControlSyncJobStreamsListBySyncJobResponse contains the response from method SourceControlSyncJobStreams.ListBySyncJob.
-type SourceControlSyncJobStreamsListBySyncJobResponse struct {
-	SourceControlSyncJobStreamsListBySyncJobResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlSyncJobStreamsListBySyncJobResult contains the result from method SourceControlSyncJobStreams.ListBySyncJob.
-type SourceControlSyncJobStreamsListBySyncJobResult struct {
-	SourceControlSyncJobStreamsListBySyncJob
-}
-
-// SourceControlUpdateResponse contains the response from method SourceControl.Update.
-type SourceControlUpdateResponse struct {
-	SourceControlUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SourceControlUpdateResult contains the result from method SourceControl.Update.
-type SourceControlUpdateResult struct {
+// SourceControlClientUpdateResult contains the result from method SourceControlClient.Update.
+type SourceControlClientUpdateResult struct {
 	SourceControl
 }
 
-// StatisticsListByAutomationAccountResponse contains the response from method Statistics.ListByAutomationAccount.
-type StatisticsListByAutomationAccountResponse struct {
-	StatisticsListByAutomationAccountResult
+// SourceControlSyncJobClientCreateResponse contains the response from method SourceControlSyncJobClient.Create.
+type SourceControlSyncJobClientCreateResponse struct {
+	SourceControlSyncJobClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// StatisticsListByAutomationAccountResult contains the result from method Statistics.ListByAutomationAccount.
-type StatisticsListByAutomationAccountResult struct {
+// SourceControlSyncJobClientCreateResult contains the result from method SourceControlSyncJobClient.Create.
+type SourceControlSyncJobClientCreateResult struct {
+	SourceControlSyncJob
+}
+
+// SourceControlSyncJobClientGetResponse contains the response from method SourceControlSyncJobClient.Get.
+type SourceControlSyncJobClientGetResponse struct {
+	SourceControlSyncJobClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SourceControlSyncJobClientGetResult contains the result from method SourceControlSyncJobClient.Get.
+type SourceControlSyncJobClientGetResult struct {
+	SourceControlSyncJobByID
+}
+
+// SourceControlSyncJobClientListByAutomationAccountResponse contains the response from method SourceControlSyncJobClient.ListByAutomationAccount.
+type SourceControlSyncJobClientListByAutomationAccountResponse struct {
+	SourceControlSyncJobClientListByAutomationAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SourceControlSyncJobClientListByAutomationAccountResult contains the result from method SourceControlSyncJobClient.ListByAutomationAccount.
+type SourceControlSyncJobClientListByAutomationAccountResult struct {
+	SourceControlSyncJobListResult
+}
+
+// SourceControlSyncJobStreamsClientGetResponse contains the response from method SourceControlSyncJobStreamsClient.Get.
+type SourceControlSyncJobStreamsClientGetResponse struct {
+	SourceControlSyncJobStreamsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SourceControlSyncJobStreamsClientGetResult contains the result from method SourceControlSyncJobStreamsClient.Get.
+type SourceControlSyncJobStreamsClientGetResult struct {
+	SourceControlSyncJobStreamByID
+}
+
+// SourceControlSyncJobStreamsClientListBySyncJobResponse contains the response from method SourceControlSyncJobStreamsClient.ListBySyncJob.
+type SourceControlSyncJobStreamsClientListBySyncJobResponse struct {
+	SourceControlSyncJobStreamsClientListBySyncJobResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SourceControlSyncJobStreamsClientListBySyncJobResult contains the result from method SourceControlSyncJobStreamsClient.ListBySyncJob.
+type SourceControlSyncJobStreamsClientListBySyncJobResult struct {
+	SourceControlSyncJobStreamsListBySyncJob
+}
+
+// StatisticsClientListByAutomationAccountResponse contains the response from method StatisticsClient.ListByAutomationAccount.
+type StatisticsClientListByAutomationAccountResponse struct {
+	StatisticsClientListByAutomationAccountResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// StatisticsClientListByAutomationAccountResult contains the result from method StatisticsClient.ListByAutomationAccount.
+type StatisticsClientListByAutomationAccountResult struct {
 	StatisticsListResult
 }
 
-// TestJobCreateResponse contains the response from method TestJob.Create.
-type TestJobCreateResponse struct {
-	TestJobCreateResult
+// TestJobClientCreateResponse contains the response from method TestJobClient.Create.
+type TestJobClientCreateResponse struct {
+	TestJobClientCreateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TestJobCreateResult contains the result from method TestJob.Create.
-type TestJobCreateResult struct {
+// TestJobClientCreateResult contains the result from method TestJobClient.Create.
+type TestJobClientCreateResult struct {
 	TestJob
 }
 
-// TestJobGetResponse contains the response from method TestJob.Get.
-type TestJobGetResponse struct {
-	TestJobGetResult
+// TestJobClientGetResponse contains the response from method TestJobClient.Get.
+type TestJobClientGetResponse struct {
+	TestJobClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TestJobGetResult contains the result from method TestJob.Get.
-type TestJobGetResult struct {
+// TestJobClientGetResult contains the result from method TestJobClient.Get.
+type TestJobClientGetResult struct {
 	TestJob
 }
 
-// TestJobResumeResponse contains the response from method TestJob.Resume.
-type TestJobResumeResponse struct {
+// TestJobClientResumeResponse contains the response from method TestJobClient.Resume.
+type TestJobClientResumeResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TestJobStopResponse contains the response from method TestJob.Stop.
-type TestJobStopResponse struct {
+// TestJobClientStopResponse contains the response from method TestJobClient.Stop.
+type TestJobClientStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TestJobStreamsGetResponse contains the response from method TestJobStreams.Get.
-type TestJobStreamsGetResponse struct {
-	TestJobStreamsGetResult
+// TestJobClientSuspendResponse contains the response from method TestJobClient.Suspend.
+type TestJobClientSuspendResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TestJobStreamsGetResult contains the result from method TestJobStreams.Get.
-type TestJobStreamsGetResult struct {
+// TestJobStreamsClientGetResponse contains the response from method TestJobStreamsClient.Get.
+type TestJobStreamsClientGetResponse struct {
+	TestJobStreamsClientGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// TestJobStreamsClientGetResult contains the result from method TestJobStreamsClient.Get.
+type TestJobStreamsClientGetResult struct {
 	JobStream
 }
 
-// TestJobStreamsListByTestJobResponse contains the response from method TestJobStreams.ListByTestJob.
-type TestJobStreamsListByTestJobResponse struct {
-	TestJobStreamsListByTestJobResult
+// TestJobStreamsClientListByTestJobResponse contains the response from method TestJobStreamsClient.ListByTestJob.
+type TestJobStreamsClientListByTestJobResponse struct {
+	TestJobStreamsClientListByTestJobResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// TestJobStreamsListByTestJobResult contains the result from method TestJobStreams.ListByTestJob.
-type TestJobStreamsListByTestJobResult struct {
+// TestJobStreamsClientListByTestJobResult contains the result from method TestJobStreamsClient.ListByTestJob.
+type TestJobStreamsClientListByTestJobResult struct {
 	JobStreamListResult
 }
 
-// TestJobSuspendResponse contains the response from method TestJob.Suspend.
-type TestJobSuspendResponse struct {
+// UsagesClientListByAutomationAccountResponse contains the response from method UsagesClient.ListByAutomationAccount.
+type UsagesClientListByAutomationAccountResponse struct {
+	UsagesClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// UsagesListByAutomationAccountResponse contains the response from method Usages.ListByAutomationAccount.
-type UsagesListByAutomationAccountResponse struct {
-	UsagesListByAutomationAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UsagesListByAutomationAccountResult contains the result from method Usages.ListByAutomationAccount.
-type UsagesListByAutomationAccountResult struct {
+// UsagesClientListByAutomationAccountResult contains the result from method UsagesClient.ListByAutomationAccount.
+type UsagesClientListByAutomationAccountResult struct {
 	UsageListResult
 }
 
-// VariableCreateOrUpdateResponse contains the response from method Variable.CreateOrUpdate.
-type VariableCreateOrUpdateResponse struct {
-	VariableCreateOrUpdateResult
+// VariableClientCreateOrUpdateResponse contains the response from method VariableClient.CreateOrUpdate.
+type VariableClientCreateOrUpdateResponse struct {
+	VariableClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VariableCreateOrUpdateResult contains the result from method Variable.CreateOrUpdate.
-type VariableCreateOrUpdateResult struct {
+// VariableClientCreateOrUpdateResult contains the result from method VariableClient.CreateOrUpdate.
+type VariableClientCreateOrUpdateResult struct {
 	Variable
 }
 
-// VariableDeleteResponse contains the response from method Variable.Delete.
-type VariableDeleteResponse struct {
+// VariableClientDeleteResponse contains the response from method VariableClient.Delete.
+type VariableClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VariableGetResponse contains the response from method Variable.Get.
-type VariableGetResponse struct {
-	VariableGetResult
+// VariableClientGetResponse contains the response from method VariableClient.Get.
+type VariableClientGetResponse struct {
+	VariableClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VariableGetResult contains the result from method Variable.Get.
-type VariableGetResult struct {
+// VariableClientGetResult contains the result from method VariableClient.Get.
+type VariableClientGetResult struct {
 	Variable
 }
 
-// VariableListByAutomationAccountResponse contains the response from method Variable.ListByAutomationAccount.
-type VariableListByAutomationAccountResponse struct {
-	VariableListByAutomationAccountResult
+// VariableClientListByAutomationAccountResponse contains the response from method VariableClient.ListByAutomationAccount.
+type VariableClientListByAutomationAccountResponse struct {
+	VariableClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VariableListByAutomationAccountResult contains the result from method Variable.ListByAutomationAccount.
-type VariableListByAutomationAccountResult struct {
+// VariableClientListByAutomationAccountResult contains the result from method VariableClient.ListByAutomationAccount.
+type VariableClientListByAutomationAccountResult struct {
 	VariableListResult
 }
 
-// VariableUpdateResponse contains the response from method Variable.Update.
-type VariableUpdateResponse struct {
-	VariableUpdateResult
+// VariableClientUpdateResponse contains the response from method VariableClient.Update.
+type VariableClientUpdateResponse struct {
+	VariableClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// VariableUpdateResult contains the result from method Variable.Update.
-type VariableUpdateResult struct {
+// VariableClientUpdateResult contains the result from method VariableClient.Update.
+type VariableClientUpdateResult struct {
 	Variable
 }
 
-// WatcherCreateOrUpdateResponse contains the response from method Watcher.CreateOrUpdate.
-type WatcherCreateOrUpdateResponse struct {
-	WatcherCreateOrUpdateResult
+// WatcherClientCreateOrUpdateResponse contains the response from method WatcherClient.CreateOrUpdate.
+type WatcherClientCreateOrUpdateResponse struct {
+	WatcherClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherCreateOrUpdateResult contains the result from method Watcher.CreateOrUpdate.
-type WatcherCreateOrUpdateResult struct {
+// WatcherClientCreateOrUpdateResult contains the result from method WatcherClient.CreateOrUpdate.
+type WatcherClientCreateOrUpdateResult struct {
 	Watcher
 }
 
-// WatcherDeleteResponse contains the response from method Watcher.Delete.
-type WatcherDeleteResponse struct {
+// WatcherClientDeleteResponse contains the response from method WatcherClient.Delete.
+type WatcherClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherGetResponse contains the response from method Watcher.Get.
-type WatcherGetResponse struct {
-	WatcherGetResult
+// WatcherClientGetResponse contains the response from method WatcherClient.Get.
+type WatcherClientGetResponse struct {
+	WatcherClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherGetResult contains the result from method Watcher.Get.
-type WatcherGetResult struct {
+// WatcherClientGetResult contains the result from method WatcherClient.Get.
+type WatcherClientGetResult struct {
 	Watcher
 }
 
-// WatcherListByAutomationAccountResponse contains the response from method Watcher.ListByAutomationAccount.
-type WatcherListByAutomationAccountResponse struct {
-	WatcherListByAutomationAccountResult
+// WatcherClientListByAutomationAccountResponse contains the response from method WatcherClient.ListByAutomationAccount.
+type WatcherClientListByAutomationAccountResponse struct {
+	WatcherClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherListByAutomationAccountResult contains the result from method Watcher.ListByAutomationAccount.
-type WatcherListByAutomationAccountResult struct {
+// WatcherClientListByAutomationAccountResult contains the result from method WatcherClient.ListByAutomationAccount.
+type WatcherClientListByAutomationAccountResult struct {
 	WatcherListResult
 }
 
-// WatcherStartResponse contains the response from method Watcher.Start.
-type WatcherStartResponse struct {
+// WatcherClientStartResponse contains the response from method WatcherClient.Start.
+type WatcherClientStartResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherStopResponse contains the response from method Watcher.Stop.
-type WatcherStopResponse struct {
+// WatcherClientStopResponse contains the response from method WatcherClient.Stop.
+type WatcherClientStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherUpdateResponse contains the response from method Watcher.Update.
-type WatcherUpdateResponse struct {
-	WatcherUpdateResult
+// WatcherClientUpdateResponse contains the response from method WatcherClient.Update.
+type WatcherClientUpdateResponse struct {
+	WatcherClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WatcherUpdateResult contains the result from method Watcher.Update.
-type WatcherUpdateResult struct {
+// WatcherClientUpdateResult contains the result from method WatcherClient.Update.
+type WatcherClientUpdateResult struct {
 	Watcher
 }
 
-// WebhookCreateOrUpdateResponse contains the response from method Webhook.CreateOrUpdate.
-type WebhookCreateOrUpdateResponse struct {
-	WebhookCreateOrUpdateResult
+// WebhookClientCreateOrUpdateResponse contains the response from method WebhookClient.CreateOrUpdate.
+type WebhookClientCreateOrUpdateResponse struct {
+	WebhookClientCreateOrUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebhookCreateOrUpdateResult contains the result from method Webhook.CreateOrUpdate.
-type WebhookCreateOrUpdateResult struct {
+// WebhookClientCreateOrUpdateResult contains the result from method WebhookClient.CreateOrUpdate.
+type WebhookClientCreateOrUpdateResult struct {
 	Webhook
 }
 
-// WebhookDeleteResponse contains the response from method Webhook.Delete.
-type WebhookDeleteResponse struct {
+// WebhookClientDeleteResponse contains the response from method WebhookClient.Delete.
+type WebhookClientDeleteResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebhookGenerateURIResponse contains the response from method Webhook.GenerateURI.
-type WebhookGenerateURIResponse struct {
-	WebhookGenerateURIResult
+// WebhookClientGenerateURIResponse contains the response from method WebhookClient.GenerateURI.
+type WebhookClientGenerateURIResponse struct {
+	WebhookClientGenerateURIResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebhookGenerateURIResult contains the result from method Webhook.GenerateURI.
-type WebhookGenerateURIResult struct {
+// WebhookClientGenerateURIResult contains the result from method WebhookClient.GenerateURI.
+type WebhookClientGenerateURIResult struct {
 	Value *string
 }
 
-// WebhookGetResponse contains the response from method Webhook.Get.
-type WebhookGetResponse struct {
-	WebhookGetResult
+// WebhookClientGetResponse contains the response from method WebhookClient.Get.
+type WebhookClientGetResponse struct {
+	WebhookClientGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebhookGetResult contains the result from method Webhook.Get.
-type WebhookGetResult struct {
+// WebhookClientGetResult contains the result from method WebhookClient.Get.
+type WebhookClientGetResult struct {
 	Webhook
 }
 
-// WebhookListByAutomationAccountResponse contains the response from method Webhook.ListByAutomationAccount.
-type WebhookListByAutomationAccountResponse struct {
-	WebhookListByAutomationAccountResult
+// WebhookClientListByAutomationAccountResponse contains the response from method WebhookClient.ListByAutomationAccount.
+type WebhookClientListByAutomationAccountResponse struct {
+	WebhookClientListByAutomationAccountResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebhookListByAutomationAccountResult contains the result from method Webhook.ListByAutomationAccount.
-type WebhookListByAutomationAccountResult struct {
+// WebhookClientListByAutomationAccountResult contains the result from method WebhookClient.ListByAutomationAccount.
+type WebhookClientListByAutomationAccountResult struct {
 	WebhookListResult
 }
 
-// WebhookUpdateResponse contains the response from method Webhook.Update.
-type WebhookUpdateResponse struct {
-	WebhookUpdateResult
+// WebhookClientUpdateResponse contains the response from method WebhookClient.Update.
+type WebhookClientUpdateResponse struct {
+	WebhookClientUpdateResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// WebhookUpdateResult contains the result from method Webhook.Update.
-type WebhookUpdateResult struct {
+// WebhookClientUpdateResult contains the result from method WebhookClient.Update.
+type WebhookClientUpdateResult struct {
 	Webhook
 }

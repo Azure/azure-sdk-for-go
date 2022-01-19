@@ -31,10 +31,8 @@ func ExamplePipelinesClient_BeginCreateOrUpdate() {
 		"<resource-group-name>",
 		"<pipeline-name>",
 		armdevops.Pipeline{
-			Resource: armdevops.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armdevops.PipelineProperties{
 				BootstrapConfiguration: &armdevops.BootstrapConfiguration{
 					Template: &armdevops.PipelineTemplate{
@@ -66,7 +64,7 @@ func ExamplePipelinesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Pipeline.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelinesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/devops/resource-manager/Microsoft.DevOps/preview/2019-07-01-preview/examples/GetAzurePipeline.json
@@ -84,7 +82,7 @@ func ExamplePipelinesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Pipeline.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelinesClientGetResult)
 }
 
 // x-ms-original-file: specification/devops/resource-manager/Microsoft.DevOps/preview/2019-07-01-preview/examples/UpdateAzurePipeline.json
@@ -107,7 +105,7 @@ func ExamplePipelinesClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Pipeline.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.PipelinesClientUpdateResult)
 }
 
 // x-ms-original-file: specification/devops/resource-manager/Microsoft.DevOps/preview/2019-07-01-preview/examples/DeleteAzurePipeline.json
@@ -137,12 +135,16 @@ func ExamplePipelinesClient_ListByResourceGroup() {
 	client := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pipeline.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -156,12 +158,16 @@ func ExamplePipelinesClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armdevops.NewPipelinesClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pipeline.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

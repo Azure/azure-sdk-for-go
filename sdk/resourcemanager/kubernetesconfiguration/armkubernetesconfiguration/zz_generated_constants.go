@@ -9,8 +9,8 @@
 package armkubernetesconfiguration
 
 const (
-	module  = "armkubernetesconfiguration"
-	version = "v0.1.0"
+	moduleName    = "armkubernetesconfiguration"
+	moduleVersion = "v0.2.0"
 )
 
 // ClusterTypes - Cluster types
@@ -153,7 +153,8 @@ func (c FluxComplianceState) ToPtr() *FluxComplianceState {
 	return &c
 }
 
-// KustomizationValidationType - Specify whether to validate the Kubernetes objects referenced in the Kustomization before applying them to the cluster.
+// KustomizationValidationType - Specify whether to validate the Kubernetes objects referenced in the Kustomization before
+// applying them to the cluster.
 type KustomizationValidationType string
 
 const (

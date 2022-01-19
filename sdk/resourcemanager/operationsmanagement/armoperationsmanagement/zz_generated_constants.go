@@ -9,6 +9,6 @@
 package armoperationsmanagement
 
 const (
-	module  = "armoperationsmanagement"
-	version = "v0.2.1"
+	moduleName    = "armoperationsmanagement"
+	moduleVersion = "v0.3.0"
 )

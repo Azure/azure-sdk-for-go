@@ -11,7 +11,6 @@ package armmediaservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,57 @@ import (
 // AssetFiltersClient contains the methods for the AssetFilters group.
 // Don't use this type directly, use NewAssetFiltersClient() instead.
 type AssetFiltersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAssetFiltersClient creates a new instance of AssetFiltersClient with the specified values.
+// subscriptionID - The unique identifier for a Microsoft Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewAssetFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AssetFiltersClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &AssetFiltersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &AssetFiltersClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // CreateOrUpdate - Creates or updates an Asset Filter associated with the specified Asset.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetFiltersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersCreateOrUpdateOptions) (AssetFiltersCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// filterName - The Asset Filter name
+// parameters - The request parameters
+// options - AssetFiltersClientCreateOrUpdateOptions contains the optional parameters for the AssetFiltersClient.CreateOrUpdate
+// method.
+func (client *AssetFiltersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersClientCreateOrUpdateOptions) (AssetFiltersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, assetName, filterName, parameters, options)
 	if err != nil {
-		return AssetFiltersCreateOrUpdateResponse{}, err
+		return AssetFiltersClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetFiltersCreateOrUpdateResponse{}, err
+		return AssetFiltersClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return AssetFiltersCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AssetFiltersClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssetFiltersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssetFiltersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +96,7 @@ func (client *AssetFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -94,46 +108,38 @@ func (client *AssetFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AssetFiltersClient) createOrUpdateHandleResponse(resp *http.Response) (AssetFiltersCreateOrUpdateResponse, error) {
-	result := AssetFiltersCreateOrUpdateResponse{RawResponse: resp}
+func (client *AssetFiltersClient) createOrUpdateHandleResponse(resp *http.Response) (AssetFiltersClientCreateOrUpdateResponse, error) {
+	result := AssetFiltersClientCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilter); err != nil {
-		return AssetFiltersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AssetFiltersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AssetFiltersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an Asset Filter associated with the specified Asset.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetFiltersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersDeleteOptions) (AssetFiltersDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// filterName - The Asset Filter name
+// options - AssetFiltersClientDeleteOptions contains the optional parameters for the AssetFiltersClient.Delete method.
+func (client *AssetFiltersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersClientDeleteOptions) (AssetFiltersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, assetName, filterName, options)
 	if err != nil {
-		return AssetFiltersDeleteResponse{}, err
+		return AssetFiltersClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetFiltersDeleteResponse{}, err
+		return AssetFiltersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AssetFiltersDeleteResponse{}, client.deleteHandleError(resp)
+		return AssetFiltersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AssetFiltersDeleteResponse{RawResponse: resp}, nil
+	return AssetFiltersClientDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssetFiltersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersDeleteOptions) (*policy.Request, error) {
+func (client *AssetFiltersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,7 +161,7 @@ func (client *AssetFiltersClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,38 +172,30 @@ func (client *AssetFiltersClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AssetFiltersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the details of an Asset Filter associated with the specified Asset.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetFiltersClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersGetOptions) (AssetFiltersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// filterName - The Asset Filter name
+// options - AssetFiltersClientGetOptions contains the optional parameters for the AssetFiltersClient.Get method.
+func (client *AssetFiltersClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersClientGetOptions) (AssetFiltersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, assetName, filterName, options)
 	if err != nil {
-		return AssetFiltersGetResponse{}, err
+		return AssetFiltersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetFiltersGetResponse{}, err
+		return AssetFiltersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetFiltersGetResponse{}, client.getHandleError(resp)
+		return AssetFiltersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssetFiltersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersGetOptions) (*policy.Request, error) {
+func (client *AssetFiltersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, options *AssetFiltersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +217,7 @@ func (client *AssetFiltersClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,43 +229,34 @@ func (client *AssetFiltersClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssetFiltersClient) getHandleResponse(resp *http.Response) (AssetFiltersGetResponse, error) {
-	result := AssetFiltersGetResponse{RawResponse: resp}
+func (client *AssetFiltersClient) getHandleResponse(resp *http.Response) (AssetFiltersClientGetResponse, error) {
+	result := AssetFiltersClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilter); err != nil {
-		return AssetFiltersGetResponse{}, runtime.NewResponseError(err, resp)
+		return AssetFiltersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AssetFiltersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List Asset Filters associated with the specified Asset.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetFiltersClient) List(resourceGroupName string, accountName string, assetName string, options *AssetFiltersListOptions) *AssetFiltersListPager {
-	return &AssetFiltersListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// options - AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
+func (client *AssetFiltersClient) List(resourceGroupName string, accountName string, assetName string, options *AssetFiltersClientListOptions) *AssetFiltersClientListPager {
+	return &AssetFiltersClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, accountName, assetName, options)
 		},
-		advancer: func(ctx context.Context, resp AssetFiltersListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp AssetFiltersClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssetFilterCollection.ODataNextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AssetFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetFiltersListOptions) (*policy.Request, error) {
+func (client *AssetFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, options *AssetFiltersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,7 +274,7 @@ func (client *AssetFiltersClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter assetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -297,46 +286,39 @@ func (client *AssetFiltersClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *AssetFiltersClient) listHandleResponse(resp *http.Response) (AssetFiltersListResponse, error) {
-	result := AssetFiltersListResponse{RawResponse: resp}
+func (client *AssetFiltersClient) listHandleResponse(resp *http.Response) (AssetFiltersClientListResponse, error) {
+	result := AssetFiltersClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilterCollection); err != nil {
-		return AssetFiltersListResponse{}, runtime.NewResponseError(err, resp)
+		return AssetFiltersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AssetFiltersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing Asset Filter associated with the specified Asset.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AssetFiltersClient) Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersUpdateOptions) (AssetFiltersUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group within the Azure subscription.
+// accountName - The Media Services account name.
+// assetName - The Asset name.
+// filterName - The Asset Filter name
+// parameters - The request parameters
+// options - AssetFiltersClientUpdateOptions contains the optional parameters for the AssetFiltersClient.Update method.
+func (client *AssetFiltersClient) Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersClientUpdateOptions) (AssetFiltersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, assetName, filterName, parameters, options)
 	if err != nil {
-		return AssetFiltersUpdateResponse{}, err
+		return AssetFiltersClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssetFiltersUpdateResponse{}, err
+		return AssetFiltersClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssetFiltersUpdateResponse{}, client.updateHandleError(resp)
+		return AssetFiltersClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AssetFiltersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersUpdateOptions) (*policy.Request, error) {
+func (client *AssetFiltersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter, options *AssetFiltersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -358,7 +340,7 @@ func (client *AssetFiltersClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -370,23 +352,10 @@ func (client *AssetFiltersClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AssetFiltersClient) updateHandleResponse(resp *http.Response) (AssetFiltersUpdateResponse, error) {
-	result := AssetFiltersUpdateResponse{RawResponse: resp}
+func (client *AssetFiltersClient) updateHandleResponse(resp *http.Response) (AssetFiltersClientUpdateResponse, error) {
+	result := AssetFiltersClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssetFilter); err != nil {
-		return AssetFiltersUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AssetFiltersClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *AssetFiltersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

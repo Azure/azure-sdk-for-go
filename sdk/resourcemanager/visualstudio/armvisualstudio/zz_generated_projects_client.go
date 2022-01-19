@@ -24,54 +24,67 @@ import (
 // ProjectsClient contains the methods for the Projects group.
 // Don't use this type directly, use NewProjectsClient() instead.
 type ProjectsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProjectsClient creates a new instance of ProjectsClient with the specified values.
+// subscriptionID - The Azure subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProjectsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ProjectsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ProjectsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// BeginCreate - Creates a Team Services project in the collection with the specified name. 'VersionControlOption' and 'ProcessTemplateId' must be specified
-// in the resource properties. Valid values for
-// VersionControlOption: Git, Tfvc. Valid values for ProcessTemplateId: 6B724908-EF14-45CF-84F8-768B5384DA45, ADCC42AB-9882-485E-A3ED-7678F01F66BC, 27450541-8E31-4150-9947-DC59F998FC01
-// (these IDs
+// BeginCreate - Creates a Team Services project in the collection with the specified name. 'VersionControlOption' and 'ProcessTemplateId'
+// must be specified in the resource properties. Valid values for
+// VersionControlOption: Git, Tfvc. Valid values for ProcessTemplateId: 6B724908-EF14-45CF-84F8-768B5384DA45, ADCC42AB-9882-485E-A3ED-7678F01F66BC,
+// 27450541-8E31-4150-9947-DC59F998FC01 (these IDs
 // correspond to Scrum, Agile, and CMMI process templates).
-// If the operation fails it returns a generic error.
-func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsBeginCreateOptions) (ProjectsCreatePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// rootResourceName - Name of the Team Services account.
+// resourceName - Name of the Team Services project.
+// body - The request data.
+// options - ProjectsClientBeginCreateOptions contains the optional parameters for the ProjectsClient.BeginCreate method.
+func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (ProjectsClientCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
 	if err != nil {
-		return ProjectsCreatePollerResponse{}, err
+		return ProjectsClientCreatePollerResponse{}, err
 	}
-	result := ProjectsCreatePollerResponse{
+	result := ProjectsClientCreatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ProjectsClient.Create", "", resp, client.pl, client.createHandleError)
+	pt, err := armruntime.NewPoller("ProjectsClient.Create", "", resp, client.pl)
 	if err != nil {
-		return ProjectsCreatePollerResponse{}, err
+		return ProjectsClientCreatePollerResponse{}, err
 	}
-	result.Poller = &ProjectsCreatePoller{
+	result.Poller = &ProjectsClientCreatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Create - Creates a Team Services project in the collection with the specified name. 'VersionControlOption' and 'ProcessTemplateId' must be specified
-// in the resource properties. Valid values for
-// VersionControlOption: Git, Tfvc. Valid values for ProcessTemplateId: 6B724908-EF14-45CF-84F8-768B5384DA45, ADCC42AB-9882-485E-A3ED-7678F01F66BC, 27450541-8E31-4150-9947-DC59F998FC01
-// (these IDs
+// Create - Creates a Team Services project in the collection with the specified name. 'VersionControlOption' and 'ProcessTemplateId'
+// must be specified in the resource properties. Valid values for
+// VersionControlOption: Git, Tfvc. Valid values for ProcessTemplateId: 6B724908-EF14-45CF-84F8-768B5384DA45, ADCC42AB-9882-485E-A3ED-7678F01F66BC,
+// 27450541-8E31-4150-9947-DC59F998FC01 (these IDs
 // correspond to Scrum, Agile, and CMMI process templates).
-// If the operation fails it returns a generic error.
-func (client *ProjectsClient) create(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProjectsClient) create(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
 	if err != nil {
 		return nil, err
@@ -81,13 +94,13 @@ func (client *ProjectsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsBeginCreateOptions) (*policy.Request, error) {
+func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{rootResourceName}/project/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -105,7 +118,7 @@ func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,37 +132,29 @@ func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// createHandleError handles the Create error response.
-func (client *ProjectsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets the details of a Team Services project resource.
-// If the operation fails it returns a generic error.
-func (client *ProjectsClient) Get(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, options *ProjectsGetOptions) (ProjectsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// rootResourceName - Name of the Team Services account.
+// resourceName - Name of the Team Services project.
+// options - ProjectsClientGetOptions contains the optional parameters for the ProjectsClient.Get method.
+func (client *ProjectsClient) Get(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, options *ProjectsClientGetOptions) (ProjectsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, rootResourceName, resourceName, options)
 	if err != nil {
-		return ProjectsGetResponse{}, err
+		return ProjectsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProjectsGetResponse{}, err
+		return ProjectsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return ProjectsGetResponse{}, client.getHandleError(resp)
+		return ProjectsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, options *ProjectsGetOptions) (*policy.Request, error) {
+func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, options *ProjectsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{rootResourceName}/project/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -167,7 +172,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,45 +184,39 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsGetResponse, error) {
-	result := ProjectsGetResponse{RawResponse: resp}
+func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsClientGetResponse, error) {
+	result := ProjectsClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResource); err != nil {
-		return ProjectsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProjectsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProjectsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetJobStatus - Gets the status of the project resource creation job.
-// If the operation fails it returns a generic error.
-func (client *ProjectsClient) GetJobStatus(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, subContainerName string, operation string, options *ProjectsGetJobStatusOptions) (ProjectsGetJobStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// rootResourceName - Name of the Team Services account.
+// resourceName - Name of the Team Services project.
+// subContainerName - This parameter should be set to the resourceName.
+// operation - The operation type. The only supported value is 'put'.
+// options - ProjectsClientGetJobStatusOptions contains the optional parameters for the ProjectsClient.GetJobStatus method.
+func (client *ProjectsClient) GetJobStatus(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, subContainerName string, operation string, options *ProjectsClientGetJobStatusOptions) (ProjectsClientGetJobStatusResponse, error) {
 	req, err := client.getJobStatusCreateRequest(ctx, resourceGroupName, rootResourceName, resourceName, subContainerName, operation, options)
 	if err != nil {
-		return ProjectsGetJobStatusResponse{}, err
+		return ProjectsClientGetJobStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProjectsGetJobStatusResponse{}, err
+		return ProjectsClientGetJobStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return ProjectsGetJobStatusResponse{}, client.getJobStatusHandleError(resp)
+		return ProjectsClientGetJobStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getJobStatusHandleResponse(resp)
 }
 
 // getJobStatusCreateRequest creates the GetJobStatus request.
-func (client *ProjectsClient) getJobStatusCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, subContainerName string, operation string, options *ProjectsGetJobStatusOptions) (*policy.Request, error) {
+func (client *ProjectsClient) getJobStatusCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, subContainerName string, operation string, options *ProjectsClientGetJobStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{rootResourceName}/project/{resourceName}/subContainers/{subContainerName}/status"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -239,7 +238,7 @@ func (client *ProjectsClient) getJobStatusCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter subContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subContainerName}", url.PathEscape(subContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,45 +254,37 @@ func (client *ProjectsClient) getJobStatusCreateRequest(ctx context.Context, res
 }
 
 // getJobStatusHandleResponse handles the GetJobStatus response.
-func (client *ProjectsClient) getJobStatusHandleResponse(resp *http.Response) (ProjectsGetJobStatusResponse, error) {
-	result := ProjectsGetJobStatusResponse{RawResponse: resp}
+func (client *ProjectsClient) getJobStatusHandleResponse(resp *http.Response) (ProjectsClientGetJobStatusResponse, error) {
+	result := ProjectsClientGetJobStatusResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResource); err != nil {
-		return ProjectsGetJobStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ProjectsClientGetJobStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getJobStatusHandleError handles the GetJobStatus error response.
-func (client *ProjectsClient) getJobStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByResourceGroup - Gets all Visual Studio Team Services project resources created in the specified Team Services account.
-// If the operation fails it returns a generic error.
-func (client *ProjectsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, rootResourceName string, options *ProjectsListByResourceGroupOptions) (ProjectsListByResourceGroupResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// rootResourceName - Name of the Team Services account.
+// options - ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.ListByResourceGroup
+// method.
+func (client *ProjectsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, rootResourceName string, options *ProjectsClientListByResourceGroupOptions) (ProjectsClientListByResourceGroupResponse, error) {
 	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, rootResourceName, options)
 	if err != nil {
-		return ProjectsListByResourceGroupResponse{}, err
+		return ProjectsClientListByResourceGroupResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProjectsListByResourceGroupResponse{}, err
+		return ProjectsClientListByResourceGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProjectsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return ProjectsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByResourceGroupHandleResponse(resp)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, options *ProjectsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, options *ProjectsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{rootResourceName}/project"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -307,7 +298,7 @@ func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter rootResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rootResourceName}", url.PathEscape(rootResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,45 +310,38 @@ func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ProjectsClient) listByResourceGroupHandleResponse(resp *http.Response) (ProjectsListByResourceGroupResponse, error) {
-	result := ProjectsListByResourceGroupResponse{RawResponse: resp}
+func (client *ProjectsClient) listByResourceGroupHandleResponse(resp *http.Response) (ProjectsClientListByResourceGroupResponse, error) {
+	result := ProjectsClientListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResourceListResult); err != nil {
-		return ProjectsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ProjectsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ProjectsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates the tags of the specified Team Services project.
-// If the operation fails it returns a generic error.
-func (client *ProjectsClient) Update(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsUpdateOptions) (ProjectsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - Name of the resource group within the Azure subscription.
+// rootResourceName - Name of the Team Services account.
+// resourceName - Name of the Team Services project.
+// body - The request data.
+// options - ProjectsClientUpdateOptions contains the optional parameters for the ProjectsClient.Update method.
+func (client *ProjectsClient) Update(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientUpdateOptions) (ProjectsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
 	if err != nil {
-		return ProjectsUpdateResponse{}, err
+		return ProjectsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProjectsUpdateResponse{}, err
+		return ProjectsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProjectsUpdateResponse{}, client.updateHandleError(resp)
+		return ProjectsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsUpdateOptions) (*policy.Request, error) {
+func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.visualstudio/account/{rootResourceName}/project/{resourceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -375,7 +359,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -387,22 +371,10 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProjectsClient) updateHandleResponse(resp *http.Response) (ProjectsUpdateResponse, error) {
-	result := ProjectsUpdateResponse{RawResponse: resp}
+func (client *ProjectsClient) updateHandleResponse(resp *http.Response) (ProjectsClientUpdateResponse, error) {
+	result := ProjectsClientUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectResource); err != nil {
-		return ProjectsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProjectsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ProjectsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

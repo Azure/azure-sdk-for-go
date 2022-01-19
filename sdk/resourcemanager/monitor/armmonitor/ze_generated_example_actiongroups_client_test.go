@@ -31,10 +31,8 @@ func ExampleActionGroupsClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<action-group-name>",
 		armmonitor.ActionGroupResource{
-			AzureResource: armmonitor.AzureResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.StringPtr("<location>"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.ActionGroup{
 				ArmRoleReceivers: []*armmonitor.ArmRoleReceiver{
 					{
@@ -139,7 +137,7 @@ func ExampleActionGroupsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ActionGroupResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ActionGroupsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/getActionGroup.json
@@ -157,7 +155,7 @@ func ExampleActionGroupsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ActionGroupResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ActionGroupsClientGetResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/deleteActionGroup.json
@@ -201,7 +199,7 @@ func ExampleActionGroupsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("ActionGroupResource.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ActionGroupsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/postTestNotifications.json
@@ -323,27 +321,13 @@ func ExampleActionGroupsClient_GetTestNotifications() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
-	_, err = client.GetTestNotifications(ctx,
+	res, err := client.GetTestNotifications(ctx,
 		"<notification-id>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/listActionGroups.json
-func ExampleActionGroupsClient_ListBySubscriptionID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscriptionID(ctx,
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Response result: %#v\n", res.ActionGroupsClientGetTestNotificationsResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/listActionGroups.json
@@ -354,12 +338,13 @@ func ExampleActionGroupsClient_ListByResourceGroup() {
 	}
 	ctx := context.Background()
 	client := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
+	res, err := client.ListByResourceGroup(ctx,
 		"<resource-group-name>",
 		nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Response result: %#v\n", res.ActionGroupsClientListByResourceGroupResult)
 }
 
 // x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/enableReceiver.json

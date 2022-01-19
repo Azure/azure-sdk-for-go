@@ -34,7 +34,7 @@ func ExampleApplicationsClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientGetResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/deleteApplication.json
@@ -84,7 +84,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateApplication.json
@@ -98,7 +98,7 @@ func ExampleApplicationsClient_Update() {
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
 		"<application-name>",
-		&armmanagedapplications.ApplicationsUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
+		&armmanagedapplications.ApplicationsClientUpdateOptions{Parameters: &armmanagedapplications.ApplicationPatchable{
 			Kind: to.StringPtr("<kind>"),
 			Properties: &armmanagedapplications.ApplicationProperties{
 				ApplicationDefinitionID: to.StringPtr("<application-definition-id>"),
@@ -109,7 +109,7 @@ func ExampleApplicationsClient_Update() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.ApplicationsClientUpdateResult)
 }
 
 // x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationsByResourceGroup.json
@@ -122,12 +122,16 @@ func ExampleApplicationsClient_ListByResourceGroup() {
 	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
 	pager := client.ListByResourceGroup("<resource-group-name>",
 		nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Application.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -141,12 +145,16 @@ func ExampleApplicationsClient_ListBySubscription() {
 	ctx := context.Background()
 	client := armmanagedapplications.NewApplicationsClient("<subscription-id>", cred, nil)
 	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("Application.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }

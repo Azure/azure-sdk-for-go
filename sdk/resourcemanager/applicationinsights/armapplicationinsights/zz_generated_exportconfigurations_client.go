@@ -24,42 +24,56 @@ import (
 // ExportConfigurationsClient contains the methods for the ExportConfigurations group.
 // Don't use this type directly, use NewExportConfigurationsClient() instead.
 type ExportConfigurationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExportConfigurationsClient creates a new instance of ExportConfigurationsClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewExportConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExportConfigurationsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ExportConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ExportConfigurationsClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Create - Create a Continuous Export configuration of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ExportConfigurationsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, exportProperties ApplicationInsightsComponentExportRequest, options *ExportConfigurationsCreateOptions) (ExportConfigurationsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// exportProperties - Properties that need to be specified to create a Continuous Export configuration of a Application Insights
+// component.
+// options - ExportConfigurationsClientCreateOptions contains the optional parameters for the ExportConfigurationsClient.Create
+// method.
+func (client *ExportConfigurationsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, exportProperties ComponentExportRequest, options *ExportConfigurationsClientCreateOptions) (ExportConfigurationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, exportProperties, options)
 	if err != nil {
-		return ExportConfigurationsCreateResponse{}, err
+		return ExportConfigurationsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportConfigurationsCreateResponse{}, err
+		return ExportConfigurationsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportConfigurationsCreateResponse{}, client.createHandleError(resp)
+		return ExportConfigurationsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportProperties ApplicationInsightsComponentExportRequest, options *ExportConfigurationsCreateOptions) (*policy.Request, error) {
+func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportProperties ComponentExportRequest, options *ExportConfigurationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -73,7 +87,7 @@ func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -85,45 +99,38 @@ func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *ExportConfigurationsClient) createHandleResponse(resp *http.Response) (ExportConfigurationsCreateResponse, error) {
-	result := ExportConfigurationsCreateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentExportConfigurationArray); err != nil {
-		return ExportConfigurationsCreateResponse{}, runtime.NewResponseError(err, resp)
+func (client *ExportConfigurationsClient) createHandleResponse(resp *http.Response) (ExportConfigurationsClientCreateResponse, error) {
+	result := ExportConfigurationsClientCreateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfigurationArray); err != nil {
+		return ExportConfigurationsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ExportConfigurationsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Delete a Continuous Export configuration of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ExportConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsDeleteOptions) (ExportConfigurationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// exportID - The Continuous Export configuration ID. This is unique within a Application Insights component.
+// options - ExportConfigurationsClientDeleteOptions contains the optional parameters for the ExportConfigurationsClient.Delete
+// method.
+func (client *ExportConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsClientDeleteOptions) (ExportConfigurationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, exportID, options)
 	if err != nil {
-		return ExportConfigurationsDeleteResponse{}, err
+		return ExportConfigurationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportConfigurationsDeleteResponse{}, err
+		return ExportConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportConfigurationsDeleteResponse{}, client.deleteHandleError(resp)
+		return ExportConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsDeleteOptions) (*policy.Request, error) {
+func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,7 +148,7 @@ func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter exportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportId}", url.PathEscape(exportID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,45 +160,38 @@ func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Contex
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ExportConfigurationsClient) deleteHandleResponse(resp *http.Response) (ExportConfigurationsDeleteResponse, error) {
-	result := ExportConfigurationsDeleteResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentExportConfiguration); err != nil {
-		return ExportConfigurationsDeleteResponse{}, runtime.NewResponseError(err, resp)
+func (client *ExportConfigurationsClient) deleteHandleResponse(resp *http.Response) (ExportConfigurationsClientDeleteResponse, error) {
+	result := ExportConfigurationsClientDeleteResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
+		return ExportConfigurationsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ExportConfigurationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get the Continuous Export configuration for this export id.
-// If the operation fails it returns a generic error.
-func (client *ExportConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsGetOptions) (ExportConfigurationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// exportID - The Continuous Export configuration ID. This is unique within a Application Insights component.
+// options - ExportConfigurationsClientGetOptions contains the optional parameters for the ExportConfigurationsClient.Get
+// method.
+func (client *ExportConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsClientGetOptions) (ExportConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, exportID, options)
 	if err != nil {
-		return ExportConfigurationsGetResponse{}, err
+		return ExportConfigurationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportConfigurationsGetResponse{}, err
+		return ExportConfigurationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportConfigurationsGetResponse{}, client.getHandleError(resp)
+		return ExportConfigurationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsGetOptions) (*policy.Request, error) {
+func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, options *ExportConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -209,7 +209,7 @@ func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter exportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportId}", url.PathEscape(exportID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -221,45 +221,37 @@ func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportConfigurationsClient) getHandleResponse(resp *http.Response) (ExportConfigurationsGetResponse, error) {
-	result := ExportConfigurationsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentExportConfiguration); err != nil {
-		return ExportConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *ExportConfigurationsClient) getHandleResponse(resp *http.Response) (ExportConfigurationsClientGetResponse, error) {
+	result := ExportConfigurationsClientGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
+		return ExportConfigurationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExportConfigurationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // List - Gets a list of Continuous Export configuration of an Application Insights component.
-// If the operation fails it returns a generic error.
-func (client *ExportConfigurationsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *ExportConfigurationsListOptions) (ExportConfigurationsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// options - ExportConfigurationsClientListOptions contains the optional parameters for the ExportConfigurationsClient.List
+// method.
+func (client *ExportConfigurationsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *ExportConfigurationsClientListOptions) (ExportConfigurationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return ExportConfigurationsListResponse{}, err
+		return ExportConfigurationsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportConfigurationsListResponse{}, err
+		return ExportConfigurationsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportConfigurationsListResponse{}, client.listHandleError(resp)
+		return ExportConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ExportConfigurationsListOptions) (*policy.Request, error) {
+func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ExportConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -273,7 +265,7 @@ func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,45 +277,39 @@ func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *ExportConfigurationsClient) listHandleResponse(resp *http.Response) (ExportConfigurationsListResponse, error) {
-	result := ExportConfigurationsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentExportConfigurationArray); err != nil {
-		return ExportConfigurationsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *ExportConfigurationsClient) listHandleResponse(resp *http.Response) (ExportConfigurationsClientListResponse, error) {
+	result := ExportConfigurationsClientListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfigurationArray); err != nil {
+		return ExportConfigurationsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ExportConfigurationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update the Continuous Export configuration for this export id.
-// If the operation fails it returns a generic error.
-func (client *ExportConfigurationsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, exportID string, exportProperties ApplicationInsightsComponentExportRequest, options *ExportConfigurationsUpdateOptions) (ExportConfigurationsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the Application Insights component resource.
+// exportID - The Continuous Export configuration ID. This is unique within a Application Insights component.
+// exportProperties - Properties that need to be specified to update the Continuous Export configuration.
+// options - ExportConfigurationsClientUpdateOptions contains the optional parameters for the ExportConfigurationsClient.Update
+// method.
+func (client *ExportConfigurationsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, exportID string, exportProperties ComponentExportRequest, options *ExportConfigurationsClientUpdateOptions) (ExportConfigurationsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, exportID, exportProperties, options)
 	if err != nil {
-		return ExportConfigurationsUpdateResponse{}, err
+		return ExportConfigurationsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportConfigurationsUpdateResponse{}, err
+		return ExportConfigurationsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExportConfigurationsUpdateResponse{}, client.updateHandleError(resp)
+		return ExportConfigurationsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, exportProperties ApplicationInsightsComponentExportRequest, options *ExportConfigurationsUpdateOptions) (*policy.Request, error) {
+func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, exportProperties ComponentExportRequest, options *ExportConfigurationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -341,7 +327,7 @@ func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter exportID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportId}", url.PathEscape(exportID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -353,22 +339,10 @@ func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ExportConfigurationsClient) updateHandleResponse(resp *http.Response) (ExportConfigurationsUpdateResponse, error) {
-	result := ExportConfigurationsUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationInsightsComponentExportConfiguration); err != nil {
-		return ExportConfigurationsUpdateResponse{}, runtime.NewResponseError(err, resp)
+func (client *ExportConfigurationsClient) updateHandleResponse(resp *http.Response) (ExportConfigurationsClientUpdateResponse, error) {
+	result := ExportConfigurationsClientUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
+		return ExportConfigurationsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ExportConfigurationsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

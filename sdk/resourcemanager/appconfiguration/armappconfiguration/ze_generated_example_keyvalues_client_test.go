@@ -29,13 +29,17 @@ func ExampleKeyValuesClient_ListByConfigurationStore() {
 	client := armappconfiguration.NewKeyValuesClient("<subscription-id>", cred, nil)
 	pager := client.ListByConfigurationStore("<resource-group-name>",
 		"<config-store-name>",
-		&armappconfiguration.KeyValuesListByConfigurationStoreOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
+		&armappconfiguration.KeyValuesClientListByConfigurationStoreOptions{SkipToken: nil})
+	for {
+		nextResult := pager.NextPage(ctx)
 		if err := pager.Err(); err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
+		if !nextResult {
+			break
+		}
 		for _, v := range pager.PageResponse().Value {
-			log.Printf("KeyValue.ID: %s\n", *v.ID)
+			log.Printf("Pager result: %#v\n", v)
 		}
 	}
 }
@@ -56,7 +60,7 @@ func ExampleKeyValuesClient_Get() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KeyValue.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KeyValuesClientGetResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresCreateKeyValue.json
@@ -71,7 +75,7 @@ func ExampleKeyValuesClient_CreateOrUpdate() {
 		"<resource-group-name>",
 		"<config-store-name>",
 		"<key-value-name>",
-		&armappconfiguration.KeyValuesCreateOrUpdateOptions{KeyValueParameters: &armappconfiguration.KeyValue{
+		&armappconfiguration.KeyValuesClientCreateOrUpdateOptions{KeyValueParameters: &armappconfiguration.KeyValue{
 			Properties: &armappconfiguration.KeyValueProperties{
 				Tags: map[string]*string{
 					"tag1": to.StringPtr("tagValue1"),
@@ -84,7 +88,7 @@ func ExampleKeyValuesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("KeyValue.ID: %s\n", *res.ID)
+	log.Printf("Response result: %#v\n", res.KeyValuesClientCreateOrUpdateResult)
 }
 
 // x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-03-01-preview/examples/ConfigurationStoresDeleteKeyValue.json

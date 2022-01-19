@@ -1,14 +1,609 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.0 (2022-01-13)
+### Breaking Changes
+
+- Function `*LotsClient.ListByBillingAccount` parameter(s) have been changed from `(string, *LotsListByBillingAccountOptions)` to `(string, *LotsClientListByBillingAccountOptions)`
+- Function `*LotsClient.ListByBillingAccount` return value(s) have been changed from `(*LotsListByBillingAccountPager)` to `(*LotsClientListByBillingAccountPager)`
+- Function `*ReservationTransactionsClient.List` parameter(s) have been changed from `(string, *ReservationTransactionsListOptions)` to `(string, *ReservationTransactionsClientListOptions)`
+- Function `*ReservationTransactionsClient.List` return value(s) have been changed from `(*ReservationTransactionsListPager)` to `(*ReservationTransactionsClientListPager)`
+- Function `*ReservationsDetailsClient.List` parameter(s) have been changed from `(string, *ReservationsDetailsListOptions)` to `(string, *ReservationsDetailsClientListOptions)`
+- Function `*ReservationsDetailsClient.List` return value(s) have been changed from `(*ReservationsDetailsListPager)` to `(*ReservationsDetailsClientListPager)`
+- Function `*BudgetsClient.Delete` parameter(s) have been changed from `(context.Context, string, string, *BudgetsDeleteOptions)` to `(context.Context, string, string, *BudgetsClientDeleteOptions)`
+- Function `*BudgetsClient.Delete` return value(s) have been changed from `(BudgetsDeleteResponse, error)` to `(BudgetsClientDeleteResponse, error)`
+- Function `*PriceSheetClient.GetByBillingPeriod` parameter(s) have been changed from `(context.Context, string, *PriceSheetGetByBillingPeriodOptions)` to `(context.Context, string, *PriceSheetClientGetByBillingPeriodOptions)`
+- Function `*PriceSheetClient.GetByBillingPeriod` return value(s) have been changed from `(PriceSheetGetByBillingPeriodResponse, error)` to `(PriceSheetClientGetByBillingPeriodResponse, error)`
+- Function `*LotsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *LotsListByBillingProfileOptions)` to `(string, string, *LotsClientListByBillingProfileOptions)`
+- Function `*LotsClient.ListByBillingProfile` return value(s) have been changed from `(*LotsListByBillingProfilePager)` to `(*LotsClientListByBillingProfilePager)`
+- Function `*ChargesClient.List` parameter(s) have been changed from `(context.Context, string, *ChargesListOptions)` to `(context.Context, string, *ChargesClientListOptions)`
+- Function `*ChargesClient.List` return value(s) have been changed from `(ChargesListResponse, error)` to `(ChargesClientListResponse, error)`
+- Function `*ReservationsSummariesClient.List` parameter(s) have been changed from `(string, Datagrain, *ReservationsSummariesListOptions)` to `(string, Datagrain, *ReservationsSummariesClientListOptions)`
+- Function `*ReservationsSummariesClient.List` return value(s) have been changed from `(*ReservationsSummariesListPager)` to `(*ReservationsSummariesClientListPager)`
+- Function `*AggregatedCostClient.GetForBillingPeriodByManagementGroup` parameter(s) have been changed from `(context.Context, string, string, *AggregatedCostGetForBillingPeriodByManagementGroupOptions)` to `(context.Context, string, string, *AggregatedCostClientGetForBillingPeriodByManagementGroupOptions)`
+- Function `*AggregatedCostClient.GetForBillingPeriodByManagementGroup` return value(s) have been changed from `(AggregatedCostGetForBillingPeriodByManagementGroupResponse, error)` to `(AggregatedCostClientGetForBillingPeriodByManagementGroupResponse, error)`
+- Function `*MarketplacesClient.List` parameter(s) have been changed from `(string, *MarketplacesListOptions)` to `(string, *MarketplacesClientListOptions)`
+- Function `*MarketplacesClient.List` return value(s) have been changed from `(*MarketplacesListPager)` to `(*MarketplacesClientListPager)`
+- Function `*BudgetsClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, Budget, *BudgetsCreateOrUpdateOptions)` to `(context.Context, string, string, Budget, *BudgetsClientCreateOrUpdateOptions)`
+- Function `*BudgetsClient.CreateOrUpdate` return value(s) have been changed from `(BudgetsCreateOrUpdateResponse, error)` to `(BudgetsClientCreateOrUpdateResponse, error)`
+- Function `*CreditsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *CreditsGetOptions)` to `(context.Context, string, string, *CreditsClientGetOptions)`
+- Function `*CreditsClient.Get` return value(s) have been changed from `(CreditsGetResponse, error)` to `(CreditsClientGetResponse, error)`
+- Function `*ReservationsSummariesClient.ListByReservationOrder` parameter(s) have been changed from `(string, Datagrain, *ReservationsSummariesListByReservationOrderOptions)` to `(string, Datagrain, *ReservationsSummariesClientListByReservationOrderOptions)`
+- Function `*ReservationsSummariesClient.ListByReservationOrder` return value(s) have been changed from `(*ReservationsSummariesListByReservationOrderPager)` to `(*ReservationsSummariesClientListByReservationOrderPager)`
+- Function `*ReservationRecommendationsClient.List` parameter(s) have been changed from `(string, *ReservationRecommendationsListOptions)` to `(string, *ReservationRecommendationsClientListOptions)`
+- Function `*ReservationRecommendationsClient.List` return value(s) have been changed from `(*ReservationRecommendationsListPager)` to `(*ReservationRecommendationsClientListPager)`
+- Function `*ReservationsDetailsClient.ListByReservationOrder` parameter(s) have been changed from `(string, string, *ReservationsDetailsListByReservationOrderOptions)` to `(string, string, *ReservationsDetailsClientListByReservationOrderOptions)`
+- Function `*ReservationsDetailsClient.ListByReservationOrder` return value(s) have been changed from `(*ReservationsDetailsListByReservationOrderPager)` to `(*ReservationsDetailsClientListByReservationOrderPager)`
+- Function `*ReservationRecommendationDetailsClient.Get` parameter(s) have been changed from `(context.Context, string, string, Term, LookBackPeriod, string, *ReservationRecommendationDetailsGetOptions)` to `(context.Context, string, string, Term, LookBackPeriod, string, *ReservationRecommendationDetailsClientGetOptions)`
+- Function `*ReservationRecommendationDetailsClient.Get` return value(s) have been changed from `(ReservationRecommendationDetailsGetResponse, error)` to `(ReservationRecommendationDetailsClientGetResponse, error)`
+- Function `*BalancesClient.GetForBillingPeriodByBillingAccount` parameter(s) have been changed from `(context.Context, string, string, *BalancesGetForBillingPeriodByBillingAccountOptions)` to `(context.Context, string, string, *BalancesClientGetForBillingPeriodByBillingAccountOptions)`
+- Function `*BalancesClient.GetForBillingPeriodByBillingAccount` return value(s) have been changed from `(BalancesGetForBillingPeriodByBillingAccountResponse, error)` to `(BalancesClientGetForBillingPeriodByBillingAccountResponse, error)`
+- Function `*ReservationsDetailsClient.ListByReservationOrderAndReservation` parameter(s) have been changed from `(string, string, string, *ReservationsDetailsListByReservationOrderAndReservationOptions)` to `(string, string, string, *ReservationsDetailsClientListByReservationOrderAndReservationOptions)`
+- Function `*ReservationsDetailsClient.ListByReservationOrderAndReservation` return value(s) have been changed from `(*ReservationsDetailsListByReservationOrderAndReservationPager)` to `(*ReservationsDetailsClientListByReservationOrderAndReservationPager)`
+- Function `*BalancesClient.GetByBillingAccount` parameter(s) have been changed from `(context.Context, string, *BalancesGetByBillingAccountOptions)` to `(context.Context, string, *BalancesClientGetByBillingAccountOptions)`
+- Function `*BalancesClient.GetByBillingAccount` return value(s) have been changed from `(BalancesGetByBillingAccountResponse, error)` to `(BalancesClientGetByBillingAccountResponse, error)`
+- Function `*TagsClient.Get` parameter(s) have been changed from `(context.Context, string, *TagsGetOptions)` to `(context.Context, string, *TagsClientGetOptions)`
+- Function `*TagsClient.Get` return value(s) have been changed from `(TagsGetResponse, error)` to `(TagsClientGetResponse, error)`
+- Function `*OperationsClient.List` parameter(s) have been changed from `(*OperationsListOptions)` to `(*OperationsClientListOptions)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsListPager)` to `(*OperationsClientListPager)`
+- Function `*EventsClient.ListByBillingAccount` parameter(s) have been changed from `(string, *EventsListByBillingAccountOptions)` to `(string, *EventsClientListByBillingAccountOptions)`
+- Function `*EventsClient.ListByBillingAccount` return value(s) have been changed from `(*EventsListByBillingAccountPager)` to `(*EventsClientListByBillingAccountPager)`
+- Function `*BudgetsClient.List` parameter(s) have been changed from `(string, *BudgetsListOptions)` to `(string, *BudgetsClientListOptions)`
+- Function `*BudgetsClient.List` return value(s) have been changed from `(*BudgetsListPager)` to `(*BudgetsClientListPager)`
+- Function `*ReservationsSummariesClient.ListByReservationOrderAndReservation` parameter(s) have been changed from `(string, string, Datagrain, *ReservationsSummariesListByReservationOrderAndReservationOptions)` to `(string, string, Datagrain, *ReservationsSummariesClientListByReservationOrderAndReservationOptions)`
+- Function `*ReservationsSummariesClient.ListByReservationOrderAndReservation` return value(s) have been changed from `(*ReservationsSummariesListByReservationOrderAndReservationPager)` to `(*ReservationsSummariesClientListByReservationOrderAndReservationPager)`
+- Function `*ReservationTransactionsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, *ReservationTransactionsListByBillingProfileOptions)` to `(string, string, *ReservationTransactionsClientListByBillingProfileOptions)`
+- Function `*ReservationTransactionsClient.ListByBillingProfile` return value(s) have been changed from `(*ReservationTransactionsListByBillingProfilePager)` to `(*ReservationTransactionsClientListByBillingProfilePager)`
+- Function `*PriceSheetClient.Get` parameter(s) have been changed from `(context.Context, *PriceSheetGetOptions)` to `(context.Context, *PriceSheetClientGetOptions)`
+- Function `*PriceSheetClient.Get` return value(s) have been changed from `(PriceSheetGetResponse, error)` to `(PriceSheetClientGetResponse, error)`
+- Function `*AggregatedCostClient.GetByManagementGroup` parameter(s) have been changed from `(context.Context, string, *AggregatedCostGetByManagementGroupOptions)` to `(context.Context, string, *AggregatedCostClientGetByManagementGroupOptions)`
+- Function `*AggregatedCostClient.GetByManagementGroup` return value(s) have been changed from `(AggregatedCostGetByManagementGroupResponse, error)` to `(AggregatedCostClientGetByManagementGroupResponse, error)`
+- Function `*EventsClient.ListByBillingProfile` parameter(s) have been changed from `(string, string, string, string, *EventsListByBillingProfileOptions)` to `(string, string, string, string, *EventsClientListByBillingProfileOptions)`
+- Function `*EventsClient.ListByBillingProfile` return value(s) have been changed from `(*EventsListByBillingProfilePager)` to `(*EventsClientListByBillingProfilePager)`
+- Function `*BudgetsClient.Get` parameter(s) have been changed from `(context.Context, string, string, *BudgetsGetOptions)` to `(context.Context, string, string, *BudgetsClientGetOptions)`
+- Function `*BudgetsClient.Get` return value(s) have been changed from `(BudgetsGetResponse, error)` to `(BudgetsClientGetResponse, error)`
+- Function `*UsageDetailsClient.List` parameter(s) have been changed from `(string, *UsageDetailsListOptions)` to `(string, *UsageDetailsClientListOptions)`
+- Function `*UsageDetailsClient.List` return value(s) have been changed from `(*UsageDetailsListPager)` to `(*UsageDetailsClientListPager)`
+- Type of `LegacyReservationRecommendation.Properties` has been changed from `*LegacyReservationRecommendationProperties` to `LegacyReservationRecommendationPropertiesClassification`
+- Function `*ReservationsSummariesListByReservationOrderAndReservationPager.Err` has been removed
+- Function `*ReservationDetail.UnmarshalJSON` has been removed
+- Function `*ReservationsDetailsListPager.Err` has been removed
+- Function `*ReservationsDetailsListByReservationOrderPager.Err` has been removed
+- Function `*ReservationTransactionsListPager.NextPage` has been removed
+- Function `*MarketplacesListPager.PageResponse` has been removed
+- Function `*EventsListByBillingProfilePager.Err` has been removed
+- Function `HighCasedErrorResponse.Error` has been removed
+- Function `*EventsListByBillingAccountPager.PageResponse` has been removed
+- Function `*LotsListByBillingProfilePager.NextPage` has been removed
+- Function `*ReservationTransactionsListByBillingProfilePager.PageResponse` has been removed
+- Function `ErrorResponse.Error` has been removed
+- Function `*UsageDetailsListPager.NextPage` has been removed
+- Function `*MarketplacesListPager.NextPage` has been removed
+- Function `*ReservationsSummariesListPager.Err` has been removed
+- Function `*ReservationsDetailsListByReservationOrderAndReservationPager.NextPage` has been removed
+- Function `*ReservationRecommendationsListPager.Err` has been removed
+- Function `*LotsListByBillingProfilePager.Err` has been removed
+- Function `*ReservationsSummariesListByReservationOrderPager.PageResponse` has been removed
+- Function `*UsageDetail.UnmarshalJSON` has been removed
+- Function `*ManagementGroupAggregatedCostResult.UnmarshalJSON` has been removed
+- Function `*ReservationsDetailsListByReservationOrderPager.NextPage` has been removed
+- Function `*CreditSummary.UnmarshalJSON` has been removed
+- Function `*ReservationRecommendationsListPager.PageResponse` has been removed
+- Function `*Marketplace.UnmarshalJSON` has been removed
+- Function `*ReservationsSummariesListByReservationOrderPager.NextPage` has been removed
+- Function `*ReservationTransactionsListPager.PageResponse` has been removed
+- Function `*Balance.UnmarshalJSON` has been removed
+- Function `*EventSummary.UnmarshalJSON` has been removed
+- Function `LotSummary.MarshalJSON` has been removed
+- Function `*ReservationRecommendationDetailsModel.UnmarshalJSON` has been removed
+- Function `EventSummary.MarshalJSON` has been removed
+- Function `*ReservationRecommendationsListPager.NextPage` has been removed
+- Function `*EventsListByBillingAccountPager.NextPage` has been removed
+- Function `*EventsListByBillingProfilePager.PageResponse` has been removed
+- Function `*ReservationsDetailsListByReservationOrderAndReservationPager.Err` has been removed
+- Function `*ReservationTransactionsListPager.Err` has been removed
+- Function `*ReservationTransactionsListByBillingProfilePager.Err` has been removed
+- Function `*ReservationSummary.UnmarshalJSON` has been removed
+- Function `*UsageDetailsListPager.PageResponse` has been removed
+- Function `*ReservationRecommendation.UnmarshalJSON` has been removed
+- Function `*ReservationTransactionsListByBillingProfilePager.NextPage` has been removed
+- Function `*OperationsListPager.NextPage` has been removed
+- Function `*EventsListByBillingAccountPager.Err` has been removed
+- Function `*ReservationsDetailsListPager.NextPage` has been removed
+- Function `*BudgetsListPager.NextPage` has been removed
+- Function `*ReservationsSummariesListByReservationOrderPager.Err` has been removed
+- Function `*ReservationsDetailsListByReservationOrderPager.PageResponse` has been removed
+- Function `*ReservationsSummariesListByReservationOrderAndReservationPager.NextPage` has been removed
+- Function `*Resource.UnmarshalJSON` has been removed
+- Function `*ReservationsSummariesListPager.PageResponse` has been removed
+- Function `*ReservationsDetailsListPager.PageResponse` has been removed
+- Function `*LotsListByBillingAccountPager.Err` has been removed
+- Function `*LotsListByBillingAccountPager.PageResponse` has been removed
+- Function `*ReservationsSummariesListByReservationOrderAndReservationPager.PageResponse` has been removed
+- Function `*UsageDetailsListPager.Err` has been removed
+- Function `*ReservationsSummariesListPager.NextPage` has been removed
+- Function `*BudgetsListPager.Err` has been removed
+- Function `*LotSummary.UnmarshalJSON` has been removed
+- Function `*LotsListByBillingProfilePager.PageResponse` has been removed
+- Function `*ReservationsDetailsListByReservationOrderAndReservationPager.PageResponse` has been removed
+- Function `*OperationsListPager.Err` has been removed
+- Function `*BudgetsListPager.PageResponse` has been removed
+- Function `*ResourceAttributes.UnmarshalJSON` has been removed
+- Function `*LotsListByBillingAccountPager.NextPage` has been removed
+- Function `*PriceSheetResult.UnmarshalJSON` has been removed
+- Function `*OperationsListPager.PageResponse` has been removed
+- Function `*ChargeSummary.UnmarshalJSON` has been removed
+- Function `*EventsListByBillingProfilePager.NextPage` has been removed
+- Function `*MarketplacesListPager.Err` has been removed
+- Struct `AggregatedCostGetByManagementGroupOptions` has been removed
+- Struct `AggregatedCostGetByManagementGroupResponse` has been removed
+- Struct `AggregatedCostGetByManagementGroupResult` has been removed
+- Struct `AggregatedCostGetForBillingPeriodByManagementGroupOptions` has been removed
+- Struct `AggregatedCostGetForBillingPeriodByManagementGroupResponse` has been removed
+- Struct `AggregatedCostGetForBillingPeriodByManagementGroupResult` has been removed
+- Struct `BalancesGetByBillingAccountOptions` has been removed
+- Struct `BalancesGetByBillingAccountResponse` has been removed
+- Struct `BalancesGetByBillingAccountResult` has been removed
+- Struct `BalancesGetForBillingPeriodByBillingAccountOptions` has been removed
+- Struct `BalancesGetForBillingPeriodByBillingAccountResponse` has been removed
+- Struct `BalancesGetForBillingPeriodByBillingAccountResult` has been removed
+- Struct `BudgetsCreateOrUpdateOptions` has been removed
+- Struct `BudgetsCreateOrUpdateResponse` has been removed
+- Struct `BudgetsCreateOrUpdateResult` has been removed
+- Struct `BudgetsDeleteOptions` has been removed
+- Struct `BudgetsDeleteResponse` has been removed
+- Struct `BudgetsGetOptions` has been removed
+- Struct `BudgetsGetResponse` has been removed
+- Struct `BudgetsGetResult` has been removed
+- Struct `BudgetsListOptions` has been removed
+- Struct `BudgetsListPager` has been removed
+- Struct `BudgetsListResponse` has been removed
+- Struct `BudgetsListResultEnvelope` has been removed
+- Struct `ChargesListOptions` has been removed
+- Struct `ChargesListResponse` has been removed
+- Struct `ChargesListResultEnvelope` has been removed
+- Struct `CreditsGetOptions` has been removed
+- Struct `CreditsGetResponse` has been removed
+- Struct `CreditsGetResult` has been removed
+- Struct `EventsListByBillingAccountOptions` has been removed
+- Struct `EventsListByBillingAccountPager` has been removed
+- Struct `EventsListByBillingAccountResponse` has been removed
+- Struct `EventsListByBillingAccountResult` has been removed
+- Struct `EventsListByBillingProfileOptions` has been removed
+- Struct `EventsListByBillingProfilePager` has been removed
+- Struct `EventsListByBillingProfileResponse` has been removed
+- Struct `EventsListByBillingProfileResult` has been removed
+- Struct `LotsListByBillingAccountOptions` has been removed
+- Struct `LotsListByBillingAccountPager` has been removed
+- Struct `LotsListByBillingAccountResponse` has been removed
+- Struct `LotsListByBillingAccountResult` has been removed
+- Struct `LotsListByBillingProfileOptions` has been removed
+- Struct `LotsListByBillingProfilePager` has been removed
+- Struct `LotsListByBillingProfileResponse` has been removed
+- Struct `LotsListByBillingProfileResult` has been removed
+- Struct `MarketplacesListOptions` has been removed
+- Struct `MarketplacesListPager` has been removed
+- Struct `MarketplacesListResponse` has been removed
+- Struct `MarketplacesListResultEnvelope` has been removed
+- Struct `OperationsListOptions` has been removed
+- Struct `OperationsListPager` has been removed
+- Struct `OperationsListResponse` has been removed
+- Struct `OperationsListResult` has been removed
+- Struct `PriceSheetGetByBillingPeriodOptions` has been removed
+- Struct `PriceSheetGetByBillingPeriodResponse` has been removed
+- Struct `PriceSheetGetByBillingPeriodResult` has been removed
+- Struct `PriceSheetGetOptions` has been removed
+- Struct `PriceSheetGetResponse` has been removed
+- Struct `PriceSheetGetResult` has been removed
+- Struct `ReservationRecommendationDetailsGetOptions` has been removed
+- Struct `ReservationRecommendationDetailsGetResponse` has been removed
+- Struct `ReservationRecommendationDetailsGetResult` has been removed
+- Struct `ReservationRecommendationsListOptions` has been removed
+- Struct `ReservationRecommendationsListPager` has been removed
+- Struct `ReservationRecommendationsListResponse` has been removed
+- Struct `ReservationRecommendationsListResultEnvelope` has been removed
+- Struct `ReservationTransactionsListByBillingProfileOptions` has been removed
+- Struct `ReservationTransactionsListByBillingProfilePager` has been removed
+- Struct `ReservationTransactionsListByBillingProfileResponse` has been removed
+- Struct `ReservationTransactionsListByBillingProfileResult` has been removed
+- Struct `ReservationTransactionsListOptions` has been removed
+- Struct `ReservationTransactionsListPager` has been removed
+- Struct `ReservationTransactionsListResponse` has been removed
+- Struct `ReservationTransactionsListResultEnvelope` has been removed
+- Struct `ReservationsDetailsListByReservationOrderAndReservationOptions` has been removed
+- Struct `ReservationsDetailsListByReservationOrderAndReservationPager` has been removed
+- Struct `ReservationsDetailsListByReservationOrderAndReservationResponse` has been removed
+- Struct `ReservationsDetailsListByReservationOrderAndReservationResult` has been removed
+- Struct `ReservationsDetailsListByReservationOrderOptions` has been removed
+- Struct `ReservationsDetailsListByReservationOrderPager` has been removed
+- Struct `ReservationsDetailsListByReservationOrderResponse` has been removed
+- Struct `ReservationsDetailsListByReservationOrderResult` has been removed
+- Struct `ReservationsDetailsListOptions` has been removed
+- Struct `ReservationsDetailsListPager` has been removed
+- Struct `ReservationsDetailsListResponse` has been removed
+- Struct `ReservationsDetailsListResult` has been removed
+- Struct `ReservationsSummariesListByReservationOrderAndReservationOptions` has been removed
+- Struct `ReservationsSummariesListByReservationOrderAndReservationPager` has been removed
+- Struct `ReservationsSummariesListByReservationOrderAndReservationResponse` has been removed
+- Struct `ReservationsSummariesListByReservationOrderAndReservationResult` has been removed
+- Struct `ReservationsSummariesListByReservationOrderOptions` has been removed
+- Struct `ReservationsSummariesListByReservationOrderPager` has been removed
+- Struct `ReservationsSummariesListByReservationOrderResponse` has been removed
+- Struct `ReservationsSummariesListByReservationOrderResult` has been removed
+- Struct `ReservationsSummariesListOptions` has been removed
+- Struct `ReservationsSummariesListPager` has been removed
+- Struct `ReservationsSummariesListResponse` has been removed
+- Struct `ReservationsSummariesListResult` has been removed
+- Struct `TagsGetOptions` has been removed
+- Struct `TagsGetResponse` has been removed
+- Struct `TagsGetResult` has been removed
+- Struct `UsageDetailsListOptions` has been removed
+- Struct `UsageDetailsListPager` has been removed
+- Struct `UsageDetailsListResponse` has been removed
+- Struct `UsageDetailsListResultEnvelope` has been removed
+- Field `Amount` of struct `AmountWithExchangeRate` has been removed
+- Field `Resource` of struct `CreditSummary` has been removed
+- Field `Resource` of struct `ReservationRecommendation` has been removed
+- Field `ResourceAttributes` of struct `ReservationRecommendation` has been removed
+- Field `InnerError` of struct `ErrorResponse` has been removed
+- Field `Resource` of struct `EventSummary` has been removed
+- Field `Resource` of struct `ManagementGroupAggregatedCostResult` has been removed
+- Field `Resource` of struct `Balance` has been removed
+- Field `ReservationTransactionResource` of struct `ModernReservationTransaction` has been removed
+- Field `Resource` of struct `ReservationDetail` has been removed
+- Field `UsageDetail` of struct `ModernUsageDetail` has been removed
+- Field `ReservationRecommendation` of struct `ModernReservationRecommendation` has been removed
+- Field `Resource` of struct `PriceSheetResult` has been removed
+- Field `ChargeSummary` of struct `ModernChargeSummary` has been removed
+- Field `ReservationTransactionResource` of struct `ReservationTransaction` has been removed
+- Field `InnerError` of struct `HighCasedErrorResponse` has been removed
+- Field `Resource` of struct `UsageDetail` has been removed
+- Field `Resource` of struct `ReservationSummary` has been removed
+- Field `Resource` of struct `ChargeSummary` has been removed
+- Field `UsageDetail` of struct `LegacyUsageDetail` has been removed
+- Field `ProxyResource` of struct `Budget` has been removed
+- Field `Resource` of struct `LotSummary` has been removed
+- Field `Resource` of struct `ReservationRecommendationDetailsModel` has been removed
+- Field `Resource` of struct `Marketplace` has been removed
+- Field `ChargeSummary` of struct `LegacyChargeSummary` has been removed
+- Field `ProxyResource` of struct `TagsResult` has been removed
+- Field `ReservationTransaction` of struct `LegacyReservationTransaction` has been removed
+- Field `ReservationRecommendation` of struct `LegacyReservationRecommendation` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New const `CultureCodeNbNo`
+- New const `CultureCodeNlNl`
+- New const `CultureCodeHuHu`
+- New const `CultureCodeItIt`
+- New const `CultureCodeSvSe`
+- New const `ThresholdTypeForecasted`
+- New const `CultureCodePtBr`
+- New const `CultureCodeTrTr`
+- New const `CultureCodePtPt`
+- New const `CultureCodeDaDk`
+- New const `CultureCodeZhTw`
+- New const `CultureCodeKoKr`
+- New const `CultureCodeDeDe`
+- New const `CultureCodeCsCz`
+- New const `CultureCodeEsEs`
+- New const `CultureCodeEnGb`
+- New const `CultureCodeJaJp`
+- New const `CultureCodeZhCn`
+- New const `CultureCodeRuRu`
+- New const `CultureCodeFrFr`
+- New const `CultureCodeEnUs`
+- New const `CultureCodePlPl`
+- New function `*ReservationRecommendationsClientListPager.NextPage(context.Context) bool`
+- New function `*ReservationsDetailsClientListByReservationOrderPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.NextPage(context.Context) bool`
+- New function `*ReservationsDetailsClientListByReservationOrderPager.Err() error`
+- New function `*ReservationsDetailsClientListByReservationOrderAndReservationPager.NextPage(context.Context) bool`
+- New function `*ReservationsSummariesClientListPager.Err() error`
+- New function `*ModernChargeSummary.GetChargeSummary() *ChargeSummary`
+- New function `*ReservationsSummariesClientListByReservationOrderPager.NextPage(context.Context) bool`
+- New function `*OperationsClientListPager.PageResponse() OperationsClientListResponse`
+- New function `CultureCode.ToPtr() *CultureCode`
+- New function `*ReservationsSummariesClientListPager.NextPage(context.Context) bool`
+- New function `*BudgetsClientListPager.Err() error`
+- New function `*MarketplacesClientListPager.Err() error`
+- New function `*ReservationsSummariesClientListByReservationOrderPager.PageResponse() ReservationsSummariesClientListByReservationOrderResponse`
+- New function `*ReservationsDetailsClientListByReservationOrderPager.PageResponse() ReservationsDetailsClientListByReservationOrderResponse`
+- New function `LegacySharedScopeReservationRecommendationProperties.MarshalJSON() ([]byte, error)`
+- New function `*LotsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `ReservationRecommendation.MarshalJSON() ([]byte, error)`
+- New function `*UsageDetailsClientListPager.Err() error`
+- New function `*ReservationTransactionsClientListByBillingProfilePager.Err() error`
+- New function `*LegacySharedScopeReservationRecommendationProperties.UnmarshalJSON([]byte) error`
+- New function `*ReservationsDetailsClientListPager.NextPage(context.Context) bool`
+- New function `*MarketplacesClientListPager.NextPage(context.Context) bool`
+- New function `*LegacySingleScopeReservationRecommendationProperties.GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties`
+- New function `*ReservationTransactionsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*EventsClientListByBillingProfilePager.NextPage(context.Context) bool`
+- New function `*LegacyChargeSummary.GetChargeSummary() *ChargeSummary`
+- New function `*ReservationsDetailsClientListByReservationOrderAndReservationPager.Err() error`
+- New function `*UsageDetailsClientListPager.NextPage(context.Context) bool`
+- New function `*ReservationsSummariesClientListByReservationOrderAndReservationPager.Err() error`
+- New function `UsageDetail.MarshalJSON() ([]byte, error)`
+- New function `*ReservationsSummariesClientListByReservationOrderAndReservationPager.NextPage(context.Context) bool`
+- New function `*ReservationsSummariesClientListByReservationOrderAndReservationPager.PageResponse() ReservationsSummariesClientListByReservationOrderAndReservationResponse`
+- New function `*BudgetsClientListPager.NextPage(context.Context) bool`
+- New function `*BudgetsClientListPager.PageResponse() BudgetsClientListResponse`
+- New function `*EventsClientListByBillingProfilePager.Err() error`
+- New function `*ReservationTransactionsClientListByBillingProfilePager.PageResponse() ReservationTransactionsClientListByBillingProfileResponse`
+- New function `*ReservationsSummariesClientListPager.PageResponse() ReservationsSummariesClientListResponse`
+- New function `*LegacyReservationRecommendationProperties.GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties`
+- New function `*ReservationsDetailsClientListPager.Err() error`
+- New function `*LegacySharedScopeReservationRecommendationProperties.GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties`
+- New function `*OperationsClientListPager.Err() error`
+- New function `*ReservationsDetailsClientListPager.PageResponse() ReservationsDetailsClientListResponse`
+- New function `*LotsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*ReservationsSummariesClientListByReservationOrderPager.Err() error`
+- New function `*LotsClientListByBillingProfilePager.Err() error`
+- New function `*LegacySingleScopeReservationRecommendationProperties.UnmarshalJSON([]byte) error`
+- New function `*EventsClientListByBillingProfilePager.PageResponse() EventsClientListByBillingProfileResponse`
+- New function `*LotsClientListByBillingAccountPager.Err() error`
+- New function `*ReservationTransactionsClientListPager.PageResponse() ReservationTransactionsClientListResponse`
+- New function `*LegacyReservationRecommendation.GetReservationRecommendation() *ReservationRecommendation`
+- New function `*LegacyUsageDetail.GetUsageDetail() *UsageDetail`
+- New function `LegacySingleScopeReservationRecommendationProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleCultureCodeValues() []CultureCode`
+- New function `LegacyReservationTransaction.MarshalJSON() ([]byte, error)`
+- New function `*UsageDetailsClientListPager.PageResponse() UsageDetailsClientListResponse`
+- New function `*EventsClientListByBillingAccountPager.Err() error`
+- New function `*ReservationTransactionsClientListPager.NextPage(context.Context) bool`
+- New function `*ReservationTransactionsClientListPager.Err() error`
+- New function `*ModernReservationRecommendation.GetReservationRecommendation() *ReservationRecommendation`
+- New function `*ReservationsDetailsClientListByReservationOrderAndReservationPager.PageResponse() ReservationsDetailsClientListByReservationOrderAndReservationResponse`
+- New function `*ModernUsageDetail.GetUsageDetail() *UsageDetail`
+- New function `*EventsClientListByBillingAccountPager.PageResponse() EventsClientListByBillingAccountResponse`
+- New function `*LotsClientListByBillingProfilePager.PageResponse() LotsClientListByBillingProfileResponse`
+- New function `*ReservationRecommendationsClientListPager.PageResponse() ReservationRecommendationsClientListResponse`
+- New function `*MarketplacesClientListPager.PageResponse() MarketplacesClientListResponse`
+- New function `*ReservationRecommendationsClientListPager.Err() error`
+- New function `*EventsClientListByBillingAccountPager.NextPage(context.Context) bool`
+- New function `*LotsClientListByBillingAccountPager.PageResponse() LotsClientListByBillingAccountResponse`
+- New struct `AggregatedCostClientGetByManagementGroupOptions`
+- New struct `AggregatedCostClientGetByManagementGroupResponse`
+- New struct `AggregatedCostClientGetByManagementGroupResult`
+- New struct `AggregatedCostClientGetForBillingPeriodByManagementGroupOptions`
+- New struct `AggregatedCostClientGetForBillingPeriodByManagementGroupResponse`
+- New struct `AggregatedCostClientGetForBillingPeriodByManagementGroupResult`
+- New struct `BalancesClientGetByBillingAccountOptions`
+- New struct `BalancesClientGetByBillingAccountResponse`
+- New struct `BalancesClientGetByBillingAccountResult`
+- New struct `BalancesClientGetForBillingPeriodByBillingAccountOptions`
+- New struct `BalancesClientGetForBillingPeriodByBillingAccountResponse`
+- New struct `BalancesClientGetForBillingPeriodByBillingAccountResult`
+- New struct `BudgetsClientCreateOrUpdateOptions`
+- New struct `BudgetsClientCreateOrUpdateResponse`
+- New struct `BudgetsClientCreateOrUpdateResult`
+- New struct `BudgetsClientDeleteOptions`
+- New struct `BudgetsClientDeleteResponse`
+- New struct `BudgetsClientGetOptions`
+- New struct `BudgetsClientGetResponse`
+- New struct `BudgetsClientGetResult`
+- New struct `BudgetsClientListOptions`
+- New struct `BudgetsClientListPager`
+- New struct `BudgetsClientListResponse`
+- New struct `BudgetsClientListResult`
+- New struct `ChargesClientListOptions`
+- New struct `ChargesClientListResponse`
+- New struct `ChargesClientListResult`
+- New struct `CreditsClientGetOptions`
+- New struct `CreditsClientGetResponse`
+- New struct `CreditsClientGetResult`
+- New struct `EventsClientListByBillingAccountOptions`
+- New struct `EventsClientListByBillingAccountPager`
+- New struct `EventsClientListByBillingAccountResponse`
+- New struct `EventsClientListByBillingAccountResult`
+- New struct `EventsClientListByBillingProfileOptions`
+- New struct `EventsClientListByBillingProfilePager`
+- New struct `EventsClientListByBillingProfileResponse`
+- New struct `EventsClientListByBillingProfileResult`
+- New struct `LegacySharedScopeReservationRecommendationProperties`
+- New struct `LegacySingleScopeReservationRecommendationProperties`
+- New struct `LotsClientListByBillingAccountOptions`
+- New struct `LotsClientListByBillingAccountPager`
+- New struct `LotsClientListByBillingAccountResponse`
+- New struct `LotsClientListByBillingAccountResult`
+- New struct `LotsClientListByBillingProfileOptions`
+- New struct `LotsClientListByBillingProfilePager`
+- New struct `LotsClientListByBillingProfileResponse`
+- New struct `LotsClientListByBillingProfileResult`
+- New struct `MarketplacesClientListOptions`
+- New struct `MarketplacesClientListPager`
+- New struct `MarketplacesClientListResponse`
+- New struct `MarketplacesClientListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListPager`
+- New struct `OperationsClientListResponse`
+- New struct `OperationsClientListResult`
+- New struct `PriceSheetClientGetByBillingPeriodOptions`
+- New struct `PriceSheetClientGetByBillingPeriodResponse`
+- New struct `PriceSheetClientGetByBillingPeriodResult`
+- New struct `PriceSheetClientGetOptions`
+- New struct `PriceSheetClientGetResponse`
+- New struct `PriceSheetClientGetResult`
+- New struct `ReservationRecommendationDetailsClientGetOptions`
+- New struct `ReservationRecommendationDetailsClientGetResponse`
+- New struct `ReservationRecommendationDetailsClientGetResult`
+- New struct `ReservationRecommendationsClientListOptions`
+- New struct `ReservationRecommendationsClientListPager`
+- New struct `ReservationRecommendationsClientListResponse`
+- New struct `ReservationRecommendationsClientListResult`
+- New struct `ReservationTransactionsClientListByBillingProfileOptions`
+- New struct `ReservationTransactionsClientListByBillingProfilePager`
+- New struct `ReservationTransactionsClientListByBillingProfileResponse`
+- New struct `ReservationTransactionsClientListByBillingProfileResult`
+- New struct `ReservationTransactionsClientListOptions`
+- New struct `ReservationTransactionsClientListPager`
+- New struct `ReservationTransactionsClientListResponse`
+- New struct `ReservationTransactionsClientListResult`
+- New struct `ReservationsDetailsClientListByReservationOrderAndReservationOptions`
+- New struct `ReservationsDetailsClientListByReservationOrderAndReservationPager`
+- New struct `ReservationsDetailsClientListByReservationOrderAndReservationResponse`
+- New struct `ReservationsDetailsClientListByReservationOrderAndReservationResult`
+- New struct `ReservationsDetailsClientListByReservationOrderOptions`
+- New struct `ReservationsDetailsClientListByReservationOrderPager`
+- New struct `ReservationsDetailsClientListByReservationOrderResponse`
+- New struct `ReservationsDetailsClientListByReservationOrderResult`
+- New struct `ReservationsDetailsClientListOptions`
+- New struct `ReservationsDetailsClientListPager`
+- New struct `ReservationsDetailsClientListResponse`
+- New struct `ReservationsDetailsClientListResult`
+- New struct `ReservationsSummariesClientListByReservationOrderAndReservationOptions`
+- New struct `ReservationsSummariesClientListByReservationOrderAndReservationPager`
+- New struct `ReservationsSummariesClientListByReservationOrderAndReservationResponse`
+- New struct `ReservationsSummariesClientListByReservationOrderAndReservationResult`
+- New struct `ReservationsSummariesClientListByReservationOrderOptions`
+- New struct `ReservationsSummariesClientListByReservationOrderPager`
+- New struct `ReservationsSummariesClientListByReservationOrderResponse`
+- New struct `ReservationsSummariesClientListByReservationOrderResult`
+- New struct `ReservationsSummariesClientListOptions`
+- New struct `ReservationsSummariesClientListPager`
+- New struct `ReservationsSummariesClientListResponse`
+- New struct `ReservationsSummariesClientListResult`
+- New struct `TagsClientGetOptions`
+- New struct `TagsClientGetResponse`
+- New struct `TagsClientGetResult`
+- New struct `UsageDetailsClientListOptions`
+- New struct `UsageDetailsClientListPager`
+- New struct `UsageDetailsClientListResponse`
+- New struct `UsageDetailsClientListResult`
+- New field `Error` in struct `HighCasedErrorResponse`
+- New field `Type` in struct `PriceSheetResult`
+- New field `Etag` in struct `PriceSheetResult`
+- New field `ID` in struct `PriceSheetResult`
+- New field `Name` in struct `PriceSheetResult`
+- New field `Tags` in struct `PriceSheetResult`
+- New field `Etag` in struct `Balance`
+- New field `ID` in struct `Balance`
+- New field `Name` in struct `Balance`
+- New field `Tags` in struct `Balance`
+- New field `Type` in struct `Balance`
+- New field `SKU` in struct `LegacyReservationRecommendation`
+- New field `Tags` in struct `LegacyReservationRecommendation`
+- New field `Type` in struct `LegacyReservationRecommendation`
+- New field `ID` in struct `LegacyReservationRecommendation`
+- New field `Kind` in struct `LegacyReservationRecommendation`
+- New field `Etag` in struct `LegacyReservationRecommendation`
+- New field `Location` in struct `LegacyReservationRecommendation`
+- New field `Name` in struct `LegacyReservationRecommendation`
+- New field `Properties` in struct `LegacyReservationTransaction`
+- New field `ID` in struct `LegacyReservationTransaction`
+- New field `Name` in struct `LegacyReservationTransaction`
+- New field `Tags` in struct `LegacyReservationTransaction`
+- New field `Type` in struct `LegacyReservationTransaction`
+- New field `ETag` in struct `EventSummary`
+- New field `ID` in struct `EventSummary`
+- New field `Name` in struct `EventSummary`
+- New field `Type` in struct `EventSummary`
+- New field `Type` in struct `CreditSummary`
+- New field `Etag` in struct `CreditSummary`
+- New field `ID` in struct `CreditSummary`
+- New field `Name` in struct `CreditSummary`
+- New field `Tags` in struct `CreditSummary`
+- New field `Name` in struct `ChargeSummary`
+- New field `Type` in struct `ChargeSummary`
+- New field `ETag` in struct `ChargeSummary`
+- New field `ID` in struct `ChargeSummary`
+- New field `Locale` in struct `Notification`
+- New field `ID` in struct `LotSummary`
+- New field `Name` in struct `LotSummary`
+- New field `Type` in struct `LotSummary`
+- New field `ETag` in struct `LotSummary`
+- New field `Name` in struct `Marketplace`
+- New field `Tags` in struct `Marketplace`
+- New field `Type` in struct `Marketplace`
+- New field `Etag` in struct `Marketplace`
+- New field `ID` in struct `Marketplace`
+- New field `BillingMonth` in struct `LegacyReservationTransactionProperties`
+- New field `MonetaryCommitment` in struct `LegacyReservationTransactionProperties`
+- New field `Overage` in struct `LegacyReservationTransactionProperties`
+- New field `ID` in struct `TagsResult`
+- New field `Name` in struct `TagsResult`
+- New field `Type` in struct `TagsResult`
+- New field `ETag` in struct `TagsResult`
+- New field `Etag` in struct `ModernReservationRecommendation`
+- New field `SKU` in struct `ModernReservationRecommendation`
+- New field `Tags` in struct `ModernReservationRecommendation`
+- New field `Location` in struct `ModernReservationRecommendation`
+- New field `Name` in struct `ModernReservationRecommendation`
+- New field `Kind` in struct `ModernReservationRecommendation`
+- New field `ID` in struct `ModernReservationRecommendation`
+- New field `Type` in struct `ModernReservationRecommendation`
+- New field `Tags` in struct `ReservationDetail`
+- New field `Type` in struct `ReservationDetail`
+- New field `Etag` in struct `ReservationDetail`
+- New field `ID` in struct `ReservationDetail`
+- New field `Name` in struct `ReservationDetail`
+- New field `Error` in struct `ErrorResponse`
+- New field `ETag` in struct `LegacyChargeSummary`
+- New field `ID` in struct `LegacyChargeSummary`
+- New field `Name` in struct `LegacyChargeSummary`
+- New field `Type` in struct `LegacyChargeSummary`
+- New field `Kind` in struct `LegacyChargeSummary`
+- New field `ID` in struct `ReservationTransaction`
+- New field `Name` in struct `ReservationTransaction`
+- New field `Tags` in struct `ReservationTransaction`
+- New field `Type` in struct `ReservationTransaction`
+- New field `Value` in struct `AmountWithExchangeRate`
+- New field `Currency` in struct `AmountWithExchangeRate`
+- New field `ID` in struct `ModernReservationTransaction`
+- New field `Name` in struct `ModernReservationTransaction`
+- New field `Tags` in struct `ModernReservationTransaction`
+- New field `Type` in struct `ModernReservationTransaction`
+- New field `ID` in struct `ManagementGroupAggregatedCostResult`
+- New field `Name` in struct `ManagementGroupAggregatedCostResult`
+- New field `Tags` in struct `ManagementGroupAggregatedCostResult`
+- New field `Type` in struct `ManagementGroupAggregatedCostResult`
+- New field `Etag` in struct `ManagementGroupAggregatedCostResult`
+- New field `Tags` in struct `ModernUsageDetail`
+- New field `Type` in struct `ModernUsageDetail`
+- New field `Kind` in struct `ModernUsageDetail`
+- New field `Etag` in struct `ModernUsageDetail`
+- New field `ID` in struct `ModernUsageDetail`
+- New field `Name` in struct `ModernUsageDetail`
+- New field `Name` in struct `UsageDetail`
+- New field `Tags` in struct `UsageDetail`
+- New field `Type` in struct `UsageDetail`
+- New field `Etag` in struct `UsageDetail`
+- New field `ID` in struct `UsageDetail`
+- New field `Type` in struct `ReservationRecommendationDetailsModel`
+- New field `Etag` in struct `ReservationRecommendationDetailsModel`
+- New field `ID` in struct `ReservationRecommendationDetailsModel`
+- New field `Name` in struct `ReservationRecommendationDetailsModel`
+- New field `Tags` in struct `ReservationRecommendationDetailsModel`
+- New field `ID` in struct `LegacyUsageDetail`
+- New field `Name` in struct `LegacyUsageDetail`
+- New field `Tags` in struct `LegacyUsageDetail`
+- New field `Type` in struct `LegacyUsageDetail`
+- New field `Kind` in struct `LegacyUsageDetail`
+- New field `Etag` in struct `LegacyUsageDetail`
+- New field `BenefitName` in struct `LegacyUsageDetailProperties`
+- New field `BenefitID` in struct `LegacyUsageDetailProperties`
+- New field `ETag` in struct `Budget`
+- New field `ID` in struct `Budget`
+- New field `Name` in struct `Budget`
+- New field `Type` in struct `Budget`
+- New field `Etag` in struct `ReservationSummary`
+- New field `ID` in struct `ReservationSummary`
+- New field `Name` in struct `ReservationSummary`
+- New field `Tags` in struct `ReservationSummary`
+- New field `Type` in struct `ReservationSummary`
+- New field `ID` in struct `ReservationRecommendation`
+- New field `Location` in struct `ReservationRecommendation`
+- New field `Name` in struct `ReservationRecommendation`
+- New field `SKU` in struct `ReservationRecommendation`
+- New field `Tags` in struct `ReservationRecommendation`
+- New field `Type` in struct `ReservationRecommendation`
+- New field `Etag` in struct `ReservationRecommendation`
+- New field `ID` in struct `ModernChargeSummary`
+- New field `Name` in struct `ModernChargeSummary`
+- New field `Type` in struct `ModernChargeSummary`
+- New field `Kind` in struct `ModernChargeSummary`
+- New field `ETag` in struct `ModernChargeSummary`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2021-10-29)
 

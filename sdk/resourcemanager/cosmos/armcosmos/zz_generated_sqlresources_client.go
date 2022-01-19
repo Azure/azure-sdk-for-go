@@ -11,7 +11,6 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,46 +24,61 @@ import (
 // SQLResourcesClient contains the methods for the SQLResources group.
 // Don't use this type directly, use NewSQLResourcesClient() instead.
 type SQLResourcesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLResourcesClient creates a new instance of SQLResourcesClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLResourcesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &SQLResourcesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &SQLResourcesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // BeginCreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLContainerOptions) (SQLResourcesCreateUpdateSQLContainerPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// createUpdateSQLContainerParameters - The parameters to provide for the current SQL container.
+// options - SQLResourcesClientBeginCreateUpdateSQLContainerOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLContainer
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (SQLResourcesClientCreateUpdateSQLContainerPollerResponse, error) {
 	resp, err := client.createUpdateSQLContainer(ctx, resourceGroupName, accountName, databaseName, containerName, createUpdateSQLContainerParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLContainerPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLContainerPollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLContainerPollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLContainerPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLContainer", "", resp, client.pl, client.createUpdateSQLContainerHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLContainer", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLContainerPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLContainerPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLContainerPoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLContainerPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLContainerOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLContainerCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, createUpdateSQLContainerParameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLContainerHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLContainerCreateRequest creates the CreateUpdateSQLContainer request.
-func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLContainerOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +116,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,41 +127,35 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLContainerParameters)
 }
 
-// createUpdateSQLContainerHandleError handles the CreateUpdateSQLContainer error response.
-func (client *SQLResourcesClient) createUpdateSQLContainerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreateUpdateSQLDatabase - Create or update an Azure Cosmos DB SQL database
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLDatabaseOptions) (SQLResourcesCreateUpdateSQLDatabasePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// createUpdateSQLDatabaseParameters - The parameters to provide for the current SQL database.
+// options - SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLDatabase
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (SQLResourcesClientCreateUpdateSQLDatabasePollerResponse, error) {
 	resp, err := client.createUpdateSQLDatabase(ctx, resourceGroupName, accountName, databaseName, createUpdateSQLDatabaseParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLDatabasePollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLDatabasePollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLDatabasePollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLDatabasePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLDatabase", "", resp, client.pl, client.createUpdateSQLDatabaseHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLDatabase", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLDatabasePollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLDatabasePollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLDatabasePoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLDatabasePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLDatabase - Create or update an Azure Cosmos DB SQL database
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLDatabaseOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLDatabaseCreateRequest(ctx, resourceGroupName, accountName, databaseName, createUpdateSQLDatabaseParameters, options)
 	if err != nil {
 		return nil, err
@@ -157,13 +165,13 @@ func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLDatabaseHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLDatabaseCreateRequest creates the CreateUpdateSQLDatabase request.
-func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLDatabaseOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -181,7 +189,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,41 +200,35 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLDatabaseParameters)
 }
 
-// createUpdateSQLDatabaseHandleError handles the CreateUpdateSQLDatabase error response.
-func (client *SQLResourcesClient) createUpdateSQLDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreateUpdateSQLRoleAssignment - Creates or updates an Azure Cosmos DB SQL Role Assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLRoleAssignmentOptions) (SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The GUID for the Role Assignment.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// createUpdateSQLRoleAssignmentParameters - The properties required to create or update a Role Assignment.
+// options - SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse, error) {
 	resp, err := client.createUpdateSQLRoleAssignment(ctx, roleAssignmentID, resourceGroupName, accountName, createUpdateSQLRoleAssignmentParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLRoleAssignment", "", resp, client.pl, client.createUpdateSQLRoleAssignmentHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLRoleAssignment", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLRoleAssignmentPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLRoleAssignmentPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLRoleAssignmentPoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLRoleAssignmentPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLRoleAssignment - Creates or updates an Azure Cosmos DB SQL Role Assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLRoleAssignmentOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLRoleAssignmentCreateRequest(ctx, roleAssignmentID, resourceGroupName, accountName, createUpdateSQLRoleAssignmentParameters, options)
 	if err != nil {
 		return nil, err
@@ -236,13 +238,13 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLRoleAssignmentHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLRoleAssignmentCreateRequest creates the CreateUpdateSQLRoleAssignment request.
-func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLRoleAssignmentOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
 	if roleAssignmentID == "" {
 		return nil, errors.New("parameter roleAssignmentID cannot be empty")
@@ -260,7 +262,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -271,42 +273,35 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLRoleAssignmentParameters)
 }
 
-// createUpdateSQLRoleAssignmentHandleError handles the CreateUpdateSQLRoleAssignment error response.
-func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateUpdateSQLRoleDefinition - Creates or updates an Azure Cosmos DB SQL Role Definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLRoleDefinitionOptions) (SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleDefinitionID - The GUID for the Role Definition.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// createUpdateSQLRoleDefinitionParameters - The properties required to create or update a Role Definition.
+// options - SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse, error) {
 	resp, err := client.createUpdateSQLRoleDefinition(ctx, roleDefinitionID, resourceGroupName, accountName, createUpdateSQLRoleDefinitionParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLRoleDefinition", "", resp, client.pl, client.createUpdateSQLRoleDefinitionHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLRoleDefinition", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLRoleDefinitionPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLRoleDefinitionPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLRoleDefinitionPoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLRoleDefinitionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLRoleDefinition - Creates or updates an Azure Cosmos DB SQL Role Definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLRoleDefinitionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLRoleDefinitionCreateRequest(ctx, roleDefinitionID, resourceGroupName, accountName, createUpdateSQLRoleDefinitionParameters, options)
 	if err != nil {
 		return nil, err
@@ -316,13 +311,13 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLRoleDefinitionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLRoleDefinitionCreateRequest creates the CreateUpdateSQLRoleDefinition request.
-func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLRoleDefinitionOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -340,7 +335,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,42 +346,37 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLRoleDefinitionParameters)
 }
 
-// createUpdateSQLRoleDefinitionHandleError handles the CreateUpdateSQLRoleDefinition error response.
-func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginCreateUpdateSQLStoredProcedure - Create or update an Azure Cosmos DB SQL storedProcedure
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLStoredProcedureOptions) (SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// storedProcedureName - Cosmos DB storedProcedure name.
+// createUpdateSQLStoredProcedureParameters - The parameters to provide for the current SQL storedProcedure.
+// options - SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse, error) {
 	resp, err := client.createUpdateSQLStoredProcedure(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSQLStoredProcedureParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLStoredProcedure", "", resp, client.pl, client.createUpdateSQLStoredProcedureHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLStoredProcedure", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLStoredProcedurePollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLStoredProcedurePollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLStoredProcedurePoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLStoredProcedurePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLStoredProcedure - Create or update an Azure Cosmos DB SQL storedProcedure
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLStoredProcedureOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLStoredProcedureCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSQLStoredProcedureParameters, options)
 	if err != nil {
 		return nil, err
@@ -396,13 +386,13 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLStoredProcedureHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLStoredProcedureCreateRequest creates the CreateUpdateSQLStoredProcedure request.
-func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLStoredProcedureOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -428,7 +418,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 		return nil, errors.New("parameter storedProcedureName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storedProcedureName}", url.PathEscape(storedProcedureName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -439,41 +429,37 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLStoredProcedureParameters)
 }
 
-// createUpdateSQLStoredProcedureHandleError handles the CreateUpdateSQLStoredProcedure error response.
-func (client *SQLResourcesClient) createUpdateSQLStoredProcedureHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreateUpdateSQLTrigger - Create or update an Azure Cosmos DB SQL trigger
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLTriggerOptions) (SQLResourcesCreateUpdateSQLTriggerPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// triggerName - Cosmos DB trigger name.
+// createUpdateSQLTriggerParameters - The parameters to provide for the current SQL trigger.
+// options - SQLResourcesClientBeginCreateUpdateSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLTrigger
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (SQLResourcesClientCreateUpdateSQLTriggerPollerResponse, error) {
 	resp, err := client.createUpdateSQLTrigger(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSQLTriggerParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLTriggerPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLTriggerPollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLTriggerPollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLTriggerPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLTrigger", "", resp, client.pl, client.createUpdateSQLTriggerHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLTrigger", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLTriggerPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLTriggerPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLTriggerPoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLTriggerPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLTrigger - Create or update an Azure Cosmos DB SQL trigger
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLTriggerOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLTriggerCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSQLTriggerParameters, options)
 	if err != nil {
 		return nil, err
@@ -483,13 +469,13 @@ func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLTriggerHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLTriggerCreateRequest creates the CreateUpdateSQLTrigger request.
-func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLTriggerOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -515,7 +501,7 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -526,41 +512,37 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLTriggerParameters)
 }
 
-// createUpdateSQLTriggerHandleError handles the CreateUpdateSQLTrigger error response.
-func (client *SQLResourcesClient) createUpdateSQLTriggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreateUpdateSQLUserDefinedFunction - Create or update an Azure Cosmos DB SQL userDefinedFunction
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginCreateUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLUserDefinedFunctionOptions) (SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// userDefinedFunctionName - Cosmos DB userDefinedFunction name.
+// createUpdateSQLUserDefinedFunctionParameters - The parameters to provide for the current SQL userDefinedFunction.
+// options - SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction
+// method.
+func (client *SQLResourcesClient) BeginCreateUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse, error) {
 	resp, err := client.createUpdateSQLUserDefinedFunction(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSQLUserDefinedFunctionParameters, options)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse{}, err
 	}
-	result := SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse{
+	result := SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLUserDefinedFunction", "", resp, client.pl, client.createUpdateSQLUserDefinedFunctionHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.CreateUpdateSQLUserDefinedFunction", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesCreateUpdateSQLUserDefinedFunctionPollerResponse{}, err
+		return SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesCreateUpdateSQLUserDefinedFunctionPoller{
+	result.Poller = &SQLResourcesClientCreateUpdateSQLUserDefinedFunctionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateSQLUserDefinedFunction - Create or update an Azure Cosmos DB SQL userDefinedFunction
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLUserDefinedFunctionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (*http.Response, error) {
 	req, err := client.createUpdateSQLUserDefinedFunctionCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSQLUserDefinedFunctionParameters, options)
 	if err != nil {
 		return nil, err
@@ -570,13 +552,13 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createUpdateSQLUserDefinedFunctionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateSQLUserDefinedFunctionCreateRequest creates the CreateUpdateSQLUserDefinedFunction request.
-func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesBeginCreateUpdateSQLUserDefinedFunctionOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -602,7 +584,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 		return nil, errors.New("parameter userDefinedFunctionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userDefinedFunctionName}", url.PathEscape(userDefinedFunctionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -613,41 +595,35 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 	return req, runtime.MarshalAsJSON(req, createUpdateSQLUserDefinedFunctionParameters)
 }
 
-// createUpdateSQLUserDefinedFunctionHandleError handles the CreateUpdateSQLUserDefinedFunction error response.
-func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteSQLContainer - Deletes an existing Azure Cosmos DB SQL container.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginDeleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginDeleteSQLContainerOptions) (SQLResourcesDeleteSQLContainerPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientBeginDeleteSQLContainerOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLContainer
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions) (SQLResourcesClientDeleteSQLContainerPollerResponse, error) {
 	resp, err := client.deleteSQLContainer(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLContainerPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLContainerPollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLContainerPollerResponse{
+	result := SQLResourcesClientDeleteSQLContainerPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLContainer", "", resp, client.pl, client.deleteSQLContainerHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLContainer", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLContainerPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLContainerPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLContainerPoller{
+	result.Poller = &SQLResourcesClientDeleteSQLContainerPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLContainer - Deletes an existing Azure Cosmos DB SQL container.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginDeleteSQLContainerOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions) (*http.Response, error) {
 	req, err := client.deleteSQLContainerCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
 		return nil, err
@@ -657,13 +633,13 @@ func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLContainerHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLContainerCreateRequest creates the DeleteSQLContainer request.
-func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginDeleteSQLContainerOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -685,7 +661,7 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -695,41 +671,34 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// deleteSQLContainerHandleError handles the DeleteSQLContainer error response.
-func (client *SQLResourcesClient) deleteSQLContainerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteSQLDatabase - Deletes an existing Azure Cosmos DB SQL database.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginDeleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginDeleteSQLDatabaseOptions) (SQLResourcesDeleteSQLDatabasePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientBeginDeleteSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLDatabase
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (SQLResourcesClientDeleteSQLDatabasePollerResponse, error) {
 	resp, err := client.deleteSQLDatabase(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLDatabasePollerResponse{}, err
+		return SQLResourcesClientDeleteSQLDatabasePollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLDatabasePollerResponse{
+	result := SQLResourcesClientDeleteSQLDatabasePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLDatabase", "", resp, client.pl, client.deleteSQLDatabaseHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLDatabase", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLDatabasePollerResponse{}, err
+		return SQLResourcesClientDeleteSQLDatabasePollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLDatabasePoller{
+	result.Poller = &SQLResourcesClientDeleteSQLDatabasePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLDatabase - Deletes an existing Azure Cosmos DB SQL database.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginDeleteSQLDatabaseOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (*http.Response, error) {
 	req, err := client.deleteSQLDatabaseCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -739,13 +708,13 @@ func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLDatabaseHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLDatabaseCreateRequest creates the DeleteSQLDatabase request.
-func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginDeleteSQLDatabaseOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -763,7 +732,7 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -773,41 +742,34 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// deleteSQLDatabaseHandleError handles the DeleteSQLDatabase error response.
-func (client *SQLResourcesClient) deleteSQLDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteSQLRoleAssignment - Deletes an existing Azure Cosmos DB SQL Role Assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginDeleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesBeginDeleteSQLRoleAssignmentOptions) (SQLResourcesDeleteSQLRoleAssignmentPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The GUID for the Role Assignment.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLRoleAssignment
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse, error) {
 	resp, err := client.deleteSQLRoleAssignment(ctx, roleAssignmentID, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLRoleAssignmentPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLRoleAssignmentPollerResponse{
+	result := SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLRoleAssignment", "", resp, client.pl, client.deleteSQLRoleAssignmentHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLRoleAssignment", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLRoleAssignmentPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLRoleAssignmentPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLRoleAssignmentPoller{
+	result.Poller = &SQLResourcesClientDeleteSQLRoleAssignmentPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLRoleAssignment - Deletes an existing Azure Cosmos DB SQL Role Assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesBeginDeleteSQLRoleAssignmentOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (*http.Response, error) {
 	req, err := client.deleteSQLRoleAssignmentCreateRequest(ctx, roleAssignmentID, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
@@ -817,13 +779,13 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLRoleAssignmentHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLRoleAssignmentCreateRequest creates the DeleteSQLRoleAssignment request.
-func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesBeginDeleteSQLRoleAssignmentOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
 	if roleAssignmentID == "" {
 		return nil, errors.New("parameter roleAssignmentID cannot be empty")
@@ -841,7 +803,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -852,42 +814,34 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 	return req, nil
 }
 
-// deleteSQLRoleAssignmentHandleError handles the DeleteSQLRoleAssignment error response.
-func (client *SQLResourcesClient) deleteSQLRoleAssignmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteSQLRoleDefinition - Deletes an existing Azure Cosmos DB SQL Role Definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginDeleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesBeginDeleteSQLRoleDefinitionOptions) (SQLResourcesDeleteSQLRoleDefinitionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleDefinitionID - The GUID for the Role Definition.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLRoleDefinition
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse, error) {
 	resp, err := client.deleteSQLRoleDefinition(ctx, roleDefinitionID, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLRoleDefinitionPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLRoleDefinitionPollerResponse{
+	result := SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLRoleDefinition", "", resp, client.pl, client.deleteSQLRoleDefinitionHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLRoleDefinition", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLRoleDefinitionPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLRoleDefinitionPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLRoleDefinitionPoller{
+	result.Poller = &SQLResourcesClientDeleteSQLRoleDefinitionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLRoleDefinition - Deletes an existing Azure Cosmos DB SQL Role Definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesBeginDeleteSQLRoleDefinitionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (*http.Response, error) {
 	req, err := client.deleteSQLRoleDefinitionCreateRequest(ctx, roleDefinitionID, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
@@ -897,13 +851,13 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLRoleDefinitionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLRoleDefinitionCreateRequest creates the DeleteSQLRoleDefinition request.
-func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesBeginDeleteSQLRoleDefinitionOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -921,7 +875,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -932,42 +886,36 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 	return req, nil
 }
 
-// deleteSQLRoleDefinitionHandleError handles the DeleteSQLRoleDefinition error response.
-func (client *SQLResourcesClient) deleteSQLRoleDefinitionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDeleteSQLStoredProcedure - Deletes an existing Azure Cosmos DB SQL storedProcedure.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginDeleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesBeginDeleteSQLStoredProcedureOptions) (SQLResourcesDeleteSQLStoredProcedurePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// storedProcedureName - Cosmos DB storedProcedure name.
+// options - SQLResourcesClientBeginDeleteSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLStoredProcedure
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (SQLResourcesClientDeleteSQLStoredProcedurePollerResponse, error) {
 	resp, err := client.deleteSQLStoredProcedure(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLStoredProcedurePollerResponse{}, err
+		return SQLResourcesClientDeleteSQLStoredProcedurePollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLStoredProcedurePollerResponse{
+	result := SQLResourcesClientDeleteSQLStoredProcedurePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLStoredProcedure", "", resp, client.pl, client.deleteSQLStoredProcedureHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLStoredProcedure", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLStoredProcedurePollerResponse{}, err
+		return SQLResourcesClientDeleteSQLStoredProcedurePollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLStoredProcedurePoller{
+	result.Poller = &SQLResourcesClientDeleteSQLStoredProcedurePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLStoredProcedure - Deletes an existing Azure Cosmos DB SQL storedProcedure.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesBeginDeleteSQLStoredProcedureOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (*http.Response, error) {
 	req, err := client.deleteSQLStoredProcedureCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, options)
 	if err != nil {
 		return nil, err
@@ -977,13 +925,13 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLStoredProcedureHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLStoredProcedureCreateRequest creates the DeleteSQLStoredProcedure request.
-func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesBeginDeleteSQLStoredProcedureOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1009,7 +957,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 		return nil, errors.New("parameter storedProcedureName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storedProcedureName}", url.PathEscape(storedProcedureName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1019,41 +967,36 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 	return req, nil
 }
 
-// deleteSQLStoredProcedureHandleError handles the DeleteSQLStoredProcedure error response.
-func (client *SQLResourcesClient) deleteSQLStoredProcedureHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteSQLTrigger - Deletes an existing Azure Cosmos DB SQL trigger.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginDeleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesBeginDeleteSQLTriggerOptions) (SQLResourcesDeleteSQLTriggerPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// triggerName - Cosmos DB trigger name.
+// options - SQLResourcesClientBeginDeleteSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLTrigger
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions) (SQLResourcesClientDeleteSQLTriggerPollerResponse, error) {
 	resp, err := client.deleteSQLTrigger(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLTriggerPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLTriggerPollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLTriggerPollerResponse{
+	result := SQLResourcesClientDeleteSQLTriggerPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLTrigger", "", resp, client.pl, client.deleteSQLTriggerHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLTrigger", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLTriggerPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLTriggerPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLTriggerPoller{
+	result.Poller = &SQLResourcesClientDeleteSQLTriggerPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLTrigger - Deletes an existing Azure Cosmos DB SQL trigger.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesBeginDeleteSQLTriggerOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions) (*http.Response, error) {
 	req, err := client.deleteSQLTriggerCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, options)
 	if err != nil {
 		return nil, err
@@ -1063,13 +1006,13 @@ func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLTriggerHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLTriggerCreateRequest creates the DeleteSQLTrigger request.
-func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesBeginDeleteSQLTriggerOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1095,7 +1038,7 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1105,41 +1048,36 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteSQLTriggerHandleError handles the DeleteSQLTrigger error response.
-func (client *SQLResourcesClient) deleteSQLTriggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDeleteSQLUserDefinedFunction - Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginDeleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesBeginDeleteSQLUserDefinedFunctionOptions) (SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// userDefinedFunctionName - Cosmos DB userDefinedFunction name.
+// options - SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.BeginDeleteSQLUserDefinedFunction
+// method.
+func (client *SQLResourcesClient) BeginDeleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse, error) {
 	resp, err := client.deleteSQLUserDefinedFunction(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, options)
 	if err != nil {
-		return SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse{}, err
 	}
-	result := SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse{
+	result := SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLUserDefinedFunction", "", resp, client.pl, client.deleteSQLUserDefinedFunctionHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.DeleteSQLUserDefinedFunction", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesDeleteSQLUserDefinedFunctionPollerResponse{}, err
+		return SQLResourcesClientDeleteSQLUserDefinedFunctionPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesDeleteSQLUserDefinedFunctionPoller{
+	result.Poller = &SQLResourcesClientDeleteSQLUserDefinedFunctionPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteSQLUserDefinedFunction - Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesBeginDeleteSQLUserDefinedFunctionOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (*http.Response, error) {
 	req, err := client.deleteSQLUserDefinedFunctionCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, options)
 	if err != nil {
 		return nil, err
@@ -1149,13 +1087,13 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteSQLUserDefinedFunctionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteSQLUserDefinedFunctionCreateRequest creates the DeleteSQLUserDefinedFunction request.
-func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesBeginDeleteSQLUserDefinedFunctionOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1181,7 +1119,7 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx 
 		return nil, errors.New("parameter userDefinedFunctionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userDefinedFunctionName}", url.PathEscape(userDefinedFunctionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1191,37 +1129,31 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx 
 	return req, nil
 }
 
-// deleteSQLUserDefinedFunctionHandleError handles the DeleteSQLUserDefinedFunction error response.
-func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetSQLContainer - Gets the SQL container under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesGetSQLContainerOptions) (SQLResourcesGetSQLContainerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientGetSQLContainerOptions contains the optional parameters for the SQLResourcesClient.GetSQLContainer
+// method.
+func (client *SQLResourcesClient) GetSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientGetSQLContainerOptions) (SQLResourcesClientGetSQLContainerResponse, error) {
 	req, err := client.getSQLContainerCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesGetSQLContainerResponse{}, err
+		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLContainerResponse{}, err
+		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLContainerResponse{}, client.getSQLContainerHandleError(resp)
+		return SQLResourcesClientGetSQLContainerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLContainerHandleResponse(resp)
 }
 
 // getSQLContainerCreateRequest creates the GetSQLContainer request.
-func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesGetSQLContainerOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientGetSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1243,7 +1175,7 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1255,45 +1187,39 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 }
 
 // getSQLContainerHandleResponse handles the GetSQLContainer response.
-func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Response) (SQLResourcesGetSQLContainerResponse, error) {
-	result := SQLResourcesGetSQLContainerResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLContainerResponse, error) {
+	result := SQLResourcesClientGetSQLContainerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerGetResults); err != nil {
-		return SQLResourcesGetSQLContainerResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLContainerHandleError handles the GetSQLContainer error response.
-func (client *SQLResourcesClient) getSQLContainerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetSQLContainerThroughput - Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesGetSQLContainerThroughputOptions) (SQLResourcesGetSQLContainerThroughputResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientGetSQLContainerThroughputOptions contains the optional parameters for the SQLResourcesClient.GetSQLContainerThroughput
+// method.
+func (client *SQLResourcesClient) GetSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientGetSQLContainerThroughputOptions) (SQLResourcesClientGetSQLContainerThroughputResponse, error) {
 	req, err := client.getSQLContainerThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesGetSQLContainerThroughputResponse{}, err
+		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLContainerThroughputResponse{}, err
+		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLContainerThroughputResponse{}, client.getSQLContainerThroughputHandleError(resp)
+		return SQLResourcesClientGetSQLContainerThroughputResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLContainerThroughputHandleResponse(resp)
 }
 
 // getSQLContainerThroughputCreateRequest creates the GetSQLContainerThroughput request.
-func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesGetSQLContainerThroughputOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientGetSQLContainerThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1315,7 +1241,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1327,45 +1253,38 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 }
 
 // getSQLContainerThroughputHandleResponse handles the GetSQLContainerThroughput response.
-func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *http.Response) (SQLResourcesGetSQLContainerThroughputResponse, error) {
-	result := SQLResourcesGetSQLContainerThroughputResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLContainerThroughputResponse, error) {
+	result := SQLResourcesClientGetSQLContainerThroughputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
-		return SQLResourcesGetSQLContainerThroughputResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLContainerThroughputHandleError handles the GetSQLContainerThroughput error response.
-func (client *SQLResourcesClient) getSQLContainerThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetSQLDatabase - Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesGetSQLDatabaseOptions) (SQLResourcesGetSQLDatabaseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientGetSQLDatabaseOptions contains the optional parameters for the SQLResourcesClient.GetSQLDatabase
+// method.
+func (client *SQLResourcesClient) GetSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientGetSQLDatabaseOptions) (SQLResourcesClientGetSQLDatabaseResponse, error) {
 	req, err := client.getSQLDatabaseCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
-		return SQLResourcesGetSQLDatabaseResponse{}, err
+		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLDatabaseResponse{}, err
+		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLDatabaseResponse{}, client.getSQLDatabaseHandleError(resp)
+		return SQLResourcesClientGetSQLDatabaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLDatabaseHandleResponse(resp)
 }
 
 // getSQLDatabaseCreateRequest creates the GetSQLDatabase request.
-func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesGetSQLDatabaseOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientGetSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1383,7 +1302,7 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1395,45 +1314,39 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 }
 
 // getSQLDatabaseHandleResponse handles the GetSQLDatabase response.
-func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Response) (SQLResourcesGetSQLDatabaseResponse, error) {
-	result := SQLResourcesGetSQLDatabaseResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLDatabaseResponse, error) {
+	result := SQLResourcesClientGetSQLDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseGetResults); err != nil {
-		return SQLResourcesGetSQLDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLDatabaseHandleError handles the GetSQLDatabase error response.
-func (client *SQLResourcesClient) getSQLDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// GetSQLDatabaseThroughput - Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesGetSQLDatabaseThroughputOptions) (SQLResourcesGetSQLDatabaseThroughputResponse, error) {
+// GetSQLDatabaseThroughput - Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account
+// with the provided name.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientGetSQLDatabaseThroughputOptions contains the optional parameters for the SQLResourcesClient.GetSQLDatabaseThroughput
+// method.
+func (client *SQLResourcesClient) GetSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientGetSQLDatabaseThroughputOptions) (SQLResourcesClientGetSQLDatabaseThroughputResponse, error) {
 	req, err := client.getSQLDatabaseThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
-		return SQLResourcesGetSQLDatabaseThroughputResponse{}, err
+		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLDatabaseThroughputResponse{}, err
+		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLDatabaseThroughputResponse{}, client.getSQLDatabaseThroughputHandleError(resp)
+		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLDatabaseThroughputHandleResponse(resp)
 }
 
 // getSQLDatabaseThroughputCreateRequest creates the GetSQLDatabaseThroughput request.
-func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesGetSQLDatabaseThroughputOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientGetSQLDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1451,7 +1364,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1463,45 +1376,38 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 }
 
 // getSQLDatabaseThroughputHandleResponse handles the GetSQLDatabaseThroughput response.
-func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *http.Response) (SQLResourcesGetSQLDatabaseThroughputResponse, error) {
-	result := SQLResourcesGetSQLDatabaseThroughputResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLDatabaseThroughputResponse, error) {
+	result := SQLResourcesClientGetSQLDatabaseThroughputResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
-		return SQLResourcesGetSQLDatabaseThroughputResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLDatabaseThroughputHandleError handles the GetSQLDatabaseThroughput error response.
-func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetSQLRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesGetSQLRoleAssignmentOptions) (SQLResourcesGetSQLRoleAssignmentResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleAssignmentID - The GUID for the Role Assignment.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientGetSQLRoleAssignmentOptions contains the optional parameters for the SQLResourcesClient.GetSQLRoleAssignment
+// method.
+func (client *SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientGetSQLRoleAssignmentOptions) (SQLResourcesClientGetSQLRoleAssignmentResponse, error) {
 	req, err := client.getSQLRoleAssignmentCreateRequest(ctx, roleAssignmentID, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesGetSQLRoleAssignmentResponse{}, err
+		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLRoleAssignmentResponse{}, err
+		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLRoleAssignmentResponse{}, client.getSQLRoleAssignmentHandleError(resp)
+		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLRoleAssignmentHandleResponse(resp)
 }
 
 // getSQLRoleAssignmentCreateRequest creates the GetSQLRoleAssignment request.
-func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesGetSQLRoleAssignmentOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientGetSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
 	if roleAssignmentID == "" {
 		return nil, errors.New("parameter roleAssignmentID cannot be empty")
@@ -1519,7 +1425,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1531,46 +1437,38 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 }
 
 // getSQLRoleAssignmentHandleResponse handles the GetSQLRoleAssignment response.
-func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.Response) (SQLResourcesGetSQLRoleAssignmentResponse, error) {
-	result := SQLResourcesGetSQLRoleAssignmentResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLRoleAssignmentResponse, error) {
+	result := SQLResourcesClientGetSQLRoleAssignmentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentGetResults); err != nil {
-		return SQLResourcesGetSQLRoleAssignmentResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLRoleAssignmentHandleError handles the GetSQLRoleAssignment error response.
-func (client *SQLResourcesClient) getSQLRoleAssignmentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSQLRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesGetSQLRoleDefinitionOptions) (SQLResourcesGetSQLRoleDefinitionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// roleDefinitionID - The GUID for the Role Definition.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientGetSQLRoleDefinitionOptions contains the optional parameters for the SQLResourcesClient.GetSQLRoleDefinition
+// method.
+func (client *SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientGetSQLRoleDefinitionOptions) (SQLResourcesClientGetSQLRoleDefinitionResponse, error) {
 	req, err := client.getSQLRoleDefinitionCreateRequest(ctx, roleDefinitionID, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesGetSQLRoleDefinitionResponse{}, err
+		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLRoleDefinitionResponse{}, err
+		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLRoleDefinitionResponse{}, client.getSQLRoleDefinitionHandleError(resp)
+		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLRoleDefinitionHandleResponse(resp)
 }
 
 // getSQLRoleDefinitionCreateRequest creates the GetSQLRoleDefinition request.
-func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesGetSQLRoleDefinitionOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientGetSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -1588,7 +1486,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1600,46 +1498,40 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 }
 
 // getSQLRoleDefinitionHandleResponse handles the GetSQLRoleDefinition response.
-func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.Response) (SQLResourcesGetSQLRoleDefinitionResponse, error) {
-	result := SQLResourcesGetSQLRoleDefinitionResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLRoleDefinitionResponse, error) {
+	result := SQLResourcesClientGetSQLRoleDefinitionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionGetResults); err != nil {
-		return SQLResourcesGetSQLRoleDefinitionResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLRoleDefinitionHandleError handles the GetSQLRoleDefinition error response.
-func (client *SQLResourcesClient) getSQLRoleDefinitionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetSQLStoredProcedure - Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesGetSQLStoredProcedureOptions) (SQLResourcesGetSQLStoredProcedureResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// storedProcedureName - Cosmos DB storedProcedure name.
+// options - SQLResourcesClientGetSQLStoredProcedureOptions contains the optional parameters for the SQLResourcesClient.GetSQLStoredProcedure
+// method.
+func (client *SQLResourcesClient) GetSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientGetSQLStoredProcedureOptions) (SQLResourcesClientGetSQLStoredProcedureResponse, error) {
 	req, err := client.getSQLStoredProcedureCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, options)
 	if err != nil {
-		return SQLResourcesGetSQLStoredProcedureResponse{}, err
+		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLStoredProcedureResponse{}, err
+		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLStoredProcedureResponse{}, client.getSQLStoredProcedureHandleError(resp)
+		return SQLResourcesClientGetSQLStoredProcedureResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLStoredProcedureHandleResponse(resp)
 }
 
 // getSQLStoredProcedureCreateRequest creates the GetSQLStoredProcedure request.
-func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesGetSQLStoredProcedureOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientGetSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1665,7 +1557,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 		return nil, errors.New("parameter storedProcedureName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storedProcedureName}", url.PathEscape(storedProcedureName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1677,45 +1569,40 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 }
 
 // getSQLStoredProcedureHandleResponse handles the GetSQLStoredProcedure response.
-func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http.Response) (SQLResourcesGetSQLStoredProcedureResponse, error) {
-	result := SQLResourcesGetSQLStoredProcedureResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLStoredProcedureResponse, error) {
+	result := SQLResourcesClientGetSQLStoredProcedureResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureGetResults); err != nil {
-		return SQLResourcesGetSQLStoredProcedureResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLStoredProcedureHandleError handles the GetSQLStoredProcedure error response.
-func (client *SQLResourcesClient) getSQLStoredProcedureHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetSQLTrigger - Gets the SQL trigger under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesGetSQLTriggerOptions) (SQLResourcesGetSQLTriggerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// triggerName - Cosmos DB trigger name.
+// options - SQLResourcesClientGetSQLTriggerOptions contains the optional parameters for the SQLResourcesClient.GetSQLTrigger
+// method.
+func (client *SQLResourcesClient) GetSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientGetSQLTriggerOptions) (SQLResourcesClientGetSQLTriggerResponse, error) {
 	req, err := client.getSQLTriggerCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, triggerName, options)
 	if err != nil {
-		return SQLResourcesGetSQLTriggerResponse{}, err
+		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLTriggerResponse{}, err
+		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLTriggerResponse{}, client.getSQLTriggerHandleError(resp)
+		return SQLResourcesClientGetSQLTriggerResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLTriggerHandleResponse(resp)
 }
 
 // getSQLTriggerCreateRequest creates the GetSQLTrigger request.
-func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesGetSQLTriggerOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientGetSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1741,7 +1628,7 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1753,45 +1640,40 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 }
 
 // getSQLTriggerHandleResponse handles the GetSQLTrigger response.
-func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Response) (SQLResourcesGetSQLTriggerResponse, error) {
-	result := SQLResourcesGetSQLTriggerResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLTriggerResponse, error) {
+	result := SQLResourcesClientGetSQLTriggerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerGetResults); err != nil {
-		return SQLResourcesGetSQLTriggerResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLTriggerHandleError handles the GetSQLTrigger error response.
-func (client *SQLResourcesClient) getSQLTriggerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // GetSQLUserDefinedFunction - Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) GetSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesGetSQLUserDefinedFunctionOptions) (SQLResourcesGetSQLUserDefinedFunctionResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// userDefinedFunctionName - Cosmos DB userDefinedFunction name.
+// options - SQLResourcesClientGetSQLUserDefinedFunctionOptions contains the optional parameters for the SQLResourcesClient.GetSQLUserDefinedFunction
+// method.
+func (client *SQLResourcesClient) GetSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientGetSQLUserDefinedFunctionOptions) (SQLResourcesClientGetSQLUserDefinedFunctionResponse, error) {
 	req, err := client.getSQLUserDefinedFunctionCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, options)
 	if err != nil {
-		return SQLResourcesGetSQLUserDefinedFunctionResponse{}, err
+		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesGetSQLUserDefinedFunctionResponse{}, err
+		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesGetSQLUserDefinedFunctionResponse{}, client.getSQLUserDefinedFunctionHandleError(resp)
+		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSQLUserDefinedFunctionHandleResponse(resp)
 }
 
 // getSQLUserDefinedFunctionCreateRequest creates the GetSQLUserDefinedFunction request.
-func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesGetSQLUserDefinedFunctionOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientGetSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1817,7 +1699,7 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 		return nil, errors.New("parameter userDefinedFunctionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userDefinedFunctionName}", url.PathEscape(userDefinedFunctionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1829,45 +1711,38 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 }
 
 // getSQLUserDefinedFunctionHandleResponse handles the GetSQLUserDefinedFunction response.
-func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *http.Response) (SQLResourcesGetSQLUserDefinedFunctionResponse, error) {
-	result := SQLResourcesGetSQLUserDefinedFunctionResponse{RawResponse: resp}
+func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *http.Response) (SQLResourcesClientGetSQLUserDefinedFunctionResponse, error) {
+	result := SQLResourcesClientGetSQLUserDefinedFunctionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionGetResults); err != nil {
-		return SQLResourcesGetSQLUserDefinedFunctionResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
 	return result, nil
 }
 
-// getSQLUserDefinedFunctionHandleError handles the GetSQLUserDefinedFunction error response.
-func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListSQLContainers - Lists the SQL container under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) ListSQLContainers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesListSQLContainersOptions) (SQLResourcesListSQLContainersResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientListSQLContainersOptions contains the optional parameters for the SQLResourcesClient.ListSQLContainers
+// method.
+func (client *SQLResourcesClient) ListSQLContainers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions) (SQLResourcesClientListSQLContainersResponse, error) {
 	req, err := client.listSQLContainersCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
-		return SQLResourcesListSQLContainersResponse{}, err
+		return SQLResourcesClientListSQLContainersResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLContainersResponse{}, err
+		return SQLResourcesClientListSQLContainersResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLContainersResponse{}, client.listSQLContainersHandleError(resp)
+		return SQLResourcesClientListSQLContainersResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLContainersHandleResponse(resp)
 }
 
 // listSQLContainersCreateRequest creates the ListSQLContainers request.
-func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesListSQLContainersOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1885,7 +1760,7 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1897,45 +1772,37 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 }
 
 // listSQLContainersHandleResponse handles the ListSQLContainers response.
-func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Response) (SQLResourcesListSQLContainersResponse, error) {
-	result := SQLResourcesListSQLContainersResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Response) (SQLResourcesClientListSQLContainersResponse, error) {
+	result := SQLResourcesClientListSQLContainersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLContainerListResult); err != nil {
-		return SQLResourcesListSQLContainersResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLContainersResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLContainersHandleError handles the ListSQLContainers error response.
-func (client *SQLResourcesClient) listSQLContainersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListSQLDatabases - Lists the SQL databases under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) ListSQLDatabases(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesListSQLDatabasesOptions) (SQLResourcesListSQLDatabasesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientListSQLDatabasesOptions contains the optional parameters for the SQLResourcesClient.ListSQLDatabases
+// method.
+func (client *SQLResourcesClient) ListSQLDatabases(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions) (SQLResourcesClientListSQLDatabasesResponse, error) {
 	req, err := client.listSQLDatabasesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesListSQLDatabasesResponse{}, err
+		return SQLResourcesClientListSQLDatabasesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLDatabasesResponse{}, err
+		return SQLResourcesClientListSQLDatabasesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLDatabasesResponse{}, client.listSQLDatabasesHandleError(resp)
+		return SQLResourcesClientListSQLDatabasesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLDatabasesHandleResponse(resp)
 }
 
 // listSQLDatabasesCreateRequest creates the ListSQLDatabases request.
-func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesListSQLDatabasesOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1949,7 +1816,7 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1961,45 +1828,37 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 }
 
 // listSQLDatabasesHandleResponse handles the ListSQLDatabases response.
-func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Response) (SQLResourcesListSQLDatabasesResponse, error) {
-	result := SQLResourcesListSQLDatabasesResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Response) (SQLResourcesClientListSQLDatabasesResponse, error) {
+	result := SQLResourcesClientListSQLDatabasesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLDatabaseListResult); err != nil {
-		return SQLResourcesListSQLDatabasesResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLDatabasesResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLDatabasesHandleError handles the ListSQLDatabases error response.
-func (client *SQLResourcesClient) listSQLDatabasesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListSQLRoleAssignments - Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) ListSQLRoleAssignments(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesListSQLRoleAssignmentsOptions) (SQLResourcesListSQLRoleAssignmentsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientListSQLRoleAssignmentsOptions contains the optional parameters for the SQLResourcesClient.ListSQLRoleAssignments
+// method.
+func (client *SQLResourcesClient) ListSQLRoleAssignments(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
 	req, err := client.listSQLRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesListSQLRoleAssignmentsResponse{}, err
+		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLRoleAssignmentsResponse{}, err
+		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLRoleAssignmentsResponse{}, client.listSQLRoleAssignmentsHandleError(resp)
+		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLRoleAssignmentsHandleResponse(resp)
 }
 
 // listSQLRoleAssignmentsCreateRequest creates the ListSQLRoleAssignments request.
-func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesListSQLRoleAssignmentsOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2013,7 +1872,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2025,46 +1884,37 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 }
 
 // listSQLRoleAssignmentsHandleResponse handles the ListSQLRoleAssignments response.
-func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *http.Response) (SQLResourcesListSQLRoleAssignmentsResponse, error) {
-	result := SQLResourcesListSQLRoleAssignmentsResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLRoleAssignmentsResponse, error) {
+	result := SQLResourcesClientListSQLRoleAssignmentsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleAssignmentListResult); err != nil {
-		return SQLResourcesListSQLRoleAssignmentsResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLRoleAssignmentsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLRoleAssignmentsHandleError handles the ListSQLRoleAssignments error response.
-func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSQLRoleDefinitions - Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) ListSQLRoleDefinitions(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesListSQLRoleDefinitionsOptions) (SQLResourcesListSQLRoleDefinitionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// options - SQLResourcesClientListSQLRoleDefinitionsOptions contains the optional parameters for the SQLResourcesClient.ListSQLRoleDefinitions
+// method.
+func (client *SQLResourcesClient) ListSQLRoleDefinitions(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
 	req, err := client.listSQLRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return SQLResourcesListSQLRoleDefinitionsResponse{}, err
+		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLRoleDefinitionsResponse{}, err
+		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLRoleDefinitionsResponse{}, client.listSQLRoleDefinitionsHandleError(resp)
+		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLRoleDefinitionsHandleResponse(resp)
 }
 
 // listSQLRoleDefinitionsCreateRequest creates the ListSQLRoleDefinitions request.
-func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesListSQLRoleDefinitionsOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2078,7 +1928,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2090,46 +1940,39 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 }
 
 // listSQLRoleDefinitionsHandleResponse handles the ListSQLRoleDefinitions response.
-func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *http.Response) (SQLResourcesListSQLRoleDefinitionsResponse, error) {
-	result := SQLResourcesListSQLRoleDefinitionsResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLRoleDefinitionsResponse, error) {
+	result := SQLResourcesClientListSQLRoleDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLRoleDefinitionListResult); err != nil {
-		return SQLResourcesListSQLRoleDefinitionsResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLRoleDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLRoleDefinitionsHandleError handles the ListSQLRoleDefinitions error response.
-func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSQLStoredProcedures - Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) ListSQLStoredProcedures(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesListSQLStoredProceduresOptions) (SQLResourcesListSQLStoredProceduresResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientListSQLStoredProceduresOptions contains the optional parameters for the SQLResourcesClient.ListSQLStoredProcedures
+// method.
+func (client *SQLResourcesClient) ListSQLStoredProcedures(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
 	req, err := client.listSQLStoredProceduresCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesListSQLStoredProceduresResponse{}, err
+		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLStoredProceduresResponse{}, err
+		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLStoredProceduresResponse{}, client.listSQLStoredProceduresHandleError(resp)
+		return SQLResourcesClientListSQLStoredProceduresResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLStoredProceduresHandleResponse(resp)
 }
 
 // listSQLStoredProceduresCreateRequest creates the ListSQLStoredProcedures request.
-func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesListSQLStoredProceduresOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2151,7 +1994,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2163,46 +2006,39 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 }
 
 // listSQLStoredProceduresHandleResponse handles the ListSQLStoredProcedures response.
-func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *http.Response) (SQLResourcesListSQLStoredProceduresResponse, error) {
-	result := SQLResourcesListSQLStoredProceduresResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *http.Response) (SQLResourcesClientListSQLStoredProceduresResponse, error) {
+	result := SQLResourcesClientListSQLStoredProceduresResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLStoredProcedureListResult); err != nil {
-		return SQLResourcesListSQLStoredProceduresResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLStoredProceduresResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLStoredProceduresHandleError handles the ListSQLStoredProcedures error response.
-func (client *SQLResourcesClient) listSQLStoredProceduresHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListSQLTriggers - Lists the SQL trigger under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) ListSQLTriggers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesListSQLTriggersOptions) (SQLResourcesListSQLTriggersResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientListSQLTriggersOptions contains the optional parameters for the SQLResourcesClient.ListSQLTriggers
+// method.
+func (client *SQLResourcesClient) ListSQLTriggers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions) (SQLResourcesClientListSQLTriggersResponse, error) {
 	req, err := client.listSQLTriggersCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesListSQLTriggersResponse{}, err
+		return SQLResourcesClientListSQLTriggersResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLTriggersResponse{}, err
+		return SQLResourcesClientListSQLTriggersResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLTriggersResponse{}, client.listSQLTriggersHandleError(resp)
+		return SQLResourcesClientListSQLTriggersResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLTriggersHandleResponse(resp)
 }
 
 // listSQLTriggersCreateRequest creates the ListSQLTriggers request.
-func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesListSQLTriggersOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2224,7 +2060,7 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2236,45 +2072,39 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 }
 
 // listSQLTriggersHandleResponse handles the ListSQLTriggers response.
-func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Response) (SQLResourcesListSQLTriggersResponse, error) {
-	result := SQLResourcesListSQLTriggersResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Response) (SQLResourcesClientListSQLTriggersResponse, error) {
+	result := SQLResourcesClientListSQLTriggersResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLTriggerListResult); err != nil {
-		return SQLResourcesListSQLTriggersResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLTriggersResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLTriggersHandleError handles the ListSQLTriggers error response.
-func (client *SQLResourcesClient) listSQLTriggersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListSQLUserDefinedFunctions - Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) ListSQLUserDefinedFunctions(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesListSQLUserDefinedFunctionsOptions) (SQLResourcesListSQLUserDefinedFunctionsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientListSQLUserDefinedFunctionsOptions contains the optional parameters for the SQLResourcesClient.ListSQLUserDefinedFunctions
+// method.
+func (client *SQLResourcesClient) ListSQLUserDefinedFunctions(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
 	req, err := client.listSQLUserDefinedFunctionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesListSQLUserDefinedFunctionsResponse{}, err
+		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLResourcesListSQLUserDefinedFunctionsResponse{}, err
+		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLResourcesListSQLUserDefinedFunctionsResponse{}, client.listSQLUserDefinedFunctionsHandleError(resp)
+		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSQLUserDefinedFunctionsHandleResponse(resp)
 }
 
 // listSQLUserDefinedFunctionsCreateRequest creates the ListSQLUserDefinedFunctions request.
-func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesListSQLUserDefinedFunctionsOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2296,7 +2126,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2308,49 +2138,43 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 }
 
 // listSQLUserDefinedFunctionsHandleResponse handles the ListSQLUserDefinedFunctions response.
-func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp *http.Response) (SQLResourcesListSQLUserDefinedFunctionsResponse, error) {
-	result := SQLResourcesListSQLUserDefinedFunctionsResponse{RawResponse: resp}
+func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp *http.Response) (SQLResourcesClientListSQLUserDefinedFunctionsResponse, error) {
+	result := SQLResourcesClientListSQLUserDefinedFunctionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLUserDefinedFunctionListResult); err != nil {
-		return SQLResourcesListSQLUserDefinedFunctionsResponse{}, runtime.NewResponseError(err, resp)
+		return SQLResourcesClientListSQLUserDefinedFunctionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSQLUserDefinedFunctionsHandleError handles the ListSQLUserDefinedFunctions error response.
-func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginMigrateSQLContainerToAutoscale - Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginMigrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginMigrateSQLContainerToAutoscaleOptions) (SQLResourcesMigrateSQLContainerToAutoscalePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLContainerToAutoscale
+// method.
+func (client *SQLResourcesClient) BeginMigrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse, error) {
 	resp, err := client.migrateSQLContainerToAutoscale(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesMigrateSQLContainerToAutoscalePollerResponse{}, err
+		return SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse{}, err
 	}
-	result := SQLResourcesMigrateSQLContainerToAutoscalePollerResponse{
+	result := SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLContainerToAutoscale", "", resp, client.pl, client.migrateSQLContainerToAutoscaleHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLContainerToAutoscale", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesMigrateSQLContainerToAutoscalePollerResponse{}, err
+		return SQLResourcesClientMigrateSQLContainerToAutoscalePollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesMigrateSQLContainerToAutoscalePoller{
+	result.Poller = &SQLResourcesClientMigrateSQLContainerToAutoscalePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateSQLContainerToAutoscale - Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginMigrateSQLContainerToAutoscaleOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (*http.Response, error) {
 	req, err := client.migrateSQLContainerToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
 		return nil, err
@@ -2360,13 +2184,13 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateSQLContainerToAutoscaleHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateSQLContainerToAutoscaleCreateRequest creates the MigrateSQLContainerToAutoscale request.
-func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginMigrateSQLContainerToAutoscaleOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2388,7 +2212,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2399,42 +2223,35 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 	return req, nil
 }
 
-// migrateSQLContainerToAutoscaleHandleError handles the MigrateSQLContainerToAutoscale error response.
-func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginMigrateSQLContainerToManualThroughput - Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginMigrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginMigrateSQLContainerToManualThroughputOptions) (SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// options - SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions contains the optional parameters for the
+// SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput method.
+func (client *SQLResourcesClient) BeginMigrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse, error) {
 	resp, err := client.migrateSQLContainerToManualThroughput(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
-		return SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse{}, err
+		return SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse{}, err
 	}
-	result := SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse{
+	result := SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLContainerToManualThroughput", "", resp, client.pl, client.migrateSQLContainerToManualThroughputHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLContainerToManualThroughput", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesMigrateSQLContainerToManualThroughputPollerResponse{}, err
+		return SQLResourcesClientMigrateSQLContainerToManualThroughputPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesMigrateSQLContainerToManualThroughputPoller{
+	result.Poller = &SQLResourcesClientMigrateSQLContainerToManualThroughputPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateSQLContainerToManualThroughput - Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginMigrateSQLContainerToManualThroughputOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (*http.Response, error) {
 	req, err := client.migrateSQLContainerToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, options)
 	if err != nil {
 		return nil, err
@@ -2444,13 +2261,13 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateSQLContainerToManualThroughputHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateSQLContainerToManualThroughputCreateRequest creates the MigrateSQLContainerToManualThroughput request.
-func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesBeginMigrateSQLContainerToManualThroughputOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2472,7 +2289,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2483,42 +2300,34 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 	return req, nil
 }
 
-// migrateSQLContainerToManualThroughputHandleError handles the MigrateSQLContainerToManualThroughput error response.
-func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginMigrateSQLDatabaseToAutoscale - Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginMigrateSQLDatabaseToAutoscaleOptions) (SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale
+// method.
+func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse, error) {
 	resp, err := client.migrateSQLDatabaseToAutoscale(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
-		return SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse{}, err
+		return SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse{}, err
 	}
-	result := SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse{
+	result := SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLDatabaseToAutoscale", "", resp, client.pl, client.migrateSQLDatabaseToAutoscaleHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLDatabaseToAutoscale", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesMigrateSQLDatabaseToAutoscalePollerResponse{}, err
+		return SQLResourcesClientMigrateSQLDatabaseToAutoscalePollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesMigrateSQLDatabaseToAutoscalePoller{
+	result.Poller = &SQLResourcesClientMigrateSQLDatabaseToAutoscalePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateSQLDatabaseToAutoscale - Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginMigrateSQLDatabaseToAutoscaleOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (*http.Response, error) {
 	req, err := client.migrateSQLDatabaseToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -2528,13 +2337,13 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateSQLDatabaseToAutoscaleHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateSQLDatabaseToAutoscaleCreateRequest creates the MigrateSQLDatabaseToAutoscale request.
-func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginMigrateSQLDatabaseToAutoscaleOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2552,7 +2361,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2563,42 +2372,34 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 	return req, nil
 }
 
-// migrateSQLDatabaseToAutoscaleHandleError handles the MigrateSQLDatabaseToAutoscale error response.
-func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginMigrateSQLDatabaseToManualThroughput - Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginMigrateSQLDatabaseToManualThroughputOptions) (SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// options - SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput
+// method.
+func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse, error) {
 	resp, err := client.migrateSQLDatabaseToManualThroughput(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
-		return SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse{}, err
+		return SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse{}, err
 	}
-	result := SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse{
+	result := SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLDatabaseToManualThroughput", "", resp, client.pl, client.migrateSQLDatabaseToManualThroughputHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.MigrateSQLDatabaseToManualThroughput", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesMigrateSQLDatabaseToManualThroughputPollerResponse{}, err
+		return SQLResourcesClientMigrateSQLDatabaseToManualThroughputPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesMigrateSQLDatabaseToManualThroughputPoller{
+	result.Poller = &SQLResourcesClientMigrateSQLDatabaseToManualThroughputPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateSQLDatabaseToManualThroughput - Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginMigrateSQLDatabaseToManualThroughputOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (*http.Response, error) {
 	req, err := client.migrateSQLDatabaseToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -2608,13 +2409,13 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.migrateSQLDatabaseToManualThroughputHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // migrateSQLDatabaseToManualThroughputCreateRequest creates the MigrateSQLDatabaseToManualThroughput request.
-func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesBeginMigrateSQLDatabaseToManualThroughputOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2632,7 +2433,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2643,42 +2444,36 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 	return req, nil
 }
 
-// migrateSQLDatabaseToManualThroughputHandleError handles the MigrateSQLDatabaseToManualThroughput error response.
-func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a container resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesBeginRetrieveContinuousBackupInformationOptions) (SQLResourcesRetrieveContinuousBackupInformationPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// location - The name of the continuous backup restore location.
+// options - SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the SQLResourcesClient.BeginRetrieveContinuousBackupInformation
+// method.
+func (client *SQLResourcesClient) BeginRetrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse, error) {
 	resp, err := client.retrieveContinuousBackupInformation(ctx, resourceGroupName, accountName, databaseName, containerName, location, options)
 	if err != nil {
-		return SQLResourcesRetrieveContinuousBackupInformationPollerResponse{}, err
+		return SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse{}, err
 	}
-	result := SQLResourcesRetrieveContinuousBackupInformationPollerResponse{
+	result := SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.RetrieveContinuousBackupInformation", "location", resp, client.pl, client.retrieveContinuousBackupInformationHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.RetrieveContinuousBackupInformation", "location", resp, client.pl)
 	if err != nil {
-		return SQLResourcesRetrieveContinuousBackupInformationPollerResponse{}, err
+		return SQLResourcesClientRetrieveContinuousBackupInformationPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesRetrieveContinuousBackupInformationPoller{
+	result.Poller = &SQLResourcesClientRetrieveContinuousBackupInformationPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a container resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
 	req, err := client.retrieveContinuousBackupInformationCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, location, options)
 	if err != nil {
 		return nil, err
@@ -2688,13 +2483,13 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.retrieveContinuousBackupInformationHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // retrieveContinuousBackupInformationCreateRequest creates the RetrieveContinuousBackupInformation request.
-func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/retrieveContinuousBackupInformation"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2716,7 +2511,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2727,42 +2522,36 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 	return req, runtime.MarshalAsJSON(req, location)
 }
 
-// retrieveContinuousBackupInformationHandleError handles the RetrieveContinuousBackupInformation error response.
-func (client *SQLResourcesClient) retrieveContinuousBackupInformationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdateSQLContainerThroughput - Update RUs per second of an Azure Cosmos DB SQL container
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginUpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesBeginUpdateSQLContainerThroughputOptions) (SQLResourcesUpdateSQLContainerThroughputPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// containerName - Cosmos DB container name.
+// updateThroughputParameters - The parameters to provide for the RUs per second of the current SQL container.
+// options - SQLResourcesClientBeginUpdateSQLContainerThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginUpdateSQLContainerThroughput
+// method.
+func (client *SQLResourcesClient) BeginUpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (SQLResourcesClientUpdateSQLContainerThroughputPollerResponse, error) {
 	resp, err := client.updateSQLContainerThroughput(ctx, resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, options)
 	if err != nil {
-		return SQLResourcesUpdateSQLContainerThroughputPollerResponse{}, err
+		return SQLResourcesClientUpdateSQLContainerThroughputPollerResponse{}, err
 	}
-	result := SQLResourcesUpdateSQLContainerThroughputPollerResponse{
+	result := SQLResourcesClientUpdateSQLContainerThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.UpdateSQLContainerThroughput", "", resp, client.pl, client.updateSQLContainerThroughputHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.UpdateSQLContainerThroughput", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesUpdateSQLContainerThroughputPollerResponse{}, err
+		return SQLResourcesClientUpdateSQLContainerThroughputPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesUpdateSQLContainerThroughputPoller{
+	result.Poller = &SQLResourcesClientUpdateSQLContainerThroughputPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdateSQLContainerThroughput - Update RUs per second of an Azure Cosmos DB SQL container
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesBeginUpdateSQLContainerThroughputOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (*http.Response, error) {
 	req, err := client.updateSQLContainerThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, options)
 	if err != nil {
 		return nil, err
@@ -2772,13 +2561,13 @@ func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateSQLContainerThroughputHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateSQLContainerThroughputCreateRequest creates the UpdateSQLContainerThroughput request.
-func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesBeginUpdateSQLContainerThroughputOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2800,7 +2589,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2811,41 +2600,35 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
 }
 
-// updateSQLContainerThroughputHandleError handles the UpdateSQLContainerThroughput error response.
-func (client *SQLResourcesClient) updateSQLContainerThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdateSQLDatabaseThroughput - Update RUs per second of an Azure Cosmos DB SQL database
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) BeginUpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesBeginUpdateSQLDatabaseThroughputOptions) (SQLResourcesUpdateSQLDatabaseThroughputPollerResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// accountName - Cosmos DB database account name.
+// databaseName - Cosmos DB database name.
+// updateThroughputParameters - The parameters to provide for the RUs per second of the current SQL database.
+// options - SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginUpdateSQLDatabaseThroughput
+// method.
+func (client *SQLResourcesClient) BeginUpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse, error) {
 	resp, err := client.updateSQLDatabaseThroughput(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
 	if err != nil {
-		return SQLResourcesUpdateSQLDatabaseThroughputPollerResponse{}, err
+		return SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse{}, err
 	}
-	result := SQLResourcesUpdateSQLDatabaseThroughputPollerResponse{
+	result := SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("SQLResourcesClient.UpdateSQLDatabaseThroughput", "", resp, client.pl, client.updateSQLDatabaseThroughputHandleError)
+	pt, err := armruntime.NewPoller("SQLResourcesClient.UpdateSQLDatabaseThroughput", "", resp, client.pl)
 	if err != nil {
-		return SQLResourcesUpdateSQLDatabaseThroughputPollerResponse{}, err
+		return SQLResourcesClientUpdateSQLDatabaseThroughputPollerResponse{}, err
 	}
-	result.Poller = &SQLResourcesUpdateSQLDatabaseThroughputPoller{
+	result.Poller = &SQLResourcesClientUpdateSQLDatabaseThroughputPoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdateSQLDatabaseThroughput - Update RUs per second of an Azure Cosmos DB SQL database
-// If the operation fails it returns a generic error.
-func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesBeginUpdateSQLDatabaseThroughputOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (*http.Response, error) {
 	req, err := client.updateSQLDatabaseThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
 	if err != nil {
 		return nil, err
@@ -2855,13 +2638,13 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateSQLDatabaseThroughputHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateSQLDatabaseThroughputCreateRequest creates the UpdateSQLDatabaseThroughput request.
-func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesBeginUpdateSQLDatabaseThroughputOptions) (*policy.Request, error) {
+func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -2879,7 +2662,7 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx c
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2888,16 +2671,4 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx c
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
-}
-
-// updateSQLDatabaseThroughputHandleError handles the UpdateSQLDatabaseThroughput error response.
-func (client *SQLResourcesClient) updateSQLDatabaseThroughputHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

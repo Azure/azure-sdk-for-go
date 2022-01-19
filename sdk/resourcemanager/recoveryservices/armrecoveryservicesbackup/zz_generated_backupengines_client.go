@@ -11,7 +11,6 @@ package armrecoveryservicesbackup
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,42 +24,54 @@ import (
 // BackupEnginesClient contains the methods for the BackupEngines group.
 // Don't use this type directly, use NewBackupEnginesClient() instead.
 type BackupEnginesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewBackupEnginesClient creates a new instance of BackupEnginesClient with the specified values.
+// subscriptionID - The subscription Id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupEnginesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &BackupEnginesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &BackupEnginesClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
 // Get - Returns backup management server registered to Recovery Services Vault.
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesGetOptions) (BackupEnginesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// backupEngineName - Name of the backup management server.
+// options - BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
+func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesClientGetOptions) (BackupEnginesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, backupEngineName, options)
 	if err != nil {
-		return BackupEnginesGetResponse{}, err
+		return BackupEnginesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return BackupEnginesGetResponse{}, err
+		return BackupEnginesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return BackupEnginesGetResponse{}, client.getHandleError(resp)
+		return BackupEnginesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesGetOptions) (*policy.Request, error) {
+func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEngines/{backupEngineName}"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -78,12 +89,12 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 		return nil, errors.New("parameter backupEngineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{backupEngineName}", url.PathEscape(backupEngineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -96,43 +107,33 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (BackupEnginesGetResponse, error) {
-	result := BackupEnginesGetResponse{RawResponse: resp}
+func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (BackupEnginesClientGetResponse, error) {
+	result := BackupEnginesClientGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupEngineBaseResource); err != nil {
-		return BackupEnginesGetResponse{}, runtime.NewResponseError(err, resp)
+		return BackupEnginesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *BackupEnginesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-// If the operation fails it returns the *CloudError error type.
-func (client *BackupEnginesClient) List(vaultName string, resourceGroupName string, options *BackupEnginesListOptions) *BackupEnginesListPager {
-	return &BackupEnginesListPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// vaultName - The name of the recovery services vault.
+// resourceGroupName - The name of the resource group where the recovery services vault is present.
+// options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.List method.
+func (client *BackupEnginesClient) List(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) *BackupEnginesClientListPager {
+	return &BackupEnginesClientListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp BackupEnginesListResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp BackupEnginesClientListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.BackupEngineBaseResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupEnginesListOptions) (*policy.Request, error) {
+func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEngines"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -146,12 +147,12 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -164,23 +165,10 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupEnginesClient) listHandleResponse(resp *http.Response) (BackupEnginesListResponse, error) {
-	result := BackupEnginesListResponse{RawResponse: resp}
+func (client *BackupEnginesClient) listHandleResponse(resp *http.Response) (BackupEnginesClientListResponse, error) {
+	result := BackupEnginesClientListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupEngineBaseResourceList); err != nil {
-		return BackupEnginesListResponse{}, runtime.NewResponseError(err, resp)
+		return BackupEnginesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *BackupEnginesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

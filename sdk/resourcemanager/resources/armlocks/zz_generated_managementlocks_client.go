@@ -11,7 +11,6 @@ package armlocks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -25,44 +24,58 @@ import (
 // ManagementLocksClient contains the methods for the ManagementLocks group.
 // Don't use this type directly, use NewManagementLocksClient() instead.
 type ManagementLocksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagementLocksClient creates a new instance of ManagementLocksClient with the specified values.
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
 func NewManagementLocksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementLocksClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	if len(cp.Endpoint) == 0 {
+		cp.Endpoint = arm.AzurePublicCloud
 	}
-	return &ManagementLocksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	client := &ManagementLocksClient{
+		subscriptionID: subscriptionID,
+		host:           string(cp.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+	}
+	return client
 }
 
-// CreateOrUpdateAtResourceGroupLevel - When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
-// you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+// CreateOrUpdateAtResourceGroupLevel - When you apply a lock at a parent scope, all child resources inherit the same lock.
+// To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateAtResourceGroupLevelOptions) (ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group to lock.
+// lockName - The lock name. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
+// control characters.
+// parameters - The management lock parameters.
+// options - ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel
+// method.
+func (client *ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions) (ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse, error) {
 	req, err := client.createOrUpdateAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, lockName, parameters, options)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse{}, err
+		return ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse{}, err
+		return ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse{}, client.createOrUpdateAtResourceGroupLevelHandleError(resp)
+		return ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAtResourceGroupLevelHandleResponse(resp)
 }
 
 // createOrUpdateAtResourceGroupLevelCreateRequest creates the CreateOrUpdateAtResourceGroupLevel request.
-func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateAtResourceGroupLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -76,7 +89,7 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -88,48 +101,45 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelCreateReq
 }
 
 // createOrUpdateAtResourceGroupLevelHandleResponse handles the CreateOrUpdateAtResourceGroupLevel response.
-func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelHandleResponse(resp *http.Response) (ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse, error) {
-	result := ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelHandleResponse(resp *http.Response) (ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse, error) {
+	result := ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksCreateOrUpdateAtResourceGroupLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAtResourceGroupLevelHandleError handles the CreateOrUpdateAtResourceGroupLevel error response.
-func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdateAtResourceLevel - When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks, you must
-// have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+// CreateOrUpdateAtResourceLevel - When you apply a lock at a parent scope, all child resources inherit the same lock. To
+// create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) CreateOrUpdateAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateAtResourceLevelOptions) (ManagementLocksCreateOrUpdateAtResourceLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the resource to lock.
+// resourceProviderNamespace - The resource provider namespace of the resource to lock.
+// parentResourcePath - The parent resource identity.
+// resourceType - The resource type of the resource to lock.
+// resourceName - The name of the resource to lock.
+// lockName - The name of lock. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
+// control characters.
+// parameters - Parameters for creating or updating a management lock.
+// options - ManagementLocksClientCreateOrUpdateAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceLevel
+// method.
+func (client *ManagementLocksClient) CreateOrUpdateAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtResourceLevelOptions) (ManagementLocksClientCreateOrUpdateAtResourceLevelResponse, error) {
 	req, err := client.createOrUpdateAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters, options)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateAtResourceLevelResponse{}, err
+		return ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateAtResourceLevelResponse{}, err
+		return ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ManagementLocksCreateOrUpdateAtResourceLevelResponse{}, client.createOrUpdateAtResourceLevelHandleError(resp)
+		return ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAtResourceLevelHandleResponse(resp)
 }
 
 // createOrUpdateAtResourceLevelCreateRequest creates the CreateOrUpdateAtResourceLevel request.
-func (client *ManagementLocksClient) createOrUpdateAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateAtResourceLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) createOrUpdateAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +163,7 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceLevelCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,48 +175,40 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceLevelCreateRequest(
 }
 
 // createOrUpdateAtResourceLevelHandleResponse handles the CreateOrUpdateAtResourceLevel response.
-func (client *ManagementLocksClient) createOrUpdateAtResourceLevelHandleResponse(resp *http.Response) (ManagementLocksCreateOrUpdateAtResourceLevelResponse, error) {
-	result := ManagementLocksCreateOrUpdateAtResourceLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) createOrUpdateAtResourceLevelHandleResponse(resp *http.Response) (ManagementLocksClientCreateOrUpdateAtResourceLevelResponse, error) {
+	result := ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksCreateOrUpdateAtResourceLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAtResourceLevelHandleError handles the CreateOrUpdateAtResourceLevel error response.
-func (client *ManagementLocksClient) createOrUpdateAtResourceLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// CreateOrUpdateAtSubscriptionLevel - When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks, you
-// must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+// CreateOrUpdateAtSubscriptionLevel - When you apply a lock at a parent scope, all child resources inherit the same lock.
+// To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(ctx context.Context, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateAtSubscriptionLevelOptions) (ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// lockName - The name of lock. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
+// control characters.
+// parameters - The management lock parameters.
+// options - ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtSubscriptionLevel
+// method.
+func (client *ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(ctx context.Context, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions) (ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse, error) {
 	req, err := client.createOrUpdateAtSubscriptionLevelCreateRequest(ctx, lockName, parameters, options)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse{}, err
+		return ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse{}, err
+		return ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse{}, client.createOrUpdateAtSubscriptionLevelHandleError(resp)
+		return ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAtSubscriptionLevelHandleResponse(resp)
 }
 
 // createOrUpdateAtSubscriptionLevelCreateRequest creates the CreateOrUpdateAtSubscriptionLevel request.
-func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelCreateRequest(ctx context.Context, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateAtSubscriptionLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelCreateRequest(ctx context.Context, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}"
 	if lockName == "" {
 		return nil, errors.New("parameter lockName cannot be empty")
@@ -216,7 +218,7 @@ func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,46 +230,42 @@ func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelCreateRequ
 }
 
 // createOrUpdateAtSubscriptionLevelHandleResponse handles the CreateOrUpdateAtSubscriptionLevel response.
-func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelHandleResponse(resp *http.Response) (ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse, error) {
-	result := ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelHandleResponse(resp *http.Response) (ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse, error) {
+	result := ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksCreateOrUpdateAtSubscriptionLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAtSubscriptionLevelHandleError handles the CreateOrUpdateAtSubscriptionLevel error response.
-func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateByScope - Create or update a management lock by scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) CreateOrUpdateByScope(ctx context.Context, scope string, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateByScopeOptions) (ManagementLocksCreateOrUpdateByScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
+// '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
+// resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+// for
+// resources.
+// lockName - The name of lock.
+// parameters - Create or update management lock parameters.
+// options - ManagementLocksClientCreateOrUpdateByScopeOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateByScope
+// method.
+func (client *ManagementLocksClient) CreateOrUpdateByScope(ctx context.Context, scope string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateByScopeOptions) (ManagementLocksClientCreateOrUpdateByScopeResponse, error) {
 	req, err := client.createOrUpdateByScopeCreateRequest(ctx, scope, lockName, parameters, options)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateByScopeResponse{}, err
+		return ManagementLocksClientCreateOrUpdateByScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksCreateOrUpdateByScopeResponse{}, err
+		return ManagementLocksClientCreateOrUpdateByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ManagementLocksCreateOrUpdateByScopeResponse{}, client.createOrUpdateByScopeHandleError(resp)
+		return ManagementLocksClientCreateOrUpdateByScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateByScopeHandleResponse(resp)
 }
 
 // createOrUpdateByScopeCreateRequest creates the CreateOrUpdateByScope request.
-func (client *ManagementLocksClient) createOrUpdateByScopeCreateRequest(ctx context.Context, scope string, lockName string, parameters ManagementLockObject, options *ManagementLocksCreateOrUpdateByScopeOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) createOrUpdateByScopeCreateRequest(ctx context.Context, scope string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/locks/{lockName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -277,7 +275,7 @@ func (client *ManagementLocksClient) createOrUpdateByScopeCreateRequest(ctx cont
 		return nil, errors.New("parameter lockName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{lockName}", url.PathEscape(lockName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,48 +287,39 @@ func (client *ManagementLocksClient) createOrUpdateByScopeCreateRequest(ctx cont
 }
 
 // createOrUpdateByScopeHandleResponse handles the CreateOrUpdateByScope response.
-func (client *ManagementLocksClient) createOrUpdateByScopeHandleResponse(resp *http.Response) (ManagementLocksCreateOrUpdateByScopeResponse, error) {
-	result := ManagementLocksCreateOrUpdateByScopeResponse{RawResponse: resp}
+func (client *ManagementLocksClient) createOrUpdateByScopeHandleResponse(resp *http.Response) (ManagementLocksClientCreateOrUpdateByScopeResponse, error) {
+	result := ManagementLocksClientCreateOrUpdateByScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksCreateOrUpdateByScopeResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientCreateOrUpdateByScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateByScopeHandleError handles the CreateOrUpdateByScope error response.
-func (client *ManagementLocksClient) createOrUpdateByScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteAtResourceGroupLevel - To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions.
-// Of the built-in roles, only Owner and User Access Administrator are granted
+// DeleteAtResourceGroupLevel - To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+// actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) DeleteAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksDeleteAtResourceGroupLevelOptions) (ManagementLocksDeleteAtResourceGroupLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the lock.
+// lockName - The name of lock to delete.
+// options - ManagementLocksClientDeleteAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceGroupLevel
+// method.
+func (client *ManagementLocksClient) DeleteAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksClientDeleteAtResourceGroupLevelOptions) (ManagementLocksClientDeleteAtResourceGroupLevelResponse, error) {
 	req, err := client.deleteAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, lockName, options)
 	if err != nil {
-		return ManagementLocksDeleteAtResourceGroupLevelResponse{}, err
+		return ManagementLocksClientDeleteAtResourceGroupLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksDeleteAtResourceGroupLevelResponse{}, err
+		return ManagementLocksClientDeleteAtResourceGroupLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ManagementLocksDeleteAtResourceGroupLevelResponse{}, client.deleteAtResourceGroupLevelHandleError(resp)
+		return ManagementLocksClientDeleteAtResourceGroupLevelResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementLocksDeleteAtResourceGroupLevelResponse{RawResponse: resp}, nil
+	return ManagementLocksClientDeleteAtResourceGroupLevelResponse{RawResponse: resp}, nil
 }
 
 // deleteAtResourceGroupLevelCreateRequest creates the DeleteAtResourceGroupLevel request.
-func (client *ManagementLocksClient) deleteAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksDeleteAtResourceGroupLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) deleteAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksClientDeleteAtResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -344,7 +333,7 @@ func (client *ManagementLocksClient) deleteAtResourceGroupLevelCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,40 +344,35 @@ func (client *ManagementLocksClient) deleteAtResourceGroupLevelCreateRequest(ctx
 	return req, nil
 }
 
-// deleteAtResourceGroupLevelHandleError handles the DeleteAtResourceGroupLevel error response.
-func (client *ManagementLocksClient) deleteAtResourceGroupLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteAtResourceLevel - To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of
-// the built-in roles, only Owner and User Access Administrator are granted
+// DeleteAtResourceLevel - To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+// actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) DeleteAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksDeleteAtResourceLevelOptions) (ManagementLocksDeleteAtResourceLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the resource with the lock to delete.
+// resourceProviderNamespace - The resource provider namespace of the resource with the lock to delete.
+// parentResourcePath - The parent resource identity.
+// resourceType - The resource type of the resource with the lock to delete.
+// resourceName - The name of the resource with the lock to delete.
+// lockName - The name of the lock to delete.
+// options - ManagementLocksClientDeleteAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceLevel
+// method.
+func (client *ManagementLocksClient) DeleteAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksClientDeleteAtResourceLevelOptions) (ManagementLocksClientDeleteAtResourceLevelResponse, error) {
 	req, err := client.deleteAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, options)
 	if err != nil {
-		return ManagementLocksDeleteAtResourceLevelResponse{}, err
+		return ManagementLocksClientDeleteAtResourceLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksDeleteAtResourceLevelResponse{}, err
+		return ManagementLocksClientDeleteAtResourceLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ManagementLocksDeleteAtResourceLevelResponse{}, client.deleteAtResourceLevelHandleError(resp)
+		return ManagementLocksClientDeleteAtResourceLevelResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementLocksDeleteAtResourceLevelResponse{RawResponse: resp}, nil
+	return ManagementLocksClientDeleteAtResourceLevelResponse{RawResponse: resp}, nil
 }
 
 // deleteAtResourceLevelCreateRequest creates the DeleteAtResourceLevel request.
-func (client *ManagementLocksClient) deleteAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksDeleteAtResourceLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) deleteAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksClientDeleteAtResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -412,7 +396,7 @@ func (client *ManagementLocksClient) deleteAtResourceLevelCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,40 +407,30 @@ func (client *ManagementLocksClient) deleteAtResourceLevelCreateRequest(ctx cont
 	return req, nil
 }
 
-// deleteAtResourceLevelHandleError handles the DeleteAtResourceLevel error response.
-func (client *ManagementLocksClient) deleteAtResourceLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// DeleteAtSubscriptionLevel - To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions.
-// Of the built-in roles, only Owner and User Access Administrator are granted
+// DeleteAtSubscriptionLevel - To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+// actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) DeleteAtSubscriptionLevel(ctx context.Context, lockName string, options *ManagementLocksDeleteAtSubscriptionLevelOptions) (ManagementLocksDeleteAtSubscriptionLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// lockName - The name of lock to delete.
+// options - ManagementLocksClientDeleteAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtSubscriptionLevel
+// method.
+func (client *ManagementLocksClient) DeleteAtSubscriptionLevel(ctx context.Context, lockName string, options *ManagementLocksClientDeleteAtSubscriptionLevelOptions) (ManagementLocksClientDeleteAtSubscriptionLevelResponse, error) {
 	req, err := client.deleteAtSubscriptionLevelCreateRequest(ctx, lockName, options)
 	if err != nil {
-		return ManagementLocksDeleteAtSubscriptionLevelResponse{}, err
+		return ManagementLocksClientDeleteAtSubscriptionLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksDeleteAtSubscriptionLevelResponse{}, err
+		return ManagementLocksClientDeleteAtSubscriptionLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ManagementLocksDeleteAtSubscriptionLevelResponse{}, client.deleteAtSubscriptionLevelHandleError(resp)
+		return ManagementLocksClientDeleteAtSubscriptionLevelResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementLocksDeleteAtSubscriptionLevelResponse{RawResponse: resp}, nil
+	return ManagementLocksClientDeleteAtSubscriptionLevelResponse{RawResponse: resp}, nil
 }
 
 // deleteAtSubscriptionLevelCreateRequest creates the DeleteAtSubscriptionLevel request.
-func (client *ManagementLocksClient) deleteAtSubscriptionLevelCreateRequest(ctx context.Context, lockName string, options *ManagementLocksDeleteAtSubscriptionLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) deleteAtSubscriptionLevelCreateRequest(ctx context.Context, lockName string, options *ManagementLocksClientDeleteAtSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}"
 	if lockName == "" {
 		return nil, errors.New("parameter lockName cannot be empty")
@@ -466,7 +440,7 @@ func (client *ManagementLocksClient) deleteAtSubscriptionLevelCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -477,38 +451,29 @@ func (client *ManagementLocksClient) deleteAtSubscriptionLevelCreateRequest(ctx 
 	return req, nil
 }
 
-// deleteAtSubscriptionLevelHandleError handles the DeleteAtSubscriptionLevel error response.
-func (client *ManagementLocksClient) deleteAtSubscriptionLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteByScope - Delete a management lock by scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) DeleteByScope(ctx context.Context, scope string, lockName string, options *ManagementLocksDeleteByScopeOptions) (ManagementLocksDeleteByScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope for the lock.
+// lockName - The name of lock.
+// options - ManagementLocksClientDeleteByScopeOptions contains the optional parameters for the ManagementLocksClient.DeleteByScope
+// method.
+func (client *ManagementLocksClient) DeleteByScope(ctx context.Context, scope string, lockName string, options *ManagementLocksClientDeleteByScopeOptions) (ManagementLocksClientDeleteByScopeResponse, error) {
 	req, err := client.deleteByScopeCreateRequest(ctx, scope, lockName, options)
 	if err != nil {
-		return ManagementLocksDeleteByScopeResponse{}, err
+		return ManagementLocksClientDeleteByScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksDeleteByScopeResponse{}, err
+		return ManagementLocksClientDeleteByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ManagementLocksDeleteByScopeResponse{}, client.deleteByScopeHandleError(resp)
+		return ManagementLocksClientDeleteByScopeResponse{}, runtime.NewResponseError(resp)
 	}
-	return ManagementLocksDeleteByScopeResponse{RawResponse: resp}, nil
+	return ManagementLocksClientDeleteByScopeResponse{RawResponse: resp}, nil
 }
 
 // deleteByScopeCreateRequest creates the DeleteByScope request.
-func (client *ManagementLocksClient) deleteByScopeCreateRequest(ctx context.Context, scope string, lockName string, options *ManagementLocksDeleteByScopeOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) deleteByScopeCreateRequest(ctx context.Context, scope string, lockName string, options *ManagementLocksClientDeleteByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/locks/{lockName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -518,7 +483,7 @@ func (client *ManagementLocksClient) deleteByScopeCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter lockName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{lockName}", url.PathEscape(lockName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -529,38 +494,29 @@ func (client *ManagementLocksClient) deleteByScopeCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteByScopeHandleError handles the DeleteByScope error response.
-func (client *ManagementLocksClient) deleteByScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAtResourceGroupLevel - Gets a management lock at the resource group level.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) GetAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksGetAtResourceGroupLevelOptions) (ManagementLocksGetAtResourceGroupLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the locked resource group.
+// lockName - The name of the lock to get.
+// options - ManagementLocksClientGetAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceGroupLevel
+// method.
+func (client *ManagementLocksClient) GetAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksClientGetAtResourceGroupLevelOptions) (ManagementLocksClientGetAtResourceGroupLevelResponse, error) {
 	req, err := client.getAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, lockName, options)
 	if err != nil {
-		return ManagementLocksGetAtResourceGroupLevelResponse{}, err
+		return ManagementLocksClientGetAtResourceGroupLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksGetAtResourceGroupLevelResponse{}, err
+		return ManagementLocksClientGetAtResourceGroupLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementLocksGetAtResourceGroupLevelResponse{}, client.getAtResourceGroupLevelHandleError(resp)
+		return ManagementLocksClientGetAtResourceGroupLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAtResourceGroupLevelHandleResponse(resp)
 }
 
 // getAtResourceGroupLevelCreateRequest creates the GetAtResourceGroupLevel request.
-func (client *ManagementLocksClient) getAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksGetAtResourceGroupLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) getAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksClientGetAtResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -574,7 +530,7 @@ func (client *ManagementLocksClient) getAtResourceGroupLevelCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -586,46 +542,41 @@ func (client *ManagementLocksClient) getAtResourceGroupLevelCreateRequest(ctx co
 }
 
 // getAtResourceGroupLevelHandleResponse handles the GetAtResourceGroupLevel response.
-func (client *ManagementLocksClient) getAtResourceGroupLevelHandleResponse(resp *http.Response) (ManagementLocksGetAtResourceGroupLevelResponse, error) {
-	result := ManagementLocksGetAtResourceGroupLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) getAtResourceGroupLevelHandleResponse(resp *http.Response) (ManagementLocksClientGetAtResourceGroupLevelResponse, error) {
+	result := ManagementLocksClientGetAtResourceGroupLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksGetAtResourceGroupLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientGetAtResourceGroupLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// getAtResourceGroupLevelHandleError handles the GetAtResourceGroupLevel error response.
-func (client *ManagementLocksClient) getAtResourceGroupLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAtResourceLevel - Get the management lock of a resource or any level below resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) GetAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksGetAtResourceLevelOptions) (ManagementLocksGetAtResourceLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourcePath - An extra path parameter needed in some services, like SQL Databases.
+// resourceType - The type of the resource.
+// resourceName - The name of the resource.
+// lockName - The name of lock.
+// options - ManagementLocksClientGetAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceLevel
+// method.
+func (client *ManagementLocksClient) GetAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksClientGetAtResourceLevelOptions) (ManagementLocksClientGetAtResourceLevelResponse, error) {
 	req, err := client.getAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, options)
 	if err != nil {
-		return ManagementLocksGetAtResourceLevelResponse{}, err
+		return ManagementLocksClientGetAtResourceLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksGetAtResourceLevelResponse{}, err
+		return ManagementLocksClientGetAtResourceLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementLocksGetAtResourceLevelResponse{}, client.getAtResourceLevelHandleError(resp)
+		return ManagementLocksClientGetAtResourceLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAtResourceLevelHandleResponse(resp)
 }
 
 // getAtResourceLevelCreateRequest creates the GetAtResourceLevel request.
-func (client *ManagementLocksClient) getAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksGetAtResourceLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) getAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksClientGetAtResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -649,7 +600,7 @@ func (client *ManagementLocksClient) getAtResourceLevelCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -661,46 +612,36 @@ func (client *ManagementLocksClient) getAtResourceLevelCreateRequest(ctx context
 }
 
 // getAtResourceLevelHandleResponse handles the GetAtResourceLevel response.
-func (client *ManagementLocksClient) getAtResourceLevelHandleResponse(resp *http.Response) (ManagementLocksGetAtResourceLevelResponse, error) {
-	result := ManagementLocksGetAtResourceLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) getAtResourceLevelHandleResponse(resp *http.Response) (ManagementLocksClientGetAtResourceLevelResponse, error) {
+	result := ManagementLocksClientGetAtResourceLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksGetAtResourceLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientGetAtResourceLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// getAtResourceLevelHandleError handles the GetAtResourceLevel error response.
-func (client *ManagementLocksClient) getAtResourceLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAtSubscriptionLevel - Gets a management lock at the subscription level.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) GetAtSubscriptionLevel(ctx context.Context, lockName string, options *ManagementLocksGetAtSubscriptionLevelOptions) (ManagementLocksGetAtSubscriptionLevelResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// lockName - The name of the lock to get.
+// options - ManagementLocksClientGetAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtSubscriptionLevel
+// method.
+func (client *ManagementLocksClient) GetAtSubscriptionLevel(ctx context.Context, lockName string, options *ManagementLocksClientGetAtSubscriptionLevelOptions) (ManagementLocksClientGetAtSubscriptionLevelResponse, error) {
 	req, err := client.getAtSubscriptionLevelCreateRequest(ctx, lockName, options)
 	if err != nil {
-		return ManagementLocksGetAtSubscriptionLevelResponse{}, err
+		return ManagementLocksClientGetAtSubscriptionLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksGetAtSubscriptionLevelResponse{}, err
+		return ManagementLocksClientGetAtSubscriptionLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementLocksGetAtSubscriptionLevelResponse{}, client.getAtSubscriptionLevelHandleError(resp)
+		return ManagementLocksClientGetAtSubscriptionLevelResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAtSubscriptionLevelHandleResponse(resp)
 }
 
 // getAtSubscriptionLevelCreateRequest creates the GetAtSubscriptionLevel request.
-func (client *ManagementLocksClient) getAtSubscriptionLevelCreateRequest(ctx context.Context, lockName string, options *ManagementLocksGetAtSubscriptionLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) getAtSubscriptionLevelCreateRequest(ctx context.Context, lockName string, options *ManagementLocksClientGetAtSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}"
 	if lockName == "" {
 		return nil, errors.New("parameter lockName cannot be empty")
@@ -710,7 +651,7 @@ func (client *ManagementLocksClient) getAtSubscriptionLevelCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -722,46 +663,37 @@ func (client *ManagementLocksClient) getAtSubscriptionLevelCreateRequest(ctx con
 }
 
 // getAtSubscriptionLevelHandleResponse handles the GetAtSubscriptionLevel response.
-func (client *ManagementLocksClient) getAtSubscriptionLevelHandleResponse(resp *http.Response) (ManagementLocksGetAtSubscriptionLevelResponse, error) {
-	result := ManagementLocksGetAtSubscriptionLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) getAtSubscriptionLevelHandleResponse(resp *http.Response) (ManagementLocksClientGetAtSubscriptionLevelResponse, error) {
+	result := ManagementLocksClientGetAtSubscriptionLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksGetAtSubscriptionLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientGetAtSubscriptionLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// getAtSubscriptionLevelHandleError handles the GetAtSubscriptionLevel error response.
-func (client *ManagementLocksClient) getAtSubscriptionLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByScope - Get a management lock by scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) GetByScope(ctx context.Context, scope string, lockName string, options *ManagementLocksGetByScopeOptions) (ManagementLocksGetByScopeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope for the lock.
+// lockName - The name of lock.
+// options - ManagementLocksClientGetByScopeOptions contains the optional parameters for the ManagementLocksClient.GetByScope
+// method.
+func (client *ManagementLocksClient) GetByScope(ctx context.Context, scope string, lockName string, options *ManagementLocksClientGetByScopeOptions) (ManagementLocksClientGetByScopeResponse, error) {
 	req, err := client.getByScopeCreateRequest(ctx, scope, lockName, options)
 	if err != nil {
-		return ManagementLocksGetByScopeResponse{}, err
+		return ManagementLocksClientGetByScopeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagementLocksGetByScopeResponse{}, err
+		return ManagementLocksClientGetByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagementLocksGetByScopeResponse{}, client.getByScopeHandleError(resp)
+		return ManagementLocksClientGetByScopeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByScopeHandleResponse(resp)
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
-func (client *ManagementLocksClient) getByScopeCreateRequest(ctx context.Context, scope string, lockName string, options *ManagementLocksGetByScopeOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) getByScopeCreateRequest(ctx context.Context, scope string, lockName string, options *ManagementLocksClientGetByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/locks/{lockName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -771,7 +703,7 @@ func (client *ManagementLocksClient) getByScopeCreateRequest(ctx context.Context
 		return nil, errors.New("parameter lockName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{lockName}", url.PathEscape(lockName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -783,43 +715,33 @@ func (client *ManagementLocksClient) getByScopeCreateRequest(ctx context.Context
 }
 
 // getByScopeHandleResponse handles the GetByScope response.
-func (client *ManagementLocksClient) getByScopeHandleResponse(resp *http.Response) (ManagementLocksGetByScopeResponse, error) {
-	result := ManagementLocksGetByScopeResponse{RawResponse: resp}
+func (client *ManagementLocksClient) getByScopeHandleResponse(resp *http.Response) (ManagementLocksClientGetByScopeResponse, error) {
+	result := ManagementLocksClientGetByScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockObject); err != nil {
-		return ManagementLocksGetByScopeResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientGetByScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// getByScopeHandleError handles the GetByScope error response.
-func (client *ManagementLocksClient) getByScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAtResourceGroupLevel - Gets all the management locks for a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName string, options *ManagementLocksListAtResourceGroupLevelOptions) *ManagementLocksListAtResourceGroupLevelPager {
-	return &ManagementLocksListAtResourceGroupLevelPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the locks to get.
+// options - ManagementLocksClientListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceGroupLevel
+// method.
+func (client *ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName string, options *ManagementLocksClientListAtResourceGroupLevelOptions) *ManagementLocksClientListAtResourceGroupLevelPager {
+	return &ManagementLocksClientListAtResourceGroupLevelPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagementLocksListAtResourceGroupLevelResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagementLocksClientListAtResourceGroupLevelResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagementLockListResult.NextLink)
 		},
 	}
 }
 
 // listAtResourceGroupLevelCreateRequest creates the ListAtResourceGroupLevel request.
-func (client *ManagementLocksClient) listAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, options *ManagementLocksListAtResourceGroupLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) listAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, options *ManagementLocksClientListAtResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -829,7 +751,7 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -844,43 +766,37 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelCreateRequest(ctx c
 }
 
 // listAtResourceGroupLevelHandleResponse handles the ListAtResourceGroupLevel response.
-func (client *ManagementLocksClient) listAtResourceGroupLevelHandleResponse(resp *http.Response) (ManagementLocksListAtResourceGroupLevelResponse, error) {
-	result := ManagementLocksListAtResourceGroupLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) listAtResourceGroupLevelHandleResponse(resp *http.Response) (ManagementLocksClientListAtResourceGroupLevelResponse, error) {
+	result := ManagementLocksClientListAtResourceGroupLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockListResult); err != nil {
-		return ManagementLocksListAtResourceGroupLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientListAtResourceGroupLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// listAtResourceGroupLevelHandleError handles the ListAtResourceGroupLevel error response.
-func (client *ManagementLocksClient) listAtResourceGroupLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAtResourceLevel - Gets all the management locks for a resource or any level below resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) ListAtResourceLevel(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksListAtResourceLevelOptions) *ManagementLocksListAtResourceLevelPager {
-	return &ManagementLocksListAtResourceLevelPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group containing the locked resource. The name is case insensitive.
+// resourceProviderNamespace - The namespace of the resource provider.
+// parentResourcePath - The parent resource identity.
+// resourceType - The resource type of the locked resource.
+// resourceName - The name of the locked resource.
+// options - ManagementLocksClientListAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceLevel
+// method.
+func (client *ManagementLocksClient) ListAtResourceLevel(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksClientListAtResourceLevelOptions) *ManagementLocksClientListAtResourceLevelPager {
+	return &ManagementLocksClientListAtResourceLevelPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagementLocksListAtResourceLevelResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagementLocksClientListAtResourceLevelResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagementLockListResult.NextLink)
 		},
 	}
 }
 
 // listAtResourceLevelCreateRequest creates the ListAtResourceLevel request.
-func (client *ManagementLocksClient) listAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksListAtResourceLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) listAtResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksClientListAtResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -900,7 +816,7 @@ func (client *ManagementLocksClient) listAtResourceLevelCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -915,49 +831,38 @@ func (client *ManagementLocksClient) listAtResourceLevelCreateRequest(ctx contex
 }
 
 // listAtResourceLevelHandleResponse handles the ListAtResourceLevel response.
-func (client *ManagementLocksClient) listAtResourceLevelHandleResponse(resp *http.Response) (ManagementLocksListAtResourceLevelResponse, error) {
-	result := ManagementLocksListAtResourceLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) listAtResourceLevelHandleResponse(resp *http.Response) (ManagementLocksClientListAtResourceLevelResponse, error) {
+	result := ManagementLocksClientListAtResourceLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockListResult); err != nil {
-		return ManagementLocksListAtResourceLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientListAtResourceLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// listAtResourceLevelHandleError handles the ListAtResourceLevel error response.
-func (client *ManagementLocksClient) listAtResourceLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListAtSubscriptionLevel - Gets all the management locks for a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) ListAtSubscriptionLevel(options *ManagementLocksListAtSubscriptionLevelOptions) *ManagementLocksListAtSubscriptionLevelPager {
-	return &ManagementLocksListAtSubscriptionLevelPager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// options - ManagementLocksClientListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtSubscriptionLevel
+// method.
+func (client *ManagementLocksClient) ListAtSubscriptionLevel(options *ManagementLocksClientListAtSubscriptionLevelOptions) *ManagementLocksClientListAtSubscriptionLevelPager {
+	return &ManagementLocksClientListAtSubscriptionLevelPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAtSubscriptionLevelCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ManagementLocksListAtSubscriptionLevelResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagementLocksClientListAtSubscriptionLevelResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagementLockListResult.NextLink)
 		},
 	}
 }
 
 // listAtSubscriptionLevelCreateRequest creates the ListAtSubscriptionLevel request.
-func (client *ManagementLocksClient) listAtSubscriptionLevelCreateRequest(ctx context.Context, options *ManagementLocksListAtSubscriptionLevelOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) listAtSubscriptionLevelCreateRequest(ctx context.Context, options *ManagementLocksClientListAtSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -972,49 +877,43 @@ func (client *ManagementLocksClient) listAtSubscriptionLevelCreateRequest(ctx co
 }
 
 // listAtSubscriptionLevelHandleResponse handles the ListAtSubscriptionLevel response.
-func (client *ManagementLocksClient) listAtSubscriptionLevelHandleResponse(resp *http.Response) (ManagementLocksListAtSubscriptionLevelResponse, error) {
-	result := ManagementLocksListAtSubscriptionLevelResponse{RawResponse: resp}
+func (client *ManagementLocksClient) listAtSubscriptionLevelHandleResponse(resp *http.Response) (ManagementLocksClientListAtSubscriptionLevelResponse, error) {
+	result := ManagementLocksClientListAtSubscriptionLevelResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockListResult); err != nil {
-		return ManagementLocksListAtSubscriptionLevelResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientListAtSubscriptionLevelResponse{}, err
 	}
 	return result, nil
 }
 
-// listAtSubscriptionLevelHandleError handles the ListAtSubscriptionLevel error response.
-func (client *ManagementLocksClient) listAtSubscriptionLevelHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByScope - Gets all the management locks for a scope.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ManagementLocksClient) ListByScope(scope string, options *ManagementLocksListByScopeOptions) *ManagementLocksListByScopePager {
-	return &ManagementLocksListByScopePager{
+// If the operation fails it returns an *azcore.ResponseError type.
+// scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
+// '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
+// resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+// for
+// resources.
+// options - ManagementLocksClientListByScopeOptions contains the optional parameters for the ManagementLocksClient.ListByScope
+// method.
+func (client *ManagementLocksClient) ListByScope(scope string, options *ManagementLocksClientListByScopeOptions) *ManagementLocksClientListByScopePager {
+	return &ManagementLocksClientListByScopePager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByScopeCreateRequest(ctx, scope, options)
 		},
-		advancer: func(ctx context.Context, resp ManagementLocksListByScopeResponse) (*policy.Request, error) {
+		advancer: func(ctx context.Context, resp ManagementLocksClientListByScopeResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagementLockListResult.NextLink)
 		},
 	}
 }
 
 // listByScopeCreateRequest creates the ListByScope request.
-func (client *ManagementLocksClient) listByScopeCreateRequest(ctx context.Context, scope string, options *ManagementLocksListByScopeOptions) (*policy.Request, error) {
+func (client *ManagementLocksClient) listByScopeCreateRequest(ctx context.Context, scope string, options *ManagementLocksClientListByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/locks"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1029,23 +928,10 @@ func (client *ManagementLocksClient) listByScopeCreateRequest(ctx context.Contex
 }
 
 // listByScopeHandleResponse handles the ListByScope response.
-func (client *ManagementLocksClient) listByScopeHandleResponse(resp *http.Response) (ManagementLocksListByScopeResponse, error) {
-	result := ManagementLocksListByScopeResponse{RawResponse: resp}
+func (client *ManagementLocksClient) listByScopeHandleResponse(resp *http.Response) (ManagementLocksClientListByScopeResponse, error) {
+	result := ManagementLocksClientListByScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementLockListResult); err != nil {
-		return ManagementLocksListByScopeResponse{}, runtime.NewResponseError(err, resp)
+		return ManagementLocksClientListByScopeResponse{}, err
 	}
 	return result, nil
-}
-
-// listByScopeHandleError handles the ListByScope error response.
-func (client *ManagementLocksClient) listByScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -64,6 +64,39 @@ func TestCreateKeyRSA(t *testing.T) {
 		})
 	}
 }
+func TestCreateKeyRSATags(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
+			skipHSM(t, testType)
+			stop := startTest(t)
+			defer stop()
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "key")
+			require.NoError(t, err)
+
+			resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+				Tags: map[string]string{
+					"tag1": "val1",
+				},
+			})
+			defer cleanUpKey(t, client, key)
+			require.NoError(t, err)
+			require.NotNil(t, resp.Key)
+
+			_, err = client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+				Tags: map[string]string{},
+			})
+			require.NoError(t, err)
+
+			getResp, err := client.GetKey(ctx, key, nil)
+			require.NoError(t, err)
+			require.Equal(t, 0, len(getResp.Tags))
+		})
+	}
+}
 
 func TestClient_CreateKeyOKP(t *testing.T) {
 	for _, testType := range testTypes {
@@ -391,8 +424,8 @@ func TestUpdateKeyProperties(t *testing.T) {
 			defer cleanUpKey(t, client, key)
 
 			resp, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				Tags: map[string]*string{
-					"Tag1": to.StringPtr("Val1"),
+				Tags: map[string]string{
+					"Tag1": "Val1",
 				},
 				KeyAttributes: &KeyAttributes{
 					Attributes: Attributes{
@@ -402,7 +435,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Attributes)
-			require.Equal(t, *resp.Tags["Tag1"], "Val1")
+			require.Equal(t, resp.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Attributes.Updated)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)

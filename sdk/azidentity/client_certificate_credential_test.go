@@ -8,12 +8,17 @@ import (
 	"crypto"
 	"crypto/x509"
 	"errors"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type certTest struct {
@@ -79,6 +84,46 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
 		})
+	}
+}
+
+func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain_mock(t *testing.T) {
+
+	validateReq := func(req *http.Request) bool {
+		body, err := ioutil.ReadAll(req.Body)
+		if err == nil {
+			bodystr := string(body)
+			kvps := strings.Split(bodystr, "&")
+			assertion := strings.Split(kvps[0], "=")
+			token, _ := jwt.Parse(assertion[1], nil)//  func(token *jwt.Token) (interface{}, error) { return []byte(""), nil})
+			if _, ok := token.Header["x5c"]; !ok {
+				t.Fatal("JWT did not contain the x5c header")
+			}
+		}
+		return true
+	}
+
+	test := allCertTests[0]
+
+	// srv, close := mock.NewServerWithURL(":443")
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse()
+	srv.AppendResponse(mock.WithBody([]byte(getTenantDiscoveryResponse(srv.URL()))))
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+
+	options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
+	cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf("unexpected token: %s", tk.Token)
 	}
 }
 

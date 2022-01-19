@@ -12,6 +12,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"sync"
 	"time"
 )
@@ -38,6 +39,9 @@ type Server struct {
 
 	// count tracks the number of requests that have been made.
 	count int
+
+	// determines whether all requests will be routed to the httptest Server by changing the Host of each request
+	routeAllRequestsToMockServer bool
 }
 
 func newServer() *Server {
@@ -123,7 +127,20 @@ func (s *Server) Do(req *http.Request) (*http.Response, error) {
 		resp := s.getResponse()
 		return nil, resp.err
 	}
-	resp, err := s.srv.Client().Do(req)
+	var err error
+	var resp *http.Response
+	if s.routeAllRequestsToMockServer /*&& strings.Contains(req.URL.Host, "login")*/ {
+		originalURL := req.URL
+		mockUrl, _ := url.Parse(req.URL.String())
+		srvUrl, _ := url.Parse(s.srv.URL)
+		mockUrl.Host = srvUrl.Host
+		mockUrl.Scheme = srvUrl.Scheme
+		req.URL = mockUrl
+		resp, err = s.srv.Client().Do(req)
+		req.URL = originalURL
+	} else {
+		resp, err = s.srv.Client().Do(req)
+	}
 	if err != nil {
 		return resp, err
 	}
@@ -223,6 +240,12 @@ type fnSrvOpt func(*Server)
 
 func (fn fnSrvOpt) apply(s *Server) {
 	fn(s)
+}
+
+func WithTransformAllRequestsToTestServerUrl() ServerOption {
+	return fnSrvOpt(func(s *Server) {
+		s.routeAllRequestsToMockServer = true
+	})
 }
 
 // WithTLSConfig sets the given TLS config on server.

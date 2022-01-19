@@ -376,7 +376,7 @@ type JSONWebKey struct {
 	Kid *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	Kty *KeyType `json:"kty,omitempty"`
+	Kty *JSONWebKeyType `json:"kty,omitempty"`
 
 	// RSA modulus.
 	N []byte `json:"n,omitempty"`
@@ -604,7 +604,7 @@ func (k KeyBundle) MarshalJSON() ([]byte, error) {
 // KeyCreateParameters - The key create parameters.
 type KeyCreateParameters struct {
 	// REQUIRED; The type of key to create. For valid values, see JsonWebKeyType.
-	Kty *KeyType `json:"kty,omitempty"`
+	Kty *JSONWebKeyType `json:"kty,omitempty"`
 
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
@@ -858,7 +858,7 @@ type KeyProperties struct {
 	KeySize *int32 `json:"key_size,omitempty"`
 
 	// The type of key pair to be used for the certificate.
-	KeyType *KeyType `json:"kty,omitempty"`
+	KeyType *JSONWebKeyType `json:"kty,omitempty"`
 
 	// Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`

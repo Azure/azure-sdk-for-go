@@ -179,7 +179,7 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 		K:      j.K,
 		KeyOps: j.KeyOps,
 		Kid:    j.ID,
-		Kty:    (*generated.KeyType)(j.KeyType),
+		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
 		N:      j.N,
 		P:      j.P,
 		Q:      j.Q,
@@ -220,8 +220,8 @@ const (
 )
 
 // convert KeyType to *generated.KeyType
-func (j KeyType) toGenerated() *generated.KeyType {
-	return generated.KeyType(j).ToPtr()
+func (j KeyType) toGenerated() *generated.JSONWebKeyType {
+	return generated.JSONWebKeyType(j).ToPtr()
 }
 
 // KeyItem - The key item containing key metadata.

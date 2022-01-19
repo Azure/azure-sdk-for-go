@@ -380,30 +380,44 @@ func (c JSONWebKeySignatureAlgorithm) ToPtr() *JSONWebKeySignatureAlgorithm {
 	return &c
 }
 
-// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-type KeyType string
+// JSONWebKeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+type JSONWebKeyType string
 
 const (
-	// EC - Elliptic Curve.
-	EC KeyType = "EC"
-	// ECHSM - Elliptic Curve with a private key which is stored in the HSM.
-	ECHSM KeyType = "EC-HSM"
-	// OKP - Octet key pair (https://tools.ietf.org/html/rfc8037)
-	OKP KeyType = "OKP"
-	// OKPHSM - Octet key pair (https://tools.ietf.org/html/rfc8037) with a private key which is stored in the HSM.
-	OKPHSM KeyType = "OKP-HSM"
-	// Oct - Octet sequence (used to represent symmetric keys)
-	Oct KeyType = "oct"
-	// OctHSM - Octet sequence (used to represent symmetric keys) which is stored the HSM.
-	OctHSM KeyType = "oct-HSM"
-	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
-	RSA KeyType = "RSA"
-	// RSAHSM - RSA with a private key which is stored in the HSM.
-	RSAHSM KeyType = "RSA-HSM"
+	// JSONWebKeyTypeEC - Elliptic Curve.
+	JSONWebKeyTypeEC JSONWebKeyType = "EC"
+	// JSONWebKeyTypeECHSM - Elliptic Curve with a private key which is stored in the HSM.
+	JSONWebKeyTypeECHSM JSONWebKeyType = "EC-HSM"
+	// JSONWebKeyTypeOKP - Octet key pair (https://tools.ietf.org/html/rfc8037)
+	JSONWebKeyTypeOKP JSONWebKeyType = "OKP"
+	// JSONWebKeyTypeOKPHSM - Octet key pair (https://tools.ietf.org/html/rfc8037) with a private key which is stored in the HSM.
+	JSONWebKeyTypeOKPHSM JSONWebKeyType = "OKP-HSM"
+	// JSONWebKeyTypeOct - Octet sequence (used to represent symmetric keys)
+	JSONWebKeyTypeOct JSONWebKeyType = "oct"
+	// JSONWebKeyTypeOctHSM - Octet sequence (used to represent symmetric keys) which is stored the HSM.
+	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
+	// JSONWebKeyTypeRSA - RSA (https://tools.ietf.org/html/rfc3447)
+	JSONWebKeyTypeRSA JSONWebKeyType = "RSA"
+	// JSONWebKeyTypeRSAHSM - RSA with a private key which is stored in the HSM.
+	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
 )
 
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
+// PossibleJSONWebKeyTypeValues returns the possible values for the JSONWebKeyType const type.
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return []JSONWebKeyType{
+		JSONWebKeyTypeEC,
+		JSONWebKeyTypeECHSM,
+		JSONWebKeyTypeOKP,
+		JSONWebKeyTypeOKPHSM,
+		JSONWebKeyTypeOct,
+		JSONWebKeyTypeOctHSM,
+		JSONWebKeyTypeRSA,
+		JSONWebKeyTypeRSAHSM,
+	}
+}
+
+// ToPtr returns a *JSONWebKeyType pointing to the current value.
+func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
 	return &c
 }
 

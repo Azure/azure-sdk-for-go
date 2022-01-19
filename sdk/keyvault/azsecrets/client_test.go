@@ -105,7 +105,7 @@ func TestSecretTags(t *testing.T) {
 
 	updateResp, err := client.UpdateSecretProperties(context.Background(), secret, Properties{
 		SecretAttributes: &Attributes{
-			Expires: to.TimePtr(time.Now().Add(24 * time.Hour)),
+			Expires: to.TimePtr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC)),
 		},
 	}, &UpdateSecretPropertiesOptions{})
 	require.NoError(t, err)

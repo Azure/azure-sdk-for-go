@@ -104,8 +104,6 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain_mock(t
 	}
 
 	test := allCertTests[0]
-
-	// srv, close := mock.NewServerWithURL(":443")
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse()

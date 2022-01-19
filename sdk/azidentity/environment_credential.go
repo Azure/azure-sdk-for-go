@@ -74,7 +74,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		}
 		return &EnvironmentCredential{cred: cred}, nil
 	}
-	if certPath := os.Getenv(envVarSendCertChain); certPath != "" {
+	if certPath := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); certPath != "" {
 		log.Write(EventAuthentication, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
@@ -84,7 +84,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		sendChainEnv := os.Getenv("AZURE_CLIENT_SEND_CERTIFICATE_CHAIN")
+		sendChainEnv := os.Getenv(envVarSendCertChain)
 		sendCertChain := sendChainEnv == "true" || sendChainEnv == "1"
 		o := &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions, SendCertificateChain: sendCertChain}
 		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, o)

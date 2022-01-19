@@ -6,10 +6,12 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
@@ -39,7 +41,7 @@ type DefaultAzureCredential struct {
 // NewDefaultAzureCredential creates a DefaultAzureCredential.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
 	var creds []azcore.TokenCredential
-	errMsg := ""
+	var errorMessages []string
 
 	if options == nil {
 		options = &DefaultAzureCredentialOptions{}
@@ -51,7 +53,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
-		errMsg += err.Error()
+		errorMessages = append(errorMessages, fmt.Sprintf("EnvironmentCredential: %s", err.Error()))
 	}
 
 	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
@@ -59,14 +61,19 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second
 	} else {
-		errMsg += err.Error()
+		errorMessages = append(errorMessages, fmt.Sprintf("ManagedIdentityCredential: %s", err.Error()))
 	}
 
 	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {
-		errMsg += err.Error()
+		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
+	}
+
+	errMsg := "\n"
+	for _, msg := range errorMessages {
+		errMsg += fmt.Sprintf("\t%s\n", msg)
 	}
 
 	if len(creds) == 0 {
@@ -74,6 +81,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		logCredentialError("Default Azure Credential", err)
 		return nil, err
 	}
+
+	if len(errMsg) != 0 {
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:%s", errMsg)
+	}
+
 	chain, err := NewChainedTokenCredential(creds, nil)
 	if err != nil {
 		return nil, err

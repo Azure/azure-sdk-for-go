@@ -64,11 +64,11 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		token, err = cred.GetToken(ctx, opts)
 		var credErr credentialUnavailableError
 		if errors.As(err, &credErr) {
-			errList = append(errList, newCredentialUnavailableError(extractCredentialName(cred), err.Error()))
+			errList = append(errList, err.(credentialUnavailableError))
 		} else if err != nil {
 			var authFailed AuthenticationFailedError
 			if errors.As(err, &authFailed) {
-				err = fmt.Errorf("ERROR in GetToken() call for %s:%s\n\t%s: %s", c.name, createChainedErrorMessage(errList), extractCredentialName(cred), err)
+				err = fmt.Errorf("ERROR in GetToken() call for %s:%s\n\t%s", c.name, createChainedErrorMessage(errList), err)
 				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
 				return nil, authErr
 			}

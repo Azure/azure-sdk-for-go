@@ -137,9 +137,9 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 	}
 	expectedError := `ChainedTokenCredential: 
 Attempted credentials:
-	UnavailableTestCredential: unavailableCredential1: Unavailable expected error
-	UnavailableTestCredential: unavailableCredential2: Unavailable expected error
-	UnavailableTestCredential: unavailableCredential3: Unavailable expected error`
+	unavailableCredential1: Unavailable expected error
+	unavailableCredential2: Unavailable expected error
+	unavailableCredential3: Unavailable expected error`
 	if err.Error() != expectedError {
 		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
 	}
@@ -153,7 +153,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 		{err: newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error")},
 	}}
 	credential3 := &TestCredential{responses: []testCredentialResponse{
-		{err: newCredentialUnavailableError("authenticationFailedCredential3", "Authentication failed expected error")},
+		{err: newAuthenticationFailedError(newCredentialUnavailableError("authenticationFailedCredential3", "Authentication failed expected error"), nil)},
 	}}
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credential1, credential2, credential3}, nil)
 	if err != nil {
@@ -169,9 +169,9 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 	}
 	expectedError := `ERROR in GetToken() call for ChainedTokenCredential:
 Attempted credentials:
-	UnavailableTestCredential: unavailableCredential1: Unavailable expected error
-	UnavailableTestCredential: unavailableCredential2: Unavailable expected error
-	AuthenticationFailedTestCredential: authenticationFailedCredential3: Authentication failed expected error`
+	unavailableCredential1: Unavailable expected error
+	unavailableCredential2: Unavailable expected error
+	authenticationFailedCredential3: Authentication failed expected error`
 	if err.Error() != expectedError {
 		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
 	}
@@ -196,7 +196,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	}
 	expectedError := `CustomNameCredential: 
 Attempted credentials:
-	UnavailableTestCredential: unavailableCredential1: Unavailable expected error`
+	unavailableCredential1: Unavailable expected error`
 	if err.Error() != expectedError {
 		t.Fatalf("Did not create an appropriate error message.\n\nReceived:\n%s\n\nExpected:\n%s", err.Error(), expectedError)
 	}

@@ -306,7 +306,23 @@ type KeyReleasePolicy struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Blob encoding the policy rules under which the key can be released.
-	Data []byte `json:"data,omitempty"`
+	EncodedPolicy []byte `json:"data,omitempty"`
+
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
+func (k *KeyReleasePolicy) toGenerated() *generated.KeyReleasePolicy {
+	if k == nil {
+		return nil
+	}
+
+	return &generated.KeyReleasePolicy{
+		ContentType:   k.ContentType,
+		EncodedPolicy: k.EncodedPolicy,
+		Immutable:     k.Immutable,
+	}
 }
 
 func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePolicy {
@@ -314,8 +330,9 @@ func keyReleasePolicyFromGenerated(i *generated.KeyReleasePolicy) *KeyReleasePol
 		return nil
 	}
 	return &KeyReleasePolicy{
-		ContentType: i.ContentType,
-		Data:        i.Data,
+		ContentType:   i.ContentType,
+		EncodedPolicy: i.EncodedPolicy,
+		Immutable:     i.Immutable,
 	}
 }
 

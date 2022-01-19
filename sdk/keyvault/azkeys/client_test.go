@@ -385,6 +385,55 @@ func TestUpdateKeyProperties(t *testing.T) {
 	}
 }
 
+func TestUpdateKeyPropertiesImmutable(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
+			t.Skip("Immutable has not been rolled out to services yet.")
+			stop := startTest(t)
+			defer stop()
+			err := recording.SetBodilessMatcher(t, nil)
+			require.NoError(t, err)
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "key")
+			require.NoError(t, err)
+
+			_, err = client.CreateRSAKey(ctx, key, nil)
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
+
+			// Set the Immutable property to true
+			resp, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+				Tags: map[string]*string{
+					"Tag1": to.StringPtr("Val1"),
+				},
+				KeyAttributes: &KeyAttributes{
+					Attributes: Attributes{
+						Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
+					},
+				},
+				ReleasePolicy: &KeyReleasePolicy{
+					Immutable: to.BoolPtr(true),
+				},
+			})
+			require.NoError(t, err)
+			require.NotNil(t, resp.Attributes)
+			require.Equal(t, *resp.Tags["Tag1"], "Val1")
+			require.NotNil(t, resp.Attributes.Updated)
+			require.True(t, *resp.ReleasePolicy.Immutable)
+
+			_, err = client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+				ReleasePolicy: &KeyReleasePolicy{
+					Immutable: to.BoolPtr(false),
+				},
+			})
+			require.Error(t, err)
+		})
+	}
+}
+
 func TestListDeletedKeys(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {

@@ -880,6 +880,9 @@ type UpdateKeyPropertiesOptions struct {
 	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
 	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
@@ -891,15 +894,19 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateP
 		attribs = u.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*generated.JSONWebKeyOperation, 0)
-	for _, o := range u.KeyOps {
-		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+	var ops []*generated.JSONWebKeyOperation
+	if len(u.KeyOps) > 0 {
+		ops = make([]*generated.JSONWebKeyOperation, 0)
+		for _, o := range u.KeyOps {
+			ops = append(ops, (*generated.JSONWebKeyOperation)(o))
+		}
 	}
 
 	return generated.KeyUpdateParameters{
 		KeyOps:        ops,
 		KeyAttributes: attribs,
 		Tags:          u.Tags,
+		ReleasePolicy: u.ReleasePolicy.toGenerated(),
 	}
 }
 
@@ -1393,9 +1400,9 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		name,
 		options.Version,
 		generated.KeyReleaseParameters{
-			Target: &target,
-			Enc:    (*generated.KeyEncryptionAlgorithm)(options.Enc),
-			Nonce:  options.Nonce,
+			TargetAttestationToken: &target,
+			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
+			Nonce:                  options.Nonce,
 		},
 		&generated.KeyVaultClientReleaseOptions{},
 	)
@@ -1448,6 +1455,7 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolic
 // UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
 type UpdateKeyRotationPolicyResponse struct {
 	KeyRotationPolicy
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }

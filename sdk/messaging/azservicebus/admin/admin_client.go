@@ -22,6 +22,7 @@ type Client struct {
 	em atom.EntityManager
 }
 
+// RetryOptions represent the options for retries.
 type RetryOptions = utils.RetryOptions
 
 // ClientOptions allows you to set optional configuration for `Client`.

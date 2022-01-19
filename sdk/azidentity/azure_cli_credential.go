@@ -125,8 +125,11 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 		output, err := cliCmd.Output()
 		if err != nil {
 			msg := stderr.String()
+			var exErr *exec.ExitError
+			if errors.As(err, &exErr); exErr.ExitCode() == 127 || strings.HasPrefix(msg, "'az' is not recognized") {
+				msg = "Azure CLI not found on path"
+			}
 			if msg == "" {
-				// if there's no output in stderr report the error message instead
 				msg = err.Error()
 			}
 			return nil, newCredentialUnavailableError("Azure CLI Credential", msg)

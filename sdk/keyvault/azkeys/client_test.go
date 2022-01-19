@@ -65,6 +65,33 @@ func TestCreateKeyRSA(t *testing.T) {
 		})
 	}
 }
+func TestCreateKeyRSATags(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+		Tags: map[string]string{
+			"Tag1": "Val1",
+		},
+	})
+	defer cleanUpKey(t, client, key)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
+	require.Equal(t, 1, len(resp.Tags))
+
+	// Remove the tag
+	resp2, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+		Tags: map[string]string{},
+	})
+	require.NoError(t, err)
+	require.Equal(t, 0, len(resp2.Tags))
+}
 
 func TestCreateECKey(t *testing.T) {
 	for _, testType := range testTypes {
@@ -364,8 +391,8 @@ func TestUpdateKeyProperties(t *testing.T) {
 			defer cleanUpKey(t, client, key)
 
 			resp, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
-				Tags: map[string]*string{
-					"Tag1": to.StringPtr("Val1"),
+				Tags: map[string]string{
+					"Tag1": "Val1",
 				},
 				KeyAttributes: &KeyAttributes{
 					Attributes: Attributes{
@@ -375,7 +402,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			})
 			require.NoError(t, err)
 			require.NotNil(t, resp.Attributes)
-			require.Equal(t, *resp.Tags["Tag1"], "Val1")
+			require.Equal(t, resp.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Attributes.Updated)
 
 			invalid, err := client.UpdateKeyProperties(ctx, "doesnotexist", nil)

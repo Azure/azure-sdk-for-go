@@ -68,14 +68,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		} else if err != nil {
 			var authFailed AuthenticationFailedError
 			if errors.As(err, &authFailed) {
-				// The message of the error created here would look as follows:
-				//
-				// 	ERROR in GetToken() call for <name>:
-				// 	Attempted credentials:
-				// 		<CredentialType>: <Error message>
-				// 		<CredentialType>: <Error message>
-				//      ...
-				//
 				err = fmt.Errorf("ERROR in GetToken() call for %s:%s\n\t%s: %s", c.name, createChainedErrorMessage(errList), extractCredentialName(cred), err)
 				authErr := newAuthenticationFailedError(err, authFailed.RawResponse)
 				return nil, authErr
@@ -91,14 +83,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	// if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableError
 	credErr := newCredentialUnavailableError(c.name, createChainedErrorMessage(errList))
 
-	// The error logged here would look as follows:
-	//
-	// 	Authentication: Azure Identity => ERROR in GetToken() call for <name>:
-	// 	Attempted credentials:
-	// 		<CredentialType>: <Error message>
-	// 		<CredentialType>: <Error message>
-	// 		...
-	//
 	log.Writef(EventAuthentication, "Azure Identity => ERROR in GetToken() call for %s", credErr.Error())
 
 	return nil, credErr

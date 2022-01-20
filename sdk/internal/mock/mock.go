@@ -129,13 +129,13 @@ func (s *Server) Do(req *http.Request) (*http.Response, error) {
 	}
 	var err error
 	var resp *http.Response
-	if s.routeAllRequestsToMockServer /*&& strings.Contains(req.URL.Host, "login")*/ {
+	if s.routeAllRequestsToMockServer {
 		originalURL := req.URL
-		mockUrl, _ := url.Parse(req.URL.String())
+		mockUrl := *req.URL
 		srvUrl, _ := url.Parse(s.srv.URL)
 		mockUrl.Host = srvUrl.Host
 		mockUrl.Scheme = srvUrl.Scheme
-		req.URL = mockUrl
+		req.URL = &mockUrl
 		resp, err = s.srv.Client().Do(req)
 		req.URL = originalURL
 	} else {

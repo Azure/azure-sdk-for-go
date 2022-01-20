@@ -25,15 +25,6 @@ type ClientResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Column - Query result column descriptor.
-type Column struct {
-	// REQUIRED; Column name.
-	Name *string `json:"name,omitempty"`
-
-	// REQUIRED; Column data type.
-	Type *ColumnDataType `json:"type,omitempty"`
-}
-
 // DateTimeInterval - An interval in time specifying the date and time for the inclusive start and exclusive end, i.e. [start,
 // end).
 type DateTimeInterval struct {
@@ -77,27 +68,6 @@ func (d *DateTimeInterval) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Error details.
-type Error struct {
-	// REQUIRED; Error code identifying the specific error.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// Error details
-	Details []*ErrorDetails `json:"details,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Error.
-func (e Error) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
 // ErrorDetails - Error details.
 type ErrorDetails struct {
 	// REQUIRED; Error code identifying the specific error.
@@ -107,7 +77,7 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
+	AdditionalProperties map[string]interface{}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ErrorDetails.
@@ -140,10 +110,10 @@ func (e *ErrorDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		default:
 			if e.AdditionalProperties == nil {
-				e.AdditionalProperties = map[string]map[string]interface{}{}
+				e.AdditionalProperties = map[string]interface{}{}
 			}
 			if val != nil {
-				var aux map[string]interface{}
+				var aux interface{}
 				err = json.Unmarshal(val, &aux)
 				e.AdditionalProperties[key] = aux
 			}
@@ -154,12 +124,6 @@ func (e *ErrorDetails) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// ErrorResponse - An error response from the API.
-type ErrorResponse struct {
-	// REQUIRED; Error information.
-	Error *Error `json:"error,omitempty"`
 }
 
 // FacetClassification provides polymorphic access to related types.
@@ -269,7 +233,7 @@ type FacetResult struct {
 	Count *int32 `json:"count,omitempty"`
 
 	// REQUIRED; A JObject array or Table containing the desired facets. Only present if the facet is valid.
-	Data map[string]interface{} `json:"data,omitempty"`
+	Data interface{} `json:"data,omitempty"`
 
 	// REQUIRED; Facet expression, same as in the corresponding facet request.
 	Expression *string `json:"expression,omitempty"`
@@ -293,7 +257,7 @@ func (f *FacetResult) GetFacet() *Facet {
 func (f FacetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "count", f.Count)
-	populate(objectMap, "data", f.Data)
+	populate(objectMap, "data", &f.Data)
 	populate(objectMap, "expression", f.Expression)
 	objectMap["resultType"] = "FacetResult"
 	populate(objectMap, "totalRecords", f.TotalRecords)
@@ -438,7 +402,7 @@ type QueryResponse struct {
 	Count *int64 `json:"count,omitempty"`
 
 	// REQUIRED; Query output in JObject array or Table format.
-	Data map[string]interface{} `json:"data,omitempty"`
+	Data interface{} `json:"data,omitempty"`
 
 	// REQUIRED; Indicates whether the query results are truncated.
 	ResultTruncated *ResultTruncated `json:"resultTruncated,omitempty"`
@@ -458,7 +422,7 @@ type QueryResponse struct {
 func (q QueryResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "count", q.Count)
-	populate(objectMap, "data", q.Data)
+	populate(objectMap, "data", &q.Data)
 	populate(objectMap, "facets", q.Facets)
 	populate(objectMap, "resultTruncated", q.ResultTruncated)
 	populate(objectMap, "$skipToken", q.SkipToken)
@@ -543,23 +507,6 @@ type ResourcesHistoryRequestOptions struct {
 
 	// The maximum number of rows that the query should return. Overrides the page size when $skipToken property is present.
 	Top *int32 `json:"$top,omitempty"`
-}
-
-// Table - Query output in tabular format.
-type Table struct {
-	// REQUIRED; Query result column descriptors.
-	Columns []*Column `json:"columns,omitempty"`
-
-	// REQUIRED; Query result rows.
-	Rows [][]map[string]interface{} `json:"rows,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Table.
-func (t Table) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "columns", t.Columns)
-	populate(objectMap, "rows", t.Rows)
-	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

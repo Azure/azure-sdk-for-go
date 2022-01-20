@@ -87,7 +87,10 @@ type Attributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
-func (s Attributes) toGenerated() *internal.SecretAttributes {
+func (s *Attributes) toGenerated() *internal.SecretAttributes {
+	if s == nil {
+		return nil
+	}
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
 		RecoveryLevel:   s.RecoveryLevel.toGenerated(),
@@ -187,8 +190,11 @@ type BackupSecretResult struct {
 }
 
 func convertPtrMap(m map[string]*string) map[string]string {
-	ret := map[string]string{}
+	if m == nil {
+		return nil
+	}
 
+	ret := map[string]string{}
 	for key, val := range m {
 		ret[key] = *val
 	}
@@ -197,8 +203,11 @@ func convertPtrMap(m map[string]*string) map[string]string {
 }
 
 func createPtrMap(m map[string]string) map[string]*string {
-	ret := map[string]*string{}
+	if m == nil {
+		return nil
+	}
 
+	ret := map[string]*string{}
 	for key, val := range m {
 		ret[key] = &val
 	}

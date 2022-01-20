@@ -147,7 +147,7 @@ type CertificateBundle struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; The certificate id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -174,7 +174,7 @@ func certificateBundleFromGenerated(g *generated.CertificateBundle) CertificateB
 		Attributes:     certificateAttributesFromGenerated(g.Attributes),
 		Cer:            g.Cer,
 		ContentType:    g.ContentType,
-		Tags:           g.Tags,
+		Tags:           convertGeneratedMap(g.Tags),
 		ID:             g.ID,
 		Kid:            g.Kid,
 		Policy:         certificatePolicyFromGenerated(g.Policy),
@@ -233,7 +233,7 @@ type CertificateItem struct {
 	ID *string `json:"id,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// Thumbprint of the certificate.
 	X509Thumbprint []byte `json:"x5t,omitempty"`
@@ -309,9 +309,10 @@ func (c *CertificatePolicy) toGeneratedCertificateCreateParameters() *generated.
 		return nil
 	}
 	var la []*generated.LifetimeAction
-	for _, l := range c.LifetimeActions {
-		la = append(la, l.toGenerated())
-	}
+		for _, l := range c.LifetimeActions {
+			la = append(la, l.toGenerated())
+		}
+	
 
 	return &generated.CertificatePolicy{
 		Attributes:                c.Attributes.toGenerated(),
@@ -786,4 +787,28 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
 		ValidityInMonths:        g.ValidityInMonths,
 	}
+}
+
+func convertToGeneratedMap(m map[string]string) map[string]*string {
+	if m == nil {
+		return nil
+	}
+
+	ret := make(map[string]*string)
+	for k, v := range m {
+		ret[k] = &v
+	}
+	return ret
+}
+
+func convertGeneratedMap(m map[string]*string) map[string]string {
+	if m == nil {
+		return nil
+	}
+
+	ret := make(map[string]string)
+	for k, v := range m {
+		ret[k] = *v
+	}
+	return ret
 }

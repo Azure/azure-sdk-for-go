@@ -558,9 +558,9 @@ func TestCRUDOperations(t *testing.T) {
 	require.Equal(t, *policy.KeyProperties.KeySize, *updateResp.KeyProperties.KeySize)
 	require.Equal(t, *policy.KeyProperties.Curve, *updateResp.KeyProperties.Curve)
 
-	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, &UpdateCertificatePropertiesOptions{Tags: map[string]*string{"tag1": to.StringPtr("updated_values1")}})
+	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, &UpdateCertificatePropertiesOptions{Tags: map[string]string{"tag1": "updated_values1"}})
 	require.NoError(t, err)
-	require.Equal(t, "updated_values1", *updatePropsResp.Tags["tag1"])
+	require.Equal(t, "updated_values1", updatePropsResp.Tags["tag1"])
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
 }
 

@@ -69,7 +69,7 @@ type BeginCreateCertificateOptions struct {
 	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCreateCertificateOptions {
@@ -172,7 +172,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certName string, po
 		certName,
 		generated.CertificateCreateParameters{
 			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
-			Tags:                  options.Tags,
+			Tags:                  convertToGeneratedMap(options.Tags),
 			CertificateAttributes: options.CertificateAttributes.toGenerated(),
 		},
 		options.toGenerated(),
@@ -242,7 +242,7 @@ func (c *Client) GetCertificate(ctx context.Context, certName string, options *G
 			Attributes:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
-			Tags:           resp.Tags,
+			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
 			Kid:            resp.Kid,
 			Policy:         certificatePolicyFromGenerated(resp.Policy),
@@ -320,7 +320,7 @@ func deleteCertificateResponseFromGenerated(g *generated.KeyVaultClientDeleteCer
 				Attributes:     certificateAttributesFromGenerated(g.Attributes),
 				Cer:            g.Cer,
 				ContentType:    g.ContentType,
-				Tags:           g.Tags,
+				Tags:           convertGeneratedMap(g.Tags),
 				ID:             g.ID,
 				Kid:            g.Kid,
 				Policy:         certificatePolicyFromGenerated(g.Policy),
@@ -504,7 +504,7 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certName string, opt
 				Attributes:     certificateAttributesFromGenerated(resp.Attributes),
 				Cer:            resp.Cer,
 				ContentType:    resp.ContentType,
-				Tags:           resp.Tags,
+				Tags:           convertGeneratedMap(resp.Tags),
 				ID:             resp.ID,
 				Kid:            resp.Kid,
 				Policy:         certificatePolicyFromGenerated(resp.Policy),
@@ -554,7 +554,7 @@ type ImportCertificateOptions struct {
 	Password *string `json:"pwd,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i *ImportCertificateOptions) toGenerated() *generated.KeyVaultClientImportCertificateOptions {
@@ -581,7 +581,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 			CertificateAttributes:    options.CertificateAttributes.toGenerated(),
 			CertificatePolicy:        options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
 			Password:                 options.Password,
-			Tags:                     options.Tags,
+			Tags:                     convertToGeneratedMap(options.Tags),
 		},
 		options.toGenerated(),
 	)
@@ -595,7 +595,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certName string, base64E
 			Attributes:     certificateAttributesFromGenerated(resp.Attributes),
 			Cer:            resp.Cer,
 			ContentType:    resp.ContentType,
-			Tags:           resp.Tags,
+			Tags:           convertGeneratedMap(resp.Tags),
 			ID:             resp.ID,
 			Kid:            resp.Kid,
 			Policy:         certificatePolicyFromGenerated(resp.Policy),
@@ -670,7 +670,7 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetCertificatesResponse
 		vals = append(vals, &CertificateItem{
 			Attributes:     certificateAttributesFromGenerated(v.Attributes),
 			ID:             v.ID,
-			Tags:           v.Tags,
+			Tags:           convertGeneratedMap(v.Tags),
 			X509Thumbprint: v.X509Thumbprint,
 		})
 	}
@@ -758,7 +758,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetCertificateVe
 		vals = append(vals, &CertificateItem{
 			Attributes:     certificateAttributesFromGenerated(v.Attributes),
 			ID:             v.ID,
-			Tags:           v.Tags,
+			Tags:           convertGeneratedMap(v.Tags),
 			X509Thumbprint: v.X509Thumbprint,
 		})
 	}
@@ -1225,7 +1225,7 @@ type UpdateCertificatePropertiesOptions struct {
 	CertificatePolicy *CertificatePolicy `json:"policy,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOptions {
@@ -1251,7 +1251,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certName strin
 		generated.CertificateUpdateParameters{
 			CertificateAttributes: options.CertificateAttributes.toGenerated(),
 			CertificatePolicy:     options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
-			Tags:                  options.Tags,
+			Tags:                  convertToGeneratedMap(options.Tags),
 		},
 		options.toGenerated(),
 	)
@@ -1270,7 +1270,7 @@ type MergeCertificateOptions struct {
 	CertificateAttributes *CertificateAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCertificateOptions {
@@ -1296,7 +1296,7 @@ func (c *Client) MergeCertificate(ctx context.Context, certName string, certific
 		generated.CertificateMergeParameters{
 			X509Certificates:      certificates,
 			CertificateAttributes: options.CertificateAttributes.toGenerated(),
-			Tags:                  options.Tags,
+			Tags:                  convertToGeneratedMap(options.Tags),
 		},
 		options.toGenerated(),
 	)
@@ -1510,7 +1510,7 @@ func (l *listDeletedCertificatesPager) PageResponse() ListDeletedCertificatesPag
 			CertificateItem: CertificateItem{
 				Attributes:     certificateAttributesFromGenerated(v.Attributes),
 				ID:             v.ID,
-				Tags:           v.Tags,
+				Tags:           convertGeneratedMap(v.Tags),
 				X509Thumbprint: v.X509Thumbprint,
 			},
 		})

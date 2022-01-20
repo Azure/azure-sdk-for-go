@@ -1,5 +1,27 @@
 # Release History
 
+## 0.3.0 (2022-01-20)
+### Breaking Changes
+
+- Type of `ParameterValuesValue.Value` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DataEffect.DetailsSchema` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ParameterDefinitionsValue.AllowedValues` has been changed from `[]map[string]interface{}` to `[]interface{}`
+- Type of `ParameterDefinitionsValue.DefaultValue` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ExemptionProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `SetDefinitionProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `AssignmentProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `ParameterDefinitionsValueMetadata.AdditionalProperties` has been changed from `map[string]map[string]interface{}` to `map[string]interface{}`
+- Type of `DefinitionProperties.PolicyRule` has been changed from `map[string]interface{}` to `interface{}`
+- Type of `DefinitionProperties.Metadata` has been changed from `map[string]interface{}` to `interface{}`
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Struct `CloudError` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorResponse` has been removed
+
+### Features Added
+
+
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

@@ -167,7 +167,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
 	}
-	expectedError := `ERROR in GetToken() call for ChainedTokenCredential:
+	expectedError := `Authentication failed for ChainedTokenCredential:
 Attempted credentials:
 	unavailableCredential1: Unavailable expected error
 	unavailableCredential2: Unavailable expected error

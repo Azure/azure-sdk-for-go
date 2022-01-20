@@ -82,7 +82,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		return nil, err
 	}
 
-	if len(errMsg) != 0 {
+	if errMsg != "\n" {
 		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:%s", errMsg)
 	}
 

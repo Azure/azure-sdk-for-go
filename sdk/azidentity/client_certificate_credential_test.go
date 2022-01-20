@@ -95,7 +95,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain_mock(t
 			bodystr := string(body)
 			kvps := strings.Split(bodystr, "&")
 			assertion := strings.Split(kvps[0], "=")
-			token, _ := jwt.Parse(assertion[1], nil)//  func(token *jwt.Token) (interface{}, error) { return []byte(""), nil})
+			token, _ := jwt.Parse(assertion[1], nil)
 			if _, ok := token.Header["x5c"]; !ok {
 				t.Fatal("JWT did not contain the x5c header")
 			}

@@ -1,0 +1,11 @@
+{
+  "commit": "665b838376ccbfa77fbcff5b4c1cd4693dddaa40",
+  "readme": "/_/azure-rest-api-specs/specification/recoveryservicessiterecovery/resource-manager/readme.md",
+  "tag": "package-2021-12",
+  "use": "@microsoft.azure/autorest.go@2.1.187",
+  "repository_url": "https://github.com/Azure/azure-rest-api-specs.git",
+  "autorest_command": "autorest --use=@microsoft.azure/autorest.go@2.1.187 --tag=package-2021-12 --go-sdk-folder=/_/azure-sdk-for-go --go --verbose --use-onever --version=V2 --go.license-header=MICROSOFT_MIT_NO_VERSION --pass-thru:schema-validator-swagger /_/azure-rest-api-specs/specification/recoveryservicessiterecovery/resource-manager/readme.md",
+  "additional_properties": {
+    "additional_options": "--go --verbose --use-onever --version=V2 --go.license-header=MICROSOFT_MIT_NO_VERSION --pass-thru:schema-validator-swagger"
+  }
+}

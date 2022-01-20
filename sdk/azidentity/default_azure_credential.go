@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -71,19 +72,17 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errorMessages = append(errorMessages, fmt.Sprintf("AzureCLICredential: %s", err.Error()))
 	}
 
-	errMsg := "\n"
-	for _, msg := range errorMessages {
-		errMsg += fmt.Sprintf("\t%s\n", msg)
-	}
+	errorMargin := "\n\t"
+	errorMessage := strings.Join(errorMessages, "\n\t")
 
 	if len(creds) == 0 {
-		err := errors.New(errMsg)
+		err := errors.New(errorMargin + errorMessage)
 		logCredentialError("Default Azure Credential", err)
 		return nil, err
 	}
 
-	if errMsg != "\n" {
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:%s", errMsg)
+	if len(errorMessage) != 0 {
+		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:%s%s", errorMargin, errorMessage)
 	}
 
 	chain, err := NewChainedTokenCredential(creds, nil)
